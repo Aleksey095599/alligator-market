@@ -1,0 +1,14 @@
+# === General OS cruft ===
+Thumbs.db
+
+# === Build output ===
+/target/
+
+# === Logs ===
+*.log
+/logs/
+
+# === IDE (IntelliJ IDEA) ===
+.idea
+*.iml
+out/
