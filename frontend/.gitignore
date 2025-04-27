@@ -1,0 +1,21 @@
+# === OS junk ===
+Thumbs.db
+
+# === Build & cache ===
+/dist
+/tmp
+/out-tsc
+/.angular/cache
+/bazel-out
+
+# === Node ===
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# === Coverage ===
+/coverage
+
+# === IDE ===
+.idea/
+.vscode/
