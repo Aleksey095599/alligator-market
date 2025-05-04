@@ -11,10 +11,9 @@ import java.util.Optional;
  * Конфигурация JPA-аудита.
  */
 @Configuration
-@EnableJpaAuditing // ← включает обработку @CreatedDate, @LastModifiedDate, @CreatedBy, @LastModifiedBy
+@EnableJpaAuditing
 public class JpaConfig {
 
-    /** Возвращает «кто совершил операцию». */
     @Bean
     public AuditorAware<String> auditorProvider() {
         // TODO: временное решение, в дальнейшем брать из контекста Spring Security
