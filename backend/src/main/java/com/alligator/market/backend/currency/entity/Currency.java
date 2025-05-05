@@ -5,14 +5,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Entity для валюты. Optimistic-locking + audit унаследованы из BaseEntity.
- */
+/* Entity для валюты. */
 @Entity
 @Table(
         name = "currency",
@@ -26,34 +23,28 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Currency extends BaseEntity {
 
-    /**
-     * Трёхбуквенный ISO-код валюты: используется как первичный ключ.
-     */
+    /* Суррогатный PK */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    /* ISO-4217 код валюты */
     @Pattern(regexp = "^[A-Z]{3}$")
-    @Column(length = 3, updatable = false, nullable = false)
+    @Column(length = 3, nullable = false)
     private String code;
 
-    /**
-     * Полное название валюты.
-     */
+    /* Наименование валюты */
     @Column(length = 50, nullable = false)
-    @Size(max = 50)
     private String name;
 
-    /**
-     * Страна или регион обращения.
-     */
+    /* Страна или регион обращения */
     @Column(length = 100, nullable = false)
-    @Size(max = 100)
     private String country;
 
-    /**
-     * Кол-во знаков после запятой для денежных сумм.
-     */
+    /* Кол-во знаков после запятой для денежных сумм */
     @Column(nullable = false)
     @Min(0)
     @Max(10)
-    private Integer decimal = 2;
+    private Integer decimal;
 
 }
