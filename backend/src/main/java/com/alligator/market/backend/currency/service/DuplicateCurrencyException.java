@@ -1,7 +1,8 @@
 package com.alligator.market.backend.currency.service;
 
+/* Исключение для дублирующейся валюты по коду. */
 public class DuplicateCurrencyException extends RuntimeException {
-    public DuplicateCurrencyException(String code) {
-        super("Currency with code %s already exists".formatted(code));
+    public DuplicateCurrencyException(String field, String value) {
+        super("Currency with " + field + " '" + value + "' already exists");
     }
 }
