@@ -8,6 +8,10 @@ import java.util.Optional;
 /* Репозиторий для работы с таблицей currency. */
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
-    /* Поиск валюты по ISO-коду (для проверки уникальности) */
     Optional<Currency> findByCode(String code);
+
+    Optional<Currency> findByName(String code);
+
+    boolean existsByCountry(String country);
+    
 }
