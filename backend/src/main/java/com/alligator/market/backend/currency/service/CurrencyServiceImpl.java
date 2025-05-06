@@ -5,11 +5,14 @@ import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/* Реализация интерфейса сервиса для операций с валютами. */
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository repository;
@@ -20,8 +23,17 @@ public class CurrencyServiceImpl implements CurrencyService {
         // Проверяем уникальность кода
         repository.findByCode(dto.code()).ifPresent(c ->
         {
-            throw new DuplicateCurrencyException(dto.code());
+            log.warn("Currency code {} already exists", dto.code());
+            throw new DuplicateCurrencyException("code", dto.code());
         });
+        if (repository.findByName(dto.name()).isPresent()) {
+            log.warn("Currency name '{}' already exists", dto.name());
+            throw new DuplicateCurrencyException("name", dto.name());
+        }
+        if (repository.existsByCountry(dto.country())) {
+            log.warn("Currency for country '{}' already exists", dto.country());
+            throw new DuplicateCurrencyException("country", dto.country());
+        }
 
         // Маппинг dto → entity (KISS - вручную)
         Currency entity = new Currency();
@@ -30,6 +42,8 @@ public class CurrencyServiceImpl implements CurrencyService {
         entity.setCountry(dto.country());
         entity.setDecimal(dto.decimal());
 
-        return repository.save(entity);
+        Currency saved = repository.save(entity);
+        log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
+        return saved;
     }
 }
