@@ -20,7 +20,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public Currency create(CreateCurrencyRequest dto) {
 
-        // Проверяем уникальность кода
+        // Проверяем уникальность кода, имени и страны
         repository.findByCode(dto.code()).ifPresent(c ->
         {
             log.warn("Currency code {} already exists", dto.code());
@@ -35,13 +35,14 @@ public class CurrencyServiceImpl implements CurrencyService {
             throw new DuplicateCurrencyException("country", dto.country());
         }
 
-        // Маппинг dto → entity (KISS - вручную)
+        // Маппинг dto → entity
         Currency entity = new Currency();
         entity.setCode(dto.code());
         entity.setName(dto.name());
         entity.setCountry(dto.country());
         entity.setDecimal(dto.decimal());
 
+        // Сохраняем в БД
         Currency saved = repository.save(entity);
         log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
         return saved;
