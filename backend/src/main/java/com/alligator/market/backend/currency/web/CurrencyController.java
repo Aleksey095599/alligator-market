@@ -23,11 +23,14 @@ public class CurrencyController {
 
     private final CurrencyService service;   // внедряем бизнес-логику
 
-    /* POST /api/v1/currencies ─ создать новую валюту. */
+    /* POST ─ создать новую валюту. */
     @PostMapping
     public ResponseEntity<Currency> create(@RequestBody @Valid CreateCurrencyRequest dto) {
+        // Создаем валюту через сервис 
         Currency saved = service.create(dto);
+        // Логируем результат
         log.debug("POST /currencies -> 201, id={}", saved.getId());
+        // Возвращаем успешный ответ с кодом 201 и URI нового ресурса
         return ResponseEntity
                 .created(URI.create("/api/v1/currencies/" + saved.getId()))
                 .build();
