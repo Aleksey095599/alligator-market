@@ -18,7 +18,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRepository repository;
 
     @Override
-    public Currency create(CreateCurrencyRequest dto) {
+    public Currency createCurrency(CreateCurrencyRequest dto) {
 
         // Проверяем уникальность кода, имени и страны
         repository.findByCode(dto.code()).ifPresent(c ->
