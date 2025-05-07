@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.entity;
+package com.alligator.market.backend.common.jpa.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -14,8 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
-/* Базовый (родительский) класс для всех entity, задающий поля для аудита (отслеживание изменений)
-   и управления версиями (оптимистичная блокировка). */
+/* Родительский класс для всех entity, задающий поля для отслеживания изменений и управления версиями. */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
