@@ -1,6 +1,6 @@
 package com.alligator.market.backend.currency.entity;
 
-import com.alligator.market.backend.common.entity.BaseEntity;
+import com.alligator.market.backend.common.jpa.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
