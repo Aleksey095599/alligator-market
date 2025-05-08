@@ -24,6 +24,7 @@ public class CurrencyController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody @Valid CreateCurrencyRequest dto) {
+
         Currency created = service.createCurrency(dto);
         log.debug("POST /currencies -> 201, id={}", created.getId());
     }
