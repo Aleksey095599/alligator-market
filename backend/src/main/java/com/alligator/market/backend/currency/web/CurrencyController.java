@@ -6,13 +6,8 @@ import com.alligator.market.backend.currency.service.CurrencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 /* REST-контроллер для операций с валютами. */
 @RestController
@@ -21,19 +16,16 @@ import java.net.URI;
 @Slf4j
 public class CurrencyController {
 
-    private final CurrencyService service;   // внедряем бизнес-логику
+    private final CurrencyService service; // внедряем бизнес-логику
 
     //==================
     // POST новую валюту
     //==================
     @PostMapping
-    public ResponseEntity<Currency> create(@RequestBody @Valid CreateCurrencyRequest dto) {
-
-        Currency saved = service.createCurrency(dto);
-        log.debug("POST /currencies -> 201, id={}", saved.getId());
-        return ResponseEntity
-                .created(URI.create("/api/v1/currencies/" + saved.getId()))
-                .build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody @Valid CreateCurrencyRequest dto) {
+        Currency created = service.createCurrency(dto);
+        log.debug("POST /currencies -> 201, id={}", created.getId());
     }
 
 }
