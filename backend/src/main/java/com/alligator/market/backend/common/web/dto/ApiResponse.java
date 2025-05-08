@@ -16,15 +16,28 @@ public record ApiResponse<T>(
 ) {
     /* Быстрый фабричный метод для успешного ответа. */
     public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(true, data, "OK",
-                null, null, LocalDateTime.now(), null);
+
+        return new ApiResponse<>(
+                true,
+                data,
+                "OK",
+                null,
+                null,
+                LocalDateTime.now(),
+                null
+        );
     }
 
     /* Быстрый фабричный метод для ошибки. */
-    public static ApiResponse<Void> fail(List<ApiError> errors,
-                                         String message,
-                                         String path) {
-        return new ApiResponse<>(false, null, message,
-                errors, null, LocalDateTime.now(), path);
+    public static ApiResponse<Void> fail(String message, List<ApiError> errors, String path) {
+
+        return new ApiResponse<>(
+                false,
+                null,
+                message,
+                errors,
+                null,
+                LocalDateTime.now(),
+                path);
     }
 }
