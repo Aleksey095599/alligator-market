@@ -5,7 +5,7 @@ import org.springframework.validation.FieldError;
 
 /* DTO-обёртка для сведений об одной ошибке (совместимо с RFC 7807). */
 public record ApiError(
-        String code,    // машинный идентификатор проблемы (например, ERR-001)
+        String code,    // машинный идентификатор проблемы
         String detail,  // человеко-читаемое описание
         String field    // имя поля (для ошибок валидации) или null
 ) {
