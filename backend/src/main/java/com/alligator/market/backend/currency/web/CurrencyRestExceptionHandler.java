@@ -2,7 +2,7 @@ package com.alligator.market.backend.currency.web;
 
 import com.alligator.market.backend.common.web.dto.ApiError;
 import com.alligator.market.backend.common.web.dto.ApiResponse;
-import com.alligator.market.backend.currency.service.exeptions.DuplicateCurrencyException;
+import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
