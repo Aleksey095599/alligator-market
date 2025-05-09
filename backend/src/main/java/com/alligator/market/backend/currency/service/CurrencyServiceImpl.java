@@ -3,7 +3,7 @@ package com.alligator.market.backend.currency.service;
 import com.alligator.market.backend.currency.dto.CreateCurrencyRequest;
 import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.currency.service.exeptions.DuplicateCurrencyException;
+import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
