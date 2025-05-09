@@ -1,4 +1,4 @@
-package com.alligator.market.backend.currency.service;
+package com.alligator.market.backend.currency.service.exeptions;
 
 /* Исключение для дублирующейся валюты. */
 public class DuplicateCurrencyException extends RuntimeException {
