@@ -3,6 +3,7 @@ package com.alligator.market.backend.currency.service;
 import com.alligator.market.backend.currency.dto.CreateCurrencyRequest;
 import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.currency.service.exeptions.DuplicateCurrencyException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,14 @@ public class CurrencyServiceImpl implements CurrencyService {
     public Currency createCurrency(CreateCurrencyRequest dto) {
 
         // Проверяем уникальность кода, имени и страны
-        repository.findByCode(dto.code()).ifPresent(c ->
-        {
-            log.warn("Currency code {} already exists", dto.code());
+        repository.findByCode(dto.code()).ifPresent(c -> {
+            log.warn("Currency code '{}' already exists", dto.code());
             throw new DuplicateCurrencyException("code", dto.code());
         });
-        if (repository.findByName(dto.name()).isPresent()) {
+        repository.findByName(dto.name()).ifPresent(c -> {
             log.warn("Currency name '{}' already exists", dto.name());
             throw new DuplicateCurrencyException("name", dto.name());
-        }
+        });
         if (repository.existsByCountry(dto.country())) {
             log.warn("Currency for country '{}' already exists", dto.country());
             throw new DuplicateCurrencyException("country", dto.country());
