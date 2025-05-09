@@ -12,3 +12,6 @@ Thumbs.db
 .idea
 *.iml
 out/
+
+# === Project Structure Exporter ===
+/structure_exports/
