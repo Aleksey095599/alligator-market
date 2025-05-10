@@ -19,7 +19,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRepository repository;
 
     @Override
-    public Currency createCurrency(CreateCurrencyRequest dto) {
+    public String createCurrency(CreateCurrencyRequest dto) {
 
         // Проверяем уникальность кода, имени и страны
         repository.findByCode(dto.code()).ifPresent(c -> {
@@ -45,6 +45,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         // Сохраняем в БД
         Currency saved = repository.save(entity);
         log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
-        return saved;
+        return saved.getCode();
     }
 }
