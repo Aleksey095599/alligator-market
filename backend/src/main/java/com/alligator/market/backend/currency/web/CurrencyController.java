@@ -1,7 +1,6 @@
 package com.alligator.market.backend.currency.web;
 
 import com.alligator.market.backend.currency.dto.CreateCurrencyRequest;
-import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.service.CurrencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +22,8 @@ public class CurrencyController {
     //==================
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid CreateCurrencyRequest dto) {
-
-        Currency created = service.createCurrency(dto);
-        log.info("POST /currencies -> 201, id={}", created.getId());
+    public String create(@RequestBody @Valid CreateCurrencyRequest dto) {
+        return service.createCurrency(dto);
     }
 
 }
