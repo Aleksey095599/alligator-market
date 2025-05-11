@@ -10,6 +10,5 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     Optional<Currency> findByCode(String code);
     Optional<Currency> findByName(String name);
-
     Optional<Currency> findByCountry(String country);
 }
