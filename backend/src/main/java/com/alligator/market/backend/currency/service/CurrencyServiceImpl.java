@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 /* Реализация интерфейса сервиса для операций с валютами. */
 @Service
 @RequiredArgsConstructor
@@ -18,33 +20,43 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository repository;
 
+    //=====================
+    // Создать новую валюту
+    //=====================
     @Override
     public String createCurrency(CreateCurrencyRequest dto) {
 
-        // Проверяем уникальность кода, имени и страны
         repository.findByCode(dto.code()).ifPresent(c -> {
-            log.warn("Currency code '{}' already exists", dto.code());
             throw new DuplicateCurrencyException("code", dto.code());
         });
         repository.findByName(dto.name()).ifPresent(c -> {
-            log.warn("Currency name '{}' already exists", dto.name());
             throw new DuplicateCurrencyException("name", dto.name());
         });
-        if (repository.existsByCountry(dto.country())) {
-            log.warn("Currency for country '{}' already exists", dto.country());
+        repository.findByCountry(dto.country()).ifPresent(c -> {
             throw new DuplicateCurrencyException("country", dto.country());
-        }
+        });
 
-        // Маппинг dto → entity
         Currency entity = new Currency();
         entity.setCode(dto.code());
         entity.setName(dto.name());
         entity.setCountry(dto.country());
         entity.setDecimal(dto.decimal());
 
-        // Сохраняем в БД
         Currency saved = repository.save(entity);
         log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
         return saved.getCode();
+    }
+
+    //===================================
+    // Удалить валюту по уникальному коду
+    //===================================
+    @Override
+    public void deleteCurrency(String code) {
+
+        Currency currency = repository.findByCode(code)
+                .orElseThrow(() -> new NoSuchElementException("Currency %s not found".formatted(code)));
+
+        repository.delete(currency);
+        log.info("Currency {} deleted (id={})", currency.getCode(), currency.getId());
     }
 }
