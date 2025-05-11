@@ -3,13 +3,12 @@ package com.alligator.market.backend.currency.service;
 import com.alligator.market.backend.currency.dto.CreateCurrencyRequest;
 import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
 import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 /* Реализация интерфейса сервиса для операций с валютами. */
 @Service
@@ -54,7 +53,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteCurrency(String code) {
 
         Currency currency = repository.findByCode(code)
-                .orElseThrow(() -> new NoSuchElementException("Currency %s not found".formatted(code)));
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
 
         repository.delete(currency);
         log.info("Currency {} deleted (id={})", currency.getCode(), currency.getId());
