@@ -7,4 +7,5 @@ public interface CurrencyService {
 
     String createCurrency(CreateCurrencyRequest dto);
 
+    void deleteCurrency(String code);
 }
