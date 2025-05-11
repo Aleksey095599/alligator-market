@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -31,16 +28,22 @@ public class CurrencyController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CreateCurrencyRequest dto) {
 
-        // Сервис возвращает код валюты
         String code = service.createCurrency(dto);
-
-        // Формируем ссылку на созданный ресурс
-        URI location = ServletUriComponentsBuilder
+        URI location = ServletUriComponentsBuilder // Формируем ссылку на созданный ресурс
                 .fromCurrentRequest()
                 .path("/{code}")
                 .buildAndExpand(code)
                 .toUri();
-
         return ResponseEntityFactory.created(location, code);
+    }
+
+    //================================
+    // DELETE — удалить валюту по коду
+    //================================
+    @DeleteMapping("/{code}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
+
+        service.deleteCurrency(code);
+        return ResponseEntityFactory.ok(null);
     }
 }
