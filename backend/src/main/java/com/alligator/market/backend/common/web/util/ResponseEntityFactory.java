@@ -26,12 +26,6 @@ public final class ResponseEntityFactory {
                 .body(ApiResponse.build(data, "created"));
     }
 
-    /* 201 Created + Location (без body) */
-    public static ResponseEntity<ApiResponse<Void>> created(URI location) {
-        return ResponseEntity.created(location)
-                .build();
-    }
-
     /* Стандартная ошибка */
     public static ResponseEntity<ApiResponse<Void>> error(HttpStatus status, String message) {
         return ResponseEntity.status(status)
