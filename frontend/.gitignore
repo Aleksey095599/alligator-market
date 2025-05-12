@@ -19,3 +19,6 @@ yarn-error.log
 # === IDE ===
 .idea/
 .vscode/
+
+# === Project Structure Exporter ===
+/structure_exports/
