@@ -63,7 +63,7 @@ public class GlobalRestExceptionHandler {
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
 
-    /* Непредвиденные ошибки */
+    /* Непредвиденные ошибки 500 */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
         log.error("Unhandled exception", ex);
