@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /* Локальный обработчик исключений пакета «Currency».
-   → Ограничиваем область действия пакетом currency,
-   чтобы не перехватывать ошибки других доменов. */
+   → Привязан к контроллеру для валют. */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.alligator.market.backend.currency")
+@RestControllerAdvice(assignableTypes = CurrencyController.class)
 public class CurrencyRestExceptionHandler {
 
     /* Дублирование по одному из уникальных параметров валюты. */
