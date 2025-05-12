@@ -30,7 +30,10 @@ public class GlobalRestExceptionHandler {
                 .collect(Collectors.joining("; "));
 
         log.warn("MethodArgumentNotValidException: {}", message);
-        return ResponseEntityFactory.error(HttpStatus.UNPROCESSABLE_ENTITY, message);
+        return ResponseEntityFactory.error(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                message
+        );
     }
 
     /* Ошибки валидации параметров (@Validated) */
@@ -43,7 +46,10 @@ public class GlobalRestExceptionHandler {
                 .collect(Collectors.joining("; "));
 
         log.warn("ConstraintViolationException: {}", message);
-        return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, message);
+        return ResponseEntityFactory.error(
+                HttpStatus.BAD_REQUEST,
+                message
+        );
     }
 
     /* Конфликт целостности данных (например, нарушение уникального индекса) */
@@ -67,7 +73,10 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
         log.error("Unhandled exception", ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error");
+        return ResponseEntityFactory.error(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Unexpected server error"
+        );
     }
 
 }
