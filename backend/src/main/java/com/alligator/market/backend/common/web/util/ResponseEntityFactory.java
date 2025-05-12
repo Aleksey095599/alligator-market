@@ -32,7 +32,7 @@ public final class ResponseEntityFactory {
                 .body(ApiResponse.build(null, message));
     }
 
-    /* Ошибка 404 Not Found */
+    /* Ошибка 404 Not Found (частный случай) */
     public static ResponseEntity<ApiResponse<Void>> notFound(String message) {
         return error(HttpStatus.NOT_FOUND, message);
     }
