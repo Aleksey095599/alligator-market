@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
 
-    /* Ошибки валидации тела запроса (@Valid) */
+    /* Ошибки валидации тела запроса (@Valid) 422 */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         // Собираем все ошибки валидации в одно сообщение
@@ -36,7 +36,7 @@ public class GlobalRestExceptionHandler {
         );
     }
 
-    /* Ошибки валидации параметров (@Validated) */
+    /* Ошибки валидации параметров (@Validated) 400 */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleConstraintViolation(ConstraintViolationException ex) {
         // Собираем все ошибки валидации в одно сообщение
@@ -52,7 +52,7 @@ public class GlobalRestExceptionHandler {
         );
     }
 
-    /* Конфликт целостности данных (например, нарушение уникального индекса) */
+    /* Конфликт целостности данных 409 */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.warn("DataIntegrityViolationException: {}", ex.getMessage());
@@ -62,7 +62,7 @@ public class GlobalRestExceptionHandler {
         );
     }
 
-    /* Ресурс не найден */
+    /* Ресурс не найден 404 */
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(NoSuchElementException ex) {
         log.warn("NoSuchElementException: {}", ex.getMessage());
