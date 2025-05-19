@@ -1,6 +1,6 @@
 package com.alligator.market.backend.currency.service;
 
-import com.alligator.market.backend.currency.dto.CreateCurrencyRequest;
+import com.alligator.market.backend.currency.dto.CurrencyDto;
 import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
 import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
@@ -23,7 +23,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     // Создать новую валюту
     //=====================
     @Override
-    public String createCurrency(CreateCurrencyRequest dto) {
+    public String createCurrency(CurrencyDto dto) {
 
         repository.findByCode(dto.code()).ifPresent(c -> {
             throw new DuplicateCurrencyException("code", dto.code());

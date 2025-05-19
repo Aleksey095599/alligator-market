@@ -3,7 +3,7 @@ package com.alligator.market.backend.currency.dto;
 import jakarta.validation.constraints.*;
 
 /* DTO для добавления валюты. */
-public record CreateCurrencyRequest(
+public record CurrencyDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
