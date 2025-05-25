@@ -8,6 +8,7 @@ import java.util.List;
 public interface CurrencyService {
 
     String createCurrency(CurrencyDto dto);
+
     void deleteCurrency(String code);
 
     List<CurrencyDto> findAll();
