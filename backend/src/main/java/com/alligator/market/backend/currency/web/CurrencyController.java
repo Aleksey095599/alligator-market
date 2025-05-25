@@ -38,9 +38,9 @@ public class CurrencyController {
         return ResponseEntityFactory.created(location, code);
     }
 
-    //=======================
-    // Удалить валюту по коду
-    //=======================
+    //===============
+    // Удалить валюту
+    //===============
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
 
@@ -48,13 +48,13 @@ public class CurrencyController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //======================
-    // Возвращает все валюты
-    //======================
+    //===================
+    // Вернуть все валюты
+    //===================
     @GetMapping
-    public List<CurrencyDto> getAll() {
+    public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 
-        return service.findAll();
+        return ResponseEntityFactory.ok(service.findAll());
     }
 
 }
