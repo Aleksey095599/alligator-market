@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /* Реализация интерфейса сервиса для операций с валютами. */
 @Service
 @RequiredArgsConstructor
@@ -58,4 +60,21 @@ public class CurrencyServiceImpl implements CurrencyService {
         repository.delete(currency);
         log.info("Currency {} deleted (id={})", currency.getCode(), currency.getId());
     }
+
+    //==============================
+    // Извлечь все валюты из таблицы
+    //==============================
+    public List<CurrencyDto> findAll() {
+
+        return repository.findAll()
+                .stream()
+                .map(c -> new CurrencyDto(
+                        c.getCode(),
+                        c.getName(),
+                        c.getCountry(),
+                        c.getDecimal()
+                ))
+                .toList();
+    }
+
 }
