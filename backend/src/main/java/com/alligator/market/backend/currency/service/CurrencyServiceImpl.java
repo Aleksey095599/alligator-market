@@ -5,10 +5,10 @@ import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
 import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
 import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,9 +64,11 @@ public class CurrencyServiceImpl implements CurrencyService {
     //==============================
     // Извлечь все валюты из таблицы
     //==============================
+    @Override
+    @Transactional(readOnly = true)
     public List<CurrencyDto> findAll() {
 
-        return repository.findAll()
+        List<CurrencyDto> result = repository.findAll()
                 .stream()
                 .map(c -> new CurrencyDto(
                         c.getCode(),
@@ -75,6 +77,8 @@ public class CurrencyServiceImpl implements CurrencyService {
                         c.getDecimal()
                 ))
                 .toList();
+        log.debug("Found {} currencies", result.size());
+        return result;
     }
 
 }
