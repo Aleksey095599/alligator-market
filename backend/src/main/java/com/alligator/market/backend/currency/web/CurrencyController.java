@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 /* REST-контроллер для операций с валютами. */
 @RestController
@@ -22,9 +23,9 @@ public class CurrencyController {
 
     private final CurrencyService service;
 
-    //============================
-    // POST — создать новую валюту
-    //============================
+    //=====================
+    // Создать новую валюту
+    //=====================
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
@@ -37,13 +38,23 @@ public class CurrencyController {
         return ResponseEntityFactory.created(location, code);
     }
 
-    //================================
-    // DELETE — удалить валюту по коду
-    //================================
+    //=======================
+    // Удалить валюту по коду
+    //=======================
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
 
         service.deleteCurrency(code);
         return ResponseEntityFactory.ok(null);
     }
+
+    //======================
+    // Возвращает все валюты
+    //======================
+    @GetMapping
+    public List<CurrencyDto> getAll() {
+
+        return service.findAll();
+    }
+
 }
