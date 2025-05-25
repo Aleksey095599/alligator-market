@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CurrencyDto} from '../models/currency.model';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {ApiResponse} from '../../shared/api-response.model';
 
 /* Сервис для взаимодействия с API по работе с валютами */
 @Injectable({
@@ -15,21 +16,25 @@ export class CurrencyService {
   /* Базовый URL (через proxy уйдёт на Spring) */
   private readonly baseUrl = '/api/v1/currencies';
 
-  /* Получить все валюты
-   * Выполняет HTTP GET запрос к /api/v1/currencies
-   * @returns Observable массива валют CurrencyDto[] с сервера
-   * Observable позволяет асинхронно получить данные когда они будут готовы */
+  /* Получить список всех валют */
   list(): Observable<CurrencyDto[]> {
-    return this.http.get<CurrencyDto[]>(this.baseUrl);
+    return this.http
+      .get<ApiResponse<CurrencyDto[]>>(this.baseUrl)
+      .pipe(map(res => res.data));
   }
 
   /* Добавить валюту, backend вернёт её код */
   add(dto: CurrencyDto): Observable<string> {
-    return this.http.post<string>(this.baseUrl, dto);
+    return this.http
+      .post<ApiResponse<string>>(this.baseUrl, dto)
+      .pipe(map(res => res.data));
   }
 
   /* Удалить валюту по коду */
   delete(code: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${code}`);
+    return this.http
+      .delete<ApiResponse<void>>(`${this.baseUrl}/${code}`)
+      .pipe(map(res => res.data));
   }
+
 }
