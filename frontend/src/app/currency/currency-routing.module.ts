@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/currency-admin/currency-admin.component')
+        .then(c => c.CurrencyAdminComponent)
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
