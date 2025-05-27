@@ -7,7 +7,7 @@ import { CurrencyRoutingModule } from './currency-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    CurrencyRoutingModule
+    CurrencyRoutingModule,
   ]
 })
 export class CurrencyModule { }
