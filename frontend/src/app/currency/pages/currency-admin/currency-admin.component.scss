@@ -1,0 +1,25 @@
+/* небольшой «воздух» вокруг каждой карточки */
+mat-card {
+  margin: 24px;
+}
+
+/* форма-toolbar внутри первой карточки */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* центрируем и ограничиваем ширину */
+.center-box {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 0 16px;
+}
+
+/* таблица пусть растягивается только внутри карточки */
+table {
+  width: 100%;
+}
