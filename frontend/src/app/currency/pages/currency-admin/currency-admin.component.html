@@ -12,12 +12,12 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
+          <mat-label>Currency Name</mat-label>
           <input matInput formControlName="name"/>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Country</mat-label>
+          <mat-label>Country/Region</mat-label>
           <input matInput formControlName="country"/>
         </mat-form-field>
 
@@ -50,19 +50,19 @@
 
         <!-- Name -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name</th>
+          <th mat-header-cell *matHeaderCellDef> Currency Name</th>
           <td mat-cell *matCellDef="let c"> {{ c.name }}</td>
         </ng-container>
 
         <!-- Country -->
         <ng-container matColumnDef="country">
-          <th mat-header-cell *matHeaderCellDef> Country</th>
+          <th mat-header-cell *matHeaderCellDef> Country/Region</th>
           <td mat-cell *matCellDef="let c"> {{ c.country }}</td>
         </ng-container>
 
         <!-- Decimal -->
         <ng-container matColumnDef="decimal">
-          <th mat-header-cell *matHeaderCellDef> Dec</th>
+          <th mat-header-cell *matHeaderCellDef> Decimal</th>
           <td mat-cell *matCellDef="let c"> {{ c.decimal }}</td>
         </ng-container>
 
