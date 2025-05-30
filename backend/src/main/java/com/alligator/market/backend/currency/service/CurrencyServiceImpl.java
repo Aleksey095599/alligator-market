@@ -7,6 +7,7 @@ import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFound
 import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +69,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Transactional(readOnly = true)
     public List<CurrencyDto> findAll() {
 
-        List<CurrencyDto> result = repository.findAll()
+        List<CurrencyDto> result = repository.findAll(Sort.by("code"))
                 .stream()
                 .map(c -> new CurrencyDto(
                         c.getCode(),
