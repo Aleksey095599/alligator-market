@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CurrencyDto} from '../../models/currency.model';
 import {CurrencyService} from '../../services/currency.service';
+import {MatCardModule} from "@angular/material/card";
 
 @Component({
   selector: 'app-currency-admin',
@@ -21,7 +22,8 @@ import {CurrencyService} from '../../services/currency.service';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
   ],
   templateUrl: './currency-admin.component.html',
   styleUrl: './currency-admin.component.scss'
