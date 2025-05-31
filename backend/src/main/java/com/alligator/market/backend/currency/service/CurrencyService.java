@@ -1,6 +1,7 @@
 package com.alligator.market.backend.currency.service;
 
 import com.alligator.market.backend.currency.dto.CurrencyDto;
+import com.alligator.market.backend.currency.dto.CurrencyUpdateDto;
 
 import java.util.List;
 
@@ -8,6 +9,8 @@ import java.util.List;
 public interface CurrencyService {
 
     String createCurrency(CurrencyDto dto);
+
+    void updateCurrency(String code, CurrencyUpdateDto dto);
 
     void deleteCurrency(String code);
 
