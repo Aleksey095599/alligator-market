@@ -128,7 +128,8 @@ export class CurrencyAdminComponent implements OnInit {
         this.snack.open(`Currency ${code} deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
-      error: err => this.snack.open(err.message ?? 'Delete failed', 'Close')
+      error: err =>
+        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close')
     });
   }
 
