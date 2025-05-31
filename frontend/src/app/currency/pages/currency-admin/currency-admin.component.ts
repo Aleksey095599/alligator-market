@@ -43,10 +43,39 @@ export class CurrencyAdminComponent implements OnInit {
     private readonly snack: MatSnackBar
   ) {
     this.form = this.fb.group({
-      code: ['', [Validators.required, Validators.maxLength(3)], Validators.pattern(/^[A-Z]{3}$/)],
-      name: ['', Validators.required, Validators.maxLength(50)],
-      country: ['', Validators.required, Validators.maxLength(100) ],
-      decimal: [2, [Validators.required, Validators.min(0), Validators.max(10)]]
+      code: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(3),
+          Validators.pattern(/^[A-Z]{3}$/)   // три заглавные латинские буквы
+        ]
+      ],
+
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50)
+        ]
+      ],
+
+      country: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(100)
+        ]
+      ],
+
+      decimal: [
+        2,                                    // ← значение по-умолчанию
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(10)
+        ]
+      ]
     });
   }
 
