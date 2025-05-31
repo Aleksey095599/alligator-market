@@ -132,6 +132,9 @@ export class CurrencyAdminComponent implements OnInit {
     });
   }
 
+  //========================
+  // Вспомогательные утилиты
+  //========================
   /* утилита: перезагрузить список */
   private refresh(): void {
     this.service.list().subscribe({
