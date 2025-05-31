@@ -70,7 +70,7 @@
         </mat-form-field>
 
         <button mat-raised-button
-                (click)="onAdd()" [disabled]="form.invalid"> Add
+                (click)="onAdd()" [disabled]="form.invalid || locked"> Add
         </button>
       </form>
     </mat-card-content>
