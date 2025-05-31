@@ -30,15 +30,18 @@ import {MatCardModule} from "@angular/material/card";
 })
 export class CurrencyAdminComponent implements OnInit {
 
-  /* ---------------- табличные данные ---------------- */
+  //=================
+  // Табличные данные
+  //=================
   displayed: string[] = ['code', 'name', 'country', 'decimal', 'actions'];
   dataSource  = new MatTableDataSource<CurrencyDto>([]);
 
-  /* ---------------- форма добавления валюты ---------------- */
+  //========================
+  // Форма добавления валюты
+  //========================
   form: FormGroup;
 
-  /* флаг блокировки кнопки Add */
-  locked = false;
+  locked = false; // флаг блокировки кнопки Add
 
   constructor(
     private readonly service: CurrencyService,
@@ -80,6 +83,10 @@ export class CurrencyAdminComponent implements OnInit {
       ]
     });
   }
+
+  //=======================
+  // Активность на странице
+  //=======================
 
   /* загрузка списка при открытии страницы */
   ngOnInit(): void {
