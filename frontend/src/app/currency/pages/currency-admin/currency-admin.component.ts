@@ -34,7 +34,7 @@ export class CurrencyAdminComponent implements OnInit {
   displayed: string[] = ['code', 'name', 'country', 'decimal', 'actions'];
   dataSource  = new MatTableDataSource<CurrencyDto>([]);
 
-  /* ---------------- форма добавления ---------------- */
+  /* ---------------- форма добавления валюты ---------------- */
   form: FormGroup;
 
   constructor(
@@ -43,10 +43,10 @@ export class CurrencyAdminComponent implements OnInit {
     private readonly snack: MatSnackBar
   ) {
     this.form = this.fb.group({
-      code: ['', [Validators.required, Validators.maxLength(3)]],
-      name: ['', Validators.required],
-      country: ['', Validators.required],
-      decimal: [2, [Validators.required, Validators.min(0), Validators.max(8)]]
+      code: ['', [Validators.required, Validators.maxLength(3)], Validators.pattern(/^[A-Z]{3}$/)],
+      name: ['', Validators.required, Validators.maxLength(50)],
+      country: ['', Validators.required, Validators.maxLength(100) ],
+      decimal: [2, [Validators.required, Validators.min(0), Validators.max(10)]]
     });
   }
 
