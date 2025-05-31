@@ -1,6 +1,7 @@
 package com.alligator.market.backend.currency.service;
 
 import com.alligator.market.backend.currency.dto.CurrencyDto;
+import com.alligator.market.backend.currency.dto.CurrencyUpdateDto;
 import com.alligator.market.backend.currency.entity.Currency;
 import com.alligator.market.backend.currency.repository.CurrencyRepository;
 import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
@@ -47,6 +48,34 @@ public class CurrencyServiceImpl implements CurrencyService {
         Currency saved = repository.save(entity);
         log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
         return saved.getCode();
+    }
+
+    //==================
+    // Обновить валюту
+    //==================
+    @Override
+    public void updateCurrency(String code, CurrencyUpdateDto dto) {
+
+        Currency currency = repository.findByCode(code)
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
+
+        repository.findByName(dto.name()).ifPresent(c -> {
+            if (!c.getId().equals(currency.getId())) {
+                throw new DuplicateCurrencyException("name", dto.name());
+            }
+        });
+        repository.findByCountry(dto.country()).ifPresent(c -> {
+            if (!c.getId().equals(currency.getId())) {
+                throw new DuplicateCurrencyException("country", dto.country());
+            }
+        });
+
+        currency.setName(dto.name());
+        currency.setCountry(dto.country());
+        currency.setDecimal(dto.decimal());
+
+        repository.save(currency);
+        log.info("Currency {} updated (id={})", currency.getCode(), currency.getId());
     }
 
     //===================================
