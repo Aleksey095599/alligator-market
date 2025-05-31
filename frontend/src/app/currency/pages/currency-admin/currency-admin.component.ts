@@ -88,6 +88,7 @@ export class CurrencyAdminComponent implements OnInit {
     if (this.form.invalid) { return; }
 
     const dto: CurrencyDto = this.form.value;
+
     this.service.add(dto).subscribe({
       next: code => {
         this.snack.open(`Currency ${code} added`, 'OK', { duration: 2500 });
