@@ -11,7 +11,7 @@
 /* выстроить поля и кнопку в одну линию, с равными промежутками и переносом на новую строку */
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 16px;
   align-items: flex-end;
 }
