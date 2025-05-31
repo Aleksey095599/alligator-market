@@ -37,6 +37,9 @@ export class CurrencyAdminComponent implements OnInit {
   /* ---------------- форма добавления валюты ---------------- */
   form: FormGroup;
 
+  /* флаг блокировки кнопки Add */
+  locked = false;
+
   constructor(
     private readonly service: CurrencyService,
     private readonly fb: FormBuilder,
@@ -85,7 +88,9 @@ export class CurrencyAdminComponent implements OnInit {
 
   /* нажата кнопка Add */
   onAdd(): void {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid || this.locked) { return; }
+
+    this.locked = true; // блокируем кнопку
 
     const dto: CurrencyDto = this.form.value;
 
@@ -95,7 +100,12 @@ export class CurrencyAdminComponent implements OnInit {
         this.refresh();
         this.form.reset({ decimal: 2 });   // оставляем decimal по-умолчанию
       },
-      error: err => this.snack.open(err.message ?? 'Add failed', 'Close')
+      error: err => {
+        // Показываем текст ошибки от сервера, если он есть
+        const msg = err.error?.message ?? err.message ?? 'Add failed';
+        const ref = this.snack.open(msg, 'Close', { duration: 0 });
+        ref.afterDismissed().subscribe(() => this.locked = false);
+      }
     });
   }
 
