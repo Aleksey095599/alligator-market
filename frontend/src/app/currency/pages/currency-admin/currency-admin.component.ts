@@ -96,15 +96,20 @@ export class CurrencyAdminComponent implements OnInit {
 
     this.service.add(dto).subscribe({
       next: code => {
-        this.snack.open(`Currency ${code} added`, 'OK', { duration: 2500 });
-        this.refresh();
+        // Если все ОК
+        this.snack.open(                   // уведомление
+          `Currency ${code} added`, 'OK', { duration: 2500 }
+        );
+        this.refresh();                    // обновляем таблицу
         this.form.reset({ decimal: 2 });   // оставляем decimal по-умолчанию
+        this.locked = false;               // разблокируем кнопку
       },
       error: err => {
-        // Показываем текст ошибки от сервера, если он есть
-        const msg = err.error?.message ?? err.message ?? 'Add failed';
-        const ref = this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => this.locked = false);
+        // Если ошибка
+        const msg = err.error?.message ?? err.message ?? 'Add failed';   // ловим сообщение ошибки сервера
+        const ref =
+          this.snack.open(msg, 'Close', { duration: 0 });               // уведомление с ошибкой
+        ref.afterDismissed().subscribe(() => this.locked = false);    // Close для разблокировки Add
       }
     });
   }
