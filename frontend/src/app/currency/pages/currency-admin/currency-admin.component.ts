@@ -47,8 +47,7 @@ export class CurrencyAdminComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.maxLength(3),
-          Validators.pattern(/^[A-Z]{3}$/)   // три заглавные латинские буквы
+          Validators.pattern(/^[A-Z]{3}$/)
         ]
       ],
 
@@ -69,7 +68,7 @@ export class CurrencyAdminComponent implements OnInit {
       ],
 
       decimal: [
-        2,                                    // ← значение по-умолчанию
+        2,
         [
           Validators.required,
           Validators.min(0),
