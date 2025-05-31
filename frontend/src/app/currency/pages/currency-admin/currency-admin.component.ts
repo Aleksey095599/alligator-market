@@ -10,6 +10,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CurrencyDto} from '../../models/currency.model';
 import {CurrencyService} from '../../services/currency.service';
 import {MatCardModule} from "@angular/material/card";
+import {CurrencyUpdateDto} from "../../models/currency-update.model";
 
 @Component({
   selector: 'app-currency-admin',
@@ -42,6 +43,8 @@ export class CurrencyAdminComponent implements OnInit {
   form: FormGroup;
 
   locked = false; // флаг блокировки кнопки Add
+  editing = false; // режим редактирования
+  editCode: string | null = null; // код валюты для редактирования
 
   constructor(
     private readonly service: CurrencyService,
@@ -119,6 +122,55 @@ export class CurrencyAdminComponent implements OnInit {
         ref.afterDismissed().subscribe(() => this.locked = false);    // Close для разблокировки Add
       }
     });
+  }
+
+  /* клик по иконке Edit */
+  onEdit(c: CurrencyDto): void {
+    this.editing = true;
+    this.editCode = c.code;
+    this.form.setValue({
+      code: c.code,
+      name: c.name,
+      country: c.country,
+      decimal: c.decimal
+    });
+    this.form.controls['code'].disable();
+  }
+
+  /* нажата кнопка Save */
+  onSave(): void {
+    if (this.form.invalid || this.locked || !this.editCode) { return; }
+
+    this.locked = true;
+
+    const dto: CurrencyUpdateDto = {
+      name: this.form.controls['name'].value,
+      country: this.form.controls['country'].value,
+      decimal: this.form.controls['decimal'].value
+    } as CurrencyUpdateDto;
+
+    this.service.update(this.editCode, dto).subscribe({
+      next: () => {
+        this.snack.open(`Currency ${this.editCode} updated`, 'OK', { duration: 2500 });
+        this.refresh();
+        this.cancelEdit();
+        this.locked = false;
+      },
+      error: err => {
+        const msg = err.error?.message ?? err.message ?? 'Update failed';
+        const ref = this.snack.open(msg, 'Close', { duration: 0 });
+        ref.afterDismissed().subscribe(() => this.locked = false);
+      }
+    });
+  }
+
+  /* нажата кнопка Cancel */
+  cancelEdit(): void {
+    this.editing = false;
+    this.editCode = null;
+    this.form.reset({ code: '', name: '', country: '', decimal: 2 });
+    this.form.controls['code'].enable();
+    this.locked = false;
   }
 
   /* клик по иконке Delete */
