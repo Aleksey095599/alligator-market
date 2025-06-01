@@ -67,11 +67,13 @@
 
         <ng-container *ngIf="!editing; else editButtons">
           <button mat-raised-button
+                  type="button"
                   (click)="onAdd()" [disabled]="form.invalid || locked"> Add
           </button>
         </ng-container>
         <ng-template #editButtons>
           <button mat-raised-button color="primary"
+                  type="button"
                   (click)="onSave()" [disabled]="form.invalid || locked"> Save
           </button>
           <button mat-raised-button type="button" (click)="cancelEdit()">Cancel</button>
