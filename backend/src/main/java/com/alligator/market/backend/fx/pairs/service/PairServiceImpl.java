@@ -1,6 +1,7 @@
 package com.alligator.market.backend.fx.pairs.service;
 
 import com.alligator.market.backend.fx.pairs.dto.PairDto;
+import com.alligator.market.backend.fx.pairs.dto.PairCreateDto;
 import com.alligator.market.backend.fx.pairs.dto.PairUpdateDto;
 import com.alligator.market.backend.fx.pairs.entity.Pair;
 import com.alligator.market.backend.fx.pairs.repository.PairRepository;
@@ -27,16 +28,18 @@ public class PairServiceImpl implements PairService {
     // Создать новую пару
     //=====================
     @Override
-    public String createPair(PairDto dto) {
+    public String createPair(PairCreateDto dto) {
 
-        repository.findByPair(dto.pair()).ifPresent(p -> {
-            throw new DuplicatePairException(dto.pair());
+        String pair = dto.code1() + dto.code2();
+
+        repository.findByPair(pair).ifPresent(p -> {
+            throw new DuplicatePairException(pair);
         });
 
         Pair entity = new Pair();
         entity.setCode1(dto.code1());
         entity.setCode2(dto.code2());
-        entity.setPair(dto.pair());
+        entity.setPair(pair);
         entity.setDecimal(dto.decimal());
 
         Pair saved = repository.save(entity);

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../../../shared/api-response.model';
 import { PairDto } from '../models/pair.model';
+import { PairCreateDto } from '../models/pair-create.model';
 import { PairUpdateDto } from '../models/pair-update.model';
 
 /* Сервис для взаимодействия с API по работе с валютными парами */
@@ -24,7 +25,7 @@ export class PairService {
   }
 
   /* Добавить валютную пару, backend вернёт её pair */
-  add(dto: PairDto): Observable<string> {
+  add(dto: PairCreateDto): Observable<string> {
     return this.http
       .post<ApiResponse<string>>(this.baseUrl, dto)
       .pipe(map(res => res.data));
