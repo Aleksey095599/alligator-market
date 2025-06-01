@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {PairDto} from '../../models/pair.model';
+import {PairCreateDto} from '../../models/pair-create.model';
 import {PairService} from '../../services/pair.service';
 import {PairUpdateDto} from '../../models/pair-update.model';
 
@@ -52,14 +53,6 @@ export class PairAdminComponent implements OnInit {
     private readonly snack: MatSnackBar
   ) {
     this.form = this.fb.group({
-      pair: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^[A-Z]{6}$/)
-        ]
-      ],
-
       code1: [
         '',
         [
@@ -102,7 +95,7 @@ export class PairAdminComponent implements OnInit {
 
     this.locked = true; // блокируем кнопку
 
-    const dto: PairDto = this.form.value;
+    const dto: PairCreateDto = this.form.value;
 
     this.service.add(dto).subscribe({
       next: pair => {
@@ -128,12 +121,10 @@ export class PairAdminComponent implements OnInit {
     this.editing = true;
     this.editPair = p.pair;
     this.form.setValue({
-      pair: p.pair,
       code1: p.code1,
       code2: p.code2,
       decimal: p.decimal
     });
-    this.form.controls['pair'].disable();
     this.form.controls['code1'].disable();
     this.form.controls['code2'].disable();
   }
@@ -167,8 +158,7 @@ export class PairAdminComponent implements OnInit {
   cancelEdit(): void {
     this.editing = false;
     this.editPair = null;
-    this.form.reset({ pair: '', code1: '', code2: '', decimal: 2 });
-    this.form.controls['pair'].enable();
+    this.form.reset({ code1: '', code2: '', decimal: 2 });
     this.form.controls['code1'].enable();
     this.form.controls['code2'].enable();
     this.locked = false;

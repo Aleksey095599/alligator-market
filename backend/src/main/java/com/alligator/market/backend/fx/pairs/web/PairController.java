@@ -3,6 +3,7 @@ package com.alligator.market.backend.fx.pairs.web;
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
 import com.alligator.market.backend.fx.pairs.dto.PairDto;
+import com.alligator.market.backend.fx.pairs.dto.PairCreateDto;
 import com.alligator.market.backend.fx.pairs.dto.PairUpdateDto;
 import com.alligator.market.backend.fx.pairs.service.PairService;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class PairController {
     // Создать новую пару
     //=====================
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairCreateDto dto) {
 
         String pair = service.createPair(dto);
         URI location = ServletUriComponentsBuilder

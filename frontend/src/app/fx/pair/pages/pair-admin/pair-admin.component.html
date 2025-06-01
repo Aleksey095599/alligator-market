@@ -10,20 +10,6 @@
     <mat-card-content>
       <form [formGroup]="form" class="toolbar">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Pair</mat-label>
-          <input
-            matInput
-            formControlName="pair"
-            maxlength="6"
-          />
-          <mat-error *ngIf="this.form.controls['pair'].hasError('required')">
-            Is required
-          </mat-error>
-          <mat-error *ngIf="this.form.controls['pair'].hasError('pattern')">
-            Six letters A-Z
-          </mat-error>
-        </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Code 1</mat-label>
