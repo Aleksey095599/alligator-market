@@ -30,12 +30,10 @@
           <input
             matInput
             formControlName="name"
+            maxlength="50"
           />
           <mat-error *ngIf="form.controls['name'].hasError('required')">
             Is required
-          </mat-error>
-          <mat-error *ngIf="form.controls['name'].hasError('maxlength')">
-            Max 50 chars
           </mat-error>
         </mat-form-field>
 
@@ -44,12 +42,10 @@
           <input
             matInput
             formControlName="country"
+            maxlength="100"
           />
           <mat-error *ngIf="form.controls['country'].hasError('required')">
             Is required
-          </mat-error>
-          <mat-error *ngIf="form.controls['country'].hasError('maxlength')">
-            Max 100 chars
           </mat-error>
         </mat-form-field>
 
