@@ -108,7 +108,7 @@ export class CurrencyAdminComponent implements OnInit {
       next: code => {
         // Если все ОК
         this.snack.open(                   // уведомление
-          `Currency ${code} added`, 'OK', { duration: 2500 }
+          `Currency '${code}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();                    // обновляем таблицу
         this.form.reset({ decimal: 2 });   // оставляем decimal по-умолчанию
@@ -151,7 +151,7 @@ export class CurrencyAdminComponent implements OnInit {
 
     this.service.update(this.editCode, dto).subscribe({
       next: () => {
-        this.snack.open(`Currency ${this.editCode} updated`, 'OK', { duration: 2500 });
+        this.snack.open(`Currency '${this.editCode}' updated`, 'OK', { duration: 2500 });
         this.refresh();
         this.cancelEdit();
         this.locked = false;
@@ -177,7 +177,7 @@ export class CurrencyAdminComponent implements OnInit {
   onDelete(code: string): void {
     this.service.delete(code).subscribe({
       next: () => {
-        this.snack.open(`Currency ${code} deleted`, 'OK', { duration: 2500 });
+        this.snack.open(`Currency '${code}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
       error: err =>
