@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: 'currencies',
     loadChildren: () =>
-      import('./currency/currency.module').then(m => m.CurrencyModule)
+      import('./fx/currency/currency.module').then(m => m.CurrencyModule)
   },
   { path: '', redirectTo: 'currencies', pathMatch: 'full' },
   { path: '**', redirectTo: 'currencies' }

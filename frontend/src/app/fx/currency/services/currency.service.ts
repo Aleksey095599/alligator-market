@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {CurrencyDto} from '../models/currency.model';
 import {map, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ApiResponse} from '../../shared/api-response.model';
+import {ApiResponse} from '../../../shared/api-response.model';
 import {CurrencyUpdateDto} from "../models/currency-update.model";
 
 /* Сервис для взаимодействия с API по работе с валютами */
