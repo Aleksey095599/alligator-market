@@ -1,7 +1,7 @@
-package com.alligator.market.backend.currency.service;
+package com.alligator.market.backend.fx.currency.service;
 
-import com.alligator.market.backend.currency.dto.CurrencyDto;
-import com.alligator.market.backend.currency.dto.CurrencyUpdateDto;
+import com.alligator.market.backend.fx.currency.dto.CurrencyDto;
+import com.alligator.market.backend.fx.currency.dto.CurrencyUpdateDto;
 
 import java.util.List;
 

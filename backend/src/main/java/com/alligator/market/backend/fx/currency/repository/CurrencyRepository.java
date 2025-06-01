@@ -1,6 +1,6 @@
-package com.alligator.market.backend.currency.repository;
+package com.alligator.market.backend.fx.currency.repository;
 
-import com.alligator.market.backend.currency.entity.Currency;
+import com.alligator.market.backend.fx.currency.entity.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

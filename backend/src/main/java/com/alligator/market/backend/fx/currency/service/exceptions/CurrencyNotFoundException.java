@@ -1,4 +1,4 @@
-package com.alligator.market.backend.currency.service.exceptions;
+package com.alligator.market.backend.fx.currency.service.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 

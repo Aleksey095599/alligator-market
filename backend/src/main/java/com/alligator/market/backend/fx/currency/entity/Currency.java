@@ -1,4 +1,4 @@
-package com.alligator.market.backend.currency.entity;
+package com.alligator.market.backend.fx.currency.entity;
 
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
 import jakarta.persistence.*;

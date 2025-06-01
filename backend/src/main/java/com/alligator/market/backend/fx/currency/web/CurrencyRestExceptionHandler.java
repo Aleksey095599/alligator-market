@@ -1,9 +1,9 @@
-package com.alligator.market.backend.currency.web;
+package com.alligator.market.backend.fx.currency.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
-import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
+import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyNotFoundException;
+import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

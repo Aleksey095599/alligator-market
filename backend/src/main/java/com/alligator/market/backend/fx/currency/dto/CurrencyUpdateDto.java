@@ -1,4 +1,4 @@
-package com.alligator.market.backend.currency.dto;
+package com.alligator.market.backend.fx.currency.dto;
 
 import jakarta.validation.constraints.*;
 

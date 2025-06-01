@@ -1,11 +1,11 @@
-package com.alligator.market.backend.currency.service;
+package com.alligator.market.backend.fx.currency.service;
 
-import com.alligator.market.backend.currency.dto.CurrencyDto;
-import com.alligator.market.backend.currency.dto.CurrencyUpdateDto;
-import com.alligator.market.backend.currency.entity.Currency;
-import com.alligator.market.backend.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.currency.service.exceptions.CurrencyNotFoundException;
-import com.alligator.market.backend.currency.service.exceptions.DuplicateCurrencyException;
+import com.alligator.market.backend.fx.currency.dto.CurrencyDto;
+import com.alligator.market.backend.fx.currency.dto.CurrencyUpdateDto;
+import com.alligator.market.backend.fx.currency.entity.Currency;
+import com.alligator.market.backend.fx.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyNotFoundException;
+import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

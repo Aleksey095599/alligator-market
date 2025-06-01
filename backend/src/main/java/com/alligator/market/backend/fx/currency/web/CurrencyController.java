@@ -1,10 +1,10 @@
-package com.alligator.market.backend.currency.web;
+package com.alligator.market.backend.fx.currency.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.currency.dto.CurrencyDto;
-import com.alligator.market.backend.currency.dto.CurrencyUpdateDto;
-import com.alligator.market.backend.currency.service.CurrencyService;
+import com.alligator.market.backend.fx.currency.dto.CurrencyDto;
+import com.alligator.market.backend.fx.currency.dto.CurrencyUpdateDto;
+import com.alligator.market.backend.fx.currency.service.CurrencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
