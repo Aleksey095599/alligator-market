@@ -1,0 +1,137 @@
+<div class="center-box">
+
+  <h1 class="mat-headline-4">Pair administration</h1>
+
+  <!-- карточка с формой добавления -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Pair Toolbar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" class="toolbar">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pair</mat-label>
+          <input
+            matInput
+            formControlName="pair"
+            maxlength="6"
+          />
+          <mat-error *ngIf="this.form.controls['pair'].hasError('required')">
+            Is required
+          </mat-error>
+          <mat-error *ngIf="this.form.controls['pair'].hasError('pattern')">
+            Six letters A-Z
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Code 1</mat-label>
+          <input
+            matInput
+            formControlName="code1"
+            maxlength="3"
+          />
+          <mat-error *ngIf="form.controls['code1'].hasError('required')">
+            Is required
+          </mat-error>
+          <mat-error *ngIf="form.controls['code1'].hasError('pattern')">
+            Three letters A-Z
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Code 2</mat-label>
+          <input
+            matInput
+            formControlName="code2"
+            maxlength="3"
+          />
+          <mat-error *ngIf="form.controls['code2'].hasError('required')">
+            Is required
+          </mat-error>
+          <mat-error *ngIf="form.controls['code2'].hasError('pattern')">
+            Three letters A-Z
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Decimal</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="decimal"
+          />
+          <mat-error *ngIf="form.controls['decimal'].hasError('required')">
+            Is required
+          </mat-error>
+          <mat-error *ngIf="form.controls['decimal'].hasError('min')
+               || form.controls['decimal'].hasError('max')">
+            0 – 10 allowed
+          </mat-error>
+        </mat-form-field>
+
+        <ng-container *ngIf="!editing; else editButtons">
+          <button mat-raised-button
+                  type="button"
+                  (click)="onAdd()" [disabled]="form.invalid || locked"> Add
+          </button>
+        </ng-container>
+        <ng-template #editButtons>
+          <button mat-raised-button color="primary"
+                  type="button"
+                  (click)="onSave()" [disabled]="form.invalid || locked"> Save
+          </button>
+          <button mat-raised-button type="button" (click)="cancelEdit()">Cancel</button>
+        </ng-template>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- карточка со списком пар -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Pair List</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+        <ng-container matColumnDef="pair">
+          <th mat-header-cell *matHeaderCellDef> Pair</th>
+          <td mat-cell *matCellDef="let p"> {{ p.pair }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="code1">
+          <th mat-header-cell *matHeaderCellDef> Code 1</th>
+          <td mat-cell *matCellDef="let p"> {{ p.code1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="code2">
+          <th mat-header-cell *matHeaderCellDef> Code 2</th>
+          <td mat-cell *matCellDef="let p"> {{ p.code2 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="decimal">
+          <th mat-header-cell *matHeaderCellDef> Decimal</th>
+          <td mat-cell *matCellDef="let p"> {{ p.decimal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button color="primary" (click)="onEdit(p)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(p.pair)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+</div>
