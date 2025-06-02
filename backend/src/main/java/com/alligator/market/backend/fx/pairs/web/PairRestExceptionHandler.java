@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
 import com.alligator.market.backend.fx.pairs.service.exceptions.PairNotFoundException;
 import com.alligator.market.backend.fx.pairs.service.exceptions.DuplicatePairException;
+import com.alligator.market.backend.fx.pairs.service.exceptions.PairCurrencyNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,5 +36,14 @@ public class PairRestExceptionHandler {
 
         log.warn("PairNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
+    }
+
+    /* Одна из валют не найдена. */
+    @ExceptionHandler(PairCurrencyNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(
+            PairCurrencyNotFoundException ex) {
+
+        log.warn("PairCurrencyNotFoundException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }
