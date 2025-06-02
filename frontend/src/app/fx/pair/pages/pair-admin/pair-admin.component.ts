@@ -70,7 +70,7 @@ export class PairAdminComponent implements OnInit {
       ],
 
       decimal: [
-        2,
+        4,
         [
           Validators.required,
           Validators.min(0),
