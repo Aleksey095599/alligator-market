@@ -15,3 +15,11 @@
   gap: 16px;
   align-items: flex-end;
 }
+
+/* фиксация toolbar при прокрутке */
+.toolbar-card {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+}
