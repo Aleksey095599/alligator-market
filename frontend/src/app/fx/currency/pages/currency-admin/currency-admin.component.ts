@@ -11,6 +11,7 @@ import {CurrencyDto} from '../../models/currency.model';
 import {CurrencyService} from '../../services/currency.service';
 import {MatCardModule} from "@angular/material/card";
 import {CurrencyUpdateDto} from "../../models/currency-update.model";
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-currency-admin',
@@ -24,7 +25,8 @@ import {CurrencyUpdateDto} from "../../models/currency-update.model";
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    RouterLink
   ],
   templateUrl: './currency-admin.component.html',
   styleUrl: './currency-admin.component.scss'
