@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./fx/pair/pair.module').then(m => m.PairModule)
   },
-  { path: '', redirectTo: 'currencies', pathMatch: 'full' },
-  { path: '**', redirectTo: 'currencies' }
+  {
+    path: '',
+    loadComponent: () =>
+      import('./home/home.component').then(c => c.HomeComponent)
+  },
+  { path: '**', redirectTo: '' }
 ];
