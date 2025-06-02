@@ -4,10 +4,10 @@ import com.alligator.market.backend.fx.currency.dto.CurrencyDto;
 import com.alligator.market.backend.fx.currency.dto.CurrencyUpdateDto;
 import com.alligator.market.backend.fx.currency.entity.Currency;
 import com.alligator.market.backend.fx.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.fx.pairs.repository.PairRepository;
 import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyNotFoundException;
-import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
 import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyUsedInPairsException;
+import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
+import com.alligator.market.backend.fx.pairs.repository.PairRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -90,6 +90,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         Currency currency = repository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
+        // Проверка, что валюта не используется в парах
         if (pairRepository.existsByCode1_CodeOrCode2_Code(code, code)) {
             throw new CurrencyUsedInPairsException(code);
         }
