@@ -15,6 +15,7 @@ import {PairService} from '../../services/pair.service';
 import {PairUpdateDto} from '../../models/pair-update.model';
 import {CurrencyService} from '../../../currency/services/currency.service';
 import {CurrencyDto} from '../../../currency/models/currency.model';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-pair-admin',
@@ -29,7 +30,8 @@ import {CurrencyDto} from '../../../currency/models/currency.model';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    RouterLink
   ],
   templateUrl: './pair-admin.component.html',
   styleUrl: './pair-admin.component.scss'

@@ -23,3 +23,9 @@
   z-index: 10;
   background: #fff;
 }
+
+/* выравниваем кнопку возврата по центру */
+.links {
+  display: flex;
+  justify-content: center;
+}
