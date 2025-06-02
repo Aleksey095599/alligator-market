@@ -4,8 +4,10 @@ import com.alligator.market.backend.fx.currency.dto.CurrencyDto;
 import com.alligator.market.backend.fx.currency.dto.CurrencyUpdateDto;
 import com.alligator.market.backend.fx.currency.entity.Currency;
 import com.alligator.market.backend.fx.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.fx.pairs.repository.PairRepository;
 import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyNotFoundException;
 import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
+import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyUsedInPairsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -22,6 +24,7 @@ import java.util.List;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository repository;
+    private final PairRepository pairRepository;
 
     //=====================
     // Создать новую валюту
@@ -86,6 +89,10 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         Currency currency = repository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
+
+        if (pairRepository.existsByCode1_CodeOrCode2_Code(code, code)) {
+            throw new CurrencyUsedInPairsException(code);
+        }
 
         repository.delete(currency);
         log.info("Currency {} deleted (id={})", currency.getCode(), currency.getId());

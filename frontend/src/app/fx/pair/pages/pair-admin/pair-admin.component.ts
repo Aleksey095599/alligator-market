@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
@@ -12,6 +13,8 @@ import {PairDto} from '../../models/pair.model';
 import {PairCreateDto} from '../../models/pair-create.model';
 import {PairService} from '../../services/pair.service';
 import {PairUpdateDto} from '../../models/pair-update.model';
+import {CurrencyService} from '../../../currency/services/currency.service';
+import {CurrencyDto} from '../../../currency/models/currency.model';
 
 @Component({
   selector: 'app-pair-admin',
@@ -22,6 +25,7 @@ import {PairUpdateDto} from '../../models/pair-update.model';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
@@ -46,27 +50,23 @@ export class PairAdminComponent implements OnInit {
   locked = false; // флаг блокировки кнопки Add
   editing = false; // режим редактирования
   editPair: string | null = null; // код пары для редактирования
+  currencies: CurrencyDto[] = [];
 
   constructor(
     private readonly service: PairService,
     private readonly fb: FormBuilder,
-    private readonly snack: MatSnackBar
+    private readonly snack: MatSnackBar,
+    private readonly currencyService: CurrencyService
   ) {
     this.form = this.fb.group({
       code1: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^[A-Z]{3}$/)
-        ]
+        [Validators.required]
       ],
 
       code2: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^[A-Z]{3}$/)
-        ]
+        [Validators.required]
       ],
 
       decimal: [
@@ -87,6 +87,10 @@ export class PairAdminComponent implements OnInit {
   /* загрузка списка при открытии страницы */
   ngOnInit(): void {
     this.refresh();
+    this.currencyService.list().subscribe({
+      next: c => this.currencies = c,
+      error: err => this.snack.open(err.message ?? 'Load currencies failed', 'Close')
+    });
   }
 
   /* нажата кнопка Add */

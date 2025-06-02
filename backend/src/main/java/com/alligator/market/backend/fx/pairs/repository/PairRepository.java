@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface PairRepository extends JpaRepository<Pair, Long> {
 
     Optional<Pair> findByPair(String pair);
+
+    boolean existsByCode1_CodeOrCode2_Code(String code1, String code2);
 }
 

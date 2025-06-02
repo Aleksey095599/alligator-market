@@ -13,31 +13,25 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Base Currency</mat-label>
-          <input
-            matInput
-            formControlName="code1"
-            maxlength="3"
-          />
+          <mat-select formControlName="code1">
+            <mat-option *ngFor="let c of currencies" [value]="c.code">
+              {{ c.code }}
+            </mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls['code1'].hasError('required')">
             Is required
-          </mat-error>
-          <mat-error *ngIf="form.controls['code1'].hasError('pattern')">
-            Three letters A-Z
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Quote Currency</mat-label>
-          <input
-            matInput
-            formControlName="code2"
-            maxlength="3"
-          />
+          <mat-select formControlName="code2">
+            <mat-option *ngFor="let c of currencies" [value]="c.code">
+              {{ c.code }}
+            </mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls['code2'].hasError('required')">
             Is required
-          </mat-error>
-          <mat-error *ngIf="form.controls['code2'].hasError('pattern')">
-            Three letters A-Z
           </mat-error>
         </mat-form-field>
 

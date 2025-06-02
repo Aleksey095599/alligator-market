@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
 import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyNotFoundException;
 import com.alligator.market.backend.fx.currency.service.exceptions.DuplicateCurrencyException;
+import com.alligator.market.backend.fx.currency.service.exceptions.CurrencyUsedInPairsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,6 +36,15 @@ public class CurrencyRestExceptionHandler {
 
         log.warn("CurrencyNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
+    }
+
+    /* Валюта используется в валютных парах. */
+    @ExceptionHandler(CurrencyUsedInPairsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(
+            CurrencyUsedInPairsException ex) {
+
+        log.warn("CurrencyUsedInPairsException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.alligator.market.backend.fx.pairs.entity;
 
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
+import com.alligator.market.backend.fx.currency.entity.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -27,15 +28,17 @@ public class Pair extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* ISO-4217 код валюты-1 */
-    @Pattern(regexp = "^[A-Z]{3}$")
-    @Column(length = 3, nullable = false)
-    private String code1;
+    /* ISO-4217 код валюты-1 (FK на currency.code) */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "code1", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_pair_code1"))
+    private Currency code1;
 
-    /* ISO-4217 код валюты-2 */
-    @Pattern(regexp = "^[A-Z]{3}$")
-    @Column(length = 3, nullable = false)
-    private String code2;
+    /* ISO-4217 код валюты-2 (FK на currency.code) */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "code2", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_pair_code2"))
+    private Currency code2;
 
     /* Валютная пара как code1 + code2 */
     @Pattern(regexp = "^[A-Z]{6}$")
