@@ -15,5 +15,5 @@ Thumbs.db
 *.iml
 out/
 
-# === Project Structure Exporter ===
+# === Плагин Project Structure Exporter ===
 /structure_exports/
