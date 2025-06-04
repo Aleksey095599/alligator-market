@@ -1,31 +1,11 @@
-# === Build output ===
-/target/
+# === Системные файлы ===
+.DS_Store
+Thumbs.db
 
-# === Maven wrapper ===
-!.mvn/wrapper/maven-wrapper.jar
+# === Результаты сборки ===
+/target/
 
 # === IDE ===
 .idea/
 .vscode/
 *.iml
-*.ipr
-*.iws
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-# === NetBeans ===
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-/build/
-
-# === OS junk ===
-.DS_Store
-Thumbs.db
