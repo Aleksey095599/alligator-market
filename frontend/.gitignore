@@ -1,25 +1,29 @@
-# === OS junk ===
+# === Системные файлы ===
+.DS_Store
 Thumbs.db
 
-# === Build & cache ===
-/dist
-/tmp
-/out-tsc
-/.angular/cache
-/bazel-out
+# === Собранные файлы и кеш ===
+/dist/
+/tmp/
+/out-tsc/
+/.angular/cache/
+/bazel-out/
 
 # === Node ===
-/node_modules
-npm-debug.log
-yarn-error.log
+/node_modules/
+npm-debug.log*
+yarn-error.log*
 
-# === Coverage ===
-/coverage
+# === Покрытие ===
+/coverage/
 
 # === IDE ===
 .idea/
 .vscode/
 *.iml
+
+# === Файлы окружения ===
+.env*
 
 # === Project Structure Exporter ===
 /structure_exports/

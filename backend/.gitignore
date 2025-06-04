@@ -1,15 +1,17 @@
-# === General OS cruft ===
+# === Системные файлы ===
+.DS_Store
 Thumbs.db
 
-# === Build output ===
+# === Результаты сборки ===
 /target/
+*.class
 
-# === Logs ===
+# === Логи ===
 *.log
 /logs/
 
-# === IDE (IntelliJ IDEA) ===
-.idea
+# === IDE ===
+.idea/
 *.iml
 out/
 
