@@ -25,5 +25,5 @@ yarn-error.log*
 # === Файлы окружения ===
 .env*
 
-# === Project Structure Exporter ===
+# === Плагин Project Structure Exporter ===
 /structure_exports/
