@@ -7,7 +7,6 @@ Thumbs.db
 /tmp/
 /out-tsc/
 /.angular/cache/
-/bazel-out/
 
 # === Node ===
 /node_modules/
