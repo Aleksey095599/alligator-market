@@ -13,7 +13,6 @@ Thumbs.db
 # === IDE ===
 .idea/
 *.iml
-out/
 
 # === Плагин Project Structure Exporter ===
 /structure_exports/
