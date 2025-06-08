@@ -23,7 +23,7 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
 
     /* Временный выбор валютной пары (TODO: реализовать выбор пары из базы списка валютных пар) */
     private static final Map<String, Long> SYMBOL_TO_ID = Map.of(
-            "EURUSD", 4L
+            "EUR/USD", 4L
     );
 
     // HTTP-клиент для отправки запросов к TwelveData API
@@ -50,7 +50,7 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                 .map(dto -> new CurrencyQuote(
                         pairId,
                         new BigDecimal(dto.price()),       // bid = ask = price
-                        new BigDecimal(dto.price()),
+                        new BigDecimal(dto.price()),       // bid = ask = price
                         (short) 2,                         // priority (secondary)
                         Instant.now()))
                 .flux();
