@@ -2,7 +2,6 @@ package com.alligator.market.backend.fx.quote.collector.twelvedata;
 
 import com.alligator.core.fx.model.CurrencyQuote;
 import com.alligator.core.fx.port.ExternalPriceFeed;
-import com.alligator.market.backend.fx.quote.exceptions.MissingPriceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,6 +14,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * Адаптер для получения котировок валют через TwelveData API.
+ * Реализует интерфейс ExternalPriceFeed для интеграции с внешним источником котировок.
+ */
 @Component
 @Slf4j
 public class TwelveDataFeedAdapter implements ExternalPriceFeed {
@@ -35,6 +38,12 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
             WebClient.builder().baseUrl("https://api.twelvedata.com").build();
 
     /* Реализуем метод интерфейса ExternalPriceFeed из market-core */
+
+    /**
+     * Создает поток котировок валют, периодически опрашивая TwelveData API.
+     *
+     * @return Поток котировок в формате CurrencyQuote
+     */
     @Override
     public Flux<CurrencyQuote> streamAll() {
         return Flux.interval(Duration.ZERO, Duration.ofMillis(pollPeriodMs))
@@ -43,6 +52,14 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
     }
 
     /* Метод запроса котировки и преобразования котировки к доменной модели */
+
+    /**
+     * Запрашивает актуальную цену для указанной валютной пары.
+     *
+     * @param symbol Символ валютной пары (например, "EUR/USD")
+     * @param pairId Идентификатор валютной пары в системе
+     * @return Поток с котировкой валютной пары
+     */
     private Flux<CurrencyQuote> fetchPrice(String symbol, Long pairId) {
         return client.get()
                 .uri(uri -> uri.path("/price")
