@@ -3,7 +3,7 @@ package com.alligator.core.fx.model;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-/* Модель котировки валютной пары. */
+/** Доменная модель котировки валютной пары с набором соответствующих полей. */
 public record CurrencyQuote (
         Long pairId,
         BigDecimal bid,
