@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./fx/pair/pair.module').then(m => m.PairModule)
   },
   {
+    path: 'quotes',
+    loadChildren: () =>
+      import('./quotes/quotes.module').then(m => m.QuotesModule)
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)
