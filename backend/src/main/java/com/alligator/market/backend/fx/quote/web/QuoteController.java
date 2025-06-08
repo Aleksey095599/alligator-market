@@ -33,7 +33,9 @@ public class QuoteController {
     // Вспомогательные методы
     //-----------------------
 
-    /** Вспомогательный метод конвертации доменной модели котировки в DTO-котировки. */
+    /**
+     * Вспомогательный метод конвертации доменной модели котировки в DTO для передачи на frontend.
+     */
     private CurrencyQuoteDto toDto(CurrencyQuote q) {
         return new CurrencyQuoteDto(q.pairId(), q.bid(), q.ask(), q.ts());
     }
