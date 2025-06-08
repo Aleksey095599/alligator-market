@@ -12,6 +12,4 @@ public interface ExternalPriceFeed {
     /** Общий поток всех котировок. */
     Flux<CurrencyQuote> streamAll();
 
-    /** Поток котировок конкретной валютной пары. */
-    Flux<CurrencyQuote> streamByPair(long pairId);
 }
