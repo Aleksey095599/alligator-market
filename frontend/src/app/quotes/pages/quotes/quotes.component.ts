@@ -27,8 +27,14 @@ export class QuotesComponent implements OnInit {
   ngOnInit(): void {
     this.service.stream().subscribe({
       next: q => {
-        const data = [q, ...this.dataSource.data].slice(0, 50);
-        this.dataSource.data = data;
+        const data = [...this.dataSource.data];
+        const idx = data.findIndex(d => d.pairId === q.pairId);
+        if (idx >= 0) {
+          data[idx] = q;
+        } else {
+          data.unshift(q);
+        }
+        this.dataSource.data = data.slice(0, 50);
       }
     });
   }
