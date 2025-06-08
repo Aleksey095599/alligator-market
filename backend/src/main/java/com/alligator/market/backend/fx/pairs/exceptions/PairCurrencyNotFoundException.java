@@ -1,4 +1,4 @@
-package com.alligator.market.backend.fx.pairs.service.exceptions;
+package com.alligator.market.backend.fx.pairs.exceptions;
 
 /* Валюта для валютной пары не найдена. */
 public class PairCurrencyNotFoundException extends RuntimeException {

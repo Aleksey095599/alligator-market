@@ -1,4 +1,4 @@
-package com.alligator.market.backend.fx.currency.service.exceptions;
+package com.alligator.market.backend.fx.currency.exceptions;
 
 public class DuplicateCurrencyException extends RuntimeException {
     public DuplicateCurrencyException(String field, String value) {

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.fx.currency.service.exceptions;
+package com.alligator.market.backend.fx.currency.exceptions;
 
 /* Нельзя удалить валюту, если она используется в валютных парах. */
 public class CurrencyUsedInPairsException extends RuntimeException {
