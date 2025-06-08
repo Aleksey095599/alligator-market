@@ -2,9 +2,9 @@ package com.alligator.market.backend.fx.pairs.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.fx.pairs.service.exceptions.PairNotFoundException;
-import com.alligator.market.backend.fx.pairs.service.exceptions.DuplicatePairException;
-import com.alligator.market.backend.fx.pairs.service.exceptions.PairCurrencyNotFoundException;
+import com.alligator.market.backend.fx.pairs.exceptions.DuplicatePairException;
+import com.alligator.market.backend.fx.pairs.exceptions.PairCurrencyNotFoundException;
+import com.alligator.market.backend.fx.pairs.exceptions.PairNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

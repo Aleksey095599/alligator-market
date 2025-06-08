@@ -1,15 +1,15 @@
 package com.alligator.market.backend.fx.pairs.service;
 
-import com.alligator.market.backend.fx.pairs.dto.PairDto;
+import com.alligator.market.backend.fx.currency.entity.Currency;
+import com.alligator.market.backend.fx.currency.repository.CurrencyRepository;
 import com.alligator.market.backend.fx.pairs.dto.PairCreateDto;
+import com.alligator.market.backend.fx.pairs.dto.PairDto;
 import com.alligator.market.backend.fx.pairs.dto.PairUpdateDto;
 import com.alligator.market.backend.fx.pairs.entity.Pair;
-import com.alligator.market.backend.fx.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.fx.currency.entity.Currency;
+import com.alligator.market.backend.fx.pairs.exceptions.DuplicatePairException;
+import com.alligator.market.backend.fx.pairs.exceptions.PairCurrencyNotFoundException;
+import com.alligator.market.backend.fx.pairs.exceptions.PairNotFoundException;
 import com.alligator.market.backend.fx.pairs.repository.PairRepository;
-import com.alligator.market.backend.fx.pairs.service.exceptions.PairNotFoundException;
-import com.alligator.market.backend.fx.pairs.service.exceptions.DuplicatePairException;
-import com.alligator.market.backend.fx.pairs.service.exceptions.PairCurrencyNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
