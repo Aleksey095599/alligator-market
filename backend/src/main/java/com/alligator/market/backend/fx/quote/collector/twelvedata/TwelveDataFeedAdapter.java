@@ -2,6 +2,7 @@ package com.alligator.market.backend.fx.quote.collector.twelvedata;
 
 import com.alligator.core.fx.model.CurrencyQuote;
 import com.alligator.core.fx.port.ExternalPriceFeed;
+import com.alligator.market.backend.fx.quote.exceptions.MissingPriceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -47,12 +48,17 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                         .build())
                 .retrieve()
                 .bodyToMono(PriceDto.class)
-                .map(dto -> new CurrencyQuote(
-                        pairId,
-                        new BigDecimal(dto.price()),       // bid = ask = price
-                        new BigDecimal(dto.price()),       // bid = ask = price
-                        (short) 2,                         // priority (secondary)
-                        Instant.now()))
+                .map(dto -> {
+                    if (dto.price() == null) {
+                        throw new MissingPriceException(symbol);
+                    }
+                    return new CurrencyQuote(
+                            pairId,
+                            new BigDecimal(dto.price()),       // bid = ask = price
+                            new BigDecimal(dto.price()),       // bid = ask = price
+                            (short) 2,                         // priority (secondary)
+                            Instant.now());
+                })
                 .flux();
     }
 
