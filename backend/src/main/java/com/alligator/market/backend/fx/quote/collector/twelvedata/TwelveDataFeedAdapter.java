@@ -3,10 +3,12 @@ package com.alligator.market.backend.fx.quote.collector.twelvedata;
 import com.alligator.core.fx.model.CurrencyQuote;
 import com.alligator.core.fx.port.ExternalPriceFeed;
 import com.alligator.market.backend.fx.quote.exceptions.MissingPriceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -14,6 +16,7 @@ import java.time.Instant;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class TwelveDataFeedAdapter implements ExternalPriceFeed {
 
     // Настройки подключения к TwelveData API
@@ -48,16 +51,17 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                         .build())
                 .retrieve()
                 .bodyToMono(PriceDto.class)
-                .map(dto -> {
+                .flatMap(dto -> {
                     if (dto.price() == null) {
-                        throw new MissingPriceException(symbol);
+                        log.warn("Missing price for {}", symbol);
+                        return Mono.empty();
                     }
-                    return new CurrencyQuote(
+                    return Mono.just(new CurrencyQuote(
                             pairId,
                             new BigDecimal(dto.price()),       // bid = ask = price
                             new BigDecimal(dto.price()),       // bid = ask = price
                             (short) 2,                         // priority (secondary)
-                            Instant.now());
+                            Instant.now()));
                 })
                 .flux();
     }
