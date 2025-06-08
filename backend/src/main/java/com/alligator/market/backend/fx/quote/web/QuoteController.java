@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
-/* Контроллер выдачи котировок через SSE. */
+/**
+ * Контроллер выдачи котировок через SSE.
+ */
 @RestController
 @RequestMapping("/api/v1/quotes")
 @RequiredArgsConstructor
@@ -18,11 +20,20 @@ public class QuoteController {
 
     private final ExternalPriceFeed feed;
 
+    //==================================
+    // Поток всех котировок валютных пар
+    //==================================
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<CurrencyQuoteDto> stream() {
+
         return feed.streamAll().map(this::toDto);
     }
 
+    //-----------------------
+    // Вспомогательные методы
+    //-----------------------
+
+    /** Вспомогательный метод конвертации доменной модели котировки в DTO-котировки. */
     private CurrencyQuoteDto toDto(CurrencyQuote q) {
         return new CurrencyQuoteDto(q.pairId(), q.bid(), q.ask(), q.ts());
     }
