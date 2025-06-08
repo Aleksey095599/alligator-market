@@ -1,13 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatCardModule} from '@angular/material/card';
 import {QuoteService} from '../../services/quote.service';
 import {CurrencyQuoteDto} from '../../models/quote.model';
 
+/* Страница отображения котировок */
 @Component({
   selector: 'app-quotes',
   standalone: true,
-  imports: [CommonModule, MatTableModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatCardModule
+  ],
   templateUrl: './quotes.component.html',
   styleUrl: './quotes.component.scss'
 })
