@@ -1,9 +1,9 @@
-package com.alligator.core.model;
+package com.alligator.core.fx.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-/* Нормализованный тик (котировка) валютной пары. */
+/* Модель котировки валютной пары. */
 public record CurrencyQuote (
         Long pairId,
         BigDecimal bid,
