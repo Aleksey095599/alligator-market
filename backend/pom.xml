@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.alligator</groupId>
-    <artifactId>market-backend</artifactId>
+    <artifactId>market.backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
     <description>backend</description>
