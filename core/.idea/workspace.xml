@@ -18,11 +18,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0d9b679-9b0a-4787-ad63-f1ce0c7173d9" name="Changes" comment="chore(idea): add IDE project configuration files" />
+    <list default="true" id="a0d9b679-9b0a-4787-ad63-f1ce0c7173d9" name="Changes" comment="`chore(build): update Avro plugin configuration in pom.xml`" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -44,6 +51,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -52,25 +62,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AIAssistantPromptsLibrary&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\alligator\market\core\src\main" />
+      <recent name="D:\alligator\market\core\src\main\java\com\alligator\core\fx" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.alligator.core" />
+      <recent name="com.alligator.market.core" />
+      <recent name="com.alligator.core.market" />
+      <recent name="com.alligator.core.fx.model" />
+      <recent name="com.alligator.market.core.fx" />
+      <recent name="com.alligator.core.fx.port" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -88,7 +110,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1748987587540</updated>
-      <workItem from="1748987588490" duration="2936000" />
+      <workItem from="1748987588490" duration="34945000" />
     </task>
     <task id="LOCAL-00001" summary="feat(repo): add .gitignore for common IDEs, build artifacts, and OS files">
       <option name="closed" value="true" />
@@ -130,18 +152,342 @@
       <option name="project" value="LOCAL" />
       <updated>1749065249892</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="`chore(idea): update workspace.xml for IDE configuration changes`">
+      <option name="closed" value="true" />
+      <created>1749066108925</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1749066108925</updated>
+    </task>
+    <task id="LOCAL-00007" summary="chore(dependencies): update JUnit and Surefire plugin versions">
+      <option name="closed" value="true" />
+      <created>1749066299160</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749066299161</updated>
+    </task>
+    <task id="LOCAL-00008" summary="chore(gitignore): update and reorganize ignored files">
+      <option name="closed" value="true" />
+      <created>1749066663885</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1749066663885</updated>
+    </task>
+    <task id="LOCAL-00009" summary="chore(gitignore): remove 'out/' directory entry">
+      <option name="closed" value="true" />
+      <created>1749067239774</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749067239774</updated>
+    </task>
+    <task id="LOCAL-00010" summary="chore(gitignore): remove .vscode entry">
+      <option name="closed" value="true" />
+      <created>1749067254733</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1749067254733</updated>
+    </task>
+    <task id="LOCAL-00011" summary="`feat(model): add CurrencyQuote record`">
+      <option name="closed" value="true" />
+      <created>1749071559746</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1749071559746</updated>
+    </task>
+    <task id="LOCAL-00012" summary="`chore(dependencies): add reactor-core dependency`">
+      <option name="closed" value="true" />
+      <created>1749072859612</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1749072859612</updated>
+    </task>
+    <task id="LOCAL-00013" summary="`feat(model): add QuoteStream interface for currency quote streaming`">
+      <option name="closed" value="true" />
+      <created>1749072873806</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1749072873806</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat(backend): add market-core dependency to pom.xml">
+      <option name="closed" value="true" />
+      <created>1749072900870</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1749072900870</updated>
+    </task>
+    <task id="LOCAL-00015" summary="`feat(core): add ExternalPriceFeed interface for streaming currency quotes`">
+      <option name="closed" value="true" />
+      <created>1749376213027</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376213027</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat(backend): add spring-boot-starter-webflux dependency in pom.xml">
+      <option name="closed" value="true" />
+      <created>1749376230983</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376230983</updated>
+    </task>
+    <task id="LOCAL-00017" summary="refactor(core): move CurrencyQuote to fx package and update comment">
+      <option name="closed" value="true" />
+      <created>1749376280523</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376280523</updated>
+    </task>
+    <task id="LOCAL-00018" summary="`chore(core): remove QuoteStream interface`">
+      <option name="closed" value="true" />
+      <created>1749376310807</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376310807</updated>
+    </task>
+    <task id="LOCAL-00019" summary="`refactor(quote): remove QuoteStreamImpl unused implementation`">
+      <option name="closed" value="true" />
+      <created>1749376325855</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376325855</updated>
+    </task>
+    <task id="LOCAL-00020" summary="`feat(fx-quote): add TwelveDataFeedAdapter for streaming currency quotes`">
+      <option name="closed" value="true" />
+      <created>1749376344265</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1749376344265</updated>
+    </task>
+    <task id="LOCAL-00021" summary="`chore(config): update TwelveData API key`">
+      <option name="closed" value="true" />
+      <created>1749378840892</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378840892</updated>
+    </task>
+    <task id="LOCAL-00022" summary="`refactor(model): remove CurrencyQuote record`">
+      <option name="closed" value="true" />
+      <created>1749378855695</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378855695</updated>
+    </task>
+    <task id="LOCAL-00023" summary="`chore(core): remove unused CurrencyQuoteDto`">
+      <option name="closed" value="true" />
+      <created>1749378868986</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378868986</updated>
+    </task>
+    <task id="LOCAL-00024" summary="`refactor(core): remove ExternalPriceFeed interface`">
+      <option name="closed" value="true" />
+      <created>1749378886833</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378886833</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feat(model): add CurrencyQuote record for FX pair quotes">
+      <option name="closed" value="true" />
+      <created>1749378900130</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378900130</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat(fx): add ExternalPriceFeed interface and CurrencyQuoteDto record for price streaming and client communication">
+      <option name="closed" value="true" />
+      <created>1749378924915</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1749378924915</updated>
+    </task>
+    <task id="LOCAL-00027" summary="refactor(core): remove unused method from ExternalPriceFeed interface">
+      <option name="closed" value="true" />
+      <created>1749397363705</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1749397363705</updated>
+    </task>
+    <task id="LOCAL-00028" summary="`feat(dependencies): add Apache Avro dependency`">
+      <option name="closed" value="true" />
+      <created>1749494209943</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1749494209943</updated>
+    </task>
+    <task id="LOCAL-00029" summary="`feat(core): add Avro schema for PriceTick`">
+      <option name="closed" value="true" />
+      <created>1749494221995</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1749494221995</updated>
+    </task>
+    <task id="LOCAL-00030" summary="```xml&#10;chore(pom): update artifactId and add Avro Maven plugin&#10;```">
+      <option name="closed" value="true" />
+      <created>1749496086256</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496086256</updated>
+    </task>
+    <task id="LOCAL-00031" summary="`feat(avro): add PriceTick schema definition`">
+      <option name="closed" value="true" />
+      <created>1749496096597</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496096597</updated>
+    </task>
+    <task id="LOCAL-00032" summary="`chore(avro): remove PriceTick schema`">
+      <option name="closed" value="true" />
+      <created>1749496112938</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496112938</updated>
+    </task>
+    <task id="LOCAL-00033" summary="`chore(avro): remove PriceTick schema`">
+      <option name="closed" value="true" />
+      <created>1749496125755</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496125755</updated>
+    </task>
+    <task id="LOCAL-00034" summary="feat(dto): add CurrencyQuoteDto for currency pair quotes">
+      <option name="closed" value="true" />
+      <created>1749496140179</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496140179</updated>
+    </task>
+    <task id="LOCAL-00035" summary="`feat(core): add autogenerated PriceTick Avro model`">
+      <option name="closed" value="true" />
+      <created>1749496157332</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1749496157332</updated>
+    </task>
+    <task id="LOCAL-00036" summary="`refactor(package): update package paths to include 'market' namespace`">
+      <option name="closed" value="true" />
+      <created>1749497265179</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1749497265179</updated>
+    </task>
+    <task id="LOCAL-00037" summary="`refactor(avro): rename PriceTick to FxPriceTick and update namespace`">
+      <option name="closed" value="true" />
+      <created>1749497277695</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1749497277695</updated>
+    </task>
+    <task id="LOCAL-00038" summary="`refactor(model): remove unused PriceTick class`">
+      <option name="closed" value="true" />
+      <created>1749497295548</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1749497295548</updated>
+    </task>
+    <task id="LOCAL-00039" summary="`feat(model): add autogenerated FxPriceTick Avro class`">
+      <option name="closed" value="true" />
+      <created>1749497310650</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1749497310650</updated>
+    </task>
+    <task id="LOCAL-00040" summary="`chore(core): remove obsolete FX-related files and classes`">
+      <option name="closed" value="true" />
+      <created>1749498424730</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1749498424730</updated>
+    </task>
+    <task id="LOCAL-00041" summary="`feat(core): add core components for FX quotes and external price feed`">
+      <option name="closed" value="true" />
+      <created>1749498441009</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1749498441009</updated>
+    </task>
+    <task id="LOCAL-00042" summary="`refactor(model): remove FxPriceTick class`">
+      <option name="closed" value="true" />
+      <created>1749498454874</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1749498454874</updated>
+    </task>
+    <task id="LOCAL-00043" summary="`chore(build): update Avro plugin configuration in pom.xml`">
+      <option name="closed" value="true" />
+      <created>1749498623953</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1749498623953</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add .gitignore for IDE, OS, and build tool files&#10;&#10;This .gitignore file excludes common build artifacts, IDE-specific files, and OS-generated files like .DS_Store. It ensures a cleaner repository by preventing unintended files from being tracked in version control." />
-    <MESSAGE value="feat(repo): add .gitignore for common IDEs, build artifacts, and OS files" />
-    <MESSAGE value="`feat(core): add initial App class with main method`" />
-    <MESSAGE value="chore(idea): add workspace.xml to project files" />
-    <MESSAGE value="chore(idea): add IDE project configuration files" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(idea): add IDE project configuration files" />
+    <MESSAGE value="`refactor(quote): remove QuoteStreamImpl unused implementation`" />
+    <MESSAGE value="`feat(fx-quote): add TwelveDataFeedAdapter for streaming currency quotes`" />
+    <MESSAGE value="`chore(config): update TwelveData API key`" />
+    <MESSAGE value="`refactor(model): remove CurrencyQuote record`" />
+    <MESSAGE value="`chore(core): remove unused CurrencyQuoteDto`" />
+    <MESSAGE value="`refactor(core): remove ExternalPriceFeed interface`" />
+    <MESSAGE value="feat(model): add CurrencyQuote record for FX pair quotes" />
+    <MESSAGE value="`feat(dto): add CurrencyQuoteDto for currency quotes representation`" />
+    <MESSAGE value="feat(fx): add ExternalPriceFeed interface and CurrencyQuoteDto record for price streaming and client communication" />
+    <MESSAGE value="refactor(core): remove unused method from ExternalPriceFeed interface" />
+    <MESSAGE value="`feat(dependencies): add Apache Avro dependency`" />
+    <MESSAGE value="`feat(core): add Avro schema for PriceTick`" />
+    <MESSAGE value="```xml&#10;chore(pom): update artifactId and add Avro Maven plugin&#10;```" />
+    <MESSAGE value="`feat(avro): add PriceTick schema definition`" />
+    <MESSAGE value="`chore(avro): remove PriceTick schema`" />
+    <MESSAGE value="feat(dto): add CurrencyQuoteDto for currency pair quotes" />
+    <MESSAGE value="`feat(core): add autogenerated PriceTick Avro model`" />
+    <MESSAGE value="`refactor(package): update package paths to include 'market' namespace`" />
+    <MESSAGE value="`refactor(avro): rename PriceTick to FxPriceTick and update namespace`" />
+    <MESSAGE value="`refactor(model): remove unused PriceTick class`" />
+    <MESSAGE value="`feat(model): add autogenerated FxPriceTick Avro class`" />
+    <MESSAGE value="`chore(core): remove obsolete FX-related files and classes`" />
+    <MESSAGE value="`feat(core): add core components for FX quotes and external price feed`" />
+    <MESSAGE value="`refactor(model): remove FxPriceTick class`" />
+    <MESSAGE value="`chore(build): update Avro plugin configuration in pom.xml`" />
+    <option name="LAST_COMMIT_MESSAGE" value="`chore(build): update Avro plugin configuration in pom.xml`" />
   </component>
 </project>
