@@ -1,7 +1,7 @@
 {
-  "namespace": "com.alligator.market.core",
+  "namespace": "com.alligator.market.core.fx.model",
   "type": "record",
-  "name": "PriceTick",
+  "name": "FxPriceTick",
   "fields": [
     { "name": "pair", "type": "string" },
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
