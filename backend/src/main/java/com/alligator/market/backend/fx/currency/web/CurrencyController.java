@@ -15,7 +15,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/* REST-контроллер для операций с валютами. */
+/**
+ * REST-контроллер для операций с валютами.
+ */
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
