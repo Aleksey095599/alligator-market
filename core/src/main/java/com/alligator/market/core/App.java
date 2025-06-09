@@ -1,4 +1,4 @@
-package com.alligator.core;
+package com.alligator.market.core;
 
 /**
  * Hello world!

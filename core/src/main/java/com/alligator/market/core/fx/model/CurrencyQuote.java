@@ -1,4 +1,4 @@
-package com.alligator.core.fx.model;
+package com.alligator.market.core.fx.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;

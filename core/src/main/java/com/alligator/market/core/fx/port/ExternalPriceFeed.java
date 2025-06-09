@@ -1,6 +1,6 @@
-package com.alligator.core.fx.port;
+package com.alligator.market.core.fx.port;
 
-import com.alligator.core.fx.model.CurrencyQuote;
+import com.alligator.market.core.fx.model.CurrencyQuote;
 import reactor.core.publisher.Flux;
 
 /**

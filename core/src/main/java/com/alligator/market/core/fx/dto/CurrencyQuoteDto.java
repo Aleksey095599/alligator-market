@@ -1,4 +1,4 @@
-package com.alligator.core.fx.dto;
+package com.alligator.market.core.fx.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
