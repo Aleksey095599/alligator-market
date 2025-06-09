@@ -57,7 +57,7 @@
         <configuration>
           <sourceDirectory>${project.basedir}/src/main/avro</sourceDirectory>
           <outputDirectory>${project.build.directory}/generated-sources/avro</outputDirectory>
-          <fieldVisibility>PRIVATE</fieldVisibility>
+          <fieldVisibility>private</fieldVisibility>
           <stringType>String</stringType>
           <enableDecimalLogicalType>true</enableDecimalLogicalType>
         </configuration>
