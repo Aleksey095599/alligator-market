@@ -43,12 +43,13 @@
         <version>1.12.0</version>
         <executions>
           <execution>
-            <goals>
-              <goal>schema</goal>
-            </goals>
+            <id>generate-avro</id>
+            <phase>generate-sources</phase>
+            <goals><goal>schema</goal></goals>
             <configuration>
               <sourceDirectory>${project.basedir}/src/main/avro</sourceDirectory>
-              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <enableDecimalLogicalType>true</enableDecimalLogicalType>
+              <stringType>String</stringType>
             </configuration>
           </execution>
         </executions>
