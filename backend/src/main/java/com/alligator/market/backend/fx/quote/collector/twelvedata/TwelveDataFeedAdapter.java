@@ -28,7 +28,7 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
     @Value("${twelvedata.poll-period-ms:1000}")
     private long pollPeriodMs;
 
-    /* Временный выбор валютной пары (TODO: реализовать выбор пары из базы списка валютных пар) */
+    // Временный выбор валютной пары (TODO: реализовать выбор пары из базы списка валютных пар)
     private static final Map<String, Long> SYMBOL_TO_ID = Map.of(
             "EUR/USD", 4L
     );
@@ -37,12 +37,8 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
     private final WebClient client =
             WebClient.builder().baseUrl("https://api.twelvedata.com").build();
 
-    /* Реализуем метод интерфейса ExternalPriceFeed из market-core */
-
     /**
-     * Создает поток котировок валют, периодически опрашивая TwelveData API.
-     *
-     * @return Поток котировок в формате CurrencyQuote
+     * Создает поток котировок валют, периодически опрашивая TwelveData API
      */
     @Override
     public Flux<CurrencyQuote> streamAll() {
@@ -51,15 +47,7 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                 .flatMap(entry -> fetchPrice(entry.getKey(), entry.getValue()));
     }
 
-    /* Метод запроса котировки и преобразования котировки к доменной модели */
-
-    /**
-     * Запрашивает актуальную цену для указанной валютной пары.
-     *
-     * @param symbol Символ валютной пары (например, "EUR/USD")
-     * @param pairId Идентификатор валютной пары в системе
-     * @return Поток с котировкой валютной пары
-     */
+    /* Запрашивает актуальную цену для указанной валютной пары. */
     private Flux<CurrencyQuote> fetchPrice(String symbol, Long pairId) {
         return client.get()
                 .uri(uri -> uri.path("/price")
@@ -83,7 +71,7 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                 .flux();
     }
 
-    /* Мини-DTO to serialize ответ TwelveData API */
+    /** Мини-DTO to serialize ответ TwelveData API */
     private record PriceDto(
             // "https://api.twelvedata.com/price" возвращает JSON {"price":"1.10034"}
             String price
