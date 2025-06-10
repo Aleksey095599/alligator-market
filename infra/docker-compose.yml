@@ -51,7 +51,9 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
     ports:
       - "8081:8081"
-
+#============
+# 3. Kafka UI
+#============
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
@@ -61,4 +63,4 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
       - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
     ports:
-      - "8080:8080"
+      - "8090:8080"
