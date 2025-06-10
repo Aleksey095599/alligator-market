@@ -101,6 +101,14 @@
         </dependency>
     </dependencies>
 
+    <!-- Репозиторий Confluent содержит Avro сериализаторы -->
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
