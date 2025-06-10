@@ -1,7 +1,7 @@
 package com.alligator.market.backend.fx.quote.collector.twelvedata;
 
-import com.alligator.core.fx.model.CurrencyQuote;
-import com.alligator.core.fx.port.ExternalPriceFeed;
+import com.alligator.market.core.fx.model.CurrencyQuote;
+import com.alligator.market.core.fx.port.ExternalPriceFeed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
