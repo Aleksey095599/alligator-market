@@ -1,8 +1,8 @@
 package com.alligator.market.backend.fx.quote.web;
 
-import com.alligator.core.fx.dto.CurrencyQuoteDto;
-import com.alligator.core.fx.model.CurrencyQuote;
-import com.alligator.core.fx.port.ExternalPriceFeed;
+import com.alligator.market.core.fx.dto.CurrencyQuoteDto;
+import com.alligator.market.core.fx.model.CurrencyQuote;
+import com.alligator.market.core.fx.port.ExternalPriceFeed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
