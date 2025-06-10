@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Map;
 
 /**
- * Адаптер для получения котировок валют через TwelveData API.
+ * Тестовый адаптер для получения котировок валют через TwelveData API.
  * Реализует интерфейс ExternalPriceFeed для интеграции с внешним источником котировок.
  */
 @Component
@@ -58,7 +58,6 @@ public class TwelveDataFeedAdapter implements ExternalPriceFeed {
                 .bodyToMono(PriceDto.class)
                 .flatMap(dto -> {
                     if (dto.price() == null) {
-                        log.warn("Missing price for {}", symbol);
                         return Mono.empty();
                     }
                     return Mono.just(new CurrencyQuote(
