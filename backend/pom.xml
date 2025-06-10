@@ -101,7 +101,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Репозиторий Confluent содержит Avro сериализаторы -->
     <repositories>
         <repository>
             <id>confluent</id>
