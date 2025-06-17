@@ -1,4 +1,4 @@
-package com.alligator.market.core;
+package com.alligator.market.domain;
 
 /**
  * Hello world!
