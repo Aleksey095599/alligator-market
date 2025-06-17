@@ -1,5 +1,5 @@
 {
-  "namespace": "com.alligator.market.core.fx.model",
+  "namespace": "com.alligator.market.domain.model",
   "type": "record",
   "name": "FxPriceTick",
   "fields": [
