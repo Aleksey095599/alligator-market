@@ -6,7 +6,9 @@ import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigUpdat
 
 import java.util.List;
 
-/* Интерфейс сервиса конфигурации стрима котировок для заданной валютной пары. */
+/**
+ * Интерфейс сервиса конфигурации стрима котировок для заданной валютной пары.
+ */
 public interface FxPairStreamingConfigService {
 
     String createConfig(FxPairStreamingConfigCreateDto dto);
@@ -16,4 +18,5 @@ public interface FxPairStreamingConfigService {
     void deleteConfig(String pair, String provider);
 
     List<FxPairStreamingConfigDto> findAll();
+
 }

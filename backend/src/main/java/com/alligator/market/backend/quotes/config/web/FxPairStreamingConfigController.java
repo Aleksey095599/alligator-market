@@ -16,7 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/* REST-контроллер для управления конфигурациями стрима котировок. */
+/**
+ * REST-контроллер для управления конфигурациями стрима котировок.
+ */
 @RestController
 @RequestMapping("/api/v1/streaming-configs")
 @RequiredArgsConstructor
@@ -25,9 +27,9 @@ public class FxPairStreamingConfigController {
 
     private final FxPairStreamingConfigService service;
 
-    //================================================
+    //======================================================
     // Создать новую конфигурацию для заданной валютной пары
-    //================================================
+    //======================================================
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxPairStreamingConfigCreateDto dto) {
 
@@ -40,9 +42,9 @@ public class FxPairStreamingConfigController {
         return ResponseEntityFactory.created(location, id);
     }
 
-    //==============================
+    //===========================================
     // Обновить конфигурацию по паре и провайдеру
-    //==============================
+    //===========================================
     @PutMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
@@ -52,9 +54,9 @@ public class FxPairStreamingConfigController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //==============================
+    //==========================================
     // Удалить конфигурацию по паре и провайдеру
-    //==============================
+    //==========================================
     @DeleteMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable String pair,
@@ -63,9 +65,9 @@ public class FxPairStreamingConfigController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //===============================
-    // Вернуть все конфигурации стримов
-    //===============================
+    //=========================
+    // Вернуть все конфигурации
+    //=========================
     @GetMapping
     public ResponseEntity<ApiResponse<List<FxPairStreamingConfigDto>>> getAll() {
 

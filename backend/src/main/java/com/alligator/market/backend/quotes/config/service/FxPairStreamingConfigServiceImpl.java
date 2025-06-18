@@ -19,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/* Реализация сервиса конфигурации стрима котировок для заданной валютной пары. */
+/**
+ * Реализация сервиса конфигурации стрима котировок для заданной валютной пары.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -30,9 +32,9 @@ public class FxPairStreamingConfigServiceImpl implements FxPairStreamingConfigSe
     private final PairRepository pairRepository;
     private final FxPairStreamingConfigMapper mapper;
 
-    //======================================
+    //====================================
     // Создать новую конфигурацию для пары
-    //======================================
+    //====================================
     @Override
     public String createConfig(FxPairStreamingConfigCreateDto dto) {
 
@@ -59,9 +61,9 @@ public class FxPairStreamingConfigServiceImpl implements FxPairStreamingConfigSe
         return "%s:%s".formatted(saved.getPair().getPair(), saved.getProvider());
     }
 
-    //==============================
+    //===========================
     // Обновить конфигурацию пары
-    //==============================
+    //===========================
     @Override
     public void updateConfig(String pair, String provider, FxPairStreamingConfigUpdateDto dto) {
 
@@ -76,9 +78,9 @@ public class FxPairStreamingConfigServiceImpl implements FxPairStreamingConfigSe
         log.info("FxPairStreamingConfig {}:{} updated (id={})", pair, provider, entity.getId());
     }
 
-    //==============================
+    //==========================
     // Удалить конфигурацию пары
-    //==============================
+    //==========================
     @Override
     public void deleteConfig(String pair, String provider) {
 
@@ -89,9 +91,9 @@ public class FxPairStreamingConfigServiceImpl implements FxPairStreamingConfigSe
         log.info("FxPairStreamingConfig {}:{} deleted (id={})", pair, provider, entity.getId());
     }
 
-    //================================
+    //=============================
     // Извлечь все конфигурации пар
-    //================================
+    //=============================
     @Override
     @Transactional(readOnly = true)
     public List<FxPairStreamingConfigDto> findAll() {

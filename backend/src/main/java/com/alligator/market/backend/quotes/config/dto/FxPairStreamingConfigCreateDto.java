@@ -2,7 +2,9 @@ package com.alligator.market.backend.quotes.config.dto;
 
 import jakarta.validation.constraints.*;
 
-/* DTO для создания конфигурации стрима котировок. */
+/**
+ * DTO для создания конфигурации стрима котировок.
+ */
 public record FxPairStreamingConfigCreateDto(
 
         @NotBlank
@@ -23,5 +25,6 @@ public record FxPairStreamingConfigCreateDto(
 
         @NotNull
         Boolean enabled
+
 ) {
 }

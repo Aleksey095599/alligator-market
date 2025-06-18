@@ -1,8 +1,12 @@
 package com.alligator.market.backend.quotes.config.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
-/* DTO для обновления конфигурации стрима котировок. */
+/**
+ * DTO для обновления конфигурации стрима котировок.
+ */
 public record FxPairStreamingConfigUpdateDto(
 
         @NotNull
@@ -15,5 +19,6 @@ public record FxPairStreamingConfigUpdateDto(
 
         @NotNull
         Boolean enabled
+
 ) {
 }
