@@ -1,16 +1,19 @@
 package com.alligator.market.backend.quotes.config.service;
 
-import com.alligator.market.domain.model.FxPairStreamingConfig;
+import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigCreateDto;
+import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigDto;
+import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigUpdateDto;
 
 import java.util.List;
 
-/**
- * Интерфейс сервиса настроек стрима котировок для заданной валютной пары.
- */
+/* Интерфейс сервиса настроек стрима котировок для заданной валютной пары. */
 public interface FxPairStreamingConfigService {
 
-    void saveConfig(FxPairStreamingConfig cfg);
+    String createConfig(FxPairStreamingConfigCreateDto dto);
 
-    List<FxPairStreamingConfig> findAll();
+    void updateConfig(String pair, String provider, FxPairStreamingConfigUpdateDto dto);
 
+    void deleteConfig(String pair, String provider);
+
+    List<FxPairStreamingConfigDto> findAll();
 }
