@@ -1,6 +1,6 @@
 package com.alligator.market.domain.model;
 
-/** Настройка потока котировок для конкретной пары и провайдера. */
+/** Настройки стрима котировок для заданной валютной пары. */
 public record FxPairStreamingConfig(
 
         String pair,
