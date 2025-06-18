@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity настроек стрима котировок для заданной валютной пары.
+ * Entity конфигурации стрима котировок для заданной валютной пары.
  */
 @Entity
 @Table(
