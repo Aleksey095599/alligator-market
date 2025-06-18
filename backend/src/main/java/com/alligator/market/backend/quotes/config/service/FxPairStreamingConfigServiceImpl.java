@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/* Реализация сервиса настроек стрима котировок для заданной валютной пары. */
+/* Реализация сервиса конфигурации стрима котировок для заданной валютной пары. */
 @Service
 @RequiredArgsConstructor
 @Transactional

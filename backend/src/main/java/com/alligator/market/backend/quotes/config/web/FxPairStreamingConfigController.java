@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/* REST-контроллер для управления настройками стрима котировок. */
+/* REST-контроллер для управления конфигурациями стрима котировок. */
 @RestController
 @RequestMapping("/api/v1/streaming-configs")
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class FxPairStreamingConfigController {
     private final FxPairStreamingConfigService service;
 
     //================================================
-    // Создать новую настройку для заданной валютной пары
+    // Создать новую конфигурацию для заданной валютной пары
     //================================================
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxPairStreamingConfigCreateDto dto) {
@@ -41,7 +41,7 @@ public class FxPairStreamingConfigController {
     }
 
     //==============================
-    // Обновить настройку по паре и провайдеру
+    // Обновить конфигурацию по паре и провайдеру
     //==============================
     @PutMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> update(
@@ -53,7 +53,7 @@ public class FxPairStreamingConfigController {
     }
 
     //==============================
-    // Удалить настройку по паре и провайдеру
+    // Удалить конфигурацию по паре и провайдеру
     //==============================
     @DeleteMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> delete(
@@ -64,7 +64,7 @@ public class FxPairStreamingConfigController {
     }
 
     //===============================
-    // Вернуть все настройки стримов
+    // Вернуть все конфигурации стримов
     //===============================
     @GetMapping
     public ResponseEntity<ApiResponse<List<FxPairStreamingConfigDto>>> getAll() {
