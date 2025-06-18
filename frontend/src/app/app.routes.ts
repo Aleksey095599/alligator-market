@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./fx/pair/pair.module').then(m => m.PairModule)
   },
   {
+    path: 'stream-configs',
+    loadChildren: () =>
+      import('./fx/stream-config/stream-config.module').then(m => m.StreamConfigModule)
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)
