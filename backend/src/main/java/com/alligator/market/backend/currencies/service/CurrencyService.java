@@ -5,7 +5,9 @@ import com.alligator.market.backend.currencies.dto.CurrencyUpdateDto;
 
 import java.util.List;
 
-/* Интерфейс сервиса для операций с валютами. */
+/**
+ * Интерфейс сервиса для операций с валютами.
+ */
 public interface CurrencyService {
 
     String createCurrency(CurrencyDto dto);
@@ -15,4 +17,5 @@ public interface CurrencyService {
     void deleteCurrency(String code);
 
     List<CurrencyDto> findAll();
+
 }

@@ -41,9 +41,9 @@ public class CurrencyController {
         return ResponseEntityFactory.created(location, code);
     }
 
-    //=================
+    //================
     // Обновить валюту
-    //=================
+    //================
     @PutMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String code,

@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/* Локальный обработчик исключений пакета «Currency».
-   → Привязан к контроллеру для валют. */
+/**
+ * Локальный обработчик исключений пакета «Currency».
+ * Привязан к соответствующему контроллеру.
+ */
 @Slf4j
 @RestControllerAdvice(assignableTypes = CurrencyController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)

@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/* Реализация интерфейса сервиса для операций с валютами. */
+/**
+ * Реализация интерфейса сервиса для операций с валютами.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -53,9 +55,9 @@ public class CurrencyServiceImpl implements CurrencyService {
         return saved.getCode();
     }
 
-    //==================
+    //================
     // Обновить валюту
-    //==================
+    //================
     @Override
     public void updateCurrency(String code, CurrencyUpdateDto dto) {
 

@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/* Entity для валюты. */
+/**
+ * Entity для валюты.
+ */
 @Entity
 @Table(
         name = "currency",

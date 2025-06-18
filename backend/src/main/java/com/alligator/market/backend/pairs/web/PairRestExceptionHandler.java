@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/* Локальный обработчик исключений пакета «Pair».
-   → Привязан к контроллеру для валютных пар. */
+/**
+ * Локальный обработчик исключений пакета «Pair».
+ * Привязан к соответствующему контроллеру.
+ */
 @Slf4j
 @RestControllerAdvice(assignableTypes = PairController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -46,4 +48,5 @@ public class PairRestExceptionHandler {
         log.warn("PairCurrencyNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
 }

@@ -6,7 +6,9 @@ import com.alligator.market.backend.pairs.dto.PairUpdateDto;
 
 import java.util.List;
 
-/* Интерфейс сервиса для операций с валютными парами. */
+/**
+ * Интерфейс сервиса для операций с валютными парами.
+ */
 public interface PairService {
 
     String createPair(PairCreateDto dto);
@@ -16,4 +18,5 @@ public interface PairService {
     void deletePair(String pair);
 
     List<PairDto> findAll();
+
 }

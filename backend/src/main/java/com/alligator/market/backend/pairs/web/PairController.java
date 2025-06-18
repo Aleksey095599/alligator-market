@@ -16,7 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/* REST-контроллер для операций с валютными парами. */
+/**
+ * REST-контроллер для операций с валютными парами.
+ */
 @RestController
 @RequestMapping("/api/v1/pairs")
 @RequiredArgsConstructor
@@ -25,9 +27,9 @@ public class PairController {
 
     private final PairService service;
 
-    //=====================
+    //===================
     // Создать новую пару
-    //=====================
+    //===================
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairCreateDto dto) {
 
@@ -40,9 +42,9 @@ public class PairController {
         return ResponseEntityFactory.created(location, pair);
     }
 
-    //=================
+    //==============
     // Обновить пару
-    //=================
+    //==============
     @PutMapping("/{pair}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
@@ -51,9 +53,9 @@ public class PairController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //================
+    //=============
     // Удалить пару
-    //================
+    //=============
     @DeleteMapping("/{pair}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String pair) {
 
@@ -61,12 +63,13 @@ public class PairController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //===================
+    //=================
     // Вернуть все пары
-    //===================
+    //=================
     @GetMapping
     public ResponseEntity<ApiResponse<List<PairDto>>> getAll() {
 
         return ResponseEntityFactory.ok(service.findAll());
     }
+
 }

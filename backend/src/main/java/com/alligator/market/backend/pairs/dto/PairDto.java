@@ -2,7 +2,9 @@ package com.alligator.market.backend.pairs.dto;
 
 import jakarta.validation.constraints.*;
 
-/* DTO для представления валютной пары. */
+/**
+ * DTO для представления валютной пары.
+ */
 public record PairDto(
 
         @NotBlank
@@ -20,5 +22,6 @@ public record PairDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
+
 ) {
 }

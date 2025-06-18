@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/* Entity для валютной пары. */
+/**
+ * Entity для валютной пары.
+ */
 @Entity
 @Table(
         name = "ccypair",

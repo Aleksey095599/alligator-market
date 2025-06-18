@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/* Реализация интерфейса сервиса для валютных пар. */
+/**
+ * Реализация интерфейса сервиса для валютных пар.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,9 +30,9 @@ public class PairServiceImpl implements PairService {
     private final PairRepository repository;
     private final CurrencyRepository currencyRepository;
 
-    //=====================
+    //===================
     // Создать новую пару
-    //=====================
+    //===================
     @Override
     public String createPair(PairCreateDto dto) {
 
@@ -56,9 +58,9 @@ public class PairServiceImpl implements PairService {
         return saved.getPair();
     }
 
-    //=================
+    //==============
     // Обновить пару
-    //=================
+    //==============
     @Override
     public void updatePair(String pair, PairUpdateDto dto) {
 
@@ -71,9 +73,9 @@ public class PairServiceImpl implements PairService {
         log.info("Pair {} updated (id={})", entity.getPair(), entity.getId());
     }
 
-    //=================
+    //=============
     // Удалить пару
-    //=================
+    //=============
     @Override
     public void deletePair(String pair) {
 
@@ -84,9 +86,9 @@ public class PairServiceImpl implements PairService {
         log.info("Pair {} deleted (id={})", entity.getPair(), entity.getId());
     }
 
-    //====================
+    //==================
     // Получить все пары
-    //====================
+    //==================
     @Override
     @Transactional(readOnly = true)
     public List<PairDto> findAll() {
@@ -103,4 +105,5 @@ public class PairServiceImpl implements PairService {
         log.debug("Found {} pairs", result.size());
         return result;
     }
+
 }

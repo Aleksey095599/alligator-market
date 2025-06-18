@@ -2,7 +2,9 @@ package com.alligator.market.backend.currencies.dto;
 
 import jakarta.validation.constraints.*;
 
-/* DTO для обновления валюты. */
+/**
+ * DTO для обновления валюты.
+ */
 public record CurrencyUpdateDto(
 
         @NotBlank
@@ -16,5 +18,6 @@ public record CurrencyUpdateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
+
 ) {
 }
