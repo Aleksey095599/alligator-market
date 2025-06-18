@@ -66,7 +66,7 @@ export class StreamConfigAdminComponent implements OnInit {
     this.form = this.fb.group({
       pair: ['', [Validators.required]],
       provider: ['', [Validators.required, Validators.maxLength(50)]],
-      priority: [0, [Validators.required, Validators.min(0), Validators.max(32767)]],
+      priority: [1, [Validators.required, Validators.min(0), Validators.max(32767)]],
       refreshMs: [1000, [Validators.required, Validators.min(0)]],
       enabled: [true]
     });
@@ -94,7 +94,7 @@ export class StreamConfigAdminComponent implements OnInit {
       next: id => {
         this.snack.open(`Config '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
-        this.form.reset({ priority: 0, refreshMs: 1000, enabled: true });
+        this.form.reset({ priority: 1, refreshMs: 1000, enabled: true });
         this.locked = false;
       },
       error: err => {
@@ -150,7 +150,7 @@ export class StreamConfigAdminComponent implements OnInit {
     this.editing = false;
     this.editPair = null;
     this.editProvider = null;
-    this.form.reset({ pair: '', provider: '', priority: 0, refreshMs: 1000, enabled: true });
+    this.form.reset({ pair: '', provider: '', priority: 1, refreshMs: 1000, enabled: true });
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
     this.locked = false;
