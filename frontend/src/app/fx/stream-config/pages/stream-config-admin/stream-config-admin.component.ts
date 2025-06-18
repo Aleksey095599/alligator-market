@@ -46,9 +46,9 @@ export class StreamConfigAdminComponent implements OnInit {
   displayed: string[] = ['pair', 'provider', 'priority', 'refreshMs', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<StreamConfigDto>([]);
 
-  //===============================
+  //==============================
   // Форма добавления конфигурации
-  //===============================
+  //==============================
   form: FormGroup;
 
   locked = false; // блокировка кнопки
