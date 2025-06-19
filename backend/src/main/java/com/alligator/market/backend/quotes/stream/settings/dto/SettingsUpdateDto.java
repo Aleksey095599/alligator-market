@@ -1,13 +1,13 @@
-package com.alligator.market.backend.quotes.config.dto;
+package com.alligator.market.backend.quotes.stream.settings.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * DTO для обновления конфигурации стрима котировок.
+ * DTO для обновления настроек.
  */
-public record FxPairStreamingConfigUpdateDto(
+public record SettingsUpdateDto(
 
         @NotNull
         @Min(0) @Max(32767)

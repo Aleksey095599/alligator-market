@@ -1,11 +1,11 @@
-package com.alligator.market.backend.quotes.config.dto;
+package com.alligator.market.backend.quotes.stream.settings.dto;
 
 import jakarta.validation.constraints.*;
 
 /**
- * DTO представления конфигурации стрима котировок.
+ * DTO для представления настроек.
  */
-public record FxPairStreamingConfigDto(
+public record SettingsDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{6}$")

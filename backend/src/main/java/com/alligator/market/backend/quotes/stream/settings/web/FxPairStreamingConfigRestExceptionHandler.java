@@ -1,10 +1,10 @@
-package com.alligator.market.backend.quotes.config.web;
+package com.alligator.market.backend.quotes.stream.settings.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
 import com.alligator.market.backend.pairs.exceptions.PairNotFoundException;
-import com.alligator.market.backend.quotes.config.exceptions.DuplicateFxPairStreamingConfigException;
-import com.alligator.market.backend.quotes.config.exceptions.FxPairStreamingConfigNotFoundException;
+import com.alligator.market.backend.quotes.stream.settings.exceptions.DuplicateSettingsException;
+import com.alligator.market.backend.quotes.stream.settings.exceptions.SettingsNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Локальный обработчик исключений пакета «FxPairStreamingConfig».
- * Привязан к соответствующему контроллеру.
+ * Локальный обработчик исключений. Привязан к соответствующему контроллеру.
  */
 @Slf4j
 @RestControllerAdvice(assignableTypes = FxPairStreamingConfigController.class)
@@ -23,20 +22,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class FxPairStreamingConfigRestExceptionHandler {
 
     /* Дублирование конфигурации для пары и провайдера. */
-    @ExceptionHandler(DuplicateFxPairStreamingConfigException.class)
+    @ExceptionHandler(DuplicateSettingsException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicate(
-            DuplicateFxPairStreamingConfigException ex) {
+            DuplicateSettingsException ex) {
 
-        log.warn("DuplicateFxPairStreamingConfigException: {}", ex.getMessage());
+        log.warn("DuplicateSettingsException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     /* Конфигурация стрима не найдена. */
-    @ExceptionHandler(FxPairStreamingConfigNotFoundException.class)
+    @ExceptionHandler(SettingsNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(
-            FxPairStreamingConfigNotFoundException ex) {
+            SettingsNotFoundException ex) {
 
-        log.warn("FxPairStreamingConfigNotFoundException: {}", ex.getMessage());
+        log.warn("SettingsNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
 

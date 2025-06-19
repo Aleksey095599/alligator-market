@@ -1,11 +1,11 @@
-package com.alligator.market.backend.quotes.config.web;
+package com.alligator.market.backend.quotes.stream.settings.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigCreateDto;
-import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigDto;
-import com.alligator.market.backend.quotes.config.dto.FxPairStreamingConfigUpdateDto;
-import com.alligator.market.backend.quotes.config.service.FxPairStreamingConfigService;
+import com.alligator.market.backend.quotes.stream.settings.dto.SettingsCreateDto;
+import com.alligator.market.backend.quotes.stream.settings.dto.SettingsDto;
+import com.alligator.market.backend.quotes.stream.settings.dto.SettingsUpdateDto;
+import com.alligator.market.backend.quotes.stream.settings.service.SettingsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST-контроллер для управления конфигурациями стрима котировок.
+ * REST-контроллер для операций с соответсвующее таблицей.
  */
 @RestController
 @RequestMapping("/api/v1/streaming-configs")
@@ -25,13 +25,13 @@ import java.util.List;
 @Slf4j
 public class FxPairStreamingConfigController {
 
-    private final FxPairStreamingConfigService service;
+    private final SettingsService service;
 
-    //======================================================
-    // Создать новую конфигурацию для заданной валютной пары
-    //======================================================
+    //========================
+    // Создать новые настройки
+    //========================
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxPairStreamingConfigCreateDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid SettingsCreateDto dto) {
 
         String id = service.createConfig(dto);
         URI location = ServletUriComponentsBuilder
@@ -42,21 +42,21 @@ public class FxPairStreamingConfigController {
         return ResponseEntityFactory.created(location, id);
     }
 
-    //===========================================
-    // Обновить конфигурацию по паре и провайдеру
-    //===========================================
+    //===================
+    // Обновить настройки
+    //===================
     @PutMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
             @PathVariable String provider,
-            @RequestBody @Valid FxPairStreamingConfigUpdateDto dto) {
+            @RequestBody @Valid SettingsUpdateDto dto) {
         service.updateConfig(pair, provider, dto);
         return ResponseEntityFactory.ok(null);
     }
 
-    //==========================================
-    // Удалить конфигурацию по паре и провайдеру
-    //==========================================
+    //==================
+    // Удалить настройки
+    //==================
     @DeleteMapping("/{pair}/{provider}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable String pair,
@@ -65,11 +65,11 @@ public class FxPairStreamingConfigController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //=========================
-    // Вернуть все конфигурации
-    //=========================
+    //======================
+    // Вернуть все настройки
+    //======================
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FxPairStreamingConfigDto>>> getAll() {
+    public ResponseEntity<ApiResponse<List<SettingsDto>>> getAll() {
 
         return ResponseEntityFactory.ok(service.findAll());
     }

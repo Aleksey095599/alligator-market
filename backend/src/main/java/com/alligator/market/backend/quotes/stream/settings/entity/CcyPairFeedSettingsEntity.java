@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.config.entity;
+package com.alligator.market.backend.quotes.stream.settings.entity;
 
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
 import com.alligator.market.backend.pairs.entity.Pair;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity конфигурации стрима котировок для заданной валютной пары.
+ * Entity для таблицы 'ccypair_feed_settings', где хранятся настройки потоков котировок от провайдеров
+ * для валютных пар. Синхронизирована с доменной моделью 'CcyPairFeedSettings' через 'CcyPairFeedSettingsMapper'.
  */
 @Entity
 @Table(
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FxPairStreamingConfig extends BaseEntity {
+public class CcyPairFeedSettingsEntity extends BaseEntity {
 
     /* Суррогатный PK */
     @Id
