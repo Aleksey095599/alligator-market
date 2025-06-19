@@ -5,6 +5,7 @@ public record CcyPairFeedSettings(
 
         String pair,
         String provider,
+        String mode,
         short priority,
         int refreshMs,
         boolean enabled

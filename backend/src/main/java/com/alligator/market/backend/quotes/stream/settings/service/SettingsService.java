@@ -13,9 +13,9 @@ public interface SettingsService {
 
     String createConfig(SettingsCreateDto dto);
 
-    void updateConfig(String pair, String provider, SettingsUpdateDto dto);
+    void updateConfig(String pair, String provider, String mode, SettingsUpdateDto dto);
 
-    void deleteConfig(String pair, String provider);
+    void deleteConfig(String pair, String provider, String mode);
 
     List<SettingsDto> findAll();
 

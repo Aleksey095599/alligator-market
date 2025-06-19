@@ -15,6 +15,7 @@ public class CcyPairFeedSettingsMapper {
         return new com.alligator.market.domain.model.CcyPairFeedSettings(
                 entity.getPair().getPair(),
                 entity.getProvider(),
+                entity.getMode(),
                 entity.getPriority(),
                 entity.getRefreshMs(),
                 entity.isEnabled()
@@ -25,6 +26,7 @@ public class CcyPairFeedSettingsMapper {
         CcyPairFeedSettingsEntity entity = new CcyPairFeedSettingsEntity();
         entity.setPair(pair);
         entity.setProvider(cfg.provider());
+        entity.setMode(cfg.mode());
         entity.setPriority(cfg.priority());
         entity.setRefreshMs(cfg.refreshMs());
         entity.setEnabled(cfg.enabled());

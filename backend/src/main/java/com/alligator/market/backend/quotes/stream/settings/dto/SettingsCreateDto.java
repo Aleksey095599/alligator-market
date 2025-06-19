@@ -15,6 +15,10 @@ public record SettingsCreateDto(
         @Size(max = 50)
         String provider,
 
+        @NotBlank
+        @Pattern(regexp = "^(PULL|PUSH)$")
+        String mode,
+
         @NotNull
         @Min(0) @Max(32767)
         Short priority,
