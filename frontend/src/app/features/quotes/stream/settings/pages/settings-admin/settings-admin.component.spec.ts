@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StreamConfigAdminComponent } from './settings-admin.component';
+import { SettingsAdminComponent } from './settings-admin.component';
 
-describe('StreamConfigAdminComponent', () => {
-  let component: StreamConfigAdminComponent;
-  let fixture: ComponentFixture<StreamConfigAdminComponent>;
+describe('SettingsAdminComponent', () => {
+  let component: SettingsAdminComponent;
+  let fixture: ComponentFixture<SettingsAdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StreamConfigAdminComponent]
+      imports: [SettingsAdminComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StreamConfigAdminComponent);
+    fixture = TestBed.createComponent(SettingsAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

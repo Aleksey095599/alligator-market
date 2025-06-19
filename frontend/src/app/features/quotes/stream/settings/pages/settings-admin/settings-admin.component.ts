@@ -10,16 +10,16 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {StreamConfigDto} from '../../models/settings.model';
-import {StreamConfigCreateDto} from '../../models/settings-create.model';
-import {StreamConfigUpdateDto} from '../../models/settings-update.model';
+import {SettingsDto} from '../../models/settings.model';
+import {SettingsCreateDto} from '../../models/settings-create.model';
+import {SettingsUpdateDto} from '../../models/settings-update.model';
 import {SettingsService} from '../../services/settings.service';
 import {PairDto} from '../../../../../pairs/models/pair.model';
 import {PairService} from '../../../../../pairs/services/pair.service';
 import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-stream-config-admin',
+  selector: 'app-settings-admin',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,17 +38,17 @@ import {RouterLink} from '@angular/router';
   templateUrl: './settings-admin.component.html',
   styleUrl: './settings-admin.component.scss'
 })
-export class StreamConfigAdminComponent implements OnInit {
+export class SettingsAdminComponent implements OnInit {
 
   //=================
   // Табличные данные
   //=================
   displayed: string[] = ['pair', 'provider', 'priority', 'refreshMs', 'enabled', 'actions'];
-  dataSource = new MatTableDataSource<StreamConfigDto>([]);
+  dataSource = new MatTableDataSource<SettingsDto>([]);
 
-  //==============================
-  // Форма добавления конфигурации
-  //==============================
+  //========================
+  // Форма добавления настроек
+  //========================
   form: FormGroup;
 
   locked = false; // блокировка кнопки
@@ -88,11 +88,11 @@ export class StreamConfigAdminComponent implements OnInit {
 
     this.locked = true;
 
-    const dto: StreamConfigCreateDto = this.form.value;
+    const dto: SettingsCreateDto = this.form.value;
 
     this.service.add(dto).subscribe({
       next: id => {
-        this.snack.open(`Config '${id}' added`, 'OK', { duration: 2500 });
+        this.snack.open(`Settings '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
         this.form.reset({ priority: 1, refreshMs: 1000, enabled: true });
         this.locked = false;
@@ -105,7 +105,7 @@ export class StreamConfigAdminComponent implements OnInit {
     });
   }
 
-  onEdit(c: StreamConfigDto): void {
+  onEdit(c: SettingsDto): void {
     this.editing = true;
     this.editPair = c.pair;
     this.editProvider = c.provider;
@@ -125,15 +125,15 @@ export class StreamConfigAdminComponent implements OnInit {
 
     this.locked = true;
 
-    const dto: StreamConfigUpdateDto = {
+    const dto: SettingsUpdateDto = {
       priority: this.form.controls['priority'].value,
       refreshMs: this.form.controls['refreshMs'].value,
       enabled: this.form.controls['enabled'].value
-    } as StreamConfigUpdateDto;
+    } as SettingsUpdateDto;
 
     this.service.update(this.editPair, this.editProvider, dto).subscribe({
       next: () => {
-        this.snack.open(`Config '${this.editPair}:${this.editProvider}' updated`, 'OK', { duration: 2500 });
+        this.snack.open(`Settings '${this.editPair}:${this.editProvider}' updated`, 'OK', { duration: 2500 });
         this.refresh();
         this.cancelEdit();
         this.locked = false;
@@ -159,7 +159,7 @@ export class StreamConfigAdminComponent implements OnInit {
   onDelete(pair: string, provider: string): void {
     this.service.delete(pair, provider).subscribe({
       next: () => {
-        this.snack.open(`Config '${pair}:${provider}' deleted`, 'OK', { duration: 2500 });
+        this.snack.open(`Settings '${pair}:${provider}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
       error: err => this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close')

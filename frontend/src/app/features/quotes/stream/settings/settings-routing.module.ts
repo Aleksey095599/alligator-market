@@ -6,7 +6,7 @@ const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./pages/settings-admin/settings-admin.component')
-        .then(c => c.StreamConfigAdminComponent)
+        .then(c => c.SettingsAdminComponent)
   }
 ];
 

@@ -1,5 +1,5 @@
-/** DTO создания конфигурации стрима аналогичный backend */
-export interface StreamConfigCreateDto {
+/** DTO создания настроек потока котировок аналогичный backend */
+export interface SettingsCreateDto {
   pair: string;
   provider: string;
   priority: number;
