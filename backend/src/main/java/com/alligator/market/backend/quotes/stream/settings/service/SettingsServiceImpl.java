@@ -45,13 +45,16 @@ public class SettingsServiceImpl implements SettingsService {
         Pair pair = pairRepository.findByPair(dto.pair())
                 .orElseThrow(() -> new PairNotFoundException(dto.pair()));
 
+        // Для PUSH-интервал определяет провайдер, поэтому устанавливаем 0.
+        int refreshMs = "PUSH".equals(dto.mode()) ? 0 : dto.refreshMs();
+
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
                 new com.alligator.market.domain.model.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
                         dto.mode(),
                         dto.priority(),
-                        dto.refreshMs(),
+                        refreshMs,
                         dto.enabled()
                 ),
                 pair
@@ -72,7 +75,9 @@ public class SettingsServiceImpl implements SettingsService {
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider, mode));
 
         entity.setPriority(dto.priority());
-        entity.setRefreshMs(dto.refreshMs());
+        // Если режим PUSH, интервал задаётся провайдером, поэтому сохраняем 0.
+        int refreshMs = "PUSH".equals(entity.getMode()) ? 0 : dto.refreshMs();
+        entity.setRefreshMs(refreshMs);
         entity.setEnabled(dto.enabled());
 
         repository.save(entity);

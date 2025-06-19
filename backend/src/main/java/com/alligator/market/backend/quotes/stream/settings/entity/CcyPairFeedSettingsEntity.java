@@ -46,7 +46,7 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
     @Column(nullable = false)
     private short priority;
 
-    /* Частота обновления, мс */
+    /* Частота обновления, мс (для PUSH всегда 0) */
     @Column(name = "refresh_ms", nullable = false)
     private int refreshMs;
 
