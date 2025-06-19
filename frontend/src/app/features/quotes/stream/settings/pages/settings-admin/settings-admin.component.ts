@@ -43,7 +43,7 @@ export class SettingsAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['pair', 'provider', 'priority', 'refreshMs', 'enabled', 'actions'];
+  displayed: string[] = ['pair', 'provider', 'mode', 'priority', 'refreshMs', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<SettingsDto>([]);
 
   //========================
@@ -55,6 +55,7 @@ export class SettingsAdminComponent implements OnInit {
   editing = false;
   editPair: string | null = null;
   editProvider: string | null = null;
+  editMode: string | null = null;
   pairs: PairDto[] = [];
 
   constructor(
@@ -66,6 +67,7 @@ export class SettingsAdminComponent implements OnInit {
     this.form = this.fb.group({
       pair: ['', [Validators.required]],
       provider: ['', [Validators.required, Validators.maxLength(50)]],
+      mode: ['PULL', [Validators.required]],
       priority: [1, [Validators.required, Validators.min(0), Validators.max(32767)]],
       refreshMs: [1000, [Validators.required, Validators.min(0)]],
       enabled: [true]
@@ -94,7 +96,7 @@ export class SettingsAdminComponent implements OnInit {
       next: id => {
         this.snack.open(`Settings '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
-        this.form.reset({ priority: 1, refreshMs: 1000, enabled: true });
+        this.form.reset({ mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
         this.locked = false;
       },
       error: err => {
@@ -109,19 +111,22 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = true;
     this.editPair = c.pair;
     this.editProvider = c.provider;
+    this.editMode = c.mode;
     this.form.setValue({
       pair: c.pair,
       provider: c.provider,
+      mode: c.mode,
       priority: c.priority,
       refreshMs: c.refreshMs,
       enabled: c.enabled
     });
     this.form.controls['pair'].disable();
     this.form.controls['provider'].disable();
+    this.form.controls['mode'].disable();
   }
 
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editPair || !this.editProvider) { return; }
+    if (this.form.invalid || this.locked || !this.editPair || !this.editProvider || !this.editMode) { return; }
 
     this.locked = true;
 
@@ -131,7 +136,7 @@ export class SettingsAdminComponent implements OnInit {
       enabled: this.form.controls['enabled'].value
     } as SettingsUpdateDto;
 
-    this.service.update(this.editPair, this.editProvider, dto).subscribe({
+    this.service.update(this.editPair, this.editProvider, this.editMode, dto).subscribe({
       next: () => {
         this.snack.open(`Settings '${this.editPair}:${this.editProvider}' updated`, 'OK', { duration: 2500 });
         this.refresh();
@@ -150,14 +155,16 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = false;
     this.editPair = null;
     this.editProvider = null;
-    this.form.reset({ pair: '', provider: '', priority: 1, refreshMs: 1000, enabled: true });
+    this.editMode = null;
+    this.form.reset({ pair: '', provider: '', mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true });
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
+    this.form.controls['mode'].enable();
     this.locked = false;
   }
 
-  onDelete(pair: string, provider: string): void {
-    this.service.delete(pair, provider).subscribe({
+  onDelete(pair: string, provider: string, mode: string): void {
+    this.service.delete(pair, provider, mode).subscribe({
       next: () => {
         this.snack.open(`Settings '${pair}:${provider}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
