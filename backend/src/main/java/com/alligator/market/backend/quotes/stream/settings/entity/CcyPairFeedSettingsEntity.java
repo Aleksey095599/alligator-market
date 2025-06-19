@@ -13,9 +13,9 @@ import lombok.Setter;
  */
 @Entity
 @Table(
-        name = "fx_pair_streaming_cfg",
+        name = "ccypair_feed_settings",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_fx_pair_streaming_cfg_pair_provider_mode", columnNames = {"pair_id", "provider", "mode"})
+                @UniqueConstraint(name = "uq_ccypair_feed_settings_pair_provider_mode", columnNames = {"pair_id", "provider", "mode"})
         }
 )
 @Getter
@@ -31,7 +31,7 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
     /* Валютная пара (FK на ccypair.id) */
     @ManyToOne(optional = false)
     @JoinColumn(name = "pair_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_stream_cfg_pair"))
+            foreignKey = @ForeignKey(name = "fk_feed_settings_pair"))
     private Pair pair;
 
     /* Имя провайдера котировок */
