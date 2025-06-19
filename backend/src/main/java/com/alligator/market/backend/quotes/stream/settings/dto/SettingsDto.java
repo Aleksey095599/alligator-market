@@ -25,7 +25,7 @@ public record SettingsDto(
 
         @NotNull
         @Min(0)
-        Integer refreshMs,
+        Integer refreshMs, // для PUSH игнорируется
 
         @NotNull
         Boolean enabled
