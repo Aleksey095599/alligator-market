@@ -13,8 +13,8 @@ import {PairDto} from '../../models/pair.model';
 import {PairCreateDto} from '../../models/pair-create.model';
 import {PairService} from '../../services/pair.service';
 import {PairUpdateDto} from '../../models/pair-update.model';
-import {CurrencyService} from '../../../currency/services/currency.service';
-import {CurrencyDto} from '../../../currency/models/currency.model';
+import {CurrencyService} from '../../../currencies/services/currency.service';
+import {CurrencyDto} from '../../../currencies/models/currency.model';
 import {RouterLink} from '@angular/router';
 
 @Component({

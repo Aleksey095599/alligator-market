@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/stream-config-admin/stream-config-admin.component')
+      import('./pages/settings-admin/settings-admin.component')
         .then(c => c.StreamConfigAdminComponent)
   }
 ];
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StreamConfigRoutingModule { }
+export class SettingsRoutingModule { }

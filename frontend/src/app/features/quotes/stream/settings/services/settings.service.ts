@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../../../shared/api-response.model';
-import { StreamConfigDto } from '../models/stream-config.model';
-import { StreamConfigCreateDto } from '../models/stream-config-create.model';
-import { StreamConfigUpdateDto } from '../models/stream-config-update.model';
+import { ApiResponse } from '../../../../../shared/api-response.model';
+import { StreamConfigDto } from '../models/settings.model';
+import { StreamConfigCreateDto } from '../models/settings-create.model';
+import { StreamConfigUpdateDto } from '../models/settings-update.model';
 
 /* Сервис взаимодействия с API конфигураций стрима */
 @Injectable({
   providedIn: 'root'
 })
-export class StreamConfigService {
+export class SettingsService {
 
   constructor(private http: HttpClient) { }
 

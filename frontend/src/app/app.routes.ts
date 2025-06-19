@@ -4,17 +4,17 @@ export const routes: Routes = [
   {
     path: 'currencies',
     loadChildren: () =>
-      import('./fx/currency/currency.module').then(m => m.CurrencyModule)
+      import('./features/currencies/currency.module').then(m => m.CurrencyModule)
   },
   {
     path: 'pairs',
     loadChildren: () =>
-      import('./fx/pair/pair.module').then(m => m.PairModule)
+      import('./features/pairs/pair.module').then(m => m.PairModule)
   },
   {
     path: 'stream-configs',
     loadChildren: () =>
-      import('./fx/stream-config/stream-config.module').then(m => m.StreamConfigModule)
+      import('./features/quotes/stream/settings/settings.module').then(m => m.SettingsModule)
   },
   {
     path: '',

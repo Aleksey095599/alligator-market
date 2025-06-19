@@ -10,12 +10,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {StreamConfigDto} from '../../models/stream-config.model';
-import {StreamConfigCreateDto} from '../../models/stream-config-create.model';
-import {StreamConfigUpdateDto} from '../../models/stream-config-update.model';
-import {StreamConfigService} from '../../services/stream-config.service';
-import {PairDto} from '../../../pair/models/pair.model';
-import {PairService} from '../../../pair/services/pair.service';
+import {StreamConfigDto} from '../../models/settings.model';
+import {StreamConfigCreateDto} from '../../models/settings-create.model';
+import {StreamConfigUpdateDto} from '../../models/settings-update.model';
+import {SettingsService} from '../../services/settings.service';
+import {PairDto} from '../../../../../pairs/models/pair.model';
+import {PairService} from '../../../../../pairs/services/pair.service';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -35,8 +35,8 @@ import {RouterLink} from '@angular/router';
     MatCheckboxModule,
     RouterLink
   ],
-  templateUrl: './stream-config-admin.component.html',
-  styleUrl: './stream-config-admin.component.scss'
+  templateUrl: './settings-admin.component.html',
+  styleUrl: './settings-admin.component.scss'
 })
 export class StreamConfigAdminComponent implements OnInit {
 
@@ -58,7 +58,7 @@ export class StreamConfigAdminComponent implements OnInit {
   pairs: PairDto[] = [];
 
   constructor(
-    private readonly service: StreamConfigService,
+    private readonly service: SettingsService,
     private readonly pairService: PairService,
     private readonly fb: FormBuilder,
     private readonly snack: MatSnackBar

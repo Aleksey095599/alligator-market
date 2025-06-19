@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StreamConfigAdminComponent } from './stream-config-admin.component';
+import { StreamConfigAdminComponent } from './settings-admin.component';
 
 describe('StreamConfigAdminComponent', () => {
   let component: StreamConfigAdminComponent;

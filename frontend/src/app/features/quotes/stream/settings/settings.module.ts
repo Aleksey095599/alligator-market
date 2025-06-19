@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { StreamConfigRoutingModule } from './stream-config-routing.module';
+import { SettingsRoutingModule } from './settings-routing.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StreamConfigRoutingModule,
+    SettingsRoutingModule,
   ]
 })
-export class StreamConfigModule { }
+export class SettingsModule { }
