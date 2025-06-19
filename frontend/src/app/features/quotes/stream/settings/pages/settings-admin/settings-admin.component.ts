@@ -72,6 +72,13 @@ export class SettingsAdminComponent implements OnInit {
       refreshMs: [1000, [Validators.required, Validators.min(0)]],
       enabled: [true]
     });
+
+    // реакция на выбор режима
+    this.form.controls['mode'].valueChanges
+      .subscribe(m => this.updateRefreshCtrl(m));
+
+    // начальное состояние поля периода
+    this.updateRefreshCtrl(this.form.controls['mode'].value);
   }
 
   //=======================
@@ -97,6 +104,8 @@ export class SettingsAdminComponent implements OnInit {
         this.snack.open(`Settings '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
         this.form.reset({ mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
+        this.form.controls['refreshMs'].enable();
+        this.updateRefreshCtrl(this.form.controls['mode'].value);
         this.locked = false;
       },
       error: err => {
@@ -120,6 +129,7 @@ export class SettingsAdminComponent implements OnInit {
       refreshMs: c.refreshMs,
       enabled: c.enabled
     });
+    this.updateRefreshCtrl(c.mode);
     this.form.controls['pair'].disable();
     this.form.controls['provider'].disable();
     this.form.controls['mode'].disable();
@@ -160,7 +170,25 @@ export class SettingsAdminComponent implements OnInit {
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
     this.form.controls['mode'].enable();
+    this.form.controls['refreshMs'].enable();
+    this.updateRefreshCtrl(this.form.controls['mode'].value);
     this.locked = false;
+  }
+
+  /**
+   * Обновляем состояние поля периода в зависимости от режима
+   */
+  private updateRefreshCtrl(mode: string): void {
+    const ctrl = this.form.controls['refreshMs'];
+    if (mode === 'PUSH') {
+      ctrl.setValue(0);
+      ctrl.disable();
+    } else {
+      ctrl.enable();
+      if (ctrl.value === 0) {
+        ctrl.setValue(1000);
+      }
+    }
   }
 
   onDelete(pair: string, provider: string, mode: string): void {
