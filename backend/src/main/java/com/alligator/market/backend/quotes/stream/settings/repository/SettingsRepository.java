@@ -10,6 +10,6 @@ import java.util.Optional;
  */
 public interface SettingsRepository extends JpaRepository<CcyPairFeedSettingsEntity, Long> {
 
-    Optional<CcyPairFeedSettingsEntity> findByPair_PairAndProvider(String pair, String provider);
+    Optional<CcyPairFeedSettingsEntity> findByPair_PairAndProviderAndMode(String pair, String provider, String mode);
 
 }

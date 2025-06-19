@@ -15,7 +15,7 @@ import lombok.Setter;
 @Table(
         name = "fx_pair_streaming_cfg",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_fx_pair_streaming_cfg_pair_provider", columnNames = {"pair_id", "provider"})
+                @UniqueConstraint(name = "uq_fx_pair_streaming_cfg_pair_provider_mode", columnNames = {"pair_id", "provider", "mode"})
         }
 )
 @Getter
@@ -37,6 +37,10 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
     /* Имя провайдера котировок */
     @Column(length = 50, nullable = false)
     private String provider;
+
+    /* Режим стриминга (PULL/PUSH) */
+    @Column(length = 4, nullable = false)
+    private String mode;
 
     /* Приоритет провайдера для пары */
     @Column(nullable = false)

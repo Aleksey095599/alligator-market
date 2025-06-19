@@ -36,8 +36,8 @@ public class FxPairStreamingConfigController {
         String id = service.createConfig(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{pair}/{provider}")
-                .buildAndExpand(dto.pair(), dto.provider())
+                .path("/{pair}/{provider}/{mode}")
+                .buildAndExpand(dto.pair(), dto.provider(), dto.mode())
                 .toUri();
         return ResponseEntityFactory.created(location, id);
     }
@@ -45,23 +45,25 @@ public class FxPairStreamingConfigController {
     //===================
     // Обновить настройки
     //===================
-    @PutMapping("/{pair}/{provider}")
+    @PutMapping("/{pair}/{provider}/{mode}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
             @PathVariable String provider,
+            @PathVariable String mode,
             @RequestBody @Valid SettingsUpdateDto dto) {
-        service.updateConfig(pair, provider, dto);
+        service.updateConfig(pair, provider, mode, dto);
         return ResponseEntityFactory.ok(null);
     }
 
     //==================
     // Удалить настройки
     //==================
-    @DeleteMapping("/{pair}/{provider}")
+    @DeleteMapping("/{pair}/{provider}/{mode}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable String pair,
-            @PathVariable String provider) {
-        service.deleteConfig(pair, provider);
+            @PathVariable String provider,
+            @PathVariable String mode) {
+        service.deleteConfig(pair, provider, mode);
         return ResponseEntityFactory.ok(null);
     }
 

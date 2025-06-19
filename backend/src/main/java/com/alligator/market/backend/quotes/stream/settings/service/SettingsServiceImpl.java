@@ -38,8 +38,8 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public String createConfig(SettingsCreateDto dto) {
 
-        repository.findByPair_PairAndProvider(dto.pair(), dto.provider()).ifPresent(c -> {
-            throw new DuplicateSettingsException(dto.pair(), dto.provider());
+        repository.findByPair_PairAndProviderAndMode(dto.pair(), dto.provider(), dto.mode()).ifPresent(c -> {
+            throw new DuplicateSettingsException(dto.pair(), dto.provider(), dto.mode());
         });
 
         Pair pair = pairRepository.findByPair(dto.pair())
@@ -49,6 +49,7 @@ public class SettingsServiceImpl implements SettingsService {
                 new com.alligator.market.domain.model.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
+                        dto.mode(),
                         dto.priority(),
                         dto.refreshMs(),
                         dto.enabled()
@@ -57,38 +58,38 @@ public class SettingsServiceImpl implements SettingsService {
         );
 
         CcyPairFeedSettingsEntity saved = repository.save(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{} saved with id={}", dto.pair(), dto.provider(), saved.getId());
-        return "%s:%s".formatted(saved.getPair().getPair(), saved.getProvider());
+        log.info("CcyPairFeedSettingsEntity {}:{}:{} saved with id={}", dto.pair(), dto.provider(), dto.mode(), saved.getId());
+        return "%s:%s:%s".formatted(saved.getPair().getPair(), saved.getProvider(), saved.getMode());
     }
 
     //===================
     // Обновить настройки
     //===================
     @Override
-    public void updateConfig(String pair, String provider, SettingsUpdateDto dto) {
+    public void updateConfig(String pair, String provider, String mode, SettingsUpdateDto dto) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
-                .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProviderAndMode(pair, provider, mode)
+                .orElseThrow(() -> new SettingsNotFoundException(pair, provider, mode));
 
         entity.setPriority(dto.priority());
         entity.setRefreshMs(dto.refreshMs());
         entity.setEnabled(dto.enabled());
 
         repository.save(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{} updated (id={})", pair, provider, entity.getId());
+        log.info("CcyPairFeedSettingsEntity {}:{}:{} updated (id={})", pair, provider, mode, entity.getId());
     }
 
     //==================
     // Удалить настройки
     //==================
     @Override
-    public void deleteConfig(String pair, String provider) {
+    public void deleteConfig(String pair, String provider, String mode) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
-                .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProviderAndMode(pair, provider, mode)
+                .orElseThrow(() -> new SettingsNotFoundException(pair, provider, mode));
 
         repository.delete(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{} deleted (id={})", pair, provider, entity.getId());
+        log.info("CcyPairFeedSettingsEntity {}:{}:{} deleted (id={})", pair, provider, mode, entity.getId());
     }
 
     //======================
@@ -98,11 +99,12 @@ public class SettingsServiceImpl implements SettingsService {
     @Transactional(readOnly = true)
     public List<SettingsDto> findAll() {
 
-        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider"))
+        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider", "mode"))
                 .stream()
                 .map(cfg -> new SettingsDto(
                         cfg.getPair().getPair(),
                         cfg.getProvider(),
+                        cfg.getMode(),
                         cfg.getPriority(),
                         cfg.getRefreshMs(),
                         cfg.isEnabled()
