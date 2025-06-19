@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 
-/* Фабрика готовых ResponseEntity<ApiResponse<?>>.
-   Позволяет легко создавать единообразные HTTP-ответы, содержащие унифицированный конверт ApiResponse<?>.
-   Позволяет централизованно добавлять новые параметры в HTTP-ответ. */
+/**
+ * Фабрика готовых ResponseEntity<ApiResponse<?>>.
+ * Позволяет легко создавать единообразные HTTP-ответы, содержащие унифицированный конверт ApiResponse<?>.
+ * Позволяет централизованно добавлять новые параметры в HTTP-ответ.
+ */
 public final class ResponseEntityFactory {
 
     private ResponseEntityFactory() {

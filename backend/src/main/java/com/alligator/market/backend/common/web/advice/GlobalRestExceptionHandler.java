@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-/* Глобальный обработчик исключений REST-слоя. */
+/**
+ * Глобальный обработчик исключений REST-слоя.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
