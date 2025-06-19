@@ -1,7 +1,7 @@
 package com.alligator.market.domain.model;
 
-/** Конфигурация стрима котировок для заданной валютной пары. */
-public record FxPairStreamingConfig(
+/** Настройки источника котировок для заданной валютной пары. */
+public record CcyPairFeedSettings(
 
         String pair,
         String provider,

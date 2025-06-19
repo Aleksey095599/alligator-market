@@ -46,7 +46,7 @@ public class FxPairStreamingConfigServiceImpl implements FxPairStreamingConfigSe
                 .orElseThrow(() -> new PairNotFoundException(dto.pair()));
 
         FxPairStreamingConfig entity = mapper.toEntity(
-                new com.alligator.market.domain.model.FxPairStreamingConfig(
+                new com.alligator.market.domain.model.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
                         dto.priority(),

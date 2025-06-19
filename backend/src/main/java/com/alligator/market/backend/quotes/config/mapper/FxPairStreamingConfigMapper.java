@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FxPairStreamingConfigMapper {
 
-    public com.alligator.market.domain.model.FxPairStreamingConfig toDomain(FxPairStreamingConfig entity) {
-        return new com.alligator.market.domain.model.FxPairStreamingConfig(
+    public com.alligator.market.domain.model.CcyPairFeedSettings toDomain(FxPairStreamingConfig entity) {
+        return new com.alligator.market.domain.model.CcyPairFeedSettings(
                 entity.getPair().getPair(),
                 entity.getProvider(),
                 entity.getPriority(),
@@ -21,7 +21,7 @@ public class FxPairStreamingConfigMapper {
         );
     }
 
-    public FxPairStreamingConfig toEntity(com.alligator.market.domain.model.FxPairStreamingConfig cfg, Pair pair) {
+    public FxPairStreamingConfig toEntity(com.alligator.market.domain.model.CcyPairFeedSettings cfg, Pair pair) {
         FxPairStreamingConfig entity = new FxPairStreamingConfig();
         entity.setPair(pair);
         entity.setProvider(cfg.provider());
