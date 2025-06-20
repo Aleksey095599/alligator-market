@@ -1,6 +1,8 @@
-package com.alligator.market.domain.model;
+package com.alligator.market.domain.quote.stream.settings;
 
-/** Настройки источника котировок для заданной валютной пары. */
+/**
+ * Настройки источника котировок для заданной валютной пары.
+ */
 public record CcyPairFeedSettings(
 
         String pair,
@@ -10,7 +12,8 @@ public record CcyPairFeedSettings(
         int refreshMs, // 0 для PUSH
         boolean enabled
 
-) {}
+) {
+}
 
 
 
