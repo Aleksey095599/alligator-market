@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Маппер между доменной моделью и соответствующим Entity.
- * Импорт доменной модели в backend обусловлен использованием этой модели в нескольких слоях.
+ * Импорт доменной модели в backend обусловлен использованием этой модели в других слоях.
  */
 @Component
 public class CcyPairFeedSettingsMapper {
