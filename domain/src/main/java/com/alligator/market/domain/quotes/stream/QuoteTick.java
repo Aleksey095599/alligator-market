@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.stream;
+package com.alligator.market.domain.quotes.stream;
 
 import java.math.BigDecimal;
 import java.time.Instant;
