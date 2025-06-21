@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CcyPairFeedSettingsMapper {
 
-    public com.alligator.market.domain.quote.stream.settings.CcyPairFeedSettings toDomain(CcyPairFeedSettingsEntity entity) {
-        return new com.alligator.market.domain.quote.stream.settings.CcyPairFeedSettings(
+    public com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings toDomain(CcyPairFeedSettingsEntity entity) {
+        return new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
                 entity.getPair().getPair(),
                 entity.getProvider(),
                 entity.getMode(),
@@ -22,7 +22,7 @@ public class CcyPairFeedSettingsMapper {
         );
     }
 
-    public CcyPairFeedSettingsEntity toEntity(com.alligator.market.domain.quote.stream.settings.CcyPairFeedSettings cfg, Pair pair) {
+    public CcyPairFeedSettingsEntity toEntity(com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings cfg, Pair pair) {
         CcyPairFeedSettingsEntity entity = new CcyPairFeedSettingsEntity();
         entity.setPair(pair);
         entity.setProvider(cfg.provider());
