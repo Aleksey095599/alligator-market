@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.stream.exeptions;
+package com.alligator.market.domain.quotes.stream.exeptions;
 
 /**
  * Бросается, если провайдер не смог вернуть актуальную котировку.
