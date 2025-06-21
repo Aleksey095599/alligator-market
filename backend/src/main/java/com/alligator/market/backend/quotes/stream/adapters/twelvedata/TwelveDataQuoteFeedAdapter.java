@@ -65,7 +65,12 @@ public class TwelveDataQuoteFeedAdapter implements QuoteFeedPort {
         }
     }
 
+    //=======================
+    // Вспомогательные классы
+    //=======================
+
     /* Ответ API с ценой. */
     private record PriceDto(String price) {
     }
+
 }
