@@ -49,7 +49,7 @@ public class SettingsServiceImpl implements SettingsService {
         int refreshMs = "PUSH".equals(dto.mode()) ? 0 : dto.refreshMs();
 
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
-                new com.alligator.market.domain.quote.stream.settings.CcyPairFeedSettings(
+                new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
                         dto.mode(),
