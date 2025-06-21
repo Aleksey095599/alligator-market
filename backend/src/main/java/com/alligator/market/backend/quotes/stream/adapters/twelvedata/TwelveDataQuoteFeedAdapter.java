@@ -51,8 +51,8 @@ public class TwelveDataQuoteFeedAdapter implements QuoteFeedPort {
             }
             BigDecimal price = new BigDecimal(dto.price());
 
-            // Формируем объект тика согласно доменной модели
-            // TODO: временная реализация bid=ask из-за ограниченной подписки
+            // Формируем объект тика согласно доменной модели.
+            // Временная реализация bid=ask из-за ограниченной подписки.
             return new QuoteTick(
                     pairCode,
                     price,
@@ -71,7 +71,7 @@ public class TwelveDataQuoteFeedAdapter implements QuoteFeedPort {
     // Вспомогательные классы
     //=======================
 
-    /* Ответ API с ценой. */
+    /* Объект для ответа провайдера (https://api.twelvedata.com/price) в виде одной записи с ценой. */
     private record PriceDto(String price) {
     }
 
