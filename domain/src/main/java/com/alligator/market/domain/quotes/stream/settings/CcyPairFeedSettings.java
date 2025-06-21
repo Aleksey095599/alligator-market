@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.stream.settings;
+package com.alligator.market.domain.quotes.stream.settings;
 
 /**
  * Настройки источника котировок для заданной валютной пары.
