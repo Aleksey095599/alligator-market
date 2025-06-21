@@ -1,7 +1,7 @@
 {
-  "namespace": "com.alligator.market.domain.model",
+  "namespace": "com.alligator.market.domain.quotes.stream",
   "type": "record",
-  "name": "FxPriceTick",
+  "name": "QuoteTick",
   "fields": [
     { "name": "pair", "type": "string" },
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
