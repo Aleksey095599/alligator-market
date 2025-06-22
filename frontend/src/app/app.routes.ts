@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'stream-configs',
     loadChildren: () =>
-      import('./features/quotes/stream/settings/settings.module').then(m => m.SettingsModule)
+      import('./features/quotes/stream/ccypair_feed_settings/settings.module').then(m => m.SettingsModule)
   },
   {
     path: '',
