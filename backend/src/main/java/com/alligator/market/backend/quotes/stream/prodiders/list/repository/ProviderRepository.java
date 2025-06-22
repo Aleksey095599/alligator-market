@@ -12,4 +12,6 @@ public interface ProviderRepository extends JpaRepository<Provider, Long> {
 
     Optional<Provider> findByName(String name);
 
+    Optional<Provider> findByNameAndMode(String name, String mode);
+
 }
