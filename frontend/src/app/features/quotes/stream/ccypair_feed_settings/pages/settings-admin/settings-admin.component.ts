@@ -16,6 +16,8 @@ import {SettingsUpdateDto} from '../../models/settings-update.model';
 import {SettingsService} from '../../services/settings.service';
 import {PairDto} from '../../../../../pairs/models/pair.model';
 import {PairService} from '../../../../../pairs/services/pair.service';
+import {ProviderDto} from '../../../../../providers/models/provider.model';
+import {ProviderService} from '../../../../../providers/services/provider.service';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -57,10 +59,13 @@ export class SettingsAdminComponent implements OnInit {
   editProvider: string | null = null;
   editMode: string | null = null;
   pairs: PairDto[] = [];
+  providers: { name: string, modes: string[] }[] = [];
+  availableModes: string[] = ['PULL', 'PUSH'];
 
   constructor(
     private readonly service: SettingsService,
     private readonly pairService: PairService,
+    private readonly providerService: ProviderService,
     private readonly fb: FormBuilder,
     private readonly snack: MatSnackBar
   ) {
@@ -77,6 +82,10 @@ export class SettingsAdminComponent implements OnInit {
     this.form.controls['mode'].valueChanges
       .subscribe(m => this.updateRefreshCtrl(m));
 
+    // реакция на выбор провайдера
+    this.form.controls['provider'].valueChanges
+      .subscribe(p => this.updateModeCtrl(p));
+
     // начальное состояние поля периода
     this.updateRefreshCtrl(this.form.controls['mode'].value);
   }
@@ -89,6 +98,20 @@ export class SettingsAdminComponent implements OnInit {
     this.pairService.list().subscribe({
       next: p => this.pairs = p,
       error: err => this.snack.open(err.message ?? 'Load pairs failed', 'Close')
+    });
+    this.providerService.list().subscribe({
+      next: list => {
+        const map = new Map<string, string[]>();
+        list.forEach(pr => {
+          const arr = map.get(pr.name) ?? [];
+          if (!arr.includes(pr.mode)) { arr.push(pr.mode); }
+          map.set(pr.name, arr);
+        });
+        this.providers = Array.from(map.entries())
+          .map(([name, modes]) => ({ name, modes }));
+        this.updateModeCtrl(this.form.controls['provider'].value);
+      },
+      error: err => this.snack.open(err.message ?? 'Load providers failed', 'Close')
     });
   }
 
@@ -105,6 +128,7 @@ export class SettingsAdminComponent implements OnInit {
         this.refresh();
         this.form.reset({ mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
         this.form.controls['refreshMs'].enable();
+        this.updateModeCtrl(this.form.controls['provider'].value);
         this.updateRefreshCtrl(this.form.controls['mode'].value);
         this.locked = false;
       },
@@ -129,6 +153,7 @@ export class SettingsAdminComponent implements OnInit {
       refreshMs: c.refreshMs,
       enabled: c.enabled
     });
+    this.updateModeCtrl(c.provider);
     this.updateRefreshCtrl(c.mode);
     this.form.controls['pair'].disable();
     this.form.controls['provider'].disable();
@@ -171,8 +196,31 @@ export class SettingsAdminComponent implements OnInit {
     this.form.controls['provider'].enable();
     this.form.controls['mode'].enable();
     this.form.controls['refreshMs'].enable();
+    this.updateModeCtrl(this.form.controls['provider'].value);
     this.updateRefreshCtrl(this.form.controls['mode'].value);
     this.locked = false;
+  }
+
+  /**
+   * Обновляем состояние поля режима в зависимости от провайдера
+   */
+  private updateModeCtrl(provider: string): void {
+    const modeCtrl = this.form.controls['mode'];
+    const item = this.providers.find(p => p.name === provider);
+    if (!item) { this.availableModes = ['PULL', 'PUSH']; modeCtrl.enable(); return; }
+
+    this.availableModes = item.modes;
+
+    if (item.modes.length === 1) {
+      modeCtrl.setValue(item.modes[0]);
+      modeCtrl.disable();
+    } else {
+      modeCtrl.enable();
+      if (!item.modes.includes(modeCtrl.value)) {
+        modeCtrl.setValue(item.modes[0]);
+      }
+    }
+    this.updateRefreshCtrl(modeCtrl.value);
   }
 
   /**

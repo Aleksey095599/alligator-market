@@ -24,7 +24,9 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Provider</mat-label>
-          <input matInput formControlName="provider" maxlength="50" />
+          <mat-select formControlName="provider">
+            <mat-option *ngFor="let p of providers" [value]="p.name">{{ p.name }}</mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls['provider'].hasError('required')">
             Is required
           </mat-error>
@@ -33,8 +35,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Mode</mat-label>
           <mat-select formControlName="mode">
-            <mat-option value="PULL">PULL</mat-option>
-            <mat-option value="PUSH">PUSH</mat-option>
+            <mat-option *ngFor="let m of availableModes" [value]="m">{{ m }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.controls['mode'].hasError('required')">
             Is required
