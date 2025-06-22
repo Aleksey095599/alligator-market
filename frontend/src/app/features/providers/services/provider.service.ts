@@ -31,17 +31,17 @@ export class ProviderService {
       .pipe(map(res => res.data));
   }
 
-  /* Удалить провайдера по имени */
-  delete(name: string): Observable<void> {
+  /* Удалить провайдера по имени и режиму */
+  delete(name: string, mode: string): Observable<void> {
     return this.http
-      .delete<ApiResponse<void>>(`${this.baseUrl}/${name}`)
+      .delete<ApiResponse<void>>(`${this.baseUrl}/${name}/${mode}`)
       .pipe(map(res => res.data));
   }
 
-  /* Обновить провайдера по имени */
-  update(name: string, dto: ProviderUpdateDto): Observable<void> {
+  /* Обновить провайдера по имени и режиму */
+  update(name: string, mode: string, dto: ProviderUpdateDto): Observable<void> {
     return this.http
-      .put<ApiResponse<void>>(`${this.baseUrl}/${name}`, dto)
+      .put<ApiResponse<void>>(`${this.baseUrl}/${name}/${mode}`, dto)
       .pipe(map(res => res.data));
   }
 }
