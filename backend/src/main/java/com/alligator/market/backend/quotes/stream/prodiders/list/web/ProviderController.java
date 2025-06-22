@@ -27,9 +27,9 @@ public class ProviderController {
 
     private final ProviderService service;
 
-    //=====================
+    //==========================
     // Создать нового провайдера
-    //=====================
+    //==========================
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid ProviderCreateDto dto) {
 
@@ -42,9 +42,9 @@ public class ProviderController {
         return ResponseEntityFactory.created(location, name);
     }
 
-    //================
+    //====================
     // Обновить провайдера
-    //================
+    //====================
     @PutMapping("/{name}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String name,
@@ -53,9 +53,9 @@ public class ProviderController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //=================
+    //===================
     // Удалить провайдера
-    //=================
+    //===================
     @DeleteMapping("/{name}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String name) {
 
@@ -63,12 +63,13 @@ public class ProviderController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //=====================
+    //=========================
     // Вернуть всех провайдеров
-    //=====================
+    //=========================
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderDto>>> getAll() {
 
         return ResponseEntityFactory.ok(service.findAll());
     }
+
 }

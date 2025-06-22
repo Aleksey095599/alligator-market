@@ -41,4 +41,5 @@ public class Provider extends BaseEntity {
     /* API-ключ */
     @Column(name = "api_key", length = 255, nullable = false)
     private String apiKey;
+
 }

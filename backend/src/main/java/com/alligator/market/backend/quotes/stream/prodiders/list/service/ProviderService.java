@@ -18,4 +18,5 @@ public interface ProviderService {
     void deleteProvider(String name);
 
     List<ProviderDto> findAll();
+
 }

@@ -26,9 +26,9 @@ public class ProviderServiceImpl implements ProviderService {
 
     private final ProviderRepository repository;
 
-    //=====================
+    //==========================
     // Создать нового провайдера
-    //=====================
+    //==========================
     @Override
     public String createProvider(ProviderCreateDto dto) {
 
@@ -47,9 +47,9 @@ public class ProviderServiceImpl implements ProviderService {
         return saved.getName();
     }
 
-    //================
+    //====================
     // Обновить провайдера
-    //================
+    //====================
     @Override
     public void updateProvider(String name, ProviderUpdateDto dto) {
 
@@ -64,9 +64,9 @@ public class ProviderServiceImpl implements ProviderService {
         log.info("Provider {} updated (id={})", provider.getName(), provider.getId());
     }
 
-    //=================
+    //===================
     // Удалить провайдера
-    //=================
+    //===================
     @Override
     public void deleteProvider(String name) {
 
@@ -77,9 +77,9 @@ public class ProviderServiceImpl implements ProviderService {
         log.info("Provider {} deleted (id={})", provider.getName(), provider.getId());
     }
 
-    //=====================
+    //=========================
     // Извлечь всех провайдеров
-    //=====================
+    //=========================
     @Override
     @Transactional(readOnly = true)
     public List<ProviderDto> findAll() {
@@ -96,4 +96,5 @@ public class ProviderServiceImpl implements ProviderService {
         log.debug("Found {} providers", result.size());
         return result;
     }
+
 }

@@ -38,4 +38,5 @@ public class ProviderRestExceptionHandler {
         log.warn("ProviderNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
+
 }
