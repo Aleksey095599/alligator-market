@@ -120,7 +120,8 @@ export class SettingsAdminComponent implements OnInit {
 
     this.locked = true;
 
-    const dto: SettingsCreateDto = this.form.value;
+    // getRawValue() позволяет получить значения выключенных контролов (mode)
+    const dto: SettingsCreateDto = this.form.getRawValue() as SettingsCreateDto;
 
     this.service.add(dto).subscribe({
       next: id => {
