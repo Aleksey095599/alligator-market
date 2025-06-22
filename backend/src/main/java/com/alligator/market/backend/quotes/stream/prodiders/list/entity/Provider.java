@@ -1,4 +1,4 @@
-package com.alligator.market.backend.providers.entity;
+package com.alligator.market.backend.quotes.stream.prodiders.list.entity;
 
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
 import jakarta.persistence.*;

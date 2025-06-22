@@ -1,12 +1,12 @@
-package com.alligator.market.backend.providers.service;
+package com.alligator.market.backend.quotes.stream.prodiders.list.service;
 
-import com.alligator.market.backend.providers.dto.ProviderCreateDto;
-import com.alligator.market.backend.providers.dto.ProviderDto;
-import com.alligator.market.backend.providers.dto.ProviderUpdateDto;
-import com.alligator.market.backend.providers.entity.Provider;
-import com.alligator.market.backend.providers.exceptions.DuplicateProviderException;
-import com.alligator.market.backend.providers.exceptions.ProviderNotFoundException;
-import com.alligator.market.backend.providers.repository.ProviderRepository;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderCreateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderUpdateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.entity.Provider;
+import com.alligator.market.backend.quotes.stream.prodiders.list.exceptions.DuplicateProviderException;
+import com.alligator.market.backend.quotes.stream.prodiders.list.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.prodiders.list.repository.ProviderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

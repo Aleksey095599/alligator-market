@@ -1,4 +1,4 @@
-package com.alligator.market.backend.providers.exceptions;
+package com.alligator.market.backend.quotes.stream.prodiders.list.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 

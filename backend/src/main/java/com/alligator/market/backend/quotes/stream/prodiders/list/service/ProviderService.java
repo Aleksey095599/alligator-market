@@ -1,8 +1,8 @@
-package com.alligator.market.backend.providers.service;
+package com.alligator.market.backend.quotes.stream.prodiders.list.service;
 
-import com.alligator.market.backend.providers.dto.ProviderCreateDto;
-import com.alligator.market.backend.providers.dto.ProviderDto;
-import com.alligator.market.backend.providers.dto.ProviderUpdateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderCreateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderUpdateDto;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package com.alligator.market.backend.providers.web;
+package com.alligator.market.backend.quotes.stream.prodiders.list.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.providers.dto.ProviderCreateDto;
-import com.alligator.market.backend.providers.dto.ProviderDto;
-import com.alligator.market.backend.providers.dto.ProviderUpdateDto;
-import com.alligator.market.backend.providers.service.ProviderService;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderCreateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.dto.ProviderUpdateDto;
+import com.alligator.market.backend.quotes.stream.prodiders.list.service.ProviderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

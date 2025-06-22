@@ -1,6 +1,8 @@
-package com.alligator.market.backend.providers.dto;
+package com.alligator.market.backend.quotes.stream.prodiders.list.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
  * DTO для создания провайдера.
