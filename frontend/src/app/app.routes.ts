@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./features/pairs/pair.module').then(m => m.PairModule)
   },
   {
+    path: 'providers',
+    loadChildren: () =>
+      import('./features/providers/provider.module').then(m => m.ProviderModule)
+  },
+  {
     path: 'stream-configs',
     loadChildren: () =>
       import('./features/quotes/stream/ccypair_feed_settings/settings.module').then(m => m.SettingsModule)

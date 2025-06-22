@@ -1,0 +1,25 @@
+/* центрируем контент и даём одинаковый зазор между карточками */
+.center-box {
+  max-width: 960px;
+  margin: 32px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0 16px;
+}
+
+/* выстроить поля и кнопку в одну линию, с равными промежутками и переносом на новую строку */
+.toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  align-items: center;
+}
+
+/* фиксация toolbar при прокрутке */
+.toolbar-card {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+}
