@@ -1,5 +1,5 @@
 {
-  "namespace": "com.alligator.market.domain.quotes.stream",
+  "namespace": "com.alligator.market.domain.avro.quotes.stream",
   "type": "record",
   "name": "QuoteTick",
   "fields": [

@@ -1,5 +1,6 @@
 package com.alligator.market.backend.currencies.service;
 
+import com.alligator.market.backend.ccypairs.repository.PairRepository;
 import com.alligator.market.backend.currencies.dto.CurrencyDto;
 import com.alligator.market.backend.currencies.dto.CurrencyUpdateDto;
 import com.alligator.market.backend.currencies.entity.Currency;
@@ -7,7 +8,6 @@ import com.alligator.market.backend.currencies.exceptions.CurrencyNotFoundExcept
 import com.alligator.market.backend.currencies.exceptions.CurrencyUsedInPairsException;
 import com.alligator.market.backend.currencies.exceptions.DuplicateCurrencyException;
 import com.alligator.market.backend.currencies.repository.CurrencyRepository;
-import com.alligator.market.backend.pairs.repository.PairRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
