@@ -2,6 +2,7 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper;
 
 import com.alligator.market.backend.ccypairs.entity.Pair;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
+import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +15,7 @@ public class CcyPairFeedSettingsMapper {
     public com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings toDomain(CcyPairFeedSettingsEntity entity) {
         return new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
                 entity.getPair().getPair(),
-                entity.getProvider(),
+                entity.getProvider().getName(),
                 entity.getMode(),
                 entity.getPriority(),
                 entity.getRefreshMs(),
@@ -22,10 +23,13 @@ public class CcyPairFeedSettingsMapper {
         );
     }
 
-    public CcyPairFeedSettingsEntity toEntity(com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings cfg, Pair pair) {
+    public CcyPairFeedSettingsEntity toEntity(
+            com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings cfg,
+            Pair pair,
+            Provider provider) {
         CcyPairFeedSettingsEntity entity = new CcyPairFeedSettingsEntity();
         entity.setPair(pair);
-        entity.setProvider(cfg.provider());
+        entity.setProvider(provider);
         entity.setMode(cfg.mode());
         entity.setPriority(cfg.priority());
         entity.setRefreshMs(cfg.refreshMs());
