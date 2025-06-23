@@ -7,7 +7,6 @@ public record CcyPairFeedSettings(
 
         String pair,
         String provider,
-        String mode,
         short priority,
         int refreshMs, // 0 для PUSH
         boolean enabled

@@ -49,17 +49,16 @@ public class SettingsServiceImpl implements SettingsService {
         Pair pair = pairRepository.findByPair(dto.pair())
                 .orElseThrow(() -> new PairNotFoundException(dto.pair()));
 
-        // Для PUSH-интервал определяет провайдер, поэтому устанавливаем 0.
-        int refreshMs = "PUSH".equals(dto.mode()) ? 0 : dto.refreshMs();
-
         Provider provider = providerRepository.findByName(dto.provider())
                 .orElseThrow(() -> new ProviderNotFoundException(dto.provider()));
+
+        // Для PUSH-интервал определяет провайдер, поэтому устанавливаем 0.
+        int refreshMs = "PUSH".equals(provider.getMode()) ? 0 : dto.refreshMs();
 
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
                 new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
-                        dto.mode(),
                         dto.priority(),
                         refreshMs,
                         dto.enabled()
@@ -69,8 +68,8 @@ public class SettingsServiceImpl implements SettingsService {
         );
 
         CcyPairFeedSettingsEntity saved = repository.save(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{}:{} saved with id={}", dto.pair(), dto.provider(), dto.mode(), saved.getId());
-        return "%s:%s:%s".formatted(saved.getPair().getPair(), saved.getProvider().getName(), saved.getMode());
+        log.info("CcyPairFeedSettingsEntity {}:{} saved with id={}", dto.pair(), dto.provider(), saved.getId());
+        return "%s:%s".formatted(saved.getPair().getPair(), saved.getProvider().getName());
     }
 
     //===================
@@ -84,7 +83,7 @@ public class SettingsServiceImpl implements SettingsService {
 
         entity.setPriority(dto.priority());
         // Если режим PUSH, интервал задаётся провайдером, поэтому сохраняем 0.
-        int refreshMs = "PUSH".equals(entity.getMode()) ? 0 : dto.refreshMs();
+        int refreshMs = "PUSH".equals(entity.getProvider().getMode()) ? 0 : dto.refreshMs();
         entity.setRefreshMs(refreshMs);
         entity.setEnabled(dto.enabled());
 
@@ -112,12 +111,11 @@ public class SettingsServiceImpl implements SettingsService {
     @Transactional(readOnly = true)
     public List<SettingsDto> findAll() {
 
-        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name", "mode"))
+        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name"))
                 .stream()
                 .map(cfg -> new SettingsDto(
                         cfg.getPair().getPair(),
                         cfg.getProvider().getName(),
-                        cfg.getMode(),
                         cfg.getPriority(),
                         cfg.getRefreshMs(),
                         cfg.isEnabled()

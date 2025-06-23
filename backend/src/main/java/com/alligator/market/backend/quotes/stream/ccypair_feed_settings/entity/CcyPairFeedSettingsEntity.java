@@ -41,9 +41,6 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_feed_settings_provider"))
     private Provider provider;
 
-    /* Режим стриминга (PULL/PUSH) */
-    @Column(length = 4, nullable = false)
-    private String mode;
 
     /* Приоритет провайдера для пары */
     @Column(nullable = false)

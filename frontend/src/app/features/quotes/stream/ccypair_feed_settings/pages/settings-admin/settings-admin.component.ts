@@ -45,7 +45,7 @@ export class SettingsAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['pair', 'provider', 'mode', 'priority', 'refreshMs', 'enabled', 'actions'];
+  displayed: string[] = ['pair', 'provider', 'priority', 'refreshMs', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<SettingsDto>([]);
 
   //========================
@@ -58,8 +58,7 @@ export class SettingsAdminComponent implements OnInit {
   editPair: string | null = null;
   editProvider: string | null = null;
   pairs: PairDto[] = [];
-  providers: { name: string, modes: string[] }[] = [];
-  availableModes: string[] = ['PULL', 'PUSH'];
+  providers: ProviderDto[] = [];
 
   constructor(
     private readonly service: SettingsService,
@@ -71,22 +70,17 @@ export class SettingsAdminComponent implements OnInit {
     this.form = this.fb.group({
       pair: ['', [Validators.required]],
       provider: ['', [Validators.required, Validators.maxLength(50)]],
-      mode: ['PULL', [Validators.required]],
       priority: [1, [Validators.required, Validators.min(0), Validators.max(32767)]],
       refreshMs: [1000, [Validators.required, Validators.min(0)]],
       enabled: [true]
     });
 
-    // реакция на выбор режима
-    this.form.controls['mode'].valueChanges
-      .subscribe(m => this.updateRefreshCtrl(m));
-
     // реакция на выбор провайдера
     this.form.controls['provider'].valueChanges
-      .subscribe(p => this.updateModeCtrl(p));
+      .subscribe(p => this.updateRefreshCtrlByProvider(p));
 
     // начальное состояние поля периода
-    this.updateRefreshCtrl(this.form.controls['mode'].value);
+    this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
   }
 
   //=======================
@@ -100,15 +94,8 @@ export class SettingsAdminComponent implements OnInit {
     });
     this.providerService.list().subscribe({
       next: list => {
-        const map = new Map<string, string[]>();
-        list.forEach(pr => {
-          const arr = map.get(pr.name) ?? [];
-          if (!arr.includes(pr.mode)) { arr.push(pr.mode); }
-          map.set(pr.name, arr);
-        });
-        this.providers = Array.from(map.entries())
-          .map(([name, modes]) => ({ name, modes }));
-        this.updateModeCtrl(this.form.controls['provider'].value);
+        this.providers = list;
+        this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
       },
       error: err => this.snack.open(err.message ?? 'Load providers failed', 'Close')
     });
@@ -119,17 +106,16 @@ export class SettingsAdminComponent implements OnInit {
 
     this.locked = true;
 
-    // getRawValue() позволяет получить значения выключенных контролов (mode)
+    // getRawValue() позволяет получить значения выключенных контролов
     const dto: SettingsCreateDto = this.form.getRawValue() as SettingsCreateDto;
 
     this.service.add(dto).subscribe({
       next: id => {
         this.snack.open(`Settings '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
-        this.form.reset({ mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
+        this.form.reset({ priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
         this.form.controls['refreshMs'].enable();
-        this.updateModeCtrl(this.form.controls['provider'].value);
-        this.updateRefreshCtrl(this.form.controls['mode'].value);
+        this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
         this.locked = false;
       },
       error: err => {
@@ -147,16 +133,13 @@ export class SettingsAdminComponent implements OnInit {
     this.form.setValue({
       pair: c.pair,
       provider: c.provider,
-      mode: c.mode,
       priority: c.priority,
       refreshMs: c.refreshMs,
       enabled: c.enabled
     });
-    this.updateModeCtrl(c.provider);
-    this.updateRefreshCtrl(c.mode);
+    this.updateRefreshCtrlByProvider(c.provider);
     this.form.controls['pair'].disable();
     this.form.controls['provider'].disable();
-    this.form.controls['mode'].disable();
   }
 
   onSave(): void {
@@ -189,43 +172,18 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = false;
     this.editPair = null;
     this.editProvider = null;
-    this.form.reset({ pair: '', provider: '', mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true });
+    this.form.reset({ pair: '', provider: '', priority: 1, refreshMs: 1000, enabled: true });
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
-    this.form.controls['mode'].enable();
     this.form.controls['refreshMs'].enable();
-    this.updateModeCtrl(this.form.controls['provider'].value);
-    this.updateRefreshCtrl(this.form.controls['mode'].value);
+    this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
     this.locked = false;
   }
 
-  /**
-   * Обновляем состояние поля режима в зависимости от провайдера
-   */
-  private updateModeCtrl(provider: string): void {
-    const modeCtrl = this.form.controls['mode'];
-    const item = this.providers.find(p => p.name === provider);
-    if (!item) { this.availableModes = ['PULL', 'PUSH']; modeCtrl.enable(); return; }
-
-    this.availableModes = item.modes;
-
-    if (item.modes.length === 1) {
-      modeCtrl.setValue(item.modes[0]);
-      modeCtrl.disable();
-    } else {
-      modeCtrl.enable();
-      if (!item.modes.includes(modeCtrl.value)) {
-        modeCtrl.setValue(item.modes[0]);
-      }
-    }
-    this.updateRefreshCtrl(modeCtrl.value);
-  }
-
-  /**
-   * Обновляем состояние поля периода в зависимости от режима
-   */
-  private updateRefreshCtrl(mode: string): void {
+  private updateRefreshCtrlByProvider(provider: string): void {
     const ctrl = this.form.controls['refreshMs'];
+    const item = this.providers.find(p => p.name === provider);
+    const mode = item?.mode ?? 'PULL';
     if (mode === 'PUSH') {
       ctrl.setValue(0);
       ctrl.disable();
