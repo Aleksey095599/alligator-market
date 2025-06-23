@@ -12,4 +12,7 @@ public interface SettingsRepository extends JpaRepository<CcyPairFeedSettingsEnt
 
     Optional<CcyPairFeedSettingsEntity> findByPair_PairAndProvider_Name(String pair, String provider);
 
+    /* Проверяет, используются ли настройки для указанного провайдера */
+    boolean existsByProvider_Name(String provider);
+
 }
