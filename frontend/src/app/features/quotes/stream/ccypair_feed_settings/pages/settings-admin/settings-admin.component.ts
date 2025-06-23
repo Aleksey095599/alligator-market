@@ -45,7 +45,7 @@ export class SettingsAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['pair', 'provider', 'priority', 'refreshMs', 'enabled', 'actions'];
+  displayed: string[] = ['pair', 'provider', 'priority', 'fetchPeriodMs', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<SettingsDto>([]);
 
   //========================
@@ -71,7 +71,7 @@ export class SettingsAdminComponent implements OnInit {
       pair: ['', [Validators.required]],
       provider: ['', [Validators.required, Validators.maxLength(50)]],
       priority: [1, [Validators.required, Validators.min(0), Validators.max(32767)]],
-      refreshMs: [1000, [Validators.required, Validators.min(0)]],
+      fetchPeriodMs: [1000, [Validators.required, Validators.min(0)]],
       enabled: [true]
     });
 
@@ -113,8 +113,8 @@ export class SettingsAdminComponent implements OnInit {
       next: id => {
         this.snack.open(`Settings '${id}' added`, 'OK', { duration: 2500 });
         this.refresh();
-        this.form.reset({ priority: 1, refreshMs: 1000, enabled: true, pair: '', provider: '' });
-        this.form.controls['refreshMs'].enable();
+        this.form.reset({ priority: 1, fetchPeriodMs: 1000, enabled: true, pair: '', provider: '' });
+        this.form.controls['fetchPeriodMs'].enable();
         this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
         this.locked = false;
       },
@@ -134,7 +134,7 @@ export class SettingsAdminComponent implements OnInit {
       pair: c.pair,
       provider: c.provider,
       priority: c.priority,
-      refreshMs: c.refreshMs,
+      fetchPeriodMs: c.fetchPeriodMs,
       enabled: c.enabled
     });
     this.updateRefreshCtrlByProvider(c.provider);
@@ -149,7 +149,7 @@ export class SettingsAdminComponent implements OnInit {
 
     const dto: SettingsUpdateDto = {
       priority: this.form.controls['priority'].value,
-      refreshMs: this.form.controls['refreshMs'].value,
+      fetchPeriodMs: this.form.controls['fetchPeriodMs'].value,
       enabled: this.form.controls['enabled'].value
     } as SettingsUpdateDto;
 
@@ -172,16 +172,16 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = false;
     this.editPair = null;
     this.editProvider = null;
-    this.form.reset({ pair: '', provider: '', priority: 1, refreshMs: 1000, enabled: true });
+    this.form.reset({ pair: '', provider: '', priority: 1, fetchPeriodMs: 1000, enabled: true });
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
-    this.form.controls['refreshMs'].enable();
+    this.form.controls['fetchPeriodMs'].enable();
     this.updateRefreshCtrlByProvider(this.form.controls['provider'].value);
     this.locked = false;
   }
 
   private updateRefreshCtrlByProvider(provider: string): void {
-    const ctrl = this.form.controls['refreshMs'];
+    const ctrl = this.form.controls['fetchPeriodMs'];
     const item = this.providers.find(p => p.name === provider);
     const mode = item?.mode ?? 'PULL';
     if (mode === 'PUSH') {

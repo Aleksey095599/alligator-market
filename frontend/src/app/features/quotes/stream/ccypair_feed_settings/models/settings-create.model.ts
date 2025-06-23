@@ -3,6 +3,6 @@ export interface SettingsCreateDto {
   pair: string;
   provider: string;
   priority: number;
-  refreshMs: number;
+  fetchPeriodMs: number;
   enabled: boolean;
 }

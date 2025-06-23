@@ -53,14 +53,14 @@ public class SettingsServiceImpl implements SettingsService {
                 .orElseThrow(() -> new ProviderNotFoundException(dto.provider()));
 
         // Для PUSH-интервал определяет провайдер, поэтому устанавливаем 0.
-        int refreshMs = "PUSH".equals(provider.getMode()) ? 0 : dto.refreshMs();
+        int fetchPeriodMs = "PUSH".equals(provider.getMode()) ? 0 : dto.fetchPeriodMs();
 
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
                 new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
                         dto.priority(),
-                        refreshMs,
+                        fetchPeriodMs,
                         dto.enabled()
                 ),
                 pair,
@@ -83,8 +83,8 @@ public class SettingsServiceImpl implements SettingsService {
 
         entity.setPriority(dto.priority());
         // Если режим PUSH, интервал задаётся провайдером, поэтому сохраняем 0.
-        int refreshMs = "PUSH".equals(entity.getProvider().getMode()) ? 0 : dto.refreshMs();
-        entity.setRefreshMs(refreshMs);
+        int fetchPeriodMs = "PUSH".equals(entity.getProvider().getMode()) ? 0 : dto.fetchPeriodMs();
+        entity.setFetchPeriodMs(fetchPeriodMs);
         entity.setEnabled(dto.enabled());
 
         repository.save(entity);
@@ -117,7 +117,7 @@ public class SettingsServiceImpl implements SettingsService {
                         cfg.getPair().getPair(),
                         cfg.getProvider().getName(),
                         cfg.getPriority(),
-                        cfg.getRefreshMs(),
+                        cfg.getFetchPeriodMs(),
                         cfg.isEnabled()
                 ))
                 .toList();

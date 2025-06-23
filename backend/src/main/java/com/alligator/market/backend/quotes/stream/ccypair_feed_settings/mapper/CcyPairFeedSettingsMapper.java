@@ -17,7 +17,7 @@ public class CcyPairFeedSettingsMapper {
                 entity.getPair().getPair(),
                 entity.getProvider().getName(),
                 entity.getPriority(),
-                entity.getRefreshMs(),
+                entity.getFetchPeriodMs(),
                 entity.isEnabled()
         );
     }
@@ -30,7 +30,7 @@ public class CcyPairFeedSettingsMapper {
         entity.setPair(pair);
         entity.setProvider(provider);
         entity.setPriority(cfg.priority());
-        entity.setRefreshMs(cfg.refreshMs());
+        entity.setFetchPeriodMs(cfg.fetchPeriodMs());
         entity.setEnabled(cfg.enabled());
         return entity;
     }

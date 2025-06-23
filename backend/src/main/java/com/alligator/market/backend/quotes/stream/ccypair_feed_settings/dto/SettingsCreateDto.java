@@ -21,7 +21,7 @@ public record SettingsCreateDto(
 
         @NotNull
         @Min(0)
-        Integer refreshMs, // для PUSH игнорируется
+        Integer fetchPeriodMs, // для PUSH игнорируется
 
         @NotNull
         Boolean enabled
