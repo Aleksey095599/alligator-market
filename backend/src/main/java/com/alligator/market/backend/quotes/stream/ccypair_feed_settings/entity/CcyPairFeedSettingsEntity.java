@@ -41,7 +41,6 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_feed_settings_provider"))
     private Provider provider;
 
-
     /* Приоритет провайдера для пары */
     @Column(nullable = false)
     private short priority;
