@@ -50,7 +50,6 @@ export class ProviderAdminComponent implements OnInit {
   locked = false; // флаг блокировки кнопки Add
   editing = false; // режим редактирования
   editName: string | null = null; // имя провайдера для редактирования
-  editMode: string | null = null; // текущий режим провайдера для редактирования
 
   constructor(
     private readonly service: ProviderService,
@@ -115,7 +114,6 @@ export class ProviderAdminComponent implements OnInit {
   onEdit(p: ProviderDto): void {
     this.editing = true;
     this.editName = p.name;
-    this.editMode = p.mode;
     this.form.setValue({
       name: p.name,
       baseUrl: p.baseUrl,
@@ -126,7 +124,7 @@ export class ProviderAdminComponent implements OnInit {
   }
 
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editName || !this.editMode) { return; }
+    if (this.form.invalid || this.locked || !this.editName) { return; }
 
     this.locked = true;
 
@@ -136,7 +134,7 @@ export class ProviderAdminComponent implements OnInit {
       apiKey: this.form.controls['apiKey'].value
     } as ProviderUpdateDto;
 
-    this.service.update(this.editName, this.editMode, dto).subscribe({
+    this.service.update(this.editName, dto).subscribe({
       next: () => {
         this.snack.open(`Provider '${this.editName}' updated to mode '${dto.mode}'`, 'OK', { duration: 2500 });
         this.refresh();
@@ -154,14 +152,13 @@ export class ProviderAdminComponent implements OnInit {
   cancelEdit(): void {
     this.editing = false;
     this.editName = null;
-    this.editMode = null;
     this.form.reset({ name: '', baseUrl: '', mode: 'PULL', apiKey: '' });
     this.form.controls['name'].enable();
     this.locked = false;
   }
 
   onDelete(name: string, mode: string): void {
-    this.service.delete(name, mode).subscribe({
+    this.service.delete(name).subscribe({
       next: () => {
         this.snack.open(`Provider '${name}' with mode '${mode}' deleted`, 'OK', { duration: 2500 });
         this.refresh();

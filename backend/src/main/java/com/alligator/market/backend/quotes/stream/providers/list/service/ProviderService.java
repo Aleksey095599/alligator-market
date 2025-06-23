@@ -13,9 +13,9 @@ public interface ProviderService {
 
     String createProvider(ProviderCreateDto dto);
 
-    void updateProvider(String name, String mode, ProviderUpdateDto dto);
+    void updateProvider(String name, ProviderUpdateDto dto);
 
-    void deleteProvider(String name, String mode);
+    void deleteProvider(String name);
 
     List<ProviderDto> findAll();
 
