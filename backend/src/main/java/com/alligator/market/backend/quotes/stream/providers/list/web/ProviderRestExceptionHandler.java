@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
 import com.alligator.market.backend.quotes.stream.providers.list.exceptions.DuplicateProviderException;
 import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderUsedInSettingsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -37,6 +38,15 @@ public class ProviderRestExceptionHandler {
 
         log.warn("ProviderNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
+    }
+
+    /* Провайдер используется в настройках. */
+    @ExceptionHandler(ProviderUsedInSettingsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleProviderUsed(
+            ProviderUsedInSettingsException ex) {
+
+        log.warn("ProviderUsedInSettingsException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 }
