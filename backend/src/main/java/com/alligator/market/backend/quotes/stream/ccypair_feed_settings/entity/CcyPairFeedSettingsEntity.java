@@ -2,6 +2,7 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity;
 
 import com.alligator.market.backend.ccypairs.entity.Pair;
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
+import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +35,11 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_feed_settings_pair"))
     private Pair pair;
 
-    /* Имя провайдера котировок */
-    @Column(length = 50, nullable = false)
-    private String provider;
+    /* Провайдер котировок (FK на provider.name) */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "provider", referencedColumnName = "name",
+            foreignKey = @ForeignKey(name = "fk_feed_settings_provider"))
+    private Provider provider;
 
     /* Режим стриминга (PULL/PUSH) */
     @Column(length = 4, nullable = false)

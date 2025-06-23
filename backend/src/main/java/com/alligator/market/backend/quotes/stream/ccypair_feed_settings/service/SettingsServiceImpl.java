@@ -11,6 +11,9 @@ import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptio
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.SettingsNotFoundException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper.CcyPairFeedSettingsMapper;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.SettingsRepository;
+import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list.repository.ProviderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -30,6 +33,7 @@ public class SettingsServiceImpl implements SettingsService {
 
     private final SettingsRepository repository;
     private final PairRepository pairRepository;
+    private final ProviderRepository providerRepository;
     private final CcyPairFeedSettingsMapper mapper;
 
     //========================
@@ -38,7 +42,7 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public String createConfig(SettingsCreateDto dto) {
 
-        repository.findByPair_PairAndProvider(dto.pair(), dto.provider()).ifPresent(c -> {
+        repository.findByPair_PairAndProvider_Name(dto.pair(), dto.provider()).ifPresent(c -> {
             throw new DuplicateSettingsException(dto.pair(), dto.provider());
         });
 
@@ -47,6 +51,9 @@ public class SettingsServiceImpl implements SettingsService {
 
         // Для PUSH-интервал определяет провайдер, поэтому устанавливаем 0.
         int refreshMs = "PUSH".equals(dto.mode()) ? 0 : dto.refreshMs();
+
+        Provider provider = providerRepository.findByName(dto.provider())
+                .orElseThrow(() -> new ProviderNotFoundException(dto.provider()));
 
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
                 new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
@@ -57,12 +64,13 @@ public class SettingsServiceImpl implements SettingsService {
                         refreshMs,
                         dto.enabled()
                 ),
-                pair
+                pair,
+                provider
         );
 
         CcyPairFeedSettingsEntity saved = repository.save(entity);
         log.info("CcyPairFeedSettingsEntity {}:{}:{} saved with id={}", dto.pair(), dto.provider(), dto.mode(), saved.getId());
-        return "%s:%s:%s".formatted(saved.getPair().getPair(), saved.getProvider(), saved.getMode());
+        return "%s:%s:%s".formatted(saved.getPair().getPair(), saved.getProvider().getName(), saved.getMode());
     }
 
     //===================
@@ -71,7 +79,7 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public void updateConfig(String pair, String provider, SettingsUpdateDto dto) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider_Name(pair, provider)
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
 
         entity.setPriority(dto.priority());
@@ -90,7 +98,7 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public void deleteConfig(String pair, String provider) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider_Name(pair, provider)
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
 
         repository.delete(entity);
@@ -104,11 +112,11 @@ public class SettingsServiceImpl implements SettingsService {
     @Transactional(readOnly = true)
     public List<SettingsDto> findAll() {
 
-        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider", "mode"))
+        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name", "mode"))
                 .stream()
                 .map(cfg -> new SettingsDto(
                         cfg.getPair().getPair(),
-                        cfg.getProvider(),
+                        cfg.getProvider().getName(),
                         cfg.getMode(),
                         cfg.getPriority(),
                         cfg.getRefreshMs(),
