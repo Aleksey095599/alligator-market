@@ -15,7 +15,7 @@ import lombok.Setter;
 @Table(
         name = "ccypair_feed_settings",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_ccypair_feed_settings_pair_provider_mode", columnNames = {"pair_id", "provider", "mode"})
+                @UniqueConstraint(name = "uq_ccypair_feed_settings_pair_provider", columnNames = {"pair_id", "provider"})
         }
 )
 @Getter

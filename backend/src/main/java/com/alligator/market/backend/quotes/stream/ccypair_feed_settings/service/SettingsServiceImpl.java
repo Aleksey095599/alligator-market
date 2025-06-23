@@ -38,8 +38,8 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public String createConfig(SettingsCreateDto dto) {
 
-        repository.findByPair_PairAndProviderAndMode(dto.pair(), dto.provider(), dto.mode()).ifPresent(c -> {
-            throw new DuplicateSettingsException(dto.pair(), dto.provider(), dto.mode());
+        repository.findByPair_PairAndProvider(dto.pair(), dto.provider()).ifPresent(c -> {
+            throw new DuplicateSettingsException(dto.pair(), dto.provider());
         });
 
         Pair pair = pairRepository.findByPair(dto.pair())
@@ -69,10 +69,10 @@ public class SettingsServiceImpl implements SettingsService {
     // Обновить настройки
     //===================
     @Override
-    public void updateConfig(String pair, String provider, String mode, SettingsUpdateDto dto) {
+    public void updateConfig(String pair, String provider, SettingsUpdateDto dto) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProviderAndMode(pair, provider, mode)
-                .orElseThrow(() -> new SettingsNotFoundException(pair, provider, mode));
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
+                .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
 
         entity.setPriority(dto.priority());
         // Если режим PUSH, интервал задаётся провайдером, поэтому сохраняем 0.
@@ -81,20 +81,20 @@ public class SettingsServiceImpl implements SettingsService {
         entity.setEnabled(dto.enabled());
 
         repository.save(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{}:{} updated (id={})", pair, provider, mode, entity.getId());
+        log.info("CcyPairFeedSettingsEntity {}:{} updated (id={})", pair, provider, entity.getId());
     }
 
     //==================
     // Удалить настройки
     //==================
     @Override
-    public void deleteConfig(String pair, String provider, String mode) {
+    public void deleteConfig(String pair, String provider) {
 
-        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProviderAndMode(pair, provider, mode)
-                .orElseThrow(() -> new SettingsNotFoundException(pair, provider, mode));
+        CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider(pair, provider)
+                .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
 
         repository.delete(entity);
-        log.info("CcyPairFeedSettingsEntity {}:{}:{} deleted (id={})", pair, provider, mode, entity.getId());
+        log.info("CcyPairFeedSettingsEntity {}:{} deleted (id={})", pair, provider, entity.getId());
     }
 
     //======================
