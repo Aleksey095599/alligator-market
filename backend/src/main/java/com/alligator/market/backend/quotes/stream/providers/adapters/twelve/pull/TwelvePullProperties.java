@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.prodiders.adapters.twelve.pull;
+package com.alligator.market.backend.quotes.stream.providers.adapters.twelve.pull;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

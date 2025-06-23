@@ -1,6 +1,6 @@
-package com.alligator.market.backend.quotes.stream.prodiders.list.repository;
+package com.alligator.market.backend.quotes.stream.providers.list.repository;
 
-import com.alligator.market.backend.quotes.stream.prodiders.list.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

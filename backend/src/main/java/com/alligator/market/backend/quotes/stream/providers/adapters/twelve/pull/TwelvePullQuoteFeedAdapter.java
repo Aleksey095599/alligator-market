@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.prodiders.adapters.twelve.pull;
+package com.alligator.market.backend.quotes.stream.providers.adapters.twelve.pull;
 
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;

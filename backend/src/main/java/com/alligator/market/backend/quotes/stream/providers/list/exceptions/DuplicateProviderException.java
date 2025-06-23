@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.prodiders.list.exceptions;
+package com.alligator.market.backend.quotes.stream.providers.list.exceptions;
 
 /**
  * Очевидно из названия.

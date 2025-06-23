@@ -1,13 +1,13 @@
-package com.alligator.market.backend.quotes.stream.prodiders.list.dto;
+package com.alligator.market.backend.quotes.stream.providers.list.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * DTO для представления провайдера.
+ * DTO для создания провайдера.
  */
-public record ProviderDto(
+public record ProviderCreateDto(
 
         @NotBlank
         @Size(max = 50)
