@@ -4,7 +4,7 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.excepti
  * Исключение при попытке создать повторную запись для той же валютной пары, провайдера и режима.
  */
 public class DuplicateSettingsException extends RuntimeException {
-    public DuplicateSettingsException(String pair, String provider, String mode) {
-        super("Streaming settings for pair '%s', provider '%s' and mode '%s' already exists".formatted(pair, provider, mode));
+    public DuplicateSettingsException(String pair, String provider) {
+        super("Streaming settings for pair '%s' and provider '%s' already exists".formatted(pair, provider));
     }
 }

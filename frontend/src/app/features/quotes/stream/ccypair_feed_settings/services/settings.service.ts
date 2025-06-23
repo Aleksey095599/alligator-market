@@ -31,17 +31,17 @@ export class SettingsService {
       .pipe(map(res => res.data));
   }
 
-  /* Удалить настройки по паре, провайдеру и режиму */
-  delete(pair: string, provider: string, mode: string): Observable<void> {
+  /* Удалить настройки по паре и провайдеру */
+  delete(pair: string, provider: string): Observable<void> {
     return this.http
-      .delete<ApiResponse<void>>(`${this.baseUrl}/${pair}/${provider}/${mode}`)
+      .delete<ApiResponse<void>>(`${this.baseUrl}/${pair}/${provider}`)
       .pipe(map(res => res.data));
   }
 
-  /* Обновить настройки по паре, провайдеру и режиму */
-  update(pair: string, provider: string, mode: string, dto: SettingsUpdateDto): Observable<void> {
+  /* Обновить настройки по паре и провайдеру */
+  update(pair: string, provider: string, dto: SettingsUpdateDto): Observable<void> {
     return this.http
-      .put<ApiResponse<void>>(`${this.baseUrl}/${pair}/${provider}/${mode}`, dto)
+      .put<ApiResponse<void>>(`${this.baseUrl}/${pair}/${provider}`, dto)
       .pipe(map(res => res.data));
   }
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
  * Очевидно из названия.
  */
 public class SettingsNotFoundException extends EntityNotFoundException {
-    public SettingsNotFoundException(String pair, String provider, String mode) {
-        super("Streaming settings for pair '%s', provider '%s' and mode '%s' not found".formatted(pair, provider, mode));
+    public SettingsNotFoundException(String pair, String provider) {
+        super("Streaming settings for pair '%s' and provider '%s' not found".formatted(pair, provider));
     }
 }

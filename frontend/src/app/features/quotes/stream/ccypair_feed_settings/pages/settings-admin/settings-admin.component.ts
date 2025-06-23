@@ -57,7 +57,6 @@ export class SettingsAdminComponent implements OnInit {
   editing = false;
   editPair: string | null = null;
   editProvider: string | null = null;
-  editMode: string | null = null;
   pairs: PairDto[] = [];
   providers: { name: string, modes: string[] }[] = [];
   availableModes: string[] = ['PULL', 'PUSH'];
@@ -145,7 +144,6 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = true;
     this.editPair = c.pair;
     this.editProvider = c.provider;
-    this.editMode = c.mode;
     this.form.setValue({
       pair: c.pair,
       provider: c.provider,
@@ -162,7 +160,7 @@ export class SettingsAdminComponent implements OnInit {
   }
 
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editPair || !this.editProvider || !this.editMode) { return; }
+    if (this.form.invalid || this.locked || !this.editPair || !this.editProvider) { return; }
 
     this.locked = true;
 
@@ -172,7 +170,7 @@ export class SettingsAdminComponent implements OnInit {
       enabled: this.form.controls['enabled'].value
     } as SettingsUpdateDto;
 
-    this.service.update(this.editPair, this.editProvider, this.editMode, dto).subscribe({
+    this.service.update(this.editPair, this.editProvider, dto).subscribe({
       next: () => {
         this.snack.open(`Settings '${this.editPair}:${this.editProvider}' updated`, 'OK', { duration: 2500 });
         this.refresh();
@@ -191,7 +189,6 @@ export class SettingsAdminComponent implements OnInit {
     this.editing = false;
     this.editPair = null;
     this.editProvider = null;
-    this.editMode = null;
     this.form.reset({ pair: '', provider: '', mode: 'PULL', priority: 1, refreshMs: 1000, enabled: true });
     this.form.controls['pair'].enable();
     this.form.controls['provider'].enable();
@@ -240,8 +237,8 @@ export class SettingsAdminComponent implements OnInit {
     }
   }
 
-  onDelete(pair: string, provider: string, mode: string): void {
-    this.service.delete(pair, provider, mode).subscribe({
+  onDelete(pair: string, provider: string): void {
+    this.service.delete(pair, provider).subscribe({
       next: () => {
         this.snack.open(`Settings '${pair}:${provider}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
