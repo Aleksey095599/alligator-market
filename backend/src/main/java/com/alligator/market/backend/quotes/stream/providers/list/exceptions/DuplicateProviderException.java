@@ -4,7 +4,7 @@ package com.alligator.market.backend.quotes.stream.providers.list.exceptions;
  * Очевидно из названия.
  */
 public class DuplicateProviderException extends RuntimeException {
-    public DuplicateProviderException(String name, String mode) {
-        super("Provider '%s' with mode '%s' already exists".formatted(name, mode));
+    public DuplicateProviderException(String name) {
+        super("Provider '%s' already exists".formatted(name));
     }
 }

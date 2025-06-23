@@ -36,8 +36,8 @@ public class ProviderController {
         String name = service.createProvider(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{name}/{mode}")
-                .buildAndExpand(name, dto.mode())
+                .path("/{name}")
+                .buildAndExpand(name)
                 .toUri();
         return ResponseEntityFactory.created(location, name);
     }
@@ -45,24 +45,22 @@ public class ProviderController {
     //====================
     // Обновить провайдера
     //====================
-    @PutMapping("/{name}/{mode}")
+    @PutMapping("/{name}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String name,
-            @PathVariable String mode,
             @RequestBody @Valid ProviderUpdateDto dto) {
-        service.updateProvider(name, mode, dto);
+        service.updateProvider(name, dto);
         return ResponseEntityFactory.ok(null);
     }
 
     //===================
     // Удалить провайдера
     //===================
-    @DeleteMapping("/{name}/{mode}")
+    @DeleteMapping("/{name}")
     public ResponseEntity<ApiResponse<Void>> delete(
-            @PathVariable String name,
-            @PathVariable String mode) {
+            @PathVariable String name) {
 
-        service.deleteProvider(name, mode);
+        service.deleteProvider(name);
         return ResponseEntityFactory.ok(null);
     }
 

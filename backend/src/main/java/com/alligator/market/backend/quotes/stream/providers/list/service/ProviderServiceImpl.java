@@ -32,8 +32,8 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public String createProvider(ProviderCreateDto dto) {
 
-        repository.findByNameAndMode(dto.name(), dto.mode()).ifPresent(p -> {
-            throw new DuplicateProviderException(dto.name(), dto.mode());
+        repository.findByName(dto.name()).ifPresent(p -> {
+            throw new DuplicateProviderException(dto.name());
         });
 
         Provider entity = new Provider();
@@ -51,36 +51,30 @@ public class ProviderServiceImpl implements ProviderService {
     // Обновить провайдера
     //====================
     @Override
-    public void updateProvider(String name, String mode, ProviderUpdateDto dto) {
+    public void updateProvider(String name, ProviderUpdateDto dto) {
 
-        Provider provider = repository.findByNameAndMode(name, mode)
-                .orElseThrow(() -> new ProviderNotFoundException(name, mode));
-
-        if (!mode.equals(dto.mode())) {
-            repository.findByNameAndMode(name, dto.mode()).ifPresent(p -> {
-                throw new DuplicateProviderException(name, dto.mode());
-            });
-        }
+        Provider provider = repository.findByName(name)
+                .orElseThrow(() -> new ProviderNotFoundException(name));
 
         provider.setBaseUrl(dto.baseUrl());
         provider.setMode(dto.mode());
         provider.setApiKey(dto.apiKey());
 
         repository.save(provider);
-        log.info("Provider {}:{} updated (id={})", provider.getName(), provider.getMode(), provider.getId());
+        log.info("Provider {} updated (id={})", provider.getName(), provider.getId());
     }
 
     //===================
     // Удалить провайдера
     //===================
     @Override
-    public void deleteProvider(String name, String mode) {
+    public void deleteProvider(String name) {
 
-        Provider provider = repository.findByNameAndMode(name, mode)
-                .orElseThrow(() -> new ProviderNotFoundException(name, mode));
+        Provider provider = repository.findByName(name)
+                .orElseThrow(() -> new ProviderNotFoundException(name));
 
         repository.delete(provider);
-        log.info("Provider {}:{} deleted (id={})", provider.getName(), provider.getMode(), provider.getId());
+        log.info("Provider {} deleted (id={})", provider.getName(), provider.getId());
     }
 
     //=========================
