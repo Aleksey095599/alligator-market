@@ -14,8 +14,7 @@ import lombok.Setter;
         name = "provider",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uq_provider_name",
-                        columnNames = {"name"}
+                        name = "uq_provider_name", columnNames = {"name"}
                 )
         }
 )
