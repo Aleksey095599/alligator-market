@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface SettingsService {
 
-    String createConfig(SettingsCreateDto dto);
+    String createSettings(SettingsCreateDto dto);
 
-    void updateConfig(String pair, String provider, SettingsUpdateDto dto);
+    void updateSettings(String pair, String provider, SettingsUpdateDto dto);
 
-    void deleteConfig(String pair, String provider);
+    void deleteSettings(String pair, String provider);
 
     List<SettingsDto> findAll();
 
