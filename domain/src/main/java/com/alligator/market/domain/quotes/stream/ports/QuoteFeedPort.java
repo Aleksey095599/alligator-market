@@ -4,7 +4,7 @@ import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 
 /**
- * Абстракция источника котировок.
+ * Входной порт «получить тик откуда‑то».
  */
 public interface QuoteFeedPort {
 
