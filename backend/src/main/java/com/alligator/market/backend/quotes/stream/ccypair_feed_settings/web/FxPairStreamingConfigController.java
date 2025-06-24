@@ -33,7 +33,7 @@ public class FxPairStreamingConfigController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid SettingsCreateDto dto) {
 
-        String id = service.createConfig(dto);
+        String id = service.createSettings(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{pair}/{provider}")
@@ -50,7 +50,7 @@ public class FxPairStreamingConfigController {
             @PathVariable String pair,
             @PathVariable String provider,
             @RequestBody @Valid SettingsUpdateDto dto) {
-        service.updateConfig(pair, provider, dto);
+        service.updateSettings(pair, provider, dto);
         return ResponseEntityFactory.ok(null);
     }
 
@@ -61,7 +61,7 @@ public class FxPairStreamingConfigController {
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable String pair,
             @PathVariable String provider) {
-        service.deleteConfig(pair, provider);
+        service.deleteSettings(pair, provider);
         return ResponseEntityFactory.ok(null);
     }
 

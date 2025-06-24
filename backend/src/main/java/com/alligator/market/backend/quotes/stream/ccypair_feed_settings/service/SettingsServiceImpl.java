@@ -40,7 +40,7 @@ public class SettingsServiceImpl implements SettingsService {
     // Создать новые настройки
     //========================
     @Override
-    public String createConfig(SettingsCreateDto dto) {
+    public String createSettings(SettingsCreateDto dto) {
 
         repository.findByPair_PairAndProvider_Name(dto.pair(), dto.provider()).ifPresent(c -> {
             throw new DuplicateSettingsException(dto.pair(), dto.provider());
@@ -76,7 +76,7 @@ public class SettingsServiceImpl implements SettingsService {
     // Обновить настройки
     //===================
     @Override
-    public void updateConfig(String pair, String provider, SettingsUpdateDto dto) {
+    public void updateSettings(String pair, String provider, SettingsUpdateDto dto) {
 
         CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider_Name(pair, provider)
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
@@ -95,7 +95,7 @@ public class SettingsServiceImpl implements SettingsService {
     // Удалить настройки
     //==================
     @Override
-    public void deleteConfig(String pair, String provider) {
+    public void deleteSettings(String pair, String provider) {
 
         CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider_Name(pair, provider)
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
@@ -113,15 +113,15 @@ public class SettingsServiceImpl implements SettingsService {
 
         List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name"))
                 .stream()
-                .map(cfg -> new SettingsDto(
-                        cfg.getPair().getPair(),
-                        cfg.getProvider().getName(),
-                        cfg.getPriority(),
-                        cfg.getFetchPeriodMs(),
-                        cfg.isEnabled()
+                .map(settings -> new SettingsDto(
+                        settings.getPair().getPair(),
+                        settings.getProvider().getName(),
+                        settings.getPriority(),
+                        settings.getFetchPeriodMs(),
+                        settings.isEnabled()
                 ))
                 .toList();
-        log.debug("Found {} streaming configs", result.size());
+        log.debug("Found {} streaming settings", result.size());
         return result;
     }
 
