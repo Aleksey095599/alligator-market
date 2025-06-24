@@ -110,7 +110,7 @@ export class PairAdminComponent implements OnInit {
           `Pair '${pair}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();
-        this.form.reset({ decimal: 2 });
+        this.form.reset({ decimal: 4 });
         this.locked = false;
       },
       error: err => {
@@ -164,7 +164,7 @@ export class PairAdminComponent implements OnInit {
   cancelEdit(): void {
     this.editing = false;
     this.editPair = null;
-    this.form.reset({ code1: '', code2: '', decimal: 2 });
+    this.form.reset({ code1: '', code2: '', decimal: 4 });
     this.form.controls['code1'].enable();
     this.form.controls['code2'].enable();
     this.locked = false;
