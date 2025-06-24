@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.stream.adapters.twelvedata;
 
-import com.alligator.market.backend.quotes.stream.providers.adapters.twelve.pull.TwelvePullQuoteFeedAdapter;
+import com.alligator.market.backend.quotes.stream.providers.adapters.twelve_free_mid_pull.TwelvePullQuoteFeedAdapter;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
