@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice(assignableTypes = CurrencyController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class CurrencyRestExceptionHandler {
+public class CurrencyExceptionHandler {
 
     /* Дублирование по одному из уникальных параметров валюты. */
     @ExceptionHandler(DuplicateCurrencyException.class)

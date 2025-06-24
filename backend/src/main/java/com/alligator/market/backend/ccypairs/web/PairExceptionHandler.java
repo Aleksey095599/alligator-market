@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice(assignableTypes = PairController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class PairRestExceptionHandler {
+public class PairExceptionHandler {
 
     /* Дублирование валютной пары. */
     @ExceptionHandler(DuplicatePairException.class)

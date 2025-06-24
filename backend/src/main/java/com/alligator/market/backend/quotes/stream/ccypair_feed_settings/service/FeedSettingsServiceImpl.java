@@ -3,14 +3,14 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.service
 import com.alligator.market.backend.ccypairs.entity.Pair;
 import com.alligator.market.backend.ccypairs.exceptions.PairNotFoundException;
 import com.alligator.market.backend.ccypairs.repository.PairRepository;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsCreateDto;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsDto;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsUpdateDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsCreateDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsUpdateDto;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.DuplicateSettingsException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.SettingsNotFoundException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper.CcyPairFeedSettingsMapper;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.SettingsRepository;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.FeedSettingsRepository;
 import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
 import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
 import com.alligator.market.backend.quotes.stream.providers.list.repository.ProviderRepository;
@@ -29,9 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class SettingsServiceImpl implements SettingsService {
+public class FeedSettingsServiceImpl implements FeedSettingsService {
 
-    private final SettingsRepository repository;
+    private final FeedSettingsRepository repository;
     private final PairRepository pairRepository;
     private final ProviderRepository providerRepository;
     private final CcyPairFeedSettingsMapper mapper;
@@ -40,7 +40,7 @@ public class SettingsServiceImpl implements SettingsService {
     // Создать новые настройки
     //========================
     @Override
-    public String createSettings(SettingsCreateDto dto) {
+    public String createSettings(FeedSettingsCreateDto dto) {
 
         repository.findByPair_PairAndProvider_Name(dto.pair(), dto.provider()).ifPresent(c -> {
             throw new DuplicateSettingsException(dto.pair(), dto.provider());
@@ -76,7 +76,7 @@ public class SettingsServiceImpl implements SettingsService {
     // Обновить настройки
     //===================
     @Override
-    public void updateSettings(String pair, String provider, SettingsUpdateDto dto) {
+    public void updateSettings(String pair, String provider, FeedSettingsUpdateDto dto) {
 
         CcyPairFeedSettingsEntity entity = repository.findByPair_PairAndProvider_Name(pair, provider)
                 .orElseThrow(() -> new SettingsNotFoundException(pair, provider));
@@ -109,11 +109,11 @@ public class SettingsServiceImpl implements SettingsService {
     //======================
     @Override
     @Transactional(readOnly = true)
-    public List<SettingsDto> findAll() {
+    public List<FeedSettingsDto> findAll() {
 
-        List<SettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name"))
+        List<FeedSettingsDto> result = repository.findAll(Sort.by("pair.pair", "provider.name"))
                 .stream()
-                .map(settings -> new SettingsDto(
+                .map(settings -> new FeedSettingsDto(
                         settings.getPair().getPair(),
                         settings.getProvider().getName(),
                         settings.getPriority(),

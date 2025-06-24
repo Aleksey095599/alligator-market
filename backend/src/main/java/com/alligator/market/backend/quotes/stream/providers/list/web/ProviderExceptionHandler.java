@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice(assignableTypes = ProviderController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ProviderRestExceptionHandler {
+public class ProviderExceptionHandler {
 
     /* Дублирование провайдера. */
     @ExceptionHandler(DuplicateProviderException.class)

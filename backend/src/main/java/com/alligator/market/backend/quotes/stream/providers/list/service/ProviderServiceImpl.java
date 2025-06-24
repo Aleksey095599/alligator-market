@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.stream.providers.list.service;
 
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.SettingsRepository;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.FeedSettingsRepository;
 import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderCreateDto;
 import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderDto;
 import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderUpdateDto;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ProviderServiceImpl implements ProviderService {
 
     private final ProviderRepository repository;
-    private final SettingsRepository settingsRepository;
+    private final FeedSettingsRepository feedSettingsRepository;
 
     //==========================
     // Создать нового провайдера
@@ -77,7 +77,7 @@ public class ProviderServiceImpl implements ProviderService {
                 .orElseThrow(() -> new ProviderNotFoundException(name));
 
         // Проверка, что провайдер не используется в настройках
-        if (settingsRepository.existsByProvider_Name(name)) {
+        if (feedSettingsRepository.existsByProvider_Name(name)) {
             throw new ProviderUsedInSettingsException(name);
         }
 

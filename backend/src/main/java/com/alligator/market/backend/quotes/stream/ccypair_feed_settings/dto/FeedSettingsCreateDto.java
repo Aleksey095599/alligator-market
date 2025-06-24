@@ -1,13 +1,19 @@
 package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 /**
- * DTO для обновления настроек.
+ * DTO для создания настроек.
  */
-public record SettingsUpdateDto(
+public record FeedSettingsCreateDto(
+
+        @NotBlank
+        @Pattern(regexp = "^[A-Z]{6}$")
+        String pair,
+
+        @NotBlank
+        @Size(max = 50)
+        String provider,
 
         @NotNull
         @Min(0) @Max(32767)

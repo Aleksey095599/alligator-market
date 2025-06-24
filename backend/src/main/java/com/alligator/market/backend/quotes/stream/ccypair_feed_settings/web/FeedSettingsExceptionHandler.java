@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * Локальный обработчик исключений. Привязан к соответствующему контроллеру.
  */
 @Slf4j
-@RestControllerAdvice(assignableTypes = FxPairStreamingConfigController.class)
+@RestControllerAdvice(assignableTypes = FeedSettingsController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class FxPairStreamingConfigRestExceptionHandler {
+public class FeedSettingsExceptionHandler {
 
     /* Дублирование конфигурации для пары и провайдера. */
     @ExceptionHandler(DuplicateSettingsException.class)

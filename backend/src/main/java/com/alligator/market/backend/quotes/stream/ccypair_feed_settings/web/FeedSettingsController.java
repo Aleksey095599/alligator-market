@@ -2,10 +2,10 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsCreateDto;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsDto;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.SettingsUpdateDto;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.service.SettingsService;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsCreateDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsUpdateDto;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.service.FeedSettingsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,15 +23,15 @@ import java.util.List;
 @RequestMapping("/api/v1/streaming-configs")
 @RequiredArgsConstructor
 @Slf4j
-public class FxPairStreamingConfigController {
+public class FeedSettingsController {
 
-    private final SettingsService service;
+    private final FeedSettingsService service;
 
     //========================
     // Создать новые настройки
     //========================
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid SettingsCreateDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FeedSettingsCreateDto dto) {
 
         String id = service.createSettings(dto);
         URI location = ServletUriComponentsBuilder
@@ -49,7 +49,7 @@ public class FxPairStreamingConfigController {
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
             @PathVariable String provider,
-            @RequestBody @Valid SettingsUpdateDto dto) {
+            @RequestBody @Valid FeedSettingsUpdateDto dto) {
         service.updateSettings(pair, provider, dto);
         return ResponseEntityFactory.ok(null);
     }
@@ -69,7 +69,7 @@ public class FxPairStreamingConfigController {
     // Вернуть все настройки
     //======================
     @GetMapping
-    public ResponseEntity<ApiResponse<List<SettingsDto>>> getAll() {
+    public ResponseEntity<ApiResponse<List<FeedSettingsDto>>> getAll() {
 
         return ResponseEntityFactory.ok(service.findAll());
     }

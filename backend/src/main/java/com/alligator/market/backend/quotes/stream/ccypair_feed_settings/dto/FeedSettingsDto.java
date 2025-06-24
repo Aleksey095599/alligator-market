@@ -3,9 +3,9 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto;
 import jakarta.validation.constraints.*;
 
 /**
- * DTO для создания настроек.
+ * DTO для представления настроек.
  */
-public record SettingsCreateDto(
+public record FeedSettingsDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{6}$")

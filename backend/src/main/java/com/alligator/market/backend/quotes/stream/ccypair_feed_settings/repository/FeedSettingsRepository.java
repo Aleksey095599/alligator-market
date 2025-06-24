@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Репозиторий для работы с таблицей 'ccypair_feed_settings'.
  */
-public interface SettingsRepository extends JpaRepository<CcyPairFeedSettingsEntity, Long> {
+public interface FeedSettingsRepository extends JpaRepository<CcyPairFeedSettingsEntity, Long> {
 
     Optional<CcyPairFeedSettingsEntity> findByPair_PairAndProvider_Name(String pair, String provider);
 
