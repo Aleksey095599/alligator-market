@@ -7,6 +7,7 @@ import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.PullQuoteFeedPort;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -20,14 +21,16 @@ import java.time.Instant;
 @Slf4j
 public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
 
-    private static final String PROVIDER = "twelve_free_mid_pull";
-
+    private final String providerName;
     private final WebClient webClient;
     private final String apiKey;
 
-    public TwelvePullQuoteFeedAdapter(WebClient.Builder builder, ProviderRepository repository) {
-        Provider provider = repository.findByName(PROVIDER)
-                .orElseThrow(() -> new ProviderNotFoundException(PROVIDER));
+    public TwelvePullQuoteFeedAdapter(@Value("${quotes.provider.twelve.pull.name}") String providerName,
+                                      WebClient.Builder builder,
+                                      ProviderRepository repository) {
+        this.providerName = providerName;
+        Provider provider = repository.findByName(providerName)
+                .orElseThrow(() -> new ProviderNotFoundException(providerName));
         this.webClient = builder.baseUrl(provider.getBaseUrl()).build();
         this.apiKey = provider.getApiKey();
     }
@@ -68,7 +71,7 @@ public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
                     price,
                     price,
                     Instant.now(),
-                    PROVIDER
+                    providerName
             );
 
         } catch (Exception e) {
