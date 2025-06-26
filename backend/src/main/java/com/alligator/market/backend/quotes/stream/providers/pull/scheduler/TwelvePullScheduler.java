@@ -1,8 +1,8 @@
-package com.alligator.market.backend.quotes.stream.scheduler;
+package com.alligator.market.backend.quotes.stream.providers.pull.scheduler;
 
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
-import com.alligator.market.backend.quotes.stream.providers.adapters.twelve_free_mid_pull.TwelvePullQuoteFeedAdapter;
+import com.alligator.market.backend.quotes.stream.providers.pull.adapters.TwelvePullQuoteFeedAdapter;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
@@ -30,7 +30,7 @@ public class TwelvePullScheduler implements ApplicationRunner {
     private final CcyPairFeedSettingsRepository settingsRepository;
     private final TwelvePullQuoteFeedAdapter adapter;
     private final QuotePublishPort publisher;
-    private final TaskScheduler scheduler; // spring.task.scheduling.pool
+    private final TaskScheduler scheduler;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -56,4 +56,5 @@ public class TwelvePullScheduler implements ApplicationRunner {
             }
         }), Duration.ofMillis(periodMs));
     }
+
 }
