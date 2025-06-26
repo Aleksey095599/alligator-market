@@ -10,7 +10,7 @@ import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.C
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.DuplicateSettingsException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.SettingsNotFoundException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper.CcyPairFeedSettingsMapper;
-import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.FeedSettingsRepository;
+import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
 import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
 import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
 import com.alligator.market.backend.quotes.stream.providers.list.repository.ProviderRepository;
@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 public class FeedSettingsServiceImpl implements FeedSettingsService {
 
-    private final FeedSettingsRepository repository;
+    private final CcyPairFeedSettingsRepository repository;
     private final PairRepository pairRepository;
     private final ProviderRepository providerRepository;
     private final CcyPairFeedSettingsMapper mapper;
