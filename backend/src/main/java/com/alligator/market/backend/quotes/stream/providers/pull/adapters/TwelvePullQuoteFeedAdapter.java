@@ -1,5 +1,8 @@
 package com.alligator.market.backend.quotes.stream.providers.pull.adapters;
 
+import com.alligator.market.backend.quotes.stream.providers.list_all.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.repository.ProviderRepository;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.PullQuoteFeedPort;
@@ -20,11 +23,13 @@ public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
     private static final String PROVIDER = "twelve_free_mid_pull";
 
     private final WebClient webClient;
-    private final TwelvePullProperties properties;
+    private final String apiKey;
 
-    public TwelvePullQuoteFeedAdapter(WebClient.Builder builder, TwelvePullProperties properties) {
-        this.webClient = builder.baseUrl(properties.getBaseUrl()).build();
-        this.properties = properties;
+    public TwelvePullQuoteFeedAdapter(WebClient.Builder builder, ProviderRepository repository) {
+        Provider provider = repository.findByName(PROVIDER)
+                .orElseThrow(() -> new ProviderNotFoundException(PROVIDER));
+        this.webClient = builder.baseUrl(provider.getBaseUrl()).build();
+        this.apiKey = provider.getApiKey();
     }
 
     //=======================================
@@ -42,7 +47,7 @@ public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
                     .uri(uriBuilder -> uriBuilder
                             .path("/price")
                             .queryParam("symbol", symbol)
-                            .queryParam("apikey", properties.getApikey())
+                            .queryParam("apikey", apiKey)
                             .build())
                     .retrieve()
                     .bodyToMono(PriceDto.class)
