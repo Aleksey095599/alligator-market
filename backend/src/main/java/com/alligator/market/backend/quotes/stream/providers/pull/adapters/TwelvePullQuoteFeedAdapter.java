@@ -2,7 +2,7 @@ package com.alligator.market.backend.quotes.stream.providers.pull.adapters;
 
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
-import com.alligator.market.domain.quotes.stream.ports.QuoteFeedPort;
+import com.alligator.market.domain.quotes.stream.ports.PullQuoteFeedPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,7 +15,7 @@ import java.time.Instant;
  */
 @Service
 @Slf4j
-public class TwelvePullQuoteFeedAdapter implements QuoteFeedPort {
+public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
 
     private static final String PROVIDER = "twelve_free_mid_pull";
 

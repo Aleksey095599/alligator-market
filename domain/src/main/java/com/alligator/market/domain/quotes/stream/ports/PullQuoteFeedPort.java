@@ -4,9 +4,9 @@ import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 
 /**
- * Входной порт «получить тик откуда‑то».
+ * Входной порт для получения тика в режиме PULL.
  */
-public interface QuoteFeedPort {
+public interface PullQuoteFeedPort {
 
     /* Получить последний тик котировки для пары. */
     QuoteTick fetchQuote(String pairCode) throws QuoteUnavailableException;
