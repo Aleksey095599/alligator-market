@@ -54,7 +54,7 @@ public class TwelvePullScheduler implements ApplicationRunner {
                 QuoteTick tick = adapter.fetchQuote(pair);
                 publisher.publish(tick);
             } catch (QuoteUnavailableException e) {
-                log.error("Cannot fetch quote", e);
+                log.error("Cannot fetch quote for pair {}", pair, e);
             }
         }), Duration.ofMillis(periodMs));
     }

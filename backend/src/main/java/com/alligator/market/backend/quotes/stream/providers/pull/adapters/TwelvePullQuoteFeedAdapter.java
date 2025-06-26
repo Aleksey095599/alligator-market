@@ -76,8 +76,8 @@ public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
             );
 
         } catch (Exception e) {
-            log.error("Cannot fetch quote from TwelveData", e);
-            throw new QuoteUnavailableException("Failed to fetch quote", e);
+            log.error("Cannot fetch quote for pair {} from TwelveData", pairCode, e);
+            throw new QuoteUnavailableException("Failed to fetch quote for pair " + pairCode, e);
         }
     }
 
