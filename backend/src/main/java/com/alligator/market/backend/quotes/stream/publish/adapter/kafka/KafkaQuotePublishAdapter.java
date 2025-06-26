@@ -28,7 +28,7 @@ public class KafkaQuotePublishAdapter implements QuotePublishPort {
                 .setPair(tick.pair())
                 .setBid(tick.bid())
                 .setAsk(tick.ask())
-                .setTs(tick.ts().toEpochMilli())
+                .setTs(tick.ts())
                 .setProvider(tick.provider())
                 .build();
         template.send(TOPIC, tick.pair(), avroTick);
