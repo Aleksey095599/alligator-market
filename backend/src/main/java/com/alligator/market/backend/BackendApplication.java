@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * Точка входа backend-приложения.
  */
-
 @SpringBootApplication
 @EnableScheduling
 public class BackendApplication {
