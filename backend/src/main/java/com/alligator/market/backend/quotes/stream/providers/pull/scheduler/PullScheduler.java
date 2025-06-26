@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.scheduler;
+package com.alligator.market.backend.quotes.stream.providers.pull.scheduler;
 
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;

@@ -1,10 +1,10 @@
-package com.alligator.market.backend.quotes.stream.providers.list.web;
+package com.alligator.market.backend.quotes.stream.providers.list_all.web;
 
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.DuplicateProviderException;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderUsedInSettingsException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.DuplicateProviderException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderUsedInSettingsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

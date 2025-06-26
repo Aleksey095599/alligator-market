@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.providers.list.exceptions;
+package com.alligator.market.backend.quotes.stream.providers.list_all.exceptions;
 
 /**
  * Нельзя удалить провайдера, если он используется в настройках потоков котировок.

@@ -2,7 +2,7 @@ package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper;
 
 import com.alligator.market.backend.ccypairs.entity.Pair;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
-import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list_all.entity.Provider;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,14 +1,14 @@
-package com.alligator.market.backend.quotes.stream.providers.list.service;
+package com.alligator.market.backend.quotes.stream.providers.list_all.service;
 
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
-import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderCreateDto;
-import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderDto;
-import com.alligator.market.backend.quotes.stream.providers.list.dto.ProviderUpdateDto;
-import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.DuplicateProviderException;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderUsedInSettingsException;
-import com.alligator.market.backend.quotes.stream.providers.list.repository.ProviderRepository;
+import com.alligator.market.backend.quotes.stream.providers.list_all.dto.ProviderCreateDto;
+import com.alligator.market.backend.quotes.stream.providers.list_all.dto.ProviderDto;
+import com.alligator.market.backend.quotes.stream.providers.list_all.dto.ProviderUpdateDto;
+import com.alligator.market.backend.quotes.stream.providers.list_all.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.DuplicateProviderException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderUsedInSettingsException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.repository.ProviderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

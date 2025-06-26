@@ -11,9 +11,9 @@ import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptio
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.SettingsNotFoundException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.mapper.CcyPairFeedSettingsMapper;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
-import com.alligator.market.backend.quotes.stream.providers.list.entity.Provider;
-import com.alligator.market.backend.quotes.stream.providers.list.exceptions.ProviderNotFoundException;
-import com.alligator.market.backend.quotes.stream.providers.list.repository.ProviderRepository;
+import com.alligator.market.backend.quotes.stream.providers.list_all.entity.Provider;
+import com.alligator.market.backend.quotes.stream.providers.list_all.exceptions.ProviderNotFoundException;
+import com.alligator.market.backend.quotes.stream.providers.list_all.repository.ProviderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

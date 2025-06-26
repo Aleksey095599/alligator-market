@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.stream.providers.list.dto;
+package com.alligator.market.backend.quotes.stream.providers.list_all.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
