@@ -23,8 +23,8 @@ public class TwelvePullQuoteFeedAdapterTest {
     void fetchQuotePublish() {
         try {
             QuoteTick tick = adapter.fetchQuote("EURUSD");
-            publisher.publish(tick);
             System.out.println("EURUSD price: " + tick.bid());
+            publisher.publish(tick);
         } catch (Exception e) {
             System.out.println("Cannot fetch quote: " + e.getMessage());
         }
