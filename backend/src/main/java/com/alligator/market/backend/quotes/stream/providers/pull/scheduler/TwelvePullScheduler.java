@@ -7,8 +7,8 @@ import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.TaskScheduler;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Планировщик для загрузки котировок от провайдера, имя которого задано в настройках.
+ * Планировщик для загрузки котировок от провайдера TwelveData.
  */
 @Service
 @RequiredArgsConstructor
