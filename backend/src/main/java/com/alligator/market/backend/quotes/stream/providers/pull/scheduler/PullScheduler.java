@@ -4,7 +4,7 @@ import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.C
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
-import com.alligator.market.domain.quotes.stream.ports.QuoteFeedPort;
+import com.alligator.market.domain.quotes.stream.ports.PullQuoteFeedPort;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class PullScheduler implements ApplicationRunner {
 
     private final CcyPairFeedSettingsRepository ccyPairFeedSettingsRepository;
-    private final Map<String, QuoteFeedPort> adapters;      // провайдер → бин‑адаптер
+    private final Map<String, PullQuoteFeedPort> adapters;  // провайдер → бин‑адаптер
     private final QuotePublishPort publisher;
     private final TaskScheduler scheduler;                  // spring.task.scheduling.pool
 
@@ -41,7 +41,7 @@ public class PullScheduler implements ApplicationRunner {
         String provider = list.get(0).getProvider().getName();
         int periodMs = list.get(0).getFetchPeriodMs();
 
-        QuoteFeedPort adapter = adapters.get(provider);
+        PullQuoteFeedPort adapter = adapters.get(provider);
         List<String> pairs = list.stream().map(s -> s.getPair().getPair()).toList();
 
         scheduler.scheduleAtFixedRate(() -> pairs.forEach(pair -> {
