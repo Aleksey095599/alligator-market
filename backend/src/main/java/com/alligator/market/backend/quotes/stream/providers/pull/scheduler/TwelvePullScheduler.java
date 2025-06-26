@@ -7,6 +7,7 @@ import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,14 +19,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Планировщик для загрузки котировок от {@code twelve_free_mid_pull}.
+ * Планировщик для загрузки котировок от провайдера, имя которого задано в настройках.
  */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TwelvePullScheduler implements ApplicationRunner {
 
-    private static final String PROVIDER = "twelve_free_mid_pull";
+    @Value("${quotes.provider.twelve.pull.name}")
+    private String providerName;
 
     private final CcyPairFeedSettingsRepository settingsRepository;
     private final TwelvePullQuoteFeedAdapter adapter;
@@ -36,7 +38,7 @@ public class TwelvePullScheduler implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         settingsRepository.findAll().stream()
                 .filter(CcyPairFeedSettingsEntity::isEnabled)
-                .filter(s -> PROVIDER.equalsIgnoreCase(s.getProvider().getName()))
+                .filter(s -> providerName.equalsIgnoreCase(s.getProvider().getName()))
                 .collect(Collectors.groupingBy(CcyPairFeedSettingsEntity::getFetchPeriodMs))
                 .forEach(this::scheduleGroup);
     }
