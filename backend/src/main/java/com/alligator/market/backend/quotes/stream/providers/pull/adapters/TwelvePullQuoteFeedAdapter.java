@@ -15,7 +15,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * Получение котировок через сервис TwelveData.
+ * Получение котировок от провайдера TwelveData.
+ * Настройки подгружаются из списка провайдеров (таблица 'providers').
  */
 @Service
 @Slf4j
