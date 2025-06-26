@@ -17,7 +17,7 @@ import java.time.Instant;
 @Slf4j
 public class TwelvePullQuoteFeedAdapter implements QuoteFeedPort {
 
-    private static final String PROVIDER = "TWELVEDATA";
+    private static final String PROVIDER = "twelve_free_mid_pull";
 
     private final WebClient webClient;
     private final TwelvePullProperties properties;
@@ -33,9 +33,11 @@ public class TwelvePullQuoteFeedAdapter implements QuoteFeedPort {
     @Override
     public QuoteTick fetchQuote(String pairCode) throws QuoteUnavailableException {
 
+        // Для запроса требуется представление пары в виде CCY/CCY
         String symbol = pairCode.substring(0, 3) + "/" + pairCode.substring(3);
 
         try {
+            // Выполняем HTTP GET запрос к TwelveData API для получения цены
             PriceDto dto = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/price")
@@ -46,9 +48,12 @@ public class TwelvePullQuoteFeedAdapter implements QuoteFeedPort {
                     .bodyToMono(PriceDto.class)
                     .block();
 
+            // Проверка полученного объекта
             if (dto == null || dto.price() == null) {
                 throw new IllegalStateException("Empty price");
             }
+
+            // Преобразование строкового представления цены в BigDecimal
             BigDecimal price = new BigDecimal(dto.price());
 
             // Формируем объект тика согласно доменной модели.
@@ -71,7 +76,7 @@ public class TwelvePullQuoteFeedAdapter implements QuoteFeedPort {
     // Вспомогательные классы
     //-----------------------
 
-    /* Объект для ответа провайдера (https://api.twelvedata.com/price) в виде одной записи с ценой. */
+    /* Объект, в который принимаем ответ от провайдера. */
     private record PriceDto(String price) {
     }
 
