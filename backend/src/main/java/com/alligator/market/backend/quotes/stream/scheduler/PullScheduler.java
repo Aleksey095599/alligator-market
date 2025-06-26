@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class PullScheduler implements ApplicationRunner {
 
