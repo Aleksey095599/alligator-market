@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.stream.adapters.twelvedata;
 
-import com.alligator.market.backend.quotes.stream.providers.pull.adapters.TwelvePullQuoteFeedAdapter;
+import com.alligator.market.backend.quotes.stream.providers.pull.adapters.TwelveFreeAdapter;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Временный тест для ручного запуска получения котировки от TwelveData.
  */
 @SpringBootTest
-public class TwelvePullQuoteFeedAdapterTest {
+public class TwelveFreeAdapterTest {
 
     @Autowired
-    private TwelvePullQuoteFeedAdapter adapter;
+    private TwelveFreeAdapter adapter;
 
     @Autowired
     private QuotePublishPort publisher;

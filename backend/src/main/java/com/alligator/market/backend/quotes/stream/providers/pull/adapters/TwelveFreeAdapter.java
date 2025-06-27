@@ -15,20 +15,20 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * Получение котировок от провайдера TwelveData.
- * Настройки подгружаются из списка провайдеров (таблица 'providers').
+ * Адаптер для получения котировок от провайдера TwelveData.
+ * Получает только цену mid, поэтому bid=ask=mid.
  */
 @Service
 @Slf4j
-public class TwelvePullQuoteFeedAdapter implements PullQuoteFeedPort {
+public class TwelveFreeAdapter implements PullQuoteFeedPort {
 
     private final String providerName;
     private final WebClient webClient;
     private final String apiKey;
 
-    public TwelvePullQuoteFeedAdapter(@Value("${quotes.provider.twelve.pull.name}") String providerName,
-                                      WebClient.Builder builder,
-                                      ProviderRepository repository) {
+    public TwelveFreeAdapter(@Value("${quotes.provider.twelve.pull.name}") String providerName,
+                             WebClient.Builder builder,
+                             ProviderRepository repository) {
         this.providerName = providerName;
         Provider provider = repository.findByName(providerName)
                 .orElseThrow(() -> new ProviderNotFoundException(providerName));

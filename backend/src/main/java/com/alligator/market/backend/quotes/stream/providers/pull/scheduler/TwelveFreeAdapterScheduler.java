@@ -2,7 +2,7 @@ package com.alligator.market.backend.quotes.stream.providers.pull.scheduler;
 
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
-import com.alligator.market.backend.quotes.stream.providers.pull.adapters.TwelvePullQuoteFeedAdapter;
+import com.alligator.market.backend.quotes.stream.providers.pull.adapters.TwelveFreeAdapter;
 import com.alligator.market.domain.quotes.stream.QuoteTick;
 import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
 import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
@@ -19,18 +19,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Планировщик для загрузки котировок от провайдера TwelveData.
+ * Планировщик для адаптера {@link TwelveFreeAdapter}.
  */
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TwelvePullScheduler implements ApplicationRunner {
+public class TwelveFreeAdapterScheduler implements ApplicationRunner {
 
     @Value("${quotes.provider.twelve.pull.name}")
     private String providerName;
 
     private final CcyPairFeedSettingsRepository settingsRepository;
-    private final TwelvePullQuoteFeedAdapter adapter;
+    private final TwelveFreeAdapter adapter;
     private final QuotePublishPort publisher;
     private final TaskScheduler scheduler;
 
