@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Планировщик для адаптера {@link TwelveFreeAdapter}.
@@ -36,19 +37,14 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        settingsRepository.findAll().stream()
-                .filter(CcyPairFeedSettingsEntity::isEnabled)
-                .filter(s -> providerName.equalsIgnoreCase(s.getProvider().getName()))
-                .collect(Collectors.groupingBy(CcyPairFeedSettingsEntity::getFetchPeriodMs))
+        settingsRepository.findActivePullSettings(providerName)
+                .stream()
+                .collect(groupingBy(CcyPairFeedSettingsEntity::getFetchPeriodMs))
                 .forEach(this::scheduleGroup);
     }
 
     /* Планируем один task на период; пропускаем, если период не положительный. */
     private void scheduleGroup(Integer periodMs, List<CcyPairFeedSettingsEntity> settings) {
-        if (periodMs == null || periodMs <= 0) {
-            log.warn("Skip scheduling with non-positive period: {}", periodMs);
-            return;
-        }
 
         List<String> pairs = settings.stream()
                 .map(s -> s.getPair().getPair())
