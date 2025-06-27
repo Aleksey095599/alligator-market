@@ -43,8 +43,13 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
                 .forEach(this::scheduleGroup);
     }
 
-    /* Планируем один task на период. */
+    /* Планируем один task на период; пропускаем, если период не положительный. */
     private void scheduleGroup(Integer periodMs, List<CcyPairFeedSettingsEntity> settings) {
+        if (periodMs == null || periodMs <= 0) {
+            log.warn("Skip scheduling with non-positive period: {}", periodMs);
+            return;
+        }
+
         List<String> pairs = settings.stream()
                 .map(s -> s.getPair().getPair())
                 .toList();
