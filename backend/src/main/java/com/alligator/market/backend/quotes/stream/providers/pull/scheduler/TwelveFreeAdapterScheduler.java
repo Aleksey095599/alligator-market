@@ -35,6 +35,10 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
     private final QuotePublishPort publisher;
     private final TaskScheduler scheduler;
 
+    /*
+     * Находит все активные настройки для заданного провайдера, группирует их по периоду запроса котировки
+     * и создает задачи планировщика для каждой группы.
+     */
     @Override
     public void run(ApplicationArguments args) {
         settingsRepository.findActivePullSettings(providerName)
@@ -43,7 +47,9 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
                 .forEach(this::scheduleGroup);
     }
 
-    /* Планируем один task на период; пропускаем, если период не положительный. */
+    /*
+     * Создает задачу планировщика для группы валютных пар с одинаковым периодом запроса котировок.
+     */
     private void scheduleGroup(Integer periodMs, List<CcyPairFeedSettingsEntity> settings) {
 
         List<String> pairs = settings.stream()
