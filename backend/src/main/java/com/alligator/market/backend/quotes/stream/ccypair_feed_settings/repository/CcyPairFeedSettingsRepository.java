@@ -17,7 +17,7 @@ public interface CcyPairFeedSettingsRepository extends JpaRepository<CcyPairFeed
 
     boolean existsByProvider_Name(String provider);
 
-    // Извлекаем в виде списка настройки потока валютных пар для заданного провайдера, только активные (enabled),
+    // Извлекаем в виде списка настройки потоков валютных пар для заданного провайдера, только активные (enabled),
     // только PULL (fetchPeriodMs > 0)
     @Query("""
             select s
