@@ -17,12 +17,15 @@ public interface CcyPairFeedSettingsRepository extends JpaRepository<CcyPairFeed
 
     boolean existsByProvider_Name(String provider);
 
-    // Ищем активные настройки для конкретного PULL провайдера (fetchPeriodMs > 0)
+    // Извлекаем в виде списка настройки потока валютных пар для заданного провайдера, только активные (enabled),
+    // только PULL (fetchPeriodMs > 0)
     @Query("""
+            select s
             from CcyPairFeedSettingsEntity s
-            where s.enabled          = true
-              and upper(s.provider.name) = upper(:provider)
-              and s.fetchPeriodMs    > 0
+            where s.provider.name = :provider
+              and s.enabled = true
+              and s.fetchPeriodMs > 0
+            order by s.id
             """)
     List<CcyPairFeedSettingsEntity> findActivePullSettings(@Param("provider") String provider);
 
