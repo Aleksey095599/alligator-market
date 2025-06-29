@@ -30,18 +30,18 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
     @Value("${quotes.provider.twelve.pull.name}")
     private String providerName;
 
-    private final CcyPairFeedSettingsRepository settingsRepository;
+    private final CcyPairFeedSettingsRepository ccyPairFeedSettingsRepository;
     private final TwelveFreeAdapter adapter;
     private final QuotePublishPort publisher;
     private final TaskScheduler scheduler;
 
     /*
-     * Находит все активные настройки для заданного провайдера, группирует их по периоду запроса котировки
-     * и создает задачи планировщика для каждой группы.
+     * Находит все активные валютные пары, которые получают поток котировок от заданного провайдера (PULL),
+     * группирует их по периоду запроса котировки и создает задачи планировщика для каждой группы.
      */
     @Override
     public void run(ApplicationArguments args) {
-        settingsRepository.findActivePullSettings(providerName)
+        ccyPairFeedSettingsRepository.findActivePullSettings(providerName)
                 .stream()
                 .collect(groupingBy(CcyPairFeedSettingsEntity::getFetchPeriodMs))
                 .forEach(this::scheduleGroup);
