@@ -1,10 +1,10 @@
-package com.alligator.market.backend.ccypairs.web;
+package com.alligator.market.backend.pairs.web;
 
-import com.alligator.market.backend.ccypairs.exceptions.DuplicatePairException;
-import com.alligator.market.backend.ccypairs.exceptions.PairCurrencyNotFoundException;
-import com.alligator.market.backend.ccypairs.exceptions.PairNotFoundException;
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
+import com.alligator.market.backend.pairs.exceptions.DuplicatePairException;
+import com.alligator.market.backend.pairs.exceptions.PairCurrencyNotFoundException;
+import com.alligator.market.backend.pairs.exceptions.PairNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

@@ -1,8 +1,8 @@
-package com.alligator.market.backend.ccypairs.service;
+package com.alligator.market.backend.pairs.service;
 
-import com.alligator.market.backend.ccypairs.dto.PairCreateDto;
-import com.alligator.market.backend.ccypairs.dto.PairDto;
-import com.alligator.market.backend.ccypairs.dto.PairUpdateDto;
+import com.alligator.market.backend.pairs.dto.PairCreateDto;
+import com.alligator.market.backend.pairs.dto.PairDto;
+import com.alligator.market.backend.pairs.dto.PairUpdateDto;
 
 import java.util.List;
 

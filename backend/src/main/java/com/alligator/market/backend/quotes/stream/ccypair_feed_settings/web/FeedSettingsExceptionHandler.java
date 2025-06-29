@@ -1,8 +1,8 @@
 package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.web;
 
-import com.alligator.market.backend.ccypairs.exceptions.PairNotFoundException;
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
+import com.alligator.market.backend.pairs.exceptions.PairNotFoundException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.DuplicateSettingsException;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.exceptions.SettingsNotFoundException;
 import lombok.extern.slf4j.Slf4j;

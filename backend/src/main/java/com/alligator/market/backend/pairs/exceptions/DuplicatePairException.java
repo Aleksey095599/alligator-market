@@ -1,4 +1,4 @@
-package com.alligator.market.backend.ccypairs.exceptions;
+package com.alligator.market.backend.pairs.exceptions;
 
 /**
  * Очевидно из названия.

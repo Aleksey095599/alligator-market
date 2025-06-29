@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.entity;
 
-import com.alligator.market.backend.ccypairs.entity.Pair;
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
+import com.alligator.market.backend.pairs.entity.Pair;
 import com.alligator.market.backend.quotes.stream.providers.list_all.entity.Provider;
 import jakarta.persistence.*;
 import lombok.Getter;

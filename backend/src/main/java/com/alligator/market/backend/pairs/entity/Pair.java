@@ -1,4 +1,4 @@
-package com.alligator.market.backend.ccypairs.entity;
+package com.alligator.market.backend.pairs.entity;
 
 import com.alligator.market.backend.common.jpa.entity.BaseEntity;
 import com.alligator.market.backend.currencies.entity.Currency;

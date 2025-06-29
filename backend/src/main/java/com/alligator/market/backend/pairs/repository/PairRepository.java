@@ -1,6 +1,6 @@
-package com.alligator.market.backend.ccypairs.repository;
+package com.alligator.market.backend.pairs.repository;
 
-import com.alligator.market.backend.ccypairs.entity.Pair;
+import com.alligator.market.backend.pairs.entity.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

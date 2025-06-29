@@ -1,15 +1,15 @@
-package com.alligator.market.backend.ccypairs.service;
+package com.alligator.market.backend.pairs.service;
 
-import com.alligator.market.backend.ccypairs.dto.PairCreateDto;
-import com.alligator.market.backend.ccypairs.dto.PairDto;
-import com.alligator.market.backend.ccypairs.dto.PairUpdateDto;
-import com.alligator.market.backend.ccypairs.entity.Pair;
-import com.alligator.market.backend.ccypairs.exceptions.DuplicatePairException;
-import com.alligator.market.backend.ccypairs.exceptions.PairCurrencyNotFoundException;
-import com.alligator.market.backend.ccypairs.exceptions.PairNotFoundException;
-import com.alligator.market.backend.ccypairs.repository.PairRepository;
 import com.alligator.market.backend.currencies.entity.Currency;
 import com.alligator.market.backend.currencies.repository.CurrencyRepository;
+import com.alligator.market.backend.pairs.dto.PairCreateDto;
+import com.alligator.market.backend.pairs.dto.PairDto;
+import com.alligator.market.backend.pairs.dto.PairUpdateDto;
+import com.alligator.market.backend.pairs.entity.Pair;
+import com.alligator.market.backend.pairs.exceptions.DuplicatePairException;
+import com.alligator.market.backend.pairs.exceptions.PairCurrencyNotFoundException;
+import com.alligator.market.backend.pairs.exceptions.PairNotFoundException;
+import com.alligator.market.backend.pairs.repository.PairRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

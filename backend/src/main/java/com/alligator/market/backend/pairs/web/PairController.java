@@ -1,11 +1,11 @@
-package com.alligator.market.backend.ccypairs.web;
+package com.alligator.market.backend.pairs.web;
 
-import com.alligator.market.backend.ccypairs.dto.PairCreateDto;
-import com.alligator.market.backend.ccypairs.dto.PairDto;
-import com.alligator.market.backend.ccypairs.dto.PairUpdateDto;
-import com.alligator.market.backend.ccypairs.service.PairService;
 import com.alligator.market.backend.common.web.dto.ApiResponse;
 import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
+import com.alligator.market.backend.pairs.dto.PairCreateDto;
+import com.alligator.market.backend.pairs.dto.PairDto;
+import com.alligator.market.backend.pairs.dto.PairUpdateDto;
+import com.alligator.market.backend.pairs.service.PairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

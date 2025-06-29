@@ -1,4 +1,4 @@
-package com.alligator.market.backend.ccypairs.dto;
+package com.alligator.market.backend.pairs.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

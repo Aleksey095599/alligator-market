@@ -1,4 +1,4 @@
-package com.alligator.market.backend.ccypairs.exceptions;
+package com.alligator.market.backend.pairs.exceptions;
 
 /**
  * Не найдена одна из валют компонент для соответствующей валютной пары.

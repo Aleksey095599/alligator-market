@@ -1,8 +1,8 @@
 package com.alligator.market.backend.quotes.stream.ccypair_feed_settings.service;
 
-import com.alligator.market.backend.ccypairs.entity.Pair;
-import com.alligator.market.backend.ccypairs.exceptions.PairNotFoundException;
-import com.alligator.market.backend.ccypairs.repository.PairRepository;
+import com.alligator.market.backend.pairs.entity.Pair;
+import com.alligator.market.backend.pairs.exceptions.PairNotFoundException;
+import com.alligator.market.backend.pairs.repository.PairRepository;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsCreateDto;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsDto;
 import com.alligator.market.backend.quotes.stream.ccypair_feed_settings.dto.FeedSettingsUpdateDto;
