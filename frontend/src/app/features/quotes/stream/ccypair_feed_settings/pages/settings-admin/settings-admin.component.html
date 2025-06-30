@@ -47,6 +47,9 @@
           <mat-error *ngIf="form.controls['fetchPeriodMs'].hasError('required')">
             Is required
           </mat-error>
+          <mat-error *ngIf="form.controls['fetchPeriodMs'].hasError('min')">
+            &gt;= 1000
+          </mat-error>
         </mat-form-field>
 
         <mat-checkbox formControlName="enabled">Enabled</mat-checkbox>

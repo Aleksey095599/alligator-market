@@ -71,7 +71,7 @@ export class SettingsAdminComponent implements OnInit {
       pair: ['', [Validators.required]],
       provider: ['', [Validators.required, Validators.maxLength(50)]],
       priority: [1, [Validators.required, Validators.min(0), Validators.max(32767)]],
-      fetchPeriodMs: [1000, [Validators.required, Validators.min(0)]],
+      fetchPeriodMs: [1000, [Validators.required, Validators.min(1000)]],
       enabled: [true]
     });
 
@@ -189,7 +189,7 @@ export class SettingsAdminComponent implements OnInit {
       ctrl.disable();
     } else {
       ctrl.enable();
-      if (ctrl.value === 0) {
+      if (ctrl.value < 1000) {
         ctrl.setValue(1000);
       }
     }
