@@ -76,7 +76,7 @@ public class TwelveFreeAdapter implements PullQuotePort {
             );
 
         } catch (Exception e) {
-            log.error("Cannot fetch quote for pair {} from TwelveData", pairCode, e);
+            log.debug("Cannot fetch quote for pair {} from {}", pairCode, providerName, e);
             throw new QuoteUnavailableException("Failed to fetch quote for pair " + pairCode, e);
         }
     }
