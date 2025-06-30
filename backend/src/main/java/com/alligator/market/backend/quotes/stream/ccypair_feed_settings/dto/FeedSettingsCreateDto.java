@@ -20,8 +20,8 @@ public record FeedSettingsCreateDto(
         Short priority,
 
         @NotNull
-        @Min(0)
-        Integer fetchPeriodMs, // для PUSH игнорируется
+        @Min(1000)
+        Integer fetchPeriodMs, // для PUSH игнорируется, минимум 1000 мс
 
         @NotNull
         Boolean enabled
