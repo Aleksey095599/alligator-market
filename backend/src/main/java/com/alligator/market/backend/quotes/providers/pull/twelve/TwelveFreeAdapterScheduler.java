@@ -60,7 +60,7 @@ public class TwelveFreeAdapterScheduler implements ApplicationRunner {
                 QuoteTick tick = adapter.fetchQuote(pair);
                 publisher.publish(tick);
             } catch (QuoteUnavailableException e) {
-                log.error("Cannot fetch quote for pair {}", pair, e);
+                log.error("Cannot fetch quote for pair {} from {}", pair, providerName, e);
             }
         }), Duration.ofMillis(periodMs));
     }
