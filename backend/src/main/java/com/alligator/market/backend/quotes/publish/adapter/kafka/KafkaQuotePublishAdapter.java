@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quotes.publish.adapter.kafka;
 
-import com.alligator.market.domain.quotes.stream.QuoteTick;
-import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
+import com.alligator.market.domain.quotes.QuoteTick;
+import com.alligator.market.domain.quotes.ports.QuotePublishPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

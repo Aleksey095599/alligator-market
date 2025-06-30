@@ -56,7 +56,7 @@ public class FeedSettingsServiceImpl implements FeedSettingsService {
         int fetchPeriodMs = "PUSH".equals(provider.getMode()) ? 0 : dto.fetchPeriodMs();
 
         CcyPairFeedSettingsEntity entity = mapper.toEntity(
-                new com.alligator.market.domain.quotes.stream.settings.CcyPairFeedSettings(
+                new com.alligator.market.domain.quotes.CcyPairFeedSettings(
                         dto.pair(),
                         dto.provider(),
                         dto.priority(),

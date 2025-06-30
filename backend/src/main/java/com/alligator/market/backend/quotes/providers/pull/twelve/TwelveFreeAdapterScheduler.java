@@ -2,9 +2,9 @@ package com.alligator.market.backend.quotes.providers.pull.twelve;
 
 import com.alligator.market.backend.quotes.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
-import com.alligator.market.domain.quotes.stream.QuoteTick;
-import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
-import com.alligator.market.domain.quotes.stream.ports.QuotePublishPort;
+import com.alligator.market.domain.quotes.QuoteTick;
+import com.alligator.market.domain.quotes.ports.QuotePublishPort;
+import com.alligator.market.domain.quotes.ports.QuoteUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

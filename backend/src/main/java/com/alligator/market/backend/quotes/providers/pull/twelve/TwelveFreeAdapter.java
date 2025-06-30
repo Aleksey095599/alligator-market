@@ -3,9 +3,9 @@ package com.alligator.market.backend.quotes.providers.pull.twelve;
 import com.alligator.market.backend.quotes.providers.list.entity.Provider;
 import com.alligator.market.backend.quotes.providers.list.exceptions.ProviderNotFoundException;
 import com.alligator.market.backend.quotes.providers.list.repository.ProviderRepository;
-import com.alligator.market.domain.quotes.stream.QuoteTick;
-import com.alligator.market.domain.quotes.stream.exeptions.QuoteUnavailableException;
-import com.alligator.market.domain.quotes.stream.ports.PullQuoteFeedPort;
+import com.alligator.market.domain.quotes.QuoteTick;
+import com.alligator.market.domain.quotes.ports.PullQuotePort;
+import com.alligator.market.domain.quotes.ports.QuoteUnavailableException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.time.Instant;
  */
 @Service
 @Slf4j
-public class TwelveFreeAdapter implements PullQuoteFeedPort {
+public class TwelveFreeAdapter implements PullQuotePort {
 
     private final String providerName;
     private final WebClient webClient;
