@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.providers.pull.twelve;
+package com.alligator.market.backend.quotes.providers.pull.api_poll.twelve;
 
 import com.alligator.market.backend.quotes.providers.list.entity.Provider;
 import com.alligator.market.backend.quotes.providers.list.exceptions.ProviderNotFoundException;

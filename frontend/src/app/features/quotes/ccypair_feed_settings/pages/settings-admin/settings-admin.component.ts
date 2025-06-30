@@ -14,10 +14,10 @@ import {SettingsDto} from '../../models/settings.model';
 import {SettingsCreateDto} from '../../models/settings-create.model';
 import {SettingsUpdateDto} from '../../models/settings-update.model';
 import {SettingsService} from '../../services/settings.service';
-import {PairDto} from '../../../../../pairs/models/pair.model';
-import {PairService} from '../../../../../pairs/services/pair.service';
-import {ProviderDto} from '../../../../../providers/models/provider.model';
-import {ProviderService} from '../../../../../providers/services/provider.service';
+import {PairDto} from '../../../../currency_pairs/models/pair.model';
+import {PairService} from '../../../../currency_pairs/services/pair.service';
+import {ProviderDto} from '../../../../providers/models/provider.model';
+import {ProviderService} from '../../../../providers/services/provider.service';
 import {RouterLink} from '@angular/router';
 
 @Component({

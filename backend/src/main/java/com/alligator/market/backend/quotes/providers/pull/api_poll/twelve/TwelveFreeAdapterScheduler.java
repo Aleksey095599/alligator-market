@@ -1,4 +1,4 @@
-package com.alligator.market.backend.quotes.providers.pull.twelve;
+package com.alligator.market.backend.quotes.providers.pull.api_poll.twelve;
 
 import com.alligator.market.backend.quotes.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;

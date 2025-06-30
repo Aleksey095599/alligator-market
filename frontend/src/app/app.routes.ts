@@ -9,7 +9,7 @@ export const routes: Routes = [
   {
     path: 'pairs',
     loadChildren: () =>
-      import('./features/pairs/pair.module').then(m => m.PairModule)
+      import('./features/currency_pairs/pair.module').then(m => m.PairModule)
   },
   {
     path: 'providers',
@@ -19,7 +19,7 @@ export const routes: Routes = [
   {
     path: 'stream-configs',
     loadChildren: () =>
-      import('./features/quotes/stream/ccypair_feed_settings/settings.module').then(m => m.SettingsModule)
+      import('./features/quotes/ccypair_feed_settings/settings.module').then(m => m.SettingsModule)
   },
   {
     path: '',

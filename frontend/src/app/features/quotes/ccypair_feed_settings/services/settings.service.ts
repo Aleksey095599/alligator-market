@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../../../../../shared/api-response.model';
+import { ApiResponse } from '../../../../shared/api-response.model';
 import { SettingsDto } from '../models/settings.model';
 import { SettingsCreateDto } from '../models/settings-create.model';
 import { SettingsUpdateDto } from '../models/settings-update.model';
