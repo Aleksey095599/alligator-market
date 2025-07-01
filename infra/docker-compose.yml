@@ -41,8 +41,8 @@ services:
 
     ports:
       - "9092:9092"
-    volumes:
-      - ./kafka-data:/tmp/kraft-combined-logs
+    #volumes:
+    # - ./kafka-data:/tmp/kraft-combined-logs
 
 #=============================
 # 3. Confluent Schema Registry
