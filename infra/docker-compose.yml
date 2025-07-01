@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-
 #=================
 # 1. PostgreSQL 15
 #=================
@@ -16,7 +15,6 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
 #=====================================
 # 2. Kafka 3.7 (образ Confluent Local)
 #=====================================
@@ -24,7 +22,6 @@ services:
     image: confluentinc/confluent-local:7.6.0
     container_name: kafka
     restart: unless-stopped
-
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
@@ -39,12 +36,10 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-
     ports:
       - "9092:9092"
     volumes:
       - kafka-data:/var/lib/kafka/data
-
 #=============================
 # 3. Confluent Schema Registry
 #=============================
@@ -60,6 +55,6 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
     ports:
       - "8081:8081"
-
 volumes:
+  # Docker volume для Kafka
   kafka-data:
