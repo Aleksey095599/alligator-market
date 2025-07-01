@@ -43,7 +43,7 @@ services:
     ports:
       - "9092:9092"
     volumes:
-      - kafka-data:/var/lib/kafka/data
+      - ./kafka-data:/var/lib/kafka/data
 
 #=============================
 # 3. Confluent Schema Registry
