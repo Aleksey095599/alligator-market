@@ -16,7 +16,7 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-      
+
 #=====================================
 # 2. Kafka 3.7 (образ Confluent Local)
 #=====================================
@@ -24,7 +24,7 @@ services:
     image: confluentinc/confluent-local:7.6.0
     container_name: kafka
     restart: unless-stopped
-    
+
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
@@ -38,7 +38,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
-      
+
     ports:
       - "9092:9092"
     volumes:
@@ -49,8 +49,8 @@ services:
 #=============================
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.0
-      depends_on:
-      - kafka   
+    depends_on:
+      - kafka
     container_name: schema-registry
     restart: unless-stopped
     environment:
