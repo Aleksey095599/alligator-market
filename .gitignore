@@ -40,11 +40,3 @@ frontend/structure_exports/
 # === Данные инфраструктуры ===
 infra/postgres-data/
 infra/kafka-data/
-
-# === Настройки IntelliJ IDEA ===
-.idea/shelf/
-.idea/workspace.xml
-.idea/httpRequests/
-.idea/mavenHomeManager.xml
-.idea/dataSources/
-.idea/dataSources.local.xml
