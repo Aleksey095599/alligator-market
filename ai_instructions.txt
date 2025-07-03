@@ -33,3 +33,11 @@ A) Инструкция для размышления модели ChatGPT:
 5. --- Инструкция для работы с холстом ---
 * Пишите на холсте только по моей просьбе;
 * Вносите правки на холсте только по моей просьбе и только в указанных местах;
+
+6. --- Commit generation --- 
+Формат Conventional Commits: <type>(<scope>): <subject>;
+Subject ≤ 50 символов, английский, imperative, без точки;
+Body (опц.) — wrap 72 c, объясняет почему, а не как;
+Footer (опц.) — BREAKING CHANGE: или ссылки на issues.
+
+Примеры: fix(auth): handle expired JWT tokens, feat(order): add discount code support, docs(readme): update local setup instructions.
