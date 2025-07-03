@@ -1,0 +1,50 @@
+# === Системные файлы ===
+.DS_Store
+Thumbs.db
+
+# === Результаты сборки ===
+*.class
+backend/target/
+domain/target/
+
+# === Логи ===
+*.log
+backend/logs/
+
+# === Frontend: собранные файлы и кеш ===
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+frontend/.angular/cache/
+
+# === Node ===
+frontend/node_modules/
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+
+# === Покрытие ===
+frontend/coverage/
+
+# === IDE ===
+*/.idea/
+*.iml
+frontend/.vscode/
+
+# === Файлы окружения ===
+frontend/.env*
+
+# === Плагин Project Structure Exporter ===
+backend/structure_exports/
+frontend/structure_exports/
+
+# === Данные инфраструктуры ===
+infra/postgres-data/
+infra/kafka-data/
+
+# === Настройки IntelliJ IDEA ===
+.idea/shelf/
+.idea/workspace.xml
+.idea/httpRequests/
+.idea/mavenHomeManager.xml
+.idea/dataSources/
+.idea/dataSources.local.xml
