@@ -4,8 +4,8 @@ Thumbs.db
 
 # === Результаты сборки ===
 *.class
-backend/target/
-domain/target/
+*/target/
+.mvn/wrapper/maven-wrapper.jar
 
 # === Логи ===
 *.log
@@ -19,6 +19,8 @@ frontend/.angular/cache/
 
 # === Node ===
 frontend/node_modules/
+npm-debug.log*
+yarn-error.log*
 frontend/npm-debug.log*
 frontend/yarn-error.log*
 
@@ -29,9 +31,11 @@ frontend/coverage/
 .idea/
 */.idea/
 *.iml
+/.vscode/
 frontend/.vscode/
 
 # === Файлы окружения ===
+/.env*
 frontend/.env*
 
 # === Плагин Project Structure Exporter ===
@@ -41,3 +45,4 @@ frontend/structure_exports/
 # === Данные инфраструктуры ===
 infra/postgres-data/
 infra/kafka-data/
+
