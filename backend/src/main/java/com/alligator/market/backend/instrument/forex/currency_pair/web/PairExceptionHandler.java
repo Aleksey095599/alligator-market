@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.forex.currency_pair.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.CurrencyFromPairNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
-import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairCurrencyNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -41,11 +41,11 @@ public class PairExceptionHandler {
     }
 
     /* Одна из валют не найдена. */
-    @ExceptionHandler(PairCurrencyNotFoundException.class)
+    @ExceptionHandler(CurrencyFromPairNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(
-            PairCurrencyNotFoundException ex) {
+            CurrencyFromPairNotFoundException ex) {
 
-        log.warn("PairCurrencyNotFoundException: {}", ex.getMessage());
+        log.warn("CurrencyFromPairNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
