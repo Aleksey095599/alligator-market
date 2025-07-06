@@ -52,5 +52,4 @@ public class PairEntity extends BaseEntity {
     @Min(0)
     @Max(10)
     private Integer decimal;
-
 }
