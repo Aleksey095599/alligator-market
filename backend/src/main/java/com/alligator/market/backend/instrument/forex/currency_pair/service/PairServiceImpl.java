@@ -82,7 +82,7 @@ public class PairServiceImpl implements CurrencyPairService {
                 .orElseThrow(() -> new PairNotFoundException(currencyPair));
 
         repository.delete(entity);
-        log.info("PairEntity {} deleted (id={})", entity.getPair(), entity.getId());
+        log.info("Currency pair {} deleted (id={})", entity.getPair(), entity.getId());
     }
 
     //==================
