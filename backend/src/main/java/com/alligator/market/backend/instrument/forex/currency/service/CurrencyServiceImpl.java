@@ -77,6 +77,7 @@ public class CurrencyServiceImpl implements CurrencyService {
             }
         });
 
+        // Обновляем сущность
         currencyEntity.setName(currency.name());
         currencyEntity.setCountry(currency.country());
         currencyEntity.setDecimal(currency.decimal());
