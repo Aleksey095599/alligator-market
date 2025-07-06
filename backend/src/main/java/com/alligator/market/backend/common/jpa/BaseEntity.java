@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.jpa.entity;
+package com.alligator.market.backend.common.jpa;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
