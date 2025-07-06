@@ -9,7 +9,7 @@ public interface CurrencyService {
 
     String createCurrency(Currency currency);
 
-    void updateCurrency(String code, Currency currency);
+    void updateCurrency(Currency currency);
 
     void deleteCurrency(String code);
 

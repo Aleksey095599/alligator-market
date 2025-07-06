@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация интерфейса сервиса для операций с валютами.
+ * Реализация интерфейса сервиса {@link CurrencyService} для операций с валютами.
  */
 @Service
 @RequiredArgsConstructor
@@ -34,7 +34,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public String createCurrency(Currency currency) {
 
-        // Проверки дублирования по коду, имени и стране
         repository.findByCode(currency.code()).ifPresent(c -> {
             throw new DuplicateCurrencyException("code", currency.code());
         });
@@ -60,13 +59,13 @@ public class CurrencyServiceImpl implements CurrencyService {
     // Обновить валюту
     //================
     @Override
-    public void updateCurrency(String code, Currency currency) {
+    public void updateCurrency(Currency currency) {
 
         // Проверка наличия валюты к обновлению
-        CurrencyEntity currencyEntity = repository.findByCode(code)
-                .orElseThrow(() -> new CurrencyNotFoundException(code));
+        CurrencyEntity currencyEntity = repository.findByCode(currency.code())
+                .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
-        // Проверки что обновление не приведет к дублированию
+        // Проверки, что обновление не приведет к дублированию
         repository.findByName(currency.name()).ifPresent(c -> {
             if (!c.getId().equals(currencyEntity.getId())) {
                 throw new DuplicateCurrencyException("name", currency.name());
@@ -111,7 +110,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
 
-        // Извлекаем все валюты, преобразуя список сущностей к модели
+        // Извлекаем все валюты, преобразуя список сущностей к доменной модели валюты
         List<Currency> result = repository.findAll(Sort.by("code"))
                 .stream()
                 .map(c -> new Currency(

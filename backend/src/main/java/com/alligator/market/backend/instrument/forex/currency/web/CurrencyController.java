@@ -70,7 +70,7 @@ public class CurrencyController {
                 dto.decimal()
         );
 
-        service.updateCurrency(code, currency);
+        service.updateCurrency(currency);
 
         return ResponseEntityFactory.ok(null);
     }
