@@ -2,14 +2,11 @@ package com.alligator.market.backend.instrument.forex.currency_pair.service;
 
 import com.alligator.market.backend.instrument.forex.currency.entity.CurrencyEntity;
 import com.alligator.market.backend.instrument.forex.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairCurrencyNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.repository.PairRepository;
+import com.alligator.market.domain.instrument.forex.currency_pair.PairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -34,26 +31,26 @@ public class PairServiceImpl implements PairService {
     // Создать новую пару
     //===================
     @Override
-    public String createPair(PairCreateDto dto) {
+    public String createPair(com.alligator.market.domain.instrument.forex.currency_pair.Pair pairModel) {
 
-        String pair = dto.code1() + dto.code2();
+        String pair = pairModel.code1() + pairModel.code2();
 
         repository.findByPair(pair).ifPresent(p -> {
             throw new DuplicatePairException(pair);
         });
 
-        CurrencyEntity c1 = currencyRepository.findByCode(dto.code1())
-                .orElseThrow(() -> new PairCurrencyNotFoundException(dto.code1()));
-        CurrencyEntity c2 = currencyRepository.findByCode(dto.code2())
-                .orElseThrow(() -> new PairCurrencyNotFoundException(dto.code2()));
+        CurrencyEntity c1 = currencyRepository.findByCode(pairModel.code1())
+                .orElseThrow(() -> new PairCurrencyNotFoundException(pairModel.code1()));
+        CurrencyEntity c2 = currencyRepository.findByCode(pairModel.code2())
+                .orElseThrow(() -> new PairCurrencyNotFoundException(pairModel.code2()));
 
-        Pair entity = new Pair();
+        com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair entity = new com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair();
         entity.setCode1(c1);
         entity.setCode2(c2);
         entity.setPair(pair);
-        entity.setDecimal(dto.decimal());
+        entity.setDecimal(pairModel.decimal());
 
-        Pair saved = repository.save(entity);
+        com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair saved = repository.save(entity);
         log.info("Pair {} saved with id={}", saved.getPair(), saved.getId());
         return saved.getPair();
     }
@@ -62,12 +59,14 @@ public class PairServiceImpl implements PairService {
     // Обновить пару
     //==============
     @Override
-    public void updatePair(String pair, PairUpdateDto dto) {
+    public void updatePair(com.alligator.market.domain.instrument.forex.currency_pair.Pair pairModel) {
 
-        Pair entity = repository.findByPair(pair)
+        String pair = pairModel.pair();
+
+        com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair entity = repository.findByPair(pair)
                 .orElseThrow(() -> new PairNotFoundException(pair));
 
-        entity.setDecimal(dto.decimal());
+        entity.setDecimal(pairModel.decimal());
 
         repository.save(entity);
         log.info("Pair {} updated (id={})", entity.getPair(), entity.getId());
@@ -79,7 +78,7 @@ public class PairServiceImpl implements PairService {
     @Override
     public void deletePair(String pair) {
 
-        Pair entity = repository.findByPair(pair)
+        com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair entity = repository.findByPair(pair)
                 .orElseThrow(() -> new PairNotFoundException(pair));
 
         repository.delete(entity);
@@ -91,11 +90,11 @@ public class PairServiceImpl implements PairService {
     //==================
     @Override
     @Transactional(readOnly = true)
-    public List<PairDto> findAll() {
+    public List<com.alligator.market.domain.instrument.forex.currency_pair.Pair> findAll() {
 
-        List<PairDto> result = repository.findAll(Sort.by("pair"))
+        List<com.alligator.market.domain.instrument.forex.currency_pair.Pair> result = repository.findAll(Sort.by("pair"))
                 .stream()
-                .map(p -> new PairDto(
+                .map(p -> new com.alligator.market.domain.instrument.forex.currency_pair.Pair(
                         p.getCode1().getCode(),
                         p.getCode2().getCode(),
                         p.getPair(),
