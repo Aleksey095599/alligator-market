@@ -39,8 +39,7 @@ frontend/.vscode/
 frontend/.env*
 
 # === Плагин Project Structure Exporter ===
-backend/structure_exports/
-frontend/structure_exports/
+structure_exports/
 
 # === Данные инфраструктуры ===
 infra/postgres-data/
