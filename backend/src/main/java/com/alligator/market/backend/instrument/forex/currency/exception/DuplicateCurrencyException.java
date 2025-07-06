@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instruments.forex.currencies.exceptions;
+package com.alligator.market.backend.instrument.forex.currency.exception;
 
 /**
  * Очевидно из названия.

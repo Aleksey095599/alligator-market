@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instruments.forex.currencies.dto;
+package com.alligator.market.backend.instrument.forex.currency.dto;
 
 import jakarta.validation.constraints.*;
 
@@ -18,6 +18,5 @@ public record CurrencyUpdateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
-
 ) {
 }
