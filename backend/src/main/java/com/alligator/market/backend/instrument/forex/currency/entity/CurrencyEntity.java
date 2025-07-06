@@ -1,6 +1,6 @@
-package com.alligator.market.backend.instruments.forex.currencies.entity;
+package com.alligator.market.backend.instrument.forex.currency.entity;
 
-import com.alligator.market.backend.common.jpa.entity.BaseEntity;
+import com.alligator.market.backend.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Currency extends BaseEntity {
+public class CurrencyEntity extends BaseEntity {
 
     /* Суррогатный PK */
     @Id
@@ -49,5 +49,4 @@ public class Currency extends BaseEntity {
     @Min(0)
     @Max(10)
     private Integer decimal;
-
 }
