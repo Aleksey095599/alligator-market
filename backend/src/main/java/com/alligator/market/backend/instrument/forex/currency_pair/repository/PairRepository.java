@@ -14,6 +14,5 @@ public interface PairRepository extends JpaRepository<PairEntity, Long> {
 
     /* Проверяет, существует ли любая валютная пара с переданным кодом в code1 или code2 */
     boolean existsByCode1_CodeOrCode2_Code(String code1, String code2);
-
 }
 
