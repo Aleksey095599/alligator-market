@@ -5,7 +5,8 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.service.PairService;
+import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class PairController {
 
-    private final PairService service;
+    private final CurrencyPairService service;
 
     //===================
     // Создать новую пару
@@ -33,12 +34,24 @@ public class PairController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairCreateDto dto) {
 
-        String pair = service.createPair(dto);
+        // Формируем модель валютной пары из DTO
+        CurrencyPair currencyPair = new CurrencyPair(
+                dto.code1(),
+                dto.code2(),
+                dto.code1() + dto.code2(),
+                dto.decimal()
+        );
+
+        // Применяем к валютной паре метод сервиса, который вернет код пары из созданной новой записи
+        String pair = service.createPair(currencyPair);
+
+        // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{pair}")
                 .buildAndExpand(pair)
                 .toUri();
+
         return ResponseEntityFactory.created(location, pair);
     }
 
@@ -49,7 +62,12 @@ public class PairController {
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
             @RequestBody @Valid PairUpdateDto dto) {
-        service.updatePair(pair, dto);
+        
+        // Формируем урезанную (но достаточную) модель валютной пары из входных параметров
+        CurrencyPair currencyPair = new CurrencyPair(null,null, pair, dto.decimal());
+
+        service.updatePair(currencyPair);
+
         return ResponseEntityFactory.ok(null);
     }
 
@@ -60,6 +78,7 @@ public class PairController {
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String pair) {
 
         service.deletePair(pair);
+
         return ResponseEntityFactory.ok(null);
     }
 
@@ -69,7 +88,18 @@ public class PairController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<PairDto>>> getAll() {
 
-        return ResponseEntityFactory.ok(service.findAll());
+        // Извлекаем сервисом список валютных-пар-моделей и на лету преобразуем его в список валютных-пар-DTO
+        List<PairDto> pairDtoList = service.findAll()
+                .stream()
+                .map(p -> new PairDto(
+                        p.code1(),
+                        p.code2(),
+                        p.pair(),
+                        p.decimal()
+                ))
+                .toList();
+
+        return ResponseEntityFactory.ok(pairDtoList);
     }
 
 }
