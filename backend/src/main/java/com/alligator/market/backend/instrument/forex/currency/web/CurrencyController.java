@@ -92,7 +92,8 @@ public class CurrencyController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 
-        List<CurrencyDto> dtoList = service.findAll()
+        // Извлекаем сервисом список валют-моделей и на лету преобразуем его в список валют-DTO
+        List<CurrencyDto> currencyDtoList = service.findAll()
                 .stream()
                 .map(c -> new CurrencyDto(
                         c.code(),
@@ -102,7 +103,7 @@ public class CurrencyController {
                 ))
                 .toList();
 
-        return ResponseEntityFactory.ok(dtoList);
+        return ResponseEntityFactory.ok(currencyDtoList);
     }
 
 }
