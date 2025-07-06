@@ -5,7 +5,8 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.service.PairService;
+import com.alligator.market.domain.instrument.forex.currency_pair.PairService;
+import com.alligator.market.domain.instrument.forex.currency_pair.Pair;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,15 @@ public class PairController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairCreateDto dto) {
 
-        String pair = service.createPair(dto);
+        // Формируем модель валютной пары из DTO
+        Pair pairModel = new Pair(
+                dto.code1(),
+                dto.code2(),
+                dto.code1() + dto.code2(),
+                dto.decimal()
+        );
+
+        String pair = service.createPair(pairModel);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{pair}")
@@ -49,7 +58,11 @@ public class PairController {
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String pair,
             @RequestBody @Valid PairUpdateDto dto) {
-        service.updatePair(pair, dto);
+
+        // Обновляем только decimal
+        Pair pairModel = new Pair(null, null, pair, dto.decimal());
+
+        service.updatePair(pairModel);
         return ResponseEntityFactory.ok(null);
     }
 
@@ -69,7 +82,17 @@ public class PairController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<PairDto>>> getAll() {
 
-        return ResponseEntityFactory.ok(service.findAll());
+        List<PairDto> dtoList = service.findAll()
+                .stream()
+                .map(p -> new PairDto(
+                        p.code1(),
+                        p.code2(),
+                        p.pair(),
+                        p.decimal()
+                ))
+                .toList();
+
+        return ResponseEntityFactory.ok(dtoList);
     }
 
 }
