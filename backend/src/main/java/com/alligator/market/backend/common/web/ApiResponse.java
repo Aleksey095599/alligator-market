@@ -1,10 +1,9 @@
-package com.alligator.market.backend.common.web.dto;
+package com.alligator.market.backend.common.web;
 
 import java.time.Instant;
 
 /**
  * Простой унифицированный конверт для любых API REST ответов.
- * Допускает расширение.
  */
 public record ApiResponse<T>(
         T data,
