@@ -1,11 +1,11 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.web;
+package com.alligator.market.backend.instrument.forex.currency_pair.web;
 
-import com.alligator.market.backend.common.web.dto.ApiResponse;
-import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairCreateDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairUpdateDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.service.PairService;
+import com.alligator.market.backend.common.web.ApiResponse;
+import com.alligator.market.backend.common.web.ResponseEntityFactory;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.service.PairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

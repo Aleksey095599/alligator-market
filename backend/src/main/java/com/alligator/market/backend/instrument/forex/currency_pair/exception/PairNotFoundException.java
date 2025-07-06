@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.exceptions;
+package com.alligator.market.backend.instrument.forex.currency_pair.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 

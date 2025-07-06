@@ -1,15 +1,15 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.service;
+package com.alligator.market.backend.instrument.forex.currency_pair.service;
 
-import com.alligator.market.backend.instruments.forex.currencies.entity.Currency;
-import com.alligator.market.backend.instruments.forex.currencies.repository.CurrencyRepository;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairCreateDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.dto.PairUpdateDto;
-import com.alligator.market.backend.instruments.forex.currency_pairs.entity.Pair;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.DuplicatePairException;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.PairCurrencyNotFoundException;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.PairNotFoundException;
-import com.alligator.market.backend.instruments.forex.currency_pairs.repository.PairRepository;
+import com.alligator.market.backend.instrument.forex.currency.entity.CurrencyEntity;
+import com.alligator.market.backend.instrument.forex.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairCurrencyNotFoundException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
+import com.alligator.market.backend.instrument.forex.currency_pair.repository.PairRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -42,9 +42,9 @@ public class PairServiceImpl implements PairService {
             throw new DuplicatePairException(pair);
         });
 
-        Currency c1 = currencyRepository.findByCode(dto.code1())
+        CurrencyEntity c1 = currencyRepository.findByCode(dto.code1())
                 .orElseThrow(() -> new PairCurrencyNotFoundException(dto.code1()));
-        Currency c2 = currencyRepository.findByCode(dto.code2())
+        CurrencyEntity c2 = currencyRepository.findByCode(dto.code2())
                 .orElseThrow(() -> new PairCurrencyNotFoundException(dto.code2()));
 
         Pair entity = new Pair();

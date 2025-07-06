@@ -1,10 +1,10 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.web;
+package com.alligator.market.backend.instrument.forex.currency_pair.web;
 
-import com.alligator.market.backend.common.web.dto.ApiResponse;
-import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.DuplicatePairException;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.PairCurrencyNotFoundException;
-import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.PairNotFoundException;
+import com.alligator.market.backend.common.web.ApiResponse;
+import com.alligator.market.backend.common.web.ResponseEntityFactory;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairCurrencyNotFoundException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

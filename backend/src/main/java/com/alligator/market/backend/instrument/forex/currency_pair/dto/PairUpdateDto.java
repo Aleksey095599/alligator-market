@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.dto;
+package com.alligator.market.backend.instrument.forex.currency_pair.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

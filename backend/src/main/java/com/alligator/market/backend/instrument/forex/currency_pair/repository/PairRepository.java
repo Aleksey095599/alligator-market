@@ -1,6 +1,6 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.repository;
+package com.alligator.market.backend.instrument.forex.currency_pair.repository;
 
-import com.alligator.market.backend.instruments.forex.currency_pairs.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
