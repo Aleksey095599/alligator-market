@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.service;
 
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEntity;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.repository.PairRepository;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsCreateDto;
@@ -46,7 +46,7 @@ public class FeedSettingsServiceImpl implements FeedSettingsService {
             throw new DuplicateSettingsException(dto.pair(), dto.provider());
         });
 
-        Pair pair = pairRepository.findByPair(dto.pair())
+        PairEntity pair = pairRepository.findByPair(dto.pair())
                 .orElseThrow(() -> new PairNotFoundException(dto.pair()));
 
         Provider provider = providerRepository.findByName(dto.provider())

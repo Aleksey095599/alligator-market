@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEntity;
 import com.alligator.market.backend.quotes.providers.list.entity.Provider;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class CcyPairFeedSettingsEntity extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "pair_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_feed_settings_pair"))
-    private Pair pair;
+    private PairEntity pair;
 
     /* Провайдер котировок (FK на provider.name) */
     @ManyToOne(optional = false)

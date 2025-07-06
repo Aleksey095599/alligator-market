@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Pair extends BaseEntity {
+public class PairEntity extends BaseEntity {
 
     /* Суррогатный PK */
     @Id

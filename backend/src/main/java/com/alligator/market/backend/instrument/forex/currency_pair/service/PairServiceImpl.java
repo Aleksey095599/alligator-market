@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.forex.currency.repository.Currenc
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairCreateDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairDto;
 import com.alligator.market.backend.instrument.forex.currency_pair.dto.PairUpdateDto;
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEntity;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairCurrencyNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
@@ -47,14 +47,14 @@ public class PairServiceImpl implements PairService {
         CurrencyEntity c2 = currencyRepository.findByCode(dto.code2())
                 .orElseThrow(() -> new PairCurrencyNotFoundException(dto.code2()));
 
-        Pair entity = new Pair();
+        PairEntity entity = new PairEntity();
         entity.setCode1(c1);
         entity.setCode2(c2);
         entity.setPair(pair);
         entity.setDecimal(dto.decimal());
 
-        Pair saved = repository.save(entity);
-        log.info("Pair {} saved with id={}", saved.getPair(), saved.getId());
+        PairEntity saved = repository.save(entity);
+        log.info("PairEntity {} saved with id={}", saved.getPair(), saved.getId());
         return saved.getPair();
     }
 
@@ -64,13 +64,13 @@ public class PairServiceImpl implements PairService {
     @Override
     public void updatePair(String pair, PairUpdateDto dto) {
 
-        Pair entity = repository.findByPair(pair)
+        PairEntity entity = repository.findByPair(pair)
                 .orElseThrow(() -> new PairNotFoundException(pair));
 
         entity.setDecimal(dto.decimal());
 
         repository.save(entity);
-        log.info("Pair {} updated (id={})", entity.getPair(), entity.getId());
+        log.info("PairEntity {} updated (id={})", entity.getPair(), entity.getId());
     }
 
     //=============
@@ -79,11 +79,11 @@ public class PairServiceImpl implements PairService {
     @Override
     public void deletePair(String pair) {
 
-        Pair entity = repository.findByPair(pair)
+        PairEntity entity = repository.findByPair(pair)
                 .orElseThrow(() -> new PairNotFoundException(pair));
 
         repository.delete(entity);
-        log.info("Pair {} deleted (id={})", entity.getPair(), entity.getId());
+        log.info("PairEntity {} deleted (id={})", entity.getPair(), entity.getId());
     }
 
     //==================

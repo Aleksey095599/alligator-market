@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.mapper;
 
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEntity;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.providers.list.entity.Provider;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class CcyPairFeedSettingsMapper {
 
     public CcyPairFeedSettingsEntity toEntity(
             com.alligator.market.domain.quotes.CcyPairFeedSettings cfg,
-            Pair pair,
+            PairEntity pair,
             Provider provider) {
         CcyPairFeedSettingsEntity entity = new CcyPairFeedSettingsEntity();
         entity.setPair(pair);
