@@ -18,6 +18,5 @@ public record PairCreateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
-
 ) {
 }
