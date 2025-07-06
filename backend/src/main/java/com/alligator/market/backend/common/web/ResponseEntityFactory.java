@@ -1,15 +1,12 @@
-package com.alligator.market.backend.common.web.util;
+package com.alligator.market.backend.common.web;
 
-import com.alligator.market.backend.common.web.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 
 /**
- * Фабрика готовых ResponseEntity<ApiResponse<?>>.
- * Позволяет легко создавать единообразные HTTP-ответы, содержащие унифицированный конверт ApiResponse<?>.
- * Позволяет централизованно добавлять новые параметры в HTTP-ответ.
+ * Фабрика готовых унифицированных HTTP-ответов, использующих конверт {@link ApiResponse}.
  */
 public final class ResponseEntityFactory {
 
@@ -17,24 +14,24 @@ public final class ResponseEntityFactory {
         // utility class – no instances
     }
 
-    /* 200 OK */
+    /* Успех: 200 OK */
     public static <T> ResponseEntity<ApiResponse<T>> ok(T data) {
         return ResponseEntity.ok(ApiResponse.build(data, "success"));
     }
 
-    /* 201 Created + Location */
+    /* Успех: частный случай - 201 Created + Location */
     public static <T> ResponseEntity<ApiResponse<T>> created(URI location, T data) {
         return ResponseEntity.created(location)
                 .body(ApiResponse.build(data, "created"));
     }
 
-    /* Стандартная ошибка */
+    /* Ошибка: общая */
     public static ResponseEntity<ApiResponse<Void>> error(HttpStatus status, String message) {
         return ResponseEntity.status(status)
                 .body(ApiResponse.build(null, message));
     }
 
-    /* Ошибка 404 Not Found (частный случай) */
+    /* Ошибка: частный случай - 404 Not Found */
     public static ResponseEntity<ApiResponse<Void>> notFound(String message) {
         return error(HttpStatus.NOT_FOUND, message);
     }

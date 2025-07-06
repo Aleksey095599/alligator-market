@@ -1,7 +1,7 @@
-package com.alligator.market.backend.instruments.forex.currency_pairs.entity;
+package com.alligator.market.backend.instrument.forex.currency_pair.entity;
 
-import com.alligator.market.backend.common.jpa.entity.BaseEntity;
-import com.alligator.market.backend.instruments.forex.currencies.entity.Currency;
+import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.instrument.forex.currency.entity.CurrencyEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -34,13 +34,13 @@ public class Pair extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "code1", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_code1"))
-    private Currency code1;
+    private CurrencyEntity code1;
 
     /* ISO-4217 код валюты-2 (FK на currency.code) */
     @ManyToOne(optional = false)
     @JoinColumn(name = "code2", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_code2"))
-    private Currency code2;
+    private CurrencyEntity code2;
 
     /* Валютная пара как code1 + code2 */
     @Pattern(regexp = "^[A-Z]{6}$")
