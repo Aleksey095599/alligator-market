@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quotes.providers.list.web;
 
-import com.alligator.market.backend.common.web.dto.ApiResponse;
-import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.ApiResponse;
+import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.quotes.providers.list.dto.ProviderCreateDto;
 import com.alligator.market.backend.quotes.providers.list.dto.ProviderDto;
 import com.alligator.market.backend.quotes.providers.list.dto.ProviderUpdateDto;

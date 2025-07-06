@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.providers.list.entity;
 
-import com.alligator.market.backend.common.jpa.entity.BaseEntity;
+import com.alligator.market.backend.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +33,7 @@ public class Provider extends BaseEntity {
     private String name;
 
     /* Базовый URL API */
-    @Column(name = "base_url", length = 255, nullable = false)
+    @Column(name = "base_url", nullable = false)
     private String baseUrl;
 
     /* Режим работы (PULL/PUSH) */
@@ -41,7 +41,7 @@ public class Provider extends BaseEntity {
     private String mode;
 
     /* API-ключ */
-    @Column(name = "api_key", length = 255, nullable = false)
+    @Column(name = "api_key", nullable = false)
     private String apiKey;
 
 }

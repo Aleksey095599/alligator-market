@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.web;
 
-import com.alligator.market.backend.common.web.dto.ApiResponse;
-import com.alligator.market.backend.common.web.util.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.ApiResponse;
+import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsCreateDto;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsDto;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsUpdateDto;

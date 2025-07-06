@@ -1,0 +1,17 @@
+package com.alligator.market.backend.instrument.forex.currency.repository;
+
+import com.alligator.market.backend.instrument.forex.currency.entity.CurrencyEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+/**
+ * Репозиторий для работы с таблицей currency.
+ */
+public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> {
+
+    Optional<CurrencyEntity> findByCode(String code);
+    Optional<CurrencyEntity> findByName(String name);
+    Optional<CurrencyEntity> findByCountry(String country);
+
+}

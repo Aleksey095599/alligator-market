@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.mapper;
 
-import com.alligator.market.backend.instruments.forex.currency_pairs.entity.Pair;
+import com.alligator.market.backend.instrument.forex.currency_pair.entity.Pair;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.entity.CcyPairFeedSettingsEntity;
 import com.alligator.market.backend.quotes.providers.list.entity.Provider;
 import org.springframework.stereotype.Component;
