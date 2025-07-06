@@ -1,8 +1,8 @@
 package com.alligator.market.backend.quotes.ccypair_feed_settings.service;
 
-import com.alligator.market.backend.currency_pairs.entity.Pair;
-import com.alligator.market.backend.currency_pairs.exceptions.PairNotFoundException;
-import com.alligator.market.backend.currency_pairs.repository.PairRepository;
+import com.alligator.market.backend.instruments.forex.currency_pairs.entity.Pair;
+import com.alligator.market.backend.instruments.forex.currency_pairs.exceptions.PairNotFoundException;
+import com.alligator.market.backend.instruments.forex.currency_pairs.repository.PairRepository;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsCreateDto;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsDto;
 import com.alligator.market.backend.quotes.ccypair_feed_settings.dto.FeedSettingsUpdateDto;
