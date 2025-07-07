@@ -9,7 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * Адаптер публикации тиков котировок в Kafka.
+ * Адаптер публикации котировок в Kafka.
  */
 @Service
 @RequiredArgsConstructor
