@@ -8,15 +8,12 @@ import com.alligator.market.domain.quotes.QuoteTick;
  */
 public interface MarketDataProvider {
 
-    // Уникальное имя провайдера
     String name();
 
-    // Режим провайдера: PULL или PUSH
     String mode();
 
-    // Метод получения рыночных данных: API_POLL,
     String method();
 
-    /* Подписка на стрим котировок указанного инструмента. */
+    // Подписка на стрим котировок указанного инструмента
     reactor.core.publisher.Flux<QuoteTick> subscribe(Instrument instrument);
 }
