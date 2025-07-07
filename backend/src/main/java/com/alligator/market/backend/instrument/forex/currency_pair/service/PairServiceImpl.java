@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEn
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.CurrencyFromPairNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.EqualCurrenciesInPairException;
 import com.alligator.market.backend.instrument.forex.currency_pair.repository.PairRepository;
 import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPairService;
@@ -38,6 +39,10 @@ public class PairServiceImpl implements CurrencyPairService {
         repository.findByPair(currencyPair.pair()).ifPresent(p -> {
             throw new DuplicatePairException(currencyPair.pair());
         });
+
+        if (currencyPair.code1().equals(currencyPair.code2())) {
+            throw new EqualCurrenciesInPairException(currencyPair.code1());
+        }
 
         CurrencyEntity c1 = currencyRepository.findByCode(currencyPair.code1())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code1()));
