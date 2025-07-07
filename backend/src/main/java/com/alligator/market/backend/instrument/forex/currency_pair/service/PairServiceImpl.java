@@ -36,10 +36,6 @@ public class PairServiceImpl implements CurrencyPairService {
     @Override
     public String createPair(CurrencyPair currencyPair) {
 
-        repository.findByPair(currencyPair.pair()).ifPresent(p -> {
-            throw new DuplicatePairException(currencyPair.pair());
-        });
-
         if (currencyPair.code1().equals(currencyPair.code2())) {
             throw new EqualCurrenciesInPairException(currencyPair.code1());
         }
@@ -48,6 +44,10 @@ public class PairServiceImpl implements CurrencyPairService {
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code1()));
         CurrencyEntity c2 = currencyRepository.findByCode(currencyPair.code2())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code2()));
+
+        repository.findByPair(currencyPair.pair()).ifPresent(p -> {
+            throw new DuplicatePairException(currencyPair.pair());
+        });
 
         PairEntity entity = new PairEntity();
         entity.setCode1(c1);
@@ -70,7 +70,7 @@ public class PairServiceImpl implements CurrencyPairService {
         PairEntity entity = repository.findByPair(currencyPair.pair())
                 .orElseThrow(() -> new PairNotFoundException(currencyPair.pair()));
 
-        // Обновляем сущность
+        // Обновляем единственный параметр, разрешенный для обновления
         entity.setDecimal(currencyPair.decimal());
 
         repository.save(entity);
