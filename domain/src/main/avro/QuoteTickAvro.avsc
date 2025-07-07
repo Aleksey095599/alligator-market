@@ -9,4 +9,4 @@
     { "name": "ts", "type": { "type": "long", "logicalType": "timestamp-millis" } },
     { "name": "provider", "type": "string" }
   ]
-}
+}\n

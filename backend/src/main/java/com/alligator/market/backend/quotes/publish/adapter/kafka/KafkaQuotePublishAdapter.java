@@ -25,7 +25,7 @@ public class KafkaQuotePublishAdapter implements QuotePublishPort {
     //==========================================
     @Override
     public void publish(QuoteTick tick) {
-        var avroTick = new QuoteTickAvro()
+        var avroTick = QuoteTickAvro.newBuilder()
                 .setPair(tick.pair())
                 .setBid(tick.bid())
                 .setAsk(tick.ask())
