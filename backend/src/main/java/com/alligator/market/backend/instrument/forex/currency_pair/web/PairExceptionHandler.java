@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Локальный обработчик исключений пакета «PairEntity».
+ * Локальный обработчик исключений валютных пар.
  * Привязан к соответствующему контроллеру.
  */
 @Slf4j

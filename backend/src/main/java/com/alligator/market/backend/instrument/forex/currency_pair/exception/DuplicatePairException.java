@@ -5,6 +5,6 @@ package com.alligator.market.backend.instrument.forex.currency_pair.exception;
  */
 public class DuplicatePairException extends RuntimeException {
     public DuplicatePairException(String pair) {
-        super("PairEntity '%s' already exists".formatted(pair));
+        super("Currency pair '%s' already exists".formatted(pair));
     }
 }
