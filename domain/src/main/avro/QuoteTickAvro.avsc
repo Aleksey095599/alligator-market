@@ -1,5 +1,5 @@
 {
-  "namespace": "com.alligator.market.domain.quote",
+  "namespace": "com.alligator.market.domain.avro",
   "type": "record",
   "name": "QuoteTickAvro",
   "fields": [
