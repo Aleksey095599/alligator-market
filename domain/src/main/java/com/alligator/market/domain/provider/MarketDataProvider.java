@@ -15,7 +15,5 @@ public interface MarketDataProvider {
 
     AccessMethod accessMethod();
 
-    String method();
-
     Flux<QuoteTick> subscribe(Instrument instrument);
 }
