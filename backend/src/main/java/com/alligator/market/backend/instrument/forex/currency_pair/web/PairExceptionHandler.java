@@ -5,6 +5,7 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.CurrencyFromPairNotFoundException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.DuplicatePairException;
 import com.alligator.market.backend.instrument.forex.currency_pair.exception.PairNotFoundException;
+import com.alligator.market.backend.instrument.forex.currency_pair.exception.EqualCurrenciesInPairException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -46,6 +47,15 @@ public class PairExceptionHandler {
             CurrencyFromPairNotFoundException ex) {
 
         log.warn("CurrencyFromPairNotFoundException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /* Валютные коды в паре совпадают. */
+    @ExceptionHandler(EqualCurrenciesInPairException.class)
+    public ResponseEntity<ApiResponse<Void>> handleEqualCurrencies(
+            EqualCurrenciesInPairException ex) {
+
+        log.warn("EqualCurrenciesInPairException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
