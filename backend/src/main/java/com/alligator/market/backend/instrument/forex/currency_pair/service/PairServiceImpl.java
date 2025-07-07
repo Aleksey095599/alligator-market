@@ -108,7 +108,7 @@ public class PairServiceImpl implements CurrencyPairService {
                 ))
                 .toList();
 
-        log.debug("Found {} pairs", result.size());
+        log.debug("Found {} currency pairs", result.size());
         return result;
     }
 }
