@@ -26,13 +26,13 @@ public class KafkaQuotePublishAdapter implements QuotePublishPort {
     @Override
     public void publish(QuoteTick tick) {
         var avroTick = QuoteTickAvro.newBuilder()
-                .setPair(tick.pair())
+                .setSymbol(tick.symbol())
                 .setBid(tick.bid())
                 .setAsk(tick.ask())
                 .setTs(tick.ts())
                 .setProvider(tick.provider())
                 .build();
-        template.send(TOPIC, tick.pair(), avroTick);
+        template.send(TOPIC, tick.symbol(), avroTick);
         log.debug("Tick {} sent to Kafka", avroTick);
     }
 }
