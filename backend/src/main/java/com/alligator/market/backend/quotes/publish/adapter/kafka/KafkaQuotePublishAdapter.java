@@ -1,5 +1,6 @@
 package com.alligator.market.backend.quotes.publish.adapter.kafka;
 
+import com.alligator.market.domain.avro.QuoteTickAvro;
 import com.alligator.market.domain.quotes.QuoteTick;
 import com.alligator.market.domain.quotes.ports.QuotePublishPort;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +18,14 @@ public class KafkaQuotePublishAdapter implements QuotePublishPort {
 
     private static final String TOPIC = "ticks.raw";
 
-    private final KafkaTemplate<String, com.alligator.market.domain.avro.quotes.stream.QuoteTick> template;
+    private final KafkaTemplate<String, QuoteTickAvro> template;
 
     //==========================================
     // Опубликовать тик котировки в топике Kafka
     //==========================================
     @Override
     public void publish(QuoteTick tick) {
-        var avroTick = com.alligator.market.domain.avro.quotes.stream.QuoteTick.newBuilder()
+        var avroTick = new QuoteTickAvro()
                 .setPair(tick.pair())
                 .setBid(tick.bid())
                 .setAsk(tick.ask())
