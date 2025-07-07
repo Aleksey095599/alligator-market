@@ -5,7 +5,7 @@ import java.time.Instant;
 
 /**
  * Модель тика котировки для валютной пары.
- * Аналогична Avro-схеме {@link com.alligator.market.domain.avro.quotes.stream.QuoteTick Avro QuoteTick}.
+ * Аналогична Avro-схеме {@link com.alligator.market.domain.avro.QuoteTickAvro QuoteTickAvro}.
  */
 public record QuoteTick(
 
