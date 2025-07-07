@@ -14,5 +14,4 @@ public record QuoteTick(
         BigDecimal ask,
         Instant ts,
         String provider
-
 ) {}
