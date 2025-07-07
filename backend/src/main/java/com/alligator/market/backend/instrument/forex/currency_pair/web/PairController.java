@@ -63,7 +63,7 @@ public class PairController {
             @PathVariable String pair,
             @RequestBody @Valid PairUpdateDto dto) {
         
-        // Формируем урезанную (но достаточную) модель валютной пары из входных параметров
+        // Формируем урезанную модель валютной пары для обновления единственного параметра
         CurrencyPair currencyPair = new CurrencyPair(null,null, pair, dto.decimal());
 
         service.updatePair(currencyPair);
