@@ -9,7 +9,6 @@ import java.time.Instant;
  */
 public record QuoteTick(
 
-        /* Символ (валютная пара или другой инструмент). */
         String symbol,
         BigDecimal bid,
         BigDecimal ask,
