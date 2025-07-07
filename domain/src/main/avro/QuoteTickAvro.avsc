@@ -1,7 +1,7 @@
 {
-  "namespace": "com.alligator.market.domain.avro.quotes.stream",
+  "namespace": "com.alligator.market.domain.quote",
   "type": "record",
-  "name": "QuoteTick",
+  "name": "QuoteTickAvro",
   "fields": [
     { "name": "pair", "type": "string" },
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
