@@ -6,11 +6,12 @@ import reactor.core.publisher.Flux;
 
 /**
  * Единый контракт адаптера для всех провайдеров рыночных данных.
+ * Содержит статические параметры и метод для подписки на поток котировок.
  */
 public interface MarketDataProvider {
 
     // Уникальный код провайдера
-    String code();
+    String providerCode();
 
     // Режим доставки рыночных данных провайдера (PULL или PUSH)
     DeliveryMode deliveryMode();
