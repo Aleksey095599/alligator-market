@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.forex.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.quotes.QuoteTick;
+import com.alligator.market.domain.quote.QuoteTick;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
