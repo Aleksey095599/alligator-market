@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * Адаптер провайдера TwelveData (free plan).
+ * Реализация адаптера провайдера TwelveData (free plan).
  */
 @Component
 public class TwelveFreeAdapter2 implements MarketDataProvider {
