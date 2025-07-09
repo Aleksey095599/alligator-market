@@ -10,18 +10,18 @@ import reactor.core.publisher.Flux;
  */
 public interface MarketDataProvider {
 
-    // Уникальный код провайдера
+    /** Уникальный код провайдера */
     String providerCode();
 
-    // Режим доставки рыночных данных провайдера (PULL или PUSH)
+    /** Режим доставки рыночных данных провайдера (PULL или PUSH) */
     DeliveryMode deliveryMode();
 
-    // Метод доступа к рыночным данным провайдера (API_POLL, WEBSOCKET и другие)
+    /** Метод доступа к рыночным данным провайдера (API_POLL, WEBSOCKET и другие) */
     AccessMethod accessMethod();
-    
-    // Возможность массовой подписки на рыночные данные для нескольких инструментов
+
+    /** Возможность массовой подписки на рыночные данные для нескольких инструментов */
     boolean supportsBulkSubscription();
 
-    // Подписка на получение рыночных данных для указанного инструмента
+    /** Подписка на получение рыночных данных для указанного инструмента */
     Flux<QuoteTick> subscribe(Instrument instrument);
 }
