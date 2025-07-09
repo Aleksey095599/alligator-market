@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @EnableScheduling
-@ConfigurationPropertiesScan("com.alligator.market.backend.provider")
+@ConfigurationPropertiesScan("com.alligator.market")
 public class BackendApplication {
 
     public static void main(String[] args) {
