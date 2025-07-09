@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config;
+package com.alligator.market.backend.config.time;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
