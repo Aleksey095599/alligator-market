@@ -19,7 +19,7 @@ public class TwelveFreeAdapter2 implements MarketDataProvider {
 
     @Override
     public String providerCode() {
-        return "twelve-free";
+        return "TWELVE_FREE_PLAN";
     }
 
     @Override
@@ -28,9 +28,7 @@ public class TwelveFreeAdapter2 implements MarketDataProvider {
     }
 
     @Override
-    public AccessMethod accessMethod() {
-        return AccessMethod.API_POLL;
-    }
+    public AccessMethod accessMethod() { return AccessMethod.API_POLL; }
 
     @Override
     public boolean supportsBulkSubscription() {
