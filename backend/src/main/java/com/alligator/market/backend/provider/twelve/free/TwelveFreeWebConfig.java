@@ -22,11 +22,9 @@ public class TwelveFreeWebConfig {
     // Конструктор
     public TwelveFreeWebConfig(
             TwelveFreeProps props,
-            @Qualifier("providerHttpClient") // Инжектируем общий для всех провайдеров http-клиент
-            HttpClient httpClient,
+            @Qualifier("providerHttpClient") HttpClient httpClient, // Инжектируем общий http-клиент
             BuildProperties build
-    )
-    {
+    ) {
         this.props = props;
         this.httpClient = httpClient;
         this.build = build;
