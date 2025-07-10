@@ -17,7 +17,7 @@ public class ProviderHttpConfigGlobal {
 
     /**
      * Общий для всех провайдеров HTTP-клиент, поверх которого могут быть реализованы более высокоуровневые
-     * сетевые абстракции, например, web-клиент.
+     * сетевые абстракции, например, web-клиент. Использует общий для всех провайдеров пул TCP-соединений.
      */
     @Bean("providerHttpClient")
     public HttpClient providerHttpClient(@Qualifier("providerConnectionPool") ConnectionProvider cp) {
