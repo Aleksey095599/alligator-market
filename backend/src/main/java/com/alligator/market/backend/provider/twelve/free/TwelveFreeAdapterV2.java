@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.twelve.free;
 
-import com.alligator.market.domain.instrument.forex.Instrument;
+import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
@@ -15,7 +15,7 @@ import java.time.Instant;
  * Реализация адаптера провайдера TwelveData (free plan).
  */
 @Component
-public class TwelveFreeAdapter2 implements MarketDataProvider {
+public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     @Override
     public String providerCode() {
@@ -36,7 +36,7 @@ public class TwelveFreeAdapter2 implements MarketDataProvider {
     }
 
     @Override
-    public Flux<QuoteTick> subscribe(Instrument instrument) {
+    public Flux<QuoteTick> streamQuotes(Instrument instrument) {
         return Flux.interval(java.time.Duration.ofSeconds(10))
                 .map(seq -> new QuoteTick(
                         instrument.symbol(),
