@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider;
 
-import com.alligator.market.domain.instrument.forex.Instrument;
+import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
@@ -8,6 +8,10 @@ import reactor.core.publisher.Flux;
  * Единый контракт адаптера для всех провайдеров рыночных данных.
  */
 public interface MarketDataProvider {
+
+    //-----------------------
+    // Статические метаданные
+    //-----------------------
 
     /* Уникальный код провайдера */
     String providerCode();
@@ -21,6 +25,12 @@ public interface MarketDataProvider {
     /* Возможность массовой подписки на рыночные данные для нескольких инструментов */
     boolean supportsBulkSubscription();
 
-    /* Подписка на получение рыночных данных для указанного инструмента */
-    Flux<QuoteTick> subscribe(Instrument instrument);
+    //=====================
+    // Runtime Data Streams
+    //=====================
+
+    /**
+     * Поток котировок для заданного инструмента.
+     */
+    Flux<QuoteTick> streamQuotes(Instrument instrument);
 }
