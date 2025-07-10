@@ -10,7 +10,7 @@ import reactor.netty.http.client.HttpClient;
 
 /**
  * Конфигурационный класс, который создает и настраивает WebClient для работы с API TwelveData.
- * Использует общий для всех провайдеров HTTP-клиент и частные настройки из TwelveFreeProps.
+ * Использует общий для всех провайдеров HTTP-клиент и частные настройки провайдера.
  */
 @Configuration
 public class TwelveFreeWebConfig {
@@ -19,10 +19,10 @@ public class TwelveFreeWebConfig {
     private final HttpClient httpClient;
     private final BuildProperties build;
 
-    // Конструктор
+    // Конструктор с инжекцией общего http-клиента для всех провайдеров
     public TwelveFreeWebConfig(
             TwelveFreeProps props,
-            @Qualifier("providerHttpClient") HttpClient httpClient, // Инжектируем общий http-клиент
+            @Qualifier("providerHttpClient") HttpClient httpClient,
             BuildProperties build
     ) {
         this.props = props;
@@ -30,7 +30,9 @@ public class TwelveFreeWebConfig {
         this.build = build;
     }
 
-    // Строим бин web-клиента
+    /**
+     * Строим бин web-клиента для провайдера TwelveData.
+     */
     @Bean("twelveFreeWebClient")
     WebClient twelveFreeWebClient() {
 
