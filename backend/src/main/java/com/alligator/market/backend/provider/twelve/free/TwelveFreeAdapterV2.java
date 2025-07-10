@@ -23,7 +23,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private final TwelveFreeProps props;
     private final WebClient webClient;
 
-    // Конструктор
+    /* Конструктор */
     public TwelveFreeAdapterV2(
             TwelveFreeProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient // инжектируем web-клиент для TwelveData
@@ -49,7 +49,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /**
      * Метод реализует поток котировок для заданного провайдера: обращается к соответствущему endpoint
-     * провайдера, возвращает цену и приводит к модели тика котировки.
+     * провайдера, возвращает цену и преобразует к модели тика котировки.
      */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
@@ -65,7 +65,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 .flux();
     }
 
-    
+    /* Вспомогательный метод преобразования ответа провайдера к модели тика котировки */
     private QuoteTick jsonToTick(JsonNode json) {
         BigDecimal price = new BigDecimal(json.get("price").asText());
         return new QuoteTick(
