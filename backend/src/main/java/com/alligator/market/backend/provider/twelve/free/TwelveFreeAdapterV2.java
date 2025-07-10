@@ -5,7 +5,10 @@ import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.quote.QuoteTick;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
@@ -17,32 +20,60 @@ import java.time.Instant;
 @Component
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    @Override
-    public String providerCode() {
+    private final TwelveFreeProps props;
+    private final WebClient webClient;
+
+    // Конструктор
+    public TwelveFreeAdapterV2(
+            TwelveFreeProps props,
+            @Qualifier("twelveFreeWebClient") WebClient webClient // инжектируем web-клиент для TwelveData
+    ) {
+        this.props = props;
+        this.webClient = webClient;
+    }
+
+    // Статические метаданные
+    @Override public String providerCode() {
         return "TWELVE_FREE_PLAN";
     }
-
-    @Override
-    public DeliveryMode deliveryMode() {
+    @Override public DeliveryMode deliveryMode() {
         return DeliveryMode.PULL;
     }
-
-    @Override
-    public AccessMethod accessMethod() { return AccessMethod.API_POLL; }
-
-    @Override
-    public boolean supportsBulkSubscription() {
+    @Override public AccessMethod accessMethod() {
+        return AccessMethod.API_POLL;
+    }
+    @Override public boolean supportsBulkSubscription() {
         return false;
     }
 
+
+    /**
+     * Метод реализует поток котировок для заданного провайдера: обращается к соответствущему endpoint
+     * провайдера, возвращает цену и приводит к модели тика котировки.
+     */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
-        return Flux.interval(java.time.Duration.ofSeconds(10))
-                .map(seq -> new QuoteTick(
-                        instrument.symbol(),
-                        BigDecimal.valueOf(1.1 + seq * 0.0001),
-                        BigDecimal.valueOf(1.1002 + seq * 0.0001),
-                        Instant.now(),
-                        providerCode()));
+
+        return webClient.get()
+                .uri(uri -> uri.path("/price")
+                        .queryParam("symbol", instrument.symbol())
+                        .queryParam("apikey", props.apiKey())
+                        .build())
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .map(this::jsonToTick)
+                .flux();
+    }
+
+    
+    private QuoteTick jsonToTick(JsonNode json) {
+        BigDecimal price = new BigDecimal(json.get("price").asText());
+        return new QuoteTick(
+                json.get("symbol").asText(),
+                price,
+                price,
+                Instant.now(),
+                providerCode()
+        );
     }
 }
