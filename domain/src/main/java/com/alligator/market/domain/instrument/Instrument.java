@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.forex;
+package com.alligator.market.domain.instrument;
 
 /**
  * Простая модель финансового инструмента.
