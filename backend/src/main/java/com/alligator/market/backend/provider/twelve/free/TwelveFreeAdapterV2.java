@@ -36,7 +36,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         this.webClient = webClient;
     }
 
+    //=======================
     // Статические метаданные
+    //=======================
+
     @Override public String providerCode() {
         return "TWELVE_FREE_PLAN";
     }
@@ -50,9 +53,12 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return false;
     }
 
+    //=====================
+    // Runtime Data Streams
+    //=====================
+
     /**
-     * Метод реализует поток котировок для заданного провайдера: обращается к соответствущему endpoint
-     * провайдера, возвращает цену, преобразует цену от провайдера к модели тика котировки.
+     * Поток котировок для заданного инструмента от провайдера TwelveData (free plan).
      */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
@@ -71,6 +77,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 .map(this::jsonToTick)
                 .flux();
     }
+
+    //-----------------------
+    // Вспомогательные методы
+    //-----------------------
 
     /* Вспомогательный метод преобразования ответа провайдера к модели тика котировки */
     private QuoteTick jsonToTick(JsonNode json) {
