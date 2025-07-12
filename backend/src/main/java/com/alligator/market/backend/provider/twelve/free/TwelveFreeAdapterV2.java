@@ -64,8 +64,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 .build()
                 .toUri();
 
-        log.debug("→ GET {}", uri);
-
         return webClient.get()
                 .uri(uri)
                 .retrieve()
