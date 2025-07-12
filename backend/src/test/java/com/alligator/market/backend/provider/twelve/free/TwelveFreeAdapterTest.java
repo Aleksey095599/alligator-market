@@ -4,9 +4,11 @@ import com.alligator.market.domain.instrument.Instrument;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import reactor.test.StepVerifier;
 
 @SpringBootTest
+@TestPropertySource("classpath:application.properties")
 public class TwelveFreeAdapterTest {
 
     @Autowired
