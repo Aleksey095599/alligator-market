@@ -53,9 +53,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return false;
     }
 
-    //=====================
-    // Runtime Data Streams
-    //=====================
+    //===========================
+    // Динамические потоки данных
+    //===========================
 
     /**
      * Поток котировок для заданного инструмента от провайдера TwelveData (free plan).
