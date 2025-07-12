@@ -6,10 +6,13 @@ import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -18,6 +21,7 @@ import java.time.Instant;
  * Реализация адаптера провайдера TwelveData (free plan).
  */
 @Component
+@Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     private final TwelveFreeProps props;
@@ -59,8 +63,13 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                         .queryParam("apikey", props.apiKey())
                         .build())
                 .retrieve()
+                .onStatus(HttpStatus::isError, resp -> resp.bodyToMono(String.class)
+                        .flatMap(body -> Mono.error(new IllegalStateException(
+                                "HTTP " + resp.statusCode() + ": " + body))))
                 .bodyToMono(JsonNode.class)
+                .map(this::validate)
                 .map(this::jsonToTick)
+                .doOnError(e -> log.error("Failed to fetch quote for {}", instrument.symbol(), e))
                 .flux();
     }
 
@@ -76,5 +85,16 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 Instant.now(),
                 providerCode()
         );
+    }
+
+    /* Проверка ответа провайдера и возврат JsonNode с ценой */
+    private JsonNode validate(JsonNode json) {
+        if (json.hasNonNull("code") && json.has("message")) {
+            throw new IllegalStateException("Provider error: " + json.get("message").asText());
+        }
+        if (!json.hasNonNull("price")) {
+            throw new IllegalStateException("Missing price field");
+        }
+        return json;
     }
 }
