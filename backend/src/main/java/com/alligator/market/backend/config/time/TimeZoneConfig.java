@@ -8,7 +8,6 @@ import java.util.TimeZone;
 
 /**
  * Конфигурация временной зоны приложения.
- * Используем локальное время сервера для всего приложения.
  */
 @Configuration
 public class TimeZoneConfig {
@@ -16,6 +15,9 @@ public class TimeZoneConfig {
     @Value("${app.time-zone:UTC}")
     private String timeZone;
 
+    /**
+     * Устанавливает временную зону приложения на основе значения из конфигурации.
+     */
     @PostConstruct
     public void init() {
         TimeZone tz = TimeZone.getTimeZone(timeZone);
