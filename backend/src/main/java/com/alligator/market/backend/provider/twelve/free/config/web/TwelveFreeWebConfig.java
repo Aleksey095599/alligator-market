@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.twelve.free.web;
+package com.alligator.market.backend.provider.twelve.free.config.web;
 
-import com.alligator.market.backend.provider.twelve.free.TwelveFreeProps;
+import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeConnectionProps;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +16,13 @@ import reactor.netty.http.client.HttpClient;
 @Configuration
 public class TwelveFreeWebConfig {
 
-    private final TwelveFreeProps props;
+    private final TwelveFreeConnectionProps props;
     private final HttpClient httpClient;
     private final BuildProperties build;
 
     // Конструктор с инжекцией общего http-клиента для всех провайдеров
     public TwelveFreeWebConfig(
-            TwelveFreeProps props,
+            TwelveFreeConnectionProps props,
             @Qualifier("providerHttpClient") HttpClient httpClient,
             BuildProperties build
     ) {
@@ -37,12 +37,12 @@ public class TwelveFreeWebConfig {
     @Bean("twelveFreeWebClient")
     WebClient twelveFreeWebClient() {
 
-        String ua = build.getName() + "/" + build.getVersion();
+        String userAgent = build.getName() + "/" + build.getVersion();
 
         return WebClient.builder()
                 .baseUrl(props.baseUrl())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .defaultHeader("User-Agent", ua)
+                .defaultHeader("User-Agent", userAgent)
                 .build();
     }
 }
