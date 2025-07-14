@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.twelve.free;
+package com.alligator.market.backend.provider.twelve.free.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Считываются из настроек приложения.
  */
 @ConfigurationProperties("provider.connection-config.twelve-free")
-public record TwelveFreeProps (
+public record TwelveFreeConnectionProps(
 
         String baseUrl,
         String apiKey
