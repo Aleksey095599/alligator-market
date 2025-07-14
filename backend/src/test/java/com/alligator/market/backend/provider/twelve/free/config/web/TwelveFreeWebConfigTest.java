@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.twelve.free.web;
+package com.alligator.market.backend.provider.twelve.free.config.web;
 
 import com.alligator.market.backend.config.http.ProviderHttpConfigGlobal;
-import com.alligator.market.backend.provider.twelve.free.TwelveFreeProps;
+import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeConnectionProps;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,20 +28,18 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 @SpringBootTest(classes = {
         ProviderHttpConfigGlobal.class,
-        TwelveFreeWebConfig.class
+        TwelveFreeWebConfig.class,
+        TwelveFreeWebConfigTest.BuildPropsStub.class
 })
-@EnableConfigurationProperties(TwelveFreeProps.class)
+@EnableConfigurationProperties(TwelveFreeConnectionProps.class)
 class TwelveFreeWebConfigTest {
 
-    /*
-     * Мини-конфигурация, подменяющая отсутствующий в тестовом контексте бин
-     * BuildProperties (Spring Boot создаёт его только при наличии build-info).
-     */
+    /* Мини-конфигурация, подменяющая отсутствующий в тестовом контексте бин BuildProperties. */
     @TestConfiguration
     static class BuildPropsStub {
         @Bean
         BuildProperties buildProperties() {
-            // Двух полей «name» и «version» достаточно для любых toString() / header-log’ов
+            // Двух полей «name» и «version» достаточно
             Properties p = new Properties();
             p.put("name", "alligator-test");
             p.put("version", "0.0.0-SNAPSHOT");
@@ -54,10 +52,15 @@ class TwelveFreeWebConfigTest {
     WebClient client;
 
     @Test
-    void baseUrlIsBound() {
-        // --> «Подсматриваем» приватное поле baseUrl через ReflectionTestUtils
-        String baseUrl = (String) ReflectionTestUtils.getField(client, "baseUrl");
+    void beanCreated() {
+        // Проверяем что client ненулевой
+        assertNotNull(client);
+    }
 
+    @Test
+    void baseUrlIsBound() {
+        // «Подсматриваем» приватное поле baseUrl через ReflectionTestUtils
+        String baseUrl = (String) ReflectionTestUtils.getField(client, "baseUrl");
         assertEquals("https://api.test/mock", baseUrl,
                 "WebClient should contain baseUrl taken from application properties");
     }
