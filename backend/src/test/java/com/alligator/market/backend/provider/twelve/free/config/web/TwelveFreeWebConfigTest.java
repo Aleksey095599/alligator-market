@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Проверяем, что бин "twelveFreeWebClient" успешно создается и внедряется в контекст Spring и использует
+ * Проверяем, что бин "twelveFreeWebClient" успешно создается, внедряется в контекст Spring и подтягивает
  * корректный base-url.
  */
 @TestPropertySource(properties = {
