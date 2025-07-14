@@ -32,15 +32,19 @@ class TwelveFreeAdapterSmokeTest {
 
     private static MockWebServer server;
 
-    // После окончания тестов закрываем сервер
+    /* Закрываем заглушку после выполнения всех тестов */
     @AfterAll
-    static void stop() throws Exception {
+    static void stop() throws IOException {
         server.close();
     }
 
-    // Подменяем base-url и api-key только для этого тестового контекста
+    /*
+     * Запускаем MockWebServer и подменяем свойства подключения.
+     * Таким образом, адаптер будет общаться не с реальным API,
+     * а с локальной заглушкой.
+     */
     @DynamicPropertySource
-    static void overrideBaseUrl(DynamicPropertyRegistry reg) throws Exception {
+    static void overrideBaseUrl(DynamicPropertyRegistry reg) throws IOException {
         server = new MockWebServer();
         server.start();
         reg.add("provider.connection-config.twelve-free.base-url",
@@ -52,15 +56,20 @@ class TwelveFreeAdapterSmokeTest {
     @Autowired
     TwelveFreeAdapterV2 adapter;
 
+    /*
+     * Основной smoke-тест.
+     * Проверяем, что адаптер формирует корректный запрос
+     * и правильно парсит полученную цену.
+     */
     @Test
-    void shouldHitCorrectEndpointAndParsePrice() throws Exception {
+    void shouldHitCorrectEndpointAndParsePrice() throws IOException, InterruptedException {
 
-        // 1. Заглушка отдаёт цену 1.1087
+        // --- 1. Заглушка отдаёт фиксированный ответ ---
         server.enqueue(new MockResponse()
                 .setBody("{\"price\":\"1.1087\",\"symbol\":\"EUR/USD\"}")
                 .addHeader("Content-Type", "application/json"));
 
-        // 2. Вызываем адаптер (Mono/Flux — неважно; здесь Mono для краткости)
+        // --- 2. Запрашиваем котировки через адаптер ---
         StepVerifier.create(adapter.streamQuotes(new Instrument("EUR/USD")))
                 .assertNext(q -> {
                     assertEquals("EUR/USD", q.symbol());
@@ -69,9 +78,10 @@ class TwelveFreeAdapterSmokeTest {
                 })
                 .verifyComplete();
 
-        // 3. Проверяем, что реально ушли по нужному пути
+        // --- 3. Проверяем путь вызова ---
         RecordedRequest rq = server.takeRequest();
+        String actualPath = rq.getRequestUrl().encodedPath() + "?" + rq.getRequestUrl().encodedQuery();
         assertEquals("/price?symbol=EUR%2FUSD&apikey=2b8e2659372340d5b922cd6b8d6d2cb2",
-                rq.getPath());
+                actualPath);
     }
 }
