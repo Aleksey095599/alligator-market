@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Считываются из настроек приложения.
  */
 @ConfigurationProperties("provider.connection-config.twelve-free")
-public record TwelveFreeConnectionProps(
+public record TwelveFreeProps(
 
         String baseUrl,
         String apiKey
