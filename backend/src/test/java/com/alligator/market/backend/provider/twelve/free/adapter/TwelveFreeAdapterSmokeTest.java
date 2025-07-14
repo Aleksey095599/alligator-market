@@ -3,9 +3,9 @@ package com.alligator.market.backend.provider.twelve.free.adapter;
 import com.alligator.market.backend.config.http.ProviderHttpConfigGlobal;
 import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
 import com.alligator.market.backend.provider.twelve.free.config.web.TwelveFreeWebConfig;
-import mockwebserver3.MockResponse;
-import mockwebserver3.MockWebServer;
-import mockwebserver3.RecordedRequest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -70,7 +70,7 @@ class TwelveFreeAdapterSmokeTest {
                 .setBody("{\"price\":\"1.1688\"}")
                 .setHeader("Content-Type", "application/json"));
 
-        // --- 2. Запрашиваем котировки через адаптер ---
+        // Запрашиваем котировку через адаптер и проверяем корректность полученного объекта QuoteTick
         StepVerifier.create(adapter.streamQuotes(new Instrument("EUR/USD")))
                 .assertNext(q -> {
                     assertEquals("EUR/USD", q.symbol());
