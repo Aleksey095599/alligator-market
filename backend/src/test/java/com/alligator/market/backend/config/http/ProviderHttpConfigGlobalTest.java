@@ -26,7 +26,6 @@ class ProviderHttpConfigGlobalTest {
 
     @Test
     void beansCreated() {
-
         // Проверяем что pool и httpClient ненулевые
         assertNotNull(pool);
         assertNotNull(httpClient);
