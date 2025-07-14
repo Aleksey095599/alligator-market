@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.twelve.free.adapter;
 
-import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
@@ -25,12 +25,12 @@ import java.time.Instant;
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    private final TwelveFreeConnectionProps props;
+    private final TwelveFreeProps props;
     private final WebClient webClient;
 
     /* Конструктор с инжекцией web-клиента для TwelveData */
     public TwelveFreeAdapterV2(
-            TwelveFreeConnectionProps props,
+            TwelveFreeProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         this.props = props;
