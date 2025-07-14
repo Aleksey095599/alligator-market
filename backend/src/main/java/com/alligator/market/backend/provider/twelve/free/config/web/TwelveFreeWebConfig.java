@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.twelve.free.config.web;
 
-import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,12 @@ import reactor.netty.http.client.HttpClient;
 @Configuration
 public class TwelveFreeWebConfig {
 
-    private final TwelveFreeConnectionProps props;
+    private final TwelveFreeProps props;
     private final HttpClient httpClient;
 
     // Конструктор с инжекцией общего http-клиента для всех провайдеров
     public TwelveFreeWebConfig(
-            TwelveFreeConnectionProps props,
+            TwelveFreeProps props,
             @Qualifier("providerHttpClient") HttpClient httpClient
     ) {
         this.props = props;
