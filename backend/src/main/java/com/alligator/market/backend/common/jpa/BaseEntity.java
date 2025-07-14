@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 
 /**
- * Родительский класс для всех entity.
+ * Родительский класс для всех entity в проекте.
  * Содержит поля для отслеживания изменений и управления версиями.
  */
 @MappedSuperclass
@@ -39,5 +39,4 @@ public abstract class BaseEntity {
 
     @LastModifiedBy
     private String updatedBy;
-
 }
