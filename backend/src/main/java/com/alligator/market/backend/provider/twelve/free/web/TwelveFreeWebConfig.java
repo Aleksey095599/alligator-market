@@ -1,5 +1,6 @@
-package com.alligator.market.backend.provider.twelve.free;
+package com.alligator.market.backend.provider.twelve.free.web;
 
+import com.alligator.market.backend.provider.twelve.free.TwelveFreeProps;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
