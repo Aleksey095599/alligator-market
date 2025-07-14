@@ -16,6 +16,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import com.alligator.market.domain.instrument.Instrument;
@@ -34,7 +35,7 @@ class TwelveFreeAdapterSmokeTest {
 
     /* Закрываем заглушку после выполнения всех тестов */
     @AfterAll
-    static void stop() throws IOException {
+    static void stop() {
         server.close();
     }
 
@@ -48,7 +49,7 @@ class TwelveFreeAdapterSmokeTest {
         server = new MockWebServer();
         server.start();
         reg.add("provider.connection-config.twelve-free.base-url",
-                () -> server.url("/").toString());
+                () -> server.url("/").toString()); // Пример - http://localhost:51423/
         reg.add("provider.connection-config.twelve-free.api-key",
                 () -> "2b8e2659372340d5b922cd6b8d6d2cb2");
     }
@@ -64,10 +65,10 @@ class TwelveFreeAdapterSmokeTest {
     @Test
     void shouldHitCorrectEndpointAndParsePrice() throws IOException, InterruptedException {
 
-        // --- 1. Заглушка отдаёт фиксированный ответ ---
+        // Формируем ответ виртуального сервера-заглушки
         server.enqueue(new MockResponse()
-                .setBody("{\"price\":\"1.1087\",\"symbol\":\"EUR/USD\"}")
-                .addHeader("Content-Type", "application/json"));
+                .setBody("{\"price\":\"1.1688\"}")
+                .setHeader("Content-Type", "application/json"));
 
         // --- 2. Запрашиваем котировки через адаптер ---
         StepVerifier.create(adapter.streamQuotes(new Instrument("EUR/USD")))
