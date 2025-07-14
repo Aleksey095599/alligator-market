@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.twelve.free.config.web;
 
 import com.alligator.market.backend.config.http.ProviderHttpConfigGlobal;
-import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
         ProviderHttpConfigGlobal.class,
         TwelveFreeWebConfig.class
 })
-@EnableConfigurationProperties(TwelveFreeConnectionProps.class)
+@EnableConfigurationProperties(TwelveFreeProps.class)
 class TwelveFreeWebConfigTest {
 
     @Autowired
