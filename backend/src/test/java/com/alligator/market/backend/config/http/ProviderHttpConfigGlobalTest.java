@@ -10,8 +10,7 @@ import reactor.netty.resources.ConnectionProvider;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Тест проверяет корректность создания и настройки бинов для HTTP-соединений.
- * Проверяется, что бины ConnectionProvider и HttpClient успешно создаются
+ * Тест проверяет что бин "providerHttpClient" и бин "providerConnectionPool" успешно создаются
  * и внедряются в контекст Spring.
  */
 @SpringBootTest(classes = ProviderHttpConfigGlobal.class)
