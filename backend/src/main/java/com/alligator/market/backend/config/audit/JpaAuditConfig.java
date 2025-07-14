@@ -19,7 +19,6 @@ public class JpaAuditConfig {
         // TODO: временное решение, в дальнейшем брать из контекста Spring Security
         return () -> Optional.of("dev_admin");
     }
-
 }
 
 
