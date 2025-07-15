@@ -31,18 +31,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TwelveFreeAdapterSmokeTest {
 
+    // Создаем mock-сервер
     private static MockWebServer server;
-
-    /* Закрываем заглушку после выполнения всех тестов */
+    // Закрываем mock-сервер после выполнения всех тестов
     @AfterAll
-    static void stop() {
+    static void stop() throws IOException {
         server.close();
     }
 
     /*
-     * Запускаем MockWebServer и подменяем свойства подключения.
-     * Таким образом, адаптер будет общаться не с реальным API,
-     * а с локальной заглушкой.
+     * Запускаем MockWebServer и динамически подменяем свойства подключения:
+     * вместо реального адреса https://api.twelvedata.com/price ставим адрес mock-сервера,
+     * api-key оставляем как есть.
      */
     @DynamicPropertySource
     static void overrideBaseUrl(DynamicPropertyRegistry reg) throws IOException {
@@ -63,7 +63,7 @@ class TwelveFreeAdapterSmokeTest {
      * и правильно преобразует полученный ответ в объект QuoteTick.
      */
     @Test
-    void shouldHitCorrectEndpointAndParsePrice() throws IOException, InterruptedException {
+    void shouldHitCorrectEndpointAndParsePrice() throws InterruptedException {
 
         // Формируем ответ виртуального сервера-заглушки
         server.enqueue(new MockResponse()
