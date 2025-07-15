@@ -49,7 +49,10 @@ class TwelveFreeAdapterSmokeTest {
         server = new MockWebServer();
         server.start();
         reg.add("provider.connection-config.twelve-free.base-url",
-                () -> server.url("/").toString()); // Пример - http://localhost:51423/
+                () -> {
+                    String base = server.url("/").toString();
+                    return base.substring(0, base.length() - 1);
+                }); // Пример - http://localhost:51423
         reg.add("provider.connection-config.twelve-free.api-key",
                 () -> "2b8e2659372340d5b922cd6b8d6d2cb2");
     }
