@@ -60,7 +60,7 @@ class TwelveFreeAdapterSmokeTest {
     /*
      * Основной smoke-тест.
      * Проверяем, что адаптер формирует корректный запрос
-     * и правильно парсит полученную цену.
+     * и правильно преобразует полученный ответ в объект QuoteTick.
      */
     @Test
     void shouldHitCorrectEndpointAndParsePrice() throws IOException, InterruptedException {
@@ -70,19 +70,20 @@ class TwelveFreeAdapterSmokeTest {
                 .setBody("{\"price\":\"1.1688\"}")
                 .setHeader("Content-Type", "application/json"));
 
+        // Проверка пути запроса котировки
+        RecordedRequest rq = server.takeRequest();
+        String actualPath = rq.getRequestUrl().encodedPath() + "?" + rq.getRequestUrl().encodedQuery();
+        assertEquals("/price?symbol=EUR%2FUSD&apikey=2b8e2659372340d5b922cd6b8d6d2cb2",
+                actualPath);
+
         // Запрашиваем котировку через адаптер и проверяем корректность полученного объекта QuoteTick
         StepVerifier.create(adapter.streamQuotes(new Instrument("EUR/USD")))
                 .assertNext(q -> {
                     assertEquals("EUR/USD", q.symbol());
                     assertEquals(new BigDecimal("1.1087"), q.bid());
                     assertEquals(new BigDecimal("1.1087"), q.ask());
+                    assertEquals("TWELVE_FREE_PLAN", q.provider());
                 })
                 .verifyComplete();
-
-        // --- 3. Проверяем путь вызова ---
-        RecordedRequest rq = server.takeRequest();
-        String actualPath = rq.getRequestUrl().encodedPath() + "?" + rq.getRequestUrl().encodedQuery();
-        assertEquals("/price?symbol=EUR%2FUSD&apikey=2b8e2659372340d5b922cd6b8d6d2cb2",
-                actualPath);
     }
 }
