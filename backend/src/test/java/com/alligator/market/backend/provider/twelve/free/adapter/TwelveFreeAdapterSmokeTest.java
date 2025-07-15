@@ -41,7 +41,7 @@ class TwelveFreeAdapterSmokeTest {
 
     /*
      * Запускаем MockWebServer и динамически подменяем свойства подключения:
-     * вместо реального адреса https://api.twelvedata.com/price ставим адрес mock-сервера,
+     * вместо реального адреса https://api.twelvedata.com ставим адрес mock-сервера,
      * api-key оставляем как есть.
      */
     @DynamicPropertySource
@@ -51,6 +51,7 @@ class TwelveFreeAdapterSmokeTest {
         reg.add("provider.connection-config.twelve-free.base-url",
                 () -> {
                     String base = server.url("/").toString();
+                    // Убираем лишнюю косую черту, адаптер сам добавит
                     return base.substring(0, base.length() - 1);
                 }); // Пример - http://localhost:51423
         reg.add("provider.connection-config.twelve-free.api-key",
