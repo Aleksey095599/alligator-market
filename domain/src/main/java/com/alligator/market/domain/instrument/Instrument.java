@@ -7,4 +7,7 @@ public interface Instrument {
 
     /* Биржевой идентификатор инструмента */
     String symbol();
+
+    /* Тип финансового инструмента */
+    InstrumentType instrumentType();
 }
