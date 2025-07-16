@@ -1,9 +1,10 @@
 package com.alligator.market.domain.instrument;
 
 /**
- * Простая модель финансового инструмента.
+ * Контракт базового финансового инструмента.
  */
-public record Instrument (
+public interface Instrument {
 
-        String symbol
-) {}
+    /* Уникальный код инструмента */
+    String symbol();
+}
