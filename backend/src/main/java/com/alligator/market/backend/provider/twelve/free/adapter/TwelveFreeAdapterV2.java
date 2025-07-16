@@ -74,15 +74,12 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             symbol = pair.code1() + "/" + pair.code2();
         }
 
-        URI uri = UriComponentsBuilder
-                .fromPath("/price")
-                .queryParam("symbol", symbol)
-                .queryParam("apikey", props.apiKey())
-                .build()
-                .toUri();
-
         return webClient.get()
-                .uri(uri)
+                .uri(builder -> builder
+                        .path("/price")
+                        .queryParam("symbol", symbol)
+                        .queryParam("apikey", props.apiKey())
+                        .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .map(this::jsonToTick)
