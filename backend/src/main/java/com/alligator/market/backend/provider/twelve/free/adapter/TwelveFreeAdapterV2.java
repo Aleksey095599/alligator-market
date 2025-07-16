@@ -5,6 +5,8 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
@@ -63,10 +65,18 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
      */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
+        // Определяем биржевой идентификатор инструмента
+        String symbol = instrument.symbol();
+
+        // Провайдер ожидает валютные пары в виде "EUR/USD"
+        if (instrument.instrumentType() == InstrumentType.CURRENCY_PAIR) {
+            CurrencyPair pair = (CurrencyPair) instrument;
+            symbol = pair.code1() + "/" + pair.code2();
+        }
 
         URI uri = UriComponentsBuilder
                 .fromPath("/price")
-                .queryParam("symbol", instrument.symbol())
+                .queryParam("symbol", symbol)
                 .queryParam("apikey", props.apiKey())
                 .build()
                 .toUri();
