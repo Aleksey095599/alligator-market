@@ -13,11 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.time.Instant;
 
 /**
@@ -65,13 +63,16 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
      */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
+
         // Определяем биржевой идентификатор инструмента
-        String symbol = instrument.symbol();
+        final String symbol;
 
         // Провайдер ожидает валютные пары в виде "EUR/USD"
         if (instrument.instrumentType() == InstrumentType.CURRENCY_PAIR) {
             CurrencyPair pair = (CurrencyPair) instrument;
             symbol = pair.code1() + "/" + pair.code2();
+        } else {
+            symbol = instrument.symbol();
         }
 
         return webClient.get()
