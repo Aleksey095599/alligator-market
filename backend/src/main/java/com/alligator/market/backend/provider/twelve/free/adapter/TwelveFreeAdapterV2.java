@@ -37,9 +37,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         this.webClient = webClient;
     }
 
-    //=======================
-    // Статические метаданные
-    //=======================
+    //==================================
+    // Статические метаданные провайдера
+    //==================================
 
     @Override public String providerCode() {
         return "TWELVE_FREE_PLAN";
@@ -54,9 +54,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return false;
     }
 
-    //================
-    // Поток котировок
-    //================
+    //===========================
+    // Поток котировок провайдера
+    //===========================
 
     /**
      * Поток котировок для заданного инструмента от провайдера TwelveData (free plan).
