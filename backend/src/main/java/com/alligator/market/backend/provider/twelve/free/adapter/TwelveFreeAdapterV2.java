@@ -94,10 +94,18 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     /* Вспомогательный метод преобразования ответа провайдера к модели тика котировки */
     private QuoteTick jsonToTick(JsonNode json) {
 
-        BigDecimal price = new BigDecimal(json.get("price").asText());
+        // В ответе провайдера ключи могут отсутствовать -> проверяем наличие
+        JsonNode priceNode = json.get("price");
+        JsonNode symbolNode = json.get("symbol");
+
+        if (priceNode == null || symbolNode == null) {
+            throw new IllegalArgumentException("Invalid provider response: " + json);
+        }
+
+        BigDecimal price = new BigDecimal(priceNode.asText());
 
         return new QuoteTick(
-                json.get("symbol").asText(),
+                symbolNode.asText(),
                 price,
                 price,
                 Instant.now(),
