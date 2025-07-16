@@ -5,6 +5,6 @@ package com.alligator.market.domain.instrument;
  */
 public interface Instrument {
 
-    /* Уникальный код инструмента */
+    /* Биржевой идентификатор инструмента */
     String symbol();
 }
