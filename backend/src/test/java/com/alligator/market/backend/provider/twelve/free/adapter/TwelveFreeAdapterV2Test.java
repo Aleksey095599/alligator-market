@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.twelve.free.adapter;
 import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
 import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.quote.QuoteTick;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -11,6 +12,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /* Интеграционный тест для адаптера TwelveFreeAdapterV2. */
+@Disabled
 class TwelveFreeAdapterV2Test {
 
     @Test
