@@ -28,10 +28,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private final TwelveFreeProps props;
     private final WebClient webClient;
 
-    /* Конструктор с инжекцией web-клиента для TwelveData */
     public TwelveFreeAdapterV2(
             TwelveFreeProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient
+            @Qualifier("twelveFreeWebClient") WebClient webClient // инжекция бина web-клиента для TwelveData
     ) {
         this.props = props;
         this.webClient = webClient;
@@ -64,26 +63,28 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
-        // Определяем биржевой идентификатор инструмента
-        final String symbol;
+        // Биржевой идентификатор инструмента согласно модели данного приложения
+        final String symbolByModel = instrument.symbol();
+        // Биржевой идентификатор инструмента, требуемый провайдером
+        final String symbolForRequest;
 
-        // Провайдер ожидает валютные пары в виде "EUR/USD"
+        // Для валютных пар данный провайдер ожидает формат биржевого идентификатора "EUR/USD"
         if (instrument.instrumentType() == InstrumentType.CURRENCY_PAIR) {
             CurrencyPair pair = (CurrencyPair) instrument;
-            symbol = pair.code1() + "/" + pair.code2();
+            symbolForRequest = pair.code1() + "/" + pair.code2();
         } else {
-            symbol = instrument.symbol();
+            symbolForRequest = instrument.symbol();
         }
 
         return webClient.get()
                 .uri(builder -> builder
                         .path("/price")
-                        .queryParam("symbol", symbol)
+                        .queryParam("symbol", symbolForRequest)
                         .queryParam("apikey", props.apiKey())
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(this::jsonToTick)
+                .map(json -> jsonToQuoteTick(json, symbolByModel))
                 .flux();
     }
 
@@ -91,21 +92,20 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     // Вспомогательные методы
     //-----------------------
 
-    /* Вспомогательный метод преобразования ответа провайдера к модели тика котировки */
-    private QuoteTick jsonToTick(JsonNode json) {
+    /* Метод преобразования ответа провайдера к модели тика котировки */
+    private QuoteTick jsonToQuoteTick(JsonNode json, String symbolByModel) {
 
-        // В ответе провайдера ключи могут отсутствовать -> проверяем наличие
+        // Извлекаем значение поля "price" из JSON-ответа провайдера в виде объекта JsonNode
         JsonNode priceNode = json.get("price");
-        JsonNode symbolNode = json.get("symbol");
 
-        if (priceNode == null || symbolNode == null) {
+        if (priceNode == null) {
             throw new IllegalArgumentException("Invalid provider response: " + json);
         }
 
         BigDecimal price = new BigDecimal(priceNode.asText());
 
         return new QuoteTick(
-                symbolNode.asText(),
+                symbolByModel,
                 price,
                 price,
                 Instant.now(),
