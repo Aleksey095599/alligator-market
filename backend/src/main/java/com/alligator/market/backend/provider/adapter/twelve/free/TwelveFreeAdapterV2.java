@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
@@ -44,7 +45,11 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //==================================
 
     @Override public String providerCode() {
-        return "TWELVE_FREE_PLAN";
+        return "TWELVE_FREE";
+    }
+    @Override
+    public String displayName() {
+        return "TwelveData (free plan)";
     }
     @Override public DeliveryMode deliveryMode() {
         return DeliveryMode.PULL;
@@ -54,6 +59,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     }
     @Override public boolean supportsBulkSubscription() {
         return false;
+    }
+    @Override
+    public Duration minPollPeriod() {
+        return Duration.ofMinutes(1);
     }
     @Override
     public Set<InstrumentType> instrumentTypes() {
