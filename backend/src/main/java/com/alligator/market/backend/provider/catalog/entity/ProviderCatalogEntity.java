@@ -2,6 +2,8 @@ package com.alligator.market.backend.provider.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.AccessMethod;
+import com.alligator.market.domain.provider.DeliveryMode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +38,30 @@ public class ProviderCatalogEntity extends BaseEntity {
      * согласно {@link MarketDataProvider#providerCode()}
      */
     @Column(length = 50, nullable = false)
-    String providerCode;
+    private String providerCode;
+
+    /**
+     * Режим доставки рыночных данных
+     * согласно {@link MarketDataProvider#deliveryMode()}
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private DeliveryMode deliveryMode;
+
+    /**
+     * Метод доступа к рыночным данным
+     * согласно {@link MarketDataProvider#accessMethod()}
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private AccessMethod accessMethod;
+
+    /**
+     * Поддержка массовой подписки на инструменты
+     * согласно {@link MarketDataProvider#supportsBulkSubscription()}
+     */
+    @Column(nullable = false)
+    private boolean supportsBulkSubscription;
 
 
 }
