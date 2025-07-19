@@ -1,9 +1,11 @@
 package com.alligator.market.backend.provider.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
+import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,4 +64,17 @@ public class ProviderCatalogEntity extends BaseEntity {
      */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
+
+    /**
+     * Поддерживаемые инструменты
+     * согласно {@link MarketDataProvider#instrumentTypes()}
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "provider_catalog_instrument_types",
+            joinColumns = @JoinColumn(name = "provider_catalog_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "instrument_type", length = 20, nullable = false)
+    private Set<InstrumentType> instrumentTypes;
 }
