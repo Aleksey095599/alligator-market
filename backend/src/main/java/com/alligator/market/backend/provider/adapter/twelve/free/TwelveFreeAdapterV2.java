@@ -34,7 +34,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     public TwelveFreeAdapterV2(
             TwelveFreeProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient // инжекция бина web-клиента для TwelveData
+            @Qualifier("twelveFreeWebClient") WebClient webClient // инжекция bean web-клиента для TwelveData
     ) {
         this.props = props;
         this.webClient = webClient;
@@ -51,6 +51,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     public String displayName() {
         return "TwelveData (free plan)";
     }
+    @Override
+    public Set<InstrumentType> instrumentTypes() {
+        return Set.of(CURRENCY_PAIR);
+    }
     @Override public DeliveryMode deliveryMode() {
         return DeliveryMode.PULL;
     }
@@ -63,10 +67,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Duration minPollPeriod() {
         return Duration.ofMinutes(1);
-    }
-    @Override
-    public Set<InstrumentType> instrumentTypes() {
-        return CURRENCY_PAIR;
     }
 
     //===========================
