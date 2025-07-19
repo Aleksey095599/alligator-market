@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.twelve.free.config;
+package com.alligator.market.backend.provider.adapter.twelve.free.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

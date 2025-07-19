@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.twelve.free.adapter;
+package com.alligator.market.backend.provider.adapter.twelve.free;
 
-import com.alligator.market.backend.provider.twelve.free.config.TwelveFreeProps;
+import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeProps;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
