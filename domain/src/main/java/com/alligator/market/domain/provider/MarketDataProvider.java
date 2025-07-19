@@ -35,14 +35,15 @@ public interface MarketDataProvider {
     /* Возможна ли массовая подписка одним запросом (symbols=EUR,GBP,JPY,...) */
     boolean supportsBulkSubscription();
 
-    /* Минимально допустимый интервал опроса.
-       Для PUSH-провайдеров вернуть Duration.ZERO. */
+    /* Минимально допустимый интервал опроса */
     Duration minPollPeriod();
 
     //===========================
     // Поток котировок провайдера
     //===========================
 
-    /** Поток котировок для заданного инструмента. */
+    /**
+     * Поток котировок для заданного инструмента.
+     */
     Flux<QuoteTick> streamQuotes(Instrument instrument);
 }
