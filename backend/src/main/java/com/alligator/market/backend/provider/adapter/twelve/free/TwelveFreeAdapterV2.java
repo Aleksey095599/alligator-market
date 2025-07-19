@@ -44,7 +44,8 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     // Статические метаданные провайдера
     //==================================
 
-    @Override public String providerCode() {
+    @Override
+    public String providerCode() {
         return "TWELVE_FREE";
     }
     @Override
@@ -65,8 +66,8 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return false;
     }
     @Override
-    public Duration minPollPeriod() {
-        return Duration.ofMinutes(1);
+    public Duration minPollPeriodMs() {
+        return Duration.ofMillis(1000);
     }
 
     //===========================

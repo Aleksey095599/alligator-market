@@ -35,8 +35,8 @@ public interface MarketDataProvider {
     /* Возможна ли массовая подписка одним запросом (symbols=EUR,GBP,JPY,...) */
     boolean supportsBulkSubscription();
 
-    /* Минимально допустимый интервал опроса */
-    Duration minPollPeriod();
+    /* Минимально допустимый интервал опроса (в миллисекундах) */
+    Duration minPollPeriodMs();
 
     //===========================
     // Поток котировок провайдера

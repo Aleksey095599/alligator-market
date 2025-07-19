@@ -52,7 +52,6 @@ public class ProviderCatalogEntity extends BaseEntity {
      * Поддерживаемые классы инструментов
      * согласно {@link MarketDataProvider#instrumentTypes()}
      */
-
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
             name = "provider_catalog_instrument_type",
@@ -65,7 +64,6 @@ public class ProviderCatalogEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "instrument_type", length = 20, nullable = false)
     private Set<InstrumentType> instrumentTypes;
-
 
     /**
      * Режим доставки рыночных данных
@@ -92,7 +90,7 @@ public class ProviderCatalogEntity extends BaseEntity {
 
     /**
      * Минимально допустимый интервал опроса
-     * согласно {@link MarketDataProvider#minPollPeriod()}
+     * согласно {@link MarketDataProvider#minPollPeriodMs()}
      */
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
