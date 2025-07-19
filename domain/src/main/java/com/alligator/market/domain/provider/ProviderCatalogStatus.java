@@ -2,8 +2,6 @@ package com.alligator.market.domain.provider;
 
 /**
  * Статус адаптера в каталоге провайдеров.
- * ACTIVE — адаптер найден в коде и успешно синхронизирован.
- * MISSING — в коде адаптера больше нет (или не прогрузился), запись сохранена ради ссылок.
  */
 public enum ProviderCatalogStatus {
 
