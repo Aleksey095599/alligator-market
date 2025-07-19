@@ -4,6 +4,8 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
+import com.alligator.market.domain.instrument.InstrumentType;
+import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +20,8 @@ import lombok.Setter;
 @Table(
         name = "provider_catalog",
         uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uq_provider_code", columnNames = {"provider_code"}
-                        name = "uq_display_name", columnNames = {"display_name"}
-                )
+                @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code"),
+                @UniqueConstraint(name = "uq_display_name", columnNames = "display_name")
         }
 )
 @Getter
@@ -53,6 +53,19 @@ public class ProviderCatalogEntity extends BaseEntity {
      * согласно {@link MarketDataProvider#instrumentTypes()}
      */
 
+    @ElementCollection(targetClass = InstrumentType.class)
+    @CollectionTable(
+            name = "provider_catalog_instrument_type",
+            joinColumns = @JoinColumn(
+                    name = "provider_id",
+                    referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "fk_provider_instrument_type_provider")
+            )
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "instrument_type", length = 20, nullable = false)
+    private Set<InstrumentType> instrumentTypes;
+
 
     /**
      * Режим доставки рыночных данных
@@ -81,4 +94,6 @@ public class ProviderCatalogEntity extends BaseEntity {
      * Минимально допустимый интервал опроса
      * согласно {@link MarketDataProvider#minPollPeriod()}
      */
+    @Column(name = "min_poll_period_ms", nullable = false)
+    private int minPollPeriodMs;
 }
