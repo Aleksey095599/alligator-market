@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProviderCatalogEntity extends BaseEntity {
 
-    /** Суррогатный PK */
+    /** Суррогатный PK. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
