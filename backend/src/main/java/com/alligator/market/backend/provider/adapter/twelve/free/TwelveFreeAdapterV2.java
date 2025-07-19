@@ -57,7 +57,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     }
     @Override
     public Set<InstrumentType> instrumentTypes() {
-        return CURRENCY_PAIR;
+        return Set.of(CURRENCY_PAIR);
     }
 
     //===========================
