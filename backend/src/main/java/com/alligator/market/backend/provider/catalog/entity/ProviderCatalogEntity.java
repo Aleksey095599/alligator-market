@@ -29,10 +29,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProviderCatalogEntity extends BaseEntity {
 
-    /** Суррогатный PK. */
+    /**
+     * Суррогатный PK.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Статус: ACTIVE или MISSING.
+     * ACTIVE — адаптер найден в коде и успешно синхронизирован.
+     * MISSING — в коде адаптера больше нет (или не прогрузился), запись сохранена ради ссылок.
+     */
 
     //==================================
     // Статические метаданные провайдера
