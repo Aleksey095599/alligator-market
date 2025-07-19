@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
+import com.alligator.market.domain.provider.ProviderCatalogStatus;
 import com.alligator.market.domain.instrument.InstrumentType;
 import java.util.Set;
 import jakarta.persistence.*;
@@ -41,6 +42,10 @@ public class ProviderCatalogEntity extends BaseEntity {
      * ACTIVE — адаптер найден в коде и успешно синхронизирован.
      * MISSING — в коде адаптера больше нет (или не прогрузился), запись сохранена ради ссылок.
      */
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private ProviderCatalogStatus status;
 
     //==================================
     // Статические метаданные провайдера
@@ -107,3 +112,4 @@ public class ProviderCatalogEntity extends BaseEntity {
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
 }
+

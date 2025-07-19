@@ -1,0 +1,2 @@
+ALTER TABLE provider_catalog
+    ADD COLUMN status VARCHAR(10) NOT NULL DEFAULT 'ACTIVE';
