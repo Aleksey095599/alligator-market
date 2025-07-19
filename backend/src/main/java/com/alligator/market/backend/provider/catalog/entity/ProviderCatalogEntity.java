@@ -20,6 +20,7 @@ import lombok.Setter;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uq_provider_code", columnNames = {"provider_code"}
+                        name = "uq_display_name", columnNames = {"display_name"}
                 )
         }
 )
@@ -49,6 +50,7 @@ public class ProviderCatalogEntity extends BaseEntity {
 
     /**
      * Поддерживаемые классы инструментов
+     * согласно {@link MarketDataProvider#instrumentTypes()}
      */
 
 
@@ -74,4 +76,9 @@ public class ProviderCatalogEntity extends BaseEntity {
      */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
+
+    /**
+     * Минимально допустимый интервал опроса
+     * согласно {@link MarketDataProvider#minPollPeriod()}
+     */
 }
