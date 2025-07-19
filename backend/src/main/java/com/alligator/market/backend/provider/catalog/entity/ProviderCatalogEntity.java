@@ -34,11 +34,23 @@ public class ProviderCatalogEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Уникальный код-идентификатор провайдера
+     * Технический идентификатор провайдера
      * согласно {@link MarketDataProvider#providerCode()}
      */
     @Column(length = 50, nullable = false)
     private String providerCode;
+
+    /**
+     * Читаемое имя для UI/логов
+     * согласно {@link MarketDataProvider#displayName()}
+     */
+    @Column(length = 50, nullable = false)
+    private String displayName;
+
+    /**
+     * Поддерживаемые классы инструментов
+     */
+
 
     /**
      * Режим доставки рыночных данных
