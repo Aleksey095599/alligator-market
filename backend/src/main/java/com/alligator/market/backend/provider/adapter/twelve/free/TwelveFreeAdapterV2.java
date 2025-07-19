@@ -17,6 +17,9 @@ import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Set;
+
+import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAIR;
 
 /**
  * Реализация адаптера провайдера TwelveData (free plan).
@@ -52,6 +55,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override public boolean supportsBulkSubscription() {
         return false;
     }
+    @Override
+    public Set<InstrumentType> instrumentTypes() {
+        return CURRENCY_PAIR;
+    }
 
     //===========================
     // Поток котировок провайдера
@@ -69,7 +76,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         final String symbolForRequest;
 
         // Для валютных пар данный провайдер ожидает формат биржевого идентификатора "EUR/USD"
-        if (instrument.instrumentType() == InstrumentType.CURRENCY_PAIR) {
+        if (instrument.instrumentType() == CURRENCY_PAIR) {
             CurrencyPair pair = (CurrencyPair) instrument;
             symbolForRequest = pair.code1() + "/" + pair.code2();
         } else {
