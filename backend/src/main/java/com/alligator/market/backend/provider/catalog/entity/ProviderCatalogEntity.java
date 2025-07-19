@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity для таблицы, в которой хранятся метаданные провайдеров, извлеченные из их адаптеров.
- * Поля соответствуют разделу "Статические метаданные провайдера" в едином контракте адаптера:
- * {@link MarketDataProvider}.
+ * Entity таблицы, в которой хранятся метаданные провайдеров.
+ * Поля соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
+ * Метод заполнения таблицы задан в {@link ProviderCatalogSync}
  */
 @Entity
 @Table(
@@ -34,23 +34,27 @@ public class ProviderCatalogEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //==================================
+    // Статические метаданные провайдера
+    //==================================
+
     /**
-     * Технический идентификатор провайдера
-     * согласно {@link MarketDataProvider#providerCode()}
+     * Технический идентификатор провайдера.
+     * Соответствует {@link MarketDataProvider#providerCode()}.
      */
     @Column(length = 50, nullable = false)
     private String providerCode;
 
     /**
-     * Читаемое имя для UI/логов
-     * согласно {@link MarketDataProvider#displayName()}
+     * Читаемое имя для UI/логов.
+     * Соответствует {@link MarketDataProvider#displayName()}.
      */
     @Column(length = 50, nullable = false)
     private String displayName;
 
     /**
-     * Поддерживаемые классы инструментов
-     * согласно {@link MarketDataProvider#instrumentTypes()}
+     * Поддерживаемые классы инструментов.
+     * Соответствует {@link MarketDataProvider#instrumentTypes()}.
      */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
@@ -66,31 +70,31 @@ public class ProviderCatalogEntity extends BaseEntity {
     private Set<InstrumentType> instrumentTypes;
 
     /**
-     * Режим доставки рыночных данных
-     * согласно {@link MarketDataProvider#deliveryMode()}
+     * Режим доставки рыночных данных: PULL или PUSH.
+     * Соответствует {@link MarketDataProvider#deliveryMode()}.
      */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private DeliveryMode deliveryMode;
 
     /**
-     * Метод доступа к рыночным данным
-     * согласно {@link MarketDataProvider#accessMethod()}
+     * Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие.
+     * Соответствует {@link MarketDataProvider#accessMethod()}.
      */
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private AccessMethod accessMethod;
 
     /**
-     * Поддержка массовой подписки на инструменты
-     * согласно {@link MarketDataProvider#supportsBulkSubscription()}
+     * Возможна ли массовая подписка одним запросом.
+     * Соответствует {@link MarketDataProvider#supportsBulkSubscription()}.
      */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
 
     /**
-     * Минимально допустимый интервал опроса
-     * согласно {@link MarketDataProvider#minPollPeriodMs()}
+     * Минимально допустимый интервал опроса в миллисекундах.
+     * Соответствует {@link MarketDataProvider#minPollPeriodMs()}.
      */
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
