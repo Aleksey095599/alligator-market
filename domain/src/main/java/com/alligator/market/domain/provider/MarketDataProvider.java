@@ -17,13 +17,13 @@ public interface MarketDataProvider {
     // Статические метаданные провайдера
     //==================================
 
-    /* Технический идентификатор провайдера (ключ в БД, конфиг-файлах) */
+    /* Технический идентификатор провайдера */
     String providerCode();
 
-    /* Читаемое имя для UI/логов («Twelve Data — Free plan») */
+    /* Читаемое имя для UI/логов */
     String displayName();
 
-    /* Поддерживаемые классы инструментов (FOREX, CRYPTO, …) */
+    /* Поддерживаемые классы инструментов */
     Set<InstrumentType> instrumentTypes();
 
     /* Режим доставки рыночных данных: PULL (request/response) или PUSH (stream) */
@@ -32,7 +32,7 @@ public interface MarketDataProvider {
     /* Конкретный транспортный метод: API_POLL, WEBSOCKET, FIX, … */
     AccessMethod accessMethod();
 
-    /* Возможна ли массовая подписка одним запросом (symbols=EUR,GBP,JPY) */
+    /* Возможна ли массовая подписка одним запросом (symbols=EUR,GBP,JPY,...) */
     boolean supportsBulkSubscription();
 
     /* Минимально допустимый интервал опроса.
