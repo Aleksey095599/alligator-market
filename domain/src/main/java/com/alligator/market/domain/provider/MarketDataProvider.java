@@ -5,6 +5,7 @@ import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Set;
 
 /**
@@ -16,20 +17,27 @@ public interface MarketDataProvider {
     // Статические метаданные провайдера
     //==================================
 
-    /* Уникальный код-идентификатор провайдера */
+    /* Технический идентификатор провайдера (ключ в БД, конфиг-файлах) */
     String providerCode();
 
-    /* Режим доставки рыночных данных (PULL или PUSH) */
+    /* Читаемое имя для UI/логов («Twelve Data — Free plan») */
+    String displayName();
+
+    /* Поддерживаемые классы инструментов (FOREX, CRYPTO, …) */
+    Set<InstrumentType> instrumentTypes();
+
+    /* Режим доставки рыночных данных: PULL (request/response) или PUSH (stream) */
     DeliveryMode deliveryMode();
 
-    /* Метод доступа к рыночным данным (API_POLL, WEBSOCKET и другие) */
+    /* Конкретный транспортный метод: API_POLL, WEBSOCKET, FIX, … */
     AccessMethod accessMethod();
 
-    /* Возможность массовой подписки на рыночные данные для нескольких инструментов */
+    /* Возможна ли массовая подписка одним запросом (symbols=EUR,GBP,JPY) */
     boolean supportsBulkSubscription();
 
-    /* Поддерживаемые инструменты */
-    Set<InstrumentType> instrumentTypes();
+    /* Минимально допустимый интервал опроса.
+       Для PUSH-провайдеров вернуть Duration.ZERO. */
+    Duration minPollPeriod();
 
     //===========================
     // Поток котировок провайдера
