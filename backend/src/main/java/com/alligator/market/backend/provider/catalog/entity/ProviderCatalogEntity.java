@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity таблицы, в которой хранятся метаданные провайдеров.
+ * Entity таблицы, в которой хранятся метаданные провайдеров рыночных данных.
  * Поля соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
- * Методы заполнения таблицы заданы в {@link com.alligator.market.backend.provider.catalog.service.ProviderCatalogSync}
  */
 @Entity
 @Table(
