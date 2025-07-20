@@ -8,8 +8,8 @@ import com.alligator.market.backend.instrument.type.forex.currency_pair.exceptio
 import com.alligator.market.backend.instrument.type.forex.currency_pair.exception.PairNotFoundException;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.exception.EqualCurrenciesInPairException;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.repository.PairRepository;
-import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
-import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPairService;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

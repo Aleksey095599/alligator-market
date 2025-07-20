@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.forex.currency;
+package com.alligator.market.domain.instrument.type.forex.currency;
 
 /**
  * Доменная модель валюты.
@@ -9,4 +9,4 @@ public record Currency (
         String name,
         String country,
         Integer decimal
-){}
+) {}

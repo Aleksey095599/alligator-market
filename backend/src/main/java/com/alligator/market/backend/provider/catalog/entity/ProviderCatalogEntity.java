@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.ProviderCatalogStatus;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 

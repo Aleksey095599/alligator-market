@@ -5,8 +5,8 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.instrument.InstrumentType;
-import com.alligator.market.domain.instrument.forex.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
-import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAIR;
+import static com.alligator.market.domain.instrument.type.InstrumentType.CURRENCY_PAIR;
 
 /**
  * Реализация адаптера провайдера TwelveData (free plan).

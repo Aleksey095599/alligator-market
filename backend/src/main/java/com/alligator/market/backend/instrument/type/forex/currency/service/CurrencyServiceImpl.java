@@ -6,8 +6,8 @@ import com.alligator.market.backend.instrument.type.forex.currency.exception.Cur
 import com.alligator.market.backend.instrument.type.forex.currency.exception.DuplicateCurrencyException;
 import com.alligator.market.backend.instrument.type.forex.currency.repository.CurrencyRepository;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.repository.PairRepository;
-import com.alligator.market.domain.instrument.forex.currency.Currency;
-import com.alligator.market.domain.instrument.forex.currency.CurrencyService;
+import com.alligator.market.domain.instrument.type.forex.currency.Currency;
+import com.alligator.market.domain.instrument.type.forex.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;

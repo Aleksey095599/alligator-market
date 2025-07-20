@@ -1,7 +1,9 @@
 package com.alligator.market.domain.instrument;
 
+import com.alligator.market.domain.instrument.type.InstrumentType;
+
 /**
- * Контракт базового финансового инструмента.
+ * Единый контракт базового финансового инструмента.
  */
 public interface Instrument {
 
