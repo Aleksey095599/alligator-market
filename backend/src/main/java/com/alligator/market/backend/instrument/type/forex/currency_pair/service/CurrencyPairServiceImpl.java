@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class PairServiceImpl implements CurrencyPairService {
+public class CurrencyPairServiceImpl implements CurrencyPairService {
 
     private final CurrencyPairRepository repository;
     private final CurrencyRepository currencyRepository;
