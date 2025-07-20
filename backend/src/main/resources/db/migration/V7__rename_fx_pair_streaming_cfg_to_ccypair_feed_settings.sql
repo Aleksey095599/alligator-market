@@ -1,5 +1,0 @@
-ALTER TABLE fx_pair_streaming_cfg RENAME TO ccypair_feed_settings;
-
-ALTER TABLE ccypair_feed_settings RENAME CONSTRAINT pk_fx_pair_streaming_cfg TO pk_ccypair_feed_settings;
-ALTER TABLE ccypair_feed_settings RENAME CONSTRAINT fk_stream_cfg_pair TO fk_feed_settings_pair;
-ALTER TABLE ccypair_feed_settings RENAME CONSTRAINT uq_fx_pair_streaming_cfg_pair_provider_mode TO uq_ccypair_feed_settings_pair_provider_mode;

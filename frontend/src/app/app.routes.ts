@@ -17,11 +17,6 @@ export const routes: Routes = [
       import('./features/providers/provider.module').then(m => m.ProviderModule)
   },
   {
-    path: 'stream-configs',
-    loadChildren: () =>
-      import('./features/quotes/ccypair_feed_settings/settings.module').then(m => m.SettingsModule)
-  },
-  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)

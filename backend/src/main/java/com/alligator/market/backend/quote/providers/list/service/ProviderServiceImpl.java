@@ -1,13 +1,11 @@
 package com.alligator.market.backend.quote.providers.list.service;
 
-import com.alligator.market.backend.quote.ccypair_feed_settings.repository.CcyPairFeedSettingsRepository;
 import com.alligator.market.backend.quote.providers.list.dto.ProviderCreateDto;
 import com.alligator.market.backend.quote.providers.list.dto.ProviderDto;
 import com.alligator.market.backend.quote.providers.list.dto.ProviderUpdateDto;
 import com.alligator.market.backend.quote.providers.list.entity.Provider;
 import com.alligator.market.backend.quote.providers.list.exceptions.DuplicateProviderException;
 import com.alligator.market.backend.quote.providers.list.exceptions.ProviderNotFoundException;
-import com.alligator.market.backend.quote.providers.list.exceptions.ProviderUsedInSettingsException;
 import com.alligator.market.backend.quote.providers.list.repository.ProviderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +25,6 @@ import java.util.List;
 public class ProviderServiceImpl implements ProviderService {
 
     private final ProviderRepository repository;
-    private final CcyPairFeedSettingsRepository ccyPairFeedSettingsRepository;
 
     //==========================
     // Создать нового провайдера
@@ -75,11 +72,6 @@ public class ProviderServiceImpl implements ProviderService {
 
         Provider provider = repository.findByName(name)
                 .orElseThrow(() -> new ProviderNotFoundException(name));
-
-        // Проверка, что провайдер не используется в настройках
-        if (ccyPairFeedSettingsRepository.existsByProvider_Name(name)) {
-            throw new ProviderUsedInSettingsException(name);
-        }
 
         repository.delete(provider);
         log.info("Provider {} deleted (id={})", provider.getName(), provider.getId());
