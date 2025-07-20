@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.provider.catalog.service.ProviderCatalogSync;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
@@ -13,8 +14,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity таблицы, в которой хранятся метаданные провайдеров рыночных данных.
- * Поля соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
+ * Entity каталога провайдеров.
+ * Каталог содержит записи о найденных в Spring-контексте бинах адаптеров провайдеров рыночных данных.
+ * Поля каталога соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
+ * Логика заполнения и обновления таблицы задана в {@link ProviderCatalogSync#refresh()}.
  */
 @Entity
 @Table(
@@ -37,7 +40,7 @@ public class ProviderCatalogEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Статус провайдера согласно {@link ProviderCatalogStatus}
+     * Статус адаптера
      */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
