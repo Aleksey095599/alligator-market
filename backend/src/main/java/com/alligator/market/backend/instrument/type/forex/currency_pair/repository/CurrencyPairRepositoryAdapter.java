@@ -2,9 +2,10 @@ package com.alligator.market.backend.instrument.type.forex.currency_pair.reposit
 
 import com.alligator.market.backend.instrument.type.forex.currency.entity.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.repository.CurrencyJpaRepository;
-import com.alligator.market.backend.instrument.type.forex.currency_pair.entity.PairEntity;
+import com.alligator.market.backend.instrument.type.forex.currency_pair.entity.CurrencyPairEntity;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairRepository;
+import com.alligator.market.backend.instrument.type.forex.currency_pair.repository.CurrencyPairJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -17,16 +18,16 @@ import java.util.Optional;
  */
 @Repository
 @RequiredArgsConstructor
-public class PairRepositoryAdapter implements CurrencyPairRepository {
+public class CurrencyPairRepositoryAdapter implements CurrencyPairRepository {
 
-    private final PairJpaRepository jpaRepository;
+    private final CurrencyPairJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyJpaRepository;
 
     @Override
     public String save(CurrencyPair pair) {
         CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.code1()).orElseThrow();
         CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.code2()).orElseThrow();
-        PairEntity entity = new PairEntity();
+        CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setCode1(c1);
         entity.setCode2(c2);
         entity.setPair(pair.pair());
@@ -56,7 +57,7 @@ public class PairRepositoryAdapter implements CurrencyPairRepository {
                 .toList();
     }
 
-    private CurrencyPair toDomain(PairEntity entity) {
+    private CurrencyPair toDomain(CurrencyPairEntity entity) {
         return new CurrencyPair(
                 entity.getCode1().getCode(),
                 entity.getCode2().getCode(),

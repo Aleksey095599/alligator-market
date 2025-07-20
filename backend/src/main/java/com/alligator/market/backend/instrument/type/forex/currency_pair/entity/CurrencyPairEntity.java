@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PairEntity extends BaseEntity {
+public class CurrencyPairEntity extends BaseEntity {
 
     /** Суррогатный PK */
     @Id
