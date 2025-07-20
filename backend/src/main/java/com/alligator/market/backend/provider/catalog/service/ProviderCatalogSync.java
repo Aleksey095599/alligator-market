@@ -16,8 +16,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Сервис синхронизации каталога провайдеров с заданными в приложении адаптерами провайдеров.
- * Вызывается при старте приложения и по запросу {@link #refresh()}.
+ * Сервис синхронизации каталога провайдеров с найденными в Spring-контексте бинами адаптеров провайдеров.
+ * Запускается после старта приложения и может вызываться вручную через {@link #refresh()}.
  */
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class ProviderCatalogSync {
     private final List<MarketDataProvider> providers;
 
     /**
-     * Синхронизируем каталог после инициализации всех бинов.
+     * Выполняет синхронизацию после инициализации всех бинов Spring.
      */
     @PostConstruct
     public void init() {
@@ -36,13 +36,14 @@ public class ProviderCatalogSync {
     }
 
     /**
-     * Синхронизировать таблицу provider_catalog с набором адаптеров:
-     * 1. Загружаем все существующие записи из БД в Map по providerCode
-     * 2. Для каждого активного провайдера:
-     *    - Находим его запись в БД или создаем новую
-     *    - Обновляем все поля метаданных
-     *    - Сохраняем с активным статусом
-     * 3. Оставшиеся в Map записи помечаем как недоступные
+     * Актуализирует записи каталога.
+     *
+     * @implSpec Последовательно:
+     * <ol>
+     *   <li>загружает существующие записи из БД в Map по коду провайдера</li>
+     *   <li>обновляет или создаёт записи для активных провайдеров и помечает их {@link ProviderCatalogStatus#IMPLEMENTED}</li>
+     *   <li>оставшиеся в Map записи помечает {@link ProviderCatalogStatus#NOT_IMPLEMENTED}</li>
+     * </ol>
      */
     @Transactional
     public void refresh() {
@@ -64,12 +65,12 @@ public class ProviderCatalogSync {
             entity.setAccessMethod(provider.accessMethod());
             entity.setSupportsBulkSubscription(provider.supportsBulkSubscription());
             entity.setMinPollPeriodMs((int) provider.minPollPeriodMs().toMillis());
-            entity.setStatus(ProviderCatalogStatus.ACTIVE);
+            entity.setStatus(ProviderCatalogStatus.IMPLEMENTED);
             repository.save(entity);
         }
 
         existing.values().forEach(entity -> {
-            entity.setStatus(ProviderCatalogStatus.UNAVAILABLE);
+            entity.setStatus(ProviderCatalogStatus.NOT_IMPLEMENTED);
             repository.save(entity);
         });
 
