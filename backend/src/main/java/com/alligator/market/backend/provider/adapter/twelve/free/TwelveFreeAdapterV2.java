@@ -23,7 +23,7 @@ import java.util.Set;
 import static com.alligator.market.domain.instrument.type.InstrumentType.CURRENCY_PAIR;
 
 /**
- * Реализация адаптера провайдера TwelveData (free plan).
+ * Адаптер для провайдера TwelveData (free plan).
  */
 @Component
 @Slf4j
