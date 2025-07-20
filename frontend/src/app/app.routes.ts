@@ -4,12 +4,12 @@ export const routes: Routes = [
   {
     path: 'currencies',
     loadChildren: () =>
-      import('./features/currencies/currency.module').then(m => m.CurrencyModule)
+      import('./features/currency/currency.module').then(m => m.CurrencyModule)
   },
   {
     path: 'pairs',
     loadChildren: () =>
-      import('./features/currency_pairs/pair.module').then(m => m.PairModule)
+      import('./features/currency_pair/pair.module').then(m => m.PairModule)
   },
   {
     path: '',
