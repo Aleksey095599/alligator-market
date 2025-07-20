@@ -6,7 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.currency_pair.dto.Pair
 import com.alligator.market.backend.instrument.type.forex.currency_pair.dto.PairDto;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.dto.PairUpdateDto;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
-import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairService;
+import com.alligator.market.backend.instrument.type.forex.currency_pair.service.CurrencyPairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

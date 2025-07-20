@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Репозиторий для работы с таблицей currency.
  */
-public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> {
+public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Long> {
 
     Optional<CurrencyEntity> findByCode(String code);
     Optional<CurrencyEntity> findByName(String name);
