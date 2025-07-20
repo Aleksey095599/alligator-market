@@ -12,11 +12,6 @@ export const routes: Routes = [
       import('./features/currency_pairs/pair.module').then(m => m.PairModule)
   },
   {
-    path: 'providers',
-    loadChildren: () =>
-      import('./features/providers/provider.module').then(m => m.ProviderModule)
-  },
-  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)
