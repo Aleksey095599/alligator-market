@@ -15,7 +15,7 @@ import lombok.Setter;
 /**
  * Entity таблицы, в которой хранятся метаданные провайдеров.
  * Поля соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
- * Метод заполнения таблицы задан в {@link com.alligator.market.backend.provider.catalog.service.ProviderCatalogSync}
+ * Методы заполнения таблицы заданы в {@link com.alligator.market.backend.provider.catalog.service.ProviderCatalogSync}
  */
 @Entity
 @Table(
@@ -38,9 +38,7 @@ public class ProviderCatalogEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Статус: ACTIVE или MISSING.
-     * ACTIVE — адаптер найден в коде и успешно синхронизирован.
-     * MISSING — в коде адаптера больше нет (или не прогрузился), запись сохранена ради ссылок.
+     * Статус провайдера согласно {@link ProviderCatalogStatus}
      */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)

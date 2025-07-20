@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quote.ccypair_feed_settings.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.instrument.forex.currency_pair.entity.PairEntity;
+import com.alligator.market.backend.instrument.type.forex.currency_pair.entity.PairEntity;
 import com.alligator.market.backend.quote.providers.list.entity.Provider;
 import jakarta.persistence.*;
 import lombok.Getter;
