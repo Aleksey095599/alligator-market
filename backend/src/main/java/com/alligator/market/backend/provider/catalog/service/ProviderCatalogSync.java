@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Сервис синхронизации каталога провайдеров с набором бинов-адаптеров.
+ * Сервис синхронизации каталога провайдеров с заданными в приложении адаптерами провайдеров.
  * Вызывается при старте приложения и по запросу {@link #refresh()}.
  */
 @Service
@@ -36,10 +36,17 @@ public class ProviderCatalogSync {
     }
 
     /**
-     * Синхронизировать таблицу provider_catalog с набором адаптеров.
+     * Синхронизировать таблицу provider_catalog с набором адаптеров:
+     * 1. Загружаем все существующие записи из БД в Map по providerCode
+     * 2. Для каждого активного провайдера:
+     *    - Находим его запись в БД или создаем новую
+     *    - Обновляем все поля метаданных
+     *    - Сохраняем с активным статусом
+     * 3. Оставшиеся в Map записи помечаем как недоступные
      */
     @Transactional
     public void refresh() {
+
         log.debug("Start provider catalog sync");
 
         Map<String, ProviderCatalogEntity> existing = repository.findAll().stream()
@@ -61,7 +68,6 @@ public class ProviderCatalogSync {
             repository.save(entity);
         }
 
-        // Оставшиеся записи помечаем как UNAVAILABLE
         existing.values().forEach(entity -> {
             entity.setStatus(ProviderCatalogStatus.UNAVAILABLE);
             repository.save(entity);
