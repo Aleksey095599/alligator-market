@@ -5,10 +5,10 @@ package com.alligator.market.domain.provider;
  */
 public enum ProviderCatalogStatus {
 
-    // Бин соответствующего провайдера найден
-    ACTIVE,
+    // Бин соответствующего адаптера найден
+    IMPLEMENTED,
 
-    // Бин соответствующего провайдера не найден, запись сохранена ради ссылок
-    UNAVAILABLE
+    // Бин соответствующего адаптера не найден, запись сохранена ради ссылок
+    NOT_IMPLEMENTED
 }
 
