@@ -101,5 +101,4 @@ public class PairController {
 
         return ResponseEntityFactory.ok(pairDtoList);
     }
-
 }

@@ -13,5 +13,4 @@ public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Lon
     Optional<CurrencyEntity> findByCode(String code);
     Optional<CurrencyEntity> findByName(String name);
     Optional<CurrencyEntity> findByCountry(String country);
-
 }

@@ -48,5 +48,4 @@ public class CurrencyExceptionHandler {
         log.warn("CurrencyUsedInPairsException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
-
 }

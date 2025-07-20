@@ -105,5 +105,4 @@ public class CurrencyController {
 
         return ResponseEntityFactory.ok(currencyDtoList);
     }
-
 }

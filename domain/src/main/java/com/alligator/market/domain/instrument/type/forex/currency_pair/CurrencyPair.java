@@ -12,6 +12,7 @@ public record CurrencyPair(
         String code2,
         String pair,
         Integer decimal
+
 ) implements Instrument {
 
     @Override public String symbol() {

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер доменного репозитория валют к Spring Data JPA.
+ * Адаптер реализующий доменный репозиторий {@link CurrencyRepository} в контексте Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor

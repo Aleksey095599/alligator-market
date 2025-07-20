@@ -58,5 +58,4 @@ public class PairExceptionHandler {
         log.warn("EqualCurrenciesInPairException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
-
 }
