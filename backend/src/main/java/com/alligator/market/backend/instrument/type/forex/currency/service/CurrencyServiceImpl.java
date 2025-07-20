@@ -1,16 +1,14 @@
 package com.alligator.market.backend.instrument.type.forex.currency.service;
 
-import com.alligator.market.backend.instrument.type.forex.currency.entity.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.backend.instrument.type.forex.currency.exception.CurrencyUsedInPairsException;
 import com.alligator.market.backend.instrument.type.forex.currency.exception.DuplicateCurrencyException;
-import com.alligator.market.backend.instrument.type.forex.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.instrument.type.forex.currency_pair.repository.PairRepository;
 import com.alligator.market.domain.instrument.type.forex.currency.Currency;
-import com.alligator.market.domain.instrument.type.forex.currency.CurrencyService;
+import com.alligator.market.backend.instrument.type.forex.currency.service.CurrencyService;
+import com.alligator.market.domain.instrument.type.forex.currency.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +24,7 @@ import java.util.List;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository repository;
-    private final PairRepository pairRepository;
+    private final CurrencyPairRepository pairRepository;
 
     //=====================
     // Создать новую валюту
@@ -44,15 +42,9 @@ public class CurrencyServiceImpl implements CurrencyService {
             throw new DuplicateCurrencyException("country", currency.country());
         });
 
-        CurrencyEntity entity = new CurrencyEntity();
-        entity.setCode(currency.code());
-        entity.setName(currency.name());
-        entity.setCountry(currency.country());
-        entity.setDecimal(currency.decimal());
-
-        CurrencyEntity saved = repository.save(entity);
-        log.info("Currency {} saved with id={}", saved.getCode(), saved.getId());
-        return saved.getCode();
+        String code = repository.save(currency);
+        log.info("Currency {} saved", code);
+        return code;
     }
 
     //================
@@ -62,28 +54,23 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void updateCurrency(Currency currency) {
 
         // Проверка наличия валюты к обновлению
-        CurrencyEntity currencyEntity = repository.findByCode(currency.code())
+        repository.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
         // Проверки, что обновление не приведет к дублированию
         repository.findByName(currency.name()).ifPresent(c -> {
-            if (!c.getId().equals(currencyEntity.getId())) {
+            if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("name", currency.name());
             }
         });
         repository.findByCountry(currency.country()).ifPresent(c -> {
-            if (!c.getId().equals(currencyEntity.getId())) {
+            if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("country", currency.country());
             }
         });
 
-        // Обновляем сущность
-        currencyEntity.setName(currency.name());
-        currencyEntity.setCountry(currency.country());
-        currencyEntity.setDecimal(currency.decimal());
-
-        repository.save(currencyEntity);
-        log.info("Currency {} updated (id={})", currencyEntity.getCode(), currencyEntity.getId());
+        repository.save(currency);
+        log.info("Currency {} updated", currency.code());
     }
 
     //===================================
@@ -92,16 +79,16 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public void deleteCurrency(String code) {
 
-        CurrencyEntity currencyEntity = repository.findByCode(code)
+        repository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
         // Проверка, что валюта не используется в парах
-        if (pairRepository.existsByCode1_CodeOrCode2_Code(code, code)) {
+        if (pairRepository.existsByCurrency(code)) {
             throw new CurrencyUsedInPairsException(code);
         }
 
-        repository.delete(currencyEntity);
-        log.info("Currency {} deleted (id={})", currencyEntity.getCode(), currencyEntity.getId());
+        repository.deleteByCode(code);
+        log.info("Currency {} deleted", code);
     }
 
     //==============================
@@ -112,15 +99,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public List<Currency> findAll() {
 
         // Извлекаем все валюты, преобразуя список сущностей к доменной модели валюты
-        List<Currency> result = repository.findAll(Sort.by("code"))
-                .stream()
-                .map(c -> new Currency(
-                        c.getCode(),
-                        c.getName(),
-                        c.getCountry(),
-                        c.getDecimal()
-                ))
-                .toList();
+        List<Currency> result = repository.findAll();
 
         log.debug("Found {} currencies", result.size());
         return result;

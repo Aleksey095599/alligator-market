@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Репозиторий для работы с таблицей валютных пар.
  */
-public interface PairRepository extends JpaRepository<PairEntity, Long> {
+public interface PairJpaRepository extends JpaRepository<PairEntity, Long> {
 
     Optional<PairEntity> findByPair(String pair);
 
