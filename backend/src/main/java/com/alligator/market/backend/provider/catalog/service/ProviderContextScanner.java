@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderContextScanner {
 
+    /** Список всех контрактов адаптеров*/
     private final List<MarketDataProvider> providers;
 
     /** Возвращает неизменяемый список всех обнаруженных провайдеров. */
