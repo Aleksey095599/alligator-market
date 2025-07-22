@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.provider.catalog.service.ProviderCatalogSync;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
@@ -16,8 +15,7 @@ import lombok.Setter;
 /**
  * Entity каталога провайдеров.
  * Каталог содержит записи о найденных в Spring-контексте бинах адаптеров провайдеров рыночных данных.
- * Поля каталога соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
- * Логика заполнения и обновления таблицы задана в {@link ProviderCatalogSync#refresh()}.
+ * Поля Entity соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
  */
 @Entity
 @Table(
