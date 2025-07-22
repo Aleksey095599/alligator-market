@@ -5,10 +5,10 @@ package com.alligator.market.domain.provider;
  */
 public enum ProviderCatalogStatus {
 
-    // Бин соответствующего адаптера найден
-    IMPLEMENTED,
+    // Бин адаптера провайдера доступен в контексте Spring
+    AVAILABLE,
 
-    // Бин соответствующего адаптера не найден, запись сохранена ради ссылок
-    NOT_IMPLEMENTED
+    // Архивная запись (бин адаптера провайдера не был найден или был изменен)
+    ARCHIVED
 }
 
