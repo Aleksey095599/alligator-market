@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.catalog.entity.ProviderCatalogEntit
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Репозиторий для работы с таблицей provider_catalog.
+ * Репозиторий для работы с каталогом провайдеров.
  */
 public interface ProviderCatalogRepository extends JpaRepository<ProviderCatalogEntity, Long> {
 }
