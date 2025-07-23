@@ -1,49 +1,17 @@
 package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
-import java.util.Set;
-
 /**
- * Единый контракт адаптера для всех провайдеров рыночных данных.
+ * Единый контракт адаптера для всех провайдеров рыночных данных
  */
 public interface MarketDataProvider {
 
-    //==================================
-    // Статические метаданные провайдера
-    //==================================
+    /** Профиль провайдера. */
+    ProviderProfile profile();
 
-    /** Технический идентификатор провайдера. */
-    String providerCode();
-
-    /** Читаемое имя для UI/логов. */
-    String displayName();
-
-    /** Поддерживаемые классы инструментов. */
-    Set<InstrumentType> instrumentTypes();
-
-    /** Режим доставки рыночных данных: PULL или PUSH. */
-    DeliveryMode deliveryMode();
-
-    /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие. */
-    AccessMethod accessMethod();
-
-    /** Возможна ли массовая подписка одним запросом. */
-    boolean supportsBulkSubscription();
-
-    /** Минимально допустимый интервал опроса в миллисекундах. */
-    Duration minPollPeriodMs();
-
-    //===========================
-    // Поток котировок провайдера
-    //===========================
-
-    /**
-     * Поток котировок для заданного инструмента.
-     */
+    /** Реактивный поток котировок. */
     Flux<QuoteTick> streamQuotes(Instrument instrument);
 }
