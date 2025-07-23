@@ -23,7 +23,7 @@ public class ProviderCatalogService {
      * Возвращает все записи каталога провайдеров.
      */
     public List<ProviderCatalogEntity> findAll() {
-        return repository.findAll();                 // неизменяемость не нужна: JPA даст копию
+        return repository.findAll();
     }
 
     /**
