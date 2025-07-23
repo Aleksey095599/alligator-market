@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.entity;
+package com.alligator.market.backend.provider.profile.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.*;
@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(
-        name = "provider_catalog",
+        name = "provider_profile",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code"),
                 @UniqueConstraint(name = "uq_display_name", columnNames = "display_name")
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProviderCatalogEntity extends BaseEntity {
+public class ProviderProfileEntity extends BaseEntity {
 
     /** Суррогатный PK */
     @Id
@@ -51,7 +51,7 @@ public class ProviderCatalogEntity extends BaseEntity {
     /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()} */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
-            name = "provider_catalog_instrument_type",
+            name = "provider_profile_instrument_type",
             joinColumns = @JoinColumn(
                     name = "provider_id",
                     referencedColumnName = "id",

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.service;
+package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
 import lombok.RequiredArgsConstructor;
