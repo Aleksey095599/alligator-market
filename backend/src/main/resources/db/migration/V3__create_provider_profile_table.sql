@@ -1,0 +1,18 @@
+-- Создает таблицу provider_profile
+CREATE TABLE provider_profile (
+    id BIGSERIAL PRIMARY KEY,
+    version BIGINT,
+    created_timestamp TIMESTAMP,
+    created_by VARCHAR(255),
+    updated_timestamp TIMESTAMP,
+    updated_by VARCHAR(255),
+    status VARCHAR(10) NOT NULL,
+    provider_code VARCHAR(50) NOT NULL,
+    display_name VARCHAR(50) NOT NULL,
+    delivery_mode VARCHAR(10) NOT NULL,
+    access_method VARCHAR(20) NOT NULL,
+    supports_bulk_subscription BOOLEAN NOT NULL,
+    min_poll_period_ms INTEGER NOT NULL,
+    CONSTRAINT uq_provider_code UNIQUE (provider_code),
+    CONSTRAINT uq_display_name UNIQUE (display_name)
+);
