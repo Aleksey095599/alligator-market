@@ -1,10 +1,7 @@
 package com.alligator.market.backend.provider.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.provider.AccessMethod;
-import com.alligator.market.domain.provider.DeliveryMode;
-import com.alligator.market.domain.provider.ProviderCatalogStatus;
+import com.alligator.market.domain.provider.*;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import java.util.Set;
 import jakarta.persistence.*;
@@ -29,42 +26,29 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProviderCatalogEntity extends BaseEntity {
 
-    /**
-     * Суррогатный PK.
-     */
+    /** Суррогатный PK */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Статус адаптера
-     */
+    /** Статус адаптера */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private ProviderCatalogStatus status;
 
-    //==================================
-    // Статические метаданные провайдера
-    //==================================
+    //========================
+    // Поля профиля провайдера
+    //========================
 
-    /**
-     * Технический идентификатор провайдера.
-     * Соответствует {@link MarketDataProvider#providerCode()}.
-     */
+    /** {@link ProviderProfile#providerCode()} */
     @Column(length = 50, nullable = false)
     private String providerCode;
 
-    /**
-     * Читаемое имя для UI/логов.
-     * Соответствует {@link MarketDataProvider#displayName()}.
-     */
+    /** {@link ProviderProfile#displayName()} */
     @Column(length = 50, nullable = false)
     private String displayName;
 
-    /**
-     * Поддерживаемые классы инструментов.
-     * Соответствует {@link MarketDataProvider#instrumentTypes()}.
-     */
+    /** {@link ProviderProfile#instrumentTypes()} */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
             name = "provider_catalog_instrument_type",
@@ -78,33 +62,21 @@ public class ProviderCatalogEntity extends BaseEntity {
     @Column(name = "instrument_type", length = 20, nullable = false)
     private Set<InstrumentType> instrumentTypes;
 
-    /**
-     * Режим доставки рыночных данных: PULL или PUSH.
-     * Соответствует {@link MarketDataProvider#deliveryMode()}.
-     */
+    /** {@link ProviderProfile#deliveryMode()} */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private DeliveryMode deliveryMode;
 
-    /**
-     * Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие.
-     * Соответствует {@link MarketDataProvider#accessMethod()}.
-     */
+    /** {@link ProviderProfile#accessMethod()} */
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private AccessMethod accessMethod;
 
-    /**
-     * Возможна ли массовая подписка одним запросом.
-     * Соответствует {@link MarketDataProvider#supportsBulkSubscription()}.
-     */
+    /** {@link ProviderProfile#supportsBulkSubscription()} */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
 
-    /**
-     * Минимально допустимый интервал опроса в миллисекундах.
-     * Соответствует {@link MarketDataProvider#minPollPeriodMs()}.
-     */
+    /** {@link ProviderProfile#minPollPeriodMs()} */
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
 }
