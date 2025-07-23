@@ -22,5 +22,4 @@ public record PairDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
-) {
-}
+) {}

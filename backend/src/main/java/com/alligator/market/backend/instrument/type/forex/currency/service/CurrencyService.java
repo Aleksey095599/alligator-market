@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface CurrencyService {
 
-    /** Создать новую валюту. */
+    /** Создать новую валюту */
     String createCurrency(Currency currency);
 
-    /** Обновить существующую валюту. */
+    /** Обновить существующую валюту */
     void updateCurrency(Currency currency);
 
-    /** Удалить валюту по коду. */
+    /** Удалить валюту по коду */
     void deleteCurrency(String code);
 
-    /** Вернуть все валюты. */
+    /** Вернуть все валюты */
     List<Currency> findAll();
 }

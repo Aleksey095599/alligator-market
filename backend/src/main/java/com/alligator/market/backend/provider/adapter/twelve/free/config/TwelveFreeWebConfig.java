@@ -17,17 +17,17 @@ public class TwelveFreeWebConfig {
     private final TwelveFreeProps props;
     private final HttpClient httpClient;
 
-    // Конструктор с инжекцией общего http-клиента для всех провайдеров
+    // Конструктор
     public TwelveFreeWebConfig(
             TwelveFreeProps props,
-            @Qualifier("providerHttpClient") HttpClient httpClient
+            @Qualifier("providerHttpClient") HttpClient httpClient // инжекция bean общего http-клиента провайдеров
     ) {
         this.props = props;
         this.httpClient = httpClient;
     }
 
     /**
-     * Строим бин web-клиента для провайдера TwelveData.
+     * Строим бин web-клиента для провайдера TwelveData
      */
     @Bean("twelveFreeWebClient")
     WebClient twelveFreeWebClient() {

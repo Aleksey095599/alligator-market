@@ -5,7 +5,6 @@ import com.alligator.market.backend.instrument.type.forex.currency.repository.Cu
 import com.alligator.market.backend.instrument.type.forex.currency_pair.entity.CurrencyPairEntity;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairRepository;
-import com.alligator.market.backend.instrument.type.forex.currency_pair.repository.CurrencyPairJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;

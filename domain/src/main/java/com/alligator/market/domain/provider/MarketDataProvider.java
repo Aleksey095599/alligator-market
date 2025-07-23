@@ -5,13 +5,19 @@ import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
 /**
- * Единый контракт адаптера для всех провайдеров рыночных данных
+ * Единый контракт адаптера для всех провайдеров рыночных данных.
  */
 public interface MarketDataProvider {
 
-    /** Профиль провайдера. */
+    //===================
+    // Профиль провайдера
+    //===================
+
     ProviderProfile profile();
 
-    /** Реактивный поток котировок. */
+    //===========================
+    // Реактивный поток котировок
+    //===========================
+
     Flux<QuoteTick> streamQuotes(Instrument instrument);
 }

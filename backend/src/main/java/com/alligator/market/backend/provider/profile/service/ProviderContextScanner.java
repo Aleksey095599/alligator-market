@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Компонент для доступа ко всем зарегистрированным провайдерам котировок.
+ * Компонент для сканирования всех профилей провайдеров рыночных данных.
  */
 @Component
 @RequiredArgsConstructor
 public class ProviderContextScanner {
 
-    /** Список всех контрактов адаптеров*/
+    /** Список всех профилей провайдеров */
     private final List<MarketDataProvider> providers;
 
-    /** Возвращает неизменяемый список всех обнаруженных провайдеров. */
+    /** Возвращает неизменяемый список всех профилей провайдеров */
     public List<MarketDataProvider> findAll() {
         return List.copyOf(providers);
     }

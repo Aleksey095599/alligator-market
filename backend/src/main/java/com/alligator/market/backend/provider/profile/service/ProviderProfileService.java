@@ -19,16 +19,12 @@ public class ProviderProfileService {
 
     private final ProviderProfileRepository repository;
 
-    /**
-     * Возвращает все профили провайдеров.
-     */
+    /** Возвращает все профили провайдеров */
     public List<ProviderProfileEntity> findAll() {
         return repository.findAll();
     }
 
-    /**
-     * Сохраняет заданную коллекцию профилей.
-     */
+    /** Сохраняет заданную коллекцию профилей */
     public void saveAll(Collection<ProviderProfileEntity> entities) {
         repository.saveAll(entities);
     }

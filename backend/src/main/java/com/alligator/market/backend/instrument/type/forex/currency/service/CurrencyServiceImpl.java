@@ -104,5 +104,4 @@ public class CurrencyServiceImpl implements CurrencyService {
         log.debug("Found {} currencies", result.size());
         return result;
     }
-
 }

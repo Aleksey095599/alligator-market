@@ -12,5 +12,4 @@ public record PairUpdateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer decimal
-) {
-}
+) {}
