@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency_pair;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.InstrumentType;
 
 /**
  * Доменная модель валютной пары.

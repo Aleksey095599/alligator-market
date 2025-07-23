@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AccessMethod;
 import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.provider.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
-import static com.alligator.market.domain.instrument.type.InstrumentType.CURRENCY_PAIR;
+import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAIR;
 
 /**
  * Адаптер для провайдера TwelveData (free).
@@ -29,7 +29,7 @@ import static com.alligator.market.domain.instrument.type.InstrumentType.CURRENC
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    // Создаем объект профиля провайдера
+    // Создаем профиль провайдера
     private static final ProviderProfile PROFILE = new ProviderProfile(
             "TWELVE_FREE",
             "TwelveData (free)",

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.InstrumentType;
 
 import java.util.Set;
 

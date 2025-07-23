@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.profile.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.*;
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.InstrumentType;
 import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;
