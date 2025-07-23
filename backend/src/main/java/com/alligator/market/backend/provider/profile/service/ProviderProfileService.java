@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Сервис для работы с профилями провайдеров.
+ * Сервис для работы с профилями провайдеров в таблице БД.
  */
 public interface ProviderProfileService {
 

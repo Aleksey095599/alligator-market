@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация интерфейса сервиса {@link CurrencyService} для операций с валютами.
+ * Реализация интерфейса сервиса {@link CurrencyService}.
  */
 @Service
 @RequiredArgsConstructor
