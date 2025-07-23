@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider;
 
 /**
- * Статус адаптера в каталоге провайдеров.
- */
-public enum ProviderCatalogStatus {
+ * Статус адаптера в профиле провайдера.
+*/
+public enum ProviderProfileStatus {
 
     // Бин адаптера провайдера доступен в контексте Spring
     AVAILABLE,
