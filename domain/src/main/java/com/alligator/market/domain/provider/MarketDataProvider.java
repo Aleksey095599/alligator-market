@@ -12,10 +12,12 @@ public interface MarketDataProvider {
     //===================
     // Профиль провайдера
     //===================
+    /** Возвращает профиль провайдера */
     ProviderProfile profile();
 
     //===========================
     // Реактивный поток котировок
     //===========================
+    /** Возвращает поток котировок в виде {@link QuoteTick} */
     Flux<QuoteTick> streamQuotes(Instrument instrument);
 }
