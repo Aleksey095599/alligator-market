@@ -18,6 +18,4 @@ public record DiffModel(
         List<ProviderProfile> toInsert,
         List<ProviderProfile> toUpdate,
         List<ProviderProfile> toOrphan
-) {
-
-}
+) {}
