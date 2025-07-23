@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderContextScanner {
 
-    /** Список всех профилей провайдеров */
+    /** Список всех адаптеров провайдеров */
     private final List<MarketDataProvider> providers;
 
-    /** Возвращает неизменяемый список всех профилей провайдеров */
-    public List<MarketDataProvider> findAll() {
-        return List.copyOf(providers);
+    /** Возвращает список профилей, доступных в контексте */
+    public List<ProviderProfile> findAll() {
+        return providers.stream()
+                .map(MarketDataProvider::profile)
+                .toList();
     }
 }
