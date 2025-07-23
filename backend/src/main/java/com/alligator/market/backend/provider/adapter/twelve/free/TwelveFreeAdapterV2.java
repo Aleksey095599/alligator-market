@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
+import com.alligator.market.domain.provider.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +17,27 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
 import static com.alligator.market.domain.instrument.type.InstrumentType.CURRENCY_PAIR;
 
 /**
- * Адаптер для провайдера TwelveData (free plan).
+ * Адаптер для провайдера TwelveData (free).
  */
 @Component
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
+
+    private static final ProviderProfile PROFILE = new ProviderProfile(
+            "TWELVE_FREE",
+            "TwelveData (free)",
+            Set.of(InstrumentType.CURRENCY_PAIR),
+            DeliveryMode.PULL,
+            AccessMethod.API_POLL,
+            false,
+            1_000
+    );
 
     private final TwelveFreeProps props;
     private final WebClient webClient;
@@ -40,43 +50,11 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         this.webClient = webClient;
     }
 
-    //==================================
-    // Статические метаданные провайдера
-    //==================================
+    /** Профиль провайдера. */
+    @Override
+    public ProviderProfile profile() { return PROFILE; }
 
-    @Override
-    public String providerCode() {
-        return "TWELVE_FREE";
-    }
-    @Override
-    public String displayName() {
-        return "TwelveData (free plan)";
-    }
-    @Override
-    public Set<InstrumentType> instrumentTypes() {
-        return Set.of(CURRENCY_PAIR);
-    }
-    @Override public DeliveryMode deliveryMode() {
-        return DeliveryMode.PULL;
-    }
-    @Override public AccessMethod accessMethod() {
-        return AccessMethod.API_POLL;
-    }
-    @Override public boolean supportsBulkSubscription() {
-        return false;
-    }
-    @Override
-    public Duration minPollPeriodMs() {
-        return Duration.ofMillis(1000);
-    }
-
-    //===========================
-    // Поток котировок провайдера
-    //===========================
-
-    /**
-     * Поток котировок для заданного инструмента от провайдера TwelveData (free plan).
-     */
+    /** Реактивный поток котировок. */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
@@ -126,7 +104,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 price,
                 price,
                 Instant.now(),
-                providerCode()
+                profile().providerCode()
         );
     }
 }
