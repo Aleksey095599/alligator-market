@@ -36,19 +36,19 @@ public class ProviderCatalogEntity extends BaseEntity {
     @Column(length = 10, nullable = false)
     private ProviderCatalogStatus status;
 
-    //========================
-    // Поля профиля провайдера
-    //========================
+    //==========================
+    // Данные профиля провайдера
+    //==========================
 
-    /** {@link ProviderProfile#providerCode()} */
+    /** Технический код {@link ProviderProfile#providerCode()} */
     @Column(length = 50, nullable = false)
     private String providerCode;
 
-    /** {@link ProviderProfile#displayName()} */
+    /** Отображаемое имя {@link ProviderProfile#displayName()} */
     @Column(length = 50, nullable = false)
     private String displayName;
 
-    /** {@link ProviderProfile#instrumentTypes()} */
+    /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()} */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
             name = "provider_catalog_instrument_type",
@@ -62,21 +62,21 @@ public class ProviderCatalogEntity extends BaseEntity {
     @Column(name = "instrument_type", length = 20, nullable = false)
     private Set<InstrumentType> instrumentTypes;
 
-    /** {@link ProviderProfile#deliveryMode()} */
+    /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()} */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private DeliveryMode deliveryMode;
 
-    /** {@link ProviderProfile#accessMethod()} */
+    /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()} */
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private AccessMethod accessMethod;
 
-    /** {@link ProviderProfile#supportsBulkSubscription()} */
+    /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()} */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
 
-    /** {@link ProviderProfile#minPollPeriodMs()} */
+    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()} */
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
 }
