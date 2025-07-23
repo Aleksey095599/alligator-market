@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.service;
+package com.alligator.market.backend.provider.profile.sync;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.ProviderProfile;
