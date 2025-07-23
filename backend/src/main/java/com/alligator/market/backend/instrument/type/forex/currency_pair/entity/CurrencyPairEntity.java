@@ -16,7 +16,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(
-        name = "ccypair",
+        name = "currency_pair",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_currency_pair", columnNames = "pair")
         }
