@@ -55,14 +55,12 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //===================
     // Профиль провайдера
     //===================
-
     @Override
     public ProviderProfile profile() { return PROFILE; }
 
     //===========================
     // Реактивный поток котировок
     //===========================
-
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
