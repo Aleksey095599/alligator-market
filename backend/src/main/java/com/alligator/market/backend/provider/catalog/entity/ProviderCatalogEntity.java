@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity для каталога провайдеров рыночных данных.
- * Поля Entity соответствуют статическим метаданным единого контракта адаптера: {@link MarketDataProvider}.
+ * Entity для таблицы с профилями провайдеров рыночных данных.
+ * Доменная модель профиля провайдера - {@link ProviderProfile}.
  */
 @Entity
 @Table(
