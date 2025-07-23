@@ -2,6 +2,8 @@ package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.repository.ProviderProfileRepository;
+import com.alligator.market.backend.provider.profile.mapper.ProviderProfileMapper;
+import com.alligator.market.domain.provider.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,10 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
 
     /** Возвращает все профили провайдеров */
     @Override
-    public List<ProviderProfileEntity> findAll() {
-        return repository.findAll();
+    public List<ProviderProfile> findAll() {
+        return repository.findAll().stream()
+                .map(ProviderProfileMapper::toDomain)
+                .toList();
     }
 
     /** Сохраняет заданную коллекцию профилей */
