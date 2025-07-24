@@ -21,7 +21,7 @@ class ProviderContextScannerTest {
 
     @Test
     void shouldPrintAllProfiles() {
-        List<ProviderProfile> profiles = scanner.findAll();
+        List<ProviderProfile> profiles = scanner.getProviderProfiles();
         profiles.forEach(System.out::println);
         assertFalse(profiles.isEmpty());
     }
