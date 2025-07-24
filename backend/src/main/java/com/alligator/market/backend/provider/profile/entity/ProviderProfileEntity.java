@@ -31,7 +31,7 @@ public class ProviderProfileEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Статус адаптера */
+    /** Статус профиля провайдера */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private ProviderProfileStatus status;
