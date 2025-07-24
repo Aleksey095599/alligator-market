@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Компонент для сканирования всех профилей провайдеров рыночных данных.
+ * Компонент для сканирования всех бинов адаптеров провайдеров реализующих контракт {@link MarketDataProvider}.
+ * Каждому бину адаптера провайдера, согласно контракту, соответствует свой профиль провайдера.
+ * Данный компонент содержит метод, который извлекает указанные профили провайдера в виде списка.
  */
 @Component
 @RequiredArgsConstructor
@@ -17,8 +19,8 @@ public class ProviderContextScanner {
     /** Список всех адаптеров провайдеров */
     private final List<MarketDataProvider> providers;
 
-    /** Возвращает список профилей, доступных в контексте */
-    public List<ProviderProfile> findAll() {
+    /** Возвращает список профилей провайдеров */
+    public List<ProviderProfile> getProviderProfiles() {
         return providers.stream()
                 .map(MarketDataProvider::profile)
                 .toList();
