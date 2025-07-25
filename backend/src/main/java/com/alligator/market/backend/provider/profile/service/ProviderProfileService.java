@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
-import com.alligator.market.domain.provider.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.Collection;
 import java.util.List;
 
