@@ -2,8 +2,8 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeProps;
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.AccessMethod;
-import com.alligator.market.domain.provider.DeliveryMode;
+import com.alligator.market.domain.provider.profile.AccessMethod;
+import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;

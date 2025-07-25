@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider;
+package com.alligator.market.domain.provider.profile;
 
 /**
  * Список возможных режимов доставки рыночных данных провайдера.
