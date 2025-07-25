@@ -23,8 +23,8 @@ public class ProviderProfileSync {
     public SyncResult compare() {
         // Извлекаем профили из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
-        // Извлекаем профили из таблицы
-        List<ProviderProfile> dbProfiles = profileService.findAll();
+        // Извлекаем профили из таблицы вместе с их PK
+        Map<ProviderProfile, Long> dbProfiles = profileService.findAll();
 
         Map<String, ProviderProfile> contextMap = contextProfiles.stream()
                 .collect(java.util.stream.Collectors.toMap(ProviderProfile::providerCode, p -> p));
@@ -34,7 +34,8 @@ public class ProviderProfileSync {
         List<ProviderProfile> onlyDb = new ArrayList<>();
         List<ProviderProfile> onlyContext = new ArrayList<>();
 
-        for (ProviderProfile dbProfile : dbProfiles) {
+        for (Map.Entry<ProviderProfile, Long> entry : dbProfiles.entrySet()) {
+            ProviderProfile dbProfile = entry.getKey();
             ProviderProfile contextProfile = contextMap.remove(dbProfile.providerCode());
             if (contextProfile == null) {
                 onlyDb.add(dbProfile);
