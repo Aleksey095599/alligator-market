@@ -32,13 +32,4 @@ public class ProviderProfileSync {
         Map<ProviderProfile, Long> dbProfiles = profileService.findAll();
 
     }
-
-    /**
-     * Результат сравнения профилей.
-     */
-    public record SyncResult(
-            Map<ProviderProfile, Long> addNewWithActiveStatus,
-            Map<ProviderProfile, Long> changeStatusToReplaced,
-            Map<ProviderProfile, Long> changeStatusToMissing
-    ) {}
 }
