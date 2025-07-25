@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.mapper;
 
 import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
-import com.alligator.market.domain.provider.ProviderProfile;
-import com.alligator.market.domain.provider.ProviderProfileStatus;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 
 /**
  * Утилитарный класс для преобразования между доменной моделью
