@@ -1,6 +1,8 @@
-package com.alligator.market.domain.provider;
+package com.alligator.market.domain.provider.profile;
 
 import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.provider.AccessMethod;
+import com.alligator.market.domain.provider.DeliveryMode;
 
 import java.util.Set;
 
