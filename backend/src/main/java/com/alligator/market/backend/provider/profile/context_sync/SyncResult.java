@@ -3,6 +3,13 @@ package com.alligator.market.backend.provider.profile.context_sync;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.Map;
 
+/**
+ * Результат синхронизации.
+ *
+ * @param addNewWithActiveStatus
+ * @param changeStatusToReplaced
+ * @param changeStatusToMissing
+ */
 public record SyncResult(
 
         Map<ProviderProfile, Long> addNewWithActiveStatus,

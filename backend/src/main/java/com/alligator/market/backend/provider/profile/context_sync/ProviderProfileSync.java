@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * Синхронизация профилей провайдеров из контекста и базы данных.
+ * Компонент синхронизирует профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных.
  */
 @Component
 @RequiredArgsConstructor
@@ -17,9 +17,6 @@ public class ProviderProfileSync {
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileService profileService;
 
-    /**
-     * Сравнивает профили провайдеров из контекста и базы данных.
-     */
     public SyncResult compare() {
 
         // Извлекаем профили из контекста
