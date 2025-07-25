@@ -17,13 +17,7 @@ import lombok.Setter;
  * Доменная модель профиля провайдера - {@link ProviderProfile}.
  */
 @Entity
-@Table(
-        name = "provider_profile",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code"),
-                @UniqueConstraint(name = "uq_display_name", columnNames = "display_name")
-        }
-)
+@Table(name = "provider_profile")
 @Getter
 @Setter
 @NoArgsConstructor

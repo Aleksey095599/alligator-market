@@ -12,7 +12,5 @@ CREATE TABLE provider_profile (
     delivery_mode VARCHAR(10) NOT NULL,
     access_method VARCHAR(20) NOT NULL,
     supports_bulk_subscription BOOLEAN NOT NULL,
-    min_poll_period_ms INTEGER NOT NULL,
-    CONSTRAINT uq_provider_code UNIQUE (provider_code),
-    CONSTRAINT uq_display_name UNIQUE (display_name)
+    min_poll_period_ms INTEGER NOT NULL
 );
