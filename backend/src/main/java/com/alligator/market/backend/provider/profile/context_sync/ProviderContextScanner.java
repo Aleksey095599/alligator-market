@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.sync;
+package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
