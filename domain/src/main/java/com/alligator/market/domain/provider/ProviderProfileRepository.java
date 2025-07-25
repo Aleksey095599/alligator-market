@@ -2,13 +2,13 @@ package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Порт хранилища профилей провайдеров.
  */
 public interface ProviderProfileRepository {
 
-    /** Вернуть все профили провайдера */
-    List<ProviderProfile> findAll();
+    /** Вернуть все профили провайдеров вместе с PK */
+    Map<ProviderProfile, Long> findAll();
 }

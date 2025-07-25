@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -22,10 +23,12 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
 
     /** Возвращает все профили провайдеров */
     @Override
-    public List<ProviderProfile> findAll() {
+    public Map<ProviderProfile, Long> findAll() {
         return repository.findAll().stream()
-                .map(ProviderProfileMapper::toDomain)
-                .toList();
+                .collect(Collectors.toMap(
+                        ProviderProfileMapper::toDomain,
+                        ProviderProfileEntity::getId
+                ));
     }
 
     /** Сохраняет заданную коллекцию профилей */

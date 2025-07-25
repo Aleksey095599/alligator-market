@@ -1,12 +1,14 @@
 package com.alligator.market.backend.provider.profile.repository;
 
+import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.mapper.ProviderProfileMapper;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Адаптер реализующий доменный репозиторий {@link com.alligator.market.domain.provider.ProviderProfileRepository}
@@ -19,9 +21,11 @@ public class ProviderProfileRepositoryAdapter implements com.alligator.market.do
     private final ProviderProfileJpaRepository jpaRepository;
 
     @Override
-    public List<ProviderProfile> findAll() {
+    public Map<ProviderProfile, Long> findAll() {
         return jpaRepository.findAll(Sort.by("providerCode")).stream()
-                .map(ProviderProfileMapper::toDomain)
-                .toList();
+                .collect(Collectors.toMap(
+                        ProviderProfileMapper::toDomain,
+                        ProviderProfileEntity::getId
+                ));
     }
 }
