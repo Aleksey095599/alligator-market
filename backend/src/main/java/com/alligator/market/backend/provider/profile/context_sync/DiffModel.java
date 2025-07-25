@@ -9,5 +9,4 @@ public record DiffModel (
         List<ProviderProfileEntity> toActive,
         List<ProviderProfileEntity> toReplaced,
         List<ProviderProfileEntity> toMissing
-
 ) {}
