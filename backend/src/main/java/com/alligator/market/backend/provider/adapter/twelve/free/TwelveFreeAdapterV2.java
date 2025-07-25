@@ -7,7 +7,7 @@ import com.alligator.market.domain.provider.DeliveryMode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
-import com.alligator.market.domain.provider.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
