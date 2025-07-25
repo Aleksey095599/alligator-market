@@ -4,13 +4,13 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.Map;
 
 /**
- * Результат синхронизации.
+ * Результат сравнения профилей провайдеров из контекста и базы данных.
  *
  * @param addNewWithActiveStatus
  * @param changeStatusToReplaced
  * @param changeStatusToMissing
  */
-public record SyncResult(
+public record CompareResult(
 
         Map<ProviderProfile, Long> addNewWithActiveStatus,
         Map<ProviderProfile, Long> changeStatusToReplaced,

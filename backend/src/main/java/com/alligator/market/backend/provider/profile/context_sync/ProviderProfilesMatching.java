@@ -8,16 +8,17 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * Компонент синхронизирует профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных.
+ * Компонент сравнивает профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных,
+ * и возвращает набор профилей {@link CompareResult} для дальнейших действий в целях синхронизации.
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderProfileSync {
+public class ProviderProfilesMatching {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileService profileService;
 
-    public SyncResult compare() {
+    public CompareResult compare() {
 
         // Извлекаем профили из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
