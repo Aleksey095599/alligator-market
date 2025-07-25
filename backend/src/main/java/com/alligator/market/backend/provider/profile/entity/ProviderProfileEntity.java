@@ -4,6 +4,9 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.*;
 import com.alligator.market.domain.instrument.InstrumentType;
 import java.util.Set;
+
+import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +34,7 @@ public class ProviderProfileEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Статус профиля провайдера */
+    /** Статус профиля провайдера согласно {@link ProviderProfileStatus} */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private ProviderProfileStatus status;
