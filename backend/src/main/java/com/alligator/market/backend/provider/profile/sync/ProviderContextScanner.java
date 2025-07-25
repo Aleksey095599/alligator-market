@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.sync;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.provider.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
