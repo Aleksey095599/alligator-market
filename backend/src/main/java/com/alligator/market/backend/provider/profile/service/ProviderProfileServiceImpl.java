@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
-import com.alligator.market.backend.provider.profile.repository.ProviderProfileRepository;
+import com.alligator.market.backend.provider.profile.repository.ProviderProfileJpaRepository;
 import com.alligator.market.backend.provider.profile.mapper.ProviderProfileMapper;
-import com.alligator.market.domain.provider.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderProfileServiceImpl implements ProviderProfileService {
 
-    private final ProviderProfileRepository repository;
+    private final ProviderProfileJpaRepository repository;
 
     /** Возвращает все профили провайдеров */
     @Override
