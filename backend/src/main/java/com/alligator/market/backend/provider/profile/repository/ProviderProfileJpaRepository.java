@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Репозиторий для работы с профилями провайдеров.
  */
-public interface ProviderProfileRepository extends JpaRepository<ProviderProfileEntity, Long> {
+public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 }
