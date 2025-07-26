@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public interface ProviderProfileService {
 
-    /** Вернуть все профили провайдеров вместе с PK */
-    Map<ProviderProfile, Long> findAll();
+    /** Вернуть все активные профили провайдеров вместе с PK */
+    Map<ProviderProfile, Long> findAllActive();
 
     /** Сохранить коллекцию профилей */
     void saveAll(Collection<ProviderProfileEntity> entities);

@@ -37,8 +37,8 @@ public class ProviderProfilesMatching {
 
         }
 
-        // Извлекаем профили из таблицы вместе с PK
-        Map<ProviderProfile, Long> dbProfiles = profileService.findAll();
+        // Извлекаем активные профили из таблицы вместе с PK
+        Map<ProviderProfile, Long> dbProfiles = profileService.findAllActive();
 
     }
 }
