@@ -39,14 +39,54 @@ public class ProviderProfilesMatching {
         // Извлекаем активные профили из таблицы вместе с PK
         Map<ProviderProfile, Long> dbActiveProfiles = profileService.findAllActive();
 
-        // Перебираем профили из dbActiveProfiles. Если i-ый профиль из dbActiveProfiles полностью (по всем полям)
-        // совпадает с некоторым j-ым профилем из contextProfiles значит в базе данных есть данный активный профиль - убираем j-ый профиль из contextProfiles.
-        // Если вдруг i-ый профиль из dbActiveProfiles вообще не найден в contextProfiles значит добавляем этот профиль в
-        // CompareResult в список changeStatusToMissing. Если i-ый профиль из dbActiveProfiles совпадает по полю providerCode некоторым j-ым профилем из contextProfiles,
-        // однако по другим полям есть хотя бы одно отличие, значит i-ый профиль из dbActiveProfiles добавляем в список changeStatusToReplaced,
-        // а j-ый профиль из contextProfiles добавляем в список addNewWithActiveStatus и убираем из списка contextProfiles. Если после того, как мы перебрали все профили из dbActiveProfiles
-        // в списке contextProfiles остались профили - значит это новые профили их добавляем в addNewWithActiveStatus.
-        // Уточнение: в CompareResult addNewWithActiveStatus это лист а не Map с номером, так как это новые записи и PK для них не может существовать
+        //======================
+        // Сопоставляем профили
+        //======================
+
+        // Контейнеры для результата
+        List<ProviderProfile> addNew = new ArrayList<>();
+        Map<ProviderProfile, Long> toReplaced = new LinkedHashMap<>();
+        Map<ProviderProfile, Long> toMissing = new LinkedHashMap<>();
+
+        // Создаем копию списка профилей из контекста, чтобы удалять найденные
+        List<ProviderProfile> restProfiles = new ArrayList<>(contextProfiles);
+
+        // Перебираем профили из БД
+        for (Map.Entry<ProviderProfile, Long> entry : dbActiveProfiles.entrySet()) {
+            ProviderProfile dbProfile = entry.getKey();
+            Long id = entry.getValue();
+
+            // Ищем профиль с тем же providerCode в контексте
+            ProviderProfile contextMatch = null;
+            for (ProviderProfile p : restProfiles) {
+                if (p.providerCode().equals(dbProfile.providerCode())) {
+                    contextMatch = p;
+                    break;
+                }
+            }
+
+            if (contextMatch == null) {
+                // Профиль в контексте не найден
+                toMissing.put(dbProfile, id);
+                continue;
+            }
+
+            if (contextMatch.equals(dbProfile)) {
+                // Полное совпадение
+                restProfiles.remove(contextMatch);
+                continue;
+            }
+
+            // providerCode совпадает, но есть отличия
+            toReplaced.put(dbProfile, id);
+            addNew.add(contextMatch);
+            restProfiles.remove(contextMatch);
+        }
+
+        // Оставшиеся в контексте профили новые
+        addNew.addAll(restProfiles);
+
+        return new CompareResult(addNew, toReplaced, toMissing);
 
     }
 }
