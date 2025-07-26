@@ -1,6 +1,8 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.profile.ProviderProfile;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 public record CompareResult(
 
-        Map<ProviderProfile, Long> addNewWithActiveStatus,
+        List<ProviderProfile> addNewWithActiveStatus,
         Map<ProviderProfile, Long> changeStatusToReplaced,
         Map<ProviderProfile, Long> changeStatusToMissing
 ) {}
