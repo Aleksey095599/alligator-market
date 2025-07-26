@@ -4,7 +4,7 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.Map;
 
 /**
- * Результат сравнения профилей провайдеров из контекста и базы данных.
+ * Результат сравнения профилей провайдеров из контекста Spring и базы данных.
  *
  * @param addNewWithActiveStatus
  * @param changeStatusToReplaced
