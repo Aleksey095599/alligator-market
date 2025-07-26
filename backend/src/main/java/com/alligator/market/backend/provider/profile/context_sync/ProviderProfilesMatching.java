@@ -45,7 +45,8 @@ public class ProviderProfilesMatching {
         // CompareResult в список changeStatusToMissing. Если i-ый профиль из dbActiveProfiles совпадает по полю providerCode некоторым j-ым профилем из contextProfiles,
         // однако по другим полям есть хотя бы одно отличие, значит i-ый профиль из dbActiveProfiles добавляем в список changeStatusToReplaced,
         // а j-ый профиль из contextProfiles добавляем в список addNewWithActiveStatus и убираем из списка contextProfiles. Если после того, как мы перебрали все профили из dbActiveProfiles
-        // в списке contextProfiles остались профили - значит это новые профили их добавляем в addNewWithActiveStatus
+        // в списке contextProfiles остались профили - значит это новые профили их добавляем в addNewWithActiveStatus.
+        // Уточнение: в CompareResult addNewWithActiveStatus это лист а не Map с номером, так как это новые записи и PK для них не может существовать
 
     }
 }
