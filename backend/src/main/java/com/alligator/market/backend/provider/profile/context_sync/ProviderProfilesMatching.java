@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * Компонент сравнивает профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных,
- * и возвращает набор профилей {@link CompareResult} для дальнейших действий в целях синхронизации.
+ * возвращает наборы профилей в виде {@link CompareResult} для дальнейших действий в целях синхронизации.
  */
 @Component
 @RequiredArgsConstructor
@@ -34,11 +34,18 @@ public class ProviderProfilesMatching {
             if (!names.add(profile.displayName())) {
                 throw new DuplicateProviderProfileException("displayName", profile.displayName());
             }
-
         }
 
         // Извлекаем активные профили из таблицы вместе с PK
-        Map<ProviderProfile, Long> dbProfiles = profileService.findAllActive();
+        Map<ProviderProfile, Long> dbActiveProfiles = profileService.findAllActive();
+
+        // Перебираем профили из dbActiveProfiles. Если i-ый профиль из dbActiveProfiles полностью (по всем полям)
+        // совпадает с некоторым j-ым профилем из contextProfiles значит в базе данных есть данный активный профиль - убираем j-ый профиль из contextProfiles.
+        // Если вдруг i-ый профиль из dbActiveProfiles вообще не найден в contextProfiles значит добавляем этот профиль в
+        // CompareResult в список changeStatusToMissing. Если i-ый профиль из dbActiveProfiles совпадает по полю providerCode некоторым j-ым профилем из contextProfiles,
+        // однако по другим полям есть хотя бы одно отличие, значит i-ый профиль из dbActiveProfiles добавляем в список changeStatusToReplaced,
+        // а j-ый профиль из contextProfiles добавляем в список addNewWithActiveStatus и убираем из списка contextProfiles. Если после того, как мы перебрали все профили из dbActiveProfiles
+        // в списке contextProfiles остались профили - значит это новые профили их добавляем в addNewWithActiveStatus
 
     }
 }
