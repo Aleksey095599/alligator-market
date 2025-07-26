@@ -4,6 +4,7 @@ import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntit
 import com.alligator.market.backend.provider.profile.repository.ProviderProfileJpaRepository;
 import com.alligator.market.backend.provider.profile.mapper.ProviderProfileMapper;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,10 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
 
     private final ProviderProfileJpaRepository repository;
 
-    /** Возвращает все профили провайдеров */
+    /** Возвращает все профили провайдеров со статусом ACTIVE */
     @Override
-    public Map<ProviderProfile, Long> findAll() {
-        return repository.findAll().stream()
+    public Map<ProviderProfile, Long> findAllActive() {
+        return repository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProviderProfileMapper::toDomain,
                         ProviderProfileEntity::getId

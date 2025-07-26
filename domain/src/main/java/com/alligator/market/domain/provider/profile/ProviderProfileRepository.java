@@ -7,6 +7,6 @@ import java.util.Map;
  */
 public interface ProviderProfileRepository {
 
-    /** Вернуть все профили провайдеров вместе с PK */
-    Map<ProviderProfile, Long> findAll();
+    /** Вернуть все активные профили провайдеров вместе с PK */
+    Map<ProviderProfile, Long> findAllActive();
 }
