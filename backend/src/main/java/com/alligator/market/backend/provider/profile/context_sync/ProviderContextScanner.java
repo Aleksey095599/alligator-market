@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,27 @@ public class ProviderContextScanner {
 
     /** Возвращает список профилей провайдеров */
     public List<ProviderProfile> getProviderProfiles() {
-        return providers.stream()
+        List<ProviderProfile> profiles = providers.stream()
                 .map(MarketDataProvider::profile)
                 .toList();
+
+        validateNoDuplicates(profiles);
+
+        return profiles;
+    }
+
+    /** Проверяем, что providerCode и displayName уникальны. */
+    private void validateNoDuplicates(List<ProviderProfile> profiles) {
+        java.util.Set<String> codes = new java.util.HashSet<>();
+        java.util.Set<String> names = new java.util.HashSet<>();
+
+        for (ProviderProfile profile : profiles) {
+            if (!codes.add(profile.providerCode())) {
+                throw new DuplicateProviderProfileException("providerCode", profile.providerCode());
+            }
+            if (!names.add(profile.displayName())) {
+                throw new DuplicateProviderProfileException("displayName", profile.displayName());
+            }
+        }
     }
 }
