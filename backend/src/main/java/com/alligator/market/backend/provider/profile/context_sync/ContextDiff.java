@@ -18,38 +18,23 @@ import java.util.Map;
 @NoArgsConstructor
 public class ContextDiff {
 
-    /** Профили, которые нужно создать со статусом ACTIVE */
-    private final List<ProviderProfile> addWithActiveStatus = new ArrayList<>();
+    /** Список профилей, которые нужно создать со статусом ACTIVE */
+    private final List<ProviderProfile> add = new ArrayList<>();
 
-    /** Профили для замены на новые */
-    private final Map<ProviderProfile, Long> changeStatusToReplaced = new LinkedHashMap<>();
+    /** Профили для замены статуса на REPLACED */
+    private final Map<ProviderProfile, Long> replaced = new LinkedHashMap<>();
 
-    /** Профили отсутствующие в контексте */
-    private final Map<ProviderProfile, Long> changeStatusToMissing = new LinkedHashMap<>();
-
-    /**
-     * Конструктор инициализирует модель заранее подготовленными контейнерами.
-     */
-    public ContextDiff(List<ProviderProfile> addWithActiveStatus,
-                       Map<ProviderProfile, Long> changeStatusToReplaced,
-                       Map<ProviderProfile, Long> changeStatusToMissing) {
-        this.addWithActiveStatus.addAll(addWithActiveStatus);
-        this.changeStatusToReplaced.putAll(changeStatusToReplaced);
-        this.changeStatusToMissing.putAll(changeStatusToMissing);
+    /** Профили для замены статуса на MISSING */
+    private final Map<ProviderProfile, Long> missing = new LinkedHashMap<>();
+    
+    // Методы добавления в соответствующие списки
+    public void putToAddList(ProviderProfile profile) {
+        add.add(profile);
     }
-
-    /** Добавить новый профиль со статусом ACTIVE. */
-    public void putAddList(ProviderProfile profile) {
-        addWithActiveStatus.add(profile);
-    }
-
-    /** Пометить профиль в БД как REPLACED. */
     public void putToReplaceMap(ProviderProfile profile, Long id) {
-        changeStatusToReplaced.put(profile, id);
+        replaced.put(profile, id);
     }
-
-    /** Пометить профиль в БД как MISSING. */
     public void putToMissingMap(ProviderProfile profile, Long id) {
-        changeStatusToMissing.put(profile, id);
+        missing.put(profile, id);
     }
 }
