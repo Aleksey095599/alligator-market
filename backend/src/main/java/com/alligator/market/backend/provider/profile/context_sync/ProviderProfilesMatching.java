@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * Компонент сравнивает профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных,
- * возвращает наборы профилей в виде {@link CompareResult} для дальнейших действий в целях синхронизации.
+ * возвращает наборы профилей в виде {@link ContextDiff} для дальнейших действий в целях синхронизации.
  */
 @Component
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class ProviderProfilesMatching {
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileService profileService;
 
-    public CompareResult compare() {
+    public ContextDiff compare() {
 
         // Извлекаем профили из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
@@ -87,6 +87,6 @@ public class ProviderProfilesMatching {
         // Оставшиеся в контексте профили новые
         addNew.addAll(restContextProfiles);
 
-        return new CompareResult(addNew, toReplaced, toMissing);
+        return new ContextDiff(addNew, toReplaced, toMissing);
     }
 }
