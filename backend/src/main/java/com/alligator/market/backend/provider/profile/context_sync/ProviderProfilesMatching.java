@@ -5,7 +5,9 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Компонент сравнивает профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных,
@@ -32,9 +34,7 @@ public class ProviderProfilesMatching {
         //===============================
 
         // Контейнеры для результата
-        List<ProviderProfile> addNew = new ArrayList<>();
-        Map<ProviderProfile, Long> toReplaced = new LinkedHashMap<>();
-        Map<ProviderProfile, Long> toMissing = new LinkedHashMap<>();
+        ContextDiff diff = new ContextDiff();
 
         // Создаем копию списка профилей из контекста, чтобы удалять найденные
         List<ProviderProfile> restContextProfiles = new ArrayList<>(contextProfiles);
@@ -56,7 +56,7 @@ public class ProviderProfilesMatching {
 
             if (contextMatch == null) {
                 // Профиль в контексте не найден
-                toMissing.put(dbProfile, id);
+                diff.putToMissingMap(dbProfile, id);
                 continue;
             }
 
@@ -67,14 +67,14 @@ public class ProviderProfilesMatching {
             }
 
             // providerCode совпадает, но есть отличия
-            toReplaced.put(dbProfile, id);
-            addNew.add(contextMatch);
+            diff.putToReplaceMap(dbProfile, id);
+            diff.putAddList(contextMatch);
             restContextProfiles.remove(contextMatch);
         }
 
         // Оставшиеся в контексте профили новые
-        addNew.addAll(restContextProfiles);
+        restContextProfiles.forEach(diff::putAddList);
 
-        return new ContextDiff(addNew, toReplaced, toMissing);
+        return diff;
     }
 }
