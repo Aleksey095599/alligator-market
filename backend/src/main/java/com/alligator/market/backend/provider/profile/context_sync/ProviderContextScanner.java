@@ -25,6 +25,7 @@ public class ProviderContextScanner {
                 .map(MarketDataProvider::profile)
                 .toList();
 
+        // Проверка на дублирование по кодам и именам провайдеров
         validateNoDuplicates(profiles);
 
         return profiles;
