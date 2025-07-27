@@ -10,13 +10,13 @@ import java.util.Map;
  * синхронизации профилей провайдеров получаемых методом {@link ProviderContextScanner#getProviderProfiles()} и
  * профилей провайдеров, содержащихся в базе данных.
  *
- * @param addNewWithActiveStatus
+ * @param addWithActiveStatus
  * @param changeStatusToReplaced
  * @param changeStatusToMissing
  */
 public record ContextDiff(
 
-        List<ProviderProfile> addNewWithActiveStatus,
+        List<ProviderProfile> addWithActiveStatus,
         Map<ProviderProfile, Long> changeStatusToReplaced,
         Map<ProviderProfile, Long> changeStatusToMissing
 ) {}
