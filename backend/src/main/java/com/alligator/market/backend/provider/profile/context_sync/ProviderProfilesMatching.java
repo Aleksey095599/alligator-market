@@ -25,7 +25,6 @@ public class ProviderProfilesMatching {
         // Извлекаем профили из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
 
-
         // Извлекаем активные профили из таблицы вместе с PK
         Map<ProviderProfile, Long> dbActiveProfiles = profileService.findAllActive();
 
@@ -68,12 +67,12 @@ public class ProviderProfilesMatching {
 
             // providerCode совпадает, но есть отличия
             diff.putToReplaceMap(dbProfile, id);
-            diff.putAddList(contextMatch);
+            diff.putToAddList(contextMatch);
             restContextProfiles.remove(contextMatch);
         }
 
         // Оставшиеся в контексте профили новые
-        restContextProfiles.forEach(diff::putAddList);
+        restContextProfiles.forEach(diff::putToAddList);
 
         return diff;
     }
