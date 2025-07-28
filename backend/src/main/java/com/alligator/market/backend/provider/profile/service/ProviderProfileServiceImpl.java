@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.profile.service;
 
-import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +24,9 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
         return repository.findAllActive();
     }
 
-    /** Сохраняет заданную коллекцию профилей */
+    /** Сохраняет заданную коллекцию профилей со статусом ACTIVE */
     @Override
-    public void saveAll(Collection<ProviderProfileEntity> entities) {
-        repository.saveAll(entities);
+    public void saveAll(Collection<ProviderProfile> profiles) {
+        repository.saveAll(profiles);
     }
 }

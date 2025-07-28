@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -29,5 +30,13 @@ public class ProviderProfileRepositoryAdapter implements ProviderProfileReposito
                         ProviderProfileMapper::toDomain,
                         ProviderProfileEntity::getId
                 ));
+    }
+
+    @Override
+    public void saveAll(Collection<ProviderProfile> profiles) {
+        var entities = profiles.stream()
+                .map(p -> ProviderProfileMapper.toEntity(p, ProviderProfileStatus.ACTIVE))
+                .toList();
+        jpaRepository.saveAll(entities);
     }
 }
