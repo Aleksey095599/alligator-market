@@ -4,10 +4,9 @@ import com.alligator.market.backend.instrument.type.forex.currency_pair.exceptio
 import com.alligator.market.backend.instrument.type.forex.currency_pair.exception.DuplicatePairException;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.exception.PairNotFoundException;
 import com.alligator.market.backend.instrument.type.forex.currency_pair.exception.EqualCurrenciesInPairException;
-import com.alligator.market.domain.instrument.type.forex.currency.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.currency.CurrencyStorage;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
-import com.alligator.market.backend.instrument.type.forex.currency_pair.service.CurrencyPairService;
-import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairRepository;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ import java.util.List;
 @Slf4j
 public class CurrencyPairServiceImpl implements CurrencyPairService {
 
-    private final CurrencyPairRepository repository;
-    private final CurrencyRepository currencyRepository;
+    private final CurrencyPairStorage repository;
+    private final CurrencyStorage currencyStorage;
 
     //===================
     // Создать новую пару
@@ -37,9 +36,9 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
             throw new EqualCurrenciesInPairException(currencyPair.code1());
         }
 
-        currencyRepository.findByCode(currencyPair.code1())
+        currencyStorage.findByCode(currencyPair.code1())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code1()));
-        currencyRepository.findByCode(currencyPair.code2())
+        currencyStorage.findByCode(currencyPair.code2())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code2()));
 
         repository.findByPair(currencyPair.pair()).ifPresent(p -> {

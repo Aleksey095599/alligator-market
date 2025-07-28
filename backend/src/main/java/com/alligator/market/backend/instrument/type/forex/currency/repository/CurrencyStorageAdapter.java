@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.currency.repository;
 
 import com.alligator.market.backend.instrument.type.forex.currency.entity.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.forex.currency.Currency;
-import com.alligator.market.domain.instrument.type.forex.currency.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.currency.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер реализующий доменный репозиторий {@link CurrencyRepository} в контексте Spring Data JPA.
+ * Адаптер реализующий доменный репозиторий {@link CurrencyStorage} в контексте Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
-public class CurrencyRepositoryAdapter implements CurrencyRepository {
+public class CurrencyStorageAdapter implements CurrencyStorage {
 
     private final CurrencyJpaRepository jpaRepository;
 

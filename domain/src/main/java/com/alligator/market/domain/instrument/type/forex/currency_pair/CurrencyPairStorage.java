@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Порт хранилища валютных пар.
  */
-public interface CurrencyPairRepository {
+public interface CurrencyPairStorage {
 
     /** Сохранить или обновить валютную пару */
     String save(CurrencyPair pair);

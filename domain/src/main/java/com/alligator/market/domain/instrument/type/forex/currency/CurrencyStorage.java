@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Порт хранилища валют.
  */
-public interface CurrencyRepository {
+public interface CurrencyStorage {
 
     /** Сохранить или обновить валюту */
     String save(Currency currency);

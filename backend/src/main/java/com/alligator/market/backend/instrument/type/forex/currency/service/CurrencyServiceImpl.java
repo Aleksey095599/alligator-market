@@ -4,9 +4,8 @@ import com.alligator.market.backend.instrument.type.forex.currency.exception.Cur
 import com.alligator.market.backend.instrument.type.forex.currency.exception.CurrencyUsedInPairsException;
 import com.alligator.market.backend.instrument.type.forex.currency.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.instrument.type.forex.currency.Currency;
-import com.alligator.market.backend.instrument.type.forex.currency.service.CurrencyService;
-import com.alligator.market.domain.instrument.type.forex.currency.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairRepository;
+import com.alligator.market.domain.instrument.type.forex.currency.CurrencyStorage;
+import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,8 @@ import java.util.List;
 @Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
-    private final CurrencyRepository repository;
-    private final CurrencyPairRepository pairRepository;
+    private final CurrencyStorage repository;
+    private final CurrencyPairStorage pairRepository;
 
     //=====================
     // Создать новую валюту
