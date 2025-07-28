@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
-import com.alligator.market.domain.provider.profile.ProviderContextScanner;
+import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
