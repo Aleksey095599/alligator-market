@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
+import com.alligator.market.backend.provider.profile.service.ProviderProfileServiceImpl;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  * В классе заданы списки профилей, касательно которых требуются действия в базе данных для обеспечения
  * синхронизации профилей провайдеров получаемых методом {@link ProviderContextScanner#getProviderProfiles()} и
- * профилей провайдеров, содержащихся в базе данных.
+ * профилей провайдеров, полученных методом {@link ProviderProfileServiceImpl#findAllActive()}.
  */
 @Getter
 @NoArgsConstructor
