@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderProfilesMatching {
+public class ContextDiffService {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileService profileService;
