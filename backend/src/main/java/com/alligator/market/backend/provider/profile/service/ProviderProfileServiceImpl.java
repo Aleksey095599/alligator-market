@@ -5,28 +5,21 @@ import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Map;
 
 
 /**
- * Реализация интерфейса сервиса {@link ProviderProfileService}.
+ * Реализация контракта сервиса {@link ProviderProfileService}.
  */
 @Service
 @RequiredArgsConstructor
 public class ProviderProfileServiceImpl implements ProviderProfileService {
 
-    private final ProviderProfileStorage repository;
+    private final ProviderProfileStorage storage;
 
     /** Возвращает все профили провайдеров со статусом ACTIVE */
     @Override
     public Map<ProviderProfile, Long> findAllActive() {
-        return repository.findAllActive();
-    }
-
-    /** Сохраняет заданную коллекцию профилей со статусом ACTIVE */
-    @Override
-    public void saveAll(Collection<ProviderProfile> profiles) {
-        repository.saveAll(profiles);
+        return storage.findAllActive();
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация интерфейса сервиса {@link CurrencyService}.
+ * Реализация контракта {@link CurrencyService}.
  */
 @Service
 @RequiredArgsConstructor
@@ -22,8 +22,8 @@ import java.util.List;
 @Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
-    private final CurrencyStorage repository;
-    private final CurrencyPairStorage pairRepository;
+    private final CurrencyStorage storage;
+    private final CurrencyPairStorage pairStorage;
 
     //=====================
     // Создать новую валюту
@@ -31,17 +31,17 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public String createCurrency(Currency currency) {
 
-        repository.findByCode(currency.code()).ifPresent(c -> {
+        storage.findByCode(currency.code()).ifPresent(c -> {
             throw new DuplicateCurrencyException("code", currency.code());
         });
-        repository.findByName(currency.name()).ifPresent(c -> {
+        storage.findByName(currency.name()).ifPresent(c -> {
             throw new DuplicateCurrencyException("name", currency.name());
         });
-        repository.findByCountry(currency.country()).ifPresent(c -> {
+        storage.findByCountry(currency.country()).ifPresent(c -> {
             throw new DuplicateCurrencyException("country", currency.country());
         });
 
-        String code = repository.save(currency);
+        String code = storage.save(currency);
         log.info("Currency {} saved", code);
         return code;
     }
@@ -53,22 +53,22 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void updateCurrency(Currency currency) {
 
         // Проверка наличия валюты к обновлению
-        repository.findByCode(currency.code())
+        storage.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
         // Проверки, что обновление не приведет к дублированию
-        repository.findByName(currency.name()).ifPresent(c -> {
+        storage.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("name", currency.name());
             }
         });
-        repository.findByCountry(currency.country()).ifPresent(c -> {
+        storage.findByCountry(currency.country()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("country", currency.country());
             }
         });
 
-        repository.save(currency);
+        storage.save(currency);
         log.info("Currency {} updated", currency.code());
     }
 
@@ -78,15 +78,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public void deleteCurrency(String code) {
 
-        repository.findByCode(code)
+        storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
         // Проверка, что валюта не используется в парах
-        if (pairRepository.existsByCurrency(code)) {
+        if (pairStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInPairsException(code);
         }
 
-        repository.deleteByCode(code);
+        storage.deleteByCode(code);
         log.info("Currency {} deleted", code);
     }
 
@@ -98,7 +98,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public List<Currency> findAll() {
 
         // Извлекаем все валюты, преобразуя список сущностей к доменной модели валюты
-        List<Currency> result = repository.findAll();
+        List<Currency> result = storage.findAll();
 
         log.debug("Found {} currencies", result.size());
         return result;
