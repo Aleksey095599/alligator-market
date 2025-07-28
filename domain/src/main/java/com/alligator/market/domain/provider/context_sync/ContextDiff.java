@@ -10,27 +10,14 @@ import java.util.Map;
 /**
  * Результат сопоставления профилей провайдеров.
  */
-public class ContextDiff {
+public record ContextDiff(
+        List<ProviderProfile> add,
+        Map<ProviderProfile, Long> replaced,
+        Map<ProviderProfile, Long> missing
+) {
 
-    /** Список профилей, которые нужно создать. */
-    private final List<ProviderProfile> add = new ArrayList<>();
-
-    /** Профили для пометки статусом REPLACED. */
-    private final Map<ProviderProfile, Long> replaced = new LinkedHashMap<>();
-
-    /** Профили для пометки статусом MISSING. */
-    private final Map<ProviderProfile, Long> missing = new LinkedHashMap<>();
-
-    public List<ProviderProfile> getAdd() {
-        return add;
-    }
-
-    public Map<ProviderProfile, Long> getReplaced() {
-        return replaced;
-    }
-
-    public Map<ProviderProfile, Long> getMissing() {
-        return missing;
+    public ContextDiff() {
+        this(new ArrayList<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public void putToAddList(ProviderProfile profile) {
