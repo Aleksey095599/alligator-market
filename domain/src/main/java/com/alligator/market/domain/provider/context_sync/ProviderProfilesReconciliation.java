@@ -21,7 +21,7 @@ public class ProviderProfilesReconciliation {
         this.profileStorage = profileStorage;
     }
 
-    /** Выполняет сравнение профилей и формирует diff. */
+    /** Выполняет сравнение профилей и формирует {@link ContextDiff}. */
     public ContextDiff compare() {
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
         Map<ProviderProfile, Long> dbActiveProfiles = profileStorage.findAllActive();
