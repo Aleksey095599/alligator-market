@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.repository;
 import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.mapper.ProviderProfileMapper;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.domain.provider.profile.ProviderProfileRepository;
+import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,12 +13,12 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Адаптер реализующий доменный репозиторий {@link ProviderProfileRepository}
+ * Адаптер реализующий доменный репозиторий {@link ProviderProfileStorage}
  * в контексте Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
-public class ProviderProfileRepositoryAdapter implements ProviderProfileRepository {
+public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
 
     private final ProviderProfileJpaRepository jpaRepository;
 

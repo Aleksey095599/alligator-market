@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Порт хранилища профилей провайдеров.
  */
-public interface ProviderProfileRepository {
+public interface ProviderProfileStorage {
 
     /** Вернуть все активные профили провайдеров вместе с PK */
     Map<ProviderProfile, Long> findAllActive();

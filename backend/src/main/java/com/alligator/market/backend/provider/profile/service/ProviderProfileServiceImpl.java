@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.service;
 
 import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.domain.provider.profile.ProviderProfileRepository;
+import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProviderProfileServiceImpl implements ProviderProfileService {
 
-    private final ProviderProfileRepository repository;
+    private final ProviderProfileStorage repository;
 
     /** Возвращает все профили провайдеров со статусом ACTIVE */
     @Override
