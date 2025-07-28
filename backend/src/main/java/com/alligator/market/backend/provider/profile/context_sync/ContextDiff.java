@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * В классе заданы списки профилей, касательно которых требуются действия в базе данных для обеспечения
- * синхронизации профилей провайдеров получаемых методом {@link ProviderContextScanner#getProviderProfiles()} и
- * профилей провайдеров, полученных методом {@link ProviderProfileServiceImpl#findAllActive()}.
+ * В классе заданы списки профилей, касательно которых требуются действия с базой данных для обеспечения
+ * синхронизации с профилями провайдеров извлеченными из контекста Spring
+ * методом {@link ProviderContextScanner#getProviderProfiles()}.
  */
 @Getter
 @NoArgsConstructor
