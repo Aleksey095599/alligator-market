@@ -22,4 +22,10 @@ public class ProviderProfilesReconciliationAdapter {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
         return domain.compare();
     }
+
+    /** Применить diff к хранилищу. */
+    public void applyContextDiffToStorage(ContextDiff diff) {
+        var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
+        domain.applyContextDiffToStorage(diff);
+    }
 }

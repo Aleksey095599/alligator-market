@@ -38,4 +38,11 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
                 .toList();
         jpaRepository.saveAll(entities);
     }
+
+    @Override
+    public void updateStatus(Collection<Long> ids, ProviderProfileStatus status) {
+        var entities = jpaRepository.findAllById(ids);
+        entities.forEach(e -> e.setStatus(status));
+        jpaRepository.saveAll(entities);
+    }
 }

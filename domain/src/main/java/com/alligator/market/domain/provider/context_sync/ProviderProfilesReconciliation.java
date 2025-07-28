@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.context_sync;
 
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ProviderProfilesReconciliation {
             }
 
             if (contextMatch == null) {
-                diff.putToMissingMap(dbProfile, id);
+                diff.putToMissingList(id);
                 continue;
             }
 
@@ -51,12 +52,27 @@ public class ProviderProfilesReconciliation {
                 continue;
             }
 
-            diff.putToReplaceMap(dbProfile, id);
+            diff.putToReplaceList(id);
             diff.putToAddList(contextMatch);
             restContextProfiles.remove(contextMatch);
         }
 
         restContextProfiles.forEach(diff::putToAddList);
         return diff;
+    }
+
+    /**
+     * Применяет diff к хранилищу профилей.
+     */
+    public void applyContextDiffToStorage(ContextDiff diff) {
+        if (!diff.add().isEmpty()) {
+            profileStorage.saveAll(diff.add());
+        }
+        if (!diff.replaced().isEmpty()) {
+            profileStorage.updateStatus(diff.replaced(), ProviderProfileStatus.REPLACED);
+        }
+        if (!diff.missing().isEmpty()) {
+            profileStorage.updateStatus(diff.missing(), ProviderProfileStatus.MISSING);
+        }
     }
 }
