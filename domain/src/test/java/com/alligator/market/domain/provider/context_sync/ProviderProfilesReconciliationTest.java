@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -40,10 +41,10 @@ class ProviderProfilesReconciliationTest {
         assertEquals(2, diff.add().size());
 
         assertEquals(1, diff.replaced().size());
-        assertEquals(2L, diff.replaced().get(dbB));
+        assertTrue(diff.replaced().contains(2L));
 
         assertEquals(1, diff.missing().size());
-        assertEquals(3L, diff.missing().get(dbC));
+        assertTrue(diff.missing().contains(3L));
     }
 
     private static ProviderProfile profile(String code, String name) {
@@ -73,6 +74,11 @@ class ProviderProfilesReconciliationTest {
 
         @Override
         public void saveAll(java.util.Collection<ProviderProfile> profiles) {
+            // not needed for test
+        }
+
+        @Override
+        public void updateStatus(java.util.Collection<Long> ids, ProviderProfileStatus status) {
             // not needed for test
         }
     }
