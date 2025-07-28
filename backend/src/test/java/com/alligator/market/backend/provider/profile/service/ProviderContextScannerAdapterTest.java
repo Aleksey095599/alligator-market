@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.service;
 
-import com.alligator.market.backend.provider.profile.context_sync.ProviderContextScanner;
+import com.alligator.market.backend.provider.profile.context_sync.ProviderContextScannerAdapter;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /* Интеграционный тест для сканера профилей провайдеров. */
 @Disabled
 @SpringBootTest
-class ProviderContextScannerTest {
+class ProviderContextScannerAdapterTest {
 
     @Autowired
-    private ProviderContextScanner scanner;
+    private ProviderContextScannerAdapter scanner;
 
     @Test
     void shouldPrintAllProfiles() {
