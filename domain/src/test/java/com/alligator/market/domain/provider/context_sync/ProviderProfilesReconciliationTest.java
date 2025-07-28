@@ -33,15 +33,15 @@ class ProviderProfilesReconciliationTest {
         ProviderProfilesReconciliation service = new ProviderProfilesReconciliation(scanner, storage);
         ContextDiff diff = service.compare();
 
-        assertTrue(diff.getAdd().contains(ctxB));
-        assertTrue(diff.getAdd().contains(ctxD));
-        assertEquals(2, diff.getAdd().size());
+        assertTrue(diff.add().contains(ctxB));
+        assertTrue(diff.add().contains(ctxD));
+        assertEquals(2, diff.add().size());
 
-        assertEquals(1, diff.getReplaced().size());
-        assertEquals(2L, diff.getReplaced().get(dbB));
+        assertEquals(1, diff.replaced().size());
+        assertEquals(2L, diff.replaced().get(dbB));
 
-        assertEquals(1, diff.getMissing().size());
-        assertEquals(3L, diff.getMissing().get(dbC));
+        assertEquals(1, diff.missing().size());
+        assertEquals(3L, diff.missing().get(dbC));
     }
 
     private static ProviderProfile profile(String code, String name) {
