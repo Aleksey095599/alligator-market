@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.profile;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -9,4 +10,7 @@ public interface ProviderProfileRepository {
 
     /** Вернуть все активные профили провайдеров вместе с PK */
     Map<ProviderProfile, Long> findAllActive();
+
+    /** Сохранить коллекцию профилей со статусом ACTIVE */
+    void saveAll(Collection<ProviderProfile> profiles);
 }
