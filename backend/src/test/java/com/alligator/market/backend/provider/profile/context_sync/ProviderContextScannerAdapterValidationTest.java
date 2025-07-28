@@ -17,15 +17,15 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/** Тесты проверки уникальности профилей в ProviderContextScanner. */
-class ProviderContextScannerValidationTest {
+/** Тесты проверки уникальности профилей в ProviderContextScannerAdapter. */
+class ProviderContextScannerAdapterValidationTest {
 
     @Disabled
     @Test
     void shouldThrowOnDuplicateCode() {
         MarketDataProvider p1 = provider("A", "Name1");
         MarketDataProvider p2 = provider("A", "Name2");
-        ProviderContextScanner scanner = new ProviderContextScanner(List.of(p1, p2));
+        ProviderContextScannerAdapter scanner = new ProviderContextScannerAdapter(List.of(p1, p2));
         assertThrows(DuplicateProviderProfileException.class, scanner::getProviderProfiles);
     }
 
@@ -34,7 +34,7 @@ class ProviderContextScannerValidationTest {
     void shouldThrowOnDuplicateName() {
         MarketDataProvider p1 = provider("A", "Same");
         MarketDataProvider p2 = provider("B", "Same");
-        ProviderContextScanner scanner = new ProviderContextScanner(List.of(p1, p2));
+        ProviderContextScannerAdapter scanner = new ProviderContextScannerAdapter(List.of(p1, p2));
         assertThrows(DuplicateProviderProfileException.class, scanner::getProviderProfiles);
     }
 
