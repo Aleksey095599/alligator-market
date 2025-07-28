@@ -25,7 +25,6 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     @Override
     public Map<ProviderProfile, Long> findAllActive() {
         return jpaRepository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
-                .sorted((o1, o2) -> o1.getProviderCode().compareTo(o2.getProviderCode()))
                 .collect(Collectors.toMap(
                         ProviderProfileMapper::toDomain,
                         ProviderProfileEntity::getId
