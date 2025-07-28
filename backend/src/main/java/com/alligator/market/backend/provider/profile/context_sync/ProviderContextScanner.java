@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ProviderContextScanner
-        implements com.alligator.market.domain.provider.profile.ProviderContextScanner {
+        implements com.alligator.market.domain.provider.context_sync.ProviderContextScanner {
 
     /** Список всех адаптеров провайдеров */
     private final List<MarketDataProvider> providers;
