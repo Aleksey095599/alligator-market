@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderContextScanner
-        implements com.alligator.market.domain.provider.context_sync.ProviderContextScanner {
+public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
     /** Список всех адаптеров провайдеров */
     private final List<MarketDataProvider> providers;
