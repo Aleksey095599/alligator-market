@@ -10,15 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Компонент сравнивает профили провайдеров, извлеченных из контекста Spring и извлеченных из базы данных,
- * возвращает наборы профилей в виде {@link ContextDiff} для дальнейших действий в целях синхронизации.
+ * Компонент сравнивает профили провайдеров, извлеченные из контекста Spring и извлеченные из базы данных.
+ * Возвращает наборы профилей в виде {@link ContextDiff} для дальнейших действий в целях синхронизации.
  */
 @Component
 @RequiredArgsConstructor
-public class ContextDiffService {
+public class ProviderProfilesReconciliation {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileService profileService;
+
 
     public ContextDiff compare() {
 
