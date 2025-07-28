@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.backend.provider.profile.service.ProviderProfileService;
+import com.alligator.market.domain.provider.profile.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

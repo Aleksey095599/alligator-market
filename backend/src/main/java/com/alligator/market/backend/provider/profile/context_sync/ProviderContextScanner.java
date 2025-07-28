@@ -14,12 +14,14 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderContextScanner {
+public class ProviderContextScanner
+        implements com.alligator.market.domain.provider.profile.ProviderContextScanner {
 
     /** Список всех адаптеров провайдеров */
     private final List<MarketDataProvider> providers;
 
     /** Возвращает список профилей провайдеров */
+    @Override
     public List<ProviderProfile> getProviderProfiles() {
         List<ProviderProfile> profiles = providers.stream()
                 .map(MarketDataProvider::profile)
