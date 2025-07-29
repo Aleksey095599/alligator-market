@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
+import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Планировщик запуска сопоставления профилей провайдеров при старте приложения.
+ * Планировщик запускает процесс синхронизации профилей провайдеров рыночных данных, извлеченных из бинов адаптеров
+ * провайдеров рыночных данных (см. {@link MarketDataProvider}) и выгруженных из базы данных (см. таблицу
+ * <code>provider_profile</code>).
  */
 @Component
 @RequiredArgsConstructor
