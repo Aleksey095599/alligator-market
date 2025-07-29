@@ -34,6 +34,16 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
+        return jpaRepository.findAll().stream()
+                .collect(Collectors.toMap(
+                        ProviderProfileMapper::toDomain,
+                        ProviderProfileEntity::getStatus
+                ));
+    }
+
+    @Override
     public void saveAll(Collection<ProviderProfile> profiles) {
         var entities = profiles.stream()
                 .map(p -> ProviderProfileMapper.toEntity(p, ProviderProfileStatus.ACTIVE))

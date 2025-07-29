@@ -12,6 +12,9 @@ public interface ProviderProfileStorage {
     /** Вернуть все активные профили провайдеров вместе с PK. */
     Map<ProviderProfile, Long> findAllActive();
 
+    /** Вернуть все профили провайдеров с их статусами. */
+    Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus();
+
     /** Сохранить коллекцию профилей со статусом ACTIVE. */
     void saveAll(Collection<ProviderProfile> profiles);
 

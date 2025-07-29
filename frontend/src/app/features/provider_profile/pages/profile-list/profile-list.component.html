@@ -2,6 +2,7 @@
   <h1 class="mat-headline-4">Provider Profiles</h1>
   <mat-card>
     <mat-card-content>
+      <mat-slide-toggle (change)="onToggle()" color="primary">Show all status</mat-slide-toggle>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
         <ng-container matColumnDef="providerCode">
@@ -37,6 +38,11 @@
         <ng-container matColumnDef="minPollPeriodMs">
           <th mat-header-cell *matHeaderCellDef>Min Poll ms</th>
           <td mat-cell *matCellDef="let p">{{ p.minPollPeriodMs }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let p">{{ p.status }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayed"></tr>
