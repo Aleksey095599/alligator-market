@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSlideToggleModule, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ProviderProfileService } from '../../services/provider-profile.service';
 import { ProviderProfileStatusDto } from '../../models/provider-profile-status.model';
 
@@ -36,7 +36,8 @@ export class ProfileListComponent implements OnInit {
   }
 
   /* переключение отображения всех статусов */
-  onToggle(): void {
+  onToggle(event: MatSlideToggleChange): void {
+    this.showAll = event.checked;
     this.refresh();
   }
 

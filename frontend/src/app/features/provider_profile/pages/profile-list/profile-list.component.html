@@ -2,7 +2,7 @@
   <h1 class="mat-headline-4">Provider Profiles</h1>
   <mat-card>
     <mat-card-content>
-      <mat-slide-toggle (change)="onToggle()" color="primary">Show all status</mat-slide-toggle>
+      <mat-slide-toggle [checked]="showAll" (change)="onToggle($event)" color="primary">Show all status</mat-slide-toggle>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
         <ng-container matColumnDef="providerCode">
