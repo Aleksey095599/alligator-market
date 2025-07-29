@@ -16,14 +16,14 @@ import { ProviderProfileStatusDto } from '../../models/provider-profile-status.m
 export class ProfileListComponent implements OnInit {
 
   displayed: string[] = [
+    'status',
     'providerCode',
     'displayName',
     'instrumentTypes',
     'deliveryMode',
     'accessMethod',
     'supportsBulkSubscription',
-    'minPollPeriodMs',
-    'status'
+    'minPollPeriodMs'
   ];
   dataSource = new MatTableDataSource<ProviderProfileStatusDto>([]);
   showAll = false;
