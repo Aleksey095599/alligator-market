@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * JPA-репозиторий для работы с сущностями {@link ProviderProfileEntity}
- * в таблице <code>provider_profiles</code>.
+ * в таблице <code>provider_profile</code>.
  */
 public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 
