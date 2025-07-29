@@ -34,6 +34,7 @@ public class ProviderProfileController {
 
     /* Утилита преобразует доменную модель в DTO. */
     private ProviderProfileDto toDto(ProviderProfile profile) {
+
         return new ProviderProfileDto(
                 profile.providerCode(),
                 profile.displayName(),
