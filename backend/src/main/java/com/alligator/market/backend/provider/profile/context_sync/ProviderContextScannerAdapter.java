@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Компонент ищет в контексте Spring все адаптеры провайдеров реализующих контракт {@link MarketDataProvider}
+ * Компонент реализует порт для сканирования контекста приложения и извлечения профилей провайдеров рыночных данных:
+ * ищет в контексте Spring все адаптеры провайдеров реализующих контракт {@link MarketDataProvider}
  * и извлекает соответствующие им профили провайдеров.
  */
 @Component
@@ -33,7 +34,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         return profiles;
     }
 
-    /** Проверяем, что providerCode и displayName уникальны. */
+    /** Проверяет, что <code>providerCode</code> и <code>displayName</code> уникальны */
     private void validateNoDuplicates(List<ProviderProfile> profiles) {
         java.util.Set<String> codes = new java.util.HashSet<>();
         java.util.Set<String> names = new java.util.HashSet<>();

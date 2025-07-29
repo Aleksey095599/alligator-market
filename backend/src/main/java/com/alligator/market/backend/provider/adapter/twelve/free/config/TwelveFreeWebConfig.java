@@ -1,5 +1,7 @@
 package com.alligator.market.backend.provider.adapter.twelve.free.config;
 
+import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
+import com.alligator.market.backend.provider.config.http.ProviderHttpConfigGlobal;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +10,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Конфигурационный класс, который создает и настраивает WebClient для работы с API TwelveData.
- * Использует общий для всех провайдеров HTTP-клиент и частные настройки провайдера.
+ * Конфигурационный класс, который создает и настраивает WebClient для адаптера провайдера {@link TwelveFreeAdapterV2}.
+ * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal}
+ * и настройки подключения провайдера {@link TwelveFreeProps}.
  */
 @Configuration
 public class TwelveFreeWebConfig {

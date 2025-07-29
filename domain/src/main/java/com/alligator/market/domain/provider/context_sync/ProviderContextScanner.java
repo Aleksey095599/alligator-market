@@ -5,8 +5,7 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.List;
 
 /**
- * Порт поиска в контексте Spring всех адаптеров провайдеров рыночных данных
- * и извлечения их профилей.
+ * Порт для сканирования контекста приложения и извлечения профилей провайдеров рыночных данных.
  */
 public interface ProviderContextScanner {
 

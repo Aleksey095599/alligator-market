@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.Currency;
 import java.util.List;
 
 /**
- * Контракт сервиса для операций с валютами в хранилище данных.
+ * Контракт сервиса операций с валютами в хранилище данных.
  */
 public interface CurrencyService {
 

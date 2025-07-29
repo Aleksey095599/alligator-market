@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис сопоставления профилей из контекста и хранилища.
+ * Сервис, реализующий логику сопоставления профилей провайдеров, извлеченных из контекста приложения
+ * и хранилища данных.
  */
 public class ProviderProfilesReconciliation {
 
@@ -22,7 +23,7 @@ public class ProviderProfilesReconciliation {
         this.profileStorage = profileStorage;
     }
 
-    /** Выполняет сравнение профилей и формирует {@link ContextDiff}. */
+    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff} */
     public ContextDiff compare() {
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
         Map<ProviderProfile, Long> dbActiveProfiles = profileStorage.findAllActive();
@@ -61,9 +62,8 @@ public class ProviderProfilesReconciliation {
         return diff;
     }
 
-    /**
-     * Применяет diff к хранилищу профилей.
-     */
+    /** Применить {@link ContextDiff} к хранилищу данных для синхронизации с контекстом приложения
+     * информации о профилях провайдеров рыночных данных */
     public void applyContextDiffToStorage(ContextDiff diff) {
         if (!diff.add().isEmpty()) {
             profileStorage.saveAll(diff.add());
