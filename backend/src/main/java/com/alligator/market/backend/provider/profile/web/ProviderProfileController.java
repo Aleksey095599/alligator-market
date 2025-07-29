@@ -3,8 +3,10 @@ package com.alligator.market.backend.provider.profile.web;
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.provider.profile.dto.ProviderProfileDto;
+import com.alligator.market.backend.provider.profile.dto.ProviderProfileStatusDto;
 import com.alligator.market.backend.provider.profile.service.ProviderProfileService;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,15 @@ public class ProviderProfileController {
         return ResponseEntityFactory.ok(list);
     }
 
+    /** Вернуть все профили провайдеров со статусами. */
+    @GetMapping("/audit")
+    public ResponseEntity<ApiResponse<List<ProviderProfileStatusDto>>> getAllWithStatus() {
+        List<ProviderProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()
+                .map(e -> toStatusDto(e.getKey(), e.getValue()))
+                .toList();
+        return ResponseEntityFactory.ok(list);
+    }
+
     /* Утилита преобразует доменную модель в DTO. */
     private ProviderProfileDto toDto(ProviderProfile profile) {
 
@@ -43,6 +54,20 @@ public class ProviderProfileController {
                 profile.accessMethod(),
                 profile.supportsBulkSubscription(),
                 profile.minPollPeriodMs()
+        );
+    }
+
+    /* Утилита преобразует доменную модель и статус в DTO. */
+    private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status) {
+        return new ProviderProfileStatusDto(
+                profile.providerCode(),
+                profile.displayName(),
+                profile.instrumentTypes(),
+                profile.deliveryMode(),
+                profile.accessMethod(),
+                profile.supportsBulkSubscription(),
+                profile.minPollPeriodMs(),
+                status
         );
     }
 }
