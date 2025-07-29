@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Collection;
@@ -23,6 +24,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     private final ProviderProfileJpaRepository jpaRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Map<ProviderProfile, Long> findAllActive() {
         return jpaRepository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
