@@ -22,7 +22,8 @@ export class ProfileListComponent implements OnInit {
     'deliveryMode',
     'accessMethod',
     'supportsBulkSubscription',
-    'minPollPeriodMs'
+    'minPollPeriodMs',
+    'status'
   ];
   dataSource = new MatTableDataSource<ProviderProfileStatusDto>([]);
   showAll = false;
@@ -42,16 +43,11 @@ export class ProfileListComponent implements OnInit {
   /* обновление таблицы в зависимости от режима */
   private refresh(): void {
     if (this.showAll) {
-      if (!this.displayed.includes('status')) {
-        this.displayed.push('status');
-      }
       this.service.listAll().subscribe({
         next: list => this.dataSource.data = list,
         error: err => console.error(err)
       });
     } else {
-      const idx = this.displayed.indexOf('status');
-      if (idx !== -1) { this.displayed.splice(idx, 1); }
       this.service.list().subscribe({
         next: list => this.dataSource.data = list.map(p => ({
           ...p,
