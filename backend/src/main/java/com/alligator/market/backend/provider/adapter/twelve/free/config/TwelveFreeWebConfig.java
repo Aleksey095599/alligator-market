@@ -30,7 +30,7 @@ public class TwelveFreeWebConfig {
     }
 
     /**
-     * Строим бин web-клиента для провайдера TwelveData
+     * Строим бин web-клиента для провайдера TwelveData.
      */
     @Bean("twelveFreeWebClient")
     WebClient twelveFreeWebClient() {

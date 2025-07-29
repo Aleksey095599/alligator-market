@@ -24,12 +24,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProviderProfileEntity extends BaseEntity {
 
-    /** Суррогатный PK */
+    /** Суррогатный PK. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Статус профиля провайдера согласно {@link ProviderProfileStatus} */
+    /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private ProviderProfileStatus status;
@@ -38,15 +38,15 @@ public class ProviderProfileEntity extends BaseEntity {
     // Данные профиля провайдера
     //==========================
 
-    /** Технический код {@link ProviderProfile#providerCode()} */
+    /** Технический код {@link ProviderProfile#providerCode()}. */
     @Column(length = 50, nullable = false)
     private String providerCode;
 
-    /** Отображаемое имя {@link ProviderProfile#displayName()} */
+    /** Отображаемое имя {@link ProviderProfile#displayName()}. */
     @Column(length = 50, nullable = false)
     private String displayName;
 
-    /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()} */
+    /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()}. */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
             name = "provider_profile_instrument_type",
@@ -60,21 +60,21 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "instrument_type", length = 20, nullable = false)
     private Set<InstrumentType> instrumentTypes;
 
-    /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()} */
+    /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()}. */
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
     private DeliveryMode deliveryMode;
 
-    /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()} */
+    /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()}. */
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private AccessMethod accessMethod;
 
-    /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()} */
+    /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()}. */
     @Column(nullable = false)
     private boolean supportsBulkSubscription;
 
-    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()} */
+    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()}. */
     @Column(name = "min_poll_period_ms", nullable = false)
     private int minPollPeriodMs;
 }

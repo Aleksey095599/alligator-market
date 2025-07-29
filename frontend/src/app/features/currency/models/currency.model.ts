@@ -1,4 +1,4 @@
-/** DTO для валюты аналогичный backend */
+/** DTO для валюты аналогичный backend. */
 export interface CurrencyDto {
   code: string;
   name: string;

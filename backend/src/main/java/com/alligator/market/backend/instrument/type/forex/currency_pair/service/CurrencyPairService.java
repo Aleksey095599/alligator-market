@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface CurrencyPairService {
 
-    /** Создать новую пару */
+    /** Создать новую пару. */
     String createPair(CurrencyPair pair);
 
-    /** Обновить существующую пару */
+    /** Обновить существующую пару. */
     void updatePair(CurrencyPair pair);
 
-    /** Удалить пару по коду */
+    /** Удалить пару по коду. */
     void deletePair(String pair);
 
-    /** Вернуть все пары */
+    /** Вернуть все пары. */
     List<CurrencyPair> findAll();
 }

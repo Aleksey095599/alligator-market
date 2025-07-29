@@ -8,6 +8,6 @@ import java.util.Map;
  */
 public interface ProviderProfileService {
 
-    /** Вернуть все активные профили провайдеров вместе с PK */
+    /** Вернуть все активные профили провайдеров вместе с PK. */
     Map<ProviderProfile, Long> findAllActive();
 }
