@@ -5,12 +5,6 @@ package com.alligator.market.domain.instrument;
  */
 public enum InstrumentType {
 
-    // Валюта
-    CURRENCY,
-
-    // Валютная пара на рынке Forex
-    CURRENCY_PAIR,
-
-    // Валютный своп
-    CURRENCY_SWAP,
+    // Валютная пара
+    CURRENCY_PAIR
 }
