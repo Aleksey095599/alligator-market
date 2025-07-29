@@ -37,7 +37,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
             false,
-            1_000
+            60_000
     );
 
     private final TwelveFreeProps props;
