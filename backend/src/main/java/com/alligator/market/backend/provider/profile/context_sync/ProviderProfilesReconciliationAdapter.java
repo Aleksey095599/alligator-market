@@ -18,14 +18,14 @@ public class ProviderProfilesReconciliationAdapter {
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
 
-    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff} */
+    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
         return domain.compare();
     }
 
     /** Применить {@link ContextDiff} к хранилищу данных для синхронизации с контекстом приложения
-     * информации о профилях провайдеров рыночных данных */
+     * информации о профилях провайдеров рыночных данных. */
     public void applyContextDiffToStorage(ContextDiff diff) {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
         domain.applyContextDiffToStorage(diff);

@@ -26,25 +26,25 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CurrencyEntity extends BaseEntity {
 
-    /** Суррогатный PK */
+    /** Суррогатный PK. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** ISO-4217 код валюты */
+    /** ISO-4217 код валюты. */
     @Pattern(regexp = "^[A-Z]{3}$")
     @Column(length = 3, nullable = false)
     private String code;
 
-    /** Наименование валюты */
+    /** Наименование валюты. */
     @Column(length = 50, nullable = false)
     private String name;
 
-    /** Страна или регион обращения */
+    /** Страна или регион обращения. */
     @Column(length = 100, nullable = false)
     private String country;
 
-    /** Кол-во знаков после запятой для денежных сумм */
+    /** Кол-во знаков после запятой для денежных сумм. */
     @Column(nullable = false)
     @Min(0)
     @Max(10)

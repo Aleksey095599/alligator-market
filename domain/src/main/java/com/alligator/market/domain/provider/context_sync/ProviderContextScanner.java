@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ProviderContextScanner {
 
-    /** Вернуть список профилей провайдеров */
+    /** Вернуть список профилей провайдеров. */
     List<ProviderProfile> getProviderProfiles();
 }

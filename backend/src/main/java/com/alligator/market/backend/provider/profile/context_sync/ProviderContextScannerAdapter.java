@@ -18,10 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
-    /** Список всех адаптеров провайдеров */
+    /** Список всех адаптеров провайдеров. */
     private final List<MarketDataProvider> providers;
 
-    /** Возвращает список профилей провайдеров */
+    /** Возвращает список профилей провайдеров. */
     @Override
     public List<ProviderProfile> getProviderProfiles() {
         List<ProviderProfile> profiles = providers.stream()
@@ -34,7 +34,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         return profiles;
     }
 
-    /** Проверяет, что <code>providerCode</code> и <code>displayName</code> уникальны */
+    /** Проверяет, что <code>providerCode</code> и <code>displayName</code> уникальны. */
     private void validateNoDuplicates(List<ProviderProfile> profiles) {
         java.util.Set<String> codes = new java.util.HashSet<>();
         java.util.Set<String> names = new java.util.HashSet<>();

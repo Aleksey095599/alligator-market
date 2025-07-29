@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 
-    /** Найти все профили по статусу */
+    /** Найти все профили по статусу. */
     List<ProviderProfileEntity> findAllByStatus(ProviderProfileStatus status);
 }

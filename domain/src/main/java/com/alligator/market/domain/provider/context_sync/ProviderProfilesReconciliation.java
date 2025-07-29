@@ -23,7 +23,7 @@ public class ProviderProfilesReconciliation {
         this.profileStorage = profileStorage;
     }
 
-    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff} */
+    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
         Map<ProviderProfile, Long> dbActiveProfiles = profileStorage.findAllActive();
@@ -63,7 +63,7 @@ public class ProviderProfilesReconciliation {
     }
 
     /** Применить {@link ContextDiff} к хранилищу данных для синхронизации с контекстом приложения
-     * информации о профилях провайдеров рыночных данных */
+     * информации о профилях провайдеров рыночных данных. */
     public void applyContextDiffToStorage(ContextDiff diff) {
         if (!diff.add().isEmpty()) {
             profileStorage.saveAll(diff.add());

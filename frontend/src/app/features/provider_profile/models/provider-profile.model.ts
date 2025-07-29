@@ -1,4 +1,4 @@
-/** DTO для профиля провайдера, аналогичный backend */
+/** DTO для профиля провайдера, аналогичный backend. */
 export interface ProviderProfileDto {
   providerCode: string;
   displayName: string;
