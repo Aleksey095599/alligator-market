@@ -25,8 +25,8 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
 
     @Override
     public String save(CurrencyPair pair) {
-        CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.code1()).orElseThrow();
-        CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.code2()).orElseThrow();
+        CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.base()).orElseThrow();
+        CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.quote()).orElseThrow();
         CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setCode1(c1);
         entity.setCode2(c2);

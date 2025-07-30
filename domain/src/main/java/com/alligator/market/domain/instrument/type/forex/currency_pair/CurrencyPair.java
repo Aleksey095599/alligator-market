@@ -8,15 +8,22 @@ import com.alligator.market.domain.instrument.InstrumentType;
  */
 public record CurrencyPair(
 
-        String code1,
-        String code2,
+        /* Код базовой валюты */
+        String base,
+
+        /* Код котируемой валюты */
+        String quote,
+
+        /* Валютная пара как base + quote */
         String pair,
+
+        /* Кол-во знаков после запятой */
         Integer decimal
 
 ) implements Instrument {
 
     @Override public String symbol() {
-        return code1 + code2;
+        return base + quote;
     }
 
     @Override public InstrumentType instrumentType() {
