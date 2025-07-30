@@ -13,24 +13,24 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Base Currency</mat-label>
-          <mat-select formControlName="code1">
+          <mat-select formControlName="base">
             <mat-option *ngFor="let c of currencies" [value]="c.code">
               {{ c.code }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['code1'].hasError('required')">
+          <mat-error *ngIf="form.controls['base'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Quote Currency</mat-label>
-          <mat-select formControlName="code2">
+          <mat-select formControlName="quote">
             <mat-option *ngFor="let c of currencies" [value]="c.code">
               {{ c.code }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['code2'].hasError('required')">
+          <mat-error *ngIf="form.controls['quote'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
@@ -76,19 +76,19 @@
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
-        <ng-container matColumnDef="pairCode">
+        <ng-container matColumnDef="symbol">
           <th mat-header-cell *matHeaderCellDef> Symbol</th>
-          <td mat-cell *matCellDef="let p"> {{ p.pairCode }}</td>
+          <td mat-cell *matCellDef="let p"> {{ p.symbol }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="code1">
+        <ng-container matColumnDef="base">
           <th mat-header-cell *matHeaderCellDef> Base Currency</th>
-          <td mat-cell *matCellDef="let p"> {{ p.code1 }}</td>
+          <td mat-cell *matCellDef="let p"> {{ p.base }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="code2">
+        <ng-container matColumnDef="quote">
           <th mat-header-cell *matHeaderCellDef> Quote Currency</th>
-          <td mat-cell *matCellDef="let p"> {{ p.code2 }}</td>
+          <td mat-cell *matCellDef="let p"> {{ p.quote }}</td>
         </ng-container>
 
         <ng-container matColumnDef="decimal">
@@ -102,7 +102,7 @@
             <button mat-icon-button color="primary" (click)="onEdit(p)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="onDelete(p.pairCode)">
+            <button mat-icon-button color="warn" (click)="onDelete(p.symbol)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
