@@ -29,7 +29,7 @@ class TwelveFreeAdapterV2Test {
 
         TwelveFreeAdapterV2 adapter = new TwelveFreeAdapterV2(props, client);
 
-        CurrencyPair pair = new CurrencyPair("EUR", "USD", "EURUSD", 2);
+        CurrencyPair pair = new CurrencyPair("EUR", "USD", 2);
 
         QuoteTick tick = adapter.streamQuotes(pair)
                 .blockFirst(Duration.ofSeconds(5));
