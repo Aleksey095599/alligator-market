@@ -20,8 +20,9 @@ public record CurrencyPair(
 
 ) implements Instrument {
 
+    /** Дефолтное создание валютной пары */
     public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, null, null, SettlementType.SPOT);
+        this(base, quote, decimal, null, null, SettlementType.TOM);
     }
 
     @Override public String symbol() {
