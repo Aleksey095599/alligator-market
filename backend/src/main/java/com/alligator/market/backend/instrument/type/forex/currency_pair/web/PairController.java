@@ -38,7 +38,6 @@ public class PairController {
         CurrencyPair currencyPair = new CurrencyPair(
                 dto.base(),
                 dto.quote(),
-                dto.base() + dto.quote(),
                 dto.decimal()
         );
 
@@ -68,7 +67,6 @@ public class PairController {
         CurrencyPair currencyPair = new CurrencyPair(
                 base,
                 quote,
-                base + quote,
                 dto.decimal()
         );
 
@@ -102,6 +100,7 @@ public class PairController {
                 .map(p -> new PairDto(
                         p.base(),
                         p.quote(),
+                        p.symbol(),
                         p.decimal()
                 ))
                 .toList();
