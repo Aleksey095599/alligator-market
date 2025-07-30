@@ -4,7 +4,6 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;
 
 import java.time.LocalDate;
-import com.alligator.market.domain.instrument.type.forex.currency_pair.SettlementType;
 
 /**
  * Доменная модель валютной пары.
@@ -14,15 +13,15 @@ public record CurrencyPair(
         String base,
         String quote,
         Integer decimal,
-        LocalDate baseSettlement,
-        LocalDate quoteSettlement,
-        SettlementType settlementType
+        SettlementType settlementType,
+        LocalDate baseSettlementDate,
+        LocalDate quoteSettlementDate
 
 ) implements Instrument {
 
     /** Дефолтное создание валютной пары */
     public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, null, null, SettlementType.TOM);
+        this(base, quote, decimal, SettlementType.TOM, null, null);
     }
 
     @Override public String symbol() {
