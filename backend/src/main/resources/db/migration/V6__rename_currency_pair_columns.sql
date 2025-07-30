@@ -9,4 +9,4 @@ ALTER TABLE currency_pair ADD CONSTRAINT fk_pair_base FOREIGN KEY (base) REFEREN
 ALTER TABLE currency_pair DROP CONSTRAINT IF EXISTS fk_pair_code2;
 ALTER TABLE currency_pair ADD CONSTRAINT fk_pair_quote FOREIGN KEY (quote) REFERENCES currency(code);
 ALTER TABLE currency_pair DROP CONSTRAINT IF EXISTS uq_currency_pair;
-ALTER TABLE currency_pair ADD CONSTRAINT uq_currency_pair UNIQUE (symbol);
+ALTER TABLE currency_pair ADD CONSTRAINT uq_symbol UNIQUE (symbol);
