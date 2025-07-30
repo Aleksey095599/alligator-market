@@ -28,40 +28,40 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.base()).orElseThrow();
         CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.quote()).orElseThrow();
         CurrencyPairEntity entity = new CurrencyPairEntity();
-        entity.setCode1(c1);
-        entity.setCode2(c2);
-        entity.setPairCode(pair.pairCode());
+        entity.setBase(c1);
+        entity.setQuote(c2);
+        entity.setSymbol(pair.pairCode());
         entity.setDecimal(pair.decimal());
-        return jpaRepository.save(entity).getPairCode();
+        return jpaRepository.save(entity).getSymbol();
     }
 
     @Override
     public void deleteByPairCode(String pairCode) {
-        jpaRepository.findByPairCode(pairCode).ifPresent(jpaRepository::delete);
+        jpaRepository.findBySymbol(pairCode).ifPresent(jpaRepository::delete);
     }
 
     @Override
     public Optional<CurrencyPair> findByPairCode(String pairCode) {
-        return jpaRepository.findByPairCode(pairCode).map(this::toDomain);
+        return jpaRepository.findBySymbol(pairCode).map(this::toDomain);
     }
 
     @Override
     public boolean existsByCurrency(String code) {
-        return jpaRepository.existsByCode1_CodeOrCode2_Code(code, code);
+        return jpaRepository.existsByBase_CodeOrQuote_Code(code, code);
     }
 
     @Override
     public List<CurrencyPair> findAll() {
-        return jpaRepository.findAll(Sort.by("pairCode")).stream()
+        return jpaRepository.findAll(Sort.by("symbol")).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     private CurrencyPair toDomain(CurrencyPairEntity entity) {
         return new CurrencyPair(
-                entity.getCode1().getCode(),
-                entity.getCode2().getCode(),
-                entity.getPairCode(),
+                entity.getBase().getCode(),
+                entity.getQuote().getCode(),
+                entity.getSymbol(),
                 entity.getDecimal()
         );
     }
