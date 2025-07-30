@@ -17,7 +17,7 @@ public record PairDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{6}$")
-        String pair,
+        String pairCode,
 
         @NotNull
         @Min(0) @Max(10)

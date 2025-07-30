@@ -14,8 +14,8 @@ public record CurrencyPair(
         /* Код котируемой валюты */
         String quote,
 
-        /* Валютная пара как base + quote */
-        String pair,
+        /* Код пары: base + quote */
+        String pairCode,
 
         /* Кол-во знаков после запятой */
         Integer decimal
@@ -23,7 +23,7 @@ public record CurrencyPair(
 ) implements Instrument {
 
     @Override public String symbol() {
-        return base + quote;
+        return pairCode;
     }
 
     @Override public InstrumentType instrumentType() {

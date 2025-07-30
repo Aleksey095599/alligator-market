@@ -12,10 +12,10 @@ public interface CurrencyPairStorage {
     String save(CurrencyPair pair);
 
     /** Удалить валютную пару по её коду. */
-    void deleteByPair(String pair);
+    void deleteByPairCode(String pairCode);
 
     /** Найти валютную пару по коду. */
-    Optional<CurrencyPair> findByPair(String pair);
+    Optional<CurrencyPair> findByPairCode(String pairCode);
 
     /** Проверить использование валюты в любой паре. */
     boolean existsByCurrency(String code);

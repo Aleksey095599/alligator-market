@@ -43,28 +43,28 @@ public class PairController {
         );
 
         // Применяем к валютной паре метод сервиса, который вернет код пары из созданной новой записи
-        String pair = service.createPair(currencyPair);
+        String pairCode = service.createPair(currencyPair);
 
         // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{pair}")
-                .buildAndExpand(pair)
+                .path("/{pairCode}")
+                .buildAndExpand(pairCode)
                 .toUri();
 
-        return ResponseEntityFactory.created(location, pair);
+        return ResponseEntityFactory.created(location, pairCode);
     }
 
     //==============
     // Обновить пару
     //==============
-    @PutMapping("/{pair}")
+    @PutMapping("/{pairCode}")
     public ResponseEntity<ApiResponse<Void>> update(
-            @PathVariable String pair,
+            @PathVariable String pairCode,
             @RequestBody @Valid PairUpdateDto dto) {
         
         // Формируем урезанную модель валютной пары для обновления единственного параметра
-        CurrencyPair currencyPair = new CurrencyPair(null,null, pair, dto.decimal());
+        CurrencyPair currencyPair = new CurrencyPair(null,null, pairCode, dto.decimal());
 
         service.updatePair(currencyPair);
 
@@ -74,10 +74,10 @@ public class PairController {
     //=============
     // Удалить пару
     //=============
-    @DeleteMapping("/{pair}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String pair) {
+    @DeleteMapping("/{pairCode}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String pairCode) {
 
-        service.deletePair(pair);
+        service.deletePair(pairCode);
 
         return ResponseEntityFactory.ok(null);
     }
@@ -94,7 +94,7 @@ public class PairController {
                 .map(p -> new PairDto(
                         p.base(),
                         p.quote(),
-                        p.pair(),
+                        p.pairCode(),
                         p.decimal()
                 ))
                 .toList();

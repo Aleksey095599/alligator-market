@@ -2,6 +2,6 @@
 export interface PairDto {
   code1: string;
   code2: string;
-  pair: string;
+  pairCode: string;
   decimal: number;
 }
