@@ -74,7 +74,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         // Для валютных пар данный провайдер ожидает формат биржевого идентификатора "EUR/USD"
         if (instrument.instrumentType() == CURRENCY_PAIR) {
             CurrencyPair pair = (CurrencyPair) instrument;
-            symbolForRequest = pair.code1() + "/" + pair.code2();
+            symbolForRequest = pair.base() + "/" + pair.quote();
         } else {
             symbolForRequest = instrument.symbol();
         }

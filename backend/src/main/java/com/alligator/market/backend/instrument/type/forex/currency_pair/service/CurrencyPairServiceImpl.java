@@ -32,14 +32,14 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     @Override
     public String createPair(CurrencyPair currencyPair) {
 
-        if (currencyPair.code1().equals(currencyPair.code2())) {
-            throw new EqualCurrenciesInPairException(currencyPair.code1());
+        if (currencyPair.base().equals(currencyPair.quote())) {
+            throw new EqualCurrenciesInPairException(currencyPair.base());
         }
 
-        currencyStorage.findByCode(currencyPair.code1())
-                .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code1()));
-        currencyStorage.findByCode(currencyPair.code2())
-                .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.code2()));
+        currencyStorage.findByCode(currencyPair.base())
+                .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.base()));
+        currencyStorage.findByCode(currencyPair.quote())
+                .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.quote()));
 
         repository.findByPair(currencyPair.pair()).ifPresent(p -> {
             throw new DuplicatePairException(currencyPair.pair());

@@ -92,8 +92,8 @@ public class PairController {
         List<PairDto> pairDtoList = service.findAll()
                 .stream()
                 .map(p -> new PairDto(
-                        p.code1(),
-                        p.code2(),
+                        p.base(),
+                        p.quote(),
                         p.pair(),
                         p.decimal()
                 ))
