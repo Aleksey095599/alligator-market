@@ -9,11 +9,11 @@ public record PairCreateDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
-        String code1,
+        String base,
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
-        String code2,
+        String quote,
 
         @NotNull
         @Min(0) @Max(10)

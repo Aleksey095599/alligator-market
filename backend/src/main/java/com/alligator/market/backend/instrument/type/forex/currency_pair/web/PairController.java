@@ -36,9 +36,9 @@ public class PairController {
 
         // Формируем модель валютной пары из DTO
         CurrencyPair currencyPair = new CurrencyPair(
-                dto.code1(),
-                dto.code2(),
-                dto.code1() + dto.code2(),
+                dto.base(),
+                dto.quote(),
+                dto.base() + dto.quote(),
                 dto.decimal()
         );
 
@@ -48,7 +48,7 @@ public class PairController {
         // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{pairCode}")
+                .path("/{symbol}")
                 .buildAndExpand(pairCode)
                 .toUri();
 

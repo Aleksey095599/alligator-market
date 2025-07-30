@@ -9,15 +9,15 @@ public record PairDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
-        String code1,
+        String base,
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
-        String code2,
+        String quote,
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{6}$")
-        String pairCode,
+        String symbol,
 
         @NotNull
         @Min(0) @Max(10)
