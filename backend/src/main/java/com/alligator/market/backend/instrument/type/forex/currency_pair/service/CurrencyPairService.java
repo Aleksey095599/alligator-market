@@ -16,7 +16,7 @@ public interface CurrencyPairService {
     void updatePair(CurrencyPair pair);
 
     /** Удалить пару по коду. */
-    void deletePair(String pair);
+    void deletePair(String pairCode);
 
     /** Вернуть все пары. */
     List<CurrencyPair> findAll();

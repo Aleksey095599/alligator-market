@@ -41,13 +41,13 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         currencyStorage.findByCode(currencyPair.quote())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.quote()));
 
-        repository.findByPair(currencyPair.pair()).ifPresent(p -> {
-            throw new DuplicatePairException(currencyPair.pair());
+        repository.findByPairCode(currencyPair.pairCode()).ifPresent(p -> {
+            throw new DuplicatePairException(currencyPair.pairCode());
         });
 
-        String pair = repository.save(currencyPair);
-        log.info("Currency pair {} saved", pair);
-        return pair;
+        String pairCode = repository.save(currencyPair);
+        log.info("Currency pair {} saved", pairCode);
+        return pairCode;
     }
 
     //==============
@@ -57,24 +57,24 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     public void updatePair(CurrencyPair currencyPair) {
 
         // Проверка наличия валютной пары к обновлению
-        repository.findByPair(currencyPair.pair())
-                .orElseThrow(() -> new PairNotFoundException(currencyPair.pair()));
+        repository.findByPairCode(currencyPair.pairCode())
+                .orElseThrow(() -> new PairNotFoundException(currencyPair.pairCode()));
 
         repository.save(currencyPair);
-        log.info("Currency pair {} updated", currencyPair.pair());
+        log.info("Currency pair {} updated", currencyPair.pairCode());
     }
 
     //=============
     // Удалить пару
     //=============
     @Override
-    public void deletePair(String currencyPair) {
+    public void deletePair(String pairCode) {
 
-        repository.findByPair(currencyPair)
-                .orElseThrow(() -> new PairNotFoundException(currencyPair));
+        repository.findByPairCode(pairCode)
+                .orElseThrow(() -> new PairNotFoundException(pairCode));
 
-        repository.deleteByPair(currencyPair);
-        log.info("Currency pair {} deleted", currencyPair);
+        repository.deleteByPairCode(pairCode);
+        log.info("Currency pair {} deleted", pairCode);
     }
 
     //==================

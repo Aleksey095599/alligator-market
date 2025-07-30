@@ -43,10 +43,10 @@ public class CurrencyPairEntity extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_pair_code2"))
     private CurrencyEntity code2;
 
-    /** Валютная пара как code1 + code2. */
+    /** Код пары как code1 + code2. */
     @Pattern(regexp = "^[A-Z]{6}$")
-    @Column(length = 6, nullable = false)
-    private String pair;
+    @Column(name = "pair", length = 6, nullable = false)
+    private String pairCode;
 
     /** Кол-во знаков после запятой для курса. */
     @Column(nullable = false)

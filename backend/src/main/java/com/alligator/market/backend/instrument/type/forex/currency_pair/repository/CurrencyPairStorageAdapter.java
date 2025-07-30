@@ -30,19 +30,19 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setCode1(c1);
         entity.setCode2(c2);
-        entity.setPair(pair.pair());
+        entity.setPairCode(pair.pairCode());
         entity.setDecimal(pair.decimal());
-        return jpaRepository.save(entity).getPair();
+        return jpaRepository.save(entity).getPairCode();
     }
 
     @Override
-    public void deleteByPair(String pair) {
-        jpaRepository.findByPair(pair).ifPresent(jpaRepository::delete);
+    public void deleteByPairCode(String pairCode) {
+        jpaRepository.findByPairCode(pairCode).ifPresent(jpaRepository::delete);
     }
 
     @Override
-    public Optional<CurrencyPair> findByPair(String pair) {
-        return jpaRepository.findByPair(pair).map(this::toDomain);
+    public Optional<CurrencyPair> findByPairCode(String pairCode) {
+        return jpaRepository.findByPairCode(pairCode).map(this::toDomain);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
 
     @Override
     public List<CurrencyPair> findAll() {
-        return jpaRepository.findAll(Sort.by("pair")).stream()
+        return jpaRepository.findAll(Sort.by("pairCode")).stream()
                 .map(this::toDomain)
                 .toList();
     }
@@ -61,7 +61,7 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         return new CurrencyPair(
                 entity.getCode1().getCode(),
                 entity.getCode2().getCode(),
-                entity.getPair(),
+                entity.getPairCode(),
                 entity.getDecimal()
         );
     }

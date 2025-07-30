@@ -6,7 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
  * Очевидно из названия.
  */
 public class PairNotFoundException extends EntityNotFoundException {
-    public PairNotFoundException(String pair) {
-        super("Currency pair '%s' not found".formatted(pair));
+    public PairNotFoundException(String pairCode) {
+        super("Currency pair '%s' not found".formatted(pairCode));
     }
 }
