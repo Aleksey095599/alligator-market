@@ -73,6 +73,12 @@ class ProviderProfilesReconciliationTest {
         }
 
         @Override
+        public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
+            // не требуется для тестов
+            return Map.of();
+        }
+
+        @Override
         public void saveAll(java.util.Collection<ProviderProfile> profiles) {
             // not needed for test
         }
