@@ -58,13 +58,19 @@ public class PairController {
     //==============
     // Обновить пару
     //==============
-    @PutMapping("/{pairCode}")
+    @PutMapping("/{base}/{quote}")
     public ResponseEntity<ApiResponse<Void>> update(
-            @PathVariable String pairCode,
+            @PathVariable String base,
+            @PathVariable String quote,
             @RequestBody @Valid PairUpdateDto dto) {
-        
-        // Формируем урезанную модель валютной пары для обновления единственного параметра
-        CurrencyPair currencyPair = new CurrencyPair(null,null, pairCode, dto.decimal());
+
+        // Формируем модель валютной пары для обновления
+        CurrencyPair currencyPair = new CurrencyPair(
+                base,
+                quote,
+                base + quote,
+                dto.decimal()
+        );
 
         service.updatePair(currencyPair);
 
@@ -74,10 +80,12 @@ public class PairController {
     //=============
     // Удалить пару
     //=============
-    @DeleteMapping("/{pairCode}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String pairCode) {
+    @DeleteMapping("/{base}/{quote}")
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable String base,
+            @PathVariable String quote) {
 
-        service.deletePair(pairCode);
+        service.deletePair(base + quote);
 
         return ResponseEntityFactory.ok(null);
     }

@@ -33,15 +33,19 @@ export class PairService {
 
   /* Удалить валютную пару по коду pairCode */
   delete(pairCode: string): Observable<void> {
+    const base = pairCode.substring(0, 3);
+    const quote = pairCode.substring(3, 6);
     return this.http
-      .delete<ApiResponse<void>>(`${this.baseUrl}/${pairCode}`)
+      .delete<ApiResponse<void>>(`${this.baseUrl}/${base}/${quote}`)
       .pipe(map(res => res.data));
   }
 
   /* Обновить валютную пару по коду pairCode */
   update(pairCode: string, dto: PairUpdateDto): Observable<void> {
+    const base = pairCode.substring(0, 3);
+    const quote = pairCode.substring(3, 6);
     return this.http
-      .put<ApiResponse<void>>(`${this.baseUrl}/${pairCode}`, dto)
+      .put<ApiResponse<void>>(`${this.baseUrl}/${base}/${quote}`, dto)
       .pipe(map(res => res.data));
   }
 }
