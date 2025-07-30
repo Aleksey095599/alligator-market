@@ -41,17 +41,17 @@ public class PairController {
                 dto.decimal()
         );
 
-        // Применяем к валютной паре метод сервиса, который вернет код пары из созданной новой записи
-        String pairCode = service.create(currencyPair);
+        // Сохраняем пару и получаем её символ
+        String symbol = service.create(currencyPair);
 
         // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{symbol}")
-                .buildAndExpand(pairCode)
+                .buildAndExpand(symbol)
                 .toUri();
 
-        return ResponseEntityFactory.created(location, pairCode);
+        return ResponseEntityFactory.created(location, symbol);
     }
 
     //==============
