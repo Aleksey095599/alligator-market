@@ -30,24 +30,24 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setBase(c1);
         entity.setQuote(c2);
-        entity.setSymbol(pair.pairCode());
+        entity.setSymbol(pair.symbol());
         entity.setDecimal(pair.decimal());
         return jpaRepository.save(entity).getSymbol();
     }
 
     @Override
-    public void deleteByPairCode(String pairCode) {
-        jpaRepository.findBySymbol(pairCode).ifPresent(jpaRepository::delete);
+    public void delete(String base, String quote) {
+        jpaRepository.findBySymbol(base+quote).ifPresent(jpaRepository::delete);
     }
 
     @Override
-    public Optional<CurrencyPair> findByPairCode(String pairCode) {
-        return jpaRepository.findBySymbol(pairCode).map(this::toDomain);
+    public Optional<CurrencyPair> find(String base, String quote) {
+        return jpaRepository.findBySymbol(base+quote).map(this::toDomain);
     }
 
     @Override
-    public boolean existsByCurrency(String code) {
-        return jpaRepository.existsByBase_CodeOrQuote_Code(code, code);
+    public boolean existsByCurrency(String currencyCode) {
+        return jpaRepository.existsByBase_CodeOrQuote_Code(currencyCode, currencyCode);
     }
 
     @Override
@@ -61,7 +61,6 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         return new CurrencyPair(
                 entity.getBase().getCode(),
                 entity.getQuote().getCode(),
-                entity.getSymbol(),
                 entity.getDecimal()
         );
     }

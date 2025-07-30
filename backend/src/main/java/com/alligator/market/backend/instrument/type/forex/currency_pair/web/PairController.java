@@ -43,7 +43,7 @@ public class PairController {
         );
 
         // Применяем к валютной паре метод сервиса, который вернет код пары из созданной новой записи
-        String pairCode = service.createPair(currencyPair);
+        String pairCode = service.create(currencyPair);
 
         // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
@@ -72,7 +72,7 @@ public class PairController {
                 dto.decimal()
         );
 
-        service.updatePair(currencyPair);
+        service.update(currencyPair);
 
         return ResponseEntityFactory.ok(null);
     }
@@ -85,7 +85,7 @@ public class PairController {
             @PathVariable String base,
             @PathVariable String quote) {
 
-        service.deletePair(base + quote);
+        service.delete(base, quote);
 
         return ResponseEntityFactory.ok(null);
     }
@@ -102,7 +102,6 @@ public class PairController {
                 .map(p -> new PairDto(
                         p.base(),
                         p.quote(),
-                        p.pairCode(),
                         p.decimal()
                 ))
                 .toList();

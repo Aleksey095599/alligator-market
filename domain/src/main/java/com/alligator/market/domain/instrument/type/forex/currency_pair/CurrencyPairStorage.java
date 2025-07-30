@@ -8,18 +8,14 @@ import java.util.Optional;
  */
 public interface CurrencyPairStorage {
 
-    /** Сохранить или обновить валютную пару. */
     String save(CurrencyPair pair);
 
-    /** Удалить валютную пару по её коду. */
-    void deleteByPairCode(String pairCode);
+    void delete(String base, String quote);
 
-    /** Найти валютную пару по коду. */
-    Optional<CurrencyPair> findByPairCode(String pairCode);
+    Optional<CurrencyPair> find(String base, String quote);
 
-    /** Проверить использование валюты в любой паре. */
-    boolean existsByCurrency(String code);
+    /** Существует ли хотя бы одна валютная пара, использующая данную валюту. */
+    boolean existsByCurrency(String currencyCode);
 
-    /** Вернуть все валютные пары. */
     List<CurrencyPair> findAll();
 }

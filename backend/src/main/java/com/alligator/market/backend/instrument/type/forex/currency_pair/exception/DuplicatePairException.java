@@ -4,7 +4,7 @@ package com.alligator.market.backend.instrument.type.forex.currency_pair.excepti
  * Очевидно из названия.
  */
 public class DuplicatePairException extends RuntimeException {
-    public DuplicatePairException(String pairCode) {
-        super("Currency pair '%s' already exists".formatted(pairCode));
+    public DuplicatePairException(String symbol) {
+        super("Currency pair '%s' already exists".formatted(symbol));
     }
 }

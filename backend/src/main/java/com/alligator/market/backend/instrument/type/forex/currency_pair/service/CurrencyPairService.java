@@ -10,13 +10,13 @@ import java.util.List;
 public interface CurrencyPairService {
 
     /** Создать новую пару. */
-    String createPair(CurrencyPair pair);
+    String create(CurrencyPair pair);
 
     /** Обновить существующую пару. */
-    void updatePair(CurrencyPair pair);
+    void update(CurrencyPair pair);
 
-    /** Удалить пару по коду. */
-    void deletePair(String pairCode);
+    /** Удалить пару базовой и котируемой валюте. */
+    void delete(String base, String quote);
 
     /** Вернуть все пары. */
     List<CurrencyPair> findAll();

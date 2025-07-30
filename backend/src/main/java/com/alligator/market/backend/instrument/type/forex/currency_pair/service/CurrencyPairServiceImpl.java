@@ -30,7 +30,7 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     // Создать новую пару
     //===================
     @Override
-    public String createPair(CurrencyPair currencyPair) {
+    public String create(CurrencyPair currencyPair) {
 
         if (currencyPair.base().equals(currencyPair.quote())) {
             throw new EqualCurrenciesInPairException(currencyPair.base());
@@ -41,40 +41,41 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         currencyStorage.findByCode(currencyPair.quote())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.quote()));
 
-        repository.findByPairCode(currencyPair.pairCode()).ifPresent(p -> {
-            throw new DuplicatePairException(currencyPair.pairCode());
+        repository.find(currencyPair.base(), currencyPair.quote()).ifPresent(p -> {
+            throw new DuplicatePairException(currencyPair.symbol());
         });
 
-        String pairCode = repository.save(currencyPair);
-        log.info("Currency pair {} saved", pairCode);
-        return pairCode;
+        String symbol = repository.save(currencyPair);
+        log.info("Currency pair {} saved", symbol);
+        return symbol;
     }
 
     //==============
     // Обновить пару
     //==============
     @Override
-    public void updatePair(CurrencyPair currencyPair) {
+    public void update(CurrencyPair currencyPair) {
 
         // Проверка наличия валютной пары к обновлению
-        repository.findByPairCode(currencyPair.pairCode())
-                .orElseThrow(() -> new PairNotFoundException(currencyPair.pairCode()));
+        repository.find(currencyPair.base(), currencyPair.quote())
+                .orElseThrow(() -> new PairNotFoundException(currencyPair.symbol()));
 
         repository.save(currencyPair);
-        log.info("Currency pair {} updated", currencyPair.pairCode());
+        log.info("Currency pair {} updated", currencyPair.symbol());
     }
 
     //=============
     // Удалить пару
     //=============
     @Override
-    public void deletePair(String pairCode) {
+    public void delete(String base, String quote) {
 
-        repository.findByPairCode(pairCode)
-                .orElseThrow(() -> new PairNotFoundException(pairCode));
+        String symbol = base + quote;
+        repository.find(base, quote)
+                .orElseThrow(() -> new PairNotFoundException(symbol));
 
-        repository.deleteByPairCode(pairCode);
-        log.info("Currency pair {} deleted", pairCode);
+        repository.delete(base, quote);
+        log.info("Currency pair {} deleted", symbol);
     }
 
     //==================
