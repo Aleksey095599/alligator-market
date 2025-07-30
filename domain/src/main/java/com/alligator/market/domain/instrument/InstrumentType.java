@@ -5,6 +5,9 @@ package com.alligator.market.domain.instrument;
  */
 public enum InstrumentType {
 
+    // Валюта (не котируется сама по себе)
+    CURRENCY,
+
     // Валютная пара
     CURRENCY_PAIR
 }
