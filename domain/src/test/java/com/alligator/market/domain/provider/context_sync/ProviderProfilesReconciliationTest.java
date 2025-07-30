@@ -80,12 +80,12 @@ class ProviderProfilesReconciliationTest {
 
         @Override
         public void saveAll(java.util.Collection<ProviderProfile> profiles) {
-            // not needed for test
+            // не требуется для тестов
         }
 
         @Override
         public void updateStatus(java.util.Collection<Long> ids, ProviderProfileStatus status) {
-            // not needed for test
+            // не требуется для тестов
         }
     }
 }

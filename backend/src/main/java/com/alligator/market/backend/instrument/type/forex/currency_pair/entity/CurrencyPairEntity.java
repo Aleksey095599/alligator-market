@@ -31,13 +31,13 @@ public class CurrencyPairEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** ISO-4217 код валюты-1 (FK на {@link Currency#code()}). */
+    /** ISO-4217 код базовой валюты (FK на {@link Currency#code()}). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "base", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_base"))
     private CurrencyEntity base;
 
-    /** ISO-4217 код валюты-2 (FK на {@link Currency#code()}). */
+    /** ISO-4217 код котируемой валюты (FK на {@link Currency#code()}). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "quote", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_quote"))

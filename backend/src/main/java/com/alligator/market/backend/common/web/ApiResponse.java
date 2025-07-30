@@ -10,7 +10,7 @@ public record ApiResponse<T>(
         String message,
         Instant timestamp
 ) {
-    /* Статическая «фабрика» для создания конверта. */
+    /** Статическая «фабрика» для создания конверта. */
     public static <T> ApiResponse<T> build(T data, String message) {
         return new ApiResponse<>(data, message, Instant.now());
     }

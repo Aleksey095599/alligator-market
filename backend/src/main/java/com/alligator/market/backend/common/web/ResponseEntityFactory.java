@@ -10,28 +10,26 @@ import java.net.URI;
  */
 public final class ResponseEntityFactory {
 
-    private ResponseEntityFactory() {
-        // utility class – no instances
-    }
+    private ResponseEntityFactory() {}
 
-    /* Успех: 200 OK */
+    /** Успех: 200 OK. */
     public static <T> ResponseEntity<ApiResponse<T>> ok(T data) {
         return ResponseEntity.ok(ApiResponse.build(data, "success"));
     }
 
-    /* Успех: частный случай - 201 Created + Location */
+    /** Успех: частный случай - 201 Created + Location. */
     public static <T> ResponseEntity<ApiResponse<T>> created(URI location, T data) {
         return ResponseEntity.created(location)
                 .body(ApiResponse.build(data, "created"));
     }
 
-    /* Ошибка: общая */
+    /** Ошибка: общая. */
     public static ResponseEntity<ApiResponse<Void>> error(HttpStatus status, String message) {
         return ResponseEntity.status(status)
                 .body(ApiResponse.build(null, message));
     }
 
-    /* Ошибка: частный случай - 404 Not Found */
+    /** Ошибка: частный случай - 404 Not Found. */
     public static ResponseEntity<ApiResponse<Void>> notFound(String message) {
         return error(HttpStatus.NOT_FOUND, message);
     }

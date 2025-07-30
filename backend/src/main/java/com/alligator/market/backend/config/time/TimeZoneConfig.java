@@ -15,9 +15,7 @@ public class TimeZoneConfig {
     @Value("${app.time-zone:UTC}")
     private String timeZone;
 
-    /**
-     * Устанавливает временную зону приложения на основе значения из конфигурации.
-     */
+    /** Устанавливает временную зону приложения на основе значения из конфигурации. */
     @PostConstruct
     public void init() {
         TimeZone tz = TimeZone.getTimeZone(timeZone);

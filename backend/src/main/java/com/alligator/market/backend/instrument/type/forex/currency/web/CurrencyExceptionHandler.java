@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CurrencyExceptionHandler {
 
-    /* Дублирование по одному из уникальных параметров валюты. */
+    /** Дублирование по одному из уникальных параметров валюты. */
     @ExceptionHandler(DuplicateCurrencyException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicateCurrency(
             DuplicateCurrencyException ex) {
@@ -31,7 +31,7 @@ public class CurrencyExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /* Валюта с указанным кодом не найдена. */
+    /** Валюта с указанным кодом не найдена. */
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(
             CurrencyNotFoundException ex) {
@@ -40,7 +40,7 @@ public class CurrencyExceptionHandler {
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
 
-    /* Валюта используется в валютных парах. */
+    /** Валюта используется в валютных парах. */
     @ExceptionHandler(CurrencyUsedInPairsException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(
             CurrencyUsedInPairsException ex) {
