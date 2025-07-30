@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.currency.exception;
 import jakarta.persistence.EntityNotFoundException;
 
 /**
- * Очевидно из названия.
+ * Валюта не найдена.
  */
 public class CurrencyNotFoundException extends EntityNotFoundException {
     public CurrencyNotFoundException(String code) {

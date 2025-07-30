@@ -5,9 +5,9 @@ package com.alligator.market.domain.instrument;
  */
 public interface Instrument {
 
-    /* Биржевой идентификатор инструмента */
+    /** Биржевой идентификатор инструмента. */
     String symbol();
 
-    /* Тип финансового инструмента */
+    /** Тип финансового инструмента. */
     InstrumentType instrumentType();
 }

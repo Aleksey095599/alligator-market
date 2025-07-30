@@ -97,7 +97,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
 
-        // Извлекаем все валюты, преобразуя список сущностей к доменной модели валюты
         List<Currency> result = storage.findAll();
 
         log.debug("Found {} currencies", result.size());

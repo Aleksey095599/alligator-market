@@ -32,10 +32,12 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     @Override
     public String create(CurrencyPair currencyPair) {
 
+        // Проверяем, что базовая и котируемая валюты разные
         if (currencyPair.base().equals(currencyPair.quote())) {
             throw new EqualCurrenciesInPairException(currencyPair.base());
         }
 
+        // Проверяем, что обе валюты есть в хранилище валют
         currencyStorage.findByCode(currencyPair.base())
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.base()));
         currencyStorage.findByCode(currencyPair.quote())
@@ -85,7 +87,6 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     @Transactional(readOnly = true)
     public List<CurrencyPair> findAll() {
 
-        // Извлекаем все валютные пары, преобразуя список сущностей к доменной модели валютной пары
         List<CurrencyPair> result = repository.findAll();
 
         log.debug("Found {} currency pairs", result.size());

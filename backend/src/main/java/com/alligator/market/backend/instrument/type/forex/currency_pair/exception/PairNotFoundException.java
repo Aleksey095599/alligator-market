@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.currency_pair.excepti
 import jakarta.persistence.EntityNotFoundException;
 
 /**
- * Очевидно из названия.
+ * Валютная пара не найдена.
  */
 public class PairNotFoundException extends EntityNotFoundException {
     public PairNotFoundException(String symbol) {

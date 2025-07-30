@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.currency_pair.exception;
 
 /**
- * Очевидно из названия.
+ * Дублирование валютной пары.
  */
 public class DuplicatePairException extends RuntimeException {
     public DuplicatePairException(String symbol) {
