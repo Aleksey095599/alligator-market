@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(
         name = "currency_pair",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_currency_pair", columnNames = "pair")
+                @UniqueConstraint(name = "uq_currency_pair", columnNames = "symbol")
         }
 )
 @Getter
@@ -33,20 +33,20 @@ public class CurrencyPairEntity extends BaseEntity {
 
     /** ISO-4217 код валюты-1 (FK на {@link Currency#code()}). */
     @ManyToOne(optional = false)
-    @JoinColumn(name = "code1", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_pair_code1"))
-    private CurrencyEntity code1;
+    @JoinColumn(name = "base", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_pair_base"))
+    private CurrencyEntity base;
 
     /** ISO-4217 код валюты-2 (FK на {@link Currency#code()}). */
     @ManyToOne(optional = false)
-    @JoinColumn(name = "code2", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_pair_code2"))
-    private CurrencyEntity code2;
+    @JoinColumn(name = "quote", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_pair_quote"))
+    private CurrencyEntity quote;
 
-    /** Код пары как code1 + code2. */
+    /** Код пары как base + quote. */
     @Pattern(regexp = "^[A-Z]{6}$")
-    @Column(name = "pair", length = 6, nullable = false)
-    private String pairCode;
+    @Column(name = "symbol", length = 6, nullable = false)
+    private String symbol;
 
     /** Кол-во знаков после запятой для курса. */
     @Column(nullable = false)
