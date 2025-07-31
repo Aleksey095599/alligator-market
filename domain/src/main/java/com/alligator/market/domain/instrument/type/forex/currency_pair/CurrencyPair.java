@@ -13,15 +13,15 @@ public record CurrencyPair(
         String base,
         String quote,
         Integer decimal,
-        SettlementType settlementType,
-        LocalDate baseSettlementDate,
-        LocalDate quoteSettlementDate
+        ValueDateCode valueDateCode,
+        LocalDate baseValueDate,
+        LocalDate quoteValueDate
 
 ) implements Instrument {
 
     @Override
     public String internalCode() {
-        return base + quote + "_" + settlementType.name();
+        return base + quote + "_" + valueDateCode.name();
     }
 
     @Override
@@ -36,6 +36,6 @@ public record CurrencyPair(
 
     /** Дефолтное создание валютной пары. */
     public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, SettlementType.TOM, null, null);
+        this(base, quote, decimal, ValueDateCode.TOM, null, null);
     }
 }
