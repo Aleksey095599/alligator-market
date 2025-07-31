@@ -29,9 +29,9 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setBase(c1);
         entity.setQuote(c2);
-        entity.setSymbol(pair.pairCode());
+        entity.setPairCode(pair.pairCode());
         entity.setDecimal(pair.decimal());
-        return jpaRepository.save(entity).getSymbol();
+        return jpaRepository.save(entity).getPairCode();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
 
     @Override
     public List<CurrencyPair> findAll() {
-        return jpaRepository.findAll(Sort.by("symbol")).stream()
+        return jpaRepository.findAll(Sort.by("pairCode")).stream()
                 .map(this::toDomain)
                 .toList();
     }

@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(
         name = "currency_pair",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_symbol", columnNames = "symbol")
+                @UniqueConstraint(name = "uq_pair_code", columnNames = "pair_code")
         }
 )
 @Getter
@@ -45,8 +45,8 @@ public class CurrencyPairEntity extends BaseEntity {
 
     /** Условный код валютной пары, составленный из базовой и котируемой валют. */
     @Pattern(regexp = "^[A-Z]{6}$")
-    @Column(name = "symbol", length = 6, nullable = false)
-    private String symbol;
+    @Column(name = "pair_code", length = 6, nullable = false)
+    private String pairCode;
 
     /** Кол-во знаков после запятой для курса. */
     @Column(nullable = false)
