@@ -100,7 +100,7 @@ public class PairController {
                 .map(p -> new PairDto(
                         p.base(),
                         p.quote(),
-                        p.symbol(),
+                        p.pairCode(),
                         p.decimal()
                 ))
                 .toList();
