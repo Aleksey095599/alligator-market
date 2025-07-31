@@ -66,8 +66,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
-        // Биржевой идентификатор инструмента согласно модели данного приложения
+        // Извлекаем внутренний идентификатор инструмента
         final String internalCode = instrument.internalCode();
+
         // Биржевой идентификатор инструмента, требуемый провайдером
         final String pairCodeForRequest;
 
