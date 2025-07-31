@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface CurrencyPairJpaRepository extends JpaRepository<CurrencyPairEntity, Long> {
 
-    Optional<CurrencyPairEntity> findBySymbol(String symbol);
+    Optional<CurrencyPairEntity> findByPairCode(String pairCode);
 
     /** Проверяет, существует ли любая валютная пара с переданным кодом в base или quote. */
     boolean existsByBase_CodeOrQuote_Code(String base, String quote);
