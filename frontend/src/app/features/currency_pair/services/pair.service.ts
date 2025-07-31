@@ -24,26 +24,26 @@ export class PairService {
       .pipe(map(res => res.data));
   }
 
-  /* Добавить валютную пару, backend вернёт её symbol */
+  /* Добавить валютную пару, backend вернёт её pairCode */
   add(dto: PairCreateDto): Observable<string> {
     return this.http
       .post<ApiResponse<string>>(this.baseUrl, dto)
       .pipe(map(res => res.data));
   }
 
-  /* Удалить валютную пару по символу */
-  delete(symbol: string): Observable<void> {
-    const base = symbol.substring(0, 3);
-    const quote = symbol.substring(3, 6);
+  /* Удалить валютную пару по коду */
+  delete(pairCode: string): Observable<void> {
+    const base = pairCode.substring(0, 3);
+    const quote = pairCode.substring(3, 6);
     return this.http
       .delete<ApiResponse<void>>(`${this.baseUrl}/${base}/${quote}`)
       .pipe(map(res => res.data));
   }
 
-  /* Обновить валютную пару по символу */
-  update(symbol: string, dto: PairUpdateDto): Observable<void> {
-    const base = symbol.substring(0, 3);
-    const quote = symbol.substring(3, 6);
+  /* Обновить валютную пару по коду */
+  update(pairCode: string, dto: PairUpdateDto): Observable<void> {
+    const base = pairCode.substring(0, 3);
+    const quote = pairCode.substring(3, 6);
     return this.http
       .put<ApiResponse<void>>(`${this.baseUrl}/${base}/${quote}`, dto)
       .pipe(map(res => res.data));

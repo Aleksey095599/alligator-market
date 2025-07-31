@@ -47,9 +47,9 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
             throw new DuplicatePairException(currencyPair.pairCode());
         });
 
-        String symbol = repository.save(currencyPair);
-        log.info("Currency pair {} saved", symbol);
-        return symbol;
+        String pairCode = repository.save(currencyPair);
+        log.info("Currency pair {} saved", pairCode);
+        return pairCode;
     }
 
     //==============

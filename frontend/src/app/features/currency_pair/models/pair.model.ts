@@ -4,8 +4,8 @@ export interface PairDto {
   base: string;
   /* Код котируемой валюты */
   quote: string;
-  /* Символ валютной пары (base + quote) */
-  symbol: string;
+  /* Код валютной пары (base + quote) */
+  pairCode: string;
   /* Кол-во знаков после запятой */
   decimal: number;
 }

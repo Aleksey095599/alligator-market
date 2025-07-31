@@ -69,20 +69,20 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         // Биржевой идентификатор инструмента согласно модели данного приложения
         final String internalCode = instrument.internalCode();
         // Биржевой идентификатор инструмента, требуемый провайдером
-        final String symbolForRequest;
+        final String pairCodeForRequest;
 
         // Для валютных пар данный провайдер ожидает формат биржевого идентификатора "EUR/USD"
         if (instrument.instrumentType() == CURRENCY_PAIR) {
             CurrencyPair pair = (CurrencyPair) instrument;
-            symbolForRequest = pair.base() + "/" + pair.quote();
+            pairCodeForRequest = pair.base() + "/" + pair.quote();
         } else {
-            symbolForRequest = instrument.internalCode();
+            pairCodeForRequest = instrument.internalCode();
         }
 
         return webClient.get()
                 .uri(builder -> builder
                         .path("/price")
-                        .queryParam("symbol", symbolForRequest)
+                        .queryParam("symbol", pairCodeForRequest)
                         .queryParam("apikey", props.apiKey())
                         .build())
                 .retrieve()
@@ -96,7 +96,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //-----------------------
 
     /* Метод преобразования ответа провайдера к модели тика котировки */
-    private QuoteTick jsonToQuoteTick(JsonNode json, String symbolByModel) {
+    private QuoteTick jsonToQuoteTick(JsonNode json, String pairCodeByModel) {
 
         // Извлекаем значение поля "price" из JSON-ответа провайдера в виде объекта JsonNode
         JsonNode priceNode = json.get("price");
@@ -108,7 +108,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         BigDecimal price = new BigDecimal(priceNode.asText());
 
         return new QuoteTick(
-                symbolByModel,
+                pairCodeByModel,
                 price,
                 price,
                 Instant.now(),
