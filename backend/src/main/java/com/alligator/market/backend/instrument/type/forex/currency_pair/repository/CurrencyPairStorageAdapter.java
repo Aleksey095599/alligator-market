@@ -29,19 +29,19 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyPairEntity entity = new CurrencyPairEntity();
         entity.setBase(c1);
         entity.setQuote(c2);
-        entity.setSymbol(pair.symbol());
+        entity.setSymbol(pair.pairCode());
         entity.setDecimal(pair.decimal());
         return jpaRepository.save(entity).getSymbol();
     }
 
     @Override
     public void delete(String base, String quote) {
-        jpaRepository.findBySymbol(base+quote).ifPresent(jpaRepository::delete);
+        jpaRepository.findByPairCode(base+quote).ifPresent(jpaRepository::delete);
     }
 
     @Override
     public Optional<CurrencyPair> find(String base, String quote) {
-        return jpaRepository.findBySymbol(base+quote).map(this::toDomain);
+        return jpaRepository.findByPairCode(base+quote).map(this::toDomain);
     }
 
     @Override
