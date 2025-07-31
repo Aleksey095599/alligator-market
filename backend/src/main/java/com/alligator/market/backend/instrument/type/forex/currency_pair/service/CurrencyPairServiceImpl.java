@@ -44,7 +44,7 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
                 .orElseThrow(() -> new CurrencyFromPairNotFoundException(currencyPair.quote()));
 
         repository.find(currencyPair.base(), currencyPair.quote()).ifPresent(p -> {
-            throw new DuplicatePairException(currencyPair.symbol());
+            throw new DuplicatePairException(currencyPair.pairCode());
         });
 
         String symbol = repository.save(currencyPair);
@@ -60,10 +60,10 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
 
         // Проверка наличия валютной пары к обновлению
         repository.find(currencyPair.base(), currencyPair.quote())
-                .orElseThrow(() -> new PairNotFoundException(currencyPair.symbol()));
+                .orElseThrow(() -> new PairNotFoundException(currencyPair.pairCode()));
 
         repository.save(currencyPair);
-        log.info("Currency pair {} updated", currencyPair.symbol());
+        log.info("Currency pair {} updated", currencyPair.pairCode());
     }
 
     //=============
@@ -72,12 +72,12 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     @Override
     public void delete(String base, String quote) {
 
-        String symbol = base + quote;
+        String pairCode = base + quote;
         repository.find(base, quote)
-                .orElseThrow(() -> new PairNotFoundException(symbol));
+                .orElseThrow(() -> new PairNotFoundException(pairCode));
 
         repository.delete(base, quote);
-        log.info("Currency pair {} deleted", symbol);
+        log.info("Currency pair {} deleted", pairCode);
     }
 
     //==================
