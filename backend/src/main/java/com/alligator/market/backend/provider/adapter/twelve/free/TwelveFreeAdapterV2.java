@@ -29,17 +29,19 @@ import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAI
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    // Создаем профиль провайдера
-    private static final ProviderProfile PROFILE = new ProviderProfile(
-            "TWELVE_FREE",
-            "TwelveData (free)",
-            Set.of(InstrumentType.CURRENCY_PAIR),
-            DeliveryMode.PULL,
-            AccessMethod.API_POLL,
-            false,
-            60_000
-    );
-
+    /* Профиль провайдера TwelveData (free). */
+    @Override
+    public ProviderProfile profile() {
+        return new ProviderProfile(
+                "TWELVE_FREE",
+                "TwelveData (free)",
+                Set.of(InstrumentType.CURRENCY_PAIR),
+                DeliveryMode.PULL,
+                AccessMethod.API_POLL,
+                false,
+                60_000
+        );
+    }
     private final TwelveFreeProps props;
     private final WebClient webClient;
 
@@ -51,13 +53,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         this.props = props;
         this.webClient = webClient;
     }
-
-    //===================
-    // Профиль провайдера
-    //===================
-    /** Возвращает профиль заданного провайдера. */
-    @Override
-    public ProviderProfile profile() { return PROFILE; }
 
     //===========================
     // Реактивный поток котировок
