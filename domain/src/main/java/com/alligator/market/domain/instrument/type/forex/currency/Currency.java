@@ -15,7 +15,7 @@ public record Currency (
 
 ) implements Instrument {
 
-    @Override public String symbol() {
+    @Override public String internalCode() {
         return code;
     }
 
