@@ -1,12 +1,12 @@
 package com.alligator.market.domain.instrument;
 
 /**
- * Единый контракт базового финансового инструмента.
+ * Единый контракт финансового инструмента.
  */
 public interface Instrument {
 
-    /** Биржевой идентификатор инструмента. */
-    String symbol();
+    /** Внутренний идентификатор инструмента. */
+    String internalCode();
 
     /** Тип финансового инструмента. */
     InstrumentType instrumentType();
