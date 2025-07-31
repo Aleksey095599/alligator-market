@@ -19,16 +19,23 @@ public record CurrencyPair(
 
 ) implements Instrument {
 
-    /** Дефолтное создание валютной пары */
-    public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, SettlementType.TOM, null, null);
+    @Override
+    public String internalCode() {
+        return base + quote + "_" + settlementType;
     }
 
-    @Override public String symbol() {
+    @Override
+    public InstrumentType instrumentType() {
+        return InstrumentType.CURRENCY_PAIR;
+    }
+
+    /** Условный код валютной пары. */
+    public String pairCode() {
         return base + quote;
     }
 
-    @Override public InstrumentType instrumentType() {
-        return InstrumentType.CURRENCY_PAIR;
+    /** Дефолтное создание валютной пары. */
+    public CurrencyPair(String base, String quote, Integer decimal) {
+        this(base, quote, decimal, SettlementType.TOM, null, null);
     }
 }
