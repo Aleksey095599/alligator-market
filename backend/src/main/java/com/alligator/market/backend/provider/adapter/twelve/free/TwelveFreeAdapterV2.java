@@ -67,7 +67,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
         // Биржевой идентификатор инструмента согласно модели данного приложения
-        final String symbolByModel = instrument.symbol();
+        final String internalCode = instrument.internalCode();
         // Биржевой идентификатор инструмента, требуемый провайдером
         final String symbolForRequest;
 
@@ -76,7 +76,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             CurrencyPair pair = (CurrencyPair) instrument;
             symbolForRequest = pair.base() + "/" + pair.quote();
         } else {
-            symbolForRequest = instrument.symbol();
+            symbolForRequest = instrument.internalCode();
         }
 
         return webClient.get()
@@ -87,7 +87,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> jsonToQuoteTick(json, symbolByModel))
+                .map(json -> jsonToQuoteTick(json, internalCode))
                 .flux();
     }
 
