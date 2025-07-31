@@ -21,7 +21,7 @@ public record CurrencyPair(
 
     @Override
     public String internalCode() {
-        return base + quote + "_" + settlementType;
+        return base + quote + "_" + settlementType.name();
     }
 
     @Override
@@ -29,7 +29,7 @@ public record CurrencyPair(
         return InstrumentType.CURRENCY_PAIR;
     }
 
-    /** Условный код валютной пары. */
+    /** Код валютной пары, составленный из базовой и котируемой валют (без учета типа расчетов). */
     public String pairCode() {
         return base + quote;
     }
