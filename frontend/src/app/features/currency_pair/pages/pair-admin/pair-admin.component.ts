@@ -41,7 +41,7 @@ export class PairAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['symbol', 'base', 'quote', 'decimal', 'actions'];
+  displayed: string[] = ['pairCode', 'base', 'quote', 'decimal', 'actions'];
   dataSource  = new MatTableDataSource<PairDto>([]);
 
   //==============================
@@ -51,7 +51,7 @@ export class PairAdminComponent implements OnInit {
 
   locked = false; // флаг блокировки кнопки Add
   editing = false; // режим редактирования
-  editSymbol: string | null = null; // символ пары для редактирования
+  editPairCode: string | null = null; // код пары для редактирования
   currencies: CurrencyDto[] = [];
 
   constructor(
@@ -104,10 +104,10 @@ export class PairAdminComponent implements OnInit {
     const dto: PairCreateDto = this.form.value;
 
     this.service.add(dto).subscribe({
-      next: symbol => {
+      next: pairCode => {
         // Если все ОК
         this.snack.open(
-          `Pair '${symbol}' added`, 'OK', { duration: 2500 }
+          `Pair '${pairCode}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();
         this.form.reset({ decimal: 4 });
@@ -125,7 +125,7 @@ export class PairAdminComponent implements OnInit {
   /* клик по иконке Edit */
   onEdit(p: PairDto): void {
     this.editing = true;
-    this.editSymbol = p.symbol;
+    this.editPairCode = p.pairCode;
     this.form.setValue({
       base: p.base,
       quote: p.quote,
@@ -137,7 +137,7 @@ export class PairAdminComponent implements OnInit {
 
   /* нажата кнопка Save */
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editSymbol) { return; }
+    if (this.form.invalid || this.locked || !this.editPairCode) { return; }
 
     this.locked = true;
 
@@ -145,9 +145,9 @@ export class PairAdminComponent implements OnInit {
       decimal: this.form.controls['decimal'].value
     } as PairUpdateDto;
 
-    this.service.update(this.editSymbol, dto).subscribe({
+    this.service.update(this.editPairCode, dto).subscribe({
       next: () => {
-        this.snack.open(`Pair '${this.editSymbol}' updated`, 'OK', { duration: 2500 });
+        this.snack.open(`Pair '${this.editPairCode}' updated`, 'OK', { duration: 2500 });
         this.refresh();
         this.cancelEdit();
         this.locked = false;
@@ -163,7 +163,7 @@ export class PairAdminComponent implements OnInit {
   /* нажата кнопка Cancel */
   cancelEdit(): void {
     this.editing = false;
-    this.editSymbol = null;
+    this.editPairCode = null;
     this.form.reset({ base: '', quote: '', decimal: 4 });
     this.form.controls['base'].enable();
     this.form.controls['quote'].enable();
@@ -171,10 +171,10 @@ export class PairAdminComponent implements OnInit {
   }
 
   /* клик по иконке Delete */
-  onDelete(symbol: string): void {
-    this.service.delete(symbol).subscribe({
+  onDelete(pairCode: string): void {
+    this.service.delete(pairCode).subscribe({
       next: () => {
-        this.snack.open(`Pair '${symbol}' deleted`, 'OK', { duration: 2500 });
+        this.snack.open(`Pair '${pairCode}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
       error: err =>
