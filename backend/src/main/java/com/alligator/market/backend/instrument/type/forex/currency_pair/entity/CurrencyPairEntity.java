@@ -43,7 +43,7 @@ public class CurrencyPairEntity extends BaseEntity {
             foreignKey = @ForeignKey(name = "fk_pair_quote"))
     private CurrencyEntity quote;
 
-    /** Код пары как base + quote. */
+    /** Код валютной пары, составленный из базовой и котируемой валют. */
     @Pattern(regexp = "^[A-Z]{6}$")
     @Column(name = "symbol", length = 6, nullable = false)
     private String symbol;
