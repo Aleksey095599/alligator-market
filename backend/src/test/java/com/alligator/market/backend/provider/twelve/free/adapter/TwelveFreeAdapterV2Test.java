@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.twelve.free.adapter;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
-import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeProps;
+import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.junit.jupiter.api.Disabled;
@@ -19,7 +19,7 @@ class TwelveFreeAdapterV2Test {
     @Test
     void shouldFetchRealQuote() {
         // Параметры подключения к провайдеру
-        TwelveFreeProps props = new TwelveFreeProps(
+        TwelveFreeConnectionProps props = new TwelveFreeConnectionProps(
                 "https://api.twelvedata.com",
                 "2b8e2659372340d5b922cd6b8d6d2cb2"
         );

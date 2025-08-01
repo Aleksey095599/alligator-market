@@ -12,17 +12,17 @@ import reactor.netty.http.client.HttpClient;
 /**
  * Конфигурационный класс, который создает и настраивает WebClient для адаптера провайдера {@link TwelveFreeAdapterV2}.
  * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal}
- * и настройки подключения провайдера {@link TwelveFreeProps}.
+ * и настройки подключения провайдера {@link TwelveFreeConnectionProps}.
  */
 @Configuration
 public class TwelveFreeWebConfig {
 
-    private final TwelveFreeProps props;
+    private final TwelveFreeConnectionProps props;
     private final HttpClient httpClient;
 
     // Конструктор
     public TwelveFreeWebConfig(
-            TwelveFreeProps props,
+            TwelveFreeConnectionProps props,
             @Qualifier("providerHttpClient") HttpClient httpClient // инжекция bean общего http-клиента провайдеров
     ) {
         this.props = props;

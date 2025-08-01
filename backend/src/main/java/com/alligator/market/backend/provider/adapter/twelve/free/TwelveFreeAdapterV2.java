@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.twelve.free;
 
-import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeProps;
+import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Set;
 
 import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAIR;
@@ -29,20 +32,37 @@ import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAI
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    private final TwelveFreeProps props;
-    private final WebClient webClient;
+    /** Внутренний контракт для работы с конкретным инструментом конкретно для данного провайдера. */
+    @FunctionalInterface
+    private interface InstrumentHandler {
+        Mono<QuoteTick> fetch(Instrument instrument);
+    }
 
+    // Параметры подключения к провайдеру. Автоматически считываются из настроек приложения.
+    private final TwelveFreeConnectionProps props;
+    // Веб клиент провайдера
+    private final WebClient webClient;
+    // Карта: тип инструмента <--> внутренний контракт
+    private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
+    // Назначаем реализацию внутреннего контракта
+    private final InstrumentHandler fxSpotHandler = this::fetchFxSpot;
+
+    /**
+     * Конструктор.
+     */
     public TwelveFreeAdapterV2(
-            TwelveFreeProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient // инжекция bean web-клиента для TwelveData
+            TwelveFreeConnectionProps props,
+            @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         this.props = props;
         this.webClient = webClient;
+        handlers.put(InstrumentType.CURRENCY_PAIR, fxSpotHandler);
     }
 
     //===================
     // Профиль провайдера
     //===================
+    /** Переопределяем метод, который возвращает профиль провайдера. */
     @Override
     public ProviderProfile profile() {
         return new ProviderProfile(

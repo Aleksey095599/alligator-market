@@ -22,15 +22,13 @@ public interface MarketDataProvider {
     /** Возвращает поток котировок в виде {@link QuoteTick}. */
     Flux<QuoteTick> streamQuotes(Instrument instrument);
 
-    //============================
-    // Дополнительно (опционально)
-    //============================
+    //====================================
+    // Дополнительные методы (опционально)
+    //====================================
     /** Текущий health-state. */
     default ProviderHealth health() { return ProviderHealth.UNKNOWN; }
-
     /** Открыть соединение. */
     default void connect() { /* no-op */ }
-
     /** Закрыть соединение. */
     default void disconnect() { /* no-op */ }
 }

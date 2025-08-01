@@ -4,11 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Параметры подключения к провайдеру TwelveData (free plan).
- * Считываются из настроек приложения.
+ * Автоматически считываются из настроек приложения.
  */
 @ConfigurationProperties("provider.connection-config.twelve-free")
-public record TwelveFreeProps(
-
+public record TwelveFreeConnectionProps(
         String baseUrl,
         String apiKey
 ) {}
