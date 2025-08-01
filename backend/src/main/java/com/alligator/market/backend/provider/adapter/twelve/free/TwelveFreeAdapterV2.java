@@ -33,7 +33,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     /** Внутренний контракт адаптера (далее handler) для работы с конкретным инструментом. */
     @FunctionalInterface
     private interface InstrumentHandler {
-        /** Загружает котировку и возвращает Mono с одним тиком. */
         Mono<QuoteTick> fetch(Instrument instrument);
     }
 
@@ -41,15 +40,13 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private final TwelveFreeConnectionProps props;
     // Веб клиент провайдера
     private final WebClient webClient;
-    // Карта соответствия: тип инструмента <--> внутренний контракт
+    // Карта соответствия: тип инструмента <--> handler
     private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
 
-    /**
-     * Конструктор.
-     */
+    /** Конструктор адаптера TwelveFreeAdapterV2. */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient
+            @Qualifier("twelveFreeWebClient") WebClient webClient // Инъекция нужного веб-клиента
     ) {
         this.props = props;
         this.webClient = webClient;
@@ -78,10 +75,11 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //===========================
     // Реактивный поток котировок
     //===========================
+    /** Переопределяем метод, который возвращает котировки. */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
-        // Извлекаем нужный handler для данного инструмента
+        // Извлекаем handler для данного типа инструмента
         InstrumentHandler handler = handlers.get(instrument.instrumentType());
 
         if (handler == null) {
@@ -92,6 +90,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return handler.fetch(instrument).flux();
     }
 
+    /** Реализация handler для запросов котировок валютных пар. */
     private Mono<QuoteTick> fetchFxSpot(Instrument instrument) {
 
         CurrencyPair pair = (CurrencyPair) instrument;
@@ -107,14 +106,14 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> toQuoteTick(json, instrument.internalCode()));
+                .map(json -> jsonToQuoteTick(json, instrument.internalCode()));
     }
 
     //-----------------------
     // Вспомогательные методы
     //-----------------------
 
-    /** Метод преобразования ответа провайдера к модели тика котировки */
+    /** Метод формирования котировки {@link QuoteTick} из JSON-ответа провайдера. */
     private QuoteTick jsonToQuoteTick(JsonNode json, String internalInstrumentCode) {
 
         // Извлекаем значение поля "price" из JSON-ответа провайдера
