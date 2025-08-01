@@ -23,8 +23,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAIR;
-
 /**
  * Адаптер для провайдера TwelveData (free).
  */
@@ -32,9 +30,10 @@ import static com.alligator.market.domain.instrument.InstrumentType.CURRENCY_PAI
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    /** Внутренний контракт для работы с конкретным инструментом конкретно для данного провайдера. */
+    /** Внутренний контракт адаптера (далее handler) для работы с конкретным инструментом. */
     @FunctionalInterface
     private interface InstrumentHandler {
+        /** Загружает котировку и возвращает Mono с одним тиком. */
         Mono<QuoteTick> fetch(Instrument instrument);
     }
 
@@ -42,10 +41,8 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private final TwelveFreeConnectionProps props;
     // Веб клиент провайдера
     private final WebClient webClient;
-    // Карта: тип инструмента <--> внутренний контракт
+    // Карта соответствия: тип инструмента <--> внутренний контракт
     private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
-    // Назначаем реализацию внутреннего контракта
-    private final InstrumentHandler fxSpotHandler = this::fetchFxSpot;
 
     /**
      * Конструктор.
@@ -56,7 +53,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     ) {
         this.props = props;
         this.webClient = webClient;
-        handlers.put(InstrumentType.CURRENCY_PAIR, fxSpotHandler);
+
+        // Добавляем реализацию handler для валютных пар
+        handlers.put(InstrumentType.CURRENCY_PAIR, this::fetchFxSpot);
     }
 
     //===================
@@ -82,40 +81,43 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
-        // Извлекаем внутренний идентификатор инструмента
-        final String internalCode = instrument.internalCode();
+        // Извлекаем нужный handler для данного инструмента
+        InstrumentHandler handler = handlers.get(instrument.instrumentType());
 
-        // Биржевой идентификатор инструмента, требуемый провайдером
-        final String pairCodeForRequest;
-
-        // Для валютных пар данный провайдер ожидает формат биржевого идентификатора "EUR/USD"
-        if (instrument.instrumentType() == CURRENCY_PAIR) {
-            CurrencyPair pair = (CurrencyPair) instrument;
-            pairCodeForRequest = pair.base() + "/" + pair.quote();
-        } else {
-            pairCodeForRequest = instrument.internalCode();
+        if (handler == null) {
+            return Flux.error(new UnsupportedOperationException(
+                    "Instrument type " + instrument.instrumentType()
+                            + " not supported by " + profile().providerCode()));
         }
+        return handler.fetch(instrument).flux();
+    }
+
+    private Mono<QuoteTick> fetchFxSpot(Instrument instrument) {
+
+        CurrencyPair pair = (CurrencyPair) instrument;
+
+        // Формат символа валютной пары для запроса
+        String symbol = pair.base() + "/" + pair.quote();
 
         return webClient.get()
-                .uri(builder -> builder
+                .uri(b -> b
                         .path("/price")
-                        .queryParam("symbol", pairCodeForRequest)
+                        .queryParam("symbol", symbol)
                         .queryParam("apikey", props.apiKey())
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> jsonToQuoteTick(json, internalCode))
-                .flux();
+                .map(json -> toQuoteTick(json, instrument.internalCode()));
     }
 
     //-----------------------
     // Вспомогательные методы
     //-----------------------
 
-    /* Метод преобразования ответа провайдера к модели тика котировки */
-    private QuoteTick jsonToQuoteTick(JsonNode json, String pairCodeByModel) {
+    /** Метод преобразования ответа провайдера к модели тика котировки */
+    private QuoteTick jsonToQuoteTick(JsonNode json, String internalInstrumentCode) {
 
-        // Извлекаем значение поля "price" из JSON-ответа провайдера в виде объекта JsonNode
+        // Извлекаем значение поля "price" из JSON-ответа провайдера
         JsonNode priceNode = json.get("price");
 
         if (priceNode == null) {
@@ -125,7 +127,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         BigDecimal price = new BigDecimal(priceNode.asText());
 
         return new QuoteTick(
-                pairCodeByModel,
+                internalInstrumentCode,
                 price,
                 price,
                 Instant.now(),
