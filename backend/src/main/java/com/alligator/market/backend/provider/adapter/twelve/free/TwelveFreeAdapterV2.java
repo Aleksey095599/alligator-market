@@ -30,18 +30,12 @@ import java.util.Set;
 @Slf4j
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    /** Внутренний контракт адаптера (далее handler) для работы с конкретным инструментом. */
-    @FunctionalInterface
-    private interface InstrumentHandler {
-        Mono<QuoteTick> fetch(Instrument instrument);
-    }
-
     // Параметры подключения к провайдеру. Автоматически считываются из настроек приложения.
     private final TwelveFreeConnectionProps props;
     // Веб клиент провайдера
     private final WebClient webClient;
     // Карта соответствия: тип инструмента <--> handler
-    private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
+    private final Map<InstrumentType, InstrumentHandler> handlerMap = new EnumMap<>(InstrumentType.class);
 
     /** Конструктор адаптера TwelveFreeAdapterV2. */
     public TwelveFreeAdapterV2(
@@ -51,13 +45,14 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         this.props = props;
         this.webClient = webClient;
 
-        // Добавляем реализацию handler для валютных пар
-        handlers.put(InstrumentType.CURRENCY_PAIR, this::fetchFxSpot);
+        // Добавляем handler для валютных пар
+        handlerMap.put(InstrumentType.CURRENCY_PAIR, this::fetchFxSpot);
     }
 
-    //===================
-    // Профиль провайдера
-    //===================
+    //===========================
+    //    Профиль провайдера
+    //===========================
+
     /** Переопределяем метод, который возвращает профиль провайдера. */
     @Override
     public ProviderProfile profile() {
@@ -75,19 +70,31 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //===========================
     // Реактивный поток котировок
     //===========================
+
     /** Переопределяем метод, который возвращает котировки. */
     @Override
     public Flux<QuoteTick> streamQuotes(Instrument instrument) {
 
         // Извлекаем handler для данного типа инструмента
-        InstrumentHandler handler = handlers.get(instrument.instrumentType());
+        InstrumentHandler handler = handlerMap.get(instrument.instrumentType());
 
         if (handler == null) {
             return Flux.error(new UnsupportedOperationException(
                     "Instrument type " + instrument.instrumentType()
                             + " not supported by " + profile().providerCode()));
         }
+
         return handler.fetch(instrument).flux();
+    }
+
+    //===========================
+    //  Вспомогательные методы
+    //===========================
+
+    /** Handler для работы с конкретным инструментом. */
+    @FunctionalInterface
+    private interface InstrumentHandler {
+        Mono<QuoteTick> fetch(Instrument instrument);
     }
 
     /** Реализация handler для запросов котировок валютных пар. */
@@ -108,10 +115,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 .bodyToMono(JsonNode.class)
                 .map(json -> jsonToQuoteTick(json, instrument.internalCode()));
     }
-
-    //-----------------------
-    // Вспомогательные методы
-    //-----------------------
 
     /** Метод формирования котировки {@link QuoteTick} из JSON-ответа провайдера. */
     private QuoteTick jsonToQuoteTick(JsonNode json, String internalInstrumentCode) {
