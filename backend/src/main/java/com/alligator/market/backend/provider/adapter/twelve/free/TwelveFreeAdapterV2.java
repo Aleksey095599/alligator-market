@@ -95,7 +95,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
         CurrencyPair pair = (CurrencyPair) instrument;
 
-        // Формат символа валютной пары для запроса
+        // Требуемый формат символа валютной пары для запроса котировки
         String symbol = pair.base() + "/" + pair.quote();
 
         return webClient.get()
