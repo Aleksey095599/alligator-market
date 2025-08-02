@@ -31,7 +31,7 @@ class TwelveFreeAdapterV2Test {
 
         CurrencyPair pair = new CurrencyPair("EUR", "USD", 2);
 
-        QuoteTick tick = adapter.streamQuotes(pair)
+        QuoteTick tick = adapter.quote(pair)
                 .blockFirst(Duration.ofSeconds(5));
 
         assertNotNull(tick);

@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency_pair.CurrencyPair;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
@@ -73,7 +73,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /** Переопределяем метод, который возвращает котировки. */
     @Override
-    public Flux<QuoteTick> streamQuotes(Instrument instrument) {
+    public Flux<QuoteTick> quote(Instrument instrument) {
 
         // Извлекаем handler для данного типа инструмента
         InstrumentHandler handler = handlerMap.get(instrument.instrumentType());

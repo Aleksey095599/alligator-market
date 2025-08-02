@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.context_sync;
 import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
@@ -57,14 +57,14 @@ class ProviderContextScannerAdapterValidationTest {
                 1
         );
         return new MarketDataProvider() {
-            
+
             @Override
             public ProviderProfile profile() {
                 return profile;
             }
 
             @Override
-            public Flux<QuoteTick> streamQuotes(Instrument instrument) {
+            public Flux<QuoteTick> quote(Instrument instrument) {
                 return Flux.empty();
             }
         };

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider;
+package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
@@ -21,6 +21,6 @@ public interface MarketDataProvider {
     // Реактивный поток котировок
     //===========================
 
-    /** Возвращает поток котировок в виде {@link QuoteTick}. */
-    Flux<QuoteTick> streamQuotes(Instrument instrument);
+    /** Возвращает котировку. */
+    Flux<QuoteTick> quote(Instrument instrument);
 }
