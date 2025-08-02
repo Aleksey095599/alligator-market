@@ -10,16 +10,8 @@ import reactor.core.publisher.Flux;
  */
 public interface MarketDataProvider {
 
-    //===========================
-    //    Профиль провайдера
-    //===========================
-
     /** Возвращает профиль провайдера. */
     ProviderProfile profile();
-
-    //===========================
-    // Реактивный поток котировок
-    //===========================
 
     /** Возвращает котировку. */
     Flux<QuoteTick> quote(Instrument instrument);
