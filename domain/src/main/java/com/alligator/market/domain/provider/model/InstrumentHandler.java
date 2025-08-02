@@ -14,5 +14,5 @@ public interface InstrumentHandler {
     InstrumentType supportedType();
 
     /** Возвращает котировку для указанного инструмента. */
-    Flux<QuoteTick> thisInstrumentQuote(Instrument instrument);
+    Flux<QuoteTick> handlerQuote(Instrument instrument);
 }
