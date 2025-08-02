@@ -36,6 +36,6 @@ public record CurrencyPair(
 
     /** Дефолтное создание валютной пары. */
     public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, ValueDateCode.TOM, null, null);
+        this(base, quote, decimal, ValueDateCode.NONE, null, null);
     }
 }

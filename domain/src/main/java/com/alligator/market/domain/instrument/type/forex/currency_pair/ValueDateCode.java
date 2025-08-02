@@ -5,8 +5,8 @@ package com.alligator.market.domain.instrument.type.forex.currency_pair;
  */
 public enum ValueDateCode {
 
-    // Индикативная котировка (провайдер не возвращает параметр value date)
-    IND,
+    // Провайдер не возвращает
+    NONE,
 
     // Сегодня
     TOD,
@@ -17,9 +17,9 @@ public enum ValueDateCode {
     // Послезавтра
     SPOT,
 
-    // Раздельный расчет
-    SPLIT,
+    // Форвард
+    FWD,
 
-    // Форвард (>SPOT)
-    FWD
+    // Раздельный расчет
+    SPLIT
 }

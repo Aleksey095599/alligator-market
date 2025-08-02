@@ -91,7 +91,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     //  Вспомогательные методы
     //===========================
 
-    /** Handler для работы с конкретным инструментом. */
+    /** Контракт-handler для работы с конкретным инструментом. */
     @FunctionalInterface
     private interface InstrumentHandler {
         Mono<QuoteTick> fetch(Instrument instrument);
