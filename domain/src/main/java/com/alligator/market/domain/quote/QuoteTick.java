@@ -9,7 +9,7 @@ import java.time.Instant;
  */
 public record QuoteTick(
 
-        String internalInstrumentCode,
+        String instrumentInternalCode,
         BigDecimal bid,
         BigDecimal ask,
         Instant ts,
