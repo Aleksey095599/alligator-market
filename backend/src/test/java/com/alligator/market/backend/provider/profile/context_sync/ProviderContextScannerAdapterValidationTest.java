@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.profile.context_sync;
 import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,6 +63,11 @@ class ProviderContextScannerAdapterValidationTest {
             @Override
             public ProviderProfile profile() {
                 return profile;
+            }
+
+            @Override
+            public Map<InstrumentType, InstrumentHandler> instrumentHandlers() {
+                return Map.of();
             }
 
             @Override
