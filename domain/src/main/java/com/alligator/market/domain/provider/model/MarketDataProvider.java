@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.provider.exception.InstrumentNotSupported;
 import java.util.Map;
 import java.util.Set;
 import reactor.core.publisher.Flux;
@@ -35,11 +36,7 @@ public interface MarketDataProvider {
 
         // Проверка, что обработчик существует
         if (handler == null) {
-            return Flux.error(
-                    new UnsupportedOperationException("Instrument type " + instrumentType +
-                            " not supported by " + profile().providerCode()
-                    )
-            );
+            return Flux.error(new InstrumentNotSupported(instrumentType, profile().providerCode()));
         }
 
         // Возвращаем котировку инструмента
