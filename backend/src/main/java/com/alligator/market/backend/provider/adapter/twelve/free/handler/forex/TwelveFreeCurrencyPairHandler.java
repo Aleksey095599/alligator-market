@@ -55,7 +55,8 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
                 .flux();
     }
 
-    private QuoteTick responseJsonToQuoteTick(JsonNode json, String internalCode) {
+    /** Метод преобразования JSON ответа провайдера в доменную модель котировки. */
+    private QuoteTick responseJsonToQuoteTick(JsonNode json, String instrumentInternalCode) {
         JsonNode priceNode = json.get("price");
         if (priceNode == null) {
             throw new IllegalArgumentException("Invalid provider response: " + json);
@@ -64,7 +65,7 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
         BigDecimal price = new BigDecimal(priceNode.asText());
 
         return new QuoteTick(
-                internalCode,
+                instrumentInternalCode,
                 price,
                 price,
                 Instant.now(),
