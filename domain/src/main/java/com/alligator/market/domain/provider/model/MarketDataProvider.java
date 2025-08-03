@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.InstrumentType;
 import java.util.Map;
+import java.util.Set;
 import reactor.core.publisher.Flux;
 
 /**
@@ -17,6 +18,11 @@ public interface MarketDataProvider {
 
     /** Возвращает карту: тип инструмента → обработчик. */
     Map<InstrumentType, InstrumentHandler> instrumentHandlers();
+
+    /** Возвращает множество поддерживаемых типов инструментов. */
+    default Set<InstrumentType> supportedInstrumentTypes() {
+        return instrumentHandlers().keySet();
+    }
 
     /** Возвращает котировку. */
     default Flux<QuoteTick> quote(Instrument instrument) {
