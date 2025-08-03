@@ -25,7 +25,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private static final String PROVIDER_CODE = "TWELVE_FREE";
 
     // Карта: тип инструмента → handler
-    private final Map<InstrumentType, InstrumentHandler> handlerMap = new EnumMap<>(InstrumentType.class);
+    private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
 
     /** Конструктор адаптера TwelveFreeAdapterV2. */
     public TwelveFreeAdapterV2(
@@ -33,7 +33,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             @Qualifier("twelveFreeWebClient") WebClient webClient // Инъекция нужного веб-клиента
     ) {
         // Добавляем обработчик для валютных пар
-        handlerMap.put(
+        handlers.put(
                 InstrumentType.CURRENCY_PAIR,
                 new TwelveFreeCurrencyPairHandler(webClient, props, PROVIDER_CODE)
         );
@@ -56,7 +56,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     /** Возвращает карту обработчиков инструментов. */
     @Override
     public Map<InstrumentType, InstrumentHandler> instrumentHandlers() {
-        return handlerMap;
+        return handlers;
     }
 }
 
