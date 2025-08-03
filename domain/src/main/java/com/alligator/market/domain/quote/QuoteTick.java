@@ -9,7 +9,9 @@ import java.time.Instant;
  */
 public record QuoteTick(
 
+        // Внутренний код приложения для инструмента
         String instrumentInternalCode,
+
         BigDecimal bid,
         BigDecimal ask,
         Instant ts,
