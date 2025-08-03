@@ -6,7 +6,7 @@
     { "name": "internalInstrumentCode", "type": "string" },
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
     { "name": "ask", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
-    { "name": "ts", "type": { "type": "long", "logicalType": "timestamp-millis" } },
+    { "name": "ts", "type": "string" },
     { "name": "provider", "type": "string" }
   ]
 }

@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 /** Handler котировок валютных пар для TwelveData (free). */
 public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
@@ -68,7 +68,7 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
                 instrumentInternalCode,
                 price,
                 price,
-                Instant.now(),
+                OffsetDateTime.now(),
                 providerCode
         );
     }
