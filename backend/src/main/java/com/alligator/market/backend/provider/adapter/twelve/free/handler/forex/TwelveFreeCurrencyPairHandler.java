@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.adapter.twelve.free.handler;
+package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.Instrument;
@@ -39,6 +39,7 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
     /** Возвращает котировку для указанного инструмента. */
     @Override
     public Flux<QuoteTick> instrumentQuote(Instrument instrument) {
+
         CurrencyPair pair = (CurrencyPair) instrument;
         String symbol = pair.base() + "/" + pair.quote();
 
@@ -50,11 +51,11 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> jsonToQuoteTick(json, instrument.internalCode()))
+                .map(json -> responseJsonToQuoteTick(json, instrument.internalCode()))
                 .flux();
     }
 
-    private QuoteTick jsonToQuoteTick(JsonNode json, String internalCode) {
+    private QuoteTick responseJsonToQuoteTick(JsonNode json, String internalCode) {
         JsonNode priceNode = json.get("price");
         if (priceNode == null) {
             throw new IllegalArgumentException("Invalid provider response: " + json);

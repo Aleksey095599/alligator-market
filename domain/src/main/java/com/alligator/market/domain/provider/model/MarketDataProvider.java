@@ -15,17 +15,28 @@ public interface MarketDataProvider {
     /** Возвращает профиль провайдера. */
     ProviderProfile profile();
 
-    /** Возвращает карту обработчиков инструментов. */
+    /** Возвращает карту: тип инструмента → обработчик. */
     Map<InstrumentType, InstrumentHandler> instrumentHandlers();
 
     /** Возвращает котировку. */
     default Flux<QuoteTick> quote(Instrument instrument) {
-        InstrumentHandler handler = instrumentHandlers().get(instrument.instrumentType());
-        if (handler != null) {
-            return handler.instrumentQuote(instrument);
+
+        // Извлекаем тип инструмента
+        InstrumentType instrumentType = instrument.instrumentType();
+
+        // Подбираем нужный обработчик для данного типа инструмента
+        InstrumentHandler handler = instrumentHandlers().get(instrumentType);
+
+        // Проверка, что обработчик существует
+        if (handler == null) {
+            return Flux.error(
+                    new UnsupportedOperationException("Instrument type " + instrumentType +
+                            " not supported by " + profile().providerCode()
+                    )
+            );
         }
-        return Flux.error(new UnsupportedOperationException(
-                "Instrument type " + instrument.instrumentType()
-                        + " not supported by " + profile().providerCode()));
+
+        // Возвращаем котировку инструмента
+        return handler.instrumentQuote(instrument);
     }
 }
