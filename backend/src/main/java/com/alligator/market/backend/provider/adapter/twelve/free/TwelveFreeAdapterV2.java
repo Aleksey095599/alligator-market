@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeCurrencyPairHandler;
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
@@ -27,10 +28,15 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     // Карта: тип инструмента → handler
     private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
 
-    /** Конструктор адаптера TwelveFreeAdapterV2. */
+    /**
+     * Конструктор адаптера TwelveFreeAdapterV2.
+     * Используем конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
+     * и конфигурационные настройки подключения {@link TwelveFreeConnectionProps}.
+     * Добавляем обработчики для конкретных инструментов.
+     */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient // Инъекция нужного веб-клиента
+            @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         // Добавляем обработчик для валютных пар
         handlers.put(
