@@ -11,8 +11,8 @@ import reactor.core.publisher.Flux;
 public interface InstrumentHandler {
 
     /** Возвращает поддерживаемый тип инструмента. */
-    InstrumentType supportedType();
+    InstrumentType supportedInstrument();
 
     /** Возвращает котировку для указанного инструмента. */
-    Flux<QuoteTick> handlerQuote(Instrument instrument);
+    Flux<QuoteTick> instrumentQuote(Instrument instrument);
 }
