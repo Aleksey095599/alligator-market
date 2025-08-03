@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Адаптер для провайдера TwelveData (free).
@@ -46,7 +45,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return new ProviderProfile(
                 PROVIDER_CODE,
                 "TwelveData (free)",
-                Set.of(InstrumentType.CURRENCY_PAIR),
+                supportedInstrumentTypes(), // ← Получаем типы инструментов из карты обработчиков
                 DeliveryMode.PULL,
                 AccessMethod.API_POLL,
                 false,
