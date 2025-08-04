@@ -1,10 +1,11 @@
 package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.InstrumentType;
-import com.alligator.market.domain.provider.exception.InstrumentNotSupported;
+
 import java.util.Map;
 import java.util.Set;
 import reactor.core.publisher.Flux;
@@ -25,7 +26,11 @@ public interface MarketDataProvider {
         return instrumentHandlers().keySet();
     }
 
-    /** Возвращает котировку. */
+    /**
+     * Возвращает котировку.
+     *
+     * @throws InstrumentNotSupported если подходящий обработчик инструмента не найден
+     */
     default Flux<QuoteTick> quote(Instrument instrument) {
 
         // Извлекаем тип инструмента
