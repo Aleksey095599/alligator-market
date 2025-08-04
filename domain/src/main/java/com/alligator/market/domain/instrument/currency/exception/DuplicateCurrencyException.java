@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument_catalog.currency.exception;
+package com.alligator.market.domain.instrument.currency.exception;
 
 /**
  * Дублирование валюты.

@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument_catalog.currency.service;
 
-import com.alligator.market.backend.instrument_catalog.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.backend.instrument_catalog.currency.exception.CurrencyUsedInPairsException;
-import com.alligator.market.backend.instrument_catalog.currency.exception.DuplicateCurrencyException;
+import com.alligator.market.domain.instrument.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.currency.exception.CurrencyUsedInPairsException;
+import com.alligator.market.domain.instrument.currency.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.instrument.currency.Currency;
 import com.alligator.market.domain.instrument.currency.CurrencyStorage;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPairStorage;

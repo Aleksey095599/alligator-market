@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.exception;
+package com.alligator.market.domain.instrument.currency_pair.exception;
 
 /**
  * Не найдена одна из валют компонент для соответствующей валютной пары.
