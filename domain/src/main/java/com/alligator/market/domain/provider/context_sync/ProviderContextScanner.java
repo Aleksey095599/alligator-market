@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface ProviderContextScanner {
 
-    /** Вернуть список профилей провайдеров. */
+    /**
+     * Вернуть список профилей провайдеров.
+     *
+     * @throws DuplicateProviderProfileInContextException если в контексте обнаружены дубли
+     */
     List<ProviderProfile> getProviderProfiles();
 }

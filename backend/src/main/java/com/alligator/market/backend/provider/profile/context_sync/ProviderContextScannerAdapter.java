@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.context_sync;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
+import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +41,10 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
         for (ProviderProfile profile : profiles) {
             if (!codes.add(profile.providerCode())) {
-                throw new DuplicateProviderProfileException("providerCode", profile.providerCode());
+                throw new DuplicateProviderProfileInContextException("providerCode", profile.providerCode());
             }
             if (!names.add(profile.displayName())) {
-                throw new DuplicateProviderProfileException("displayName", profile.displayName());
+                throw new DuplicateProviderProfileInContextException("displayName", profile.displayName());
             }
         }
     }

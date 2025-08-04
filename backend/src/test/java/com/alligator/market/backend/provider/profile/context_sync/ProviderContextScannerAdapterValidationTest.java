@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
-import com.alligator.market.backend.provider.profile.exception.DuplicateProviderProfileException;
+import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
@@ -28,7 +28,7 @@ class ProviderContextScannerAdapterValidationTest {
         MarketDataProvider p1 = provider("A", "Name1");
         MarketDataProvider p2 = provider("A", "Name2");
         ProviderContextScannerAdapter scanner = new ProviderContextScannerAdapter(List.of(p1, p2));
-        assertThrows(DuplicateProviderProfileException.class, scanner::getProviderProfiles);
+        assertThrows(DuplicateProviderProfileInContextException.class, scanner::getProviderProfiles);
     }
 
     @Disabled
@@ -37,7 +37,7 @@ class ProviderContextScannerAdapterValidationTest {
         MarketDataProvider p1 = provider("A", "Same");
         MarketDataProvider p2 = provider("B", "Same");
         ProviderContextScannerAdapter scanner = new ProviderContextScannerAdapter(List.of(p1, p2));
-        assertThrows(DuplicateProviderProfileException.class, scanner::getProviderProfiles);
+        assertThrows(DuplicateProviderProfileInContextException.class, scanner::getProviderProfiles);
     }
 
 
