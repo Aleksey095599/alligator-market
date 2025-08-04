@@ -1,5 +1,6 @@
 package com.alligator.market.backend.common.web;
 
+import com.alligator.market.domain.common.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -63,9 +64,9 @@ public class GlobalRestExceptionHandler {
     }
 
     /** Ресурс не найден 404. */
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(NoSuchElementException ex) {
-        log.warn("NoSuchElementException: {}", ex.getMessage());
+    @ExceptionHandler({NotFoundException.class, NoSuchElementException.class})
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(RuntimeException ex) {
+        log.warn("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
 
