@@ -1,11 +1,11 @@
 package com.alligator.market.domain.instrument.currency.exception;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.alligator.market.domain.common.exception.NotFoundException;
 
 /**
  * Валюта не найдена.
  */
-public class CurrencyNotFoundException extends EntityNotFoundException {
+public class CurrencyNotFoundException extends NotFoundException {
     public CurrencyNotFoundException(String code) {
         super("Currency '%s' not found".formatted(code));
     }
