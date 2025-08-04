@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.profile.mapper;
+package com.alligator.market.backend.provider.profile.catalog.mapper;
 
-import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
+import com.alligator.market.backend.provider.profile.catalog.entity.ProviderProfileEntity;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 

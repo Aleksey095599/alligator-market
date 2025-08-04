@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.profile.repository;
+package com.alligator.market.backend.provider.profile.catalog.repository;
 
-import com.alligator.market.backend.provider.profile.entity.ProviderProfileEntity;
+import com.alligator.market.backend.provider.profile.catalog.entity.ProviderProfileEntity;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

@@ -1,21 +1,23 @@
-package com.alligator.market.backend.provider.profile.dto;
+package com.alligator.market.backend.provider.profile.catalog.dto;
 
 import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * DTO для информативного представления профиля провайдера.
+ * DTO с информацией о статусе профиля провайдера.
  */
-public record ProviderProfileDto(
+public record ProviderProfileStatusDto(
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentTypes,
         @NotNull DeliveryMode deliveryMode,
         @NotNull AccessMethod accessMethod,
         boolean supportsBulkSubscription,
-        int minPollPeriodMs
+        int minPollPeriodMs,
+        @NotNull ProviderProfileStatus status
 ) {}

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.entity;
+package com.alligator.market.backend.provider.profile.catalog.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.InstrumentType;
