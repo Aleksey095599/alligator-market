@@ -1,5 +1,8 @@
 package com.alligator.market.domain.quote;
 
+import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.provider.profile.ProviderProfile;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
@@ -9,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public record QuoteTick(
 
-        // Внутренний код приложения для инструмента
+        /** Внутренний код инструмента, соответствует {@link Instrument#internalCode()} */
         String instrumentInternalCode,
 
         BigDecimal bid,
@@ -18,5 +21,6 @@ public record QuoteTick(
         // Время тика котировки
         OffsetDateTime ts,
 
+        /** Внутренний код провайдера, соответствует {@link ProviderProfile#providerCode()} */
         String provider
 ) {}
