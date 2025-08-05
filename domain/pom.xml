@@ -42,7 +42,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
         <dependencies>
-          <!-- Совместимый лаунчер JUnit Platform -->
           <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
