@@ -7,7 +7,7 @@
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
     { "name": "ask", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
     { "name": "ts", "type": "string" },
-    { "name": "provider", "type": "string" }
+    { "name": "providerCode", "type": "string" }
   ]
 }
 
