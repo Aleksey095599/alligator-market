@@ -1,5 +1,7 @@
-package com.alligator.market.domain.provider.context_sync;
+package com.alligator.market.domain.provider.context_sync.service;
 
+import com.alligator.market.domain.provider.context_sync.ContextDiff;
+import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
@@ -9,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис, реализующий логику сопоставления профилей провайдеров, извлеченных из контекста приложения
- * и хранилища данных.
+ * Сервис, реализующий доменную логику сопоставления профилей провайдеров, извлеченных из контекста приложения
+ * и из хранилища данных.
  */
 public class ProviderProfilesReconciliation {
 

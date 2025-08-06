@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.quote.instrument_feed.InstrumentFeed;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

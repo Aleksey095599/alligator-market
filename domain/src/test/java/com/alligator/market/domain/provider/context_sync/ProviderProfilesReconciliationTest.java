@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.context_sync;
 
 import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.provider.context_sync.service.ProviderProfilesReconciliation;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
