@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.repository;
 import com.alligator.market.backend.provider.profile.catalog.entity.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.mapper.ProviderProfileMapper;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
+import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

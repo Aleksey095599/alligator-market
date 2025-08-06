@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote.instrument_feed;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataProvider;
 
 /**
  * Связка инструмента и провайдера с приоритетом обработки.

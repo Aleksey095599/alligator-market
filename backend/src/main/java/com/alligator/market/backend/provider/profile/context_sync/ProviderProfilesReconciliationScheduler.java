@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

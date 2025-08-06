@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.profile.ProviderProfile;
 import java.util.List;
 
 /**
- * Порт для сканирования контекста приложения и извлечения профилей провайдеров.
+ * Контракт сканера контекста приложения, извлекающего профили провайдеров.
  */
 public interface ProviderContextScanner {
 

@@ -2,8 +2,8 @@ package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
-import com.alligator.market.domain.provider.context_sync.service.ProviderProfilesReconciliation;
-import com.alligator.market.domain.provider.profile.ProviderProfileStorage;
+import com.alligator.market.domain.provider.context_sync.ProviderProfilesReconciliation;
+import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

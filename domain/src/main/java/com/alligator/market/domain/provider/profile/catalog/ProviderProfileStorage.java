@@ -1,4 +1,7 @@
-package com.alligator.market.domain.provider.profile;
+package com.alligator.market.domain.provider.profile.catalog;
+
+import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 
 import java.util.Collection;
 import java.util.Map;

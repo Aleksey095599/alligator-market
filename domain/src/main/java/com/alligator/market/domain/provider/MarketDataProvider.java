@@ -1,7 +1,6 @@
-package com.alligator.market.domain.provider.model;
+package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.InstrumentType;
@@ -11,7 +10,7 @@ import java.util.Set;
 import reactor.core.publisher.Flux;
 
 /**
- * Единый контракт адаптера для всех провайдеров рыночных данных.
+ * Контракт адаптера для всех провайдеров рыночных данных.
  */
 public interface MarketDataProvider {
 

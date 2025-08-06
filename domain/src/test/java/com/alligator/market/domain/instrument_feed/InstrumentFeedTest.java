@@ -2,8 +2,8 @@ package com.alligator.market.domain.instrument_feed;
 
 import com.alligator.market.domain.instrument.currency.Currency;
 import com.alligator.market.domain.instrument.InstrumentType;
-import com.alligator.market.domain.provider.model.InstrumentHandler;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.InstrumentHandler;
+import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.AccessMethod;
 import com.alligator.market.domain.provider.profile.DeliveryMode;
 import com.alligator.market.domain.provider.profile.ProviderProfile;

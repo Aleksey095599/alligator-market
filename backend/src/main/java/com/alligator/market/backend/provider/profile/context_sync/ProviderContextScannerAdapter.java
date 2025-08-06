@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
