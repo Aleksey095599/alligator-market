@@ -3,6 +3,7 @@ package com.alligator.market.backend.instrument_catalog.currency_pair.adapter;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairEntity;
+import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairEntityMapper;
 import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairJpaRepository;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;
@@ -25,24 +26,29 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
 
     @Override
     public String save(CurrencyPair pair) {
-        CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.base()).orElseThrow();
-        CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.quote()).orElseThrow();
-        CurrencyPairEntity entity = new CurrencyPairEntity();
-        entity.setBase(c1);
-        entity.setQuote(c2);
-        entity.setPairCode(pair.pairCode());
-        entity.setDecimal(pair.decimal());
+        // Находим связанные валюты
+        CurrencyEntity base = currencyJpaRepository.findByCode(pair.base()).orElseThrow();
+        CurrencyEntity quote = currencyJpaRepository.findByCode(pair.quote()).orElseThrow();
+
+        // Загружаем сущность пары или создаём новую
+        CurrencyPairEntity entity = jpaRepository.findByPairCode(pair.pairCode())
+                .orElseGet(CurrencyPairEntity::new);
+
+        // Наполняем сущность данными из модели
+        CurrencyPairEntityMapper.toEntity(pair, base, quote, entity);
+
         return jpaRepository.save(entity).getPairCode();
     }
 
     @Override
     public void delete(String base, String quote) {
-        jpaRepository.findByPairCode(base+quote).ifPresent(jpaRepository::delete);
+        jpaRepository.findByPairCode(base + quote).ifPresent(jpaRepository::delete);
     }
 
     @Override
     public Optional<CurrencyPair> find(String base, String quote) {
-        return jpaRepository.findByPairCode(base+quote).map(this::toDomain);
+        return jpaRepository.findByPairCode(base + quote)
+                .map(CurrencyPairEntityMapper::toDomain);
     }
 
     @Override
@@ -53,15 +59,7 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
     @Override
     public List<CurrencyPair> findAll() {
         return jpaRepository.findAll(Sort.by("pairCode")).stream()
-                .map(this::toDomain)
+                .map(CurrencyPairEntityMapper::toDomain)
                 .toList();
-    }
-
-    private CurrencyPair toDomain(CurrencyPairEntity entity) {
-        return new CurrencyPair(
-                entity.getBase().getCode(),
-                entity.getQuote().getCode(),
-                entity.getDecimal()
-        );
     }
 }
