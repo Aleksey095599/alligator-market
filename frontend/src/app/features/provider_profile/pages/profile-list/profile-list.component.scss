@@ -6,3 +6,26 @@
   gap: 32px;
   padding: 0 16px;
 }
+
+/* базовый стиль индикатора статуса */
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* цвет активного статуса */
+.status-active {
+  background: #4CAF50;
+}
+
+/* цвет заменённого статуса */
+.status-replaced {
+  background: #9E9E9E;
+}
+
+/* цвет отсутствующего статуса */
+.status-missing {
+  background: #F44336;
+}

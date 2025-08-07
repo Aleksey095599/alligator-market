@@ -41,6 +41,20 @@ export class ProfileListComponent implements OnInit {
     this.refresh();
   }
 
+  /* выбор класса для отображения статуса */
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'ACTIVE':
+        return 'status-active';
+      case 'REPLACED':
+        return 'status-replaced';
+      case 'MISSING':
+        return 'status-missing';
+      default:
+        return 'status-missing';
+    }
+  }
+
   /* обновление таблицы в зависимости от режима */
   private refresh(): void {
     if (this.showAll) {
