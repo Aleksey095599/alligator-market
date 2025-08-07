@@ -1,16 +1,15 @@
-package com.alligator.market.backend.provider.profile.catalog.mapper;
+package com.alligator.market.backend.provider.profile.catalog.jpa;
 
-import com.alligator.market.backend.provider.profile.catalog.entity.ProviderProfileEntity;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 
 /**
- * Утилитарный класс для преобразования между доменной моделью
- * {@link ProviderProfile} и сущностью {@link ProviderProfileEntity}.
+ * Утилитарный класс для преобразования между сущностью {@link ProviderProfileEntity} и
+ * доменной моделью {@link ProviderProfile}.
  */
-public final class ProviderProfileMapper {
+public final class ProviderProfileEntityMapper {
 
-    private ProviderProfileMapper() {
+    private ProviderProfileEntityMapper() {
     }
 
     /**

@@ -26,9 +26,6 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
     private final CurrencyPairStorage repository;
     private final CurrencyStorage currencyStorage;
 
-    //===================
-    // Создать новую пару
-    //===================
     @Override
     public String create(CurrencyPair currencyPair) {
 
@@ -52,9 +49,6 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         return pairCode;
     }
 
-    //==============
-    // Обновить пару
-    //==============
     @Override
     public void update(CurrencyPair currencyPair) {
 
@@ -66,9 +60,6 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         log.info("Currency pair {} updated", currencyPair.pairCode());
     }
 
-    //=============
-    // Удалить пару
-    //=============
     @Override
     public void delete(String base, String quote) {
 
@@ -80,9 +71,6 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         log.info("Currency pair {} deleted", pairCode);
     }
 
-    //==================
-    // Получить все пары
-    //==================
     @Override
     @Transactional(readOnly = true)
     public List<CurrencyPair> findAll() {

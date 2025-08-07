@@ -25,9 +25,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyStorage storage;
     private final CurrencyPairStorage pairStorage;
 
-    //=====================
-    // Создать новую валюту
-    //=====================
     @Override
     public String createCurrency(Currency currency) {
 
@@ -46,9 +43,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         return code;
     }
 
-    //================
-    // Обновить валюту
-    //================
     @Override
     public void updateCurrency(Currency currency) {
 
@@ -72,9 +66,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         log.info("Currency {} updated", currency.code());
     }
 
-    //===================================
-    // Удалить валюту по уникальному коду
-    //===================================
     @Override
     public void deleteCurrency(String code) {
 
@@ -90,9 +81,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         log.info("Currency {} deleted", code);
     }
 
-    //==============================
-    // Извлечь все валюты из таблицы
-    //==============================
     @Override
     @Transactional(readOnly = true)
     public List<Currency> findAll() {

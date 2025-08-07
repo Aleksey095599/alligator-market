@@ -18,7 +18,6 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
 
     private final ProviderProfileStorage storage;
 
-    /** Возвращает все профили провайдеров со статусом ACTIVE. */
     @Override
     public Map<ProviderProfile, Long> findAllActive() {
         return storage.findAllActive();

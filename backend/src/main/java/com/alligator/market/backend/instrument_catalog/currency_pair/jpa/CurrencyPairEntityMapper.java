@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.entity;
+package com.alligator.market.backend.instrument_catalog.currency_pair.jpa;
 
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.entity;
+package com.alligator.market.backend.provider.profile.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.InstrumentType;
@@ -15,7 +15,6 @@ import lombok.Setter;
 
 /**
  * Entity для таблицы с профилями провайдеров рыночных данных.
- * Доменная модель профиля провайдера - {@link ProviderProfile}.
  */
 @Entity
 @Table(name = "provider_profile")

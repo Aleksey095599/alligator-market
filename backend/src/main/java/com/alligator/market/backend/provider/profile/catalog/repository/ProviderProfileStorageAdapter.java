@@ -1,7 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.repository;
 
-import com.alligator.market.backend.provider.profile.catalog.entity.ProviderProfileEntity;
-import com.alligator.market.backend.provider.profile.catalog.mapper.ProviderProfileMapper;
+import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntity;
+import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileJpaRepository;
+import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntityMapper;
 import com.alligator.market.domain.provider.profile.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * Адаптер реализующий доменную модель хранилища профилей провайдеров
- * {@link ProviderProfileStorage} в контексте Spring Data JPA.
+ * {@link ProviderProfileStorage} в контексте Spring Data JPA с помощью {@link ProviderProfileJpaRepository}.
  */
 @Repository
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     public Map<ProviderProfile, Long> findAllActive() {
         return jpaRepository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
-                        ProviderProfileMapper::toDomain,
+                        ProviderProfileEntityMapper::toDomain,
                         ProviderProfileEntity::getId
                 ));
     }
@@ -38,7 +39,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
-                        ProviderProfileMapper::toDomain,
+                        ProviderProfileEntityMapper::toDomain,
                         ProviderProfileEntity::getStatus
                 ));
     }
@@ -46,7 +47,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     @Override
     public void saveAll(Collection<ProviderProfile> profiles) {
         var entities = profiles.stream()
-                .map(p -> ProviderProfileMapper.toEntity(p, ProviderProfileStatus.ACTIVE))
+                .map(p -> ProviderProfileEntityMapper.toEntity(p, ProviderProfileStatus.ACTIVE))
                 .toList();
         jpaRepository.saveAll(entities);
     }
