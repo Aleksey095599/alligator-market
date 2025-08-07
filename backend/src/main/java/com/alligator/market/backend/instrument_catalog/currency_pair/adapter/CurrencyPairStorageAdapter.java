@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaR
 import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairEntity;
 import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairEntityMapper;
 import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairJpaRepository;
-import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

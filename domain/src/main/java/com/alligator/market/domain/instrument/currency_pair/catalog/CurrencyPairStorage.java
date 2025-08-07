@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.currency_pair.catalog;
 
-import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 
 import java.util.List;
 import java.util.Optional;

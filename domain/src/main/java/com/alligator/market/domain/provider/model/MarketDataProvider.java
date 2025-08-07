@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider;
+package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.InstrumentType;
 
@@ -28,7 +28,7 @@ public interface MarketDataProvider {
     /**
      * Возвращает котировку.
      *
-     * @throws InstrumentNotSupported если подходящий обработчик инструмента не найден
+     * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
     default Flux<QuoteTick> quote(Instrument instrument) {
 
@@ -40,7 +40,7 @@ public interface MarketDataProvider {
 
         // Проверка, что обработчик существует
         if (handler == null) {
-            return Flux.error(new InstrumentNotSupported(instrumentType, profile().providerCode()));
+            return Flux.error(new InstrumentNotSupportedException(instrumentType, profile().providerCode()));
         }
 
         // Возвращаем котировку инструмента

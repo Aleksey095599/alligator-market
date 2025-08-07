@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.Dup
 import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.PairNotFoundException;
 import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
 import com.alligator.market.domain.instrument.currency.catalog.CurrencyStorage;
-import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

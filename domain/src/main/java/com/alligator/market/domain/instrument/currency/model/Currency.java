@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.currency;
+package com.alligator.market.domain.instrument.currency.model;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;

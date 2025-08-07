@@ -4,11 +4,11 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeCurrencyPairHandler;
 import com.alligator.market.domain.instrument.InstrumentType;
-import com.alligator.market.domain.provider.InstrumentHandler;
-import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.provider.profile.AccessMethod;
-import com.alligator.market.domain.provider.profile.DeliveryMode;
-import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.model.InstrumentHandler;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.profile.model.AccessMethod;
+import com.alligator.market.domain.provider.profile.model.DeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

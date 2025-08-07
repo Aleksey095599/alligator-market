@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument_catalog.currency.adapter;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntityMapper;
-import com.alligator.market.domain.instrument.currency.Currency;
+import com.alligator.market.domain.instrument.currency.model.Currency;
 import com.alligator.market.domain.instrument.currency.catalog.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

@@ -5,7 +5,7 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument_catalog.currency_pair.web.dto.PairCreateDto;
 import com.alligator.market.backend.instrument_catalog.currency_pair.web.dto.PairDto;
 import com.alligator.market.backend.instrument_catalog.currency_pair.web.dto.PairUpdateDto;
-import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import com.alligator.market.backend.instrument_catalog.currency_pair.service.CurrencyPairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

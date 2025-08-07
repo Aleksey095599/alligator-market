@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument_catalog.currency.web.dto.CurrencyDto;
 import com.alligator.market.backend.instrument_catalog.currency.web.dto.CurrencyUpdateDto;
-import com.alligator.market.domain.instrument.currency.Currency;
+import com.alligator.market.domain.instrument.currency.model.Currency;
 import com.alligator.market.backend.instrument_catalog.currency.service.CurrencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

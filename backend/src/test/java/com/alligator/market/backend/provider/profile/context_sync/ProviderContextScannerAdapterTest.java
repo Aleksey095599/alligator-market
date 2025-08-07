@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
-import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

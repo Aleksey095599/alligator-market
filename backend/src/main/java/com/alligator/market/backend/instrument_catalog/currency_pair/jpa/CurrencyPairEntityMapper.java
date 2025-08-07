@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument_catalog.currency_pair.jpa;
 
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
-import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
+import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 
 /**
  * Утилитарный класс для преобразования между сущностью {@link CurrencyPairEntity}

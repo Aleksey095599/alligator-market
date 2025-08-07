@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.context_sync;
 
-import com.alligator.market.domain.provider.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

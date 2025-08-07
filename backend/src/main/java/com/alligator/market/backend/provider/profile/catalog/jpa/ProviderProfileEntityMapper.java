@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
-import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 
 /**
  * Утилитарный класс для преобразования между сущностью {@link ProviderProfileEntity} и

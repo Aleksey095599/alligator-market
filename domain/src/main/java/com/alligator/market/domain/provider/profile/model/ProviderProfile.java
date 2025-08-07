@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.profile;
+package com.alligator.market.domain.provider.profile.model;
 
 import com.alligator.market.domain.instrument.InstrumentType;
 

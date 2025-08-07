@@ -4,10 +4,10 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.InstrumentType;
 import java.util.Set;
 
-import com.alligator.market.domain.provider.profile.AccessMethod;
-import com.alligator.market.domain.provider.profile.DeliveryMode;
-import com.alligator.market.domain.provider.profile.ProviderProfile;
-import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
+import com.alligator.market.domain.provider.profile.model.AccessMethod;
+import com.alligator.market.domain.provider.profile.model.DeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

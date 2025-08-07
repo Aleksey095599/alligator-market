@@ -5,8 +5,8 @@ import com.alligator.market.domain.instrument.currency.catalog.exeption.Duplicat
 import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.CurrencyFromPairNotFoundException;
 import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.DuplicatePairException;
 import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
+import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
-import com.alligator.market.domain.provider.InstrumentNotSupported;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -72,10 +72,10 @@ public class ApplicationExceptionHandler {
     }
 
     /** Тип инструмента не поддерживается провайдером. */
-    @ExceptionHandler(InstrumentNotSupported.class)
-    public ResponseEntity<ApiResponse<Void>> handleInstrumentNotSupported(InstrumentNotSupported ex) {
+    @ExceptionHandler(InstrumentNotSupportedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInstrumentNotSupported(InstrumentNotSupportedException ex) {
         // 400, неподдерживаемый тип инструмента
-        log.warn("InstrumentNotSupported: {}", ex.getMessage());
+        log.warn("InstrumentNotSupportedException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }
