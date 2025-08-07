@@ -12,9 +12,7 @@ public final class ProviderProfileEntityMapper {
     private ProviderProfileEntityMapper() {
     }
 
-    /**
-     * Преобразует доменную модель в сущность, назначая заданный статус.
-     */
+    /** Преобразует доменную модель в сущность, назначая заданный статус. */
     public static ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status) {
         ProviderProfileEntity entity = new ProviderProfileEntity();
         entity.setStatus(status);
@@ -28,9 +26,7 @@ public final class ProviderProfileEntityMapper {
         return entity;
     }
 
-    /**
-     * Преобразует сущность в доменную модель, игнорируя статус.
-     */
+    /** Преобразует сущность в доменную модель, игнорируя статус. */
     public static ProviderProfile toDomain(ProviderProfileEntity entity) {
         return new ProviderProfile(
                 entity.getProviderCode(),

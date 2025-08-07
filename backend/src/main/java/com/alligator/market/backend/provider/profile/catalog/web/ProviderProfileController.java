@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер для чтения профилей провайдеров.
+ * REST-контроллер для операций с профилями провайдеров.
  */
 @RestController
 @RequestMapping("/api/v1/providers")
@@ -24,6 +24,10 @@ import java.util.List;
 public class ProviderProfileController {
 
     private final ProviderProfileService service;
+
+    //==============================================
+    //                  Операции
+    //==============================================
 
     /** Вернуть все активные профили провайдеров. */
     @GetMapping
@@ -43,7 +47,11 @@ public class ProviderProfileController {
         return ResponseEntityFactory.ok(list);
     }
 
-    /* Утилита преобразует доменную модель в DTO. */
+    //==============================================
+    //                   Утилиты
+    //==============================================
+
+    /** Утилита преобразует доменную модель в DTO. */
     private ProviderProfileDto toDto(ProviderProfile profile) {
 
         return new ProviderProfileDto(
@@ -57,7 +65,7 @@ public class ProviderProfileController {
         );
     }
 
-    /* Утилита преобразует доменную модель и статус в DTO. */
+    /** Утилита преобразует доменную модель и статус в DTO. */
     private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status) {
         return new ProviderProfileStatusDto(
                 profile.providerCode(),

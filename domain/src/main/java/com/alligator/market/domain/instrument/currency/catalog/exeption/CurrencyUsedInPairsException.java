@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.currency.catalog;
+package com.alligator.market.domain.instrument.currency.catalog.exeption;
 
 /**
  * Нельзя удалить валюту, если она используется в валютных парах.

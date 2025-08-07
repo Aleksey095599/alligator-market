@@ -28,9 +28,11 @@ public class PairController {
 
     private final CurrencyPairService service;
 
-    //===================
-    // Создать новую пару
-    //===================
+    //========================================
+    //               Операции
+    //========================================
+
+    /** Создать валютную пару. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid PairCreateDto dto) {
 
@@ -54,9 +56,7 @@ public class PairController {
         return ResponseEntityFactory.created(location, pairCode);
     }
 
-    //==============
-    // Обновить пару
-    //==============
+    /** Обновить валютную пару. */
     @PutMapping("/{base}/{quote}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String base,
@@ -75,9 +75,7 @@ public class PairController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //=============
-    // Удалить пару
-    //=============
+    /** Удалить валютную пару. */
     @DeleteMapping("/{base}/{quote}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable String base,
@@ -88,9 +86,7 @@ public class PairController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //=================
-    // Вернуть все пары
-    //=================
+    /** Вернуть все валютные пары. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<PairDto>>> getAll() {
 

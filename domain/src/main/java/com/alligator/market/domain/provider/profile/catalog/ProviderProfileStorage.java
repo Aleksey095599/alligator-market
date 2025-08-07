@@ -6,9 +6,8 @@ import com.alligator.market.domain.provider.profile.ProviderProfileStatus;
 import java.util.Collection;
 import java.util.Map;
 
-
 /**
- * Порт хранилища профилей провайдеров.
+ * Контракт хранилища профилей провайдеров.
  */
 public interface ProviderProfileStorage {
 
@@ -18,7 +17,7 @@ public interface ProviderProfileStorage {
     /** Вернуть все профили провайдеров с их статусами. */
     Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus();
 
-    /** Сохранить коллекцию профилей со статусом ACTIVE. */
+    /** Сохранить коллекцию профилей. */
     void saveAll(Collection<ProviderProfile> profiles);
 
     /** Обновить статус профилей по их идентификаторам. */

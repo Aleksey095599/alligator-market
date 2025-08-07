@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * JPA-репозиторий для работы с сущностями {@link ProviderProfileEntity}.
+ * JPA-репозиторий для операций с сущностями {@link ProviderProfileEntity}.
  */
 public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 
-    /** Найти все профили по статусу. */
+    /** Найти все профили по заданному статусу. */
     List<ProviderProfileEntity> findAllByStatus(ProviderProfileStatus status);
 }

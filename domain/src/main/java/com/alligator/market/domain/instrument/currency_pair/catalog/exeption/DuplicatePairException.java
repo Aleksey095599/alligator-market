@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.currency_pair.catalog;
+package com.alligator.market.domain.instrument.currency_pair.catalog.exeption;
 
 /**
  * Дублирование валютной пары.

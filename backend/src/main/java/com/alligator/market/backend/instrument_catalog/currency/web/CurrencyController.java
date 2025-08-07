@@ -27,9 +27,11 @@ public class CurrencyController {
 
     private final CurrencyService service;
 
-    //=====================
-    // Создать новую валюту
-    //=====================
+    //========================================
+    //               Операции
+    //========================================
+
+    /** Создать валюту. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
@@ -54,9 +56,7 @@ public class CurrencyController {
         return ResponseEntityFactory.created(location, code);
     }
 
-    //================
-    // Обновить валюту
-    //================
+    /** Обновить валюту. */
     @PutMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> update(
             @PathVariable String code,
@@ -75,9 +75,7 @@ public class CurrencyController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //===============
-    // Удалить валюту
-    //===============
+    /** Удалить валюту. */
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
 
@@ -86,9 +84,7 @@ public class CurrencyController {
         return ResponseEntityFactory.ok(null);
     }
 
-    //===================
-    // Вернуть все валюты
-    //===================
+    /** Вернуть все валюты. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 

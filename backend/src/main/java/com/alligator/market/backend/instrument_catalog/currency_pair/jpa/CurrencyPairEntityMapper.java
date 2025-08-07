@@ -28,7 +28,6 @@ public final class CurrencyPairEntityMapper {
             CurrencyEntity quote,
             CurrencyPairEntity entity
     ) {
-        // Устанавливаем ссылки на валюты и основные параметры пары
         entity.setBase(base);
         entity.setQuote(quote);
         entity.setPairCode(pair.pairCode());

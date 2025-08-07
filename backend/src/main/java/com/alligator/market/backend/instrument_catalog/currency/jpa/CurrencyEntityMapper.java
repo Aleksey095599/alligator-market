@@ -23,7 +23,6 @@ import com.alligator.market.domain.instrument.currency.Currency;
 
     /** Заполняет сущность данными из доменной модели. */
     public static void toEntity(Currency currency, CurrencyEntity entity) {
-        // Переносим основные поля из модели в сущность
         entity.setCode(currency.code());
         entity.setName(currency.name());
         entity.setCountry(currency.country());

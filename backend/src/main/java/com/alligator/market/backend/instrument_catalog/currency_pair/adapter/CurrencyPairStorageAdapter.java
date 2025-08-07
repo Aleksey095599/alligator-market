@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер реализующий доменную модель хранилища валютных пар {@link CurrencyPairStorage} в контексте Spring Data JPA.
+ * Адаптер реализующий доменную модель хранилища валютных пар {@link CurrencyPairStorage}
+ * в контексте Spring Data JPA с помощью {@link CurrencyPairJpaRepository}.
  */
 @Repository
 @RequiredArgsConstructor

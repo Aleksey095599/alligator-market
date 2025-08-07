@@ -1,10 +1,10 @@
 package com.alligator.market.backend.common.web;
 
-import com.alligator.market.domain.instrument.currency.catalog.CurrencyUsedInPairsException;
-import com.alligator.market.domain.instrument.currency.catalog.DuplicateCurrencyException;
-import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyFromPairNotFoundException;
-import com.alligator.market.domain.instrument.currency_pair.catalog.DuplicatePairException;
-import com.alligator.market.domain.instrument.currency_pair.catalog.EqualCurrenciesInPairException;
+import com.alligator.market.domain.instrument.currency.catalog.exeption.CurrencyUsedInPairsException;
+import com.alligator.market.domain.instrument.currency.catalog.exeption.DuplicateCurrencyException;
+import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.CurrencyFromPairNotFoundException;
+import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.DuplicatePairException;
+import com.alligator.market.domain.instrument.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
 import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
 import com.alligator.market.domain.provider.InstrumentNotSupported;
 import lombok.extern.slf4j.Slf4j;
