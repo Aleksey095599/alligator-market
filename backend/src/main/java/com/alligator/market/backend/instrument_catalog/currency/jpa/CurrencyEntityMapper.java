@@ -20,23 +20,5 @@ public final class CurrencyEntityMapper {
                 entity.getDecimal()
         );
     }
-
-    /** Преобразует доменную модель в новую сущность. */
-    public static CurrencyEntity toEntity(Currency currency) {
-        var entity = new CurrencyEntity();
-        toEntity(currency, entity);
-        return entity;
-    }
-
-    /**
-     * Вспомогательный метод.
-     * Заполняет сущность данными из доменной модели.
-     */
-    public static void toEntity(Currency currency, CurrencyEntity entity) {
-        entity.setCode(currency.code());
-        entity.setName(currency.name());
-        entity.setCountry(currency.country());
-        entity.setDecimal(currency.decimal());
-    }
 }
 
