@@ -15,6 +15,11 @@
   display: inline-block;
 }
 
+/* узкая ячейка для цветового индикатора */
+.status-indicator-cell {
+  width: 24px;
+}
+
 /* цвет активного статуса */
 .status-active {
   background: #4CAF50;

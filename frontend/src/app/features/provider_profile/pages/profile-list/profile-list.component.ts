@@ -15,7 +15,9 @@ import { ProviderProfileStatusDto } from '../../models/provider-profile-status.m
 })
 export class ProfileListComponent implements OnInit {
 
+  /* список колонок таблицы */
   displayed: string[] = [
+    'statusIndicator',
     'status',
     'providerCode',
     'displayName',
