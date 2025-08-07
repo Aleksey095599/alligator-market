@@ -1,12 +1,11 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.repository;
+package com.alligator.market.backend.instrument_catalog.currency_pair.jpa;
 
-import com.alligator.market.backend.instrument_catalog.currency_pair.entity.CurrencyPairEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 /**
- * JPA-репозиторий для работы с сущностями {@link CurrencyPairEntity} в таблице <code>currency_pair</code>.
+ * JPA-репозиторий для работы с сущностями {@link CurrencyPairEntity}.
  */
 public interface CurrencyPairJpaRepository extends JpaRepository<CurrencyPairEntity, Long> {
 

@@ -3,7 +3,6 @@ package com.alligator.market.backend.instrument_catalog.currency_pair.repository
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument_catalog.currency_pair.entity.CurrencyPairEntity;
-import com.alligator.market.backend.instrument_catalog.currency_pair.entity.CurrencyPairEntityMapper;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,10 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
         CurrencyEntity c1 = currencyJpaRepository.findByCode(pair.base()).orElseThrow();
         CurrencyEntity c2 = currencyJpaRepository.findByCode(pair.quote()).orElseThrow();
         CurrencyPairEntity entity = new CurrencyPairEntity();
-        CurrencyPairEntityMapper.toEntity(pair, c1, c2, entity);
+        entity.setBase(c1);
+        entity.setQuote(c2);
+        entity.setPairCode(pair.pairCode());
+        entity.setDecimal(pair.decimal());
         return jpaRepository.save(entity).getPairCode();
     }
 
@@ -39,7 +41,7 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
 
     @Override
     public Optional<CurrencyPair> find(String base, String quote) {
-        return jpaRepository.findByPairCode(base+quote).map(CurrencyPairEntityMapper::toDomain);
+        return jpaRepository.findByPairCode(base+quote).map(this::toDomain);
     }
 
     @Override
@@ -50,8 +52,15 @@ public class CurrencyPairStorageAdapter implements CurrencyPairStorage {
     @Override
     public List<CurrencyPair> findAll() {
         return jpaRepository.findAll(Sort.by("pairCode")).stream()
-                .map(CurrencyPairEntityMapper::toDomain)
+                .map(this::toDomain)
                 .toList();
     }
 
+    private CurrencyPair toDomain(CurrencyPairEntity entity) {
+        return new CurrencyPair(
+                entity.getBase().getCode(),
+                entity.getQuote().getCode(),
+                entity.getDecimal()
+        );
+    }
 }

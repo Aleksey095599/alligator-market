@@ -1,11 +1,11 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.dto;
+package com.alligator.market.backend.instrument_catalog.currency_pair.web.dto;
 
 import jakarta.validation.constraints.*;
 
 /**
- * DTO для создания валютной пары.
+ * DTO для представления валютной пары.
  */
-public record PairCreateDto(
+public record PairDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
@@ -14,6 +14,10 @@ public record PairCreateDto(
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
         String quote,
+
+        @NotBlank
+        @Pattern(regexp = "^[A-Z]{6}$")
+        String pairCode,
 
         @NotNull
         @Min(0) @Max(10)

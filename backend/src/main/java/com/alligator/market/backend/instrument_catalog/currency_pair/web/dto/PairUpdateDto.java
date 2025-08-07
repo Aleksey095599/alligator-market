@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.dto;
+package com.alligator.market.backend.instrument_catalog.currency_pair.web.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
