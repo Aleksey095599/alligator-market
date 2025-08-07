@@ -3,25 +3,19 @@ package com.alligator.market.domain.quote.instrument_feed;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.MarketDataProvider;
 
+import java.util.Objects;
+
 /**
- * Связка инструмента и провайдера с приоритетом обработки.
+ * Связка инструмента и провайдера.
  *
- * @param instrument инструмент, данные по которому будут запрашиваться
- * @param provider   провайдер рыночных данных
- * @param priority   порядок обработки, чем меньше значение — тем выше приоритет
+ * @param instrument финансовый инструмент {@link Instrument}
+ * @param provider   провайдер рыночных данных {@link MarketDataProvider}
+ * @param priority   приоритет провайдера (самый высокий =1)
  */
 public record InstrumentFeed(
 
         Instrument instrument,
         MarketDataProvider provider,
         int priority
-
-) implements Comparable<InstrumentFeed> {
-
-    @Override
-    public int compareTo(InstrumentFeed other) {
-        // Сортируем по возрастанию приоритета
-        return Integer.compare(this.priority, other.priority);
-    }
-}
+) {}
 
