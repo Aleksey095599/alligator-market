@@ -1,8 +1,9 @@
-package com.alligator.market.backend.instrument_catalog.currency_pair.repository;
+package com.alligator.market.backend.instrument_catalog.currency_pair.adapter;
 
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
-import com.alligator.market.backend.instrument_catalog.currency_pair.entity.CurrencyPairEntity;
+import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairEntity;
+import com.alligator.market.backend.instrument_catalog.currency_pair.jpa.CurrencyPairJpaRepository;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
