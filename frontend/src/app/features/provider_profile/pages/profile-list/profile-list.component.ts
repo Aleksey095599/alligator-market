@@ -16,6 +16,7 @@ import { ProviderProfileStatusDto } from '../../models/provider-profile-status.m
 export class ProfileListComponent implements OnInit {
 
   displayed: string[] = [
+    'statusIndicator',
     'status',
     'providerCode',
     'displayName',
@@ -39,6 +40,20 @@ export class ProfileListComponent implements OnInit {
   onToggle(event: MatSlideToggleChange): void {
     this.showAll = event.checked;
     this.refresh();
+  }
+
+  /* выбор класса для отображения статуса */
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'ACTIVE':
+        return 'status-active';
+      case 'REPLACED':
+        return 'status-replaced';
+      case 'MISSING':
+        return 'status-missing';
+      default:
+        return 'status-missing';
+    }
   }
 
   /* обновление таблицы в зависимости от режима */
