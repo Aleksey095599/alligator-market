@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument_catalog.currency_pair.entity;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.instrument_catalog.currency.entity.CurrencyEntity;
+import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.currency.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument_catalog.currency_pair.repository;
 
-import com.alligator.market.backend.instrument_catalog.currency.entity.CurrencyEntity;
-import com.alligator.market.backend.instrument_catalog.currency.repository.CurrencyJpaRepository;
+import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument_catalog.currency_pair.entity.CurrencyPairEntity;
 import com.alligator.market.domain.instrument.currency_pair.CurrencyPair;
 import com.alligator.market.domain.instrument.currency_pair.catalog.CurrencyPairStorage;

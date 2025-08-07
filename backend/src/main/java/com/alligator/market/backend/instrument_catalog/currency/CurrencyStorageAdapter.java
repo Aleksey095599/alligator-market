@@ -1,6 +1,7 @@
-package com.alligator.market.backend.instrument_catalog.currency.repository;
+package com.alligator.market.backend.instrument_catalog.currency;
 
-import com.alligator.market.backend.instrument_catalog.currency.entity.CurrencyEntity;
+import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.currency.Currency;
 import com.alligator.market.domain.instrument.currency.catalog.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
