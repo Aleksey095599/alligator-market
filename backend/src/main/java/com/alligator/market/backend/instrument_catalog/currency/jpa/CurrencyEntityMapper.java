@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.currency.Currency;
  * Утилитарный класс для преобразования между сущностью {@link CurrencyEntity}
  * и доменной моделью {@link Currency}.
  */
-public final class CurrencyEntityMapper {
+ public final class CurrencyEntityMapper {
 
     private CurrencyEntityMapper() {
     }
@@ -19,6 +19,15 @@ public final class CurrencyEntityMapper {
                 entity.getCountry(),
                 entity.getDecimal()
         );
+    }
+
+    /** Заполняет сущность данными из доменной модели. */
+    public static void toEntity(Currency currency, CurrencyEntity entity) {
+        // Переносим основные поля из модели в сущность
+        entity.setCode(currency.code());
+        entity.setName(currency.name());
+        entity.setCountry(currency.country());
+        entity.setDecimal(currency.decimal());
     }
 }
 
