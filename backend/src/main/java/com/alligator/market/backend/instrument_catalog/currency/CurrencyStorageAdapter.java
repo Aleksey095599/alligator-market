@@ -24,10 +24,7 @@ public class CurrencyStorageAdapter implements CurrencyStorage {
     public String save(Currency currency) {
         CurrencyEntity entity = jpaRepository.findByCode(currency.code())
                 .orElseGet(CurrencyEntity::new);
-        entity.setCode(currency.code());
-        entity.setName(currency.name());
-        entity.setCountry(currency.country());
-        entity.setDecimal(currency.decimal());
+        CurrencyMapper.toEntity(currency, entity);
         return jpaRepository.save(entity).getCode();
     }
 
@@ -38,32 +35,23 @@ public class CurrencyStorageAdapter implements CurrencyStorage {
 
     @Override
     public Optional<Currency> findByCode(String code) {
-        return jpaRepository.findByCode(code).map(this::toDomain);
+        return jpaRepository.findByCode(code).map(CurrencyMapper::toDomain);
     }
 
     @Override
     public Optional<Currency> findByName(String name) {
-        return jpaRepository.findByName(name).map(this::toDomain);
+        return jpaRepository.findByName(name).map(CurrencyMapper::toDomain);
     }
 
     @Override
     public Optional<Currency> findByCountry(String country) {
-        return jpaRepository.findByCountry(country).map(this::toDomain);
+        return jpaRepository.findByCountry(country).map(CurrencyMapper::toDomain);
     }
 
     @Override
     public List<Currency> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
-                .map(this::toDomain)
+                .map(CurrencyMapper::toDomain)
                 .toList();
-    }
-
-    private Currency toDomain(CurrencyEntity entity) {
-        return new Currency(
-                entity.getCode(),
-                entity.getName(),
-                entity.getCountry(),
-                entity.getDecimal()
-        );
     }
 }
