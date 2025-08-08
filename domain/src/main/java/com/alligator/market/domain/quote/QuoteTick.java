@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote;
 
 import com.alligator.market.domain.avro.QuoteTickAvro;
-import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.math.BigDecimal;

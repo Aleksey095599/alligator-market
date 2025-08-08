@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.currency.model;
 
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 
 /**
  * Модель валюты.

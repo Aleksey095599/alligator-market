@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider.model;
 
-import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 
 import java.util.Map;
 import java.util.Set;

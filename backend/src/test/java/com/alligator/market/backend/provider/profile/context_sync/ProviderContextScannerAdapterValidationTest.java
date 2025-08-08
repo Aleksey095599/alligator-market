@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
 import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.web.dto;
 
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;

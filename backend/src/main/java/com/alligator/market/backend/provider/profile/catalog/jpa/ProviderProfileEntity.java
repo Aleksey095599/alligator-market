@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import java.util.Set;
 
 import com.alligator.market.domain.provider.profile.model.AccessMethod;

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.model;
 
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 
 /**
  * Неподдерживаемый тип инструмента.

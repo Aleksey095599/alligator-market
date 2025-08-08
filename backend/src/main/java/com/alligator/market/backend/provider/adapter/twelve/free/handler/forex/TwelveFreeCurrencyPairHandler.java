@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;

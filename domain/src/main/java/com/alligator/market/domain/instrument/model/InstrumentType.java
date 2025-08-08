@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument;
+package com.alligator.market.domain.instrument.model;
 
 /**
  * Список всех типов финансовых инструментов.
