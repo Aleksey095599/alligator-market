@@ -52,7 +52,7 @@ class ProviderContextScannerAdapterValidationTest {
         ProviderProfile profile = new ProviderProfile(
                 code,
                 name,
-                Set.of(InstrumentType.CURRENCY),
+                Set.of(InstrumentType.FX_SPOT),
                 DeliveryMode.PULL,
                 AccessMethod.API_POLL,
                 false,

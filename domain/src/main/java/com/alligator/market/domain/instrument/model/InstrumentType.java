@@ -5,9 +5,6 @@ package com.alligator.market.domain.instrument.model;
  */
 public enum InstrumentType {
 
-    // Валюта
-    CURRENCY,
-
-    // Валютная пара
-    CURRENCY_PAIR
+    // Конверсионная сделка
+    FX_SPOT,
 }

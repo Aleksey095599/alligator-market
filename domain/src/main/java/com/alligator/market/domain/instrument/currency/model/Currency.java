@@ -12,14 +12,4 @@ public record Currency (
         String name,
         String country,
         Integer decimal
-
-) implements Instrument {
-
-    @Override public String internalCode() {
-        return code;
-    }
-
-    @Override public InstrumentType instrumentType() {
-        return InstrumentType.CURRENCY;
-    }
-}
+) {}

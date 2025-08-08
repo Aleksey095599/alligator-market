@@ -33,7 +33,7 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
     public InstrumentType supportedInstrument() {
-        return InstrumentType.CURRENCY_PAIR;
+        return InstrumentType.FX_SPOT;
     }
 
     /** Возвращает котировку для указанного инструмента. */

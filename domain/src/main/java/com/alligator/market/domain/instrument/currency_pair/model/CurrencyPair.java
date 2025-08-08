@@ -1,5 +1,6 @@
 package com.alligator.market.domain.instrument.currency_pair.model;
 
+import com.alligator.market.domain.instrument.fxspot.CurrencyValueDateCode;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 
@@ -12,30 +13,5 @@ public record CurrencyPair(
 
         String base,
         String quote,
-        Integer decimal,
-        ValueDateCode valueDateCode,
-        LocalDate baseValueDate,
-        LocalDate quoteValueDate
-
-) implements Instrument {
-
-    @Override
-    public String internalCode() {
-        return base + quote + "_" + valueDateCode.name();
-    }
-
-    @Override
-    public InstrumentType instrumentType() {
-        return InstrumentType.CURRENCY_PAIR;
-    }
-
-    /** Код валютной пары, составленный из базовой и котируемой валют (без учета типа расчетов). */
-    public String pairCode() {
-        return base + quote;
-    }
-
-    /** Дефолтное создание валютной пары. */
-    public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, ValueDateCode.NONE, null, null);
-    }
-}
+        Integer decimal
+) {}

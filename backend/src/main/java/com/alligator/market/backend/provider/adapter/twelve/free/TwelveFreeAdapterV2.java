@@ -40,7 +40,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     ) {
         // Добавляем обработчик для валютных пар
         handlers.put(
-                InstrumentType.CURRENCY_PAIR,
+                InstrumentType.FX_SPOT,
                 new TwelveFreeCurrencyPairHandler(webClient, props, PROVIDER_CODE)
         );
     }
