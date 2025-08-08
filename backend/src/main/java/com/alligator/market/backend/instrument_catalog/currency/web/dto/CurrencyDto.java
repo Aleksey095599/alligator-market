@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument_catalog.currency.web.dto;
 import jakarta.validation.constraints.*;
 
 /**
- * DTO для добавления/представления валюты.
+ * DTO валюты.
  */
 public record CurrencyDto(
 

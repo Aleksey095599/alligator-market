@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * DTO для обновления валютной пары.
+ * DTO обновления валютной пары.
  */
 public record PairUpdateDto(
 

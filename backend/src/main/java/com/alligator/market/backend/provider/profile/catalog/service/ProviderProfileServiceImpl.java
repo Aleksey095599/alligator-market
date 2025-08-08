@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 /**
- * Реализация контракта {@link ProviderProfileService}.
+ * Реализация сервиса профилей провайдеров.
  */
 @Service
 @RequiredArgsConstructor

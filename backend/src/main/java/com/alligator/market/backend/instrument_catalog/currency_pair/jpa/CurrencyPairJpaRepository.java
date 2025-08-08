@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * JPA-репозиторий для операций с сущностями {@link CurrencyPairEntity}.
+ * JPA-репозиторий валютных пар.
  */
 public interface CurrencyPairJpaRepository extends JpaRepository<CurrencyPairEntity, Long> {
 

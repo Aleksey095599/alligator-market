@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.InstrumentType;
 import java.time.LocalDate;
 
 /**
- * Доменная модель валютной пары.
+ * Модель валютной пары.
  */
 public record CurrencyPair(
 

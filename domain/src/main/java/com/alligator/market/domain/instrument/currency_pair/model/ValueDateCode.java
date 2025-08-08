@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.currency_pair.model;
 
 /**
- * Краткие обозначения (коды) для value date конверсионных сделок.
+ * Коды value date для конверсионных сделок.
  */
 public enum ValueDateCode {
 

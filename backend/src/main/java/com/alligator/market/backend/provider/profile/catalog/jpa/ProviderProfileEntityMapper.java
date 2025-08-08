@@ -4,8 +4,7 @@ import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 
 /**
- * Утилитарный класс для преобразования между сущностью {@link ProviderProfileEntity} и
- * доменной моделью {@link ProviderProfile}.
+ * Маппер сущности профиля провайдера и доменной модели.
  */
 public final class ProviderProfileEntityMapper {
 

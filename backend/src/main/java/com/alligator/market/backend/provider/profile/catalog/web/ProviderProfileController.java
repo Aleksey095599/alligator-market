@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер для операций с профилями провайдеров.
+ * REST-контроллер профилей провайдеров.
  */
 @RestController
 @RequestMapping("/api/v1/providers")

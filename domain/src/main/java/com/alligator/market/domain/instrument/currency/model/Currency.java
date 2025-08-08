@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.InstrumentType;
 
 /**
- * Доменная модель валюты.
+ * Модель валюты.
  */
 public record Currency (
 

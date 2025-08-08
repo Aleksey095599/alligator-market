@@ -4,8 +4,7 @@ import com.alligator.market.backend.instrument_catalog.currency.jpa.CurrencyEnti
 import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 
 /**
- * Утилитарный класс для преобразования между сущностью {@link CurrencyPairEntity}
- * и доменной моделью {@link CurrencyPair}.
+ * Маппер сущности валютной пары и доменной модели.
  */
 public final class CurrencyPairEntityMapper {
 

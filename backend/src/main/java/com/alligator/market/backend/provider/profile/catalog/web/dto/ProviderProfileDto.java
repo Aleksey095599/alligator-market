@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * DTO для информативного представления профиля провайдера.
+ * DTO профиля провайдера.
  */
 public record ProviderProfileDto(
         @NotBlank String providerCode,

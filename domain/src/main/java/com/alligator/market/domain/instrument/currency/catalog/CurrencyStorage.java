@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Контракт хранилища валют.
+ * Хранилище валют.
  */
 public interface CurrencyStorage {
 
