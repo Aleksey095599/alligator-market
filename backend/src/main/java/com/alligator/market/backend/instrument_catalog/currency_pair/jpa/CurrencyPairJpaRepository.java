@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public interface CurrencyPairJpaRepository extends JpaRepository<CurrencyPairEntity, Long> {
 
-
+    /** Найти валютную пару по составному коду. */
     Optional<CurrencyPairEntity> findByPairCode(String pairCode);
 
     /**
