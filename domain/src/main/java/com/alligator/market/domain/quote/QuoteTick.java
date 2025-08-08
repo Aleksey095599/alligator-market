@@ -11,12 +11,12 @@ import java.time.OffsetDateTime;
  * Глобальная модель тика котировки для валютной пары.
  * Соответствует Avro-схеме {@link QuoteTickAvro}.
  *
- * @param instrumentInternalCode соответствует {@link Instrument#internalCode()}
+ * @param instrumentCode соответствует {@link Instrument#internalCode()}
  * @param providerCode           соответствует {@link ProviderProfile#providerCode()}
  */
 public record QuoteTick(
 
-        String instrumentInternalCode,
+        String instrumentCode,
         BigDecimal bid,
         BigDecimal ask,
         OffsetDateTime timestamp,

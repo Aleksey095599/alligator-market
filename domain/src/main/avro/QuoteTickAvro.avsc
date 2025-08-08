@@ -3,7 +3,7 @@
   "type": "record",
   "name": "QuoteTickAvro",
   "fields": [
-    { "name": "internalInstrumentCode", "type": "string" },
+    { "name": "instrumentCode", "type": "string" },
     { "name": "bid", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
     { "name": "ask", "type": { "type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 6 } },
     { "name": "timestamp", "type": "string" },
