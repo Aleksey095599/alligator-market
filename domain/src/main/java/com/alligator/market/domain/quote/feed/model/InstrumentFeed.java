@@ -8,7 +8,7 @@ import com.alligator.market.domain.provider.model.MarketDataProvider;
  *
  * @param instrument финансовый инструмент {@link Instrument}
  * @param provider   провайдер рыночных данных {@link MarketDataProvider}
- * @param priority   приоритет провайдера (1,2,3...)
+ * @param priority   приоритет провайдера 1 (наивысший), 2, 3...
  */
 public record InstrumentFeed(
 
