@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * JPA-репозиторий для операций с сущностями {@link ProviderProfileEntity}.
+ * JPA-репозиторий профилей провайдеров.
  */
 public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 

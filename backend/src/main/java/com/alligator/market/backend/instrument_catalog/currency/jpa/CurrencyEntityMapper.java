@@ -3,10 +3,9 @@ package com.alligator.market.backend.instrument_catalog.currency.jpa;
 import com.alligator.market.domain.instrument.currency.model.Currency;
 
 /**
- * Утилитарный класс для преобразования между сущностью {@link CurrencyEntity}
- * и доменной моделью {@link Currency}.
+ * Маппер между сущностью валюты и доменной моделью.
  */
- public final class CurrencyEntityMapper {
+public final class CurrencyEntityMapper {
 
     private CurrencyEntityMapper() {
     }

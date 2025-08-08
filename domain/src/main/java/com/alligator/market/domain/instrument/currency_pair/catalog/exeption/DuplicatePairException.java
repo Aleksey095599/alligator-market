@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.currency_pair.catalog.exeption;
 
 /**
- * Дублирование валютной пары.
+ * Валютная пара уже существует.
  */
 public class DuplicatePairException extends RuntimeException {
     public DuplicatePairException(String pairCode) {

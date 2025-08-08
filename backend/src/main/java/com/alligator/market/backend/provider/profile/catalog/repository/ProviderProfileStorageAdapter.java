@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Адаптер реализующий доменную модель хранилища профилей провайдеров {@link ProviderProfileStorage}
- * в контексте Spring Data JPA с помощью {@link ProviderProfileJpaRepository}.
+ * Адаптер хранилища профилей провайдеров на Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor

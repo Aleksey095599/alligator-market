@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST-контроллер для операций с валютными парами.
+ * REST-контроллер валютных пар.
  */
 @RestController
 @RequestMapping("/api/v1/pairs")

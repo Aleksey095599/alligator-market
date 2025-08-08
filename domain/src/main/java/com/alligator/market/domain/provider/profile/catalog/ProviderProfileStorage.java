@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Контракт хранилища профилей провайдеров.
+ * Хранилище профилей провайдеров.
  */
 public interface ProviderProfileStorage {
 

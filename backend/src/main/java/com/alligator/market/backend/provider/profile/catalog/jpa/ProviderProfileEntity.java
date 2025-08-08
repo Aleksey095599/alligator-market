@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity для таблицы с профилями провайдеров рыночных данных.
+ * Entity профиля провайдера.
  */
 @Entity
 @Table(name = "provider_profile")

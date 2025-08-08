@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import java.util.List;
 
 /**
- * Контракт сервиса операций с валютными парами в хранилище данных.
+ * Сервис работы с валютными парами.
  */
 public interface CurrencyPairService {
 

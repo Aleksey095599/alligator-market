@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.currency_pair.catalog.exeption;
 
 /**
- * Валютные коды пары не могут совпадать.
+ * В паре указана одна и та же валюта.
  */
 public class EqualCurrenciesInPairException extends RuntimeException {
     public EqualCurrenciesInPairException(String currencyCode) {

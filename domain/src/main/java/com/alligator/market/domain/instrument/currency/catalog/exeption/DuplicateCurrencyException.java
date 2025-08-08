@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.currency.catalog.exeption;
 
 /**
- * Дублирование валюты.
+ * Валюта уже существует.
  */
 public class DuplicateCurrencyException extends RuntimeException {
     public DuplicateCurrencyException(String field, String value) {
