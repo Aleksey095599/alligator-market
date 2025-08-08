@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 
 /**
- * Модель связки инструмента и провайдера.
+ * Модель связки инструмента и провайдера с учетом приоритета.
  *
  * @param instrument финансовый инструмент {@link Instrument}
  * @param provider   провайдер рыночных данных {@link MarketDataProvider}
