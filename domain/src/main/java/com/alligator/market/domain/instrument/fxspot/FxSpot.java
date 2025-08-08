@@ -4,38 +4,29 @@ import com.alligator.market.domain.instrument.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 
-import java.time.LocalDate;
-
 /**
  * Модель инструмента FX_SPOT.
  */
 public record FxSpot(
 
         CurrencyPair currencyPair,
-        CurrencyValueDateCode baseValueDate,
-        CurrencyValueDateCode quoteValueDate
+        CurrencyValueDate baseValueDate,
+        CurrencyValueDate quoteValueDate
 
 ) implements Instrument {
 
     @Override
     public String internalCode() {
-        return baseCurrency + quoteCurrency + "_" + valueDate.name();
+        return currencyPair.base() + currencyPair.quote() + "_" + valueDate;
     }
 
     @Override
     public InstrumentType instrumentType() {
-        return InstrumentType.CURRENCY_PAIR;
+        return InstrumentType.FX_SPOT;
     }
 
-    //
-
-    /** Код валютной пары, составленный из базовой и котируемой валют (без учета типа расчетов). */
-    public String pairCode() {
-        return baseCurrency + quoteCurrency;
-    }
-
-    /** Дефолтное создание валютной пары. */
-    public CurrencyPair(String base, String quote, Integer decimal) {
-        this(base, quote, decimal, CurrencyValueDateCode.NONE, null, null);
+    public FxSpotValueDate valueDate() {
+        // если baseValueDate = quoteValueDate тогда valueDate = baseValueDate
+        // иначе valueDate = FxSpotValueDate.SPLIT
     }
 }
