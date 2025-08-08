@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.ingestion.feed.model;
+package com.alligator.market.domain.quote.feed.model;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
