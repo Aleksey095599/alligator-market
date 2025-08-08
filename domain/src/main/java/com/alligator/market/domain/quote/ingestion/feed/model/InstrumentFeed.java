@@ -1,10 +1,10 @@
-package com.alligator.market.domain.quote.feed;
+package com.alligator.market.domain.quote.ingestion.feed.model;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 
 /**
- * Общая модель связки инструмента и провайдера.
+ * Модель связки инструмента и провайдера.
  *
  * @param instrument финансовый инструмент {@link Instrument}
  * @param provider   провайдер рыночных данных {@link MarketDataProvider}
