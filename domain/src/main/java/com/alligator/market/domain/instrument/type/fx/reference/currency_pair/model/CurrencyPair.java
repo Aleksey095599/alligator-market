@@ -8,4 +8,10 @@ public record CurrencyPair(
         String base,
         String quote,
         Integer decimal
-) {}
+) {
+
+    /** Код валютной пары, составленный из базовой и котируемой валют. */
+    public String pairCode() {
+        return base + quote;
+    }
+}
