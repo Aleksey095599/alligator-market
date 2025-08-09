@@ -43,32 +43,18 @@
         </ng-container>
 
         <ng-container matColumnDef="supportsBulkSubscription">
-          <th mat-header-cell *matHeaderCellDef>
-            Bulk<sup><a href="#bulk-info">*</a></sup>
-          </th>
+          <th mat-header-cell *matHeaderCellDef>Bulk*</th>
           <td mat-cell *matCellDef="let p">{{ p.supportsBulkSubscription }}</td>
         </ng-container>
 
         <ng-container matColumnDef="minPollPeriodMs">
-          <th mat-header-cell *matHeaderCellDef>
-            Min Poll<sup><a href="#min-poll-info">**</a></sup>, ms
-          </th>
+          <th mat-header-cell *matHeaderCellDef>Min Poll**, ms</th>
           <td mat-cell *matCellDef="let p">{{ p.minPollPeriodMs }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayed"></tr>
         <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
       </table>
-
-      <!-- Пояснения к столбцам -->
-      <div class="table-footnotes">
-        <p id="bulk-info" class="mat-body-small">
-          <sup>*</sup> Возможность подписаться на несколько инструментов одним запросом
-        </p>
-        <p id="min-poll-info" class="mat-body-small">
-          <sup>**</sup> Минимально допустимый период опроса в миллисекундах
-        </p>
-      </div>
     </mat-card-content>
   </mat-card>
 </div>
