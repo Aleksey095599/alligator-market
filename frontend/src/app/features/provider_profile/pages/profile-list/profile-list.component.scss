@@ -34,3 +34,14 @@
 .status-missing {
   background: #F44336;
 }
+
+/* Таблица: содержимое ячеек в одну строку, заголовки переносятся */
+.mat-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-table th {
+  white-space: normal;
+}
