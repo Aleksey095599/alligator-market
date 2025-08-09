@@ -36,12 +36,12 @@
 }
 
 /* Таблица: содержимое ячеек в одну строку, заголовки переносятся */
-.mat-table td {
+:host ::ng-deep .mat-mdc-table .mat-mdc-cell {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.mat-table th {
+:host ::ng-deep .mat-mdc-table .mat-mdc-header-cell {
   white-space: normal;
 }
