@@ -50,7 +50,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     public ProviderProfile profile() {
         return new ProviderProfile(
                 PROVIDER_CODE,
-                "TwelveData (free)",
+                "TwelveData Free Plan",
                 supportedInstrumentTypes(), // ← Получаем типы инструментов из карты обработчиков
                 DeliveryMode.PULL,
                 AccessMethod.API_POLL,
