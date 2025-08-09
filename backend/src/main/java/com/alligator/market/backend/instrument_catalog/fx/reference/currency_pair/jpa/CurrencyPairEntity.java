@@ -2,7 +2,6 @@ package com.alligator.market.backend.instrument_catalog.fx.reference.currency_pa
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency.jpa.CurrencyEntity;
-import com.alligator.market.domain.instrument.type.fx.reference.currency.model.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -31,13 +30,13 @@ public class CurrencyPairEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** ISO-4217 код базовой валюты (FK на {@link Currency#code()}). */
+    /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "base", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_base"))
     private CurrencyEntity base;
 
-    /** ISO-4217 код котируемой валюты (FK на {@link Currency#code()}). */
+    /** ISO-4217 код котируемой валюты (FK на "code" в таблице "currency"). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "quote", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_pair_quote"))

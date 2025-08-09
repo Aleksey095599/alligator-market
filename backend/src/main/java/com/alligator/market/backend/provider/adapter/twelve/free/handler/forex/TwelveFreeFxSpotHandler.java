@@ -4,6 +4,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
+import com.alligator.market.domain.instrument.type.fx.spot.FxSpot;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,14 +14,14 @@ import reactor.core.publisher.Flux;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-/** Handler котировок валютных пар для TwelveData (free). */
-public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
+/** Handler котировок FX-спот для TwelveData (free). */
+public class TwelveFreeFxSpotHandler implements InstrumentHandler {
 
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
     private final String providerCode;
 
-    public TwelveFreeCurrencyPairHandler(
+    public TwelveFreeFxSpotHandler(
             WebClient webClient,
             TwelveFreeConnectionProps props,
             String providerCode
@@ -40,7 +41,9 @@ public class TwelveFreeCurrencyPairHandler implements InstrumentHandler {
     @Override
     public Flux<QuoteTick> instrumentQuote(Instrument instrument) {
 
-        CurrencyPair pair = (CurrencyPair) instrument;
+        // Извлекаем валютную пару из модели FX-спот
+        FxSpot spot = (FxSpot) instrument;
+        CurrencyPair pair = spot.currencyPair();
         String symbol = pair.base() + "/" + pair.quote();
 
         return webClient.get()

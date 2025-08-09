@@ -3,6 +3,8 @@ package com.alligator.market.backend.provider.twelve.free.adapter;
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
+import com.alligator.market.domain.instrument.type.fx.spot.FxSpot;
+import com.alligator.market.domain.instrument.type.fx.spot.ValueDateCode;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,8 +32,9 @@ class TwelveFreeAdapterV2Test {
         TwelveFreeAdapterV2 adapter = new TwelveFreeAdapterV2(props, client);
 
         CurrencyPair pair = new CurrencyPair("EUR", "USD", 2);
+        FxSpot fxSpot = new FxSpot(pair, ValueDateCode.TOM);
 
-        QuoteTick tick = adapter.quote(pair)
+        QuoteTick tick = adapter.quote(fxSpot)
                 .blockFirst(Duration.ofSeconds(5));
 
         assertNotNull(tick);
