@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.util.Optional;
-
 /**
  * Конфигурация JPA-аудита.
  */
@@ -14,10 +12,10 @@ import java.util.Optional;
 @EnableJpaAuditing
 public class JpaAuditConfig {
 
+    /** Провайдер аудитора на основе контекста сервиса. */
     @Bean
-    public AuditorAware<String> auditorProvider() {
-        // TODO: временное решение, в дальнейшем брать из контекста Spring Security
-        return () -> Optional.of("dev_admin");
+    public AuditorAware<String> auditorProvider(ServiceAuditorContext context) {
+        return new ContextAuditorAware(context);
     }
 }
 

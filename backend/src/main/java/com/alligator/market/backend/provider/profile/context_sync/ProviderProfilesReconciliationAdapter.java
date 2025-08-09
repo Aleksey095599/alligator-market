@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
+import com.alligator.market.backend.config.audit.ServiceAuditorContext;
 import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.context_sync.ProviderProfilesReconciliation;
@@ -17,6 +18,7 @@ public class ProviderProfilesReconciliationAdapter {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
+    private final ServiceAuditorContext context;
 
     /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
@@ -28,6 +30,6 @@ public class ProviderProfilesReconciliationAdapter {
      * информации о профилях провайдеров рыночных данных. */
     public void applyContextDiffToStorage(ContextDiff diff) {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
-        domain.applyContextDiffToStorage(diff);
+        context.runWith("provider-sync-service", () -> domain.applyContextDiffToStorage(diff));
     }
 }
