@@ -1,5 +1,6 @@
 package com.alligator.market.backend.instrument_catalog.fx.spot.service;
 
+
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntity;
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntityMapper;
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairJpaRepository;
@@ -8,6 +9,7 @@ import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotStorage
 import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.fx.spot.model.ValueDateCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.Arrays;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class FxSpotInstrumentServiceImpl implements FxSpotInstrumentService {
 
     private final FxSpotStorage storage;
@@ -33,10 +36,12 @@ public class FxSpotInstrumentServiceImpl implements FxSpotInstrumentService {
         Arrays.stream(ValueDateCode.values())
                 .map(code -> new FxSpot(currencyPair, code))
                 .forEach(storage::save);
+        log.info("FX Spot instruments for pair {} created", pairCode);
     }
 
     @Override
     public void deleteForPair(String pairCode) {
         storage.delete(pairCode);
+        log.info("FX Spot instruments for pair {} deleted", pairCode);
     }
 }
