@@ -3,17 +3,3 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Глобальные стили изображений */
-img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Класс для адаптивных изображений */
-.img-responsive {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-

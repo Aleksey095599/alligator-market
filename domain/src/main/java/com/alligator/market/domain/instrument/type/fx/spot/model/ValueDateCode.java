@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.fx.spot;
+package com.alligator.market.domain.instrument.type.fx.spot.model;
 
 /**
  * Обозначения для даты расчетов инструмента {@link FxSpot}.

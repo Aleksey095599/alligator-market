@@ -1,10 +1,8 @@
-package com.alligator.market.domain.instrument.type.fx.spot;
+package com.alligator.market.domain.instrument.type.fx.spot.model;
 
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
-
-import java.time.LocalDateTime;
 
 /**
  * Модель инструмента FX_SPOT.
