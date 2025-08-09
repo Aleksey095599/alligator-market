@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.ca
 import com.alligator.market.domain.instrument.type.fx.reference.currency.catalog.CurrencyStorage;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.catalog.CurrencyPairStorage;
+import com.alligator.market.backend.instrument_catalog.fx.spot.service.FxSpotInstrumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
 
     private final CurrencyPairStorage repository;
     private final CurrencyStorage currencyStorage;
+    private final FxSpotInstrumentService fxSpotInstrumentService;
 
     @Override
     public String create(CurrencyPair currencyPair) {
@@ -45,6 +47,7 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         });
 
         String pairCode = repository.save(currencyPair);
+        fxSpotInstrumentService.createForPair(pairCode);
         log.info("Currency pair {} saved", pairCode);
         return pairCode;
     }
@@ -67,6 +70,7 @@ public class CurrencyPairServiceImpl implements CurrencyPairService {
         repository.find(base, quote)
                 .orElseThrow(() -> new PairNotFoundException(pairCode));
 
+        fxSpotInstrumentService.deleteForPair(pairCode);
         repository.delete(base, quote);
         log.info("Currency pair {} deleted", pairCode);
     }
