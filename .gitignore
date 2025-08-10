@@ -8,8 +8,8 @@ Thumbs.db
 .mvn/wrapper/maven-wrapper.jar
 
 # === Логи ===
-*.log
 backend/logs/
+logs
 
 # === Frontend: собранные файлы и кеш ===
 frontend/dist/
@@ -44,4 +44,3 @@ structure_exports/
 # === Данные инфраструктуры ===
 infra/postgres-data/
 infra/kafka-data/
-
