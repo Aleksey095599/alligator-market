@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.audit;
+package com.alligator.market.backend.config.audit.old;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;

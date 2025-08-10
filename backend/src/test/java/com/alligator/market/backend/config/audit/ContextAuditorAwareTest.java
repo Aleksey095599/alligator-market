@@ -1,5 +1,6 @@
 package com.alligator.market.backend.config.audit;
 
+import com.alligator.market.backend.config.audit.old.ContextAuditorAware;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

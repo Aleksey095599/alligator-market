@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.audit;
+package com.alligator.market.backend.config.audit.old;
 
 import org.springframework.stereotype.Component;
 

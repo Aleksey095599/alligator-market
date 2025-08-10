@@ -34,7 +34,6 @@ public abstract class BaseEntity {
     @CreatedBy
     private String createdBy;
 
-    /** Источник создания записи. */
     private String createdVia;
 
     @LastModifiedDate
@@ -43,6 +42,5 @@ public abstract class BaseEntity {
     @LastModifiedBy
     private String updatedBy;
 
-    /** Источник обновления записи. */
     private String updatedVia;
 }
