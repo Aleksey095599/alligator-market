@@ -5,6 +5,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Optional;
 
@@ -14,17 +15,36 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ContextAuditorAware implements AuditorAware<String> {
 
+    /** Имя текущего сервиса. */
     private final String serviceName;
 
+    /** Заглушка для имени пользователя. */
+    private static final String STUB_USER = "admin_dev";
+
+    /** Имя для внутренних сервисов. */
+    private static final String INTERNAL_SERVICE = "internal-service";
+
     /**
-     * Вернуть текущего аудитора из SecurityContext в виде "serviceName-by-user".
+     * Вернуть аудитора в формате "user@service".
      */
     @Override
     @NonNull
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String user = authentication != null ? authentication.getName() : "internal-service";
-        return Optional.of(serviceName + "-by-" + user);
+
+        String user;
+        if (authentication != null) {
+            // Имя пришло из SecurityContext
+            user = authentication.getName();
+        } else if (RequestContextHolder.getRequestAttributes() != null) {
+            // HTTP-запрос без авторизации → используем заглушку
+            user = STUB_USER;
+        } else {
+            // Внутренний сервис
+            user = INTERNAL_SERVICE;
+        }
+
+        return Optional.of(user + "@" + serviceName);
     }
 }
 
