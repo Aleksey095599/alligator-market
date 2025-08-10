@@ -35,13 +35,11 @@
   background: #F44336;
 }
 
-/* Таблица: содержимое ячеек в одну строку, заголовки переносятся */
+/* Таблица: содержимое ячеек и заголовков в одну строку */
 :host ::ng-deep .mat-mdc-table .mat-mdc-cell {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 :host ::ng-deep .mat-mdc-table .mat-mdc-header-cell {
-  white-space: normal;
+  white-space: nowrap;
 }
