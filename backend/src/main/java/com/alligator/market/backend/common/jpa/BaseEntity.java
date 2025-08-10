@@ -34,9 +34,15 @@ public abstract class BaseEntity {
     @CreatedBy
     private String createdBy;
 
+    /** Источник создания записи. */
+    private String createdVia;
+
     @LastModifiedDate
     private Instant updatedTimestamp;
 
     @LastModifiedBy
     private String updatedBy;
+
+    /** Источник обновления записи. */
+    private String updatedVia;
 }
