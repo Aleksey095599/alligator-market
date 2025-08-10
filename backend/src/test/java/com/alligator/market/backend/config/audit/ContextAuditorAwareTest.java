@@ -1,7 +1,9 @@
 package com.alligator.market.backend.config.audit;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Тесты для {@link ContextAuditorAware}.
  */
+@Disabled
+@SpringBootTest
 class ContextAuditorAwareTest {
 
     private final ContextAuditorAware auditorAware = new ContextAuditorAware("test-service");

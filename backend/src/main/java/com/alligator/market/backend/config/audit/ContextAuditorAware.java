@@ -18,10 +18,13 @@ public class ContextAuditorAware implements AuditorAware<String> {
     /** Имя текущего сервиса. */
     private final String serviceName;
 
-    /** Заглушка для имени пользователя. */
+    /** Временная заглушка для имени пользователя ("user"). */
     private static final String STUB_USER = "admin_dev";
 
-    /** Имя для внутренних сервисов. */
+    /**
+     * Имя для внутренних сервисов.
+     * Используется как условный "user", когда действие выполняется внутренним сервисом, а не пользователем.
+     */
     private static final String INTERNAL_SERVICE = "internal-service";
 
     /**
@@ -33,6 +36,7 @@ public class ContextAuditorAware implements AuditorAware<String> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String user;
+
         if (authentication != null) {
             // Имя пришло из SecurityContext
             user = authentication.getName();
