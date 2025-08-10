@@ -8,7 +8,6 @@ Thumbs.db
 .mvn/wrapper/maven-wrapper.jar
 
 # === Логи ===
-backend/logs/
 logs
 
 # === Frontend: собранные файлы и кеш ===
