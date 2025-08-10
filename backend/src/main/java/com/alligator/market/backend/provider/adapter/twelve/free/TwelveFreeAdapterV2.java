@@ -17,7 +17,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Адаптер для провайдера TwelveData (free).
+ * Адаптер для провайдера рыночных данных (далее - провайдера) TwelveData (бесплатная подписка).
  */
 @Component
 public class TwelveFreeAdapterV2 implements MarketDataProvider {

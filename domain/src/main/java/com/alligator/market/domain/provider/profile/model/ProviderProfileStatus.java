@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.profile.model;
 
 /**
- * Статус профиля провайдера.
+ * Статус профиля провайдера рыночных данных.
  */
 public enum ProviderProfileStatus {
 

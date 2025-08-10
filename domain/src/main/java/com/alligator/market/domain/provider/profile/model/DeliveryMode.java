@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.profile.model;
 
 /**
- * Список возможных режимов доставки рыночных данных провайдера.
+ * Список возможных режимов доставки данных провайдерами рыночных данных.
  */
 public enum DeliveryMode {
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер профилей провайдеров.
+ * REST-контроллер профилей провайдеров рыночных данных (далее - профили).
  */
 @RestController
 @RequestMapping("/api/v1/providers")
@@ -29,7 +29,7 @@ public class ProviderProfileController {
     //                  Операции
     //==============================================
 
-    /** Вернуть все активные профили провайдеров. */
+    /** Вернуть все активные профили. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
         List<ProviderProfileDto> list = service.findAllActive().keySet().stream()
@@ -38,7 +38,7 @@ public class ProviderProfileController {
         return ResponseEntityFactory.ok(list);
     }
 
-    /** Вернуть все профили провайдеров со статусами. */
+    /** Вернуть все профили со статусами. */
     @GetMapping("/audit")
     public ResponseEntity<ApiResponse<List<ProviderProfileStatusDto>>> getAllWithStatus() {
         List<ProviderProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()

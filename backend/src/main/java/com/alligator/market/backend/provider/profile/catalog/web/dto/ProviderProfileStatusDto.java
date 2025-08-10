@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- * DTO профиля провайдера со статусом.
+ * DTO профиля провайдера рыночных данных со статусом.
  */
 public record ProviderProfileStatusDto(
         @NotBlank String providerCode,

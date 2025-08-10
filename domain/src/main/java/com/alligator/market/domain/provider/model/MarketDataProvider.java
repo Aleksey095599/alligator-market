@@ -10,7 +10,7 @@ import java.util.Set;
 import reactor.core.publisher.Flux;
 
 /**
- * Контракт адаптера для всех провайдеров рыночных данных.
+ * Контракт адаптера для всех провайдеров рыночных данных (далее - провайдеры).
  */
 public interface MarketDataProvider {
 

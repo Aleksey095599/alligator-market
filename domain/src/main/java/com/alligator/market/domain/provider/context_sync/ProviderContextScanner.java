@@ -5,12 +5,12 @@ import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import java.util.List;
 
 /**
- * Контракт сканера контекста приложения, извлекающего профили провайдеров рыночных данных (далее - провайдеры).
+ * Контракт сканера контекста приложения, извлекающего профили провайдеров рыночных данных (далее - профили).
  */
 public interface ProviderContextScanner {
 
     /**
-     * Вернуть список профилей провайдеров.
+     * Вернуть список профилей.
      *
      * @throws DuplicateProviderProfileInContextException если в контексте обнаружены дубли
      */

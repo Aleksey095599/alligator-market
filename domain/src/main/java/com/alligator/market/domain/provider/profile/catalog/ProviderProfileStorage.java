@@ -7,14 +7,14 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Хранилище профилей провайдеров.
+ * Хранилище профилей провайдеров рыночных данных (далее - профили).
  */
 public interface ProviderProfileStorage {
 
-    /** Вернуть все активные профили провайдеров вместе с PK. */
+    /** Вернуть все активные профили вместе с PK. */
     Map<ProviderProfile, Long> findAllActive();
 
-    /** Вернуть все профили провайдеров с их статусами. */
+    /** Вернуть все профили с их статусами. */
     Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus();
 
     /** Сохранить коллекцию профилей. */

@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * Компонент вызывает доменную логику сопоставления профилей провайдеров, извлеченных из контекста приложения
- * и хранилища данных.
+ * Компонент вызывает доменную логику сопоставления профилей провайдеров рыночных данных (далее - профили),
+ * извлеченных из контекста приложения и хранилища данных.
  */
 @Component
 @RequiredArgsConstructor
@@ -20,14 +20,14 @@ public class ProviderProfilesReconciliationAdapter {
     private final ProviderProfileStorage profileStorage;
     private final ServiceAuditorContext context;
 
-    /** Сравнить профили провайдеров и получить расхождения в виде {@link ContextDiff}. */
+    /** Сравнить профили и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
         return domain.compare();
     }
 
     /** Применить {@link ContextDiff} к хранилищу данных для синхронизации с контекстом приложения
-     * информации о профилях провайдеров рыночных данных. */
+     * информации о профилях. */
     public void applyContextDiffToStorage(ContextDiff diff) {
         var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
         context.runWith("provider-sync-service", () -> domain.applyContextDiffToStorage(diff));
