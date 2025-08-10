@@ -34,7 +34,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         return profiles;
     }
 
-    /** Проверяет, что <code>providerCode</code> и <code>displayName</code> уникальны. */
+    /** Вспомогательный метод проверяет уникальность кодов и имен провайдеров. */
     private void validateNoDuplicates(List<ProviderProfile> profiles) {
         java.util.Set<String> codes = new java.util.HashSet<>();
         java.util.Set<String> names = new java.util.HashSet<>();
