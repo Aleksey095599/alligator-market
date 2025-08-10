@@ -1,8 +1,10 @@
 package com.alligator.market.backend.common.jpa;
 
+import com.alligator.market.backend.config.audit.AuditViaListener;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +21,7 @@ import java.time.Instant;
  * Содержит поля для отслеживания изменений и управления версиями.
  */
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, AuditViaListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,6 +36,7 @@ public abstract class BaseEntity {
     @CreatedBy
     private String createdBy;
 
+    @Setter(AccessLevel.NONE) // только заданный JPA Listener может вставлять
     private String createdVia;
 
     @LastModifiedDate
@@ -42,5 +45,6 @@ public abstract class BaseEntity {
     @LastModifiedBy
     private String updatedBy;
 
+    @Setter(AccessLevel.NONE) // только заданный JPA Listener может вставлять
     private String updatedVia;
 }
