@@ -13,7 +13,7 @@ public final class AuditContextHolder {
     // Дефолты дев-режима (TODO: временная заглушка до реализации аутентификации)
     private static final String DEV_ACTOR = "dev_admin";
     private static final String DEV_VIA   = "rest-api-dev";
-    private static final AuditContext DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
+    private static final AuditContext DEV_DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
 
     /** Локальное хранилище контекста для текущего потока. */
     private static final ThreadLocal<AuditContext> contextThreadLocal = new ThreadLocal<>();
@@ -23,10 +23,10 @@ public final class AuditContextHolder {
         contextThreadLocal.set(ctx);
     }
 
-    /** Получить текущий контекст. Если контекст пуст, вернет дефолтный контекст. */
+    /** Получить текущий контекст. Если контекст пуст, вернет дефолтный контекст дев-режима. */
     public static AuditContext get() {
         AuditContext ctx = contextThreadLocal.get();
-        return (ctx != null) ? ctx : DEFAULTS;
+        return (ctx != null) ? ctx : DEV_DEFAULTS;
     }
 
     /** Очистить контекст. */
