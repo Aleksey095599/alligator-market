@@ -13,17 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderProfilesReconciliationAdapter {
 
-    private final ProviderContextScanner contextScanner;
-    private final ProviderProfileStorage profileStorage;
     /** Доменная логика сопоставления профилей. */
     private final ProviderProfilesReconciliation reconciliation;
 
+    // Конструктор
     public ProviderProfilesReconciliationAdapter(
             ProviderContextScanner contextScanner,
             ProviderProfileStorage profileStorage
     ) {
-        this.contextScanner = contextScanner;
-        this.profileStorage = profileStorage;
         this.reconciliation = new ProviderProfilesReconciliation(contextScanner, profileStorage);
     }
 

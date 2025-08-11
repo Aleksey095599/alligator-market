@@ -17,6 +17,7 @@ public class AuditConfig {
     /** Поставщик для @CreatedBy/@LastModifiedBy. */
     @Bean
     public AuditorAware<String> auditorAware() {
+
         return () -> Optional.of(AuditContextHolder.get().actorId());
     }
 }
