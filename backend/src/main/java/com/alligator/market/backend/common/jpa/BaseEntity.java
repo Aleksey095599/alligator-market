@@ -26,24 +26,31 @@ import java.time.Instant;
 public abstract class BaseEntity {
 
     @Version
+    @Column(nullable = false)
     private Long version;
 
     @CreatedDate
+    @Column(updatable = false, nullable = false)
     private Instant createdTimestamp;
 
     @CreatedBy
+    @Column(updatable = false, nullable = false)
     private String createdBy;
 
     @Setter(AccessLevel.NONE) // пишем только из колбэка ниже
+    @Column(updatable = false, nullable = false)
     private String createdVia;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private Instant updatedTimestamp;
 
     @LastModifiedBy
+    @Column(nullable = false)
     private String updatedBy;
 
     @Setter(AccessLevel.NONE) // пишем только из колбэка ниже
+    @Column(nullable = false)
     private String updatedVia;
 
     /* JPA-callback: при вставке выставляем из контекста. */
