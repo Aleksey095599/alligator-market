@@ -1,5 +1,7 @@
 package com.alligator.market.backend.provider.profile.context_sync;
 
+import com.alligator.market.backend.config.audit.AuditContext;
+import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.context_sync.ProviderProfilesReconciliation;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProviderProfilesReconciliationAdapter {
+
+    /** Внутренний источник операции. */
+    private static final String VIA = "provider-profiles-reconciliation";
 
     /** Доменная логика сопоставления профилей. */
     private final ProviderProfilesReconciliation reconciliation;
@@ -31,6 +36,12 @@ public class ProviderProfilesReconciliationAdapter {
 
     /** Применить {@link ContextDiff} к хранилищу данных, выполняя задачу от имени системного пользователя. */
     public void applyContextDiffToStorage(ContextDiff diff) {
-        reconciliation.applyContextDiffToStorage(diff);
+        AuditContext previous = AuditContextHolder.get();
+        AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, VIA));
+        try {
+            reconciliation.applyContextDiffToStorage(diff);
+        } finally {
+            AuditContextHolder.set(previous);
+        }
     }
 }
