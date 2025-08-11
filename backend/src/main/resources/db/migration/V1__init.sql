@@ -1,8 +1,8 @@
 -- Инициализация схемы и таблиц проекта.
 
 -- Создаём схему при отсутствии.
-CREATE SCHEMA IF NOT EXISTS main;
-SET search_path TO main;
+CREATE SCHEMA IF NOT EXISTS public;
+SET search_path TO public;
 
 -- =============================
 -- Таблица валют
