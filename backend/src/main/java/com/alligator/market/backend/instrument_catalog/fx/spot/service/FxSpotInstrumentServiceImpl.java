@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Реализация сервиса инструментов FX SPOT.
@@ -43,5 +44,13 @@ public class FxSpotInstrumentServiceImpl implements FxSpotInstrumentService {
     public void deleteForPair(String pairCode) {
         storage.delete(pairCode);
         log.info("FX Spot instruments for pair {} deleted", pairCode);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<FxSpot> findAll() {
+        List<FxSpot> result = storage.findAll();
+        log.debug("Found {} FX Spot instruments", result.size());
+        return result;
     }
 }

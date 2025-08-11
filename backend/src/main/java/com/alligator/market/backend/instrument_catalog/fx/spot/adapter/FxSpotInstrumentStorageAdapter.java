@@ -12,6 +12,7 @@ import com.alligator.market.backend.config.audit.AuditContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,5 +59,15 @@ public class FxSpotInstrumentStorageAdapter implements FxSpotInstrumentStorage {
                         CurrencyPairEntityMapper.toDomain(entity.getCurrencyPair()),
                         entity.getValueDateCode()
                 ));
+    }
+
+    @Override
+    public List<FxSpot> findAll() {
+        return jpaRepository.findAll().stream()
+                .map(entity -> new FxSpot(
+                        CurrencyPairEntityMapper.toDomain(entity.getCurrencyPair()),
+                        entity.getValueDateCode()
+                ))
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package com.alligator.market.domain.instrument.type.fx.spot.catalog;
 
 import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,4 +18,7 @@ public interface FxSpotInstrumentStorage {
 
     /** Найти инструмент по внутреннему коду. */
     Optional<FxSpot> find(String internalCode);
+
+    /** Вернуть все инструменты. */
+    List<FxSpot> findAll();
 }

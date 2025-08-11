@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./features/currency_pair/pair.module').then(m => m.PairModule)
   },
   {
+    path: 'fx-spots',
+    loadChildren: () =>
+      import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
+  },
+  {
     path: 'providers',
     loadChildren: () =>
       import('./features/provider_profile/provider-profile.module')
