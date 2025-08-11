@@ -1,9 +1,10 @@
 package com.alligator.market.backend.config.time;
 
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.ZoneId;
 import java.util.TimeZone;
 
 /**
@@ -11,6 +12,8 @@ import java.util.TimeZone;
  */
 @Configuration
 public class TimeZoneConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(TimeZoneConfig.class);
 
     private final AppTimeProps props;
 
@@ -22,7 +25,8 @@ public class TimeZoneConfig {
     /** Устанавливает дефолтную временную зону. */
     @PostConstruct
     public void init() {
-        ZoneId zoneId = ZoneId.of(props.timeZone());
-        TimeZone.setDefault(TimeZone.getTimeZone(zoneId));
+        TimeZone.setDefault(TimeZone.getTimeZone(props.timeZone()));
+        // Логируем успешную установку зоны
+        log.info("Default time zone set to {}", props.timeZone());
     }
 }

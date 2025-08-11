@@ -1,8 +1,10 @@
 package com.alligator.market.backend.config.time;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import java.time.ZoneId;
 
 /**
  * Настройка временной зоны.
@@ -12,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("app")
 public record AppTimeProps(
 
-        @NotBlank
-        String timeZone
+        /** Тайм-зона приложения. */
+        @NotNull
+        ZoneId timeZone
 ) {}
