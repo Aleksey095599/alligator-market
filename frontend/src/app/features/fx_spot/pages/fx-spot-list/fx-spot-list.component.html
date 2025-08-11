@@ -2,12 +2,12 @@
   <mat-card>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="internalCode">
-        <th mat-header-cell *matHeaderCellDef>Internal</th>
+        <th mat-header-cell *matHeaderCellDef>Internal Code</th>
         <td mat-cell *matCellDef="let s">{{s.internalCode}}</td>
       </ng-container>
 
       <ng-container matColumnDef="pairCode">
-        <th mat-header-cell *matHeaderCellDef>Pair</th>
+        <th mat-header-cell *matHeaderCellDef>Currency Pair</th>
         <td mat-cell *matCellDef="let s">{{s.pairCode}}</td>
       </ng-container>
 
