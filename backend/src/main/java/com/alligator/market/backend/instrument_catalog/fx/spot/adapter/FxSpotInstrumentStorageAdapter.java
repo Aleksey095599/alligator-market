@@ -23,7 +23,7 @@ public class FxSpotInstrumentStorageAdapter implements FxSpotInstrumentStorage {
     private final CurrencyPairJpaRepository currencyPairJpaRepository;
 
     @Override
-    public String save(FxSpot instrument) {
+    public void save(FxSpot instrument) {
         CurrencyPairEntity pair = currencyPairJpaRepository
                 .findByPairCode(instrument.currencyPair().pairCode())
                 .orElseThrow();
@@ -32,7 +32,7 @@ public class FxSpotInstrumentStorageAdapter implements FxSpotInstrumentStorage {
         entity.setInternalCode(instrument.internalCode());
         entity.setCurrencyPair(pair);
         entity.setValueDateCode(instrument.valueDateCode());
-        return jpaRepository.save(entity).getInternalCode();
+        jpaRepository.save(entity);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FxSpotInstrumentStorage {
 
     /** Сохранить инструмент FX SPOT. */
-    String save(FxSpot instrument);
+    void save(FxSpot instrument);
 
     /** Удалить все инструменты по коду валютной пары. */
     void delete(String pairCode);
