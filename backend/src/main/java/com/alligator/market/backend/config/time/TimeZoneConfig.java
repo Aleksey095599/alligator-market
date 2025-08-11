@@ -26,7 +26,6 @@ public class TimeZoneConfig {
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone(props.timeZone()));
-        // Логируем успешную установку зоны
         log.info("Default time zone set to {}", props.timeZone());
     }
 }
