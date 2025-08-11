@@ -31,9 +31,4 @@ public final class AuditContextHolder {
         AuditContext ctx = contextThreadLocal.get();
         return (ctx != null) ? ctx : DEV_DEFAULTS;
     }
-
-    /** Очистить контекст. */
-    public static void clear() {
-        contextThreadLocal.remove();
-    }
 }
