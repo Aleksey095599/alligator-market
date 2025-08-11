@@ -13,8 +13,6 @@ import java.time.ZoneId;
 @Validated
 @ConfigurationProperties("app")
 public record AppTimeProps(
-
-        /** Тайм-зона приложения. */
         @NotNull
         ZoneId timeZone
 ) {}
