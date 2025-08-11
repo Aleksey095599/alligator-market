@@ -5,15 +5,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Запрещаем перенос строк в ячейках Angular Material */
 .mat-header-cell,
-.mat-cell,
-.mat-mdc-header-cell,
-.mat-mdc-cell {
+.mat-cell {
   white-space: nowrap;
 }
 
 /* Разрешаем прокрутку таблиц по горизонтали */
-.mat-table,
-.mat-mdc-table {
+.mat-table {
   overflow-x: auto;
   display: block;
 }
