@@ -15,6 +15,9 @@ public final class AuditContextHolder {
     private static final String DEV_VIA   = "rest-api-dev";
     private static final AuditContext DEV_DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
 
+    // Зарезервированный системный актор для внутренних процессов
+    public static final String SYSTEM_ACTOR = "system";
+
     /** Локальное хранилище контекста для текущего потока. */
     private static final ThreadLocal<AuditContext> contextThreadLocal = new ThreadLocal<>();
 
