@@ -1,11 +1,11 @@
 -- Создает таблицу currency_pair
 CREATE TABLE currency_pair (
     id BIGSERIAL PRIMARY KEY,
-    version BIGINT,
-    created_timestamp TIMESTAMP,
-    created_by VARCHAR(255),
-    updated_timestamp TIMESTAMP,
-    updated_by VARCHAR(255),
+    version BIGINT NOT NULL,
+    created_timestamp TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_timestamp TIMESTAMP NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     code1 VARCHAR(3) NOT NULL,
     code2 VARCHAR(3) NOT NULL,
     pair VARCHAR(6) NOT NULL,

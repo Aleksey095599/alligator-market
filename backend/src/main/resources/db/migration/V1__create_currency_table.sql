@@ -1,11 +1,11 @@
 -- Создает таблицу currency
 CREATE TABLE currency (
     id BIGSERIAL PRIMARY KEY,
-    version BIGINT,
-    created_timestamp TIMESTAMP,
-    created_by VARCHAR(255),
-    updated_timestamp TIMESTAMP,
-    updated_by VARCHAR(255),
+    version BIGINT NOT NULL,
+    created_timestamp TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_timestamp TIMESTAMP NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     code VARCHAR(3) NOT NULL,
     name VARCHAR(50) NOT NULL,
     country VARCHAR(100) NOT NULL,
