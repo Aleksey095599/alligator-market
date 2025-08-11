@@ -10,7 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-/* Интеграционный тест для сканера профилей провайдеров. */
+/**
+ * Интеграционный тест для сканера профилей провайдеров.
+ * Выводит в консоль список провайдеров.
+ */
 @Disabled
 @SpringBootTest
 class ProviderContextScannerAdapterTest {

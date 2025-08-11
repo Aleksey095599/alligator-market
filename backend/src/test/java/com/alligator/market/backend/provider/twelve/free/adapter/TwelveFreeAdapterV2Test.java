@@ -14,7 +14,10 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/* Интеграционный тест для адаптера TwelveFreeAdapterV2. */
+/**
+ * Интеграционный тест для адаптера TwelveFreeAdapterV2.
+ * Выводит в консоль котировку валютной пары EUR/USD.
+ */
 @Disabled
 class TwelveFreeAdapterV2Test {
 
