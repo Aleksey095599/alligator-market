@@ -4,7 +4,6 @@ import com.alligator.market.domain.provider.context_sync.ContextDiff;
 import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
 import com.alligator.market.domain.provider.context_sync.ProviderProfilesReconciliation;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,21 +11,29 @@ import org.springframework.stereotype.Component;
  * извлеченных из контекста приложения и хранилища данных.
  */
 @Component
-@RequiredArgsConstructor
 public class ProviderProfilesReconciliationAdapter {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
+    /** Доменная логика сопоставления профилей. */
+    private final ProviderProfilesReconciliation reconciliation;
+
+    public ProviderProfilesReconciliationAdapter(
+            ProviderContextScanner contextScanner,
+            ProviderProfileStorage profileStorage
+    ) {
+        this.contextScanner = contextScanner;
+        this.profileStorage = profileStorage;
+        this.reconciliation = new ProviderProfilesReconciliation(contextScanner, profileStorage);
+    }
 
     /** Сравнить профили и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
-        var domainReconciliationService = new ProviderProfilesReconciliation(contextScanner, profileStorage);
-        return domainReconciliationService.compare();
+        return reconciliation.compare();
     }
 
     /** Применить {@link ContextDiff} к хранилищу данных, выполняя задачу от имени системного пользователя. */
     public void applyContextDiffToStorage(ContextDiff diff) {
-        var domainReconciliationService = new ProviderProfilesReconciliation(contextScanner, profileStorage);
-        domainReconciliationService.applyContextDiffToStorage(diff);
+        reconciliation.applyContextDiffToStorage(diff);
     }
 }
