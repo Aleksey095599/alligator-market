@@ -20,13 +20,13 @@ public class ProviderProfilesReconciliationAdapter {
 
     /** Сравнить профили и получить расхождения в виде {@link ContextDiff}. */
     public ContextDiff compare() {
-        var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
-        return domain.compare();
+        var domainReconciliationLogic = new ProviderProfilesReconciliation(contextScanner, profileStorage);
+        return domainReconciliationLogic.compare();
     }
 
     /** Применить {@link ContextDiff} к хранилищу данных, выполняя задачу от имени системного пользователя. */
     public void applyContextDiffToStorage(ContextDiff diff) {
-        var domain = new ProviderProfilesReconciliation(contextScanner, profileStorage);
-            domain.applyContextDiffToStorage(diff);
+        var domainReconciliationLogic = new ProviderProfilesReconciliation(contextScanner, profileStorage);
+        domainReconciliationLogic.applyContextDiffToStorage(diff);
     }
 }
