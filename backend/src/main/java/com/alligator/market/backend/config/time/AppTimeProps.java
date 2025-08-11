@@ -5,13 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Настройки временной зоны.
+ * Настройка временной зоны.
+ * Автоматически считывается из настроек приложения.
  */
 @Validated
-@ConfigurationProperties(prefix = "app")
+@ConfigurationProperties("app")
 public record AppTimeProps(
 
         @NotBlank
-        @ValidZoneId
         String timeZone
 ) {}
