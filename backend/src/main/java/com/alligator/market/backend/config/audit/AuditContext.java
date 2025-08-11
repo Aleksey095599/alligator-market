@@ -1,8 +1,12 @@
 package com.alligator.market.backend.config.audit;
 
 /**
- * Контекст аудита на время операции.
+ * Контекст аудита приложения.
  */
-public record AuditContext(String actorId, String via) {}
+public record AuditContext(
+
+        String actorId,
+        String via
+) {}
 
 

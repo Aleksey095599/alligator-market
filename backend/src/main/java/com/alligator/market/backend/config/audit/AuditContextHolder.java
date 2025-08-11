@@ -11,7 +11,7 @@ import lombok.NonNull;
 public final class AuditContextHolder {
 
     /** Локальное хранилище контекста для текущего потока. */
-    private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
+    private static final ThreadLocal<AuditContext> contextThreadLocal = new ThreadLocal<>();
 
     /** Дефолтный контекст для дев-режима. */
     private static final AuditContext DEFAULTS =
@@ -19,15 +19,17 @@ public final class AuditContextHolder {
 
     /** Установить контекст. */
     public static void set(@NonNull AuditContext ctx) {
-        CTX.set(ctx);
+        contextThreadLocal.set(ctx);
     }
 
     /** Получить текущий контекст. Если контекст пуст, вернет дефолтный контекст. */
     public static AuditContext get() {
-        AuditContext ctx = CTX.get();
+        AuditContext ctx = contextThreadLocal.get();
         return (ctx != null) ? ctx : DEFAULTS;
     }
 
-    /** Очистить контекст после операции. */
-    public static void clear() { CTX.remove(); }
+    /** Очистить контекст. */
+    public static void clear() {
+        contextThreadLocal.remove();
+    }
 }
