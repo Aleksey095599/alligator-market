@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pai
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntityMapper;
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairJpaRepository;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.catalog.exeption.PairNotFoundException;
-import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotStorage;
+import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotInstrumentStorage;
 import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.fx.spot.model.ValueDateCode;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 @Slf4j
 public class FxSpotInstrumentServiceImpl implements FxSpotInstrumentService {
 
-    private final FxSpotStorage storage;
+    private final FxSpotInstrumentStorage storage;
     private final CurrencyPairJpaRepository currencyPairRepository;
 
     @Override

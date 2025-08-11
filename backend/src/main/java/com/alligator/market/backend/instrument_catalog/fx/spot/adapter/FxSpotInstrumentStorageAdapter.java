@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pai
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairJpaRepository;
 import com.alligator.market.backend.instrument_catalog.fx.spot.jpa.FxSpotInstrumentEntity;
 import com.alligator.market.backend.instrument_catalog.fx.spot.jpa.FxSpotInstrumentJpaRepository;
-import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotStorage;
+import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotInstrumentStorage;
 import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Repository
 @RequiredArgsConstructor
-public class FxSpotStorageAdapter implements FxSpotStorage {
+public class FxSpotInstrumentStorageAdapter implements FxSpotInstrumentStorage {
 
     private final FxSpotInstrumentJpaRepository jpaRepository;
     private final CurrencyPairJpaRepository currencyPairJpaRepository;

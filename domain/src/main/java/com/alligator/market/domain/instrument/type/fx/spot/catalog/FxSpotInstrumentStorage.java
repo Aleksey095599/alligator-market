@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Хранилище инструментов FX SPOT.
  */
-public interface FxSpotStorage {
+public interface FxSpotInstrumentStorage {
 
     /** Сохранить инструмент FX SPOT. */
     String save(FxSpot instrument);
