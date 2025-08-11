@@ -7,6 +7,8 @@ import com.alligator.market.backend.instrument_catalog.fx.spot.jpa.FxSpotInstrum
 import com.alligator.market.backend.instrument_catalog.fx.spot.jpa.FxSpotInstrumentJpaRepository;
 import com.alligator.market.domain.instrument.type.fx.spot.catalog.FxSpotInstrumentStorage;
 import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
+import com.alligator.market.backend.config.audit.AuditContext;
+import com.alligator.market.backend.config.audit.AuditContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,17 +24,26 @@ public class FxSpotInstrumentStorageAdapter implements FxSpotInstrumentStorage {
     private final FxSpotInstrumentJpaRepository jpaRepository;
     private final CurrencyPairJpaRepository currencyPairJpaRepository;
 
+    /** Внутренний источник операции. */
+    private static final String VIA = "fx-spot-instrument-storage-adapter";
+
     @Override
     public void save(FxSpot instrument) {
-        CurrencyPairEntity pair = currencyPairJpaRepository
-                .findByPairCode(instrument.currencyPair().pairCode())
-                .orElseThrow();
+        AuditContext previous = AuditContextHolder.get();
+        AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, VIA));
+        try {
+            CurrencyPairEntity pair = currencyPairJpaRepository
+                    .findByPairCode(instrument.currencyPair().pairCode())
+                    .orElseThrow();
 
-        FxSpotInstrumentEntity entity = new FxSpotInstrumentEntity();
-        entity.setInternalCode(instrument.internalCode());
-        entity.setCurrencyPair(pair);
-        entity.setValueDateCode(instrument.valueDateCode());
-        jpaRepository.save(entity);
+            FxSpotInstrumentEntity entity = new FxSpotInstrumentEntity();
+            entity.setInternalCode(instrument.internalCode());
+            entity.setCurrencyPair(pair);
+            entity.setValueDateCode(instrument.valueDateCode());
+            jpaRepository.save(entity); // Сохраняем entity в БД
+        } finally {
+            AuditContextHolder.set(previous);
+        }
     }
 
     @Override
