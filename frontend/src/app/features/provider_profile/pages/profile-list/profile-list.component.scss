@@ -35,11 +35,7 @@
   background: #F44336;
 }
 
-/* Таблица: содержимое ячеек и заголовков в одну строку */
-:host ::ng-deep .mat-mdc-table .mat-mdc-cell {
-  white-space: nowrap;
-}
-
-:host ::ng-deep .mat-mdc-table .mat-mdc-header-cell {
-  white-space: nowrap;
+/* Горизонтальная прокрутка при переполнении */
+:host ::ng-deep .mat-mdc-card-content {
+  overflow-x: auto;
 }

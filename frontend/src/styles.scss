@@ -3,8 +3,8 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Таблицы: запрещаем перенос строк */
-table {
+/* Таблицы без переноса строк */
+table.no-wrap {
   white-space: nowrap;
 }
 
