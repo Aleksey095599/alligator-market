@@ -12,7 +12,7 @@ import lombok.Setter;
  * Entity инструмента FX OUTRIGHT.
  */
 @Entity
-@Table(name = "fx_spot_instruments")
+@Table(name = "fx_outright_instruments")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class FxOutrightEntity extends BaseEntity {
     /** Ссылка на валютную пару. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "pair_code", referencedColumnName = "pair_code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_pair"))
+            foreignKey = @ForeignKey(name = "fk_fx_outright_pair"))
     private CurrencyPairEntity currencyPair;
 
     /** Код даты расчетов. */

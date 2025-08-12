@@ -12,9 +12,9 @@ export const routes: Routes = [
       import('./features/currency_pair/pair.module').then(m => m.PairModule)
   },
   {
-    path: 'fx-spots',
+    path: 'fx-outright-instrument',
     loadChildren: () =>
-      import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
+      import('./features/fx_outright/fx-outright.module').then(m => m.FxOutrightModule)
   },
   {
     path: 'providers',

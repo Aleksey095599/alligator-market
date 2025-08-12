@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/fx-spot-list/fx-spot-list.component')
-        .then(c => c.FxSpotListComponent)
+      import('./pages/fx-outright-list/fx-outright-list.component')
+        .then(c => c.FxOutrightListComponent)
   }
 ];
 
@@ -14,4 +14,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FxSpotRoutingModule { }
+/* Маршрутизация для списка FX OUTRIGHT. */
+export class FxOutrightRoutingModule { }
