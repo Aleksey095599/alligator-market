@@ -29,8 +29,9 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private Long version;
 
+    /* Время создания записи. */
     @CreatedDate
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime createdTimestamp;
 
     @CreatedBy
@@ -41,8 +42,9 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
+    /* Время последнего обновления записи. */
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updatedTimestamp;
 
     @LastModifiedBy
