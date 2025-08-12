@@ -15,7 +15,6 @@ public class TimeZoneDateTimeProvider implements DateTimeProvider {
 
     @Override
     public Optional<TemporalAccessor> getNow() {
-        // Instant всегда в UTC
         return Optional.of(Instant.now());
     }
 }

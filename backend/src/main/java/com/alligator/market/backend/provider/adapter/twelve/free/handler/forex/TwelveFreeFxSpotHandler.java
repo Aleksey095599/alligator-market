@@ -71,7 +71,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
                 instrumentInternalCode,
                 price,
                 price,
-                Instant.now(), // Время котировки в UTC
+                Instant.now(),
                 providerCode
         );
     }
