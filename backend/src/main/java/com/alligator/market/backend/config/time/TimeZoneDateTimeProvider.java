@@ -4,24 +4,18 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 
 /**
- * Поставщик текущего времени с учётом настроенной временной зоны.
+ * Поставщик текущего времени в UTC.
  */
 @Component
 public class TimeZoneDateTimeProvider implements DateTimeProvider {
 
-    private final AppTimeProps props;
-
-    // Конструктор
-    public TimeZoneDateTimeProvider(AppTimeProps props) {
-        this.props = props;
-    }
-
     @Override
     public Optional<TemporalAccessor> getNow() {
-        return Optional.of(OffsetDateTime.now(props.timeZone()));
+        return Optional.of(OffsetDateTime.now(ZoneOffset.UTC));
     }
 }
