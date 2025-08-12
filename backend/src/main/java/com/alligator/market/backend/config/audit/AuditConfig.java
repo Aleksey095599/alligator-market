@@ -11,7 +11,7 @@ import java.util.Optional;
  *  Конфигурация аудита: включает JPA Auditing и берёт актора из AuditContextHolder.
  */
 @Configuration
-@EnableJpaAuditing
+@EnableJpaAuditing(dateTimeProviderRef = "timeZoneDateTimeProvider")
 public class AuditConfig {
 
     /** Поставщик для @CreatedBy/@LastModifiedBy. */
