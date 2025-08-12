@@ -133,4 +133,3 @@ BEGIN
             ADD CONSTRAINT fk_provider_instrument_type_provider FOREIGN KEY (provider_id) REFERENCES provider_profile(id);
     END IF;
 END $$;
-
