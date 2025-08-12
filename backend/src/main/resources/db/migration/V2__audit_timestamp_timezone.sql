@@ -7,7 +7,7 @@ ALTER TABLE currency_pair
     ALTER COLUMN created_timestamp TYPE TIMESTAMP WITH TIME ZONE USING created_timestamp AT TIME ZONE 'UTC',
     ALTER COLUMN updated_timestamp TYPE TIMESTAMP WITH TIME ZONE USING updated_timestamp AT TIME ZONE 'UTC';
 
-ALTER TABLE fx_spot_instruments
+ALTER TABLE fx_outright_instruments
     ALTER COLUMN created_timestamp TYPE TIMESTAMP WITH TIME ZONE USING created_timestamp AT TIME ZONE 'UTC',
     ALTER COLUMN updated_timestamp TYPE TIMESTAMP WITH TIME ZONE USING updated_timestamp AT TIME ZONE 'UTC';
 
