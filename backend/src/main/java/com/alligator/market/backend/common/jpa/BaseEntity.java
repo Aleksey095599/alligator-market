@@ -31,7 +31,7 @@ public abstract class BaseEntity {
 
     /* Время создания записи. */
     @CreatedDate
-    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(updatable = false, nullable = false)
     private Instant createdTimestamp;
 
     @CreatedBy
@@ -44,7 +44,7 @@ public abstract class BaseEntity {
 
     /* Время последнего обновления записи. */
     @LastModifiedDate
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(nullable = false)
     private Instant updatedTimestamp;
 
     @LastModifiedBy
