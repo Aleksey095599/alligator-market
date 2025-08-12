@@ -12,7 +12,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Родительский класс для всех entity в проекте.
@@ -32,7 +32,7 @@ public abstract class BaseEntity {
     /* Время создания записи. */
     @CreatedDate
     @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private OffsetDateTime createdTimestamp;
+    private Instant createdTimestamp;
 
     @CreatedBy
     @Column(updatable = false, nullable = false)
@@ -45,7 +45,7 @@ public abstract class BaseEntity {
     /* Время последнего обновления записи. */
     @LastModifiedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private OffsetDateTime updatedTimestamp;
+    private Instant updatedTimestamp;
 
     @LastModifiedBy
     @Column(nullable = false)
