@@ -1,22 +1,22 @@
-package com.alligator.market.backend.instrument_catalog.fx.spot.jpa;
+package com.alligator.market.backend.instrument_catalog.fx.outright.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntity;
-import com.alligator.market.domain.instrument.type.fx.spot.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.fx.outright.model.ValueDateCode;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity инструмента FX SPOT.
+ * Entity инструмента FX OUTRIGHT.
  */
 @Entity
 @Table(name = "fx_spot_instruments")
 @Getter
 @Setter
 @NoArgsConstructor
-public class FxSpotInstrumentEntity extends BaseEntity {
+public class FxOutrightEntity extends BaseEntity {
 
     /** Внутренний код инструмента. */
     @Id

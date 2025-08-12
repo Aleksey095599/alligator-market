@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.fx.spot.model;
+package com.alligator.market.domain.instrument.type.fx.outright.model;
 
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.model.Instrument;
@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.model.InstrumentType;
 /**
  * Модель инструмента FX_SPOT.
  */
-public record FxSpot(
+public record FxOutright(
 
         CurrencyPair currencyPair,
         ValueDateCode valueDateCode
@@ -21,6 +21,6 @@ public record FxSpot(
 
     @Override
     public InstrumentType instrumentType() {
-        return InstrumentType.FX_SPOT;
+        return InstrumentType.FX_OUTRIGHT;
     }
 }

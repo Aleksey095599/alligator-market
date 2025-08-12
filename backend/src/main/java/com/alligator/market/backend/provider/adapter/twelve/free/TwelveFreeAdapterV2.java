@@ -40,7 +40,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     ) {
         // Добавляем обработчик для FX-спот
         handlers.put(
-                InstrumentType.FX_SPOT,
+                InstrumentType.FX_OUTRIGHT,
                 new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE)
         );
     }

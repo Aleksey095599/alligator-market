@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.model.CurrencyPair;
-import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.fx.outright.model.FxOutright;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,7 +34,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
     public InstrumentType supportedInstrument() {
-        return InstrumentType.FX_SPOT;
+        return InstrumentType.FX_OUTRIGHT;
     }
 
     /** Возвращает котировку для указанного инструмента. */
@@ -42,7 +42,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
     public Flux<QuoteTick> instrumentQuote(Instrument instrument) {
 
         // Извлекаем валютную пару из модели FX-спот
-        FxSpot spot = (FxSpot) instrument;
+        FxOutright spot = (FxOutright) instrument;
         CurrencyPair pair = spot.currencyPair();
         String symbol = pair.base() + "/" + pair.quote();
 

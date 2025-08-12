@@ -1,6 +1,6 @@
-package com.alligator.market.domain.instrument.type.fx.spot.catalog;
+package com.alligator.market.domain.instrument.type.fx.outright.catalog;
 
-import com.alligator.market.domain.instrument.type.fx.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.fx.outright.model.FxOutright;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,17 +8,17 @@ import java.util.Optional;
 /**
  * Хранилище инструментов FX SPOT.
  */
-public interface FxSpotInstrumentStorage {
+public interface FxOutrightStorage {
 
     /** Сохранить инструмент FX SPOT. */
-    void save(FxSpot instrument);
+    void save(FxOutright instrument);
 
     /** Удалить все инструменты по коду валютной пары. */
     void delete(String pairCode);
 
     /** Найти инструмент по внутреннему коду. */
-    Optional<FxSpot> find(String internalCode);
+    Optional<FxOutright> find(String internalCode);
 
     /** Вернуть все инструменты. */
-    List<FxSpot> findAll();
+    List<FxOutright> findAll();
 }
