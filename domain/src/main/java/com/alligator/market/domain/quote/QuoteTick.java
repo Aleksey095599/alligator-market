@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Глобальная модель тика котировки для валютной пары.
@@ -19,6 +19,6 @@ public record QuoteTick(
         String instrumentCode,
         BigDecimal bid,
         BigDecimal ask,
-        OffsetDateTime timestamp,
+        Instant timestamp,
         String providerCode
 ) {}
