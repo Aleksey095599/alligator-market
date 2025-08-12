@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 
 /**
  * Родительский класс для всех entity в проекте.
- * Содержит поля для отслеживания изменений и управления версиями.
+ * Содержит поля для отслеживания изменений (JPA Audit) и управления версиями (Version).
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
