@@ -38,7 +38,7 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdBy;
 
-    @Setter(AccessLevel.NONE) // пишем только из колбэка ниже
+    @Setter(AccessLevel.NONE) // доступа нет, только callback ниже может заполнять поле
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
@@ -51,19 +51,19 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private String updatedBy;
 
-    @Setter(AccessLevel.NONE) // пишем только из колбэка ниже
+    @Setter(AccessLevel.NONE) // доступа нет, только callback ниже может заполнять поле
     @Column(nullable = false)
     private String updatedVia;
 
-    /* JPA-callback: при вставке выставляем из контекста. */
+    /* JPA-callback: при вставке берем из контекста. */
     @PrePersist
     protected void __onCreateAudit() {
         String via = AuditContextHolder.get().via();
-        this.createdVia = via; // при вставке совпадают
+        this.createdVia = via;
         this.updatedVia = via;
     }
 
-    /* JPA-callback: при апдейте обновляем из контекста. */
+    /* JPA-callback: при обновлении берем из контекста. */
     @PreUpdate
     protected void __onUpdateAudit() {
         this.updatedVia = AuditContextHolder.get().via();
