@@ -17,7 +17,7 @@ import java.util.List;
  * REST-контроллер инструментов FX OUTRIGHT.
  */
 @RestController
-@RequestMapping("/api/v1/fx-spots")
+@RequestMapping("/api/v1/fx-outright-instrument")
 @RequiredArgsConstructor
 @Slf4j
 public class FxOutrightController {

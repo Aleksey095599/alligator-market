@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { FxSpotService } from '../../services/fx-spot.service';
-import { FxSpotDto } from '../../models/fx-spot.model';
+import { FxOutrightService } from '../../services/fx-outright.service';
+import { FxOutrightDto } from '../../models/fx-outright.model';
 
 @Component({
-  selector: 'app-fx-spot-list',
+  selector: 'app-fx-outright-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule],
-  templateUrl: './fx-spot-list.component.html',
-  styleUrl: './fx-spot-list.component.scss'
+  templateUrl: './fx-outright-list.component.html',
+  styleUrl: './fx-outright-list.component.scss'
 })
-export class FxSpotListComponent implements OnInit {
+export class FxOutrightListComponent implements OnInit {
 
   /* список колонок таблицы */
   displayed: string[] = ['internalCode', 'pairCode', 'valueDateCode'];
-  dataSource = new MatTableDataSource<FxSpotDto>([]);
+  dataSource = new MatTableDataSource<FxOutrightDto>([]);
 
-  constructor(private readonly service: FxSpotService) {}
+  constructor(private readonly service: FxOutrightService) {}
 
   /* загрузка списка при открытии страницы */
   ngOnInit(): void {

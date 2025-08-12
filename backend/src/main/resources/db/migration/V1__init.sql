@@ -71,9 +71,9 @@ BEGIN
 END $$;
 
 -- =============================
--- Таблица FX SPOT инструментов
+-- Таблица FX OUTRIGHT инструментов
 -- =============================
-CREATE TABLE IF NOT EXISTS fx_spot_instruments (
+CREATE TABLE IF NOT EXISTS fx_outright_instruments (
     internal_code VARCHAR(12) PRIMARY KEY,
     pair_code VARCHAR(6) NOT NULL,
     value_date_code VARCHAR(4) NOT NULL,
@@ -86,12 +86,12 @@ CREATE TABLE IF NOT EXISTS fx_spot_instruments (
     updated_via VARCHAR(255) NOT NULL
 );
 
--- Связь FX SPOT инструментов с валютной парой
+-- Связь FX OUTRIGHT инструментов с валютной парой
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_fx_spot_pair') THEN
-        ALTER TABLE fx_spot_instruments
-            ADD CONSTRAINT fk_fx_spot_pair FOREIGN KEY (pair_code) REFERENCES currency_pair(pair_code);
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_fx_outright_pair') THEN
+        ALTER TABLE fx_outright_instruments
+            ADD CONSTRAINT fk_fx_outright_pair FOREIGN KEY (pair_code) REFERENCES currency_pair(pair_code);
     END IF;
 END $$;
 
