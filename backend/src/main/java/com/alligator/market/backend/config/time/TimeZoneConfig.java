@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 /**
@@ -20,29 +22,24 @@ public class TimeZoneConfig {
 
     private static final Logger log = LoggerFactory.getLogger(TimeZoneConfig.class);
 
-    private final AppTimeProps props;
-
-    // Конструктор
-    public TimeZoneConfig(AppTimeProps props) {
-        this.props = props;
-    }
+    private static final ZoneId UTC = ZoneOffset.UTC;
 
     /** Устанавливает дефолтную временную зону. */
     @PostConstruct
     public void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone(props.timeZone()));
-        log.info("Default time zone set to {}", props.timeZone());
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC));
+        log.info("Default time zone set to UTC");
     }
 
     /** Настраивает временную зону для сериализации JSON. */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonTimeZoneCustomizer() {
-        return builder -> builder.timeZone(TimeZone.getTimeZone(props.timeZone()));
+        return builder -> builder.timeZone(TimeZone.getTimeZone(UTC));
     }
 
     /** Настраивает временную зону для Hibernate. */
     @Bean
     public HibernatePropertiesCustomizer hibernateTimeZoneCustomizer() {
-        return properties -> properties.put(AvailableSettings.JDBC_TIME_ZONE, props.timeZone());
+        return properties -> properties.put(AvailableSettings.JDBC_TIME_ZONE, UTC);
     }
 }

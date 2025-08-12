@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /** Handler котировок FX-спот для TwelveData (free). */
 public class TwelveFreeFxSpotHandler implements InstrumentHandler {
@@ -71,7 +72,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
                 instrumentInternalCode,
                 price,
                 price,
-                OffsetDateTime.now(),
+                OffsetDateTime.now(ZoneOffset.UTC), // Время котировки в UTC
                 providerCode
         );
     }
