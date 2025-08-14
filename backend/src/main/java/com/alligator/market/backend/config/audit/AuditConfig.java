@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.util.Optional;
 
 /**
- *  Конфигурация аудита: включает JPA Auditing и берёт актора из AuditContextHolder.
+ *  Конфигурация аудита.
+ *  Включает JPA Auditing и берёт актора из AuditContextHolder.
  */
 @Configuration
 @EnableJpaAuditing

@@ -26,9 +26,9 @@ public final class AuditContextHolder {
         contextThreadLocal.set(ctx);
     }
 
-    /** Получить текущий контекст. Если контекст пуст, вернет дефолтный контекст дев-режима. */
+    /** Получить текущий контекст. */
     public static AuditContext get() {
         AuditContext ctx = contextThreadLocal.get();
-        return (ctx != null) ? ctx : DEV_DEFAULTS;
+        return (ctx != null) ? ctx : DEV_DEFAULTS; // Если контекст пуст, вернет дефолтный контекст дев-режима
     }
 }

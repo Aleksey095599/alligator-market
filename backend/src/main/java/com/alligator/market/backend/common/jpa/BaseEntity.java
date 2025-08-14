@@ -55,15 +55,27 @@ public abstract class BaseEntity {
 
     /* JPA-callback: при вставке берем из контекста. */
     @PrePersist
-    protected void __onCreateAudit() {
+    private void __onCreateAudit() {
         String via = AuditContextHolder.get().via();
         this.createdVia = via;
         this.updatedVia = via;
+        onPrePersist();
     }
 
     /* JPA-callback: при обновлении берем из контекста. */
     @PreUpdate
-    protected void __onUpdateAudit() {
+    private void __onUpdateAudit() {
         this.updatedVia = AuditContextHolder.get().via();
+        onPreUpdate();
+    }
+
+    /* Хук для PrePersist в наследниках. */
+    protected void onPrePersist() {
+        // no-op
+    }
+
+    /* Хук для PreUpdate в наследниках. */
+    protected void onPreUpdate() {
+        // no-op
     }
 }

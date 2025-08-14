@@ -25,11 +25,11 @@ public abstract class InstrumentEntity extends BaseEntity {
     private Long id;
 
     /** Внутренний код инструмента. */
-    @Column(name = "code", nullable = false, updatable = false, length = 64)
-    private String code;
+    @Column(name = "instrument_code", nullable = false, updatable = false, length = 64)
+    private String instrumentCode;
 
     /** Тип финансового инструмента. */
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, updatable = false, length = 32)
-    private InstrumentType type;
+    @Column(name = "instrument_type", nullable = false, updatable = false, length = 32)
+    private InstrumentType instrumentType;
 }
