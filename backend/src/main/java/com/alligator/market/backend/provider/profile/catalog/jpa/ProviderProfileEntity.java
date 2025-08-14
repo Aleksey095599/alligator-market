@@ -52,7 +52,7 @@ public class ProviderProfileEntity extends BaseEntity {
             joinColumns = @JoinColumn(
                     name = "provider_id",
                     referencedColumnName = "id",
-                    foreignKey = @ForeignKey(name = "fk_provider_instrument_type_provider")
+                    foreignKey = @ForeignKey(name = "fk_provider_profile_instrument_type_provider_profile")
             )
     )
     @Enumerated(EnumType.STRING)
