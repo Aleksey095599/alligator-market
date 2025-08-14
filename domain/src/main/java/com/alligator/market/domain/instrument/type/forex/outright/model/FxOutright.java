@@ -3,6 +3,9 @@ package com.alligator.market.domain.instrument.type.forex.outright.model;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 
+/**
+ * Модель финансового инструмента FX_OUTRIGHT.
+ */
 public record FxOutright(
 
         String baseCurrency,
@@ -13,12 +16,12 @@ public record FxOutright(
 ) implements Instrument {
 
     @Override
-    public String internalCode() {
+    public String code() {
         return baseCurrency + quoteCurrency + "_" + valueDateCode;
     }
 
     @Override
-    public InstrumentType instrumentType() {
+    public InstrumentType type() {
         return InstrumentType.FX_OUTRIGHT;
     }
 }

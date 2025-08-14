@@ -11,7 +11,7 @@ import java.time.Instant;
  * Глобальная модель тика котировки для валютной пары.
  * Соответствует Avro-схеме {@link QuoteTickAvro}.
  *
- * @param instrumentCode соответствует {@link Instrument#internalCode()}
+ * @param instrumentCode соответствует {@link Instrument#code()}
  * @param providerCode           соответствует {@link ProviderProfile#providerCode()}
  */
 public record QuoteTick(

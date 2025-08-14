@@ -5,9 +5,9 @@ package com.alligator.market.domain.instrument.model;
  */
 public interface Instrument {
 
-    /** Внутренний идентификатор инструмента. */
-    String internalCode();
+    /** Внутренний код инструмента. */
+    String code();
 
     /** Тип финансового инструмента. */
-    InstrumentType instrumentType();
+    InstrumentType type();
 }

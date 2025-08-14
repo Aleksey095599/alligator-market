@@ -33,7 +33,7 @@ public interface MarketDataProvider {
     default Flux<QuoteTick> quote(Instrument instrument) {
 
         // Извлекаем тип инструмента
-        InstrumentType instrumentType = instrument.instrumentType();
+        InstrumentType instrumentType = instrument.type();
 
         // Подбираем нужный обработчик для данного типа инструмента
         InstrumentHandler handler = instrumentHandlers().get(instrumentType);

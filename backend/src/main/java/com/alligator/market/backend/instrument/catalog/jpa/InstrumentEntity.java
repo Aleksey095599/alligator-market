@@ -9,7 +9,7 @@ import jakarta.persistence.*;
         uniqueConstraints = @UniqueConstraint(name = "uk_instrument_code", columnNames = "instrument_code")
 )
 @Inheritance(strategy = InheritanceType.JOINED)
-public class InstrumentEntity extends BaseEntity {
+public abstract class InstrumentEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @Id
@@ -18,8 +18,9 @@ public class InstrumentEntity extends BaseEntity {
     private Long id;
 
     /** Внутренний код инструмента. */
-    @Column(name = "instrument_code", length = 12)
-    private String internalCode;
+    @Column(name = "code", length = 12)
+    private String code;
 
-
+    /** Тип финансового инструмента. */
+    type
 }

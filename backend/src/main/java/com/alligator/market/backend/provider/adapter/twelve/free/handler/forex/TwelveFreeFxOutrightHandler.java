@@ -54,7 +54,7 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> responseJsonToQuoteTick(json, instrument.internalCode()))
+                .map(json -> responseJsonToQuoteTick(json, instrument.code()))
                 .flux();
     }
 
