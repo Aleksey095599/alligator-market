@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument_catalog.fx.outright.adapter;
 
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntity;
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntityMapper;
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairJpaRepository;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairEntity;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairEntityMapper;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairJpaRepository;
 import com.alligator.market.backend.instrument_catalog.fx.outright.jpa.FxOutrightEntity;
 import com.alligator.market.backend.instrument_catalog.fx.outright.jpa.FxOutrightJpaRepository;
 import com.alligator.market.domain.instrument.type.fx.outright.catalog.FxOutrightStorage;

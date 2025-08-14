@@ -1,10 +1,10 @@
 package com.alligator.market.backend.instrument_catalog.fx.outright.service;
 
 
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntity;
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairEntityMapper;
-import com.alligator.market.backend.instrument_catalog.fx.reference.currency_pair.jpa.CurrencyPairJpaRepository;
-import com.alligator.market.domain.instrument.type.fx.reference.currency_pair.catalog.exeption.PairNotFoundException;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairEntity;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairEntityMapper;
+import com.alligator.market.backend.instrument.type.fx.outright.reference.currency_pair.jpa.CurrencyPairJpaRepository;
+import com.alligator.market.domain.instrument.type.fx.outright.reference.currency_pair.catalog.exeption.PairNotFoundException;
 import com.alligator.market.domain.instrument.type.fx.outright.catalog.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.fx.outright.model.FxOutright;
 import com.alligator.market.domain.instrument.type.fx.outright.model.ValueDateCode;

@@ -1,22 +1,20 @@
 package com.alligator.market.domain.instrument.type.fx.outright.model;
 
-import com.alligator.market.domain.instrument.type.fx.outright.reference.currency_pair.model.CurrencyPair;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 
-/**
- * Модель инструмента FX_SPOT.
- */
-public record FxOutright(
+public record FxOutrightNew (
 
-        CurrencyPair currencyPair,
+        String baseCurrency,
+        String quoteCurrency,
+        Integer quoteDecimal,
         ValueDateCode valueDateCode
 
 ) implements Instrument {
 
     @Override
     public String internalCode() {
-        return currencyPair.base() + currencyPair.quote() + "_" + valueDateCode;
+        return baseCurrency + quoteCurrency + "_" + valueDateCode;
     }
 
     @Override

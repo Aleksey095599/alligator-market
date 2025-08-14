@@ -5,6 +5,5 @@ package com.alligator.market.domain.instrument.model;
  */
 public enum InstrumentType {
 
-    // Конверсионная сделка
     FX_OUTRIGHT,
 }
