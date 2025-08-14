@@ -38,7 +38,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     private ValueDateCode valueDateCode;
 
     /** Кол-во знаков после запятой для курса. */
-    @Column(nullable = false)
+    @Column(name = "quote_decimal", nullable = false)
     @Min(0)
     @Max(10)
     private Integer quoteDecimal;

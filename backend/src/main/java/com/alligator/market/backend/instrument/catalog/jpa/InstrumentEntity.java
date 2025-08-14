@@ -25,7 +25,7 @@ public abstract class InstrumentEntity extends BaseEntity {
     private Long id;
 
     /** Внутренний код инструмента. */
-    @Column(name = "instrument_code", nullable = false, updatable = false, length = 64)
+    @Column(name = "instrument_code", nullable = false, updatable = false, length = 32)
     private String instrumentCode;
 
     /** Тип финансового инструмента. */
