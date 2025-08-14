@@ -1,13 +1,20 @@
 package com.alligator.market.backend.instrument.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(
         name = "instrument",
-        uniqueConstraints = @UniqueConstraint(name = "uk_instrument_code", columnNames = "instrument_code")
+        uniqueConstraints = @UniqueConstraint(name = "uk_instrument_code", columnNames = "code")
 )
+@Getter
+@Setter
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class InstrumentEntity extends BaseEntity {
 
@@ -18,9 +25,11 @@ public abstract class InstrumentEntity extends BaseEntity {
     private Long id;
 
     /** Внутренний код инструмента. */
-    @Column(name = "code", length = 12)
+    @Column(name = "code", nullable = false, updatable = false, length = 64)
     private String code;
 
     /** Тип финансового инструмента. */
-    type
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, updatable = false, length = 32)
+    private InstrumentType type;
 }

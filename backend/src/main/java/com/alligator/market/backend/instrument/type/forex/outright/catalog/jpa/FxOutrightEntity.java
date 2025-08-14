@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
 import jakarta.persistence.*;
@@ -11,19 +12,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity инструмента FX_OUTRIGHT.
+ * Entity финансового инструмента FX_OUTRIGHT.
  */
 @Entity
 @Table(name = "fx_outright")
 @Getter
 @Setter
 @NoArgsConstructor
-public class FxOutrightEntity extends BaseEntity {
-
-    /** Внутренний код инструмента. */
-    @Id
-    @Column(name = "internal_code", length = 12)
-    private String internalCode;
+public class FxOutrightEntity extends InstrumentEntity {
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @ManyToOne(optional = false)
