@@ -29,23 +29,24 @@ public class CurrencyEntity extends BaseEntity {
     /** Суррогатный PK. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /** ISO-4217 код валюты. */
     @Pattern(regexp = "^[A-Z]{3}$")
-    @Column(length = 3, nullable = false)
+    @Column(name = "code", length = 3, nullable = false)
     private String code;
 
     /** Наименование валюты. */
-    @Column(length = 50, nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     /** Страна или регион обращения. */
-    @Column(length = 100, nullable = false)
+    @Column(name = "country", length = 100, nullable = false)
     private String country;
 
     /** Кол-во знаков после запятой для денежных сумм. */
-    @Column(nullable = false)
+    @Column(name = "decimal", nullable = false)
     @Min(0)
     @Max(10)
     private Integer decimal;
