@@ -2,9 +2,8 @@ package com.alligator.market.backend.provider.twelve.free.adapter;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.domain.instrument.type.fx.outright.reference.currency_pair.model.CurrencyPair;
-import com.alligator.market.domain.instrument.type.fx.outright.model.FxOutright;
-import com.alligator.market.domain.instrument.type.fx.outright.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -34,8 +33,7 @@ class TwelveFreeAdapterV2Test {
 
         TwelveFreeAdapterV2 adapter = new TwelveFreeAdapterV2(props, client);
 
-        CurrencyPair pair = new CurrencyPair("EUR", "USD", 2);
-        FxOutright fxOutright = new FxOutright(pair, ValueDateCode.TOM);
+        FxOutright fxOutright = new FxOutright("EUR", "USD", 4, ValueDateCode.TOM);
 
         QuoteTick tick = adapter.quote(fxOutright)
                 .blockFirst(Duration.ofSeconds(5));

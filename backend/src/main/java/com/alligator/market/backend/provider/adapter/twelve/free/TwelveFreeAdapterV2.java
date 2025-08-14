@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
-import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxOutrightHandler;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
@@ -41,7 +41,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         // Добавляем обработчик для FX-спот
         handlers.put(
                 InstrumentType.FX_OUTRIGHT,
-                new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE)
+                new TwelveFreeFxOutrightHandler(webClient, props, PROVIDER_CODE)
         );
     }
 

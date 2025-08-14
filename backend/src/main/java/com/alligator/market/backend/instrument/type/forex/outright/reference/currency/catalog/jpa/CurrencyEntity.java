@@ -1,0 +1,53 @@
+package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa;
+
+import com.alligator.market.backend.common.jpa.BaseEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * Entity валюты.
+ */
+@Entity
+@Table(
+        name = "currency",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_currency_code", columnNames = "code"),
+                @UniqueConstraint(name = "uq_currency_name", columnNames = "name"),
+                @UniqueConstraint(name = "uq_currency_country", columnNames = "country")
+        }
+)
+@Getter
+@Setter
+@NoArgsConstructor
+public class CurrencyEntity extends BaseEntity {
+
+    /** Суррогатный PK. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    /** ISO-4217 код валюты. */
+    @Pattern(regexp = "^[A-Z]{3}$")
+    @Column(name = "code", length = 3, nullable = false)
+    private String code;
+
+    /** Наименование валюты. */
+    @Column(name = "name", length = 50, nullable = false)
+    private String name;
+
+    /** Страна или регион обращения. */
+    @Column(name = "country", length = 100, nullable = false)
+    private String country;
+
+    /** Кол-во знаков после запятой для денежных сумм. */
+    @Column(name = "decimal", nullable = false)
+    @Min(0)
+    @Max(10)
+    private Integer decimal;
+}

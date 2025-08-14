@@ -29,7 +29,6 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private Long version;
 
-    /* Время создания записи. */
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private Instant createdTimestamp;
@@ -42,7 +41,6 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
-    /* Время последнего обновления записи. */
     @LastModifiedDate
     @Column(nullable = false)
     private Instant updatedTimestamp;
