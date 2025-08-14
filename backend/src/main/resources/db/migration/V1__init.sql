@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS provider_profile_instrument_type (
 -- Связь типов инструментов с профилем провайдера
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_provider_instrument_type_provider') THEN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_provider_profile_instrument_type_provider_profile') THEN
         ALTER TABLE provider_profile_instrument_type
-            ADD CONSTRAINT fk_provider_instrument_type_provider FOREIGN KEY (provider_id) REFERENCES provider_profile(id);
+            ADD CONSTRAINT fk_provider_profile_instrument_type_provider_profile FOREIGN KEY (provider_id) REFERENCES provider_profile(id);
     END IF;
 END $$;
