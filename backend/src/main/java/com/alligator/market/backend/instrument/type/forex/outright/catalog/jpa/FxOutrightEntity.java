@@ -53,7 +53,6 @@ public class FxOutrightEntity extends InstrumentEntity {
      */
     @Override
     protected void onPrePersist() {
-        // Проверяем, что базовая и котируемая валюты различаются
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
