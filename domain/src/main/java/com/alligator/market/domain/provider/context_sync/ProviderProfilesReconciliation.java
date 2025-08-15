@@ -68,22 +68,20 @@ public class ProviderProfilesReconciliation {
 
             // 2) Если полное совпадение по всем полям значит профиль актуален
             if (contextMatch.equals(dbProfile)) {
-                // Исключаем из "restContextProfiles",
-                // в БД i-ый профиль останется без изменений
+                // Исключаем из "restContextProfiles", в БД i-ый профиль останется без изменений
                 restContextProfiles.remove(contextMatch);
                 continue; // переходим к i+1 профилю из БД
             }
 
-            // 3) Сюда приходим, если совпадение есть, но не полное
-            diff.putToReplaceList(id); // Помещаем в список для замены (REPLACED)
-
-            // 4) Сюда приходим если ???
-            diff.putToAddList(contextMatch);
+            // 3) Если совпадение есть, но не по всем полям профиля
+            diff.putToReplaceList(id); // Помещаем i-ый профиль БД в список для замены (REPLACED)
+            diff.putToAddList(contextMatch); // Профиль их контекста добавляем в список для добавления как ACTIVE
 
             // Удаляем из "restContextProfiles" обработанный профиль "contextMatch"
             restContextProfiles.remove(contextMatch);
         }
 
+        // Оставшиеся профили не нашли совпадений с БД, значит их добавляем в список для добавления как ACTIVE
         restContextProfiles.forEach(diff::putToAddList);
         return diff;
     }
