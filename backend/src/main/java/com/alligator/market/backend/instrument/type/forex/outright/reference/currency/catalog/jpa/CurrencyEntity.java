@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,10 +39,12 @@ public class CurrencyEntity extends BaseEntity {
     private String code;
 
     /** Наименование валюты. */
+    @NotBlank
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     /** Страна или регион обращения. */
+    @NotBlank
     @Column(name = "country", length = 100, nullable = false)
     private String country;
 
