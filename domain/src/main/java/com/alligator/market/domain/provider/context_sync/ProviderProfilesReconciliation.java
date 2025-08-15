@@ -79,6 +79,8 @@ public class ProviderProfilesReconciliation {
 
             // 4) Сюда приходим если ???
             diff.putToAddList(contextMatch);
+
+            // Удаляем из "restContextProfiles" обработанный профиль "contextMatch"
             restContextProfiles.remove(contextMatch);
         }
 
