@@ -22,9 +22,6 @@ public interface CurrencyStorage {
     /** Найти валюту по имени. */
     Optional<Currency> findByName(String name);
 
-    /** Найти валюту по стране обращения. */
-    Optional<Currency> findByCountry(String country);
-
     /** Вернуть все валюты. */
     List<Currency> findAll();
 }

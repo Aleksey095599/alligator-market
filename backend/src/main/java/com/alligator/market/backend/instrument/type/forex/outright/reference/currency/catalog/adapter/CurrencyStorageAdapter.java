@@ -45,11 +45,6 @@ public class CurrencyStorageAdapter implements CurrencyStorage {
     }
 
     @Override
-    public Optional<Currency> findByCountry(String country) {
-        return jpaRepository.findByCountry(country).map(CurrencyEntityMapper::toDomain);
-    }
-
-    @Override
     public List<Currency> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
                 .map(CurrencyEntityMapper::toDomain)

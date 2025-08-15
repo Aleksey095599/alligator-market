@@ -34,10 +34,6 @@ public class CurrencyServiceImpl implements CurrencyService {
         storage.findByName(currency.name()).ifPresent(c -> {
             throw new DuplicateCurrencyException("name", currency.name());
         });
-        storage.findByCountry(currency.country()).ifPresent(c -> {
-            throw new DuplicateCurrencyException("country", currency.country());
-        });
-
         String code = storage.save(currency);
         log.info("Currency {} saved", code);
         return code;
@@ -56,12 +52,6 @@ public class CurrencyServiceImpl implements CurrencyService {
                 throw new DuplicateCurrencyException("name", currency.name());
             }
         });
-        storage.findByCountry(currency.country()).ifPresent(c -> {
-            if (!c.code().equals(currency.code())) {
-                throw new DuplicateCurrencyException("country", currency.country());
-            }
-        });
-
         storage.save(currency);
         log.info("Currency {} updated", currency.code());
     }
