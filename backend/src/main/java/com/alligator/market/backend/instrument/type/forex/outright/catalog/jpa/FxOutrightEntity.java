@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDat
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     private ValueDateCode valueDateCode;
 
     /** Кол-во знаков после запятой для курса. */
+    @NotNull
     @Column(name = "quote_decimal", nullable = false)
     @Min(0)
     @Max(10)
