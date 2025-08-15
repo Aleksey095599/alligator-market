@@ -31,9 +31,6 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'uq_currency_name') THEN
         ALTER TABLE currency ADD CONSTRAINT uq_currency_name UNIQUE (name);
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'uq_currency_country') THEN
-        ALTER TABLE currency ADD CONSTRAINT uq_currency_country UNIQUE (country);
-    END IF;
 END $$;
 
 -- =============================

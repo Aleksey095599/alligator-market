@@ -18,8 +18,7 @@ import lombok.Setter;
         name = "currency",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_currency_code", columnNames = "code"),
-                @UniqueConstraint(name = "uq_currency_name", columnNames = "name"),
-                @UniqueConstraint(name = "uq_currency_country", columnNames = "country")
+                @UniqueConstraint(name = "uq_currency_name", columnNames = "name")
         }
 )
 @Getter
