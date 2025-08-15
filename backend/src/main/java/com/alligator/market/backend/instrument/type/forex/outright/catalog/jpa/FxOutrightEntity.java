@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa;
 
 import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
+import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -44,9 +45,10 @@ public class FxOutrightEntity extends InstrumentEntity {
     @Max(10)
     private Integer quoteDecimal;
 
-    /* JPA-callback: генерируем код перед вставкой. */
+    /** JPA-callback код перед вставкой. */
     @Override
     protected void onPrePersist() {
+        setInstrumentType(InstrumentType.FX_OUTRIGHT);
         __generateInstrumentCode();
     }
 
@@ -56,7 +58,7 @@ public class FxOutrightEntity extends InstrumentEntity {
         __generateInstrumentCode();
     }
 
-    /* Генерация внутреннего кода инструмента. */
+    /** Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
         setInstrumentCode(instrumentCode);
