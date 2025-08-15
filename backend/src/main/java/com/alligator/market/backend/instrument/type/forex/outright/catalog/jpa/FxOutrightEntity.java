@@ -31,6 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class FxOutrightEntity extends InstrumentEntity {
+
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -64,11 +65,14 @@ public class FxOutrightEntity extends InstrumentEntity {
      */
     @Override
     protected void onPrePersist() {
+        // Проверка: разные валюты для пары
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
             // TODO: Заменить на собственную ошибку из доменного класса
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
+        // Присваиваем тип финансового инструмента
         setInstrumentType(InstrumentType.FX_OUTRIGHT);
+        // Генерируем код финансового инструмента
         __generateInstrumentCode();
     }
 
