@@ -32,7 +32,7 @@ public class ProviderProfileController {
     /** Вернуть все активные профили. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
-        List<ProviderProfileDto> list = service.findAllActive().keySet().stream()
+        List<ProviderProfileDto> list = service.findAllActive().values().stream()
                 .map(this::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
