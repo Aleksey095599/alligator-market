@@ -48,19 +48,19 @@ public class ProviderProfilesReconciliation {
             Long id = entry_i.getKey();
             ProviderProfile dbProfile = entry_i.getValue();
 
-            // Совпавший по коду провайдера профиль
+            // Переменная, предназначенная для хранения профиля провайдера, совпавшего по коду
             ProviderProfile contextMatch = null;
 
-            // Перебираем остаточный список контекстных профилей
+            // Перебираем профили из списка "restContextProfiles"
             for (ProviderProfile p : restContextProfiles) {
                 if (p.providerCode().equals(dbProfile.providerCode())) {
-                    // Если совпадающий по коду провайдера с i-ым профилем из БД:
-                    contextMatch = p;
+                    // Если найдено совпадение с i-ым профилем из БД
+                    contextMatch = p; // помещаем этот профиль в "contextMatch"
                     break;
                 }
             }
 
-            // 1) Если для i-го профиля из БД не нашлось ни одного совпадения
+            // 1) Если ни один профиль из контекста не совпал с i-ым профилем из БД
             if (contextMatch == null) {
                 diff.putToMissingList(id); // Значит профиль в БД не актуален (MISSING)
                 continue; // переходим к i+1 профилю из БД
@@ -68,14 +68,14 @@ public class ProviderProfilesReconciliation {
 
             // 2) Если полное совпадение по всем полям значит профиль актуален
             if (contextMatch.equals(dbProfile)) {
-                // Исключаем из остаточного списка контекстных профилей,
-                // в БД i-ый профиль останется без изменений, то есть ACTIVE
+                // Исключаем из "restContextProfiles",
+                // в БД i-ый профиль останется без изменений
                 restContextProfiles.remove(contextMatch);
                 continue; // переходим к i+1 профилю из БД
             }
 
             // 3) Сюда приходим, если совпадение есть, но не полное
-            diff.putToReplaceList(id); // Помещаем в список для замещения в БД (REPLACED)
+            diff.putToReplaceList(id); // Помещаем в список для замены (REPLACED)
 
             // 4) Сюда приходим если
             diff.putToAddList(contextMatch);
