@@ -21,7 +21,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-// equals/hashCode без учета родителя
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class InstrumentEntity extends BaseEntity {

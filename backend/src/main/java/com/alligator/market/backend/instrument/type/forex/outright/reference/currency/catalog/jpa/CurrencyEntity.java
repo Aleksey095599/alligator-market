@@ -26,7 +26,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-// equals/hashCode без учета родителя
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class CurrencyEntity extends BaseEntity {
 
