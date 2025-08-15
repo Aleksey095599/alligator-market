@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных (далее - провайдеры),
+ * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных (далее - профили),
  * извлеченных из контекста приложения и из хранилища данных.
  */
 public class ProviderProfilesReconciliation {
@@ -24,41 +24,60 @@ public class ProviderProfilesReconciliation {
     }
 
     /**
-     * Сравнить профили провайдеров рыночных данных в хранилище данных и извлеченных
-     * из контекста приложения.
+     * Сравнить профили в хранилище данных и в контексте приложения.
      *
      * @return {@link ContextDiff}
      */
     public ContextDiff compare() {
+
+        // Список контекстных профилей
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
+        // Карта <профиль, PK> профилей из БД со статусом ACTIVE
         Map<ProviderProfile, Long> dbActiveProfiles = profileStorage.findAllActive();
 
         ContextDiff diff = new ContextDiff();
-        List<ProviderProfile> restContextProfiles = new ArrayList<>(contextProfiles);
 
-        for (Map.Entry<ProviderProfile, Long> entry : dbActiveProfiles.entrySet()) {
-            ProviderProfile dbProfile = entry.getKey();
-            Long id = entry.getValue();
+        // Список оставшихся контекстных профилей
+        List<ProviderProfile> restContextProfiles =
+                new ArrayList<>(contextProfiles); // До начала цикла совпадает с полным
 
+        // Перебираем все профили в карте <профиль, PK> из БД
+        for (Map.Entry<ProviderProfile, Long> entry_i : dbActiveProfiles.entrySet()) {
+
+            // entry_i это пара <i-ый профиль, PK>
+            ProviderProfile dbProfile = entry_i.getKey();
+            Long id = entry_i.getValue();
+
+            // Совпавший по коду провайдера профиль
             ProviderProfile contextMatch = null;
+
+            // Перебираем остаточный список контекстных профилей
             for (ProviderProfile p : restContextProfiles) {
                 if (p.providerCode().equals(dbProfile.providerCode())) {
+                    // Если совпадающий по коду провайдера с i-ым профилем из БД:
                     contextMatch = p;
                     break;
                 }
             }
 
+            // 1) Если для i-го профиля из БД не нашлось ни одного совпадения
             if (contextMatch == null) {
-                diff.putToMissingList(id);
-                continue;
+                diff.putToMissingList(id); // Значит профиль в БД не актуален (MISSING)
+                continue; // переходим к i+1 профилю из БД
             }
 
+            // 2) Если полное совпадение по всем полям значит профиль актуален
             if (contextMatch.equals(dbProfile)) {
+                // Исключаем из остаточного списка контекстных профилей,
+                // в БД i-ый профиль останется без изменений, то есть ACTIVE
                 restContextProfiles.remove(contextMatch);
-                continue;
+                continue; // переходим к i+1 профилю из БД
             }
 
-            diff.putToReplaceList(id);
+            // 3) Сюда приходим, если совпадение есть, но не полное
+            diff.putToReplaceList(id); // Помещаем в список для замещения в БД (REPLACED)
+
+            // 4) Сюда приходим если
             diff.putToAddList(contextMatch);
             restContextProfiles.remove(contextMatch);
         }
