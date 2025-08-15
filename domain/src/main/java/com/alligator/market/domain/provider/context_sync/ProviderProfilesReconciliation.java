@@ -30,16 +30,16 @@ public class ProviderProfilesReconciliation {
      */
     public ContextDiff compare() {
 
-        // Список контекстных профилей
+        // Список профилей из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
-        // Карта <PK, профиль> профилей из БД со статусом ACTIVE
+        // Карта <PK, активный профиль> из БД
         Map<Long, ProviderProfile> dbActiveProfiles = profileStorage.findAllActive();
 
         ContextDiff diff = new ContextDiff();
 
-        // Список оставшихся контекстных профилей
+        // Список профилей из контекста, сокращающийся по мере работы цикла
         List<ProviderProfile> restContextProfiles =
-                new ArrayList<>(contextProfiles); // До начала цикла совпадает с полным
+                new ArrayList<>(contextProfiles); // До начала цикла совпадает с полным списком
 
         // Перебираем все профили в карте <PK, профиль> из БД
         for (Map.Entry<Long, ProviderProfile> entry_i : dbActiveProfiles.entrySet()) {
