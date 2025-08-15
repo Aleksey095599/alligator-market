@@ -54,6 +54,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     @Override
     protected void onPrePersist() {
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
+            // TODO: Заменить на собственную ошибку из доменного класса
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
         setInstrumentType(InstrumentType.FX_OUTRIGHT);
