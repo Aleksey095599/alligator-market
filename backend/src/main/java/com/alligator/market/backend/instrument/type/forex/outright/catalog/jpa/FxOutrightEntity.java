@@ -4,7 +4,15 @@ import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,13 +32,13 @@ public class FxOutrightEntity extends InstrumentEntity {
 
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_outright_base"), updatable = false, nullable = false)
     private CurrencyEntity baseCurrency;
 
     /** ISO-4217 код котируемой валюты (FK на "code" в таблице "currency"). */
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_outright_quote"), updatable = false, nullable = false)
     private CurrencyEntity quoteCurrency;
