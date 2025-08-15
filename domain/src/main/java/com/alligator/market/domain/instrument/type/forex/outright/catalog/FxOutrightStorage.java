@@ -10,8 +10,11 @@ import java.util.Optional;
  */
 public interface FxOutrightStorage {
 
-    /** Сохранить инструмент FX SPOT. */
+    /** Сохранить инструмент FX OUTRIGHT. */
     void save(FxOutright instrument);
+
+    /** Удалить инструмент по внутреннему коду. */
+    void delete(String internalCode);
 
     /** Найти инструмент по внутреннему коду. */
     Optional<FxOutright> find(String internalCode);
