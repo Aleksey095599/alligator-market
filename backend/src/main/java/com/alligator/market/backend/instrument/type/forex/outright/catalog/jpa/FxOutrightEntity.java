@@ -69,6 +69,25 @@ public class FxOutrightEntity extends InstrumentEntity {
         __generateInstrumentCode();
     }
 
+    /**
+     * JPA-callback код перед обновлением.
+     * Перегенерирует код инструмента при изменении валют или даты расчётов.
+     */
+    @Override
+    protected void onPreUpdate() {
+        // Проверка: разные валюты для пары
+        if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
+            // TODO: Заменить на собственную ошибку из доменного класса
+            throw new IllegalArgumentException("Base and quote currencies must be different");
+        }
+        // Ожидаемый код на основании текущих параметров
+        String expectedCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
+        // Пересохраняем код только при изменении
+        if (!expectedCode.equals(getInstrumentCode())) {
+            __generateInstrumentCode(); // → сохраняем новое значение
+        }
+    }
+
     /* Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
