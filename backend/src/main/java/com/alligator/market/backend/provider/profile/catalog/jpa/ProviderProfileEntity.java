@@ -20,10 +20,10 @@ import lombok.Setter;
  * Entity профиля провайдера рыночных данных (далее - провайдера).
  */
 @Entity
-@Table(
+/*@Table(
         name = "provider_profile",
         uniqueConstraints = @UniqueConstraint(name = "uq_provider_profile_code", columnNames = "provider_code")
-)
+) TODO: исключить REPLACED статус провайдера и вернуть данное ограничение */
 @Getter
 @Setter
 @NoArgsConstructor

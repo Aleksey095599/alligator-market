@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Хранилище инструментов FX SPOT.
+ * Хранилище инструментов FX_OUTRIGHT.
  */
 public interface FxOutrightStorage {
 
