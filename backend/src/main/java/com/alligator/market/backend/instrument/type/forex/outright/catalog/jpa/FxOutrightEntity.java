@@ -49,10 +49,14 @@ public class FxOutrightEntity extends InstrumentEntity {
 
     /**
      * JPA-callback код перед вставкой.
-     * Добавляет тип инструмента и генерирует код инструмента.
+     * Добавляет тип инструмента, проверяет валюты и генерирует код инструмента.
      */
     @Override
     protected void onPrePersist() {
+        // Проверяем, что базовая и котируемая валюты различаются
+        if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
+            throw new IllegalArgumentException("Base and quote currencies must be different");
+        }
         setInstrumentType(InstrumentType.FX_OUTRIGHT);
         __generateInstrumentCode();
     }
