@@ -34,7 +34,7 @@ public class CurrencyEntity extends BaseEntity {
 
     /** ISO-4217 код валюты. */
     @Pattern(regexp = "^[A-Z]{3}$")
-    @Column(name = "code", length = 3, nullable = false)
+    @Column(name = "code", length = 3, nullable = false, updatable = false)
     private String code;
 
     /** Наименование валюты. */

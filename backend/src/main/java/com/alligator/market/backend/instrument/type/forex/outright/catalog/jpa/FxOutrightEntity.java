@@ -20,21 +20,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FxOutrightEntity extends InstrumentEntity {
 
+
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_outright_base"))
+            foreignKey = @ForeignKey(name = "fk_fx_outright_base"), updatable = false, nullable = false)
     private CurrencyEntity baseCurrency;
 
     /** ISO-4217 код котируемой валюты (FK на "code" в таблице "currency"). */
     @ManyToOne(optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_outright_quote"))
+            foreignKey = @ForeignKey(name = "fk_fx_outright_quote"), updatable = false, nullable = false)
     private CurrencyEntity quoteCurrency;
 
     /** Код даты расчетов. */
     @Enumerated(EnumType.STRING)
-    @Column(name = "value_date_code", length = 4, nullable = false)
+    @Column(name = "value_date_code", length = 4, updatable = false, nullable = false)
     private ValueDateCode valueDateCode;
 
     /** Кол-во знаков после запятой для курса. */
