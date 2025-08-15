@@ -12,8 +12,9 @@ import java.util.List;
 /**
  * Компонент реализует доменный контракт сканера контекста приложения, извлекающего профили провайдеров
  * рыночных данных (далее - провайдеры):
- * ищет в контексте Spring все адаптеры провайдеров реализующих контракт {@link MarketDataProvider}
- * и извлекает соответствующие им профили провайдеров.
+ * 1) ищет в контексте Spring все адаптеры провайдеров реализующих контракт {@link MarketDataProvider};
+ * 2) извлекает соответствующие им профили провайдеров;
+ * 3) проверяет, что в контексте нет дублей провайдеров по кодам и именам.
  */
 @Component
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         return profiles;
     }
 
-    /** Вспомогательный метод проверяет уникальность кодов и имен провайдеров. */
+    /** Вспомогательный метод проверяет уникальность кодов и имен провайдеров в списке. */
     private void validateNoDuplicates(List<ProviderProfile> profiles) {
         java.util.Set<String> codes = new java.util.HashSet<>();
         java.util.Set<String> names = new java.util.HashSet<>();
