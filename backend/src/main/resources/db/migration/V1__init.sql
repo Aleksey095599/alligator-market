@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS currency (
     code VARCHAR(3) NOT NULL,
     name VARCHAR(50) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    decimal INTEGER NOT NULL,
+    decimal_digits INTEGER NOT NULL,
     version BIGINT NOT NULL,
     created_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     created_by VARCHAR(255) NOT NULL,

@@ -95,7 +95,7 @@ public class CurrencyController {
                         c.code(),
                         c.name(),
                         c.country(),
-                        c.decimal()
+                        c.decimalDigits()
                 ))
                 .toList();
 
