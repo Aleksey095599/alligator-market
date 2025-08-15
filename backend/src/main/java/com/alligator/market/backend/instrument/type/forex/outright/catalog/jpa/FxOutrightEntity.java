@@ -45,20 +45,17 @@ public class FxOutrightEntity extends InstrumentEntity {
     @Max(10)
     private Integer quoteDecimal;
 
-    /** JPA-callback код перед вставкой. */
+    /**
+     * JPA-callback код перед вставкой.
+     * Добавляет тип инструмента и генерирует код инструмента.
+     */
     @Override
     protected void onPrePersist() {
         setInstrumentType(InstrumentType.FX_OUTRIGHT);
         __generateInstrumentCode();
     }
 
-    /* JPA-callback: генерируем код перед обновлением. */
-    @Override
-    protected void onPreUpdate() {
-        __generateInstrumentCode();
-    }
-
-    /** Вспомогательный метод генерации кода инструмента. */
+    /* Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
         setInstrumentCode(instrumentCode);
