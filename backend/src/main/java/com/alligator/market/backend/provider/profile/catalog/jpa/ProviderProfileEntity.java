@@ -2,13 +2,16 @@ package com.alligator.market.backend.provider.profile.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
-import java.util.Set;
-
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.util.Set;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,20 +20,27 @@ import lombok.Setter;
  * Entity профиля провайдера рыночных данных (далее - провайдера).
  */
 @Entity
-@Table(name = "provider_profile")
+@Table(
+        name = "provider_profile",
+        uniqueConstraints = @UniqueConstraint(name = "uq_provider_profile_code", columnNames = "provider_code")
+)
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class ProviderProfileEntity extends BaseEntity {
 
     /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 10, nullable = false)
+    @Column(name = "status", length = 10, nullable = false)
     private ProviderProfileStatus status;
 
     //==========================
@@ -38,11 +48,15 @@ public class ProviderProfileEntity extends BaseEntity {
     //==========================
 
     /** Технический код {@link ProviderProfile#providerCode()}. */
-    @Column(length = 50, nullable = false)
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
     /** Отображаемое имя {@link ProviderProfile#displayName()}. */
-    @Column(length = 50, nullable = false)
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "display_name", length = 50, nullable = false)
     private String displayName;
 
     /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()}. */
@@ -60,17 +74,19 @@ public class ProviderProfileEntity extends BaseEntity {
     private Set<InstrumentType> instrumentTypes;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()}. */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 10, nullable = false)
+    @Column(name = "delivery_mode", length = 10, nullable = false)
     private DeliveryMode deliveryMode;
 
     /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()}. */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(name = "access_method", length = 20, nullable = false)
     private AccessMethod accessMethod;
 
     /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()}. */
-    @Column(nullable = false)
+    @Column(name = "supports_bulk_subscription", nullable = false)
     private boolean supportsBulkSubscription;
 
     /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()}. */
