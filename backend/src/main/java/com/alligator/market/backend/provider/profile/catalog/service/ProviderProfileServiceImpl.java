@@ -19,7 +19,7 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
     private final ProviderProfileStorage storage;
 
     @Override
-    public Map<ProviderProfile, Long> findAllActive() {
+    public Map<Long, ProviderProfile> findAllActive() {
         return storage.findAllActive();
     }
 

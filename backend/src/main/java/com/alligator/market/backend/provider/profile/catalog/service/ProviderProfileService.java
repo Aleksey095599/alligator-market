@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ProviderProfileService {
 
     /** Вернуть все активные профили вместе с PK. */
-    Map<ProviderProfile, Long> findAllActive();
+    Map<Long, ProviderProfile> findAllActive();
 
     /** Вернуть все профили с их статусами. */
     Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus();

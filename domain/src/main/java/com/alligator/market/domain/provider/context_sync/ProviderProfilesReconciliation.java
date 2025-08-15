@@ -32,8 +32,8 @@ public class ProviderProfilesReconciliation {
 
         // Список контекстных профилей
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
-        // Карта <профиль, PK> профилей из БД со статусом ACTIVE
-        Map<ProviderProfile, Long> dbActiveProfiles = profileStorage.findAllActive();
+        // Карта <PK, профиль> профилей из БД со статусом ACTIVE
+        Map<Long, ProviderProfile> dbActiveProfiles = profileStorage.findAllActive();
 
         ContextDiff diff = new ContextDiff();
 
@@ -41,12 +41,12 @@ public class ProviderProfilesReconciliation {
         List<ProviderProfile> restContextProfiles =
                 new ArrayList<>(contextProfiles); // До начала цикла совпадает с полным
 
-        // Перебираем все профили в карте <профиль, PK> из БД
-        for (Map.Entry<ProviderProfile, Long> entry_i : dbActiveProfiles.entrySet()) {
+        // Перебираем все профили в карте <PK, профиль> из БД
+        for (Map.Entry<Long, ProviderProfile> entry_i : dbActiveProfiles.entrySet()) {
 
-            // entry_i это пара <i-ый профиль, PK>
-            ProviderProfile dbProfile = entry_i.getKey();
-            Long id = entry_i.getValue();
+            // entry_i это пара <PK, i-ый профиль>
+            Long id = entry_i.getKey();
+            ProviderProfile dbProfile = entry_i.getValue();
 
             // Совпавший по коду провайдера профиль
             ProviderProfile contextMatch = null;
