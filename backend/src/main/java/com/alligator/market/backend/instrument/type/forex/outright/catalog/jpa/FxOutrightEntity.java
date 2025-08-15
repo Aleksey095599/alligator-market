@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,22 +29,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class FxOutrightEntity extends InstrumentEntity {
-
-
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_outright_base"), updatable = false, nullable = false)
     private CurrencyEntity baseCurrency;
 
     /** ISO-4217 код котируемой валюты (FK на "code" в таблице "currency"). */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_outright_quote"), updatable = false, nullable = false)
     private CurrencyEntity quoteCurrency;
 
     /** Код даты расчетов. */
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date_code", length = 4, updatable = false, nullable = false)
     private ValueDateCode valueDateCode;
