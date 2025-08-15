@@ -5,10 +5,14 @@ import com.alligator.market.domain.instrument.model.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Базовая entity финансового инструмента.
+ */
 @Entity
 @Table(
         name = "instrument",
@@ -17,10 +21,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class InstrumentEntity extends BaseEntity {
 
     /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
