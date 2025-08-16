@@ -3,7 +3,6 @@ package com.alligator.market.backend.provider.profile.context.scanner;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.context.ProfileContextScanner;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
