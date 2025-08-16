@@ -33,6 +33,7 @@ public class ProviderProfileEntity extends BaseEntity {
 
     /** Код провайдера, объединенный с версией записи. */
     @NotNull
+    @Column(name = "provider_versioned_code", length = 10, nullable = false, updatable = false)
     private String providerVersionedCode;
 
     /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
@@ -44,11 +45,6 @@ public class ProviderProfileEntity extends BaseEntity {
     /** Данные профиля провайдера. */
     @Embedded
     private ProviderProfileEmbeddable profile;
-
-    /**
-     * JPA-callback код перед вставкой.
-     * Добавляет тип инструмента, проверяет валюты и генерирует код инструмента.
-     */
 
 
 }
