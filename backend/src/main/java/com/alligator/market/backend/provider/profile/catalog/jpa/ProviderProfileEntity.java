@@ -14,10 +14,7 @@ import lombok.Setter;
  * Entity профиля провайдера рыночных данных (далее - провайдера).
  */
 @Entity
-@Table(
-        name = "provider_profile",
-        uniqueConstraints = @UniqueConstraint(name = "uq_provider_profile_code", columnNames = "provider_code")
-)
+@Table(name = "provider_profile")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,11 +28,6 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Код провайдера, объединенный с версией записи. */
-    @NotNull
-    @Column(name = "provider_versioned_code", length = 10, nullable = false, updatable = false)
-    private String providerVersionedCode;
-
     /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -45,7 +37,5 @@ public class ProviderProfileEntity extends BaseEntity {
     /** Данные профиля провайдера. */
     @Embedded
     private ProviderProfileEmbeddable profile;
-
-
 }
 
