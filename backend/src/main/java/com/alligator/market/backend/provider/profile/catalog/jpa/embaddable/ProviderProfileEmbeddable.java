@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.jpa;
+package com.alligator.market.backend.provider.profile.catalog.jpa.embaddable;
 
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
@@ -16,6 +16,7 @@ import lombok.Setter;
 
 /**
  * Встраиваемая часть профиля провайдера рыночных данных.
+ * Поля полностью соответствуют параметром доменной модели {@link ProviderProfile}
  */
 @Embeddable
 @Getter

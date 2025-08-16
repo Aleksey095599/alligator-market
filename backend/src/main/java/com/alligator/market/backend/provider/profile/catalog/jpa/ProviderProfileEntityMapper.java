@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
+import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProviderProfileEmbeddable;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 
@@ -27,7 +28,7 @@ public final class ProviderProfileEntityMapper {
         return entity;
     }
 
-    /** Преобразует сущность в доменную модель, игнорируя статус. */
+    /** Преобразует сущность в доменную модель. */
     public static ProviderProfile toDomain(ProviderProfileEntity entity) {
         ProviderProfileEmbeddable data = entity.getProfile();
         return new ProviderProfile(
