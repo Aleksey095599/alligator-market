@@ -88,7 +88,7 @@ public class FxOutrightEntity extends InstrumentEntity {
         }
     }
 
-    /* Вспомогательный метод генерации кода инструмента. */
+    /** Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
         setInstrumentCode(instrumentCode);
