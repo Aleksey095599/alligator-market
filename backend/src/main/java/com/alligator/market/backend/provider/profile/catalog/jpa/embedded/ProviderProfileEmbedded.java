@@ -8,9 +8,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
+/** Встраиваемый профиль провайдера. */
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@Embeddable
 public class ProviderProfileEmbedded {
 
     /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
