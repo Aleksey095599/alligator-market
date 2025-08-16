@@ -71,7 +71,7 @@ public class FxOutrightEntity extends InstrumentEntity {
 
     /**
      * JPA-callback код перед обновлением.
-     * Перегенерирует код инструмента при изменении валют или даты расчётов.
+     * Обновляет код инструмента при изменении валют или даты расчётов.
      */
     @Override
     protected void onPreUpdate() {
@@ -82,7 +82,7 @@ public class FxOutrightEntity extends InstrumentEntity {
         }
         // Ожидаемый код на основании текущих параметров
         String expectedCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
-        // Пересохраняем код только при изменении
+        // Перезаписывает код только при изменении
         if (!expectedCode.equals(getInstrumentCode())) {
             __generateInstrumentCode(); // → сохраняем новое значение
         }
