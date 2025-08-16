@@ -13,16 +13,14 @@ import org.mapstruct.Mapping;
 public interface CurrencyDtoMapper {
 
     /** Преобразует DTO в доменную модель. */
-    @Mapping(target = "decimalDigits", source = "decimal")
     Currency toDomain(CurrencyDto dto);
 
     /** Преобразует DTO обновления и код в доменную модель. */
     @Mapping(target = "code", source = "code")
-    @Mapping(target = "decimalDigits", source = "dto.decimal")
+    @Mapping(target = "decimal", source = "dto.decimal")
     Currency toDomain(String code, CurrencyUpdateDto dto);
 
     /** Преобразует доменную модель в DTO. */
-    @Mapping(target = "decimal", source = "decimalDigits")
     CurrencyDto toDto(Currency currency);
 }
 
