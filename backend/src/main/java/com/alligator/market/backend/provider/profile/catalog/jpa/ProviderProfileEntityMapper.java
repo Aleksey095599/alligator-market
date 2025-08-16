@@ -15,26 +15,29 @@ public final class ProviderProfileEntityMapper {
     public static ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status) {
         ProviderProfileEntity entity = new ProviderProfileEntity();
         entity.setStatus(status);
-        entity.setProviderCode(profile.providerCode());
-        entity.setDisplayName(profile.displayName());
-        entity.setInstrumentTypes(profile.instrumentTypes());
-        entity.setDeliveryMode(profile.deliveryMode());
-        entity.setAccessMethod(profile.accessMethod());
-        entity.setSupportsBulkSubscription(profile.supportsBulkSubscription());
-        entity.setMinPollPeriodMs(profile.minPollPeriodMs());
+        ProviderProfileEmbeddable data = new ProviderProfileEmbeddable();
+        data.setProviderCode(profile.providerCode());
+        data.setDisplayName(profile.displayName());
+        data.setInstrumentTypes(profile.instrumentTypes());
+        data.setDeliveryMode(profile.deliveryMode());
+        data.setAccessMethod(profile.accessMethod());
+        data.setSupportsBulkSubscription(profile.supportsBulkSubscription());
+        data.setMinPollPeriodMs(profile.minPollPeriodMs());
+        entity.setProfile(data);
         return entity;
     }
 
     /** Преобразует сущность в доменную модель, игнорируя статус. */
     public static ProviderProfile toDomain(ProviderProfileEntity entity) {
+        ProviderProfileEmbeddable data = entity.getProfile();
         return new ProviderProfile(
-                entity.getProviderCode(),
-                entity.getDisplayName(),
-                entity.getInstrumentTypes(),
-                entity.getDeliveryMode(),
-                entity.getAccessMethod(),
-                entity.isSupportsBulkSubscription(),
-                entity.getMinPollPeriodMs()
+                data.getProviderCode(),
+                data.getDisplayName(),
+                data.getInstrumentTypes(),
+                data.getDeliveryMode(),
+                data.getAccessMethod(),
+                data.isSupportsBulkSubscription(),
+                data.getMinPollPeriodMs()
         );
     }
 }
