@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.catalog.service;
+package com.alligator.market.backend.provider.profile.catalog.service;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class ProviderProfileServiceImpl implements ProviderProfileService {
     }
 
     @Override
-    public Map<ProviderProfile, ProviderStatus> findAllWithStatus() {
+    public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
         return storage.findAllWithStatus();
     }
 }

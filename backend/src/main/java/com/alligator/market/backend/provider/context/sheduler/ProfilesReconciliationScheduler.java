@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.context.sheduler;
 
 import com.alligator.market.backend.provider.context.adapter.ProfilesReconciliationAdapter;
-import com.alligator.market.domain.provider.context.ProfilesReconciliation;
-import com.alligator.market.domain.provider.context.ProfileContextDiff;
+import com.alligator.market.domain.provider.profile.context.ProfilesReconciliation;
+import com.alligator.market.domain.provider.profile.context.ProfileContextDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

@@ -6,8 +6,8 @@ import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.T
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.model.InstrumentHandler;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.profile.model.AccessMethod;
-import com.alligator.market.domain.provider.profile.model.DeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
+import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -52,8 +52,8 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
                 PROVIDER_CODE,
                 "TwelveData Free Plan",
                 supportedInstrumentTypes(), // ← Получаем типы инструментов из карты обработчиков
-                DeliveryMode.PULL,
-                AccessMethod.API_POLL,
+                ProviderDeliveryMode.PULL,
+                ProviderAccessMethod.API_POLL,
                 false,
                 60_000
         );

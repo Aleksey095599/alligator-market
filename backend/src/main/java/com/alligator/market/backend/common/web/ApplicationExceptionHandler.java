@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.reference.curr
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.DuplicatePairException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
 import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.context.DuplicateProfileInContextException;
+import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

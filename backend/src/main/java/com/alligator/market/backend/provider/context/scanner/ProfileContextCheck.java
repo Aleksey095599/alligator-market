@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.context.scanner;
 
-import com.alligator.market.domain.provider.context.DuplicateProfileInContextException;
+import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.HashSet;

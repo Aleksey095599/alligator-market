@@ -1,40 +1,25 @@
-package com.alligator.market.backend.provider.profile.catalog.jpa;
+package com.alligator.market.backend.provider.profile.catalog.jpa.embedded;
 
-import com.alligator.market.backend.provider.catalog.jpa.ProviderEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
-import com.alligator.market.domain.provider.profile.model.AccessMethod;
-import com.alligator.market.domain.provider.profile.model.DeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
+import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.Set;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-/**
- * Профиль провайдера встраиваемый в {@link ProviderEntity}.
- * Поля полностью соответствуют параметром доменной модели {@link ProviderProfile}.
- * Поля не подлежат обновлению, так как любое изменение параметров профиля провайдера приводит
- * к созданию новой записи о провайдере.
- */
-@Embeddable
-@Getter
-@Setter
-@NoArgsConstructor
-@EqualsAndHashCode
-public class ProfileEmbeddable {
+public class ProviderProfileEmbedded {
 
-    /** Технический код {@link ProviderProfile#providerCode()}. */
+    /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
-    /** Отображаемое имя {@link ProviderProfile#displayName()}. */
+    /** Отображаемое имя провайдера (user friendly) {@link ProviderProfile#displayName()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
@@ -58,19 +43,19 @@ public class ProfileEmbeddable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_mode", length = 10, nullable = false, updatable = false)
-    private DeliveryMode deliveryMode;
+    private ProviderDeliveryMode deliveryMode;
 
     /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "access_method", length = 20, nullable = false, updatable = false)
-    private AccessMethod accessMethod;
+    private ProviderAccessMethod accessMethod;
 
-    /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()}. */
-    @Column(name = "supports_bulk_subscription", nullable = false, updatable = false)
-    private boolean supportsBulkSubscription;
+    /** Поддержка массовой подписки одним запросом {@link ProviderProfile#bulkSubscription()}. */
+    @Column(name = "bulk_subscription", nullable = false, updatable = false)
+    private boolean bulkSubscription;
 
-    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()}. */
-    @Column(name = "min_poll_period_ms", nullable = false, updatable = false)
-    private int minPollPeriodMs;
+    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollMs()}. */
+    @Column(name = "min_poll_ms", nullable = false, updatable = false)
+    private int minPollMs;
 }

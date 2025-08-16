@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.context;
+package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Модель результата сопоставления профилей провайдеров рыночных данных в виде трех соответствующих списков,
- * касательно которых требуются действия для целей синхронизации.
+ * касательно которых требуются действия с хранилищем профилей для целей синхронизации.
  */
 public record ProfileContextDiff(
         List<ProviderProfile> add,

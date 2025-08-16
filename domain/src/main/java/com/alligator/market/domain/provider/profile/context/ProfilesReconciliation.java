@@ -1,15 +1,14 @@
-package com.alligator.market.domain.provider.context;
+package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных (далее - профили),
+ * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных,
  * извлеченных из контекста приложения и из хранилища данных.
  */
 public class ProfilesReconciliation {
@@ -87,18 +86,17 @@ public class ProfilesReconciliation {
     }
 
     /**
-     * Применить {@link ProfileContextDiff} к хранилищу данных для синхронизации списка провайдеров
-     * рыночных данных с контекстом приложения.
+     * Применить {@link ProfileContextDiff} к хранилищу данных для приведения к актуальному состоянию.
      */
     public void applyContextDiffToStorage(ProfileContextDiff diff) {
         if (!diff.add().isEmpty()) {
             profileStorage.saveAll(diff.add());
         }
         if (!diff.replaced().isEmpty()) {
-            profileStorage.updateStatus(diff.replaced(), ProviderStatus.REPLACED);
+            profileStorage.updateStatus(diff.replaced(), ProviderProfileStatus.REPLACED);
         }
         if (!diff.missing().isEmpty()) {
-            profileStorage.updateStatus(diff.missing(), ProviderStatus.MISSING);
+            profileStorage.updateStatus(diff.missing(), ProviderProfileStatus.MISSING);
         }
     }
 }

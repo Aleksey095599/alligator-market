@@ -1,13 +1,13 @@
-package com.alligator.market.domain.provider.catalog;
+package com.alligator.market.domain.provider.profile.catalog;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * Хранилище профилей провайдеров рыночных данных (далее - профили).
+ * Хранилище профилей провайдеров рыночных данных.
  */
 public interface ProviderProfileStorage {
 
@@ -15,11 +15,11 @@ public interface ProviderProfileStorage {
     Map<Long, ProviderProfile> findAllActive();
 
     /** Вернуть все профили с их статусами. */
-    Map<ProviderProfile, ProviderStatus> findAllWithStatus();
+    Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus();
 
     /** Сохранить коллекцию профилей. */
     void saveAll(Collection<ProviderProfile> profiles);
 
     /** Обновить статус профилей по их идентификаторам. */
-    void updateStatus(Collection<Long> ids, ProviderStatus status);
+    void updateStatus(Collection<Long> ids, ProviderProfileStatus status);
 }

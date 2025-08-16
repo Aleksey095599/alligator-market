@@ -1,12 +1,12 @@
-package com.alligator.market.backend.provider.catalog.web;
+package com.alligator.market.backend.provider.profile.catalog.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.catalog.web.dto.ProviderProfileDto;
-import com.alligator.market.backend.provider.catalog.web.dto.ProviderProfileStatusDto;
-import com.alligator.market.backend.provider.catalog.service.ProviderProfileService;
+import com.alligator.market.backend.provider.profile.catalog.web.dto.ProviderProfileDto;
+import com.alligator.market.backend.provider.profile.catalog.web.dto.ProviderProfileStatusDto;
+import com.alligator.market.backend.provider.profile.catalog.service.ProviderProfileService;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,21 +60,21 @@ public class ProviderProfileController {
                 profile.instrumentTypes(),
                 profile.deliveryMode(),
                 profile.accessMethod(),
-                profile.supportsBulkSubscription(),
-                profile.minPollPeriodMs()
+                profile.bulkSubscription(),
+                profile.minPollMs()
         );
     }
 
     /** Утилита преобразует доменную модель и статус в DTO. */
-    private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderStatus status) {
+    private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status) {
         return new ProviderProfileStatusDto(
                 profile.providerCode(),
                 profile.displayName(),
                 profile.instrumentTypes(),
                 profile.deliveryMode(),
                 profile.accessMethod(),
-                profile.supportsBulkSubscription(),
-                profile.minPollPeriodMs(),
+                profile.bulkSubscription(),
+                profile.minPollMs(),
                 status
         );
     }

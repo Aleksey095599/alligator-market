@@ -1,11 +1,11 @@
-package com.alligator.market.domain.provider.context;
+package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.List;
 
 /**
- * Контракт сканера контекста приложения, извлекающего профили провайдеров рыночных данных (далее - профили).
+ * Контракт сканера контекста приложения, извлекающего профили провайдеров рыночных данных.
  */
 public interface ProfileContextScanner {
 
