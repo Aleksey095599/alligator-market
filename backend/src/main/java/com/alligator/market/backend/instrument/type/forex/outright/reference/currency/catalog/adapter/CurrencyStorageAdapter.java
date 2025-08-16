@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.adapter;
 
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,13 @@ import java.util.Optional;
 public class CurrencyStorageAdapter implements CurrencyStorage {
 
     private final CurrencyJpaRepository jpaRepository;
+    private final CurrencyEntityMapper mapper;
 
     @Override
     public String save(Currency currency) {
         CurrencyEntity entity = jpaRepository.findByCode(currency.code())
                 .orElseGet(CurrencyEntity::new);
-        CurrencyEntityMapper.toEntity(currency, entity);
+        mapper.updateEntity(currency, entity);
         return jpaRepository.save(entity).getCode();
     }
 
@@ -36,18 +37,18 @@ public class CurrencyStorageAdapter implements CurrencyStorage {
 
     @Override
     public Optional<Currency> findByCode(String code) {
-        return jpaRepository.findByCode(code).map(CurrencyEntityMapper::toDomain);
+        return jpaRepository.findByCode(code).map(mapper::toDomain);
     }
 
     @Override
     public Optional<Currency> findByName(String name) {
-        return jpaRepository.findByName(name).map(CurrencyEntityMapper::toDomain);
+        return jpaRepository.findByName(name).map(mapper::toDomain);
     }
 
     @Override
     public List<Currency> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
-                .map(CurrencyEntityMapper::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 }

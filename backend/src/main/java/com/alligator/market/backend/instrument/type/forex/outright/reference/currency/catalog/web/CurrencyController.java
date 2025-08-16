@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.web.dto.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.web.dto.CurrencyUpdateDto;
+import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.web.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.service.CurrencyService;
 import jakarta.validation.Valid;
@@ -26,6 +27,7 @@ import java.util.List;
 public class CurrencyController {
 
     private final CurrencyService service;
+    private final CurrencyDtoMapper mapper;
 
     //========================================
     //               Операции
@@ -35,13 +37,7 @@ public class CurrencyController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
-        // Создаем модель валюты на основе полученного DTO
-        Currency currency = new Currency(
-                dto.code(),
-                dto.name(),
-                dto.country(),
-                dto.decimal()
-        );
+        Currency currency = mapper.toDomain(dto);
 
         // Применяем к валюте метод сервиса, который вернет код валюты из созданной новой записи
         String code = service.createCurrency(currency);
@@ -62,13 +58,7 @@ public class CurrencyController {
             @PathVariable String code,
             @RequestBody @Valid CurrencyUpdateDto dto) {
 
-        // Создаем модель валюты на основе полученного DTO
-        Currency currency = new Currency(
-                code,
-                dto.name(),
-                dto.country(),
-                dto.decimal()
-        );
+        Currency currency = mapper.toDomain(code, dto);
 
         service.updateCurrency(currency);
 
@@ -88,15 +78,9 @@ public class CurrencyController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 
-        // Извлекаем сервисом список валют-моделей и на лету преобразуем его в список валют-DTO
         List<CurrencyDto> currencyDtoList = service.findAll()
                 .stream()
-                .map(c -> new CurrencyDto(
-                        c.code(),
-                        c.name(),
-                        c.country(),
-                        c.decimalDigits()
-                ))
+                .map(mapper::toDto)
                 .toList();
 
         return ResponseEntityFactory.ok(currencyDtoList);

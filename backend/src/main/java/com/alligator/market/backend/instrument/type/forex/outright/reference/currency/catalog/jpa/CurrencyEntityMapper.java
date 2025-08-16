@@ -1,31 +1,22 @@
 package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa;
 
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 /**
  * Маппер между сущностью валюты и доменной моделью.
  */
-public final class CurrencyEntityMapper {
-
-    private CurrencyEntityMapper() {
-    }
+@Mapper(componentModel = "spring")
+public interface CurrencyEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
-    public static Currency toDomain(CurrencyEntity entity) {
-        return new Currency(
-                entity.getCode(),
-                entity.getName(),
-                entity.getCountry(),
-                entity.getDecimalDigits()
-        );
-    }
+    Currency toDomain(CurrencyEntity entity);
 
-    /** Заполняет сущность данными из доменной модели. */
-    public static void toEntity(Currency currency, CurrencyEntity entity) {
-        entity.setCode(currency.code());
-        entity.setName(currency.name());
-        entity.setCountry(currency.country());
-        entity.setDecimalDigits(currency.decimalDigits());
-    }
+    /** Преобразует доменную модель в новую сущность. */
+    CurrencyEntity toEntity(Currency currency);
+
+    /** Обновляет сущность данными доменной модели. */
+    void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
 }
 
