@@ -13,10 +13,13 @@ import java.util.function.Function;
  * Вспомогательный класс, содержащий методы для проверки профилей провайдеров рыночных данных (далее - профили),
  * выгруженных из контекста приложения.
  */
-public class ProfileContextCheck {
+public final class ProfileContextCheck {
 
-    /** Проверка уникальности профилей параметрам: код профиля, имя профиля. */
-    private void validateNoDuplicates(List<ProviderProfile> profiles) {
+    private ProfileContextCheck() {
+    }
+
+    /** Проверяет уникальность профилей по кодам и именам. */
+    public static void validateNoDuplicates(List<ProviderProfile> profiles) {
 
         if (profiles == null || profiles.size() < 2) return; // Нечего проверять
 
@@ -25,7 +28,7 @@ public class ProfileContextCheck {
     }
 
     /**
-     * Метод проверяет заданный список профилей на дублирование по значению заданного параметра.
+     * Проверяет список профилей на дублирование по значению заданного параметра.
      *
      * @param profileList         список профилей для проверки
      * @param paramValueExtractor функция извлекает значение параметра
@@ -33,9 +36,9 @@ public class ProfileContextCheck {
      *
      * @throws DuplicateProfileInContextException при обнаружении дублирования
      */
-    private void checkForDuplicateByParam(List<ProviderProfile> profileList,
-                                          Function<ProviderProfile, String> paramValueExtractor,
-                                          String paramToCheck) {
+    private static void checkForDuplicateByParam(List<ProviderProfile> profileList,
+                                                 Function<ProviderProfile, String> paramValueExtractor,
+                                                 String paramToCheck) {
 
         // Коллекция типа HashSet для хранения только уникальных значений
         Set<String> paramValues = new HashSet<>();
