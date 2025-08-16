@@ -11,6 +11,7 @@ import java.util.Set;
  * DTO профиля провайдера рыночных данных.
  */
 public record ProviderProfileDto(
+
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentTypes,
