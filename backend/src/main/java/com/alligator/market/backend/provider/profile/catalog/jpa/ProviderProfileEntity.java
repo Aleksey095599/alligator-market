@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProviderProfileEmbeddable;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
+import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProfileEmbeddable;
+import com.alligator.market.domain.provider.model.ProviderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity профиля провайдера рыночных данных (далее - провайдера).
+ * Entity провайдера рыночных данных (далее - провайдера).
  */
 @Entity
-@Table(name = "provider_profile")
+@Table(name = "provider")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,14 +28,14 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
+    /** Статус провайдера согласно {@link ProviderStatus}. */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10, nullable = false)
-    private ProviderProfileStatus status;
+    private ProviderStatus status;
 
     /** Данные профиля провайдера. */
     @Embedded
-    private ProviderProfileEmbeddable profile;
+    private ProfileEmbeddable profile;
 }
 

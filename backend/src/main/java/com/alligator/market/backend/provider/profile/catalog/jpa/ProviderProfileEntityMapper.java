@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
-import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProviderProfileEmbeddable;
+import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProfileEmbeddable;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.model.ProviderStatus;
 
 /**
  * Маппер сущности и доменной модели профиля провайдера рыночных данных.
@@ -13,10 +13,10 @@ public final class ProviderProfileEntityMapper {
     }
 
     /** Преобразует доменную модель в сущность, назначая заданный статус. */
-    public static ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status) {
+    public static ProviderProfileEntity toEntity(ProviderProfile profile, ProviderStatus status) {
         ProviderProfileEntity entity = new ProviderProfileEntity();
         entity.setStatus(status);
-        ProviderProfileEmbeddable data = new ProviderProfileEmbeddable();
+        ProfileEmbeddable data = new ProfileEmbeddable();
         data.setProviderCode(profile.providerCode());
         data.setDisplayName(profile.displayName());
         data.setInstrumentTypes(profile.instrumentTypes());
@@ -30,7 +30,7 @@ public final class ProviderProfileEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
     public static ProviderProfile toDomain(ProviderProfileEntity entity) {
-        ProviderProfileEmbeddable data = entity.getProfile();
+        ProfileEmbeddable data = entity.getProfile();
         return new ProviderProfile(
                 data.getProviderCode(),
                 data.getDisplayName(),

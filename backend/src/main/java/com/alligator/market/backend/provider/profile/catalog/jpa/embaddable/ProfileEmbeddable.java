@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ProviderProfileEmbeddable {
+public class ProfileEmbeddable {
 
     /** Технический код {@link ProviderProfile#providerCode()}. */
     @NotBlank

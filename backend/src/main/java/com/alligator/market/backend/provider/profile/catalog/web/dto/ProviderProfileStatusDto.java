@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.web.dto;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.model.ProviderStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -19,5 +19,5 @@ public record ProviderProfileStatusDto(
         @NotNull AccessMethod accessMethod,
         boolean supportsBulkSubscription,
         int minPollPeriodMs,
-        @NotNull ProviderProfileStatus status
+        @NotNull ProviderStatus status
 ) {}

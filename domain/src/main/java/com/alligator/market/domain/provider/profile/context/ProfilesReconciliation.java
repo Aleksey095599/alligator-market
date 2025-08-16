@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.model.ProviderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,10 +95,10 @@ public class ProfilesReconciliation {
             profileStorage.saveAll(diff.add());
         }
         if (!diff.replaced().isEmpty()) {
-            profileStorage.updateStatus(diff.replaced(), ProviderProfileStatus.REPLACED);
+            profileStorage.updateStatus(diff.replaced(), ProviderStatus.REPLACED);
         }
         if (!diff.missing().isEmpty()) {
-            profileStorage.updateStatus(diff.missing(), ProviderProfileStatus.MISSING);
+            profileStorage.updateStatus(diff.missing(), ProviderStatus.MISSING);
         }
     }
 }

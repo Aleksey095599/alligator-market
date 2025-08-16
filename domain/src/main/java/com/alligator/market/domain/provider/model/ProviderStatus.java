@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.profile.model;
+package com.alligator.market.domain.provider.model;
 
 /**
  * Статус профиля провайдера рыночных данных.
  */
-public enum ProviderProfileStatus {
+public enum ProviderStatus {
 
     ACTIVE,
     REPLACED,
