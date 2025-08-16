@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.profile.catalog;
+package com.alligator.market.domain.provider.catalog;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.model.ProviderStatus;

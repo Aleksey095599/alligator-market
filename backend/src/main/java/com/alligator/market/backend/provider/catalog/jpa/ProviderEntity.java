@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.profile.catalog.jpa;
+package com.alligator.market.backend.provider.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.provider.profile.catalog.jpa.embaddable.ProfileEmbeddable;
+import com.alligator.market.backend.provider.profile.catalog.jpa.ProfileEmbeddable;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity провайдера рыночных данных (далее - провайдера).
+ * Entity провайдера рыночных данных.
  */
 @Entity
 @Table(name = "provider")
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class ProviderProfileEntity extends BaseEntity {
+public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @EqualsAndHashCode.Include

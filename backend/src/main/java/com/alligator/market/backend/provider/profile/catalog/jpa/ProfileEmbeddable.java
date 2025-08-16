@@ -1,5 +1,6 @@
-package com.alligator.market.backend.provider.profile.catalog.jpa.embaddable;
+package com.alligator.market.backend.provider.profile.catalog.jpa;
 
+import com.alligator.market.backend.provider.catalog.jpa.ProviderEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
@@ -15,8 +16,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Встраиваемая часть профиля провайдера рыночных данных.
- * Поля полностью соответствуют параметром доменной модели {@link ProviderProfile}
+ * Профиль провайдера встраиваемый в {@link ProviderEntity}.
+ * Поля полностью соответствуют параметром доменной модели {@link ProviderProfile}.
+ * Поля не подлежат обновлению, так как любое изменение параметров профиля провайдера приводит
+ * к созданию новой записи о провайдере.
  */
 @Embeddable
 @Getter
@@ -34,7 +37,7 @@ public class ProfileEmbeddable {
     /** Отображаемое имя {@link ProviderProfile#displayName()}. */
     @NotBlank
     @Size(max = 50)
-    @Column(name = "display_name", length = 50, nullable = false)
+    @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
 
     /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()}. */
@@ -48,26 +51,26 @@ public class ProfileEmbeddable {
             )
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "instrument_type", length = 20, nullable = false)
+    @Column(name = "instrument_type", length = 20, nullable = false, updatable = false)
     private Set<InstrumentType> instrumentTypes;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "delivery_mode", length = 10, nullable = false)
+    @Column(name = "delivery_mode", length = 10, nullable = false, updatable = false)
     private DeliveryMode deliveryMode;
 
     /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link ProviderProfile#accessMethod()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "access_method", length = 20, nullable = false)
+    @Column(name = "access_method", length = 20, nullable = false, updatable = false)
     private AccessMethod accessMethod;
 
     /** Поддержка массовой подписки одним запросом {@link ProviderProfile#supportsBulkSubscription()}. */
-    @Column(name = "supports_bulk_subscription", nullable = false)
+    @Column(name = "supports_bulk_subscription", nullable = false, updatable = false)
     private boolean supportsBulkSubscription;
 
     /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderProfile#minPollPeriodMs()}. */
-    @Column(name = "min_poll_period_ms", nullable = false)
+    @Column(name = "min_poll_period_ms", nullable = false, updatable = false)
     private int minPollPeriodMs;
 }

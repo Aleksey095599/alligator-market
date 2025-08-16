@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.profile.context;
+package com.alligator.market.domain.provider.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 

@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.profile.context;
+package com.alligator.market.domain.provider.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 
 import java.util.ArrayList;

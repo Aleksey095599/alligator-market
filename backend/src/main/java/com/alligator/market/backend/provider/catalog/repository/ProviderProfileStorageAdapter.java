@@ -1,10 +1,10 @@
-package com.alligator.market.backend.provider.profile.catalog.repository;
+package com.alligator.market.backend.provider.catalog.repository;
 
-import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntity;
-import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileJpaRepository;
-import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntityMapper;
+import com.alligator.market.backend.provider.catalog.jpa.ProviderEntity;
+import com.alligator.market.backend.provider.catalog.jpa.ProviderProfileJpaRepository;
+import com.alligator.market.backend.provider.catalog.jpa.ProviderProfileEntityMapper;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,7 +28,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     public Map<Long, ProviderProfile> findAllActive() {
         return jpaRepository.findAllByStatus(ProviderStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
-                        ProviderProfileEntity::getId,
+                        ProviderEntity::getId,
                         ProviderProfileEntityMapper::toDomain
                 ));
     }
@@ -39,7 +39,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
                         ProviderProfileEntityMapper::toDomain,
-                        ProviderProfileEntity::getStatus
+                        ProviderEntity::getStatus
                 ));
     }
 

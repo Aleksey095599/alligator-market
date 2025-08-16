@@ -1,11 +1,11 @@
-package com.alligator.market.backend.provider.profile.context.adapter;
+package com.alligator.market.backend.provider.context.adapter;
 
 import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
-import com.alligator.market.domain.provider.profile.context.ProfileContextDiff;
-import com.alligator.market.domain.provider.profile.context.ProfileContextScanner;
-import com.alligator.market.domain.provider.profile.context.ProfilesReconciliation;
-import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.context.ProfileContextDiff;
+import com.alligator.market.domain.provider.context.ProfileContextScanner;
+import com.alligator.market.domain.provider.context.ProfilesReconciliation;
+import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
 import org.springframework.stereotype.Component;
 
 /**

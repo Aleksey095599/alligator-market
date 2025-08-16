@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.profile.context;
+package com.alligator.market.domain.provider.context;
 
 /**
  * Профиль провайдера рыночных данных с указанным полем уже присутствует в контексте.
