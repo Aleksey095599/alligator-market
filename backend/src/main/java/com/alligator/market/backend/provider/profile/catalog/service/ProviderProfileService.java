@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.profile.context.ProviderProfileStatu
 import java.util.Map;
 
 /**
- * Сервис профилей провайдеров рыночных данных (далее - профили).
+ * Сервис профилей провайдеров рыночных данных.
  */
 public interface ProviderProfileService {
 

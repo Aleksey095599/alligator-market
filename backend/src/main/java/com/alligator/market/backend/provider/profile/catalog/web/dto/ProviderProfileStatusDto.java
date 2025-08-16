@@ -12,12 +12,13 @@ import java.util.Set;
  * DTO профиля провайдера рыночных данных со статусом.
  */
 public record ProviderProfileStatusDto(
+
+        @NotNull ProviderProfileStatus status,
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentTypes,
         @NotNull ProviderDeliveryMode providerDeliveryMode,
         @NotNull ProviderAccessMethod providerAccessMethod,
         boolean supportsBulkSubscription,
-        int minPollPeriodMs,
-        @NotNull ProviderProfileStatus status
+        int minPollPeriodMs
 ) {}

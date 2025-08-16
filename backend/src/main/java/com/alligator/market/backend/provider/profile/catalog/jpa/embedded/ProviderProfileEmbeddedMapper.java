@@ -3,14 +3,15 @@ package com.alligator.market.backend.provider.profile.catalog.jpa.embedded;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 /**
- * Маппер доменной модели и встраиваемого профиля.
+ * Маппер встраиваемого компонента профиля провайдера {@link ProviderProfileEmbedded} и
+ * доменной модели профиля провайдера рыночных данных {@link ProviderProfile}.
  */
 public final class ProviderProfileEmbeddedMapper {
 
     private ProviderProfileEmbeddedMapper() {
     }
 
-    /** Преобразует доменную модель во встраиваемый профиль. */
+    /** Преобразует доменную модель во встраиваемый компонент. */
     public static ProviderProfileEmbedded toEmbedded(ProviderProfile profile) {
         ProviderProfileEmbedded embedded = new ProviderProfileEmbedded();
         embedded.setProviderCode(profile.providerCode());
@@ -23,7 +24,7 @@ public final class ProviderProfileEmbeddedMapper {
         return embedded;
     }
 
-    /** Преобразует встраиваемый профиль в доменную модель. */
+    /** Преобразует встраиваемый компонент в доменную модель. */
     public static ProviderProfile toDomain(ProviderProfileEmbedded embedded) {
         return new ProviderProfile(
                 embedded.getProviderCode(),

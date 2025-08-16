@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер профилей провайдеров рыночных данных (далее - профили).
+ * REST-контроллер профилей провайдеров рыночных данных.
  */
 @RestController
 @RequestMapping("/api/v1/providers")
@@ -68,14 +68,14 @@ public class ProviderProfileController {
     /** Утилита преобразует доменную модель и статус в DTO. */
     private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status) {
         return new ProviderProfileStatusDto(
+                status,
                 profile.providerCode(),
                 profile.displayName(),
                 profile.instrumentTypes(),
                 profile.deliveryMode(),
                 profile.accessMethod(),
                 profile.bulkSubscription(),
-                profile.minPollMs(),
-                status
+                profile.minPollMs()
         );
     }
 }

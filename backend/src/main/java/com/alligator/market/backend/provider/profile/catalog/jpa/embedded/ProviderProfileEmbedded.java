@@ -15,7 +15,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
-/** Встраиваемый профиль провайдера. */
+/**
+ * Встраиваемый компонент профиля провайдера рыночных данных.
+ * Полностью соответствует доменной модели профиля провайдера {@link ProviderProfile}.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
