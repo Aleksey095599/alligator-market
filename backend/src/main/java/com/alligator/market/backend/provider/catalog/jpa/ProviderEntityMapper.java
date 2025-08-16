@@ -7,9 +7,9 @@ import com.alligator.market.domain.provider.model.ProviderStatus;
 /**
  * Маппер сущности и доменной модели профиля провайдера рыночных данных.
  */
-public final class ProviderProfileEntityMapper {
+public final class ProviderEntityMapper {
 
-    private ProviderProfileEntityMapper() {
+    private ProviderEntityMapper() {
     }
 
     /** Преобразует доменную модель в сущность, назначая заданный статус. */

@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.repository;
 
 import com.alligator.market.backend.provider.catalog.jpa.ProviderEntity;
 import com.alligator.market.backend.provider.catalog.jpa.ProviderProfileJpaRepository;
-import com.alligator.market.backend.provider.catalog.jpa.ProviderProfileEntityMapper;
+import com.alligator.market.backend.provider.catalog.jpa.ProviderEntityMapper;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.model.ProviderStatus;
@@ -29,7 +29,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
         return jpaRepository.findAllByStatus(ProviderStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProviderEntity::getId,
-                        ProviderProfileEntityMapper::toDomain
+                        ProviderEntityMapper::toDomain
                 ));
     }
 
@@ -38,7 +38,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     public Map<ProviderProfile, ProviderStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
-                        ProviderProfileEntityMapper::toDomain,
+                        ProviderEntityMapper::toDomain,
                         ProviderEntity::getStatus
                 ));
     }
@@ -46,7 +46,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     @Override
     public void saveAll(Collection<ProviderProfile> profiles) {
         var entities = profiles.stream()
-                .map(p -> ProviderProfileEntityMapper.toEntity(p, ProviderStatus.ACTIVE))
+                .map(p -> ProviderEntityMapper.toEntity(p, ProviderStatus.ACTIVE))
                 .toList();
         jpaRepository.saveAll(entities);
     }
