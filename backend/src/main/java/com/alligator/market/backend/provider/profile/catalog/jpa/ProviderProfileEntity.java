@@ -5,7 +5,6 @@ import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,10 +19,10 @@ import lombok.Setter;
  * Entity профиля провайдера рыночных данных (далее - провайдера).
  */
 @Entity
-/*@Table(
+@Table(
         name = "provider_profile",
         uniqueConstraints = @UniqueConstraint(name = "uq_provider_profile_code", columnNames = "provider_code")
-) TODO: исключить REPLACED статус провайдера и вернуть данное ограничение */
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,23 +36,13 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Статус профиля провайдера согласно {@link ProviderProfileStatus}. */
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 10, nullable = false)
-    private ProviderProfileStatus status;
-
-    //==========================
-    // Данные профиля провайдера
-    //==========================
-
-    /** Технический код {@link ProviderProfile#providerCode()}. */
+    /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
-    /** Отображаемое имя {@link ProviderProfile#displayName()}. */
+    /** Отображаемое имя провайдера {@link ProviderProfile#displayName()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "display_name", length = 50, nullable = false)
