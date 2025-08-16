@@ -1,10 +1,10 @@
-package com.alligator.market.domain.provider.context_sync;
+package com.alligator.market.domain.provider.profile.context;
 
 /**
  * Профиль провайдера рыночных данных с указанным полем уже присутствует в контексте.
  */
-public class DuplicateProviderProfileInContextException extends RuntimeException {
-    public DuplicateProviderProfileInContextException(String field, String value) {
+public class DuplicateProfileInContextException extends RuntimeException {
+    public DuplicateProfileInContextException(String field, String value) {
         super("Provider profile with %s '%s' already exists".formatted(field, value));
     }
 }

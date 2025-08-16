@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.reference.curr
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.DuplicatePairException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
 import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
+import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -64,10 +64,10 @@ public class ApplicationExceptionHandler {
     }
 
     /** Профиль провайдера уже присутствует в контексте. */
-    @ExceptionHandler(DuplicateProviderProfileInContextException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateProviderProfile(DuplicateProviderProfileInContextException ex) {
+    @ExceptionHandler(DuplicateProfileInContextException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateProviderProfile(DuplicateProfileInContextException ex) {
         // 409, дубликат профиля
-        log.warn("DuplicateProviderProfileInContextException: {}", ex.getMessage());
+        log.warn("DuplicateProfileInContextException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 

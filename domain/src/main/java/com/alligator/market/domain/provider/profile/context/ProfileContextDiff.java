@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.context_sync;
+package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
@@ -10,13 +10,13 @@ import java.util.List;
  * Модель результата сопоставления профилей провайдеров рыночных данных в виде трех соответствующих списков,
  * касательно которых требуются действия для целей синхронизации.
  */
-public record ContextDiff(
+public record ProfileContextDiff(
         List<ProviderProfile> add,
         List<Long> replaced,
         List<Long> missing
 ) {
 
-    public ContextDiff() {
+    public ProfileContextDiff() {
         this(new ArrayList<>(), new LinkedList<>(), new LinkedList<>());
     }
 

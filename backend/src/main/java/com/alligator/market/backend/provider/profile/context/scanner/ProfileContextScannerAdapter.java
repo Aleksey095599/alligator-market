@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.profile.context_sync;
+package com.alligator.market.backend.provider.profile.context.scanner;
 
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.context_sync.ProviderContextScanner;
+import com.alligator.market.domain.provider.profile.context.ProfileContextScanner;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.context_sync.DuplicateProviderProfileInContextException;
+import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderContextScannerAdapter implements ProviderContextScanner {
+public class ProfileContextScannerAdapter implements ProfileContextScanner {
 
     /** Список всех адаптеров провайдеров. */
     private final List<MarketDataProvider> providers;
@@ -26,28 +26,14 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     /** Возвращает список профилей провайдеров. */
     @Override
     public List<ProviderProfile> getProviderProfiles() {
+
         List<ProviderProfile> profiles = providers.stream()
                 .map(MarketDataProvider::profile)
                 .toList();
 
         // Проверка на дублирование по кодам и именам провайдеров
-        validateNoDuplicates(profiles);
+
 
         return profiles;
-    }
-
-    /** Вспомогательный метод проверяет уникальность кодов и имен провайдеров в списке. */
-    private void validateNoDuplicates(List<ProviderProfile> profiles) {
-        java.util.Set<String> codes = new java.util.HashSet<>();
-        java.util.Set<String> names = new java.util.HashSet<>();
-
-        for (ProviderProfile profile : profiles) {
-            if (!codes.add(profile.providerCode())) {
-                throw new DuplicateProviderProfileInContextException("providerCode", profile.providerCode());
-            }
-            if (!names.add(profile.displayName())) {
-                throw new DuplicateProviderProfileInContextException("displayName", profile.displayName());
-            }
-        }
     }
 }

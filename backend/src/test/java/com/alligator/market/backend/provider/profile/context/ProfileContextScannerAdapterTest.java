@@ -1,5 +1,6 @@
-package com.alligator.market.backend.provider.profile.context_sync;
+package com.alligator.market.backend.provider.profile.context;
 
+import com.alligator.market.backend.provider.profile.context.scanner.ProfileContextScannerAdapter;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  */
 @Disabled
 @SpringBootTest
-class ProviderContextScannerAdapterTest {
+class ProfileContextScannerAdapterTest {
 
     @Autowired
-    private ProviderContextScannerAdapter scanner;
+    private ProfileContextScannerAdapter scanner;
 
     @Test
     void shouldPrintAllProfiles() {

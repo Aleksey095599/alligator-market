@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.context_sync;
+package com.alligator.market.domain.provider.profile.context;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
@@ -12,13 +12,13 @@ import java.util.Map;
  * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных (далее - профили),
  * извлеченных из контекста приложения и из хранилища данных.
  */
-public class ProviderProfilesReconciliation {
+public class ProfilesReconciliation {
 
-    private final ProviderContextScanner contextScanner;
+    private final ProfileContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
 
-    public ProviderProfilesReconciliation(ProviderContextScanner contextScanner,
-                                          ProviderProfileStorage profileStorage) {
+    public ProfilesReconciliation(ProfileContextScanner contextScanner,
+                                  ProviderProfileStorage profileStorage) {
         this.contextScanner = contextScanner;
         this.profileStorage = profileStorage;
     }
@@ -26,16 +26,16 @@ public class ProviderProfilesReconciliation {
     /**
      * Сравнить профили в хранилище данных и в контексте приложения.
      *
-     * @return {@link ContextDiff}
+     * @return {@link ProfileContextDiff}
      */
-    public ContextDiff compare() {
+    public ProfileContextDiff compare() {
 
         // Профили из контекста
         List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
         // Профили из БД в виде набора <PK, активный профиль>
         Map<Long, ProviderProfile> dbActiveProfiles = profileStorage.findAllActive();
 
-        ContextDiff diff = new ContextDiff();
+        ProfileContextDiff diff = new ProfileContextDiff();
 
         // Копия списка профилей из контекста, из которого удаляются найденные совпадения
         List<ProviderProfile> restContextProfiles =
@@ -87,10 +87,10 @@ public class ProviderProfilesReconciliation {
     }
 
     /**
-     * Применить {@link ContextDiff} к хранилищу данных для синхронизации списка провайдеров
+     * Применить {@link ProfileContextDiff} к хранилищу данных для синхронизации списка провайдеров
      * рыночных данных с контекстом приложения.
      */
-    public void applyContextDiffToStorage(ContextDiff diff) {
+    public void applyContextDiffToStorage(ProfileContextDiff diff) {
         if (!diff.add().isEmpty()) {
             profileStorage.saveAll(diff.add());
         }
