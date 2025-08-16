@@ -52,9 +52,9 @@ public class CurrencyEntity extends BaseEntity {
     private String country;
 
     /** Кол-во знаков после запятой для денежных сумм. */
-    @Column(name = "decimal_digits", nullable = false)
+    @Column(name = "decimal", nullable = false)
     @Min(0)
     @Max(10)
     @NotNull
-    private Integer decimalDigits;
+    private Integer decimal;
 }
