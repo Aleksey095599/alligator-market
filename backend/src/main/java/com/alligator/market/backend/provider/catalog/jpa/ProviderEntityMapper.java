@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.jpa;
 
 import com.alligator.market.backend.provider.profile.catalog.jpa.ProfileEmbeddable;
+import com.alligator.market.backend.provider.profile.catalog.jpa.ProfileEmbeddableMapper;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 
@@ -16,14 +17,7 @@ public final class ProviderEntityMapper {
     public static ProviderEntity toEntity(ProviderProfile profile, ProviderStatus status) {
         ProviderEntity entity = new ProviderEntity();
         entity.setStatus(status);
-        ProfileEmbeddable data = new ProfileEmbeddable();
-        data.setProviderCode(profile.providerCode());
-        data.setDisplayName(profile.displayName());
-        data.setInstrumentTypes(profile.instrumentTypes());
-        data.setDeliveryMode(profile.deliveryMode());
-        data.setAccessMethod(profile.accessMethod());
-        data.setSupportsBulkSubscription(profile.supportsBulkSubscription());
-        data.setMinPollPeriodMs(profile.minPollPeriodMs());
+        ProfileEmbeddable data = ProfileEmbeddableMapper.toEmbeddable(profile);
         entity.setProfile(data);
         return entity;
     }
@@ -31,14 +25,6 @@ public final class ProviderEntityMapper {
     /** Преобразует сущность в доменную модель. */
     public static ProviderProfile toDomain(ProviderEntity entity) {
         ProfileEmbeddable data = entity.getProfile();
-        return new ProviderProfile(
-                data.getProviderCode(),
-                data.getDisplayName(),
-                data.getInstrumentTypes(),
-                data.getDeliveryMode(),
-                data.getAccessMethod(),
-                data.isSupportsBulkSubscription(),
-                data.getMinPollPeriodMs()
-        );
+        return ProfileEmbeddableMapper.toDomain(data);
     }
 }
