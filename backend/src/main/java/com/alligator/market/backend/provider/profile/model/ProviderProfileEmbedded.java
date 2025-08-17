@@ -16,16 +16,15 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Встраиваемый компонент, содержащий параметры профиля провайдера рыночных данных.
- * Строго соответствует (точный маппинг) параметрам доменной модели {@link ProviderProfile}.
- * Используется для упрощения представления сущности профиля провайдера.
+ * Встраиваемый компонент, соответсвующий доменной модели профиля провайдера рыночных данных {@link ProviderProfile}.
+ * Содержит поля для параметров профиля провайдера.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable
-public class ProfileParamsEmbedded {
+public class ProviderProfileEmbedded {
 
     /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
     @NotBlank

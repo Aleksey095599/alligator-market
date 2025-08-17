@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.provider.profile.model.ProfileParamsEmbedded;
+import com.alligator.market.backend.provider.profile.model.ProviderProfileEmbedded;
 import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,9 +34,9 @@ public class ProviderProfileEntity extends BaseEntity {
     @Column(name = "status", length = 10, nullable = false)
     private ProviderProfileStatus status;
 
-    /** Встраиваемый компонент с параметрами профиля провайдера. */
+    /** Встраиваемый компонент, содержащий поля профиля провайдера. */
     @NotNull
     @Embedded
-    private ProfileParamsEmbedded profileParams;
+    private ProviderProfileEmbedded profileParams;
 }
 

@@ -4,15 +4,14 @@ import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.mapstruct.Mapper;
 
 /**
- * Маппер встраиваемого компонента профиля провайдера {@link ProfileParamsEmbedded}
- * и доменной модели профиля провайдера рыночных данных {@link ProviderProfile}.
+ * Маппер: доменная модель профиля провайдера ⇄ встраиваемый компонент.
  */
 @Mapper(componentModel = "spring")
-public interface ProfileParamsEmbeddedMapper {
+public interface ProviderProfileEmbeddedMapper {
 
     /** Преобразует доменную модель во встраиваемый компонент. */
-    ProfileParamsEmbedded toEmbedded(ProviderProfile profile);
+    ProviderProfileEmbedded toEmbedded(ProviderProfile profile);
 
     /** Преобразует встраиваемый компонент в доменную модель. */
-    ProviderProfile toDomain(ProfileParamsEmbedded embedded);
+    ProviderProfile toDomain(ProviderProfileEmbedded embedded);
 }
