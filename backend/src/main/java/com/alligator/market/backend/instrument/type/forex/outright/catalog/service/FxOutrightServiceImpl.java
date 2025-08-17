@@ -1,9 +1,12 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.CurrencyFromFxOutrightNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.DuplicateFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +24,19 @@ import java.util.List;
 public class FxOutrightServiceImpl implements FxOutrightService {
 
     private final FxOutrightStorage storage;
+    private final CurrencyStorage currencyStorage;
 
     @Override
     public String create(FxOutright instrument) {
+        if (instrument.baseCurrency().equals(instrument.quoteCurrency())) {
+            throw new SameCurrenciesException();
+        }
+
+        currencyStorage.findByCode(instrument.baseCurrency())
+                .orElseThrow(() -> new CurrencyFromFxOutrightNotFoundException(instrument.baseCurrency()));
+        currencyStorage.findByCode(instrument.quoteCurrency())
+                .orElseThrow(() -> new CurrencyFromFxOutrightNotFoundException(instrument.quoteCurrency()));
+
         storage.find(instrument.code()).ifPresent(i -> {
             throw new DuplicateFxOutrightException(instrument.code());
         });
