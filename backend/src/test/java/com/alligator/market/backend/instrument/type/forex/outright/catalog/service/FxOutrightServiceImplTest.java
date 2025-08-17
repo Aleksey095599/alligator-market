@@ -25,13 +25,13 @@ class FxOutrightServiceImplTest {
         }
 
         @Override
-        public void delete(String internalCode) {
-            map.remove(internalCode);
+        public void delete(String code) {
+            map.remove(code);
         }
 
         @Override
-        public Optional<FxOutright> find(String internalCode) {
-            return Optional.ofNullable(map.get(internalCode));
+        public Optional<FxOutright> find(String code) {
+            return Optional.ofNullable(map.get(code));
         }
 
         @Override

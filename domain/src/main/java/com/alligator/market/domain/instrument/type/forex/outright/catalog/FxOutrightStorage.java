@@ -13,11 +13,11 @@ public interface FxOutrightStorage {
     /** Сохранить инструмент FX OUTRIGHT. */
     void save(FxOutright instrument);
 
-    /** Удалить инструмент по внутреннему коду. */
-    void delete(String internalCode);
+    /** Удалить инструмент по коду. */
+    void delete(String code);
 
-    /** Найти инструмент по внутреннему коду. */
-    Optional<FxOutright> find(String internalCode);
+    /** Найти инструмент по коду. */
+    Optional<FxOutright> find(String code);
 
     /** Вернуть все инструменты. */
     List<FxOutright> findAll();
