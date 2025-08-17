@@ -49,7 +49,7 @@ public class ProviderProfileEmbedded {
             )
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "instrument_type", length = 20, nullable = false, updatable = false)
+    @Column(name = "instrument_types", length = 20, nullable = false, updatable = false)
     private Set<InstrumentType> instrumentTypes;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()}. */
