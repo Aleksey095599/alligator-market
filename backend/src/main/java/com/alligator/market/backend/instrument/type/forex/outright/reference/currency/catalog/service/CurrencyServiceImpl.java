@@ -27,7 +27,6 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public String createCurrency(Currency currency) {
-
         storage.findByCode(currency.code()).ifPresent(c -> {
             throw new DuplicateCurrencyException("code", currency.code());
         });
@@ -41,7 +40,6 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void updateCurrency(Currency currency) {
-
         storage.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
@@ -56,7 +54,6 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void deleteCurrency(String code) {
-
         storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
@@ -72,7 +69,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
-
         List<Currency> result = storage.findAll();
 
         log.debug("Found {} currencies", result.size());
