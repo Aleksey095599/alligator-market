@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.catalog.exeption;
+package com.alligator.market.domain.instrument.type.forex.outright.catalog.exception;
 
 /**
  * Инструмент уже существует.

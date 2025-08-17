@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.catalog.exeption;
+package com.alligator.market.domain.instrument.type.forex.outright.catalog.exception;
 
 import com.alligator.market.domain.common.exception.NotFoundException;
 

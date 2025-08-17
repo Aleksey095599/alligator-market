@@ -1,11 +1,11 @@
 package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.service;
 
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInPairsException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.CurrencyPairStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.List;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyStorage storage;
-    private final CurrencyPairStorage pairStorage;
+    private final FxOutrightStorage fxOutrightStorage;
 
     @Override
     public String createCurrency(Currency currency) {
@@ -63,7 +63,7 @@ public class CurrencyServiceImpl implements CurrencyService {
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
         // Проверка, что валюта не используется в парах
-        if (pairStorage.existsByCurrency(code)) {
+        if (fxOutrightStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInPairsException(code);
         }
 
