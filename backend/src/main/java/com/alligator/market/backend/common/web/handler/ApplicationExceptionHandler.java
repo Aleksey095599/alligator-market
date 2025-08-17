@@ -5,7 +5,7 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.CurrencyFromFxOutrightNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.DuplicateFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightsException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
@@ -34,10 +34,10 @@ public class ApplicationExceptionHandler {
     }
 
     /** Валюта используется в инструментах FX_OUTRIGHT. */
-    @ExceptionHandler(CurrencyUsedInFxOutrightsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxOutrightsException ex) {
+    @ExceptionHandler(CurrencyUsedInFxOutrightException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxOutrightException ex) {
         // 409, ресурс занят
-        log.warn("CurrencyUsedInFxOutrightsException: {}", ex.getMessage());
+        log.warn("CurrencyUsedInFxOutrightException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 

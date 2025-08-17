@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.outright.reference.cu
 
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightsException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;
@@ -57,7 +57,7 @@ public class CurrencyServiceImpl implements CurrencyService {
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
         // Проверяем, что валюта не используется в инструментах FX_OUTRIGHT
         if (fxOutrightStorage.existsByCurrency(code)) {
-            throw new CurrencyUsedInFxOutrightsException(code);
+            throw new CurrencyUsedInFxOutrightException(code);
         }
         storage.deleteByCode(code);
         log.info("Currency {} deleted", code);
