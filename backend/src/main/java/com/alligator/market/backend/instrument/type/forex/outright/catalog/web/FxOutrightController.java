@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST-контроллер FX_OUTRIGHT.
+ * REST-контроллер для инструментов FX_OUTRIGHT.
  */
 @RestController
 @RequestMapping("/api/v1/fx-outrights")

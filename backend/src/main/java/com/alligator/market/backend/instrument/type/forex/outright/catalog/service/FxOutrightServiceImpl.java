@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса FX_OUTRIGHT.
+ * Реализация сервиса.
  */
 @Service
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class FxOutrightServiceImpl implements FxOutrightService {
     @Transactional(readOnly = true)
     public List<FxOutright> findAll() {
         List<FxOutright> result = storage.findAll();
-        log.debug("Found {} fx outrights", result.size());
+        log.debug("Found {} FX_OUTRIGHT instruments", result.size());
         return result;
     }
 }

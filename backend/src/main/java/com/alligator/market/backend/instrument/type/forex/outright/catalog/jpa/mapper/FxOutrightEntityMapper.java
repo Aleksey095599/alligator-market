@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 
 /**
- * Маппер между сущностью FX_OUTRIGHT и доменной моделью.
+ * Маппер: модель инструмента FX_OUTRIGHT ⇄ сущность инструмента FX_OUTRIGHT.
  */
 public final class FxOutrightEntityMapper {
 

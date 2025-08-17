@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutrig
 import java.util.List;
 
 /**
- * Сервис работы с инструментами FX_OUTRIGHT.
+ * Сервис для работы с инструментами FX_OUTRIGHT.
  */
 public interface FxOutrightService {
 

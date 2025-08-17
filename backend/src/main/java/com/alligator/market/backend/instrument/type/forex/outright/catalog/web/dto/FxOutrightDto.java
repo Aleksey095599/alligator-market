@@ -4,9 +4,10 @@ import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDat
 import jakarta.validation.constraints.*;
 
 /**
- * DTO инструмента FX_OUTRIGHT.
+ * Основной DTO инструмента FX_OUTRIGHT.
  */
 public record FxOutrightDto(
+
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
         String baseCurrency,

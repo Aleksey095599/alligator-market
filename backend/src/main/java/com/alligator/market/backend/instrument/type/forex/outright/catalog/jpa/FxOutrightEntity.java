@@ -32,7 +32,7 @@ public class FxOutrightEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Общие атрибуты инструмента. */
+    /** Встраиваемый компонент с базовыми атрибутами инструмента. */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "code", column = @Column(name = "instrument_code", length = 32, nullable = false, updatable = false)),
