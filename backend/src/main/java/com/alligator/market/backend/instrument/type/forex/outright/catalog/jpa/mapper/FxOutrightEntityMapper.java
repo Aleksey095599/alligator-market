@@ -14,6 +14,8 @@ import org.mapstruct.MappingTarget;
 public interface FxOutrightEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
+    @Mapping(target = "baseCurrency", source = "entity.baseCurrency.code")
+    @Mapping(target = "quoteCurrency", source = "entity.quoteCurrency.code")
     FxOutright toDomain(FxOutrightEntity entity);
 
     /** Обновляет сущность данными из доменной модели и валют. */
