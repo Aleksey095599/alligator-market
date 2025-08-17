@@ -24,8 +24,8 @@ export class ProfileListComponent implements OnInit {
     'instrumentTypes',
     'deliveryMode',
     'accessMethod',
-    'supportsBulkSubscription',
-    'minPollPeriodMs'
+    'bulkSubscription',
+    'minPollMs'
   ];
   dataSource = new MatTableDataSource<ProviderProfileStatusDto>([]);
   showAll = false;
