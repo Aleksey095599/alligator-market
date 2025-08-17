@@ -1,10 +1,10 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.adapter;
 
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.FxOutrightEntity;
-import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.mapper.FxOutrightEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.FxOutrightJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
+import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.mapper.FxOutrightEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyNotFoundException;
@@ -24,6 +24,7 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
 
     private final FxOutrightJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
+    private final FxOutrightEntityMapper mapper;
 
     @Override
     public void save(FxOutright instrument) {
@@ -35,7 +36,7 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
         CurrencyEntity quote = currencyRepository.findByCode(instrument.quoteCurrency())
                 .orElseThrow(() -> new CurrencyNotFoundException(instrument.quoteCurrency()));
 
-        FxOutrightEntityMapper.toEntity(instrument, entity, base, quote);
+        mapper.updateEntity(instrument, base, quote, entity);
         jpaRepository.save(entity);
     }
 
@@ -48,13 +49,13 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
     @Override
     public Optional<FxOutright> find(String internalCode) {
         return jpaRepository.findByInstrumentCode(internalCode)
-                .map(FxOutrightEntityMapper::toDomain);
+                .map(mapper::toDomain);
     }
 
     @Override
     public List<FxOutright> findAll() {
         return jpaRepository.findAll(Sort.by("instrument.code")).stream()
-                .map(FxOutrightEntityMapper::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
