@@ -3,7 +3,6 @@ package com.alligator.market.domain.provider.profile.context;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public record ProfileContextDiff(
 ) {
 
     public ProfileContextDiff() {
-        this(new ArrayList<>(), new LinkedList<>(), new LinkedList<>());
+        this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     public void putToAddList(ProviderProfile profile) {
