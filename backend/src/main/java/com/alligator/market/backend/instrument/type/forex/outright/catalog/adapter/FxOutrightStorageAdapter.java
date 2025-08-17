@@ -53,7 +53,7 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
 
     @Override
     public List<FxOutright> findAll() {
-        return jpaRepository.findAll(Sort.by("instrumentCode")).stream()
+        return jpaRepository.findAll(Sort.by("instrument.code")).stream()
                 .map(FxOutrightEntityMapper::toDomain)
                 .toList();
     }
