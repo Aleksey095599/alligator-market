@@ -33,11 +33,8 @@ public class FxOutrightEntity extends BaseEntity {
     private Long id;
 
     /** Встраиваемый компонент с базовыми атрибутами инструмента. */
+    @NotNull
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "code", column = @Column(name = "instrument_code", length = 32, nullable = false, updatable = false)),
-            @AttributeOverride(name = "type", column = @Column(name = "instrument_type", length = 32, nullable = false, updatable = false))
-    })
     private InstrumentEmbeddable instrument = new InstrumentEmbeddable();
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
