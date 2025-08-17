@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-/** Handler котировок FX-спот для TwelveData (free). */
+/** Обработчик котировок FX-спот для TwelveData (free). */
 public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
 
     private final WebClient webClient;
@@ -41,10 +41,10 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
     @Override
     public Flux<QuoteTick> instrumentQuote(Instrument instrument) {
 
-        FxOutright mustBeFxOutright = (FxOutright) instrument;
+        FxOutright fxOutright = (FxOutright) instrument;
 
         // Провайдер ожидает именно такой формат запроса:
-        String symbol = mustBeFxOutright.baseCurrency() + "/" + mustBeFxOutright.quoteCurrency();
+        String symbol = fxOutright.baseCurrency() + "/" + fxOutright.quoteCurrency();
 
         return webClient.get()
                 .uri(b -> b
