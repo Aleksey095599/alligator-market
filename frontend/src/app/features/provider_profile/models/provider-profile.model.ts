@@ -5,6 +5,6 @@ export interface ProviderProfileDto {
   instrumentTypes: string[];
   deliveryMode: string;
   accessMethod: string;
-  supportsBulkSubscription: boolean;
-  minPollPeriodMs: number;
+  bulkSubscription: boolean;
+  minPollMs: number;
 }

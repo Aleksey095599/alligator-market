@@ -45,14 +45,14 @@
           <td mat-cell *matCellDef="let p">{{ p.accessMethod }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="supportsBulkSubscription">
+        <ng-container matColumnDef="bulkSubscription">
           <th mat-header-cell *matHeaderCellDef>Bulk Subscription</th>
-          <td mat-cell *matCellDef="let p">{{ p.supportsBulkSubscription }}</td>
+          <td mat-cell *matCellDef="let p">{{ p.bulkSubscription }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="minPollPeriodMs">
+        <ng-container matColumnDef="minPollMs">
           <th mat-header-cell *matHeaderCellDef>Min Poll Interval, ms</th>
-          <td mat-cell *matCellDef="let p">{{ p.minPollPeriodMs }}</td>
+          <td mat-cell *matCellDef="let p">{{ p.minPollMs }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayed"></tr>

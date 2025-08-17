@@ -15,8 +15,8 @@ public record ProviderProfileDto(
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentTypes,
-        @NotNull ProviderDeliveryMode providerDeliveryMode,
-        @NotNull ProviderAccessMethod providerAccessMethod,
-        boolean supportsBulkSubscription,
-        int minPollPeriodMs
+        @NotNull ProviderDeliveryMode deliveryMode,
+        @NotNull ProviderAccessMethod accessMethod,
+        boolean bulkSubscription,
+        int minPollMs
 ) {}
