@@ -5,18 +5,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 /**
- * Маппер между сущностью валюты и доменной моделью.
+ * Маппер: модель валюты ⇄ сущность валюты.
  */
 @Mapper(componentModel = "spring")
 public interface CurrencyEntityMapper {
 
-    /** Преобразует сущность в доменную модель. */
+    /** Преобразует сущность в модель. */
     Currency toDomain(CurrencyEntity entity);
 
-    /** Преобразует доменную модель в новую сущность. */
+    /** Преобразует модель в новую сущность. */
     CurrencyEntity toEntity(Currency currency);
 
-    /** Обновляет сущность данными доменной модели. */
+    /** Обновляет сущность данными модели. */
     void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
 }
-

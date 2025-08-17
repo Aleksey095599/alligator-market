@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Маппер между доменной моделью валюты и её DTO.
+ * Маппер: модель валюты ⇄ DTO.
  */
 @Mapper(componentModel = "spring")
 public interface CurrencyDtoMapper {
@@ -17,7 +17,6 @@ public interface CurrencyDtoMapper {
 
     /** Преобразует DTO обновления и код в доменную модель. */
     @Mapping(target = "code", source = "code")
-    @Mapping(target = "decimal", source = "dto.decimal")
     Currency toDomain(String code, UpdateCurrencyDto dto);
 
     /** Преобразует доменную модель в основной DTO. */

@@ -7,7 +7,7 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exeption.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
