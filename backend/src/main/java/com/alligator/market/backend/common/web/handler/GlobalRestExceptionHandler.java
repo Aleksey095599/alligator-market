@@ -1,5 +1,7 @@
-package com.alligator.market.backend.common.web;
+package com.alligator.market.backend.common.web.handler;
 
+import com.alligator.market.backend.common.web.ApiResponse;
+import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

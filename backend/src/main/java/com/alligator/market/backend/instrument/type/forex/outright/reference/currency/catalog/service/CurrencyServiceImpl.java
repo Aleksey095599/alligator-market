@@ -42,7 +42,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void updateCurrency(Currency currency) {
         storage.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
-
         storage.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("name", currency.name());
@@ -56,12 +55,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteCurrency(String code) {
         storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
-
         // Проверка, что валюта не используется в инструментах FX_OUTRIGHT
         if (fxOutrightStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInPairsException(code);
         }
-
         storage.deleteByCode(code);
         log.info("Currency {} deleted", code);
     }
@@ -70,7 +67,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
         List<Currency> result = storage.findAll();
-
         log.debug("Found {} currencies", result.size());
         return result;
     }
