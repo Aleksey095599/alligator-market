@@ -2,11 +2,11 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInPairsException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.CurrencyFromFxOutrightNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.DuplicateFxOutrightException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightsException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.CurrencyFromPairNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.DuplicatePairException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency_pair.catalog.exeption.EqualCurrenciesInPairException;
 import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.extern.slf4j.Slf4j;
@@ -33,35 +33,35 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Валюта используется в валютных парах. */
-    @ExceptionHandler(CurrencyUsedInPairsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInPairsException ex) {
+    /** Валюта используется в инструментах FX_OUTRIGHT. */
+    @ExceptionHandler(CurrencyUsedInFxOutrightsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxOutrightsException ex) {
         // 409, ресурс занят
-        log.warn("CurrencyUsedInPairsException: {}", ex.getMessage());
+        log.warn("CurrencyUsedInFxOutrightsException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Дублирование валютной пары. */
-    @ExceptionHandler(DuplicatePairException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicatePair(DuplicatePairException ex) {
-        // 409 при попытке создать существующую пару
-        log.warn("DuplicatePairException: {}", ex.getMessage());
+    /** Дублирование инструмента FX_OUTRIGHT. */
+    @ExceptionHandler(DuplicateFxOutrightException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(DuplicateFxOutrightException ex) {
+        // 409 при попытке создать существующий инструмент
+        log.warn("DuplicateFxOutrightException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Одна из валют компонента пары не найдена. */
-    @ExceptionHandler(CurrencyFromPairNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromPairNotFound(CurrencyFromPairNotFoundException ex) {
-        // 400, неверные данные пары
-        log.warn("CurrencyFromPairNotFoundException: {}", ex.getMessage());
+    /** Одна из валют компонента FX_OUTRIGHT не найдена. */
+    @ExceptionHandler(CurrencyFromFxOutrightNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(CurrencyFromFxOutrightNotFoundException ex) {
+        // 400, неверные данные инструмента
+        log.warn("CurrencyFromFxOutrightNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
-    /** Валютные коды в паре совпадают. */
-    @ExceptionHandler(EqualCurrenciesInPairException.class)
-    public ResponseEntity<ApiResponse<Void>> handleEqualCurrencies(EqualCurrenciesInPairException ex) {
+    /** Базовая и котируемая валюты совпадают. */
+    @ExceptionHandler(SameCurrenciesException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(SameCurrenciesException ex) {
         // 400, клиентская ошибка
-        log.warn("EqualCurrenciesInPairException: {}", ex.getMessage());
+        log.warn("SameCurrenciesException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

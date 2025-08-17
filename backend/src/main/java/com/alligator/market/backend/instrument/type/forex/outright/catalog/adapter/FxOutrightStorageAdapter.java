@@ -6,8 +6,8 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.mapper.FxOutrightEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.CurrencyFromFxOutrightNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -32,9 +32,9 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
                 .orElseGet(FxOutrightEntity::new);
 
         CurrencyEntity base = currencyRepository.findByCode(instrument.baseCurrency())
-                .orElseThrow(() -> new CurrencyNotFoundException(instrument.baseCurrency()));
+                .orElseThrow(() -> new CurrencyFromFxOutrightNotFoundException(instrument.baseCurrency()));
         CurrencyEntity quote = currencyRepository.findByCode(instrument.quoteCurrency())
-                .orElseThrow(() -> new CurrencyNotFoundException(instrument.quoteCurrency()));
+                .orElseThrow(() -> new CurrencyFromFxOutrightNotFoundException(instrument.quoteCurrency()));
 
         mapper.updateEntity(instrument, base, quote, entity);
         jpaRepository.save(entity);
