@@ -1,7 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa;
 
-import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.instrument.model.InstrumentEmbeddable;
+import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
@@ -19,23 +18,12 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "fx_outright")
+@PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class FxOutrightEntity extends BaseEntity {
-
-    /** Суррогатный PK. */
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    /** Встраиваемый компонент с базовыми атрибутами инструмента. */
-    @NotNull
-    @Embedded
-    private InstrumentEmbeddable instrument = new InstrumentEmbeddable();
+@EqualsAndHashCode(callSuper = true)
+public class FxOutrightEntity extends InstrumentEntity {
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
@@ -67,24 +55,14 @@ public class FxOutrightEntity extends BaseEntity {
     /** JPA-callback код перед вставкой. */
     @Override
     protected void onPrePersist() {
-        // 1) Проверка: базовая и котируемая валюты должны быть разные
+        // 1) Проверяем, что валюты различаются
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
-            // TODO: Заменить на собственную ошибку из доменного класса
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
-        // 2) Присваиваем тип финансового инструмента
-        instrument.setType(InstrumentType.FX_OUTRIGHT);
-        // 3) Генерируем код финансового инструмента
-        __generateInstrumentCode();
-    }
-
-    // ===============================
-    // Вспомогательные классы и методы
-    // ===============================
-
-    /** Вспомогательный метод генерации кода инструмента. */
-    private void __generateInstrumentCode() {
-        String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
-        instrument.setCode(instrumentCode);
+        // 2) Устанавливаем тип инструмента
+        setType(InstrumentType.FX_OUTRIGHT);
+        // 3) Генерируем и устанавливаем код инструмента
+        String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode.name();
+        setCode(instrumentCode);
     }
 }
