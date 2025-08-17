@@ -5,8 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingInheritanceStrategy;
 import org.mapstruct.MappingTarget;
 
+
 @MapperConfig(mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
 public interface BaseEntityMappingConfig {
+
     @Mapping(target = "version", ignore = true)
     @Mapping(target = "createdTimestamp", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
