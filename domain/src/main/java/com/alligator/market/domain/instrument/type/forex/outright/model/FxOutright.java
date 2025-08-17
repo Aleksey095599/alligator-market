@@ -10,8 +10,8 @@ public record FxOutright(
 
         String baseCurrency,
         String quoteCurrency,
-        Integer quoteDecimal,
-        ValueDateCode valueDateCode
+        ValueDateCode valueDateCode,
+        Integer quoteDecimal
 
 ) implements Instrument {
 

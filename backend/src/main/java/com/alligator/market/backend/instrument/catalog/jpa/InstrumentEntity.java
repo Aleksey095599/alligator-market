@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Базовая entity финансового инструмента.
+ * Сущность финансового инструмента.
  */
 @Entity
 @Table(
         name = "instrument",
-        uniqueConstraints = @UniqueConstraint(name = "uk_instrument_code", columnNames = "instrument_code")
+        uniqueConstraints = @UniqueConstraint(name = "uk_instrument_code", columnNames = "code")
 )
 @Getter
 @Setter
@@ -34,12 +34,12 @@ public abstract class InstrumentEntity extends BaseEntity {
 
     /** Внутренний код инструмента. */
     @NotBlank
-    @Column(name = "instrument_code", nullable = false, updatable = false, length = 32)
-    private String instrumentCode;
+    @Column(name = "code", nullable = false, updatable = false, length = 32)
+    private String code;
 
     /** Тип финансового инструмента. */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "instrument_type", nullable = false, updatable = false, length = 32)
-    private InstrumentType instrumentType;
+    @Column(name = "type", nullable = false, updatable = false, length = 32)
+    private InstrumentType type;
 }

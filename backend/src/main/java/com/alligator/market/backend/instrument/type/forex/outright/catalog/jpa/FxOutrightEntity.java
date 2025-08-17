@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity финансового инструмента FX_OUTRIGHT.
+ * Сущность финансового инструмента FX_OUTRIGHT.
  */
 @Entity
 @Table(name = "fx_outright")
@@ -47,31 +47,34 @@ public class FxOutrightEntity extends InstrumentEntity {
 
     /** Кол-во знаков после запятой для курса. */
     @NotNull
-    @Column(name = "quote_decimal", nullable = false)
     @Min(0)
     @Max(10)
+    @Column(name = "quote_decimal", nullable = false)
     private Integer quoteDecimal;
 
     /**
      * JPA-callback код перед вставкой.
-     * Добавляет тип инструмента, проверяет валюты и генерирует код инструмента.
      */
     @Override
     protected void onPrePersist() {
-        // Проверка: разные валюты для пары
+        // 1) Проверка: базовая и котируемая валюты должны быть разные
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
             // TODO: Заменить на собственную ошибку из доменного класса
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
-        // Присваиваем тип финансового инструмента
-        setInstrumentType(InstrumentType.FX_OUTRIGHT);
-        // Генерируем код финансового инструмента
+        // 2) Присваиваем тип финансового инструмента
+        setType(InstrumentType.FX_OUTRIGHT);
+        // 3) Генерируем код финансового инструмента
         __generateInstrumentCode();
     }
+
+    // ===============================
+    // Вспомогательные классы и методы
+    // ===============================
 
     /** Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
-        setInstrumentCode(instrumentCode);
+        setCode(instrumentCode);
     }
 }

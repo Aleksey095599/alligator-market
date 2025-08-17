@@ -62,7 +62,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
-        // Проверка, что валюта не используется в парах
+        // Проверка, что валюта не используется в инструментах FX_OUTRIGHT
         if (fxOutrightStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInPairsException(code);
         }
