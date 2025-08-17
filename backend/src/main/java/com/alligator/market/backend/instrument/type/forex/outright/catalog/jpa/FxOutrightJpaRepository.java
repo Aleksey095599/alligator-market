@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FxOutrightJpaRepository extends JpaRepository<FxOutrightEntity, Long> {
 
     /** Найти инструмент по внутреннему коду. */
-    Optional<FxOutrightEntity> findByInstrumentCode(String instrumentCode);
+    Optional<FxOutrightEntity> findByCode(String code);
 
     /** Проверить, используется ли валюта в парах. */
     boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(String baseCurrency, String quoteCurrency);

@@ -21,6 +21,8 @@ public interface FxOutrightEntityMapper {
     @Mapping(target = "quoteCurrency", source = "quoteCurrency")
     @Mapping(target = "quoteDecimal", source = "model.quoteDecimal")
     @Mapping(target = "valueDateCode", source = "model.valueDateCode")
+    @Mapping(target = "code", expression = "java(model.code())")
+    @Mapping(target = "type", expression = "java(model.type())")
     void updateEntity(FxOutright model,
                       CurrencyEntity baseCurrency,
                       CurrencyEntity quoteCurrency,

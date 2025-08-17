@@ -28,7 +28,7 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
 
     @Override
     public void save(FxOutright instrument) {
-        FxOutrightEntity entity = jpaRepository.findByInstrumentCode(instrument.code())
+        FxOutrightEntity entity = jpaRepository.findByCode(instrument.code())
                 .orElseGet(FxOutrightEntity::new);
 
         CurrencyEntity base = currencyRepository.findByCode(instrument.baseCurrency())
@@ -42,19 +42,19 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
 
     @Override
     public void delete(String internalCode) {
-        jpaRepository.findByInstrumentCode(internalCode)
-                .ifPresent(jpaRepository::delete);
+        jpaRepository.findByCode(internalCode)
+                .ifPresent(e -> jpaRepository.deleteById(e.getId())); // Удаляем по ID
     }
 
     @Override
     public Optional<FxOutright> find(String internalCode) {
-        return jpaRepository.findByInstrumentCode(internalCode)
+        return jpaRepository.findByCode(internalCode)
                 .map(mapper::toDomain);
     }
 
     @Override
     public List<FxOutright> findAll() {
-        return jpaRepository.findAll(Sort.by("instrument.code")).stream()
+        return jpaRepository.findAll(Sort.by("code")).stream()
                 .map(mapper::toDomain)
                 .toList();
     }
