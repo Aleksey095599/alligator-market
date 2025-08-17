@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa;
 
-import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
+import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEmbeddable;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
@@ -21,9 +22,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@PrimaryKeyJoinColumn(name = "id")
-public class FxOutrightEntity extends InstrumentEntity {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class FxOutrightEntity extends BaseEntity {
+
+    /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    /** Общие атрибуты инструмента. */
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "code", column = @Column(name = "instrument_code", length = 32, nullable = false, updatable = false)),
+            @AttributeOverride(name = "type", column = @Column(name = "instrument_type", length = 32, nullable = false, updatable = false))
+    })
+    private InstrumentEmbeddable instrument = new InstrumentEmbeddable();
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
@@ -52,9 +67,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     @Column(name = "quote_decimal", nullable = false)
     private Integer quoteDecimal;
 
-    /**
-     * JPA-callback код перед вставкой.
-     */
+    /** JPA-callback код перед вставкой. */
     @Override
     protected void onPrePersist() {
         // 1) Проверка: базовая и котируемая валюты должны быть разные
@@ -63,7 +76,7 @@ public class FxOutrightEntity extends InstrumentEntity {
             throw new IllegalArgumentException("Base and quote currencies must be different");
         }
         // 2) Присваиваем тип финансового инструмента
-        setType(InstrumentType.FX_OUTRIGHT);
+        instrument.setType(InstrumentType.FX_OUTRIGHT);
         // 3) Генерируем код финансового инструмента
         __generateInstrumentCode();
     }
@@ -75,6 +88,6 @@ public class FxOutrightEntity extends InstrumentEntity {
     /** Вспомогательный метод генерации кода инструмента. */
     private void __generateInstrumentCode() {
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode;
-        setCode(instrumentCode);
+        instrument.setCode(instrumentCode);
     }
 }
