@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 
 /**
- * Родительский класс для всех entity в проекте.
+ * Родительский класс для всех сущностей в проекте.
  * Содержит поля для отслеживания изменений (JPA Audit) и управления версиями (Version).
  */
 @MappedSuperclass

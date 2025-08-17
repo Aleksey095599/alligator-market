@@ -14,9 +14,6 @@ public interface CurrencyEntityMapper {
     /** Преобразует сущность в модель. */
     Currency toDomain(CurrencyEntity entity);
 
-    /** Преобразует модель в новую сущность. */
-    CurrencyEntity toEntity(Currency currency);
-
     /** Обновляет сущность данными модели. */
     void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
 }
