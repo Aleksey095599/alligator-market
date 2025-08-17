@@ -15,4 +15,7 @@ public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Lon
     /** Найти валюту по имени. */
     Optional<CurrencyEntity> findByName(String name);
 
+    /** Удалить валюту по ISO-коду. */
+    void deleteByCode(String code);
+
 }

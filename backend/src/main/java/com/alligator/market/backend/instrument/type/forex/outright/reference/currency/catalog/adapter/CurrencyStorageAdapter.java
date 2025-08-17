@@ -32,7 +32,7 @@ public class CurrencyStorageAdapter implements CurrencyStorage {
 
     @Override
     public void deleteByCode(String code) {
-        jpaRepository.findByCode(code).ifPresent(jpaRepository::delete);
+        jpaRepository.deleteByCode(code);
     }
 
     @Override
