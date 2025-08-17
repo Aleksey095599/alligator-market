@@ -8,9 +8,11 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.service.CurrencyService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class CurrencyController {
 
     private final CurrencyService service;
@@ -50,7 +53,7 @@ public class CurrencyController {
     /** Обновить валюту. */
     @PutMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> update(
-            @PathVariable String code,
+            @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
             @RequestBody @Valid UpdateCurrencyDto dto) {
 
         Currency currency = mapper.toDomain(code, dto);
@@ -62,7 +65,8 @@ public class CurrencyController {
 
     /** Удалить валюту. */
     @DeleteMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
 
         service.deleteCurrency(code);
 
