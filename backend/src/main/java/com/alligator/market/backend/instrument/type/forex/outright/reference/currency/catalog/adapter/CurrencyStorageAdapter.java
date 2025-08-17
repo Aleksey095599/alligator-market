@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.adapter;
 
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.mapper.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;

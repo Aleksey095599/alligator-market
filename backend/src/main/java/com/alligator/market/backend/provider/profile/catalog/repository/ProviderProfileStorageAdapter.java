@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.profile.catalog.repository;
 
 import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileJpaRepository;
-import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfileEntityMapper;
+import com.alligator.market.backend.provider.profile.catalog.jpa.mapper.ProviderProfileEntityMapper;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;

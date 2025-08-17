@@ -1,5 +1,6 @@
-package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa;
+package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.mapper;
 
+import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

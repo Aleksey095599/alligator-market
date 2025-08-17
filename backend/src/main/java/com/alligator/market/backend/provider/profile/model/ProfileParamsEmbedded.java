@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.jpa.embedded;
+package com.alligator.market.backend.provider.profile.model;
 
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
@@ -16,16 +16,16 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Встраиваемый компонент профиля провайдера рыночных данных.
- * Полностью соответствует доменной модели профиля провайдера {@link ProviderProfile}.
- * Используется для упрощения представления сущности профиля провайдера и преобразований в доменную модель.
+ * Встраиваемый компонент, содержащий параметры профиля провайдера рыночных данных.
+ * Строго соответствует (точный маппинг) параметрам доменной модели {@link ProviderProfile}.
+ * Используется для упрощения представления сущности профиля провайдера.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable
-public class ProviderProfileEmbedded {
+public class ProfileParamsEmbedded {
 
     /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
     @NotBlank

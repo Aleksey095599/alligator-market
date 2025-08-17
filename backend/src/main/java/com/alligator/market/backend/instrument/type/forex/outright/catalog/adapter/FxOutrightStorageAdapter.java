@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.adapter;
 
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.FxOutrightEntity;
-import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.FxOutrightEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.mapper.FxOutrightEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa.FxOutrightJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyJpaRepository;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEmbeddable;
+import com.alligator.market.backend.instrument.model.InstrumentEmbeddable;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;

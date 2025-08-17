@@ -1,5 +1,6 @@
-package com.alligator.market.backend.instrument.catalog.jpa;
+package com.alligator.market.backend.instrument.model;
 
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,7 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Встраиваемая модель общих атрибутов инструмента.
+ * Встраиваемый компонент, содержащий общие атрибуты финансового инструмента.
+ * Строго соответствует (прямой маппинг) контракту финансового инструмента {@link Instrument}.
+ * Используется для упрощения представления сущностей конкретных финансовых инструментов.
  */
 @Embeddable
 @Getter
