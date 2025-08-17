@@ -37,6 +37,23 @@ public class FxOutrightServiceImpl implements FxOutrightService {
     }
 
     @Override
+    public void updateQuoteDecimal(String code, int quoteDecimal) {
+        // Ищем текущий инструмент
+        FxOutright current = storage.find(code)
+                .orElseThrow(() -> new FxOutrightNotFoundException(code));
+        // Создаем модель с новой точностью котировки
+        FxOutright updated = new FxOutright(
+                current.baseCurrency(),
+                current.quoteCurrency(),
+                current.valueDateCode(),
+                quoteDecimal
+        );
+        // Сохраняем обновленную модель
+        storage.save(updated);
+        log.info("FxOutright {} updated", code);
+    }
+
+    @Override
     public void delete(String code) {
         storage.find(code).orElseThrow(() -> new FxOutrightNotFoundException(code));
         storage.delete(code);

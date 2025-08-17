@@ -12,6 +12,9 @@ public interface FxOutrightService {
     /** Сохранить новый инструмент. */
     String create(FxOutright instrument);
 
+    /** Обновить точность котировки. */
+    void updateQuoteDecimal(String code, int quoteDecimal);
+
     /** Удалить инструмент по коду. */
     void delete(String code);
 

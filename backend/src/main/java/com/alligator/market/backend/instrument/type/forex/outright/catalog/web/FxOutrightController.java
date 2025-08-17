@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.service.FxOutrightService;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.web.dto.FxOutrightDto;
+import com.alligator.market.backend.instrument.type.forex.outright.catalog.web.dto.FxOutrightUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.web.mapper.FxOutrightDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import jakarta.validation.Valid;
@@ -38,6 +39,14 @@ public class FxOutrightController {
                 .buildAndExpand(code)
                 .toUri();
         return ResponseEntityFactory.created(location, code);
+    }
+
+    /** Обновить точность котировки. */
+    @PatchMapping("/{code}")
+    public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
+                                                                @RequestBody @Valid FxOutrightUpdateDto dto) {
+        service.updateQuoteDecimal(code, dto.quoteDecimal());
+        return ResponseEntityFactory.ok(null);
     }
 
     /** Удалить инструмент. */
