@@ -25,10 +25,6 @@ public class ProviderProfileController {
     private final ProviderProfileService service;
     private final ProviderProfileDtoMapper mapper;
 
-    //==============================================
-    //                  Операции
-    //==============================================
-
     /** Вернуть все активные профили. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
@@ -46,5 +42,4 @@ public class ProviderProfileController {
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
-
 }

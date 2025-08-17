@@ -9,7 +9,7 @@ import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStora
 import org.springframework.stereotype.Component;
 
 /**
- * Компонент вызывает доменную логику сопоставления профилей провайдеров рыночных данных (далее - профили),
+ * Компонент вызывает доменную логику сопоставления профилей провайдеров рыночных данных,
  * извлеченных из контекста приложения и хранилища данных.
  */
 @Component

@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.context.sheduler;
 
 import com.alligator.market.backend.provider.context.adapter.ProfilesReconciliationAdapter;
-import com.alligator.market.domain.provider.profile.context.ProfilesReconciliation;
 import com.alligator.market.domain.provider.profile.context.ProfileContextDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Планировщик запускает методы сервиса {@link ProfilesReconciliation}.
+ * Планировщик процедуры сопоставления профилей провайдеров рыночных данных,
+ * извлеченных из контекста приложения и хранилища данных.
  */
 @Component
 @RequiredArgsConstructor
