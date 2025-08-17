@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.context.sheduler;
+package com.alligator.market.backend.provider.context.scheduler;
 
 import com.alligator.market.backend.provider.context.adapter.ProfilesReconciliationAdapter;
 import com.alligator.market.domain.provider.profile.context.ProfileContextDiff;
