@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.service.FxOutrightService;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.web.dto.FxOutrightDto;
+import com.alligator.market.backend.instrument.type.forex.outright.catalog.web.mapper.FxOutrightDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +26,12 @@ import java.util.List;
 public class FxOutrightController {
 
     private final FxOutrightService service;
+    private final FxOutrightDtoMapper mapper;
 
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxOutrightDto dto) {
-        FxOutright model = new FxOutright(
-                dto.baseCurrency(),
-                dto.quoteCurrency(),
-                dto.quoteDecimal(),
-                dto.valueDateCode()
-        );
+        FxOutright model = mapper.toDomain(dto);
         String code = service.create(model);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")
@@ -54,12 +51,7 @@ public class FxOutrightController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<FxOutrightDto>>> getAll() {
         List<FxOutrightDto> list = service.findAll().stream()
-                .map(i -> new FxOutrightDto(
-                        i.baseCurrency(),
-                        i.quoteCurrency(),
-                        i.quoteDecimal(),
-                        i.valueDateCode()
-                ))
+                .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
