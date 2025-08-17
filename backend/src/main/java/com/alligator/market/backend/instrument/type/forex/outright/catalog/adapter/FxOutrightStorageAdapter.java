@@ -41,14 +41,14 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
     }
 
     @Override
-    public void delete(String internalCode) {
-        jpaRepository.findByCode(internalCode)
+    public void delete(String code) {
+        jpaRepository.findByCode(code)
                 .ifPresent(e -> jpaRepository.deleteById(e.getId())); // Удаляем по ID
     }
 
     @Override
-    public Optional<FxOutright> find(String internalCode) {
-        return jpaRepository.findByCode(internalCode)
+    public Optional<FxOutright> find(String code) {
+        return jpaRepository.findByCode(code)
                 .map(mapper::toDomain);
     }
 
