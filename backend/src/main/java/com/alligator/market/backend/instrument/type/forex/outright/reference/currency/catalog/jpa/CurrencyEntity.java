@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity валюты.
+ * Сущность валюты.
  */
 @Entity
 @Table(

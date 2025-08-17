@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.reference.curr
 import java.util.List;
 
 /**
- * Сервис работы с валютами.
+ * Сервис для работы с валютами.
  */
 public interface CurrencyService {
 

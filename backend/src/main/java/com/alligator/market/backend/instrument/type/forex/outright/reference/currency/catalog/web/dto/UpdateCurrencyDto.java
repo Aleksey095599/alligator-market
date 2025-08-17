@@ -3,9 +3,9 @@ package com.alligator.market.backend.instrument.type.forex.outright.reference.cu
 import jakarta.validation.constraints.*;
 
 /**
- * DTO обновления валюты.
+ * DTO обновления.
  */
-public record CurrencyUpdateDto(
+public record UpdateCurrencyDto(
 
         @NotBlank
         @Size(max = 50)

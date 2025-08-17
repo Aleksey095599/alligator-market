@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.outright.reference.cu
 import jakarta.validation.constraints.*;
 
 /**
- * DTO валюты.
+ * Основной DTO.
  */
 public record CurrencyDto(
 
