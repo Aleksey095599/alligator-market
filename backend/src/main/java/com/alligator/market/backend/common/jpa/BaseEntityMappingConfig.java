@@ -6,9 +6,14 @@ import org.mapstruct.MappingInheritanceStrategy;
 import org.mapstruct.MappingTarget;
 
 
+/**
+ * Конфигурация маппера для базовой сущности.
+ * Определяет правила игнорирования служебных полей при маппинге.
+ */
 @MapperConfig(mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
 public interface BaseEntityMappingConfig {
 
+    @SuppressWarnings("unused") // метод используется MapStruct
     @Mapping(target = "version", ignore = true)
     @Mapping(target = "createdTimestamp", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
@@ -16,5 +21,5 @@ public interface BaseEntityMappingConfig {
     @Mapping(target = "updatedTimestamp", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
     @Mapping(target = "updatedVia", ignore = true)
-    void ignoreBaseFields(BaseEntity src, @MappingTarget BaseEntity dst);
+    void ignoreBaseEntityFields(BaseEntity src, @MappingTarget BaseEntity dst);
 }

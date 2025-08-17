@@ -17,6 +17,6 @@ public interface CurrencyEntityMapper {
     Currency toDomain(CurrencyEntity entity);
 
     /** Обновляет сущность данными модели. */
-    @InheritConfiguration(name = "ignoreBaseFields")
+    @InheritConfiguration(name = "ignoreBaseEntityFields")
     void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
 }
