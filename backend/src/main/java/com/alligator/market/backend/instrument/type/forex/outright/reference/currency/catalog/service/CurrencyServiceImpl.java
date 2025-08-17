@@ -42,11 +42,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public void updateCurrency(Currency currency) {
 
-        // Проверка наличия валюты к обновлению
         storage.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
-        // Проверки, что обновление не приведет к дублированию
         storage.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
                 throw new DuplicateCurrencyException("name", currency.name());

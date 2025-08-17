@@ -5,6 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
@@ -17,6 +18,7 @@ public interface CurrencyEntityMapper {
     Currency toDomain(CurrencyEntity entity);
 
     /** Обновляет сущность данными модели. */
+    @Mapping(target = "id", ignore = true)
     @InheritConfiguration(name = "ignoreBaseEntityFields")
     void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
 }
