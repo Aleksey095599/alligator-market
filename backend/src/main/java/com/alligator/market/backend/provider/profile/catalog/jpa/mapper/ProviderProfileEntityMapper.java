@@ -4,26 +4,21 @@ import com.alligator.market.backend.provider.profile.catalog.jpa.ProviderProfile
 import com.alligator.market.backend.provider.profile.model.ProfileParamsEmbeddedMapper;
 import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
- * Маппер сущности и доменной модели профиля провайдера рыночных данных.
- * Использует маппер {@link ProfileParamsEmbeddedMapper}.
+ * Маппер: сущность профиля провайдера ⇄ доменная модель.
  */
-public final class ProviderProfileEntityMapper {
-
-    private ProviderProfileEntityMapper() {
-    }
+@Mapper(componentModel = "spring", uses = ProfileParamsEmbeddedMapper.class)
+public interface ProviderProfileEntityMapper {
 
     /** Преобразует доменную модель в сущность. */
-    public static ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status) {
-        ProviderProfileEntity entity = new ProviderProfileEntity();
-        entity.setStatus(status);
-        entity.setProfile(ProfileParamsEmbeddedMapper.toEmbedded(profile));
-        return entity;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "profileParams", source = "profile")
+    ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status);
 
     /** Преобразует сущность в доменную модель. */
-    public static ProviderProfile toDomain(ProviderProfileEntity entity) {
-        return ProfileParamsEmbeddedMapper.toDomain(entity.getProfile());
-    }
+    @Mapping(target = ".", source = "profileParams")
+    ProviderProfile toDomain(ProviderProfileEntity entity);
 }

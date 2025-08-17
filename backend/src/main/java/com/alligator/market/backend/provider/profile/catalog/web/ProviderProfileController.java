@@ -5,8 +5,7 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.provider.profile.catalog.web.dto.ProviderProfileDto;
 import com.alligator.market.backend.provider.profile.catalog.web.dto.ProviderProfileStatusDto;
 import com.alligator.market.backend.provider.profile.catalog.service.ProviderProfileService;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
+import com.alligator.market.backend.provider.profile.catalog.web.mapper.ProviderProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +23,7 @@ import java.util.List;
 public class ProviderProfileController {
 
     private final ProviderProfileService service;
+    private final ProviderProfileDtoMapper mapper;
 
     //==============================================
     //                  Операции
@@ -33,7 +33,7 @@ public class ProviderProfileController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
         List<ProviderProfileDto> list = service.findAllActive().values().stream()
-                .map(this::toDto)
+                .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
@@ -42,40 +42,9 @@ public class ProviderProfileController {
     @GetMapping("/audit")
     public ResponseEntity<ApiResponse<List<ProviderProfileStatusDto>>> getAllWithStatus() {
         List<ProviderProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()
-                .map(e -> toStatusDto(e.getKey(), e.getValue()))
+                .map(e -> mapper.toStatusDto(e.getKey(), e.getValue()))
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
 
-    //==============================================
-    //                   Утилиты
-    //==============================================
-
-    /** Утилита преобразует доменную модель в DTO. */
-    private ProviderProfileDto toDto(ProviderProfile profile) {
-
-        return new ProviderProfileDto(
-                profile.providerCode(),
-                profile.displayName(),
-                profile.instrumentTypes(),
-                profile.deliveryMode(),
-                profile.accessMethod(),
-                profile.bulkSubscription(),
-                profile.minPollMs()
-        );
-    }
-
-    /** Утилита преобразует доменную модель и статус в DTO. */
-    private ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status) {
-        return new ProviderProfileStatusDto(
-                status,
-                profile.providerCode(),
-                profile.displayName(),
-                profile.instrumentTypes(),
-                profile.deliveryMode(),
-                profile.accessMethod(),
-                profile.bulkSubscription(),
-                profile.minPollMs()
-        );
-    }
 }

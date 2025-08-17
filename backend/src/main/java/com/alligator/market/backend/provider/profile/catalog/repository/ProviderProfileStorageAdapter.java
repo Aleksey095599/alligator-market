@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
 
     private final ProviderProfileJpaRepository jpaRepository;
+    private final ProviderProfileEntityMapper mapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -29,7 +30,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
         return jpaRepository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProviderProfileEntity::getId,
-                        ProviderProfileEntityMapper::toDomain
+                        mapper::toDomain
                 ));
     }
 
@@ -38,7 +39,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
-                        ProviderProfileEntityMapper::toDomain,
+                        mapper::toDomain,
                         ProviderProfileEntity::getStatus
                 ));
     }
@@ -46,7 +47,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     @Override
     public void saveAll(Collection<ProviderProfile> profiles) {
         var entities = profiles.stream()
-                .map(p -> ProviderProfileEntityMapper.toEntity(p, ProviderProfileStatus.ACTIVE))
+                .map(p -> mapper.toEntity(p, ProviderProfileStatus.ACTIVE))
                 .toList();
         jpaRepository.saveAll(entities);
     }
