@@ -37,51 +37,51 @@ public class ProfilesReconciliation {
         ProfileContextDiff diff = new ProfileContextDiff();
 
         // Копия списка профилей из контекста, из которого удаляются найденные совпадения
-        List<ProviderProfile> restContextProfiles =
+        List<ProviderProfile> remainingContextProfiles =
                 new ArrayList<>(contextProfiles); // До начала цикла совпадает с полным списком
 
         // Перебираем все профили из БД
-        for (Map.Entry<Long, ProviderProfile> entry_i : dbActiveProfiles.entrySet()) {
+        for (Map.Entry<Long, ProviderProfile> entry : dbActiveProfiles.entrySet()) {
 
-            // entry_i это пара <PK, i-ый профиль>
-            Long id = entry_i.getKey();
-            ProviderProfile dbProfile = entry_i.getValue();
+            // entry — это пара <PK, профиль из БД>
+            Long id = entry.getKey();
+            ProviderProfile dbProfile = entry.getValue();
 
             // Переменная, предназначенная для хранения профиля провайдера, совпавшего по коду
             ProviderProfile contextMatch = null;
 
-            // Перебираем профили из списка "restContextProfiles"
-            for (ProviderProfile p : restContextProfiles) {
+            // Перебираем профили из списка "remainingContextProfiles"
+            for (ProviderProfile p : remainingContextProfiles) {
                 if (p.providerCode().equals(dbProfile.providerCode())) {
-                    // Если найдено совпадение с i-ым профилем из БД
+                    // Если найдено совпадение с текущим профилем из БД
                     contextMatch = p; // помещаем этот профиль в "contextMatch"
                     break;
                 }
             }
 
-            // 1) Если ни один профиль из контекста не совпал с i-ым профилем из БД
+            // 1) Если ни один профиль из контекста не совпал с текущим профилем из БД
             if (contextMatch == null) {
                 diff.putToMissingList(id); // Значит профиль в БД не актуален (MISSING)
-                continue; // переходим к i+1 профилю из БД
+                continue; // переходим к следующему профилю из БД
             }
 
             // 2) Если полное совпадение по всем полям значит профиль актуален
             if (contextMatch.equals(dbProfile)) {
-                // Исключаем из "restContextProfiles", в БД i-ый профиль останется без изменений
-                restContextProfiles.remove(contextMatch);
-                continue; // переходим к i+1 профилю из БД
+                // Исключаем из "remainingContextProfiles", в БД текущий профиль останется без изменений
+                remainingContextProfiles.remove(contextMatch);
+                continue; // переходим к следующему профилю из БД
             }
 
             // 3) Если совпадение есть, но не по всем полям профиля
-            diff.putToReplaceList(id); // Помещаем i-ый профиль БД в список для замены (REPLACED)
-            diff.putToAddList(contextMatch); // Профиль их контекста добавляем в список для добавления как ACTIVE
+            diff.putToReplaceList(id); // Помещаем текущий профиль БД в список для замены (REPLACED)
+            diff.putToAddList(contextMatch); // Профиль из контекста добавляем в список для добавления как ACTIVE
 
-            // Удаляем из "restContextProfiles" обработанный профиль "contextMatch"
-            restContextProfiles.remove(contextMatch);
+            // Удаляем из "remainingContextProfiles" обработанный профиль "contextMatch"
+            remainingContextProfiles.remove(contextMatch);
         }
 
         // Оставшиеся профили не нашли совпадений с БД, значит их добавляем в список для добавления как ACTIVE
-        restContextProfiles.forEach(diff::putToAddList);
+        remainingContextProfiles.forEach(diff::putToAddList);
         return diff;
     }
 
