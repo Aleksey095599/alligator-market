@@ -57,4 +57,9 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
                 .map(FxOutrightEntityMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public boolean existsByCurrency(String currencyCode) {
+        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
+    }
 }

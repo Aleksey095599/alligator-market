@@ -21,4 +21,7 @@ public interface FxOutrightStorage {
 
     /** Вернуть все инструменты. */
     List<FxOutright> findAll();
+
+    /** Проверить, используется ли валюта в инструментах. */
+    boolean existsByCurrency(String currencyCode);
 }

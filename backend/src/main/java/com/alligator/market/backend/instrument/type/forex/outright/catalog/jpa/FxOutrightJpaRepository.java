@@ -11,4 +11,7 @@ public interface FxOutrightJpaRepository extends JpaRepository<FxOutrightEntity,
 
     /** Найти инструмент по внутреннему коду. */
     Optional<FxOutrightEntity> findByInstrumentCode(String instrumentCode);
+
+    /** Проверить, используется ли валюта в парах. */
+    boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(String baseCurrency, String quoteCurrency);
 }
