@@ -27,12 +27,12 @@ public class InstrumentEmbeddable {
 
     /** Внутренний код инструмента. */
     @NotBlank
-    @Column(length = 32, nullable = false, updatable = false)
+    @Column(name = "instrument_code", length = 32, nullable = false, updatable = false)
     private String code;
 
     /** Тип финансового инструмента. */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 32, nullable = false, updatable = false)
+    @Column(name = "instrument_type", length = 32, nullable = false, updatable = false)
     private InstrumentType type;
 }
