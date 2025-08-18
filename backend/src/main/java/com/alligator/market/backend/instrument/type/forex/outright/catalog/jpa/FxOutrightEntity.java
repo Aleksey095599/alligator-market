@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.catalog.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -58,7 +58,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     protected void onPrePersist() {
         // 1) Проверяем, что валюты различаются
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
-            throw new SameCurrenciesException();
+            throw new FxOutrightSameCurrenciesException();
         }
         // 2) Устанавливаем тип инструмента
         setType(InstrumentType.FX_OUTRIGHT);

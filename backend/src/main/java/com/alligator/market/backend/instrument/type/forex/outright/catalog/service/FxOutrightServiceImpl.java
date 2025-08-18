@@ -1,9 +1,9 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.DuplicateFxOutrightException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +26,10 @@ public class FxOutrightServiceImpl implements FxOutrightService {
     @Override
     public String create(FxOutright instrument) {
         if (instrument.baseCurrency().equals(instrument.quoteCurrency())) {
-            throw new SameCurrenciesException();
+            throw new FxOutrightSameCurrenciesException();
         }
         storage.find(instrument.code()).ifPresent(i -> {
-            throw new DuplicateFxOutrightException(instrument.code());
+            throw new FxOutrightDuplicateException(instrument.code());
         });
         storage.save(instrument);
         log.info("FxOutright {} saved", instrument.code());

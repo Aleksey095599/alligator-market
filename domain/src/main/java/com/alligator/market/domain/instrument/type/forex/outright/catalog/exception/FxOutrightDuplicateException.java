@@ -3,8 +3,8 @@ package com.alligator.market.domain.instrument.type.forex.outright.catalog.excep
 /**
  * Инструмент уже существует.
  */
-public class DuplicateFxOutrightException extends RuntimeException {
-    public DuplicateFxOutrightException(String code) {
+public class FxOutrightDuplicateException extends RuntimeException {
+    public FxOutrightDuplicateException(String code) {
         super("FxOutright '%s' already exists".formatted(code));
     }
 }

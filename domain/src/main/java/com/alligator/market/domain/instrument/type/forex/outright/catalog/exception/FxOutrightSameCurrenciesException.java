@@ -3,8 +3,8 @@ package com.alligator.market.domain.instrument.type.forex.outright.catalog.excep
 /**
  * Базовая и котируемая валюты совпадают.
  */
-public class SameCurrenciesException extends RuntimeException {
-    public SameCurrenciesException() {
+public class FxOutrightSameCurrenciesException extends RuntimeException {
+    public FxOutrightSameCurrenciesException() {
         super("Base and quote currencies must be different");
     }
 }

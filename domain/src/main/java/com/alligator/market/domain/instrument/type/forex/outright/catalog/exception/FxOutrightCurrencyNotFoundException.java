@@ -5,8 +5,8 @@ import com.alligator.market.domain.common.exception.NotFoundException;
 /**
  * Одна из валют FX_OUTRIGHT не найдена.
  */
-public class CurrencyFromFxOutrightNotFoundException extends NotFoundException {
-    public CurrencyFromFxOutrightNotFoundException(String code) {
+public class FxOutrightCurrencyNotFoundException extends NotFoundException {
+    public FxOutrightCurrencyNotFoundException(String code) {
         super("Currency '%s' not found".formatted(code));
     }
 }

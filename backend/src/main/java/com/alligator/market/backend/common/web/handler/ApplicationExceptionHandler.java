@@ -2,9 +2,9 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.CurrencyFromFxOutrightNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.DuplicateFxOutrightException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.SameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
 import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Централизованный обработчик доменных исключений.
+ * Централизованный обработчик доменных исключений, относящихся к бизнес-логике.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -42,26 +42,26 @@ public class ApplicationExceptionHandler {
     }
 
     /** Дублирование инструмента FX_OUTRIGHT. */
-    @ExceptionHandler(DuplicateFxOutrightException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(DuplicateFxOutrightException ex) {
+    @ExceptionHandler(FxOutrightDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(FxOutrightDuplicateException ex) {
         // 409 при попытке создать существующий инструмент
-        log.warn("DuplicateFxOutrightException: {}", ex.getMessage());
+        log.warn("FxOutrightDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     /** Одна из валют компонента FX_OUTRIGHT не найдена. */
-    @ExceptionHandler(CurrencyFromFxOutrightNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(CurrencyFromFxOutrightNotFoundException ex) {
+    @ExceptionHandler(FxOutrightCurrencyNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(FxOutrightCurrencyNotFoundException ex) {
         // 400, неверные данные инструмента
-        log.warn("CurrencyFromFxOutrightNotFoundException: {}", ex.getMessage());
+        log.warn("FxOutrightCurrencyNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     /** Базовая и котируемая валюты совпадают. */
-    @ExceptionHandler(SameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(SameCurrenciesException ex) {
+    @ExceptionHandler(FxOutrightSameCurrenciesException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(FxOutrightSameCurrenciesException ex) {
         // 400, клиентская ошибка
-        log.warn("SameCurrenciesException: {}", ex.getMessage());
+        log.warn("FxOutrightSameCurrenciesException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
