@@ -5,7 +5,8 @@ import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutrig
 import java.util.List;
 
 /**
- * Сервис для работы с инструментами FX_OUTRIGHT.
+ * Сервисный контракт, используемый REST-слоем для работы с инструментами FX_OUTRIGHT:
+ * создание, обновление, удаление и получение списка и т.п.
  */
 public interface FxOutrightService {
 

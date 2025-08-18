@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * JPA-репозиторий инструментов FX_OUTRIGHT.
+ * Spring Data JPA-репозиторий для работы с инструментами FX_OUTRIGHT.
  */
 public interface FxOutrightJpaRepository extends JpaRepository<FxOutrightEntity, Long> {
 

@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный контракт хранилища валют {@link CurrencyStorage}.
+ * Адаптер, реализующий доменный контракт {@link CurrencyStorage}
+ * с использованием Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor

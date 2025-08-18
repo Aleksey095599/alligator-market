@@ -12,6 +12,5 @@ public record FxOutrightUpdateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer quoteDecimal
-
 ) {}
 

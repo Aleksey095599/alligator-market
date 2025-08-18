@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * JPA-репозиторий валют.
+ * Spring Data JPA-репозиторий для работы с валютами.
  */
 public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Long> {
 
@@ -17,5 +17,4 @@ public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Lon
 
     /** Удалить валюту по ISO-коду. */
     void deleteByCode(String code);
-
 }

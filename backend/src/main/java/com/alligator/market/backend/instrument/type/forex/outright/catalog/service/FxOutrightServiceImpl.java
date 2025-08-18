@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса.
+ * Реализация контракта сервиса {@link FxOutrightService}.
  */
 @Service
 @RequiredArgsConstructor

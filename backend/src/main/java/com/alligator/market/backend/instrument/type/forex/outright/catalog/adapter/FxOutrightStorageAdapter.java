@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер хранилища FX_OUTRIGHT на Spring Data JPA.
+ * Адаптер, реализующий доменный контракт {@link FxOutrightStorage}
+ * с использованием Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
@@ -30,12 +31,10 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
     public void save(FxOutright fxOutright) {
         FxOutrightEntity entity = jpaRepository.findByCode(fxOutright.code())
                 .orElseGet(FxOutrightEntity::new);
-
         CurrencyEntity base = currencyRepository.findByCode(fxOutright.baseCurrency())
                 .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.baseCurrency()));
         CurrencyEntity quote = currencyRepository.findByCode(fxOutright.quoteCurrency())
                 .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.quoteCurrency()));
-
         mapper.updateEntity(fxOutright, base, quote, entity);
         jpaRepository.save(entity);
     }
