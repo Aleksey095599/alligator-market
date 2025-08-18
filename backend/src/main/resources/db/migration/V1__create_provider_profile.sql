@@ -14,5 +14,7 @@ CREATE TABLE public.provider_profile (
     created_via VARCHAR(255) NOT NULL,
     updated_timestamp TIMESTAMP NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
-    updated_via VARCHAR(255) NOT NULL
+    updated_via VARCHAR(255) NOT NULL,
+    CONSTRAINT uq_provider_profile_provider_code UNIQUE (provider_code),
+    CONSTRAINT uq_provider_profile_display_name UNIQUE (display_name)
 );
