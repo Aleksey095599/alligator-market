@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
- * Маппер: модель инструмента FX_OUTRIGHT ⇄ сущность инструмента FX_OUTRIGHT.
+ * Маппер: модель ⇄ сущность.
  */
 @Mapper(componentModel = "spring")
 public interface FxOutrightEntityMapper {

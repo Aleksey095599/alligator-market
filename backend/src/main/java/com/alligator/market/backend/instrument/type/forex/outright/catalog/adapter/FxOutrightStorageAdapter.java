@@ -27,16 +27,16 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
     private final FxOutrightEntityMapper mapper;
 
     @Override
-    public void save(FxOutright instrument) {
-        FxOutrightEntity entity = jpaRepository.findByCode(instrument.code())
+    public void save(FxOutright fxOutright) {
+        FxOutrightEntity entity = jpaRepository.findByCode(fxOutright.code())
                 .orElseGet(FxOutrightEntity::new);
 
-        CurrencyEntity base = currencyRepository.findByCode(instrument.baseCurrency())
-                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(instrument.baseCurrency()));
-        CurrencyEntity quote = currencyRepository.findByCode(instrument.quoteCurrency())
-                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(instrument.quoteCurrency()));
+        CurrencyEntity base = currencyRepository.findByCode(fxOutright.baseCurrency())
+                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.baseCurrency()));
+        CurrencyEntity quote = currencyRepository.findByCode(fxOutright.quoteCurrency())
+                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.quoteCurrency()));
 
-        mapper.updateEntity(instrument, base, quote, entity);
+        mapper.updateEntity(fxOutright, base, quote, entity);
         jpaRepository.save(entity);
     }
 
