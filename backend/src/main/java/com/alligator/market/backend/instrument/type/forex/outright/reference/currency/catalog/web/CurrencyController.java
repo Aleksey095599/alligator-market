@@ -37,13 +37,11 @@ public class CurrencyController {
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
         Currency currency = mapper.toDomain(dto);
         String code = service.createCurrency(currency);
-        // Формируем ссылку на созданный ресурс
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
                 .buildAndExpand(code)
                 .toUri();
-
         return ResponseEntityFactory.created(location, code);
     }
 
@@ -72,7 +70,6 @@ public class CurrencyController {
                 .stream()
                 .map(mapper::toDto)
                 .toList();
-
         return ResponseEntityFactory.ok(currencyDtoList);
     }
 }

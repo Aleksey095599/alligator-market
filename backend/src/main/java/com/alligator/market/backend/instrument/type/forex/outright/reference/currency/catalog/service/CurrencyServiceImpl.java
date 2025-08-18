@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса.
+ * Реализация контракта сервиса {@link CurrencyService}.
  */
 @Service
 @RequiredArgsConstructor
@@ -55,7 +55,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteCurrency(String code) {
         storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
-        // Проверяем, что валюта не используется в инструментах FX_OUTRIGHT
+        // Проверяем, что валюта не используется в инструментах FX_OUTRIGHT, иначе нельзя удалять
         if (fxOutrightStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInFxOutrightException(code);
         }
