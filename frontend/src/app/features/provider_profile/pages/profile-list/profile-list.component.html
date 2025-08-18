@@ -30,9 +30,9 @@
           <td mat-cell *matCellDef="let p">{{ p.displayName }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="instrumentTypes">
+        <ng-container matColumnDef="instrumentsSupported">
           <th mat-header-cell *matHeaderCellDef>Instruments</th>
-          <td mat-cell *matCellDef="let p">{{ p.instrumentTypes.join(', ') }}</td>
+          <td mat-cell *matCellDef="let p">{{ p.instrumentsSupported.join(', ') }}</td>
         </ng-container>
 
         <ng-container matColumnDef="deliveryMode">

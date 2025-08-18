@@ -38,19 +38,19 @@ public class ProviderProfileEmbedded {
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
 
-    /** Поддерживаемые инструменты {@link ProviderProfile#instrumentTypes()}. */
+    /** Поддерживаемые инструменты {@link ProviderProfile#instrumentsSupported()}. */
     @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
-            name = "provider_profile_instrument_type",
+            name = "provider_profile_supported_instrument",
             joinColumns = @JoinColumn(
                     name = "provider_id",
                     referencedColumnName = "id",
-                    foreignKey = @ForeignKey(name = "fk_provider_profile_instrument_type_provider_profile")
+                    foreignKey = @ForeignKey(name = "fk_provider_profile_supported_instrument_provider_profile")
             )
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "instrument_types", length = 20, nullable = false, updatable = false)
-    private Set<InstrumentType> instrumentTypes;
+    @Column(name = "instruments_supported", length = 20, nullable = false, updatable = false)
+    private Set<InstrumentType> instrumentsSupported;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderProfile#deliveryMode()}. */
     @NotNull

@@ -2,7 +2,7 @@
 export interface ProviderProfileDto {
   providerCode: string;
   displayName: string;
-  instrumentTypes: string[];
+  instrumentsSupported: string[];
   deliveryMode: string;
   accessMethod: string;
   bulkSubscription: boolean;

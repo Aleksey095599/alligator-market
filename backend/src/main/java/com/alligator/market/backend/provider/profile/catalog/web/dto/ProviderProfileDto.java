@@ -14,7 +14,7 @@ public record ProviderProfileDto(
 
         @NotBlank String providerCode,
         @NotBlank String displayName,
-        @NotNull Set<InstrumentType> instrumentTypes,
+        @NotNull Set<InstrumentType> instrumentsSupported,
         @NotNull ProviderDeliveryMode deliveryMode,
         @NotNull ProviderAccessMethod accessMethod,
         boolean bulkSubscription,
