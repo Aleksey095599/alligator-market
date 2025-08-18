@@ -10,7 +10,7 @@ import lombok.NonNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AuditContextHolder {
 
-    // Дефолты дев-режима (TODO: временная заглушка до реализации аутентификации)
+    // Дефолты дев-режима
     private static final String DEV_ACTOR = "dev_admin";
     private static final String DEV_VIA   = "rest-api-dev";
     private static final AuditContext DEV_DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
