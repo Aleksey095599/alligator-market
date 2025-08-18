@@ -4,7 +4,7 @@ import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.mapstruct.Mapper;
 
 /**
- * Маппер: доменная модель профиля провайдера ⇄ встраиваемый компонент.
+ * Маппер: доменная модель ⇄ встраиваемый компонент.
  */
 @Mapper(componentModel = "spring")
 public interface ProviderProfileEmbeddedMapper {
