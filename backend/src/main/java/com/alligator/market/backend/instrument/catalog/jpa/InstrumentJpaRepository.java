@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * JPA-репозиторий базовых финансовых инструментов.
+ * Spring Data JPA-репозиторий для работы с родительскими сущностями финансовых инструментов.
  */
 public interface InstrumentJpaRepository extends JpaRepository<InstrumentEntity, Long> {
 

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * JPA-репозиторий для профилей провайдеров рыночных данных.
+ * Spring Data JPA-репозиторий для работы с профилями провайдеров.
  */
 public interface ProviderProfileJpaRepository extends JpaRepository<ProviderProfileEntity, Long> {
 
