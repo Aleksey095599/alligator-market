@@ -32,6 +32,7 @@ class ProviderProfileDtoJsonTest {
                 42
         );
         String json = mapper.writeValueAsString(dto);
+        assertTrue(json.contains("\"instrumentsSupported\""));
         assertTrue(json.contains("\"deliveryMode\""));
         assertTrue(json.contains("\"accessMethod\""));
         assertTrue(json.contains("\"bulkSubscription\""));
@@ -56,6 +57,7 @@ class ProviderProfileDtoJsonTest {
         );
         String json = mapper.writeValueAsString(dto);
         assertTrue(json.contains("\"status\""));
+        assertTrue(json.contains("\"instrumentsSupported\""));
         assertTrue(json.contains("\"deliveryMode\""));
         assertTrue(json.contains("\"accessMethod\""));
         assertTrue(json.contains("\"bulkSubscription\""));

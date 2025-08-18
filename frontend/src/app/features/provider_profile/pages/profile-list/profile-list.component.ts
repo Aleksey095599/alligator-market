@@ -21,7 +21,7 @@ export class ProfileListComponent implements OnInit {
     'status',
     'providerCode',
     'displayName',
-    'instrumentTypes',
+    'instrumentsSupported',
     'deliveryMode',
     'accessMethod',
     'bulkSubscription',
