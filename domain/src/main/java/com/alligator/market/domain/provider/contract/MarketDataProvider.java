@@ -21,30 +21,20 @@ public interface MarketDataProvider {
     /** Возвращает карту: тип инструмента → обработчик. */
     Map<InstrumentType, InstrumentHandler> instrumentHandlers();
 
-    // TODO: нужно убрать данное поле, список поддерживаемых инструментов следует из instrumentHandlers
-    /** Возвращает множество поддерживаемых типов инструментов. */
-    default Set<InstrumentType> supportedInstrumentTypes() {
-        return instrumentHandlers().keySet();
-    }
-
     /**
      * Возвращает котировку.
      *
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
     default Flux<QuoteTick> quote(Instrument instrument) {
-
         // Извлекаем тип инструмента
         InstrumentType instrumentType = instrument.type();
-
         // Подбираем нужный обработчик для данного типа инструмента
         InstrumentHandler handler = instrumentHandlers().get(instrumentType);
-
         // Проверка, что обработчик существует
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(instrumentType, profile().providerCode()));
         }
-
         // Возвращаем котировку инструмента
         return handler.instrumentQuote(instrument);
     }
