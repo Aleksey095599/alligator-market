@@ -50,5 +50,5 @@ public class ProviderEntity extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "profile_status", length = 10, nullable = false)
-    private ProviderProfileStatus status;
+    private ProviderProfileStatus profileStatus;
 }

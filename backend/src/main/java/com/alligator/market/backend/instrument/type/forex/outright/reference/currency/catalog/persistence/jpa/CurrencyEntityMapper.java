@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
- * Маппер: модель ⇄ сущность.
+ * Маппер: модель валюты ⇄ сущность.
  */
 @Mapper(componentModel = "spring", config = BaseEntityMappingConfig.class)
 public interface CurrencyEntityMapper {
