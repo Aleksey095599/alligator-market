@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.contract;
 
-import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.model.InstrumentType;
+import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.contract.InstrumentType;
 import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
@@ -9,6 +9,9 @@ import reactor.core.publisher.Flux;
  * Контракт обработчика (handler) для конкретного инструмента.
  */
 public interface InstrumentHandler {
+
+    /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
+    String providerCode();
 
     /** Возвращает поддерживаемый тип инструмента. */
     InstrumentType supportedInstrument();

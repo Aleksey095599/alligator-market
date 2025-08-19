@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.outright.model;
 
-import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.model.InstrumentType;
+import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.contract.InstrumentType;
 
 /**
  * Модель финансового инструмента FX_OUTRIGHT.
