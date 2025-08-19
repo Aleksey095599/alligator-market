@@ -18,6 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "provider")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,5 +50,5 @@ public class ProviderEntity extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "profile_status", length = 10, nullable = false)
-    private ProviderProfileStatus profile_status;
+    private ProviderProfileStatus status;
 }
