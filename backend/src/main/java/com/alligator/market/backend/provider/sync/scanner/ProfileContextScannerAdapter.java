@@ -19,7 +19,7 @@ import java.util.List;
 public class ProfileContextScannerAdapter implements ProfileContextScanner {
 
     /** Список всех адаптеров провайдеров. */
-    private final List<MarketDataProvider> providers;
+    private final List<MarketDataProvider<?>> providers;
 
     /** Возвращает список профилей провайдеров. */
     @Override

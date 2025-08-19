@@ -7,8 +7,10 @@ import reactor.core.publisher.Flux;
 
 /**
  * Контракт обработчика (handler) для конкретного инструмента.
+ *
+ * @param <P> провайдер рыночных данных
  */
-public interface InstrumentHandler {
+public interface InstrumentHandler<P extends MarketDataProvider<?>> {
 
     /** Возвращает поддерживаемый тип инструмента. */
     InstrumentType supportedInstrument();

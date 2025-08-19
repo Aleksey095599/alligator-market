@@ -13,7 +13,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 public record InstrumentFeed(
 
         Instrument instrument,
-        MarketDataProvider provider,
+        MarketDataProvider<?> provider,
         int priority
 ) {}
 
