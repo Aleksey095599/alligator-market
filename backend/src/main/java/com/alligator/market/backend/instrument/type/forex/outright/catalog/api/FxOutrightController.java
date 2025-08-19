@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.outright.catalog.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.type.forex.outright.catalog.service.FxOutrightService;
+import com.alligator.market.backend.instrument.type.forex.outright.catalog.service.crud.FxOutrightService;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightDto;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightDtoMapper;

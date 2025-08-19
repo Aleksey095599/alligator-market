@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.outright.catalog.service;
+package com.alligator.market.backend.instrument.type.forex.outright.catalog.service.crud;
 
 import com.alligator.market.domain.instrument.type.forex.outright.contract.FxOutrightStorage;
 import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightDuplicateException;

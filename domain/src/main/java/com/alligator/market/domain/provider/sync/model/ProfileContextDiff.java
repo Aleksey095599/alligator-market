@@ -14,19 +14,15 @@ public record ProfileContextDiff(
         List<Long> replaced,
         List<Long> missing
 ) {
-
     public ProfileContextDiff() {
         this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
-
     public void putToAddList(ProviderProfile profile) {
         add.add(profile);
     }
-
     public void putToReplaceList(Long id) {
         replaced.add(id);
     }
-
     public void putToMissingList(Long id) {
         missing.add(id);
     }
