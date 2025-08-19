@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDto;
 import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileStatusDto;
-import com.alligator.market.backend.provider.profile.catalog.service.ProviderProfileService;
+import com.alligator.market.backend.provider.profile.catalog.service.crud.ProviderProfileService;
 import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
