@@ -5,7 +5,7 @@ import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
 import com.alligator.market.domain.provider.sync.contract.ProfileContextScanner;
 import com.alligator.market.domain.provider.sync.service.ProfilesReconciliationService;
-import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.profile.contract.ProviderProfileStorage;
 import org.springframework.stereotype.Component;
 
 /**

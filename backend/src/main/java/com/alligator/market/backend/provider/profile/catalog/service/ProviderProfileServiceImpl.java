@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.service;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
-import com.alligator.market.domain.provider.sync.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.profile.contract.ProviderProfileStorage;
+import com.alligator.market.domain.provider.model.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

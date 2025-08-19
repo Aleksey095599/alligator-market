@@ -4,8 +4,8 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxOutrightHandler;
 import com.alligator.market.domain.instrument.model.InstrumentType;
-import com.alligator.market.domain.provider.model.InstrumentHandler;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
 import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;

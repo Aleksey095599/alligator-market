@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.model;
+package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.exeption.InstrumentNotSupportedException;
@@ -21,6 +21,7 @@ public interface MarketDataProvider {
     /** Возвращает карту: тип инструмента → обработчик. */
     Map<InstrumentType, InstrumentHandler> instrumentHandlers();
 
+    // TODO: нужно убрать данное поле, список поддерживаемых инструментов следует из instrumentHandlers
     /** Возвращает множество поддерживаемых типов инструментов. */
     default Set<InstrumentType> supportedInstrumentTypes() {
         return instrumentHandlers().keySet();

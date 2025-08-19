@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.model;
+package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;

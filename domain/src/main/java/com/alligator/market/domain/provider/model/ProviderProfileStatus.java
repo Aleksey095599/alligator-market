@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.sync.model;
+package com.alligator.market.domain.provider.model;
 
 /**
  * Статус профиля провайдера рыночных данных в хранилище профилей.
