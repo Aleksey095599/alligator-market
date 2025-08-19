@@ -5,12 +5,7 @@ package com.alligator.market.domain.instrument.type.forex.outright.model;
  */
 public enum ValueDateCode {
 
-    // Сегодня
     TOD,
-
-    // Завтра
     TOM,
-
-    // Послезавтра
     SPOT
 }

@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.provider.exeption.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.model.InstrumentType;

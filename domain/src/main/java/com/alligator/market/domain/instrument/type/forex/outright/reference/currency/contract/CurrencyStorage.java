@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog;
+package com.alligator.market.domain.instrument.type.forex.outright.reference.currency.contract;
 
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
 

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.catalog;
+package com.alligator.market.domain.instrument.type.forex.outright.contract;
 
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 

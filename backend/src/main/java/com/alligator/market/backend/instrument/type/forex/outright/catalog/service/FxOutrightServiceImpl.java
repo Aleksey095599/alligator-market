@@ -1,9 +1,9 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.contract.FxOutrightStorage;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

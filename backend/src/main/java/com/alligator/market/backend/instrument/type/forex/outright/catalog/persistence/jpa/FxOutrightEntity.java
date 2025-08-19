@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.catalog.persistence.jpa.Instrumen
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

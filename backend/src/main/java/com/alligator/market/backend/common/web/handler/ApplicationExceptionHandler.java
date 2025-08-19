@@ -2,12 +2,12 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightSameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.CurrencyUsedInFxOutrightException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception.DuplicateCurrencyException;
-import com.alligator.market.domain.provider.model.InstrumentNotSupportedException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyUsedInFxOutrightException;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.provider.exeption.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.context.DuplicateProfileInContextException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApplicationExceptionHandler {
 
     /** Дублирование валюты. */
-    @ExceptionHandler(DuplicateCurrencyException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateCurrency(DuplicateCurrencyException ex) {
+    @ExceptionHandler(CurrencyDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateCurrency(CurrencyDuplicateException ex) {
         // Отдаем 409, так как запись уже существует
-        log.warn("DuplicateCurrencyException: {}", ex.getMessage());
+        log.warn("CurrencyDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 

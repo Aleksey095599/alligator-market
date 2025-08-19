@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.type.forex.outright.reference.cur
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.CurrencyStorage;
+import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.contract.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;

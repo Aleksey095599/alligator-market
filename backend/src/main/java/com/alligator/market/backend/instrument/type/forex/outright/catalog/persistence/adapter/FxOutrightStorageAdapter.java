@@ -5,8 +5,8 @@ import com.alligator.market.backend.instrument.type.forex.outright.catalog.persi
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.persistence.jpa.FxOutrightEntityMapper;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.FxOutrightStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.catalog.exception.FxOutrightCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.outright.contract.FxOutrightStorage;
+import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

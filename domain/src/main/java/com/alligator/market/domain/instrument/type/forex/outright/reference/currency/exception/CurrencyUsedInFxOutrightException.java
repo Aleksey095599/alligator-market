@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.reference.currency.catalog.exception;
+package com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception;
 
 /**
  * Валюта используется в инструментах FX_OUTRIGHT.

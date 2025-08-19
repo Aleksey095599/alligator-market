@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.outright.catalog.exception;
+package com.alligator.market.domain.instrument.type.forex.outright.exception;
 
 /**
  * Базовая и котируемая валюты совпадают.
