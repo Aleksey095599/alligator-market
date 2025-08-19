@@ -1,7 +1,10 @@
-package com.alligator.market.domain.provider.profile.context;
+package com.alligator.market.domain.provider.sync.service;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
+import com.alligator.market.domain.provider.sync.contract.ProfileContextScanner;
+import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.sync.model.ProviderProfileStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +14,13 @@ import java.util.Map;
  * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных,
  * извлеченных из контекста приложения и из хранилища данных.
  */
-public class ProfilesReconciliation {
+public class ProfilesReconciliationService {
 
     private final ProfileContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
 
-    public ProfilesReconciliation(ProfileContextScanner contextScanner,
-                                  ProviderProfileStorage profileStorage) {
+    public ProfilesReconciliationService(ProfileContextScanner contextScanner,
+                                         ProviderProfileStorage profileStorage) {
         this.contextScanner = contextScanner;
         this.profileStorage = profileStorage;
     }

@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.Pro
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntityMapper;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
-import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
+import com.alligator.market.domain.provider.sync.model.ProviderProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

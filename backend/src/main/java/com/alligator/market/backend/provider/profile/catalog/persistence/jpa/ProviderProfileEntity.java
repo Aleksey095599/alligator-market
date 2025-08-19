@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.backend.provider.profile.model.ProviderProfileEmbedded;
-import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
+import com.alligator.market.domain.provider.sync.model.ProviderProfileStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;

@@ -2,9 +2,9 @@ package com.alligator.market.backend.provider.context.adapter;
 
 import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
-import com.alligator.market.domain.provider.profile.context.ProfileContextDiff;
-import com.alligator.market.domain.provider.profile.context.ProfileContextScanner;
-import com.alligator.market.domain.provider.profile.context.ProfilesReconciliation;
+import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.sync.contract.ProfileContextScanner;
+import com.alligator.market.domain.provider.sync.service.ProfilesReconciliationService;
 import com.alligator.market.domain.provider.profile.catalog.ProviderProfileStorage;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +19,14 @@ public class ProfilesReconciliationAdapter {
     private static final String VIA = "provider-profiles-reconciliation";
 
     /** Доменная логика сопоставления профилей. */
-    private final ProfilesReconciliation reconciliation;
+    private final ProfilesReconciliationService reconciliation;
 
     // Конструктор
     public ProfilesReconciliationAdapter(
             ProfileContextScanner contextScanner,
             ProviderProfileStorage profileStorage
     ) {
-        this.reconciliation = new ProfilesReconciliation(contextScanner, profileStorage);
+        this.reconciliation = new ProfilesReconciliationService(contextScanner, profileStorage);
     }
 
     /** Сравнить профили и получить расхождения в виде {@link ProfileContextDiff}. */

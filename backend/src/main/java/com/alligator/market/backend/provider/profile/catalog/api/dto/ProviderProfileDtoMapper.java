@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
-import com.alligator.market.domain.provider.profile.context.ProviderProfileStatus;
+import com.alligator.market.domain.provider.sync.model.ProviderProfileStatus;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.mapstruct.Mapper;
 

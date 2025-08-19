@@ -1,6 +1,7 @@
-package com.alligator.market.domain.provider.profile.context;
+package com.alligator.market.domain.provider.sync.contract;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.sync.exeption.ContextProfileDuplicateException;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ProfileContextScanner {
     /**
      * Вернуть список профилей.
      *
-     * @throws DuplicateProfileInContextException если в контексте обнаружены дубли
+     * @throws ContextProfileDuplicateException если в контексте обнаружены дубли
      */
     List<ProviderProfile> getProviderProfiles();
 }
