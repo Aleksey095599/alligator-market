@@ -20,13 +20,13 @@ import java.util.Map;
  * Адаптер для провайдера рыночных данных (далее - провайдера) TwelveData (бесплатная подписка).
  */
 @Component
-public class TwelveFreeAdapterV2 implements MarketDataProvider {
+public class TwelveFreeAdapterV2 implements MarketDataProvider<InstrumentHandler<TwelveFreeAdapterV2>> {
 
     // Код провайдера
     private static final String PROVIDER_CODE = "TWELVE_FREE";
 
     // Карта: тип инструмента → handler
-    private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
+    private final Map<InstrumentType, InstrumentHandler<TwelveFreeAdapterV2>> handlers = new EnumMap<>(InstrumentType.class);
 
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.
@@ -61,7 +61,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /** Возвращает карту обработчиков инструментов. */
     @Override
-    public Map<InstrumentType, InstrumentHandler> instrumentHandlers() {
+    public Map<InstrumentType, InstrumentHandler<TwelveFreeAdapterV2>> instrumentHandlers() {
         return handlers;
     }
 }

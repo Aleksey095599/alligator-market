@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /** Обработчик котировок FX-спот для TwelveData (free). */
-public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
+public class TwelveFreeFxOutrightHandler implements InstrumentHandler<TwelveFreeAdapterV2> {
 
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
