@@ -8,15 +8,15 @@ import org.mapstruct.Mapping;
 /**
  * Маппер: сущность профиля провайдера ⇄ доменная модель.
  */
-@Mapper(componentModel = "spring", uses = ProviderProfileEmbeddedMapper.class)
+@Mapper(componentModel = "spring")
 public interface ProviderProfileEntityMapper {
 
     /** Преобразует доменную модель в сущность. */
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "profileParams", source = "profile")
+    @Mapping(target = "instrumentsSupported", ignore = true)
+    @Mapping(target = "status", source = "status")
     ProviderProfileEntity toEntity(ProviderProfile profile, ProviderProfileStatus status);
 
     /** Преобразует сущность в доменную модель. */
-    @Mapping(target = ".", source = "profileParams")
     ProviderProfile toDomain(ProviderProfileEntity entity);
 }

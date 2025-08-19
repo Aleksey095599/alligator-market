@@ -18,18 +18,12 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "provider_profile")
+@PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class ProviderProfileEntity extends ProviderEntity {
-
-    /** Суррогатный PK. */
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
     /** Технический код провайдера {@link ProviderProfile#providerCode()}. */
     @NotBlank
