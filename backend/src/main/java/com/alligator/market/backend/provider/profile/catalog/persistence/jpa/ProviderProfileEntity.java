@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Сущность профиля провайдера рыночных данных. Дочерняя относительно {@link ProviderEntity}.
+ * Сущность профиля провайдера рыночных данных.
+ * Дочерняя относительно {@link ProviderEntity}.
  */
 @Entity
 @Table(name = "provider_profile")
