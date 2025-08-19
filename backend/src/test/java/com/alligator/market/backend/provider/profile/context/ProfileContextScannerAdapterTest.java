@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.context;
 
-import com.alligator.market.backend.provider.context.scanner.ProfileContextScannerAdapter;
+import com.alligator.market.backend.provider.sync.scanner.ProfileContextScannerAdapter;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

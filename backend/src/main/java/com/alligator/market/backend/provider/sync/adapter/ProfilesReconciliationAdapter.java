@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.context.adapter;
+package com.alligator.market.backend.provider.sync.adapter;
 
 import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
