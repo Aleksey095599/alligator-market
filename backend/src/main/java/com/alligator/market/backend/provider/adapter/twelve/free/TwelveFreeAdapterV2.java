@@ -30,9 +30,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.
-     * Используем конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
-     * и конфигурационные настройки подключения {@link TwelveFreeConnectionProps}.
-     * Добавляем обработчики для конкретных инструментов.
+     *
+     * @param props       конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
+     * @param webClient   конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
      */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
@@ -61,4 +61,3 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         return Collections.unmodifiableSet(handlers);
     }
 }
-
