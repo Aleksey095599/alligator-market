@@ -63,6 +63,12 @@ public interface MarketDataProvider {
      * @throws IllegalStateException при нарушении инвариантов
      */
     default void validateHandlers() {
+        // 1) Проверяем, что список обработчиков не пустой
+        if (handlers().isEmpty()) {
+            throw new IllegalStateException("Provider '" + profile().providerCode() +
+                    "' must have at least one handler");
+        }
+        // 2) Проверяем, что все обработчики соответствуют данному провайдеру
         String codeFromProfile = profile().providerCode();
         for (InstrumentHandler handler : handlers()) {
             if (handler == null) {
@@ -71,8 +77,8 @@ public interface MarketDataProvider {
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
                 throw new IllegalStateException(
-                        "Provider/handler mismatch: expected '" + codeFromProfile +
-                                "', but handler has '" + codeFromHandler + "'"
+                        "Среди обработчиков провайдера с кодом " + profile().providerCode() + " найден обработчик + " +
+                                "относящийся к провайдеру с кодом " + codeFromHandler
                 );
             }
         }
