@@ -8,6 +8,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
 import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -59,5 +60,12 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Set<InstrumentHandler> handlers() {
         return Collections.unmodifiableSet(handlers);
+    }
+
+    /** Проверяет корректность набора обработчиков после создания компонента. */
+    @Override
+    @PostConstruct
+    public void validateHandlers() {
+        MarketDataProvider.super.validateHandlers();
     }
 }
