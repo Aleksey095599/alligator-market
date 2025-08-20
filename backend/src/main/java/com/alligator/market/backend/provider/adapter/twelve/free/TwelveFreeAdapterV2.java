@@ -43,6 +43,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         handlers.add(new TwelveFreeFxOutrightHandler(webClient, props, PROVIDER_CODE));
     }
 
+    /** Возвращает профиль провайдера. */
     @Override
     public ProviderProfile profile() {
         return new ProviderProfile(
@@ -55,13 +56,10 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         );
     }
 
+    /** Возвращает набор обработчиков (handlers) данного провайдера. */
     @Override
-    public Set<InstrumentHandler> handlers
-
-    /** Возвращает карту обработчиков инструментов. */
-    @Override
-    public Map<InstrumentType, InstrumentHandler> instrumentHandlers() {
-        return handlers;
+    public Set<InstrumentHandler> handlers() {
+        return Set.copyOf(handlers.values());
     }
 }
 
