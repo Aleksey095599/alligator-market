@@ -58,7 +58,7 @@ public interface MarketDataProvider {
     }
 
     /**
-     * Вызывает проверки обработчиков данного провайдера.
+     * Вызывает проверки обработчиков провайдера.
      *
      * @throws IllegalStateException при нарушении инвариантов
      */
