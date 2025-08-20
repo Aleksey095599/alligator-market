@@ -2,6 +2,9 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
+import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
+import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
@@ -61,12 +64,14 @@ public interface MarketDataProvider {
     /**
      * Вызывает проверки обработчиков провайдера.
      *
-     * @throws IllegalStateException при нарушении инвариантов
+     * @throws ProviderHandlersInvalidException           некорректный набор обработчиков
+     * @throws ProviderHandlerMismatchException           обработчик относится к другому провайдеру
+     * @throws ProviderInstrumentHandlerDuplicateException дублирование обработчика по типу инструмента
      */
     default void validateHandlers() {
         // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
         if (handlers().isEmpty() || handlers().stream().anyMatch(Objects::isNull)) {
-            throw new IllegalStateException("Handlers list must be non-empty and contain no null elements");
+            throw new ProviderHandlersInvalidException();
         }
         // 2) Проверяем, что все обработчики соответствуют данному провайдеру
         String codeFromProfile = profile().providerCode();
@@ -74,15 +79,12 @@ public interface MarketDataProvider {
         for (InstrumentHandler handler : handlers()) {
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
-                throw new IllegalStateException(
-                        "Handlers list of provider with code " + profile().providerCode() + " has at least one " +
-                                "handler for another provider with code " + codeFromHandler
-                );
+                throw new ProviderHandlerMismatchException(codeFromProfile, codeFromHandler);
             }
             // 3) Проверяем, что тип инструмента уникален для каждого обработчика
             InstrumentType instrumentType = handler.supportedInstrument();
             if (!instrumentTypes.add(instrumentType)) {
-                throw new IllegalStateException("Duplicate handler for instrument type: " + instrumentType);
+                throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
             }
         }
     }

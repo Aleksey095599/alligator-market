@@ -8,6 +8,9 @@ import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOu
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyUsedInFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
+import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
+import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
 import com.alligator.market.domain.provider.sync.exeption.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -79,5 +82,29 @@ public class ApplicationExceptionHandler {
         // 400, неподдерживаемый тип инструмента
         log.warn("InstrumentNotSupportedException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** Некорректный набор обработчиков провайдера. */
+    @ExceptionHandler(ProviderHandlersInvalidException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidHandlers(ProviderHandlersInvalidException ex) {
+        // 500, ошибка конфигурации сервера
+        log.error("ProviderHandlersInvalidException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    /** Обработчик относится к другому провайдеру. */
+    @ExceptionHandler(ProviderHandlerMismatchException.class)
+    public ResponseEntity<ApiResponse<Void>> handleHandlerMismatch(ProviderHandlerMismatchException ex) {
+        // 500, ошибка конфигурации сервера
+        log.error("ProviderHandlerMismatchException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    /** Дублирование обработчика по типу инструмента. */
+    @ExceptionHandler(ProviderInstrumentHandlerDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateHandler(ProviderInstrumentHandlerDuplicateException ex) {
+        // 500, ошибка конфигурации сервера
+        log.error("ProviderInstrumentHandlerDuplicateException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 }
