@@ -21,7 +21,7 @@ public interface MarketDataProvider {
     /** Возвращает набор обработчиков данного провайдера. */
     Set<InstrumentHandler> handlers();
 
-    /** Возвращает набор поддерживаемых типов инструментов. */
+    /** Возвращает набор поддерживаемых типов инструментов (извлекаются из обработчиков). */
     default Set<InstrumentType> supportedInstrumentTypes() {
         return handlers().stream()
                 .map(InstrumentHandler::supportedInstrument)
@@ -34,7 +34,6 @@ public interface MarketDataProvider {
      * @return подходящий handler или null, если не найден
      */
     default InstrumentHandler findHandler(InstrumentType type) {
-        // → линейный поиск (O(n)); см. примечание про возможную индексацию в абстрактном базовом классе
         for (InstrumentHandler h : handlers()) {
             if (h.supportedInstrument() == type) {
                 return h;
