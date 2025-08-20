@@ -13,8 +13,11 @@ import reactor.core.publisher.Flux;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-/** Обработчик котировок FX-спот для TwelveData (free). */
+/** Обработчик (handler) инструмента FX_OUTRIGHT для TwelveData (free). */
 public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
+
+    // Переменная с кодом провайдера к которому относится данный обработчик
+    private static final String PROVIDER_CODE = "TWELVE_FREE";
 
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
@@ -30,6 +33,12 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
         this.providerCode = providerCode;
     }
 
+    /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
+    @Override
+    public String providerCode() {
+        return PROVIDER_CODE;
+    }
+
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
     public InstrumentType supportedInstrument() {
@@ -43,7 +52,7 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
 
         FxOutright fxOutright = (FxOutright) instrument;
 
-        // Провайдер ожидает именно такой формат запроса:
+        // Провайдер ожидает именно такой формат запрашиваемого символа инструмента:
         String symbol = fxOutright.baseCurrency() + "/" + fxOutright.quoteCurrency();
 
         return webClient.get()
@@ -76,4 +85,3 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
         );
     }
 }
-

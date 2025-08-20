@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Адаптер для провайдера рыночных данных (далее - провайдера) TwelveData (бесплатная подписка).
@@ -22,11 +23,11 @@ import java.util.Map;
 @Component
 public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
-    // Код провайдера
+    // Переменная с кодом провайдера
     private static final String PROVIDER_CODE = "TWELVE_FREE";
 
-    // Карта: тип инструмента → handler
-    private final Map<InstrumentType, InstrumentHandler> handlers = new EnumMap<>(InstrumentType.class);
+    // Список для набора обработчиков
+    private final Set<InstrumentHandler> handlers = Set.of();
 
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.
@@ -38,26 +39,24 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             TwelveFreeConnectionProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
-        // Добавляем обработчик для FX-спот
-        handlers.put(
-                InstrumentType.FX_OUTRIGHT,
-                new TwelveFreeFxOutrightHandler(webClient, props, PROVIDER_CODE)
-        );
+        // Добавляем обработчики
+        handlers.add(new TwelveFreeFxOutrightHandler(webClient, props, PROVIDER_CODE));
     }
 
-    /** Возвращает профиль провайдера. */
     @Override
     public ProviderProfile profile() {
         return new ProviderProfile(
                 PROVIDER_CODE,
                 "TwelveData Free Plan",
-                supportedInstrumentTypes(), // ← Получаем типы инструментов из карты обработчиков
                 ProviderDeliveryMode.PULL,
                 ProviderAccessMethod.API_POLL,
                 false,
                 60_000
         );
     }
+
+    @Override
+    public Set<InstrumentHandler> handlers
 
     /** Возвращает карту обработчиков инструментов. */
     @Override
