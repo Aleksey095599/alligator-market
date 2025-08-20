@@ -1,11 +1,12 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.exeption.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
 
+import java.util.Objects;
 import java.util.Set;
 
 import reactor.core.publisher.Flux;
@@ -63,22 +64,18 @@ public interface MarketDataProvider {
      * @throws IllegalStateException при нарушении инвариантов
      */
     default void validateHandlers() {
-        // 1) Проверяем, что список обработчиков не пустой
-        if (handlers().isEmpty()) {
-            throw new IllegalStateException("Provider '" + profile().providerCode() +
-                    "' must have at least one handler");
+        // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
+        if (handlers().isEmpty() || handlers().stream().anyMatch(Objects::isNull)) {
+            throw new IllegalStateException("Handlers list must be non-empty and contain no null elements");
         }
         // 2) Проверяем, что все обработчики соответствуют данному провайдеру
         String codeFromProfile = profile().providerCode();
         for (InstrumentHandler handler : handlers()) {
-            if (handler == null) {
-                throw new IllegalStateException("Handler must not be null");
-            }
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
                 throw new IllegalStateException(
-                        "Among handlers of provider with code " + profile().providerCode() + " found handler " +
-                                "belonging to another provider with code " + codeFromHandler
+                        "Handlers list of provider with code " + profile().providerCode() + " has at least one " +
+                                "handler for another provider with code " + codeFromHandler
                 );
             }
         }

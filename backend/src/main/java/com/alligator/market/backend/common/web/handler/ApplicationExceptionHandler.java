@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOu
 import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyUsedInFxOutrightException;
 import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.provider.exeption.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.sync.exeption.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

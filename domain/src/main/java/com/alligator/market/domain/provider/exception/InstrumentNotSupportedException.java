@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.exeption;
+package com.alligator.market.domain.provider.exception;
 
 import com.alligator.market.domain.instrument.contract.InstrumentType;
 
