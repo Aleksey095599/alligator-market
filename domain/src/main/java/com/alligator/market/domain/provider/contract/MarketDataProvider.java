@@ -8,6 +8,7 @@ import com.alligator.market.domain.instrument.contract.InstrumentType;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.HashSet;
 
 import reactor.core.publisher.Flux;
 
@@ -69,6 +70,7 @@ public interface MarketDataProvider {
         }
         // 2) Проверяем, что все обработчики соответствуют данному провайдеру
         String codeFromProfile = profile().providerCode();
+        Set<InstrumentType> instrumentTypes = new HashSet<>();
         for (InstrumentHandler handler : handlers()) {
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
@@ -76,6 +78,11 @@ public interface MarketDataProvider {
                         "Handlers list of provider with code " + profile().providerCode() + " has at least one " +
                                 "handler for another provider with code " + codeFromHandler
                 );
+            }
+            // 3) Проверяем, что тип инструмента уникален
+            InstrumentType instrumentType = handler.supportedInstrument();
+            if (!instrumentTypes.add(instrumentType)) {
+                throw new IllegalStateException("Duplicate handler for instrument type: " + instrumentType);
             }
         }
     }
