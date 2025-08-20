@@ -31,9 +31,9 @@ public interface MarketDataProvider {
     }
 
     /**
-     * Находит handler для указанного типа инструмента.
+     * Находит обработчик для указанного типа инструмента.
      *
-     * @return подходящий handler или null, если не найден
+     * @return подходящий обработчик или null, если не найден
      */
     default InstrumentHandler findHandler(InstrumentType type) {
         for (InstrumentHandler h : handlers()) {
@@ -79,7 +79,7 @@ public interface MarketDataProvider {
                                 "handler for another provider with code " + codeFromHandler
                 );
             }
-            // 3) Проверяем, что тип инструмента уникален
+            // 3) Проверяем, что тип инструмента уникален для каждого обработчика
             InstrumentType instrumentType = handler.supportedInstrument();
             if (!instrumentTypes.add(instrumentType)) {
                 throw new IllegalStateException("Duplicate handler for instrument type: " + instrumentType);
