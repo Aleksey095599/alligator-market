@@ -77,8 +77,8 @@ public interface MarketDataProvider {
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
                 throw new IllegalStateException(
-                        "Среди обработчиков провайдера с кодом " + profile().providerCode() + " найден обработчик + " +
-                                "относящийся к провайдеру с кодом " + codeFromHandler
+                        "Among handlers of provider with code " + profile().providerCode() + " found handler " +
+                                "belonging to another provider with code " + codeFromHandler
                 );
             }
         }
