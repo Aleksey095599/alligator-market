@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface ProviderContextScanner {
 
-    /**
-     * Вернуть список всех провайдеров рыночных данных из контекста.
-     */
+    /** Вернуть список провайдеров рыночных данных из контекста. */
     List<MarketDataProvider> getProviders();
 }
