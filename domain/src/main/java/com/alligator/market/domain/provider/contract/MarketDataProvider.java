@@ -64,9 +64,9 @@ public interface MarketDataProvider {
     /**
      * Вызывает проверки обработчиков провайдера.
      *
-     * @throws ProviderHandlersInvalidException           некорректный набор обработчиков
-     * @throws ProviderHandlerMismatchException           обработчик относится к другому провайдеру
-     * @throws ProviderInstrumentHandlerDuplicateException дублирование обработчика по типу инструмента
+     * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
+     * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
+     * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
      */
     default void validateHandlers() {
         // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
