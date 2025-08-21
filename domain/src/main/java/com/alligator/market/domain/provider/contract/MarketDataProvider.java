@@ -23,6 +23,11 @@ public interface MarketDataProvider {
     /** Возвращает профиль провайдера. */
     ProviderProfile profile();
 
+    /** Возвращает код провайдера. */
+    default String providerCode() {
+        return profile().providerCode();
+    }
+
     /** Возвращает набор обработчиков (handlers) данного провайдера. */
     Set<InstrumentHandler> handlers();
 
