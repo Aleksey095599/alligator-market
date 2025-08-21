@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import java.util.List;
 
 /**
- * Контракт сканера контекста приложения, извлекающего профили провайдеров рыночных данных.
+ * Контракт сканера контекста приложения, извлекающего провайдеров рыночных данных.
  */
 public interface ProviderContextScanner {
 
