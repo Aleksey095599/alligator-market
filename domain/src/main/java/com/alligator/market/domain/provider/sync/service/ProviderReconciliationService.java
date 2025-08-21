@@ -25,7 +25,8 @@ public class ProviderReconciliationService {
         this.profileStorage = profileStorage;
     }
 
-    // метод который извлекает модели MarketDataProvider в список, далее
+    // метод, который извлекает модели MarketDataProvider в список, далее получит список
+    // кодов провадераов с помощью
 
     /**
      * Сравнить профили в хранилище данных и в контексте приложения.

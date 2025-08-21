@@ -25,7 +25,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     public List<ProviderProfile> getProviders() {
 
         List<ProviderProfile> profiles = providers.stream()
-                .map(MarketDataProvider::profile)
+                .map(MarketDataProvider::getProfile)
                 .toList();
 
         // Проверка на дублирование по кодам и именам провайдеров

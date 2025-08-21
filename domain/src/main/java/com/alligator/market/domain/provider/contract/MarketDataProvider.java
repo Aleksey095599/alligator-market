@@ -21,19 +21,19 @@ import reactor.core.publisher.Flux;
 public interface MarketDataProvider {
 
     /** Возвращает профиль провайдера. */
-    ProviderProfile profile();
+    ProviderProfile getProfile();
 
     /** Возвращает код провайдера. */
-    default String providerCode() {
-        return profile().providerCode();
+    default String getProviderCode() {
+        return getProfile().providerCode();
     }
 
     /** Возвращает набор обработчиков (handlers) данного провайдера. */
-    Set<InstrumentHandler> handlers();
+    Set<InstrumentHandler> getHandlers();
 
     /** Возвращает набор поддерживаемых типов инструментов (извлекаются из обработчиков). */
     default Set<InstrumentType> supportedInstrumentTypes() {
-        return handlers().stream()
+        return getHandlers().stream()
                 .map(InstrumentHandler::supportedInstrument)
                 .collect(java.util.stream.Collectors.toUnmodifiableSet());
     }
@@ -43,8 +43,8 @@ public interface MarketDataProvider {
      *
      * @return подходящий обработчик или null, если не найден
      */
-    default InstrumentHandler findHandler(InstrumentType type) {
-        for (InstrumentHandler h : handlers()) {
+    default InstrumentHandler findHandlerForInstrument(InstrumentType type) {
+        for (InstrumentHandler h : getHandlers()) {
             if (h.supportedInstrument() == type) {
                 return h;
             }
@@ -57,11 +57,11 @@ public interface MarketDataProvider {
      *
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
-    default Flux<QuoteTick> quote(Instrument instrument) {
+    default Flux<QuoteTick> getQuote(Instrument instrument) {
         InstrumentType type = instrument.type();
-        InstrumentHandler handler = findHandler(type);
+        InstrumentHandler handler = findHandlerForInstrument(type);
         if (handler == null) {
-            return Flux.error(new InstrumentNotSupportedException(type, profile().providerCode()));
+            return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
         return handler.instrumentQuote(instrument);
     }
@@ -75,13 +75,13 @@ public interface MarketDataProvider {
      */
     default void validateHandlers() {
         // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
-        if (handlers().isEmpty() || handlers().stream().anyMatch(Objects::isNull)) {
+        if (getHandlers().isEmpty() || getHandlers().stream().anyMatch(Objects::isNull)) {
             throw new ProviderHandlersInvalidException();
         }
         // 2) Проверяем, что все обработчики соответствуют данному провайдеру
-        String codeFromProfile = profile().providerCode();
+        String codeFromProfile = getProfile().providerCode();
         Set<InstrumentType> instrumentTypes = new HashSet<>();
-        for (InstrumentHandler handler : handlers()) {
+        for (InstrumentHandler handler : getHandlers()) {
             String codeFromHandler = handler.providerCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
                 throw new ProviderHandlerMismatchException(codeFromProfile, codeFromHandler);

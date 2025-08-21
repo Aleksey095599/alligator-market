@@ -45,7 +45,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /** Возвращает профиль провайдера. */
     @Override
-    public ProviderProfile profile() {
+    public ProviderProfile getProfile() {
         return new ProviderProfile(
                 PROVIDER_CODE,
                 "TwelveData Free Plan",
@@ -58,7 +58,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /** Возвращает набор обработчиков (handlers) данного провайдера. */
     @Override
-    public Set<InstrumentHandler> handlers() {
+    public Set<InstrumentHandler> getHandlers() {
         return Collections.unmodifiableSet(handlers);
     }
 

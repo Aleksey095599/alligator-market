@@ -35,7 +35,7 @@ class TwelveFreeAdapterV2Test {
 
         FxOutright fxOutright = new FxOutright("EUR", "USD", 4, ValueDateCode.TOM);
 
-        QuoteTick tick = adapter.quote(fxOutright)
+        QuoteTick tick = adapter.getQuote(fxOutright)
                 .blockFirst(Duration.ofSeconds(5));
 
         assertNotNull(tick);
