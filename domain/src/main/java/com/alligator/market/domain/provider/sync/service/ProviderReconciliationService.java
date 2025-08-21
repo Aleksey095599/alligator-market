@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.sync.service;
 
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.provider.profile.contract.ProviderProfileStorage;
-import com.alligator.market.domain.provider.sync.contract.ProfileContextScanner;
+import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
 import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
 import com.alligator.market.domain.provider.model.ProviderProfileStatus;
 
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис, реализующий доменную логику сопоставления профилей провайдеров рыночных данных,
- * извлеченных из контекста приложения и из хранилища данных.
+ * Сервис, реализующий доменную логику обработки провайдеров рыночных данных:
+ *
  */
-public class ProfilesReconciliationService {
+public class ProviderReconciliationService {
 
-    private final ProfileContextScanner contextScanner;
+    private final ProviderContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
 
-    public ProfilesReconciliationService(ProfileContextScanner contextScanner,
+    public ProviderReconciliationService(ProviderContextScanner contextScanner,
                                          ProviderProfileStorage profileStorage) {
         this.contextScanner = contextScanner;
         this.profileStorage = profileStorage;
@@ -33,7 +33,7 @@ public class ProfilesReconciliationService {
     public ProfileContextDiff compare() {
 
         // Список профилей из контекста
-        List<ProviderProfile> contextProfiles = contextScanner.getProviderProfiles();
+        List<ProviderProfile> contextProfiles = contextScanner.getProviders();
         // Активные профили из БД вместе с PK
         Map<Long, ProviderProfile> dbActiveProfiles = profileStorage.findAllActive();
 
