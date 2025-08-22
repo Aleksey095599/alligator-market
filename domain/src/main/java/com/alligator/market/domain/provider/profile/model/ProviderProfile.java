@@ -1,7 +1,10 @@
 package com.alligator.market.domain.provider.profile.model;
 
+import com.alligator.market.domain.provider.model.Provider;
+
 /**
- * Доменная модель профиля провайдера рыночных данных.
+ * Доменная модель профиля провайдера, содержащего статические параметры провайдера рыночных данных.
+ * Профиль встраивается в доменную модель провайдера {@link Provider}
  *
  * @param providerCode       Технический код провайдера
  * @param displayName        Отображаемое имя провайдера (user friendly)

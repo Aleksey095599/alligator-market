@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.Set;
 
@@ -9,9 +10,11 @@ import java.util.Set;
  *
  * @param instrumentsSupported   Поддерживаемые инструменты
  * @param profileStatus          Статус профиля провайдера
+ * @param providerProfile        Профиль провайдера
  */
 public record Provider (
 
         Set<InstrumentType>instrumentsSupported,
-        ProviderProfileStatus profileStatus
+        ProviderProfileStatus profileStatus,
+        ProviderProfile providerProfile
 ) {}

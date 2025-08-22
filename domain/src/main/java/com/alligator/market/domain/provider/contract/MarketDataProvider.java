@@ -5,7 +5,6 @@ import com.alligator.market.domain.provider.exception.InstrumentNotSupportedExce
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
-import com.alligator.market.domain.provider.service.MarketDataProviderService;
 import java.util.Set;
 
 import reactor.core.publisher.Flux;
@@ -21,11 +20,6 @@ public interface MarketDataProvider {
     /** Возвращает код провайдера. */
     default String getProviderCode() {
         return getProfile().providerCode();
-    }
-
-    /** Запускает проверку обработчиков с помощью доменного сервиса {@link MarketDataProviderService}. */
-    default void validateHandlers(MarketDataProviderService service) {
-        service.validateHandlers(this);
     }
 
     /** Возвращает набор обработчиков (handlers) данного провайдера. */

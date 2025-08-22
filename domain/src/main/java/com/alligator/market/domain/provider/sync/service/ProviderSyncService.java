@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Класс содержит доменную логику синхронизации контекста приложения и хранилища
- * касательно провайдеров рыночных данных.
+ * Сервис для обслуживания процессов синхронизации профилей провайдеров {@link ProviderProfile},
+ * из контекста приложения и из хранилища {@link ProviderProfileStorage}.
  */
 public class ProviderSyncService {
 

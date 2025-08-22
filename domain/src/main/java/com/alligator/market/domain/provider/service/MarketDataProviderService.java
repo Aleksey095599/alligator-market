@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Сервис содержит доменную логику для провайдеров рыночных данных.
+ * Сервис содержит методы для обслуживания провайдеров рыночных данных {@link MarketDataProvider}.
  */
 public class MarketDataProviderService {
 
