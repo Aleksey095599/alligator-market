@@ -2,16 +2,10 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
-import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
-import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
-
-import java.util.Objects;
 import java.util.Set;
-import java.util.HashSet;
 
 import reactor.core.publisher.Flux;
 
@@ -66,31 +60,4 @@ public interface MarketDataProvider {
         return handler.instrumentQuote(instrument);
     }
 
-    /**
-     * Вызывает проверки обработчиков провайдера.
-     *
-     * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
-     * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
-     * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
-     */
-    default void validateHandlers() {
-        // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
-        if (getHandlers().isEmpty() || getHandlers().stream().anyMatch(Objects::isNull)) {
-            throw new ProviderHandlersInvalidException();
-        }
-        // 2) Проверяем, что все обработчики соответствуют данному провайдеру
-        String codeFromProfile = getProfile().providerCode();
-        Set<InstrumentType> instrumentTypes = new HashSet<>();
-        for (InstrumentHandler handler : getHandlers()) {
-            String codeFromHandler = handler.providerCode();
-            if (!codeFromProfile.equals(codeFromHandler)) {
-                throw new ProviderHandlerMismatchException(codeFromProfile, codeFromHandler);
-            }
-            // 3) Проверяем, что тип инструмента уникален для каждого обработчика
-            InstrumentType instrumentType = handler.supportedInstrument();
-            if (!instrumentTypes.add(instrumentType)) {
-                throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
-            }
-        }
-    }
 }

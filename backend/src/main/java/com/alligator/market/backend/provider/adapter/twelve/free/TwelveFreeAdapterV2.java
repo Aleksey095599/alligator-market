@@ -5,6 +5,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxOutrightHandler;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.service.MarketDataProviderService;
 import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
 import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
@@ -28,6 +29,9 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     // Список для набора обработчиков
     private final Set<InstrumentHandler> handlers = new HashSet<>();
+
+    /** Сервис проверки обработчиков. */
+    private static final MarketDataProviderService SERVICE = new MarketDataProviderService();
 
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.
@@ -63,9 +67,8 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     }
 
     /** Проверяет корректность набора обработчиков после создания компонента. */
-    @Override
     @PostConstruct
     public void validateHandlers() {
-        MarketDataProvider.super.validateHandlers();
+        SERVICE.validateHandlers(this);
     }
 }
