@@ -12,21 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис, реализующий доменную логику обработки провайдеров рыночных данных.
+ * Класс содержит доменную логику синхронизации контекста приложения и хранилища
+ * касательно провайдеров рыночных данных.
  */
-public class ProviderReconciliationService {
+public class ProviderSyncService {
 
     private final ProviderContextScanner contextScanner;
     private final ProviderProfileStorage profileStorage;
 
-    public ProviderReconciliationService(ProviderContextScanner contextScanner,
-                                         ProviderProfileStorage profileStorage) {
+    public ProviderSyncService(ProviderContextScanner contextScanner,
+                               ProviderProfileStorage profileStorage) {
         this.contextScanner = contextScanner;
         this.profileStorage = profileStorage;
     }
 
     // метод, который извлекает модели MarketDataProvider в список, далее получит список
-    // кодов провадераов с помощью
+    // кодов провадераов с помощью getProviderCode и простым интсрументов Java проверяет что нет дублей кодов
+    //
 
     /**
      * Сравнить профили в хранилище данных и в контексте приложения.
