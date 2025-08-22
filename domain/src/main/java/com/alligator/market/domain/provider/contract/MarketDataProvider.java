@@ -32,7 +32,7 @@ public interface MarketDataProvider {
     Set<InstrumentHandler> getHandlers();
 
     /** Возвращает набор поддерживаемых типов инструментов (извлекаются из обработчиков). */
-    default Set<InstrumentType> supportedInstrumentTypes() {
+    default Set<InstrumentType> getSupportedInstrumentTypes() {
         return getHandlers().stream()
                 .map(InstrumentHandler::supportedInstrument)
                 .collect(java.util.stream.Collectors.toUnmodifiableSet());
