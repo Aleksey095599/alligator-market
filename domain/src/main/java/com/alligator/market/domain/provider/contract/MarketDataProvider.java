@@ -23,6 +23,11 @@ public interface MarketDataProvider {
         return getProfile().providerCode();
     }
 
+    /** Запускает проверку обработчиков с помощью доменного сервиса {@link MarketDataProviderService}. */
+    default void validateHandlers(MarketDataProviderService service) {
+        service.validateHandlers(this);
+    }
+
     /** Возвращает набор обработчиков (handlers) данного провайдера. */
     Set<InstrumentHandler> getHandlers();
 
@@ -31,11 +36,6 @@ public interface MarketDataProvider {
         return getHandlers().stream()
                 .map(InstrumentHandler::supportedInstrument)
                 .collect(java.util.stream.Collectors.toUnmodifiableSet());
-    }
-
-    /** Запускает проверку обработчиков через сервис. */
-    default void validateHandlers(MarketDataProviderService service) {
-        service.validateHandlers(this);
     }
 
     /**
@@ -65,5 +65,4 @@ public interface MarketDataProvider {
         }
         return handler.instrumentQuote(instrument);
     }
-
 }
