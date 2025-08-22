@@ -2,18 +2,16 @@ package com.alligator.market.domain.provider.sync.service;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.contract.ProviderProfileStorage;
 import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
 import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
-import com.alligator.market.domain.provider.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.model.ProviderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис для обслуживания процессов синхронизации профилей провайдеров {@link ProviderProfile},
- * из контекста приложения и из хранилища {@link ProviderProfileStorage}.
+ * Сервис реализующий методы и логику сопоставления данных о провайдере
  */
 public class ProviderSyncService {
 
@@ -100,10 +98,10 @@ public class ProviderSyncService {
             profileStorage.saveAll(diff.add());
         }
         if (!diff.replaced().isEmpty()) {
-            profileStorage.updateStatus(diff.replaced(), ProviderProfileStatus.REPLACED);
+            profileStorage.updateStatus(diff.replaced(), ProviderStatus.REPLACED);
         }
         if (!diff.missing().isEmpty()) {
-            profileStorage.updateStatus(diff.missing(), ProviderProfileStatus.MISSING);
+            profileStorage.updateStatus(diff.missing(), ProviderStatus.MISSING);
         }
     }
 }

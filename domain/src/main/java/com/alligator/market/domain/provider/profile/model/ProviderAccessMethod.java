@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.profile.model;
 
 /**
- * Список возможных методов доступа к данным.
+ * Список методов доступа к рыночным данным.
  */
 public enum ProviderAccessMethod {
 

@@ -8,8 +8,8 @@ import com.alligator.market.domain.provider.model.Provider;
  *
  * @param providerCode       Технический код провайдера
  * @param displayName        Отображаемое имя провайдера (user friendly)
- * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH
- * @param accessMethod       Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие
+ * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH {@link ProviderAccessMethod}
+ * @param accessMethod       Метод доступа к рыночным данным {@link ProviderAccessMethod}
  * @param bulkSubscription   Поддержка массовой подписки одним запросом
  * @param minPollMs          Минимально допустимый интервал опроса в миллисекундах
  */

@@ -1,0 +1,26 @@
+package com.alligator.market.domain.provider.contract.storage;
+
+import com.alligator.market.domain.provider.model.Provider;
+import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+
+import java.util.Collection;
+import java.util.Map;
+
+/**
+ * Хранилище провайдеров рыночных данных.
+ */
+public interface ProviderStorage {
+
+    /** Вернуть все провайдеры. */
+    Map<Provider, ProviderStatus> findAllWithStatus();
+
+    /** Вернуть все провайдеры (вместе с PK) со статусом {@link ProviderStatus#ACTIVE}. */
+    Map<Long, Provider> findAllActive();
+
+    /** Сохранить коллекцию профилей провайдеров. */
+    void saveAll(Collection<ProviderProfile> profiles);
+
+    /** Обновить статус провайдеров по их идентификаторам. */
+    void updateStatus(Collection<Long> ids, ProviderStatus status);
+}

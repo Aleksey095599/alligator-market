@@ -8,13 +8,13 @@ import java.util.Set;
 /**
  * Доменная модель провайдера рыночных данных.
  *
- * @param instrumentsSupported   Поддерживаемые инструменты
- * @param profileStatus          Статус профиля провайдера
- * @param providerProfile        Профиль провайдера
+ * @param instrumentsSupported   Поддерживаемые инструменты {@link InstrumentType}
+ * @param providerStatus         Статус провайдера {@link ProviderStatus}
+ * @param providerProfile        Профиль провайдера {@link ProviderProfile}
  */
 public record Provider (
 
+        ProviderStatus providerStatus,
         Set<InstrumentType>instrumentsSupported,
-        ProviderProfileStatus profileStatus,
         ProviderProfile providerProfile
 ) {}

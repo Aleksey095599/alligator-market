@@ -6,7 +6,9 @@ import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
 /**
- * Контракт обработчика (handler) для конкретного инструмента.
+ * Контракт обработчика (handler) конкретного финансового инструмента.
+ * Обработчики применяются провайдерами рыночных данных {@link MarketDataProvider} для обработки
+ * запросов котировок для разных инструментов.
  */
 public interface InstrumentHandler {
 
