@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.exception.InstrumentNotSupportedExce
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.provider.service.MarketDataProviderService;
 import java.util.Set;
 
 import reactor.core.publisher.Flux;
@@ -30,6 +31,11 @@ public interface MarketDataProvider {
         return getHandlers().stream()
                 .map(InstrumentHandler::supportedInstrument)
                 .collect(java.util.stream.Collectors.toUnmodifiableSet());
+    }
+
+    /** Запускает проверку обработчиков через сервис. */
+    default void validateHandlers(MarketDataProviderService service) {
+        service.validateHandlers(this);
     }
 
     /**

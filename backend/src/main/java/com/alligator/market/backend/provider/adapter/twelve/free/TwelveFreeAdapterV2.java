@@ -69,6 +69,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     /** Проверяет корректность набора обработчиков после создания компонента. */
     @PostConstruct
     public void validateHandlers() {
-        SERVICE.validateHandlers(this);
+        validateHandlers(SERVICE);
     }
 }

@@ -5,6 +5,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
 import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
 import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.provider.service.MarketDataProviderService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,6 +33,7 @@ class TwelveFreeAdapterV2Test {
                 .build();
 
         TwelveFreeAdapterV2 adapter = new TwelveFreeAdapterV2(props, client);
+        adapter.validateHandlers(new MarketDataProviderService());
 
         FxOutright fxOutright = new FxOutright("EUR", "USD", 4, ValueDateCode.TOM);
 
