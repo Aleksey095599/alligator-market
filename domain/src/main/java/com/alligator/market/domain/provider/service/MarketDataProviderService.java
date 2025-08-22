@@ -20,9 +20,9 @@ public class MarketDataProviderService {
      * Проверяет корректность набора обработчиков указанного провайдера.
      *
      * @param provider провайдер для проверки
-     * @throws ProviderHandlersInvalidException            некорректный набор обработчиков
-     * @throws ProviderHandlerMismatchException            обработчик относится к другому провайдеру
-     * @throws ProviderInstrumentHandlerDuplicateException дублирование обработчика по типу инструмента
+     * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
+     * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
+     * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
      */
     public void validateHandlers(MarketDataProvider provider) {
         // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
