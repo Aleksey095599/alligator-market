@@ -1,10 +1,10 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.service.crud;
 
-import com.alligator.market.domain.instrument.type.forex.outright.contract.FxOutrightStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.spot.storage.SpotStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ import java.util.List;
 @Slf4j
 public class FxOutrightServiceImpl implements FxOutrightService {
 
-    private final FxOutrightStorage storage;
+    private final SpotStorage storage;
 
     @Override
-    public String create(FxOutright instrument) {
+    public String create(FxSpot instrument) {
         if (instrument.baseCurrency().equals(instrument.quoteCurrency())) {
             throw new FxOutrightSameCurrenciesException();
         }
@@ -32,35 +32,35 @@ public class FxOutrightServiceImpl implements FxOutrightService {
             throw new FxOutrightDuplicateException(instrument.getCode());
         });
         storage.save(instrument);
-        log.info("FxOutright {} saved", instrument.getCode());
+        log.info("FxSpot {} saved", instrument.getCode());
         return instrument.getCode();
     }
 
     @Override
     public void updateQuoteDecimal(String code, int quoteDecimal) {
-        FxOutright current = storage.find(code)
+        FxSpot current = storage.find(code)
                 .orElseThrow(() -> new FxOutrightNotFoundException(code));
-        FxOutright updated = new FxOutright(
+        FxSpot updated = new FxSpot(
                 current.baseCurrency(),
                 current.quoteCurrency(),
                 current.valueDateCode(),
                 quoteDecimal
         );
         storage.save(updated);
-        log.info("FxOutright {} updated", code);
+        log.info("FxSpot {} updated", code);
     }
 
     @Override
     public void delete(String code) {
         storage.find(code).orElseThrow(() -> new FxOutrightNotFoundException(code));
         storage.delete(code);
-        log.info("FxOutright {} deleted", code);
+        log.info("FxSpot {} deleted", code);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<FxOutright> findAll() {
-        List<FxOutright> result = storage.findAll();
+    public List<FxSpot> findAll() {
+        List<FxSpot> result = storage.findAll();
         log.debug("Found {} FX_OUTRIGHT instruments", result.size());
         return result;
     }

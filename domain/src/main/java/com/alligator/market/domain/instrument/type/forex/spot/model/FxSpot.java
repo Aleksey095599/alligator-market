@@ -1,12 +1,12 @@
-package com.alligator.market.domain.instrument.type.forex.outright.model;
+package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 
 /**
- * Модель финансового инструмента FX_OUTRIGHT.
+ * Модель финансового инструмента "валютная сделка спот".
  */
-public record FxOutright(
+public record FxSpot(
 
         String baseCurrency,
         String quoteCurrency,
@@ -22,6 +22,6 @@ public record FxOutright(
 
     @Override
     public InstrumentType getType() {
-        return InstrumentType.FX_OUTRIGHT;
+        return InstrumentType.FX_SPOT;
     }
 }

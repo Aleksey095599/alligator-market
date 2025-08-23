@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto;
 
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.mapstruct.Mapper;
 
 /**
@@ -10,9 +10,9 @@ import org.mapstruct.Mapper;
 public interface FxOutrightDtoMapper {
 
     /** Преобразует основной DTO в доменную модель. */
-    FxOutright toDomain(FxOutrightDto dto);
+    FxSpot toDomain(FxOutrightDto dto);
 
     /** Преобразует доменную модель в основной DTO. */
-    FxOutrightDto toDto(FxOutright model);
+    FxOutrightDto toDto(FxSpot model);
 }
 

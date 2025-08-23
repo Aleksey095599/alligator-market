@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.service.crud;
 
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface FxOutrightService {
 
     /** Сохранить новый инструмент. */
-    String create(FxOutright instrument);
+    String create(FxSpot instrument);
 
     /** Обновить точность котировки. */
     void updateQuoteDecimal(String code, int quoteDecimal);
@@ -20,5 +20,5 @@ public interface FxOutrightService {
     void delete(String code);
 
     /** Вернуть все инструменты. */
-    List<FxOutright> findAll();
+    List<FxSpot> findAll();
 }

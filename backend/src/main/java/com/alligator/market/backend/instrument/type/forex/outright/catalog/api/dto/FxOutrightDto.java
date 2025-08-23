@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto;
 
-import com.alligator.market.domain.instrument.type.forex.outright.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import jakarta.validation.constraints.*;
 
 /**

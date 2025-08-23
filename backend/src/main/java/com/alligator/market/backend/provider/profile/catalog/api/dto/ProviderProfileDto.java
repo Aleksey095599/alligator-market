@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
-import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.model.profile.ProviderAccessMethod;
 import com.alligator.market.domain.provider.model.profile.ProviderDeliveryMode;
 import jakarta.validation.constraints.NotBlank;

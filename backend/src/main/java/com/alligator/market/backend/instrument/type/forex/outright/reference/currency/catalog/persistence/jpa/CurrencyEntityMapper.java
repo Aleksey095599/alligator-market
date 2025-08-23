@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntityMappingConfig;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

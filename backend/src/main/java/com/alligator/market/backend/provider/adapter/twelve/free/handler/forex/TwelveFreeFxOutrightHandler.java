@@ -2,8 +2,8 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.instrument.contract.InstrumentType;
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -50,10 +50,10 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
     @Override
     public Flux<QuoteTick> getInstrumentQuote(Instrument instrument) {
 
-        FxOutright fxOutright = (FxOutright) instrument;
+        FxSpot fxSpot = (FxSpot) instrument;
 
         // Провайдер ожидает именно такой формат запрашиваемого символа инструмента:
-        String symbol = fxOutright.baseCurrency() + "/" + fxOutright.quoteCurrency();
+        String symbol = fxSpot.baseCurrency() + "/" + fxSpot.quoteCurrency();
 
         return webClient.get()
                 .uri(b -> b

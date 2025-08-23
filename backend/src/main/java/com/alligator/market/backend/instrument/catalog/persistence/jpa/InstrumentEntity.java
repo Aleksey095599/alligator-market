@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

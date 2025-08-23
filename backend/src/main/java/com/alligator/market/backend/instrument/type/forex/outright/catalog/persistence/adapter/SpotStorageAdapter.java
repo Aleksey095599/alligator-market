@@ -5,9 +5,9 @@ import com.alligator.market.backend.instrument.type.forex.outright.catalog.persi
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.persistence.jpa.FxOutrightEntityMapper;
-import com.alligator.market.domain.instrument.type.forex.outright.contract.FxOutrightStorage;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.spot.storage.SpotStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -16,26 +16,26 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный контракт {@link FxOutrightStorage}
+ * Адаптер, реализующий доменный контракт {@link SpotStorage}
  * с использованием Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
-public class FxOutrightStorageAdapter implements FxOutrightStorage {
+public class SpotStorageAdapter implements SpotStorage {
 
     private final FxOutrightJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
     private final FxOutrightEntityMapper mapper;
 
     @Override
-    public void save(FxOutright fxOutright) {
-        FxOutrightEntity entity = jpaRepository.findByCode(fxOutright.getCode())
+    public void save(FxSpot fxSpot) {
+        FxOutrightEntity entity = jpaRepository.findByCode(fxSpot.getCode())
                 .orElseGet(FxOutrightEntity::new);
-        CurrencyEntity base = currencyRepository.findByCode(fxOutright.baseCurrency())
-                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.baseCurrency()));
-        CurrencyEntity quote = currencyRepository.findByCode(fxOutright.quoteCurrency())
-                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.quoteCurrency()));
-        mapper.updateEntity(fxOutright, base, quote, entity);
+        CurrencyEntity base = currencyRepository.findByCode(fxSpot.baseCurrency())
+                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxSpot.baseCurrency()));
+        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quoteCurrency())
+                .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxSpot.quoteCurrency()));
+        mapper.updateEntity(fxSpot, base, quote, entity);
         jpaRepository.save(entity);
     }
 
@@ -46,13 +46,13 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
     }
 
     @Override
-    public Optional<FxOutright> find(String code) {
+    public Optional<FxSpot> find(String code) {
         return jpaRepository.findByCode(code)
                 .map(mapper::toDomain);
     }
 
     @Override
-    public List<FxOutright> findAll() {
+    public List<FxSpot> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
                 .map(mapper::toDomain)
                 .toList();

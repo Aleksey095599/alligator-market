@@ -1,6 +1,6 @@
-package com.alligator.market.domain.instrument.type.forex.outright.reference.currency.contract;
+package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.storage;
 
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 
 import java.util.List;
 import java.util.Optional;

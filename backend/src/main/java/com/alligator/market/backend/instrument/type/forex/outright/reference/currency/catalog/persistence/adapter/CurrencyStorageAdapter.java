@@ -3,8 +3,8 @@ package com.alligator.market.backend.instrument.type.forex.outright.reference.cu
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.contract.CurrencyStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.storage.CurrencyStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;

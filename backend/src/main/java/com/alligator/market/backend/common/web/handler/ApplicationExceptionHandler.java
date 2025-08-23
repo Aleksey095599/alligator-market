@@ -2,11 +2,11 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.outright.exception.FxOutrightSameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyUsedInFxOutrightException;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxOutrightException;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;

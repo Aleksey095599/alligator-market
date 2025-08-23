@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.exception;
 
-import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 
 /**
  * Дублирование обработчика по типу инструмента.

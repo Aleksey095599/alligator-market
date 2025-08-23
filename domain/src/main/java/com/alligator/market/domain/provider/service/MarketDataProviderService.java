@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.service;
 
-import com.alligator.market.domain.instrument.contract.InstrumentType;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;

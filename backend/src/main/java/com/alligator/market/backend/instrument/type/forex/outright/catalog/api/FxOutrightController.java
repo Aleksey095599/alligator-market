@@ -6,7 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.outright.catalog.servi
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightDto;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.outright.catalog.api.dto.FxOutrightDtoMapper;
-import com.alligator.market.domain.instrument.type.forex.outright.model.FxOutright;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class FxOutrightController {
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxOutrightDto dto) {
-        FxOutright model = mapper.toDomain(dto);
+        FxSpot model = mapper.toDomain(dto);
         String code = service.create(model);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")

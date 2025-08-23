@@ -5,7 +5,7 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.api.dto.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.api.dto.UpdateCurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.api.dto.CurrencyDtoMapper;
-import com.alligator.market.domain.instrument.type.forex.outright.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 import com.alligator.market.backend.instrument.type.forex.outright.reference.currency.catalog.service.crud.CurrencyService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;

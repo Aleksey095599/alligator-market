@@ -1,10 +1,10 @@
-package com.alligator.market.domain.instrument.type.forex.outright.exception;
+package com.alligator.market.domain.instrument.type.forex.spot.exception;
 
 /**
  * Инструмент уже существует.
  */
 public class FxOutrightDuplicateException extends RuntimeException {
     public FxOutrightDuplicateException(String code) {
-        super("FxOutright '%s' already exists".formatted(code));
+        super("FxSpot '%s' already exists".formatted(code));
     }
 }
