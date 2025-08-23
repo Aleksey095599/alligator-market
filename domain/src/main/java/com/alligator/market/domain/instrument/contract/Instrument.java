@@ -5,9 +5,9 @@ package com.alligator.market.domain.instrument.contract;
  */
 public interface Instrument {
 
-    /** Внутренний код инструмента. */
-    String code();
+    /** Возвращает внутренний код инструмента. */
+    String getCode();
 
-    /** Тип финансового инструмента. */
-    InstrumentType type();
+    /** Возвращает тип инструмента. */
+    InstrumentType getType();
 }
