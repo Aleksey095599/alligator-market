@@ -29,7 +29,7 @@ public class FxOutrightStorageAdapter implements FxOutrightStorage {
 
     @Override
     public void save(FxOutright fxOutright) {
-        FxOutrightEntity entity = jpaRepository.findByCode(fxOutright.code())
+        FxOutrightEntity entity = jpaRepository.findByCode(fxOutright.getCode())
                 .orElseGet(FxOutrightEntity::new);
         CurrencyEntity base = currencyRepository.findByCode(fxOutright.baseCurrency())
                 .orElseThrow(() -> new FxOutrightCurrencyNotFoundException(fxOutright.baseCurrency()));

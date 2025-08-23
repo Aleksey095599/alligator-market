@@ -16,12 +16,12 @@ public record FxOutright(
 ) implements Instrument {
 
     @Override
-    public String code() {
+    public String getCode() {
         return baseCurrency + quoteCurrency + "_" + valueDateCode;
     }
 
     @Override
-    public InstrumentType type() {
+    public InstrumentType getType() {
         return InstrumentType.FX_OUTRIGHT;
     }
 }

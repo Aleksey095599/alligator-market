@@ -11,12 +11,12 @@ import reactor.core.publisher.Flux;
  */
 public interface InstrumentHandler {
 
-    /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
+    /** Возвращает внутренний код провайдера рыночных данных, к которому относится обработчик. */
     String getProviderCode();
 
-    /** Возвращает финансовый инструмент, который поддерживает данный обработчик. */
-    Instrument getInstrument();
+    /** Возвращает тип финансового инструмента, который поддерживает данный обработчик. */
+    InstrumentType getSupportedInstrumentType();
 
-    /** Возвращает котировку для указанного инструмента. */
-    Flux<QuoteTick> getInstrumentQuote();
+    /** Возвращает котировку для заданного инструмента. */
+    Flux<QuoteTick> getInstrumentQuote(Instrument instrument);
 }

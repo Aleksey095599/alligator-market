@@ -41,7 +41,7 @@ public class MarketDataProviderService {
             }
 
             // 3) Проверяем, что тип инструмента уникален
-            InstrumentType instrumentType = handler.getInstrumentType();
+            InstrumentType instrumentType = handler.getSupportedInstrumentType();
             if (!instrumentTypes.add(instrumentType)) {
                 throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
             }

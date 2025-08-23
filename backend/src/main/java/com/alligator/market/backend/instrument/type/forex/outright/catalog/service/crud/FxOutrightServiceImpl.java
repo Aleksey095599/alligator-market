@@ -28,12 +28,12 @@ public class FxOutrightServiceImpl implements FxOutrightService {
         if (instrument.baseCurrency().equals(instrument.quoteCurrency())) {
             throw new FxOutrightSameCurrenciesException();
         }
-        storage.find(instrument.code()).ifPresent(i -> {
-            throw new FxOutrightDuplicateException(instrument.code());
+        storage.find(instrument.getCode()).ifPresent(i -> {
+            throw new FxOutrightDuplicateException(instrument.getCode());
         });
         storage.save(instrument);
-        log.info("FxOutright {} saved", instrument.code());
-        return instrument.code();
+        log.info("FxOutright {} saved", instrument.getCode());
+        return instrument.getCode();
     }
 
     @Override

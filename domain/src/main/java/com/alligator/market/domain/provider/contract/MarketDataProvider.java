@@ -26,23 +26,22 @@ public interface MarketDataProvider {
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
     default Flux<QuoteTick> getQuote(Instrument instrument) {
-        InstrumentType type = instrument.type();
+        InstrumentType type = instrument.getType();
         InstrumentHandler handler = findHandlerForInstrument(type);
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
-        return handler.getInstrumentQuote();
+        return handler.getInstrumentQuote(instrument);
     }
 
     /**
      * Вспомогательный метод находит обработчик для указанного типа инструмента.
-     * Нужен для метода {@link #getQuote(Instrument)}.
      *
-     * @return подходящий обработчик или null, если не найден
+     * @return подходящий обработчик или null
      */
     default InstrumentHandler findHandlerForInstrument(InstrumentType type) {
         for (InstrumentHandler h : getHandlers()) {
-            if (h.getInstrumentType() == type) {
+            if (h.getSupportedInstrumentType() == type) {
                 return h;
             }
         }

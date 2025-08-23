@@ -41,7 +41,7 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
 
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
-    public InstrumentType getInstrumentType() {
+    public InstrumentType getSupportedInstrumentType() {
         return InstrumentType.FX_OUTRIGHT;
     }
 
@@ -63,7 +63,7 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> responseJsonToQuoteTick(json, instrument.code()))
+                .map(json -> responseJsonToQuoteTick(json, instrument.getCode()))
                 .flux();
     }
 
