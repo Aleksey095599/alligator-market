@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntityMappingConfig;
 import com.alligator.market.domain.provider.model.ProviderStatus;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

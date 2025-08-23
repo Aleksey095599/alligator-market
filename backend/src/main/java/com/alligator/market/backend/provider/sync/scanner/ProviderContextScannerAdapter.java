@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.sync.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

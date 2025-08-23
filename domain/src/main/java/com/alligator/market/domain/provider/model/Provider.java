@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.contract.InstrumentType;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 
 import java.util.Set;
 

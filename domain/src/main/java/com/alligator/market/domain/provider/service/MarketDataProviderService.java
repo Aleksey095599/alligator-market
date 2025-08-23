@@ -35,13 +35,13 @@ public class MarketDataProviderService {
         String codeFromProfile = provider.getProfile().providerCode();
         Set<InstrumentType> instrumentTypes = new HashSet<>();
         for (InstrumentHandler handler : handlers) {
-            String codeFromHandler = handler.providerCode();
+            String codeFromHandler = handler.getProviderCode();
             if (!codeFromProfile.equals(codeFromHandler)) {
                 throw new ProviderHandlerMismatchException(codeFromProfile, codeFromHandler);
             }
 
             // 3) Проверяем, что тип инструмента уникален
-            InstrumentType instrumentType = handler.supportedInstrument();
+            InstrumentType instrumentType = handler.getInstrumentType();
             if (!instrumentTypes.add(instrumentType)) {
                 throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
             }

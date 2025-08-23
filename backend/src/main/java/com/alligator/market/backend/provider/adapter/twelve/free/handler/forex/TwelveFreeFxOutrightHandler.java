@@ -35,20 +35,20 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
 
     /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
     @Override
-    public String providerCode() {
+    public String getProviderCode() {
         return PROVIDER_CODE;
     }
 
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
-    public InstrumentType supportedInstrument() {
+    public InstrumentType getInstrumentType() {
         return InstrumentType.FX_OUTRIGHT;
     }
 
 
     /** Возвращает котировку для указанного инструмента. */
     @Override
-    public Flux<QuoteTick> instrumentQuote(Instrument instrument) {
+    public Flux<QuoteTick> getInstrumentQuote(Instrument instrument) {
 
         FxOutright fxOutright = (FxOutright) instrument;
 

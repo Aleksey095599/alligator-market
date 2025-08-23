@@ -6,18 +6,17 @@ import com.alligator.market.domain.quote.QuoteTick;
 import reactor.core.publisher.Flux;
 
 /**
- * Контракт обработчика (handler) конкретного финансового инструмента.
- * Обработчики применяются провайдерами рыночных данных {@link MarketDataProvider} для обработки
- * запросов котировок для разных инструментов.
+ * Контракт обработчика (handler) для конкретного финансового инструмента.
+ * Каждый провайдер рыночных данных {@link MarketDataProvider} имеет как минимум один обработчик.
  */
 public interface InstrumentHandler {
 
     /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
-    String providerCode();
+    String getProviderCode();
 
-    /** Возвращает поддерживаемый тип инструмента. */
-    InstrumentType supportedInstrument();
+    /** Возвращает финансовый инструмент, который поддерживает данный обработчик. */
+    Instrument getInstrument();
 
     /** Возвращает котировку для указанного инструмента. */
-    Flux<QuoteTick> instrumentQuote(Instrument instrument);
+    Flux<QuoteTick> getInstrumentQuote();
 }

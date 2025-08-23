@@ -1,8 +1,8 @@
-package com.alligator.market.domain.provider.contract.storage;
+package com.alligator.market.domain.provider.storage;
 
 import com.alligator.market.domain.provider.model.Provider;
 import com.alligator.market.domain.provider.model.ProviderStatus;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 
 import java.util.Collection;
 import java.util.Map;

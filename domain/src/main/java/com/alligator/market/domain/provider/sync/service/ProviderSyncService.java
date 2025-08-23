@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.sync.service;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
 import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
 import com.alligator.market.domain.provider.model.ProviderStatus;

@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.adapte
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileJpaRepository;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntityMapper;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

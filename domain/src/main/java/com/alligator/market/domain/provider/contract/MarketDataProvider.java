@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.contract.InstrumentType;
 import java.util.Set;
@@ -17,20 +17,8 @@ public interface MarketDataProvider {
     /** Возвращает профиль провайдера {@link ProviderProfile}. */
     ProviderProfile getProfile();
 
-    /** Возвращает код провайдера. */
-    default String getProviderCode() {
-        return getProfile().providerCode();
-    }
-
     /** Возвращает набор обработчиков {@link InstrumentHandler}. */
     Set<InstrumentHandler> getHandlers();
-
-    /** Возвращает набор поддерживаемых типов инструментов (извлекаются из обработчиков). */
-    default Set<InstrumentType> getSupportedInstrumentTypes() {
-        return getHandlers().stream()
-                .map(InstrumentHandler::supportedInstrument)
-                .collect(java.util.stream.Collectors.toUnmodifiableSet());
-    }
 
     /**
      * Возвращает котировку.
@@ -43,7 +31,7 @@ public interface MarketDataProvider {
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
-        return handler.instrumentQuote(instrument);
+        return handler.getInstrumentQuote();
     }
 
     /**
@@ -54,7 +42,7 @@ public interface MarketDataProvider {
      */
     default InstrumentHandler findHandlerForInstrument(InstrumentType type) {
         for (InstrumentHandler h : getHandlers()) {
-            if (h.supportedInstrument() == type) {
+            if (h.getInstrumentType() == type) {
                 return h;
             }
         }

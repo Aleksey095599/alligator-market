@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 
 import java.math.BigDecimal;
 import java.time.Instant;

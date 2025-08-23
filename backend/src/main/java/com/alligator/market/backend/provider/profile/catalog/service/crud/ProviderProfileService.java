@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.service.crud;
 
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.model.profile.ProviderProfile;
 import com.alligator.market.domain.provider.model.ProviderStatus;
 import java.util.Map;
 
