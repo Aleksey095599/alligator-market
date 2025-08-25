@@ -55,7 +55,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteCurrency(String code) {
         storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
-        // Проверяем, что валюта не используется в инструментах FX_OUTRIGHT, иначе нельзя удалять
+        // Проверяем, что валюта не используется в инструментах FX_SPOT, иначе нельзя удалять
         if (fxSpotStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }
