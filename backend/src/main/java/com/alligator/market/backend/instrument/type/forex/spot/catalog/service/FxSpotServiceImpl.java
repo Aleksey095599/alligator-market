@@ -62,7 +62,7 @@ public class FxSpotServiceImpl implements FxSpotService {
     @Transactional(readOnly = true)
     public List<FxSpot> findAll() {
         List<FxSpot> result = storage.findAll();
-        log.debug("Found {} FX_OUTRIGHT instruments", result.size());
+        log.debug("Found {} FX_SPOT instruments", result.size());
         return result;
     }
 }

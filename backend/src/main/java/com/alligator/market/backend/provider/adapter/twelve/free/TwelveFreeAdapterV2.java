@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
-import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxOutrightHandler;
+import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.service.MarketDataProviderService;
@@ -44,7 +44,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         // Добавляем обработчики
-        handlers.add(new TwelveFreeFxOutrightHandler(webClient, props, PROVIDER_CODE));
+        handlers.add(new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE));
     }
 
     /** Возвращает профиль провайдера. */

@@ -4,9 +4,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCod
 import jakarta.validation.constraints.*;
 
 /**
- * Основной DTO инструмента FX_OUTRIGHT.
+ * Основной DTO инструмента FX_SPOT.
  */
-public record FxOutrightDto(
+public record FxSpotDto(
 
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")

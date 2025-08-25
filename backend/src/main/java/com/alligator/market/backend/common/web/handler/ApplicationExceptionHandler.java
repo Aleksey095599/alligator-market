@@ -36,7 +36,7 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Валюта используется в инструментах FX_OUTRIGHT. */
+    /** Валюта используется в инструментах FX_SPOT. */
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxSpotException ex) {
         // 409, ресурс занят
@@ -44,7 +44,7 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Дублирование инструмента FX_OUTRIGHT. */
+    /** Дублирование инструмента FX_SPOT. */
     @ExceptionHandler(FxSpotDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(FxSpotDuplicateException ex) {
         // 409 при попытке создать существующий инструмент
@@ -52,7 +52,7 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Одна из валют компонента FX_OUTRIGHT не найдена. */
+    /** Одна из валют компонента FX_SPOT не найдена. */
     @ExceptionHandler(FxSpotCurrencyNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(FxSpotCurrencyNotFoundException ex) {
         // 400, неверные данные инструмента

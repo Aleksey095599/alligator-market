@@ -3,9 +3,9 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.api;
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotService;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxOutrightDto;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxOutrightUpdateDto;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxOutrightDtoMapper;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +24,14 @@ import java.util.List;
 @RequestMapping("/api/v1/fx-outright")
 @RequiredArgsConstructor
 @Slf4j
-public class FxOutrightController {
+public class FxSpotController {
 
     private final FxSpotService service;
-    private final FxOutrightDtoMapper mapper;
+    private final FxSpotDtoMapper mapper;
 
     /** Создать инструмент. */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxOutrightDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
         FxSpot model = mapper.toDomain(dto);
         String code = service.create(model);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -44,7 +44,7 @@ public class FxOutrightController {
     /** Обновить точность котировки. */
     @PatchMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
-                                                                @RequestBody @Valid FxOutrightUpdateDto dto) {
+                                                                @RequestBody @Valid FxSpotUpdateDto dto) {
         service.updateQuoteDecimal(code, dto.quoteDecimal());
         return ResponseEntityFactory.ok(null);
     }
@@ -58,8 +58,8 @@ public class FxOutrightController {
 
     /** Вернуть все инструменты. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FxOutrightDto>>> getAll() {
-        List<FxOutrightDto> list = service.findAll().stream()
+    public ResponseEntity<ApiResponse<List<FxSpotDto>>> getAll() {
+        List<FxSpotDto> list = service.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);

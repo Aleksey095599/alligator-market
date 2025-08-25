@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /** Обработчик (handler) инструмента FX_SPOT для TwelveData (free). */
-public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
+public class TwelveFreeFxSpotHandler implements InstrumentHandler {
 
     // Переменная с кодом провайдера к которому относится данный обработчик
     private static final String PROVIDER_CODE = "TWELVE_FREE";
@@ -23,7 +23,7 @@ public class TwelveFreeFxOutrightHandler implements InstrumentHandler {
     private final TwelveFreeConnectionProps props;
     private final String providerCode;
 
-    public TwelveFreeFxOutrightHandler(
+    public TwelveFreeFxSpotHandler(
             WebClient webClient,
             TwelveFreeConnectionProps props,
             String providerCode

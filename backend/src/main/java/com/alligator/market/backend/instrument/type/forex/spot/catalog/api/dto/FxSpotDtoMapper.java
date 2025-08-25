@@ -4,15 +4,15 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.mapstruct.Mapper;
 
 /**
- * Маппер: FX_OUTRIGHT модель ⇄ DTO.
+ * Маппер: модель ⇄ DTO.
  */
 @Mapper(componentModel = "spring")
-public interface FxOutrightDtoMapper {
+public interface FxSpotDtoMapper {
 
     /** Преобразует основной DTO в доменную модель. */
-    FxSpot toDomain(FxOutrightDto dto);
+    FxSpot toDomain(FxSpotDto dto);
 
     /** Преобразует доменную модель в основной DTO. */
-    FxOutrightDto toDto(FxSpot model);
+    FxSpotDto toDto(FxSpot model);
 }
 
