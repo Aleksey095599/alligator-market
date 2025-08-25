@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Компонент вызывает доменную логику сопоставления профилей провайдеров рыночных данных,
- * извлеченных из контекста приложения и хранилища данных.
+ * извлеченных из контекста приложения и репозитория.
  */
 @Component
 public class ProfilesReconciliationAdapter {
@@ -33,7 +33,7 @@ public class ProfilesReconciliationAdapter {
         return reconciliation.compare();
     }
 
-    /** Применить {@link ProfileContextDiff} к хранилищу данных, выполняя задачу от имени системного пользователя. */
+    /** Применить {@link ProfileContextDiff} к репозиторию, выполняя задачу от имени системного пользователя. */
     public void applyContextDiffToStorage(ProfileContextDiff diff) {
         AuditContext previous = AuditContextHolder.get();
         AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, VIA));

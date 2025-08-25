@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Хранилище провайдеров рыночных данных.
+ * Репозиторий провайдеров рыночных данных.
  */
 public interface ProviderStorage {
 

@@ -3,7 +3,7 @@ package com.alligator.market.domain.instrument.type.forex.spot.exception;
 import com.alligator.market.domain.common.exception.NotFoundException;
 
 /**
- * Инструмент не найден в хранилище.
+ * Инструмент не найден.
  */
 public class FxSpotNotFoundException extends NotFoundException {
     public FxSpotNotFoundException(String code) {

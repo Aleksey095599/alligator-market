@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.exception;
 
 /**
- * Инструмент уже существует в хранилище.
+ * Инструмент уже существует.
  */
 public class FxSpotDuplicateException extends RuntimeException {
     public FxSpotDuplicateException(String code) {

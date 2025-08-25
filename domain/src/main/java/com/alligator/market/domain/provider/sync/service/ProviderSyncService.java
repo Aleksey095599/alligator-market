@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Сервис реализующий методы и логику сопоставления данных о провайдере
+ * Сервис, реализующий методы и логику сопоставления данных о провайдере.
  */
 public class ProviderSyncService {
 
@@ -29,7 +29,7 @@ public class ProviderSyncService {
     //
 
     /**
-     * Сравнить профили в хранилище данных и в контексте приложения.
+     * Сравнить профили в репозитории и контексте приложения.
      *
      * @return {@link ProfileContextDiff}
      */
@@ -91,7 +91,7 @@ public class ProviderSyncService {
     }
 
     /**
-     * Применить {@link ProfileContextDiff} к хранилищу данных для приведения к актуальному состоянию.
+     * Применить {@link ProfileContextDiff} к репозиторию для приведения к актуальному состоянию.
      */
     public void applyContextDiffToStorage(ProfileContextDiff diff) {
         if (!diff.add().isEmpty()) {

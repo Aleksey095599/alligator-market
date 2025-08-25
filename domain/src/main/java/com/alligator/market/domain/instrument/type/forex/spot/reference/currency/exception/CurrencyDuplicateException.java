@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception;
 
 /**
- * Валюта уже существует в хранилище.
+ * Валюта уже существует.
  */
 public class CurrencyDuplicateException extends RuntimeException {
     public CurrencyDuplicateException(String field, String value) {

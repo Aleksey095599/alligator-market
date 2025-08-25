@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Адаптер хранилища профилей провайдеров рыночных данных на Spring Data JPA.
+ * Адаптер порта репозитория профилей провайдеров рыночных данных на Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
