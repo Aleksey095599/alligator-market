@@ -24,26 +24,26 @@ public class CurrencyDomainService {
         this.fxSpotStorage = fxSpotStorage;
     }
 
-    /** Добавить валюту. */
+    /** Добавить валюту в хранилище. */
     public String add(Currency currency) {
-        // Проверяем уникальность кода
+        // Проверяем, что в хранилище нет валюты с таким же кодом
         storage.findByCode(currency.code()).ifPresent(c -> {
             throw new CurrencyDuplicateException("code", currency.code());
         });
-        // Проверяем уникальность имени
+        // Проверяем, что в хранилище нет валюты с таким же названием
         storage.findByName(currency.name()).ifPresent(c -> {
             throw new CurrencyDuplicateException("name", currency.name());
         });
         return storage.save(currency);
     }
 
-    /** Получить валюту по коду. */
+    /** Получить валюту из хранилища по коду. */
     public Currency get(String code) {
         return storage.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
     }
 
-    /** Обновить валюту. */
+    /** Обновить параметры валюты в хранилище. */
     public void update(Currency currency) {
         // Убеждаемся, что валюта существует
         storage.findByCode(currency.code())
@@ -57,18 +57,18 @@ public class CurrencyDomainService {
         storage.save(currency);
     }
 
-    /** Удалить валюту по коду. */
+    /** Удалить валюту из хранилища по коду. */
     public void remove(String code) {
         // Проверяем, что валюта существует
         get(code);
-        // Нельзя удалять, если используется в FX_SPOT
+        // Нельзя удалять, если валюта используется инструментом FX_SPOT
         if (fxSpotStorage.existsByCurrency(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }
         storage.deleteByCode(code);
     }
 
-    /** Вернуть все валюты. */
+    /** Вернуть список всех валют из хранилища. */
     public List<Currency> getAll() {
         return storage.findAll();
     }
