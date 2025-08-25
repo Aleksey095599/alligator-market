@@ -66,7 +66,7 @@ public class CurrencyController {
     /** Вернуть все валюты. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
-        List<CurrencyDto> currencyDtoList = service.findAll()
+        List<CurrencyDto> currencyDtoList = service.getAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
