@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.service.
 
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.spot.storage.FxSpotStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotInstrumentRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class FxOutrightServiceImpl implements FxOutrightService {
 
-    private final FxSpotStorage storage;
+    private final FxSpotInstrumentRepository storage;
 
     @Override
     public String create(FxSpot instrument) {

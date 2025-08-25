@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.reference.currenc
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.storage.CurrencyStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -13,12 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный контракт {@link CurrencyStorage}
- * с использованием Spring Data JPA.
+ * Адаптер, реализующий доменный порт {@link CurrencyRepository} с использованием Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
-public class CurrencyStorageAdapter implements CurrencyStorage {
+public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     private final CurrencyJpaRepository jpaRepository;
     private final CurrencyEntityMapper mapper;

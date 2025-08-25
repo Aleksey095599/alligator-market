@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxOutrightEntityMapper;
-import com.alligator.market.domain.instrument.type.forex.spot.storage.FxSpotStorage;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotInstrumentRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный контракт {@link FxSpotStorage}
+ * Адаптер, реализующий доменный контракт {@link FxSpotInstrumentRepository}
  * с использованием Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
-public class FxSpotStorageAdapter implements FxSpotStorage {
+public class FxSpotInstrumentRepositoryAdapter implements FxSpotInstrumentRepository {
 
     private final FxOutrightJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;

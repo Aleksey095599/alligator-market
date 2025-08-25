@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyStorageService;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,31 +18,32 @@ import java.util.List;
 @Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
-    private final CurrencyStorageService storageService;
+    // Доменный сервис каталога валют
+    private final CurrencyDomainService domain;
 
     @Override
     public String createCurrency(Currency currency) {
-        String code = storageService.add(currency);
-        log.info("Currency {} saved", code);
+        String code = domain.create(currency);
+        log.info("Currency {} created", code);
         return code;
     }
 
     @Override
     public void updateCurrency(Currency currency) {
-        storageService.update(currency);
+        domain.update(currency);
         log.info("Currency {} updated", currency.code());
     }
 
     @Override
     public void deleteCurrency(String code) {
-        storageService.remove(code);
+        domain.remove(code);
         log.info("Currency {} deleted", code);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
-        List<Currency> result = storageService.getAll();
+        List<Currency> result = domain.getAll();
         log.debug("Found {} currencies", result.size());
         return result;
     }

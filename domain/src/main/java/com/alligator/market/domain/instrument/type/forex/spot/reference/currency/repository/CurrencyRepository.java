@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.storage;
+package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.repository;
 
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Хранилище валют.
+ * Порт репозитория валют.
  */
-public interface CurrencyStorage {
+public interface CurrencyRepository {
 
     /** Сохранить валюту. */
     String save(Currency currency);

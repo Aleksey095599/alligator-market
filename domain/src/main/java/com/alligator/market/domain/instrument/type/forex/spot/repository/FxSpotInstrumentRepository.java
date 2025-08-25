@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.spot.storage;
+package com.alligator.market.domain.instrument.type.forex.spot.repository;
 
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Хранилище инструментов FX_SPOT.
+ * Порт репозитория инструментов FX_SPOT.
  */
-public interface FxSpotStorage {
+public interface FxSpotInstrumentRepository {
 
     /** Сохранить инструмент. */
     void save(FxSpot instrument);
