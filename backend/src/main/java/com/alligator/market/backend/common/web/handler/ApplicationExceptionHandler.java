@@ -2,10 +2,10 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxOutrightSameCurrenciesException;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxOutrightException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
@@ -37,34 +37,34 @@ public class ApplicationExceptionHandler {
     }
 
     /** Валюта используется в инструментах FX_OUTRIGHT. */
-    @ExceptionHandler(CurrencyUsedInFxOutrightException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxOutrightException ex) {
+    @ExceptionHandler(CurrencyUsedInFxSpotException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxSpotException ex) {
         // 409, ресурс занят
-        log.warn("CurrencyUsedInFxOutrightException: {}", ex.getMessage());
+        log.warn("CurrencyUsedInFxSpotException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     /** Дублирование инструмента FX_OUTRIGHT. */
-    @ExceptionHandler(FxOutrightDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(FxOutrightDuplicateException ex) {
+    @ExceptionHandler(FxSpotDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(FxSpotDuplicateException ex) {
         // 409 при попытке создать существующий инструмент
-        log.warn("FxOutrightDuplicateException: {}", ex.getMessage());
+        log.warn("FxSpotDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     /** Одна из валют компонента FX_OUTRIGHT не найдена. */
-    @ExceptionHandler(FxOutrightCurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(FxOutrightCurrencyNotFoundException ex) {
+    @ExceptionHandler(FxSpotCurrencyNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(FxSpotCurrencyNotFoundException ex) {
         // 400, неверные данные инструмента
-        log.warn("FxOutrightCurrencyNotFoundException: {}", ex.getMessage());
+        log.warn("FxSpotCurrencyNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     /** Базовая и котируемая валюты совпадают. */
-    @ExceptionHandler(FxOutrightSameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(FxOutrightSameCurrenciesException ex) {
+    @ExceptionHandler(FxSpotSameCurrenciesException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(FxSpotSameCurrenciesException ex) {
         // 400, клиентская ошибка
-        log.warn("FxOutrightSameCurrenciesException: {}", ex.getMessage());
+        log.warn("FxSpotSameCurrenciesException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

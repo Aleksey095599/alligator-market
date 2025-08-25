@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type;
 
 /**
- * Список всех типов финансовых инструментов.
+ * Типы финансовых инструментов.
  */
 public enum InstrumentType {
 

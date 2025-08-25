@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 /**
- * Обозначения для даты расчетов инструмента {@link FxSpot}.
+ * Коды дат валютирования инструмента FX_SPOT.
  */
 public enum ValueDateCode {
 

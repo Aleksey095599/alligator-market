@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 
 /**
- * Модель финансового инструмента "валютная сделка спот".
+ * Модель финансового инструмента FX_SPOT.
  */
 public record FxSpot(
 

@@ -3,7 +3,7 @@ package com.alligator.market.domain.instrument.type.forex.spot.reference.currenc
 import com.alligator.market.domain.common.exception.NotFoundException;
 
 /**
- * Валюта не найдена.
+ * Валюта не найдена в хранилище.
  */
 public class CurrencyNotFoundException extends NotFoundException {
     public CurrencyNotFoundException(String code) {
