@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service.crud;
+package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyStorageService;
