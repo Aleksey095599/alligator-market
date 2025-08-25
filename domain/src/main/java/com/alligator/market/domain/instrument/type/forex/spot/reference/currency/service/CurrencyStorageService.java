@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Сервис для операций с валютами.
+ * Сервис работы с хранилищем валют.
  */
 @Service
-public class CurrencyDomainService {
+public class CurrencyStorageService {
 
     private final CurrencyStorage storage;
     private final FxSpotStorage fxSpotStorage;
 
-    public CurrencyDomainService(CurrencyStorage storage, FxSpotStorage fxSpotStorage) {
+    public CurrencyStorageService(CurrencyStorage storage, FxSpotStorage fxSpotStorage) {
         this.storage = storage;
         this.fxSpotStorage = fxSpotStorage;
     }
