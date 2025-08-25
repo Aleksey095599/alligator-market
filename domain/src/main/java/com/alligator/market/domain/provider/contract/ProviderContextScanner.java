@@ -1,6 +1,4 @@
-package com.alligator.market.domain.provider.sync.contract;
-
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
+package com.alligator.market.domain.provider.contract;
 
 import java.util.List;
 

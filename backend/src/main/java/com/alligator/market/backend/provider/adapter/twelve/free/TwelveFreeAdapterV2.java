@@ -3,9 +3,9 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
-import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.service.MarketDataProviderService;
+import com.alligator.market.domain.provider.service.ProviderService;
 import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
 import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
@@ -31,7 +31,7 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     private final Set<InstrumentHandler> handlers = new HashSet<>();
 
     /** Сервис проверки обработчиков. */
-    private static final MarketDataProviderService SERVICE = new MarketDataProviderService();
+    private static final ProviderService SERVICE = new ProviderService();
 
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.

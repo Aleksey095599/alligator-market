@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.sync.service;
+package com.alligator.market.domain.provider.service;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
-import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.contract.ProviderContextScanner;
+import com.alligator.market.domain.provider.model.ProfileContextDiff;
 import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 
 import java.util.ArrayList;

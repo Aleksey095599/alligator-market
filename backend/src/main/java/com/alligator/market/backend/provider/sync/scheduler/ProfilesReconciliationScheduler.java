@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.sync.scheduler;
 
 import com.alligator.market.backend.provider.sync.adapter.ProfilesReconciliationAdapter;
-import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.model.ProfileContextDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

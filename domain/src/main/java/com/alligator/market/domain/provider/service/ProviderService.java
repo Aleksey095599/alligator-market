@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.service;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Сервис содержит методы для обслуживания провайдеров рыночных данных {@link MarketDataProvider}.
  */
-public class MarketDataProviderService {
+public class ProviderService {
 
     /**
      * Проверяет корректность набора обработчиков указанного провайдера.

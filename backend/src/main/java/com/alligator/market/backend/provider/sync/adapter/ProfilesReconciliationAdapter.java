@@ -2,9 +2,9 @@ package com.alligator.market.backend.provider.sync.adapter;
 
 import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
-import com.alligator.market.domain.provider.sync.model.ProfileContextDiff;
-import com.alligator.market.domain.provider.sync.contract.ProviderContextScanner;
-import com.alligator.market.domain.provider.sync.service.ProviderSyncService;
+import com.alligator.market.domain.provider.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.contract.ProviderContextScanner;
+import com.alligator.market.domain.provider.service.ProviderSyncService;
 import org.springframework.stereotype.Component;
 
 /**

@@ -11,7 +11,7 @@ import com.alligator.market.domain.provider.exception.InstrumentNotSupportedExce
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
 import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
-import com.alligator.market.domain.provider.sync.exeption.ContextProfileDuplicateException;
+import com.alligator.market.domain.provider.exception.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

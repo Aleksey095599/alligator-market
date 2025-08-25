@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.sync.exeption;
+package com.alligator.market.domain.provider.exception;
 
 /**
  * Профиль провайдера рыночных данных с указанным полем уже присутствует в контексте.
