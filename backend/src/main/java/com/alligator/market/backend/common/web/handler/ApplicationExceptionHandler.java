@@ -30,7 +30,7 @@ public class ApplicationExceptionHandler {
 
     /** Дублирование валюты. */
     @ExceptionHandler(CurrencyDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateCurrency(CurrencyDuplicateException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyDuplicate(CurrencyDuplicateException ex) {
         // Отдаем 409, так как запись уже существует
         log.warn("CurrencyDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
@@ -38,7 +38,7 @@ public class ApplicationExceptionHandler {
 
     /** Валюта используется в инструментах FX_SPOT. */
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsed(CurrencyUsedInFxSpotException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
         // 409, ресурс занят
         log.warn("CurrencyUsedInFxSpotException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
@@ -46,7 +46,7 @@ public class ApplicationExceptionHandler {
 
     /** Дублирование инструмента FX_SPOT. */
     @ExceptionHandler(FxSpotDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateFxOutright(FxSpotDuplicateException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleFxSpotDuplicate(FxSpotDuplicateException ex) {
         // 409 при попытке создать существующий инструмент
         log.warn("FxSpotDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
@@ -54,7 +54,7 @@ public class ApplicationExceptionHandler {
 
     /** Одна из валют компонента FX_SPOT не найдена. */
     @ExceptionHandler(FxSpotCurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyFromFxOutrightNotFound(FxSpotCurrencyNotFoundException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleFxSpotCurrencyNotFound(FxSpotCurrencyNotFoundException ex) {
         // 400, неверные данные инструмента
         log.warn("FxSpotCurrencyNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -62,7 +62,7 @@ public class ApplicationExceptionHandler {
 
     /** Базовая и котируемая валюты совпадают. */
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> handleSameCurrencies(FxSpotSameCurrenciesException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleFxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
         // 400, клиентская ошибка
         log.warn("FxSpotSameCurrenciesException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -70,7 +70,7 @@ public class ApplicationExceptionHandler {
 
     /** Профиль провайдера уже присутствует в контексте. */
     @ExceptionHandler(ContextProfileDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateProviderProfile(ContextProfileDuplicateException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleContextProfileDuplicate(ContextProfileDuplicateException ex) {
         // 409, дубликат профиля
         log.warn("ContextProfileDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
@@ -86,7 +86,7 @@ public class ApplicationExceptionHandler {
 
     /** Некорректный набор обработчиков провайдера. */
     @ExceptionHandler(ProviderHandlersInvalidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInvalidHandlers(ProviderHandlersInvalidException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleProviderHandlersInvalid(ProviderHandlersInvalidException ex) {
         // 500, ошибка конфигурации сервера
         log.error("ProviderHandlersInvalidException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -94,7 +94,7 @@ public class ApplicationExceptionHandler {
 
     /** Обработчик относится к другому провайдеру. */
     @ExceptionHandler(ProviderHandlerMismatchException.class)
-    public ResponseEntity<ApiResponse<Void>> handleHandlerMismatch(ProviderHandlerMismatchException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleProviderHandlerMismatch(ProviderHandlerMismatchException ex) {
         // 500, ошибка конфигурации сервера
         log.error("ProviderHandlerMismatchException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -102,7 +102,7 @@ public class ApplicationExceptionHandler {
 
     /** Дублирование обработчика по типу инструмента. */
     @ExceptionHandler(ProviderInstrumentHandlerDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicateHandler(ProviderInstrumentHandlerDuplicateException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleProviderInstrumentHandlerDuplicate(ProviderInstrumentHandlerDuplicateException ex) {
         // 500, ошибка конфигурации сервера
         log.error("ProviderInstrumentHandlerDuplicateException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

@@ -18,10 +18,10 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST-контроллер для инструментов FX_OUTRIGHT.
+ * REST-контроллер для инструментов FX_SPOT.
  */
 @RestController
-@RequestMapping("/api/v1/fx-outright")
+@RequestMapping("/api/v1/fx-spot")
 @RequiredArgsConstructor
 @Slf4j
 public class FxSpotController {
