@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Сущность базового финансового инструмента.
+ * Абстрактная сущность базового финансового инструмента.
  * Родитель для сущностей финансовых инструментов всех типов.
+ * Не может быть создана напрямую.
  */
 @Entity
 @Table(name = "instrument")
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class InstrumentEntity extends BaseEntity {
+public abstract class InstrumentEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @EqualsAndHashCode.Include
