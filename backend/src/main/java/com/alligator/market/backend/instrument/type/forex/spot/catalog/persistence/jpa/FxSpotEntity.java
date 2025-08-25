@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Сущность финансового инструмента FX_OUTRIGHT.
+ * Сущность финансового инструмента FX_SPOT.
  */
 @Entity
-@Table(name = "fx_outright")
+@Table(name = "fx_spot")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class FxOutrightEntity extends InstrumentEntity {
+public class FxSpotEntity extends InstrumentEntity {
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
@@ -61,7 +61,7 @@ public class FxOutrightEntity extends InstrumentEntity {
             throw new FxSpotSameCurrenciesException();
         }
         // 2) Устанавливаем тип инструмента
-        setType(InstrumentType.FX_OUTRIGHT);
+        setType(InstrumentType.FX_SPOT);
         // 3) Генерируем и устанавливаем код инструмента
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode.name();
         setCode(instrumentCode);

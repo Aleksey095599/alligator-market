@@ -1,10 +1,10 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.adapter;
 
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxOutrightEntity;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxOutrightJpaRepository;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxOutrightEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -16,21 +16,20 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный контракт {@link FxSpotRepository}
- * с использованием Spring Data JPA.
+ * Адаптер, реализующий доменный порт {@link FxSpotRepository} с помощью Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
-    private final FxOutrightJpaRepository jpaRepository;
+    private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
-    private final FxOutrightEntityMapper mapper;
+    private final FxSpotEntityMapper mapper;
 
     @Override
     public void save(FxSpot fxSpot) {
-        FxOutrightEntity entity = jpaRepository.findByCode(fxSpot.getCode())
-                .orElseGet(FxOutrightEntity::new);
+        FxSpotEntity entity = jpaRepository.findByCode(fxSpot.getCode())
+                .orElseGet(FxSpotEntity::new);
         CurrencyEntity base = currencyRepository.findByCode(fxSpot.baseCurrency())
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.baseCurrency()));
         CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quoteCurrency())

@@ -10,12 +10,12 @@ import org.mapstruct.MappingTarget;
  * Маппер: модель ⇄ сущность.
  */
 @Mapper(componentModel = "spring")
-public interface FxOutrightEntityMapper {
+public interface FxSpotEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
     @Mapping(target = "baseCurrency", source = "entity.baseCurrency.code")
     @Mapping(target = "quoteCurrency", source = "entity.quoteCurrency.code")
-    FxSpot toDomain(FxOutrightEntity entity);
+    FxSpot toDomain(FxSpotEntity entity);
 
     /** Обновляет сущность данными из доменной модели и валют. */
     @Mapping(target = "baseCurrency", source = "baseCurrency")
@@ -27,6 +27,6 @@ public interface FxOutrightEntityMapper {
     void updateEntity(FxSpot model,
                       CurrencyEntity baseCurrency,
                       CurrencyEntity quoteCurrency,
-                      @MappingTarget FxOutrightEntity entity);
+                      @MappingTarget FxSpotEntity entity);
 }
 

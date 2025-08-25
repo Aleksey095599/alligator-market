@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.service.crud;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
@@ -13,13 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация контракта сервиса {@link FxOutrightService}.
+ * Реализация контракта сервиса {@link FxSpotService}.
+ * Применяем доменный сервис, реализующий бизнес-логику работы с репозиторием инструментов FX_SPOT.
  */
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class FxOutrightServiceImpl implements FxOutrightService {
+public class FxSpotServiceImpl implements FxSpotService {
 
     private final FxSpotRepository storage;
 
