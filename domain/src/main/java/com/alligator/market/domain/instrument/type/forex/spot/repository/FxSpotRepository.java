@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Порт репозитория инструментов FX_SPOT.
  */
-public interface FxSpotInstrumentRepository {
+public interface FxSpotRepository {
 
     /** Сохранить инструмент. */
     void save(FxSpot instrument);

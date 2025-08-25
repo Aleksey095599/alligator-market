@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.reference.currency
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotInstrumentRepository;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 public class CurrencyDomainService {
 
     private final CurrencyRepository repository;
-    private final FxSpotInstrumentRepository fxSpotRepository;
+    private final FxSpotRepository fxSpotRepository;
 
-    public CurrencyDomainService(CurrencyRepository repository, FxSpotInstrumentRepository fxSpotRepository) {
+    public CurrencyDomainService(CurrencyRepository repository, FxSpotRepository fxSpotRepository) {
         this.repository = repository;
         this.fxSpotRepository = fxSpotRepository;
     }

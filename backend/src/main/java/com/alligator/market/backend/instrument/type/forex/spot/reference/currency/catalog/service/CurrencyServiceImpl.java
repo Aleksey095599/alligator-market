@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Реализация контракта сервиса {@link CurrencyService}.
- * Применяем доменный сервис для каталога валют, реализующий доменную бизнес логику работы с каталогом валют.
+ * Применяем доменный сервис, реализующий бизнес логику работы с репозиторием валют.
  */
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
-    // Доменный сервис каталога валют
     private final CurrencyDomainService domain;
 
     @Override
