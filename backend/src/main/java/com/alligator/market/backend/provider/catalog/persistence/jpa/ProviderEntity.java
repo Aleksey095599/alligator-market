@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -50,5 +50,5 @@ public class ProviderEntity extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "profile_status", length = 10, nullable = false)
-    private ProviderStatus profileStatus;
+    private ProviderProfileStatus profileStatus;
 }

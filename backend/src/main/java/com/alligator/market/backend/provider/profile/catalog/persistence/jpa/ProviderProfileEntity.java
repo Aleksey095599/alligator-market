@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
-import com.alligator.market.domain.provider.model.profile.ProviderAccessMethod;
-import com.alligator.market.domain.provider.model.profile.ProviderDeliveryMode;
-import com.alligator.market.domain.provider.model.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
+import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

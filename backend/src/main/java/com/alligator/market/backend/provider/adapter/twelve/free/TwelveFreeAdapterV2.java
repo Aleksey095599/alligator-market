@@ -6,9 +6,9 @@ import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.T
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.service.MarketDataProviderService;
-import com.alligator.market.domain.provider.model.profile.ProviderAccessMethod;
-import com.alligator.market.domain.provider.model.profile.ProviderDeliveryMode;
-import com.alligator.market.domain.provider.model.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
+import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

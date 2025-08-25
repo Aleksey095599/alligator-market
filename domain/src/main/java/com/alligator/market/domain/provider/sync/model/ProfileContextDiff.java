@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.sync.model;
 
-import com.alligator.market.domain.provider.model.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 
 import java.util.ArrayList;
 import java.util.List;

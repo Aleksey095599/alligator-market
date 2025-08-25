@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.model.profile.ProviderAccessMethod;
-import com.alligator.market.domain.provider.model.profile.ProviderDeliveryMode;
-import com.alligator.market.domain.provider.model.ProviderStatus;
+import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
+import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
+import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public record ProviderProfileStatusDto(
 
-        @NotNull ProviderStatus status,
+        @NotNull ProviderProfileStatus status,
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentsSupported,

@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.model.profile.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProviderProfile;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import java.util.Set;
