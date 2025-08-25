@@ -42,7 +42,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
     /** Возвращает поддерживаемый тип инструмента. */
     @Override
     public InstrumentType getSupportedInstrumentType() {
-        return InstrumentType.FX_OUTRIGHT;
+        return InstrumentType.FX_SPOT;
     }
 
 
