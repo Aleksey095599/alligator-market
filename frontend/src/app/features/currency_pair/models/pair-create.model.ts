@@ -4,6 +4,6 @@ export interface PairCreateDto {
   base: string;
   /* Код котируемой валюты */
   quote: string;
-  /* Кол-во знаков после запятой */
+  /* Количество знаков после запятой */
   decimal: number;
 }

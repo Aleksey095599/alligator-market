@@ -52,7 +52,7 @@ public class CurrencyEntity extends BaseEntity {
     @Column(name = "country", length = 100, nullable = false)
     private String country;
 
-    /** Кол-во знаков после запятой для денежных сумм. */
+    /** Количество знаков после запятой для денежных сумм. */
     @NotNull
     @Min(0)
     @Max(10)

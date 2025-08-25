@@ -6,6 +6,6 @@ export interface PairDto {
   quote: string;
   /* Код валютной пары (base + quote) */
   pairCode: string;
-  /* Кол-во знаков после запятой */
+  /* Количество знаков после запятой */
   decimal: number;
 }

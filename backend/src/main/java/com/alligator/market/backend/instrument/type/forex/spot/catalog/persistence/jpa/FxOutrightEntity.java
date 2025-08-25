@@ -46,7 +46,7 @@ public class FxOutrightEntity extends InstrumentEntity {
     @Column(name = "value_date_code", length = 4, updatable = false, nullable = false)
     private ValueDateCode valueDateCode;
 
-    /** Кол-во знаков после запятой для курса. */
+    /** Количество знаков после запятой для курса. */
     @NotNull
     @Min(0)
     @Max(10)

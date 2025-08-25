@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Сервис реализует бизнес логику работы с репозиторием валют.
+ * Сервис реализует бизнес-логику работы с репозиторием валют.
  */
 @Service
 public class CurrencyDomainService {
@@ -61,7 +61,7 @@ public class CurrencyDomainService {
     public void delete(String code) {
         // Проверяем, что валюта существует
         get(code);
-        // Проверяем, что валюта не используется инструментом FX_SPOT
+        // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrency(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }
