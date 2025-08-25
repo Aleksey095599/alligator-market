@@ -19,6 +19,11 @@
       <artifactId>reactor-core</artifactId>
       <version>${reactor.version}</version>
     </dependency>
+    <!-- Spring context для доменных сервисов -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
     <!-- Avro для генерации классов -->
     <dependency>
       <groupId>org.apache.avro</groupId>
