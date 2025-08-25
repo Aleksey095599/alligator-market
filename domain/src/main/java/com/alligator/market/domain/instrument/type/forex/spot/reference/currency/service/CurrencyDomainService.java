@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Доменный сервис каталога валют: инварианты, проверки, бизнес-правила.
+ * Сервис реализует бизнес логику работы с репозиторием валют.
  */
 @Service
 public class CurrencyDomainService {

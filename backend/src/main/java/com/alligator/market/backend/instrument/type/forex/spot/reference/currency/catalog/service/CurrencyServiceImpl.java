@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Реализация контракта сервиса {@link CurrencyService}.
+ * Применяем доменный сервис для каталога валют, реализующий доменную бизнес логику работы с каталогом валют.
  */
 @Service
 @RequiredArgsConstructor

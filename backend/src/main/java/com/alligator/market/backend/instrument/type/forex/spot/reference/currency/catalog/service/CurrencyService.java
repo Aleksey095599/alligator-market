@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.reference.currency
 import java.util.List;
 
 /**
- * Сервисный контракт, используемый REST-слоем для работы с валютами:
+ * Сервисный контракт, используемый REST-контроллером для работы с валютами:
  * создание, обновление, удаление и получение списка и т.п.
  */
 public interface CurrencyService {
