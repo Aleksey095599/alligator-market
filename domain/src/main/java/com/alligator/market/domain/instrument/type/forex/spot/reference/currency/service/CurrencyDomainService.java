@@ -58,7 +58,7 @@ public class CurrencyDomainService {
     }
 
     /** Удалить валюту. */
-    public void remove(String code) {
+    public void delete(String code) {
         // Проверяем, что валюта существует
         get(code);
         // Проверяем, что валюта не используется инструментом FX_SPOT

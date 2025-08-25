@@ -20,5 +20,5 @@ public interface CurrencyService {
     void deleteCurrency(String code);
 
     /** Вернуть все валюты. */
-    List<Currency> findAll();
+    List<Currency> getAll();
 }

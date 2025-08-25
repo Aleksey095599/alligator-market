@@ -36,13 +36,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void deleteCurrency(String code) {
-        domain.remove(code);
+        domain.delete(code);
         log.info("Currency {} deleted", code);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Currency> findAll() {
+    public List<Currency> getAll() {
         List<Currency> result = domain.getAll();
         log.debug("Found {} currencies", result.size());
         return result;
