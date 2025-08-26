@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.reconciliation.scanner;
+package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
 import com.alligator.market.domain.provider.profile.model.Profile;
