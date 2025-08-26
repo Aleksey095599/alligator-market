@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер профилей провайдеров рыночных данных.
+ * REST-контроллер профилей провайдеров.
  */
 @RestController
 @RequestMapping("/api/v1/providers")
 @RequiredArgsConstructor
-public class ProviderProfileController {
+public class ProfileController {
 
     private final ProviderProfileService service;
     private final ProfileDtoMapper mapper;
