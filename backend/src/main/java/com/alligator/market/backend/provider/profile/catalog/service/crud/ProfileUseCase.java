@@ -5,9 +5,9 @@ import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import java.util.Map;
 
 /**
- * Сервис профилей провайдеров рыночных данных.
+ * Application-сервис (use case) для операций профилями провайдеров.
  */
-public interface ProviderProfileService {
+public interface ProfileUseCase {
 
     /** Вернуть все активные профили вместе с PK. */
     Map<Long, Profile> findAllActive();

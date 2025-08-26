@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 /**
- * Реализация сервиса профилей провайдеров рыночных данных.
+ * Реализация сервиса {@link ProfileUseCase}.
  */
 @Service
 @RequiredArgsConstructor
-public class ProviderProfileServiceImpl implements ProviderProfileService {
+public class ProfileUseCaseImpl implements ProfileUseCase {
 
     private final ProfileRepository repository;
 
