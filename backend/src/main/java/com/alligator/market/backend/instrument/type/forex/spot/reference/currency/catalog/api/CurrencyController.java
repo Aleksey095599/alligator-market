@@ -6,7 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.reference.currenc
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.api.dto.UpdateCurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.api.dto.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service.CurrencyService;
+import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service.CurrencyUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.List;
 @Validated
 public class CurrencyController {
 
-    private final CurrencyService service;
+    private final CurrencyUseCase service;
     private final CurrencyDtoMapper mapper;
 
     /** Создать валюту. */

@@ -5,10 +5,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.reference.currency
 import java.util.List;
 
 /**
- * Сервисный контракт, используемый REST-контроллером для работы с валютами:
- * создание, обновление, удаление и получение списка и т.п.
+ * Application-сервис (use case) для операций с валютами.
  */
-public interface CurrencyService {
+public interface CurrencyUseCase {
 
     /** Сохранить новую валюту. */
     String createCurrency(Currency currency);

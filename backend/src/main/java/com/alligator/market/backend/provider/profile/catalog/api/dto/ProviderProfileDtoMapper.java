@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.profile.model.Profile;
 import org.mapstruct.Mapper;
 
 /**
@@ -11,8 +11,8 @@ import org.mapstruct.Mapper;
 public interface ProviderProfileDtoMapper {
 
     /** Преобразует доменную модель в DTO. */
-    ProviderProfileDto toDto(ProviderProfile profile);
+    ProviderProfileDto toDto(Profile profile);
 
     /** Преобразует доменную модель и статус в DTO. */
-    ProviderProfileStatusDto toStatusDto(ProviderProfile profile, ProviderProfileStatus status);
+    ProviderProfileStatusDto toStatusDto(Profile profile, ProfileStatus status);
 }

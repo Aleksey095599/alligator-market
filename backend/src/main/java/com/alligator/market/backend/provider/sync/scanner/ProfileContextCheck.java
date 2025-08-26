@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.sync.scanner;
 
 import com.alligator.market.domain.provider.exception.ContextProfileDuplicateException;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.Profile;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,12 +19,12 @@ public final class ProfileContextCheck {
     }
 
     /** Проверяет уникальность профилей по кодам и именам. */
-    public static void validateNoDuplicates(List<ProviderProfile> profiles) {
+    public static void validateNoDuplicates(List<Profile> profiles) {
 
         if (profiles == null || profiles.size() < 2) return; // Нечего проверять
 
-        checkForDuplicateByParam(profiles, ProviderProfile::providerCode, "providerCode");
-        checkForDuplicateByParam(profiles, ProviderProfile::displayName, "displayName");
+        checkForDuplicateByParam(profiles, Profile::providerCode, "providerCode");
+        checkForDuplicateByParam(profiles, Profile::displayName, "displayName");
     }
 
     /**
@@ -36,15 +36,15 @@ public final class ProfileContextCheck {
      *
      * @throws ContextProfileDuplicateException при обнаружении дублирования
      */
-    private static void checkForDuplicateByParam(List<ProviderProfile> profileList,
-                                                 Function<ProviderProfile, String> paramValueExtractor,
+    private static void checkForDuplicateByParam(List<Profile> profileList,
+                                                 Function<Profile, String> paramValueExtractor,
                                                  String paramToCheck) {
 
         // Коллекция типа HashSet для хранения только уникальных значений
         Set<String> paramValues = new HashSet<>();
 
         // Перебираем все профили из списка
-        for (ProviderProfile p : profileList) {
+        for (Profile p : profileList) {
 
             // Извлекаем значение параметра из данного профиля
             String value = paramValueExtractor.apply(p);

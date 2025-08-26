@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.sync.scheduler;
 
 import com.alligator.market.backend.provider.sync.adapter.ProfilesReconciliationAdapter;
-import com.alligator.market.domain.provider.model.ProfileContextDiff;
+import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -22,7 +22,7 @@ public class ProfilesReconciliationScheduler implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         log.info("Start provider profiles reconciliation");
-        ProfileContextDiff diff = reconciliationAdapter.compare();
+        ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);
         log.info(
                 "Provider profiles synced: added={}, replaced={}, missing={}",

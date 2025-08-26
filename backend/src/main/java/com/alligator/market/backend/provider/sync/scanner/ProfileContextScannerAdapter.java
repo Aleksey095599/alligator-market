@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.sync.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.ProviderContextScanner;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
+import com.alligator.market.domain.provider.profile.model.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +15,16 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class ProviderContextScannerAdapter implements ProviderContextScanner {
+public class ProfileContextScannerAdapter implements ProfileContextScanner {
 
     /** Список всех адаптеров провайдеров. */
     private final List<MarketDataProvider> providers;
 
     /** Возвращает список профилей провайдеров. */
     @Override
-    public List<ProviderProfile> getProviders() {
+    public List<Profile> getProfiles() {
 
-        List<ProviderProfile> profiles = providers.stream()
+        List<Profile> profiles = providers.stream()
                 .map(MarketDataProvider::getProfile)
                 .toList();
 

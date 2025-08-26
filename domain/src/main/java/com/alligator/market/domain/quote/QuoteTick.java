@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.Profile;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,7 +10,7 @@ import java.time.Instant;
  * Глобальная модель тика котировки для валютной пары.
  *
  * @param instrumentCode соответствует {@link Instrument#getCode()}
- * @param providerCode   соответствует {@link ProviderProfile#providerCode()}
+ * @param providerCode   соответствует {@link Profile#providerCode()}
  */
 public record QuoteTick(
 

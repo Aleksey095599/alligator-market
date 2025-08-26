@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotService;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class FxSpotController {
 
-    private final FxSpotService service;
+    private final FxSpotUseCase service;
     private final FxSpotDtoMapper mapper;
 
     /** Создать инструмент. */

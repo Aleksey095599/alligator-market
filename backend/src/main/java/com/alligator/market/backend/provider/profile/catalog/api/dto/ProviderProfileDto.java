@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
-import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
+import com.alligator.market.domain.provider.profile.model.AccessMethod;
+import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -15,8 +15,8 @@ public record ProviderProfileDto(
         @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull Set<InstrumentType> instrumentsSupported,
-        @NotNull ProviderDeliveryMode deliveryMode,
-        @NotNull ProviderAccessMethod accessMethod,
+        @NotNull DeliveryMode deliveryMode,
+        @NotNull AccessMethod accessMethod,
         boolean bulkSubscription,
         int minPollMs
 ) {}

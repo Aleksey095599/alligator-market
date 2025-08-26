@@ -3,12 +3,12 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
-import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.service.ProviderService;
-import com.alligator.market.domain.provider.profile.model.ProviderAccessMethod;
-import com.alligator.market.domain.provider.profile.model.ProviderDeliveryMode;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
+import com.alligator.market.domain.provider.profile.model.AccessMethod;
+import com.alligator.market.domain.provider.profile.model.DeliveryMode;
+import com.alligator.market.domain.provider.profile.model.Profile;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -49,12 +49,12 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
 
     /** Возвращает профиль провайдера. */
     @Override
-    public ProviderProfile getProfile() {
-        return new ProviderProfile(
+    public Profile getProfile() {
+        return new Profile(
                 PROVIDER_CODE,
                 "TwelveData Free Plan",
-                ProviderDeliveryMode.PULL,
-                ProviderAccessMethod.API_POLL,
+                DeliveryMode.PULL,
+                AccessMethod.API_POLL,
                 false,
                 60_000
         );

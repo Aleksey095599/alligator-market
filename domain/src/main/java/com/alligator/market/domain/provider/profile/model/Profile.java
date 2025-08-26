@@ -5,25 +5,26 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 import java.util.Set;
 
 /**
- * Модель профиля провайдера, содержащего информацию о провайдере рыночных данных.
+ * Модель профиля провайдера.
+ * Содержит информацию о провайдере.
  *
- * @param providerProfileStatus   Статус профиля {@link ProviderProfileStatus}
+ * @param profileStatus   Статус профиля {@link ProfileStatus}
  * @param providerCode            Технический код провайдера
  * @param displayName             Отображаемое имя провайдера (user friendly)
  * @param instrumentsSupported    Поддерживаемые инструменты {@link InstrumentType}
- * @param deliveryMode            Режим доставки рыночных данных: PULL или PUSH {@link ProviderAccessMethod}
- * @param accessMethod            Метод доступа к рыночным данным {@link ProviderAccessMethod}
+ * @param deliveryMode            Режим доставки рыночных данных: PULL или PUSH {@link AccessMethod}
+ * @param accessMethod            Метод доступа к рыночным данным {@link AccessMethod}
  * @param bulkSubscription        Поддержка массовой подписки одним запросом
  * @param minPollMs               Минимально допустимый интервал опроса в миллисекундах
  */
-public record ProviderProfile(
+public record Profile(
 
-        ProviderProfileStatus providerProfileStatus,
+        ProfileStatus profileStatus,
         String providerCode,
         String displayName,
         Set<InstrumentType> instrumentsSupported,
-        ProviderDeliveryMode deliveryMode,
-        ProviderAccessMethod accessMethod,
+        DeliveryMode deliveryMode,
+        AccessMethod accessMethod,
         boolean bulkSubscription,
         int minPollMs
 ) {}

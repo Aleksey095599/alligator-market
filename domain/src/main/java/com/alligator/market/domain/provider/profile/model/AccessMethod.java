@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.profile.model;
 /**
  * Список методов доступа к рыночным данным.
  */
-public enum ProviderAccessMethod {
+public enum AccessMethod {
 
     // Метод периодического опроса API провайдера для получения рыночных данных
     API_POLL,

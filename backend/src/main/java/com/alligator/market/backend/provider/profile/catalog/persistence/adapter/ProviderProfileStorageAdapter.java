@@ -3,8 +3,8 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.adapte
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileJpaRepository;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntityMapper;
-import com.alligator.market.domain.provider.profile.model.ProviderProfile;
-import com.alligator.market.domain.provider.profile.model.ProviderProfileStatus;
+import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,8 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, ProviderProfile> findAllActive() {
-        return jpaRepository.findAllByStatus(ProviderProfileStatus.ACTIVE).stream()
+    public Map<Long, Profile> findAllActive() {
+        return jpaRepository.findAllByStatus(ProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProviderProfileEntity::getId,
                         mapper::toDomain
@@ -35,7 +35,7 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<ProviderProfile, ProviderProfileStatus> findAllWithStatus() {
+    public Map<Profile, ProfileStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
                         mapper::toDomain,
@@ -44,15 +44,15 @@ public class ProviderProfileStorageAdapter implements ProviderProfileStorage {
     }
 
     @Override
-    public void saveAll(Collection<ProviderProfile> profiles) {
+    public void saveAll(Collection<Profile> profiles) {
         var entities = profiles.stream()
-                .map(p -> mapper.toEntity(p, ProviderProfileStatus.ACTIVE))
+                .map(p -> mapper.toEntity(p, ProfileStatus.ACTIVE))
                 .toList();
         jpaRepository.saveAll(entities);
     }
 
     @Override
-    public void updateStatus(Collection<Long> ids, ProviderProfileStatus status) {
+    public void updateStatus(Collection<Long> ids, ProfileStatus status) {
         var entities = jpaRepository.findAllById(ids);
         entities.forEach(e -> e.setStatus(status));
         jpaRepository.saveAll(entities);

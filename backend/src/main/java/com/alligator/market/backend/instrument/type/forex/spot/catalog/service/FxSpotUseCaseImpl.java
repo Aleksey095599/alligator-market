@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса для работы с инструментами типа FX_SPOT.
+ * Реализация сервиса {@link FxSpotUseCase}.
  * Делегирует выполнение операций доменному классу {@link FxSpotCatalog},
  * который содержит бизнес-логику и проверки.
  */
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class FxSpotServiceImpl implements FxSpotService {
+public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     private final FxSpotCatalog domainCatalog;
 

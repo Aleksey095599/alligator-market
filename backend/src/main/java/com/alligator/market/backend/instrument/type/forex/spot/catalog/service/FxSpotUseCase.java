@@ -5,10 +5,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import java.util.List;
 
 /**
- * Сервисный контракт, используемый REST-контроллером для работы с инструментами FX_SPOT:
- * создание, обновление, удаление и получение списка и т.п.
+ * Application-сервис (use case) для операций с инструментами FX_SPOT.
  */
-public interface FxSpotService {
+public interface FxSpotUseCase {
 
     /** Сохранить новый инструмент. */
     String create(FxSpot instrument);
