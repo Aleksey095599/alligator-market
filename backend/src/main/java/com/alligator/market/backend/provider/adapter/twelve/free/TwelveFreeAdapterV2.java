@@ -3,12 +3,14 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.service.ProviderCare;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.service.ProviderCare;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Адаптер для провайдера рыночных данных (далее - провайдера) TwelveData (бесплатная подписка).
@@ -50,9 +53,14 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     /** Возвращает профиль провайдера. */
     @Override
     public Profile getProfile() {
+        Set<InstrumentType> instruments = handlers.stream()
+                .map(InstrumentHandler::getSupportedInstrumentType)
+                .collect(Collectors.toSet());
         return new Profile(
+                ProfileStatus.ACTIVE,
                 PROVIDER_CODE,
                 "TwelveData Free Plan",
+                instruments,
                 DeliveryMode.PULL,
                 AccessMethod.API_POLL,
                 false,
@@ -72,3 +80,4 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
         validateHandlers(SERVICE);
     }
 }
+
