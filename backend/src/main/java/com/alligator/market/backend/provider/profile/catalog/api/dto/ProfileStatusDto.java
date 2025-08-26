@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * DTO профиля провайдера рыночных данных со статусом.
  */
-public record ProviderProfileStatusDto(
+public record ProfileStatusDto(
 
         @NotNull ProfileStatus status,
         @NotBlank String providerCode,
