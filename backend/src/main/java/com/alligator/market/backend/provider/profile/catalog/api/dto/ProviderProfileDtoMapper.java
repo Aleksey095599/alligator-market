@@ -8,11 +8,11 @@ import org.mapstruct.Mapper;
  * Маппер: профиль провайдера ⇄ DTO.
  */
 @Mapper(componentModel = "spring")
-public interface ProfileDtoMapper {
+public interface ProviderProfileDtoMapper {
 
     /** Преобразует доменную модель в DTO. */
-    ProfileDto toDto(Profile profile);
+    ProviderProfileDto toDto(Profile profile);
 
     /** Преобразует доменную модель и статус в DTO. */
-    ProfileStatusDto toStatusDto(Profile profile, ProfileStatus status);
+    ProviderProfileStatusDto toStatusDto(Profile profile, ProfileStatus status);
 }

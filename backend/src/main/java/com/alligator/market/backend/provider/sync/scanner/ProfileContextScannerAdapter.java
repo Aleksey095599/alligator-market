@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.reconciliation.scanner;
+package com.alligator.market.backend.provider.sync.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
