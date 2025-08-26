@@ -18,7 +18,7 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Entity для профиля провайдера.
+ * Entity профиля провайдера.
  */
 @Entity
 @Table(name = "provider_profile")

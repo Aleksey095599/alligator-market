@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @Repository
 @RequiredArgsConstructor
-public class ProfileStorageAdapter implements ProfileRepository {
+public class ProfileRepositoryAdapter implements ProfileRepository {
 
     private final ProfileJpaRepository jpaRepository;
     private final ProfileEntityMapper mapper;
