@@ -15,6 +15,7 @@ public final class ProfileReconciler {
 
     /** Сканер профилей из контекста приложения. */
     private final ProfileContextScanner contextScanner;
+
     /** Репозиторий профилей провайдеров. */
     private final ProfileRepository repository;
 
