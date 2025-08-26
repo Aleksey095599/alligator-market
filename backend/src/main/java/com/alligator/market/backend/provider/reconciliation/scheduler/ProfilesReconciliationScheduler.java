@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.scheduler;
 
-import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconciliationAdapter;
+import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconcilerAdapter;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ProfilesReconciliationScheduler implements ApplicationRunner {
 
-    private final ProfilesReconciliationAdapter reconciliationAdapter;
+    private final ProfilesReconcilerAdapter reconciliationAdapter;
 
     @Override
     public void run(ApplicationArguments args) {

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * извлеченных из контекста приложения и репозитория.
  */
 @Component
-public class ProfilesReconciliationAdapter implements ProfileReconciler {
+public class ProfilesReconcilerAdapter implements ProfileReconciler {
 
     /** Внутренний источник операции. */
     private static final String via = "provider-profiles-reconciliation";
@@ -22,7 +22,7 @@ public class ProfilesReconciliationAdapter implements ProfileReconciler {
     private final ProfileReconciler reconciliation;
 
     // Конструктор
-    public ProfilesReconciliationAdapter(
+    public ProfilesReconcilerAdapter(
             ProfileContextScanner contextScanner,
             ProfileRepository repository
     ) {
