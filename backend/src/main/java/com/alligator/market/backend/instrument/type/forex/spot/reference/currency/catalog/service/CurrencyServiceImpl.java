@@ -1,7 +1,8 @@
 package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyDomainService;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyCatalog;
+import com.alligator.market.domain.instrument.type.forex.spot.service.FxSpotCatalog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация контракта сервиса {@link CurrencyService}.
- * Применяем доменный сервис, реализующий бизнес-логику работы с репозиторием валют.
+ * Реализация REST-сервиса для работы с валютами.
+ * Делегирует выполнение операций доменному классу {@link FxSpotCatalog},
+ * который содержит бизнес-логику и проверки.
  */
 @Service
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class CurrencyServiceImpl implements CurrencyService {
 
-    private final CurrencyDomainService domain;
+    private final CurrencyCatalog domain;
 
     @Override
     public String createCurrency(Currency currency) {

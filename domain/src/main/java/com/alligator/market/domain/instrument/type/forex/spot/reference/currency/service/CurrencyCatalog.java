@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Сервис реализует бизнес-логику работы с репозиторием валют.
+ *  Каталог валют: проверки, инварианты, доменные операции.
  */
 @Service
-public class CurrencyDomainService {
+public class CurrencyCatalog {
 
     private final CurrencyRepository repository;
     private final FxSpotRepository fxSpotRepository;
 
-    public CurrencyDomainService(CurrencyRepository repository, FxSpotRepository fxSpotRepository) {
+    public CurrencyCatalog(CurrencyRepository repository, FxSpotRepository fxSpotRepository) {
         this.repository = repository;
         this.fxSpotRepository = fxSpotRepository;
     }

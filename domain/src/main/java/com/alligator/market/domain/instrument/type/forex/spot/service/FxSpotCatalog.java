@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Сервис реализует бизнес-логику работы с репозиторием инструментов FX_SPOT.
+ *  Каталог инструментов FX_SPOT: проверки, инварианты, доменные операции.
  */
 @Service
-public class FxSpotDomainService {
+public class FxSpotCatalog {
 
     private final FxSpotRepository repository;
     private final CurrencyRepository currencyRepository;
 
-    public FxSpotDomainService(FxSpotRepository repository, CurrencyRepository currencyRepository) {
+    public FxSpotCatalog(FxSpotRepository repository, CurrencyRepository currencyRepository) {
         this.repository = repository;
         this.currencyRepository = currencyRepository;
     }
