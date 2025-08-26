@@ -9,11 +9,10 @@ import com.alligator.market.domain.provider.reconciliation.ProfileReconciler;
 import org.springframework.stereotype.Component;
 
 /**
- * Компонент реализует доменную логику сопоставления профилей провайдеров рыночных данных,
- * извлеченных из контекста приложения и репозитория.
+ * Адаптер доменного сервиса сопоставления профилей провайдеров рыночных данных.
  */
 @Component
-public class ProfilesReconcilerAdapter implements ProfileReconciler {
+public class ProfilesReconcilerAdapter {
 
     /** Внутренний источник операции. */
     private static final String via = "provider-profiles-reconciliation";
