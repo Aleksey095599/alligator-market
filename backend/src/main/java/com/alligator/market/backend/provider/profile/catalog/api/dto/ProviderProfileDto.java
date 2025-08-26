@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * DTO профиля провайдера рыночных данных.
  */
-public record ProfileDto(
+public record ProviderProfileDto(
 
         @NotBlank String providerCode,
         @NotBlank String displayName,
