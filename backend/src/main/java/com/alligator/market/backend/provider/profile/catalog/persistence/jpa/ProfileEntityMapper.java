@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntityMappingConfig;
 import com.alligator.market.domain.provider.profile.model.Profile;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,7 +15,6 @@ public interface ProfileEntityMapper {
     Profile toDomain(ProfileEntity entity);
 
     /** Преобразует доменную модель в сущность. */
-    @InheritInverseConfiguration
     @Mapping(target = "id", ignore = true)
     ProfileEntity toEntity(Profile profile);
 }
