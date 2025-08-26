@@ -28,6 +28,13 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class ProfileEntity extends BaseEntity {
 
+    /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     /** Статус профиля {@link Profile#profileStatus()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -57,7 +64,7 @@ public class ProfileEntity extends BaseEntity {
             )
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "instrument", length = 20, nullable = false, updatable = false)
+    @Column(name = "instruments_supported", length = 20, nullable = false, updatable = false)
     private Set<InstrumentType> instrumentsSupported;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link Profile#deliveryMode()}. */
@@ -79,12 +86,5 @@ public class ProfileEntity extends BaseEntity {
     /** Минимально допустимый интервал опроса в миллисекундах {@link Profile#minPollMs()}. */
     @Column(name = "min_poll_ms", nullable = false, updatable = false)
     private int minPollMs;
-
-    /** Суррогатный PK. */
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 }
 
