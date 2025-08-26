@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Сервис содержит методы для обслуживания провайдеров рыночных данных {@link MarketDataProvider}.
  */
-public class ProviderService {
+public class ProviderCare {
 
     /**
      * Проверяет корректность набора обработчиков указанного провайдера.
