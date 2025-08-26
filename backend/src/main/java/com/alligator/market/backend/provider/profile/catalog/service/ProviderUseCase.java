@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.service.crud;
+package com.alligator.market.backend.provider.profile.catalog.service;
 
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Сервис профилей провайдеров рыночных данных.
  */
-public interface ProviderProfileService {
+public interface ProviderUseCase {
 
     /** Вернуть все активные профили вместе с PK. */
     Map<Long, Profile> findAllActive();

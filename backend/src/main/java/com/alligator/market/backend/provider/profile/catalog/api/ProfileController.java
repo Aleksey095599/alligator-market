@@ -2,10 +2,10 @@ package com.alligator.market.backend.provider.profile.catalog.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDto;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileStatusDto;
-import com.alligator.market.backend.provider.profile.catalog.service.crud.ProviderProfileService;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDtoMapper;
+import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDto;
+import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileStatusDto;
+import com.alligator.market.backend.provider.profile.catalog.service.ProviderUseCase;
+import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +20,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/providers")
 @RequiredArgsConstructor
-public class ProviderProfileController {
+public class ProfileController {
 
-    private final ProviderProfileService service;
-    private final ProviderProfileDtoMapper mapper;
+    private final ProviderUseCase service;
+    private final ProfileDtoMapper mapper;
 
     /** Вернуть все активные профили. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
-        List<ProviderProfileDto> list = service.findAllActive().values().stream()
+    public ResponseEntity<ApiResponse<List<ProfileDto>>> getAll() {
+        List<ProfileDto> list = service.findAllActive().values().stream()
                 .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
@@ -36,8 +36,8 @@ public class ProviderProfileController {
 
     /** Вернуть все профили со статусами. */
     @GetMapping("/audit")
-    public ResponseEntity<ApiResponse<List<ProviderProfileStatusDto>>> getAllWithStatus() {
-        List<ProviderProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()
+    public ResponseEntity<ApiResponse<List<ProfileStatusDto>>> getAllWithStatus() {
+        List<ProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()
                 .map(e -> mapper.toStatusDto(e.getKey(), e.getValue()))
                 .toList();
         return ResponseEntityFactory.ok(list);

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.service.crud;
+package com.alligator.market.backend.provider.profile.catalog.service;
 
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Service
 @RequiredArgsConstructor
-public class ProviderProfileServiceImpl implements ProviderProfileService {
+public class ProviderUseCaseImpl implements ProviderUseCase {
 
     private final ProfileRepository repository;
 
