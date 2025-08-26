@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.sync.scheduler;
+package com.alligator.market.backend.provider.reconciliation.scheduler;
 
-import com.alligator.market.backend.provider.sync.adapter.ProfilesReconciliationAdapter;
+import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconciliationAdapter;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

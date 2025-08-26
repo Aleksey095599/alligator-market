@@ -2,10 +2,9 @@ package com.alligator.market.backend.provider.profile.catalog.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDto;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileStatusDto;
+import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDto;
 import com.alligator.market.backend.provider.profile.catalog.service.crud.ProviderProfileService;
-import com.alligator.market.backend.provider.profile.catalog.api.dto.ProviderProfileDtoMapper;
+import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +22,12 @@ import java.util.List;
 public class ProviderProfileController {
 
     private final ProviderProfileService service;
-    private final ProviderProfileDtoMapper mapper;
+    private final ProfileDtoMapper mapper;
 
     /** Вернуть все активные профили. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProviderProfileDto>>> getAll() {
-        List<ProviderProfileDto> list = service.findAllActive().values().stream()
+    public ResponseEntity<ApiResponse<List<ProfileDto>>> getAll() {
+        List<ProfileDto> list = service.findAllActive().values().stream()
                 .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
