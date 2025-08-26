@@ -1,9 +1,11 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
+import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,18 +15,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 /**
- * Сущность профиля провайдера рыночных данных.
- * Дочерняя относительно {@link ProviderEntity}.
+ * Entity для профиля провайдера.
  */
 @Entity
 @Table(name = "provider_profile")
-@PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ProviderProfileEntity extends ProviderEntity {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class ProfileEntity extends BaseEntity {
+
+    /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    /** Статус профиля {@link Profile#profileStatus()}. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "profile_status", length = 10, nullable = false)
+    private ProfileStatus profileStatus;
 
     /** Технический код провайдера {@link Profile#providerCode()}. */
     @NotBlank
@@ -38,13 +53,27 @@ public class ProviderProfileEntity extends ProviderEntity {
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
 
+    /** Поддерживаемые инструменты {@link Profile#instrumentsSupported()}. */
+    @ElementCollection(targetClass = InstrumentType.class)
+    @CollectionTable(
+            name = "profile_supported_instrument",
+            joinColumns = @JoinColumn(
+                    name = "profile_id",
+                    referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "fk_profile_supported_instrument")
+            )
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "instrument", length = 20, nullable = false, updatable = false)
+    private Set<InstrumentType> instrumentsSupported;
+
     /** Режим доставки рыночных данных: PULL или PUSH {@link Profile#deliveryMode()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_mode", length = 10, nullable = false, updatable = false)
     private DeliveryMode deliveryMode;
 
-    /** Метод доступа к рыночным данным: API_POLL, WEBSOCKET, FIX или другие {@link Profile#accessMethod()}. */
+    /** Метод доступа к рыночным данным {@link Profile#accessMethod()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "access_method", length = 20, nullable = false, updatable = false)
