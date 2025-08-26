@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.common.jpa;
+package com.alligator.market.backend.instrument.base.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.type.InstrumentType;
