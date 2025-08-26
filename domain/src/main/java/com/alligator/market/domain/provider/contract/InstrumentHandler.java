@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 
 /**
  * Контракт обработчика (handler) для конкретного финансового инструмента.
- * Каждый провайдер рыночных данных {@link MarketDataProvider} имеет как минимум один обработчик.
+ * Каждый провайдер рыночных данных {@link MarketDataProvider} должен иметь как минимум один обработчик.
  */
 public interface InstrumentHandler {
 

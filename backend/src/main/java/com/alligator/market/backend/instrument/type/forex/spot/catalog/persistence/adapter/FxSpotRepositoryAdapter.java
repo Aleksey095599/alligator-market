@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный порт {@link FxSpotRepository} с помощью Spring Data JPA.
+ * Адаптер, реализующий доменный порт {@link FxSpotRepository} через Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor

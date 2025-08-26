@@ -5,6 +5,7 @@ import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.Pro
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderProfileEntityMapper;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Адаптер порта репозитория профилей провайдеров рыночных данных на Spring Data JPA.
+ * Адаптер, реализующий доменный порт {@link ProfileRepository} через Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
