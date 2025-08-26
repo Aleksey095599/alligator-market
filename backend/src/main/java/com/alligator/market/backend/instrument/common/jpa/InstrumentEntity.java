@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.common.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.type.InstrumentType;
