@@ -28,13 +28,6 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class ProfileEntity extends BaseEntity {
 
-    /** Суррогатный PK. */
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     /** Статус профиля {@link Profile#profileStatus()}. */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -86,5 +79,12 @@ public class ProfileEntity extends BaseEntity {
     /** Минимально допустимый интервал опроса в миллисекундах {@link Profile#minPollMs()}. */
     @Column(name = "min_poll_ms", nullable = false, updatable = false)
     private int minPollMs;
+
+    /** Суррогатный PK. */
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 }
 
