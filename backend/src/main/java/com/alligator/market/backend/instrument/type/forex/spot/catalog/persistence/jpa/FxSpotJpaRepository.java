@@ -5,13 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Spring Data JPA-репозиторий для работы с инструментами FX_SPOT.
+ * Spring Data JPA-репозиторий инструментов FX_SPOT.
  */
 public interface FxSpotJpaRepository extends JpaRepository<FxSpotEntity, Long> {
 
-    /** Найти инструмент по внутреннему коду. */
+    /** Найти инструмент по коду. */
     Optional<FxSpotEntity> findByCode(String code);
 
-    /** Проверить, используется ли валюта в парах. */
+    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте. */
     boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(String baseCurrency, String quoteCurrency);
 }
