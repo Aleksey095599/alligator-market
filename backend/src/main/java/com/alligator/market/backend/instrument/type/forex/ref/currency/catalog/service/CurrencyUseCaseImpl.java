@@ -59,10 +59,10 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     @Override
     public void deleteCurrency(String code) {
         // Проверяем, что валюта с таким кодом существует
-        currencyRepository.findByCode(code)
+        Currency currency = currencyRepository.findByCode(code)
                 .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(code)));
         // Проверяем, что валюта не используется инструментами FX_SPOT
-        if (fxSpotRepository.existsByCurrency(code)) {
+        if (fxSpotRepository.existsByCurrency(currency)) {
             throw new ResourceInUseException("Currency '%s'".formatted(code), "FX_SPOT instrument");
         }
         currencyRepository.deleteByCode(code);

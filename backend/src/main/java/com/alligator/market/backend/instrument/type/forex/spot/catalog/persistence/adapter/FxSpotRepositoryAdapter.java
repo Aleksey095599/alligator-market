@@ -5,6 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -29,10 +30,10 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public void save(FxSpot fxSpot) {
         FxSpotEntity entity = jpaRepository.findByCode(fxSpot.getCode())
                 .orElseGet(FxSpotEntity::new);
-        CurrencyEntity base = currencyRepository.findByCode(fxSpot.baseCurrency())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.baseCurrency()));
-        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quoteCurrency())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.quoteCurrency()));
+        CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.base().code()));
+        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quote().code())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.quote().code()));
         mapper.updateEntity(fxSpot, base, quote, entity);
         jpaRepository.save(entity);
     }
@@ -56,7 +57,8 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public boolean existsByCurrency(String currencyCode) {
-        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
+    public boolean existsByCurrency(Currency currency) {
+        String code = currency.code();
+        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(code, code);
     }
 }

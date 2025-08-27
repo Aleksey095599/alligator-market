@@ -53,7 +53,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
         FxSpot fxSpot = (FxSpot) instrument;
 
         // Провайдер ожидает именно такой формат запрашиваемого символа инструмента:
-        String symbol = fxSpot.baseCurrency() + "/" + fxSpot.quoteCurrency();
+        String symbol = fxSpot.base().code() + "/" + fxSpot.quote().code();
 
         return webClient.get()
                 .uri(b -> b
