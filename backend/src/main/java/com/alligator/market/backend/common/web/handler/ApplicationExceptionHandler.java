@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDu
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
@@ -42,6 +43,14 @@ public class ApplicationExceptionHandler {
         // 409, ресурс занят
         log.warn("CurrencyUsedInFxSpotException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    /** Валюта не найдена. */
+    @ExceptionHandler(CurrencyNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(CurrencyNotFoundException ex) {
+        // 404, ресурс не существует
+        log.warn("CurrencyNotFoundException: {}", ex.getMessage());
+        return ResponseEntityFactory.notFound(ex.getMessage());
     }
 
     /** Дублирование инструмента FX_SPOT. */
