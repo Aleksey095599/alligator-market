@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model;
+package com.alligator.market.domain.instrument.reference.currency.model;
 
 /**
  * Модель валюты.

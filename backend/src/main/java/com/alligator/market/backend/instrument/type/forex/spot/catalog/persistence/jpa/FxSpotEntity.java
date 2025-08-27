@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa;
 
 import com.alligator.market.backend.instrument.base.jpa.InstrumentEntity;
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;

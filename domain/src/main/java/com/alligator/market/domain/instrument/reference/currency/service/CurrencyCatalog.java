@@ -1,10 +1,10 @@
-package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service;
+package com.alligator.market.domain.instrument.reference.currency.service;
 
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception.CurrencyUsedInFxSpotException;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
+import com.alligator.market.domain.instrument.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import org.springframework.stereotype.Service;
 

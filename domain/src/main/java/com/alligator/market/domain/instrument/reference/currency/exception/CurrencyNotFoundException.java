@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.spot.reference.currency.exception;
+package com.alligator.market.domain.instrument.reference.currency.exception;
 
 import com.alligator.market.domain.common.exception.NotFoundException;
 

@@ -1,10 +1,10 @@
-package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.adapter;
+package com.alligator.market.backend.instrument.reference.currency.catalog.persistence.adapter;
 
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa.CurrencyJpaRepository;
+import com.alligator.market.domain.instrument.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;

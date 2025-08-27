@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

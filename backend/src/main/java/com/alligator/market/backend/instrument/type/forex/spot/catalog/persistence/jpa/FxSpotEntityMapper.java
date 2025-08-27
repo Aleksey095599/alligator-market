@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa;
 
-import com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

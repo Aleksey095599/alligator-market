@@ -1,7 +1,7 @@
-package com.alligator.market.backend.instrument.type.forex.spot.reference.currency.catalog.service;
+package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.spot.reference.currency.service.CurrencyCatalog;
+import com.alligator.market.domain.instrument.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.reference.currency.service.CurrencyCatalog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
