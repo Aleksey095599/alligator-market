@@ -27,10 +27,6 @@ public class FxSpotCatalog {
 
     /** Создать инструмент. */
     public String create(FxSpot instrument) {
-        // Проверяем, что базовая и котируемая валюты разные
-        if (instrument.baseCurrency().equals(instrument.quoteCurrency())) {
-            throw new FxSpotSameCurrenciesException();
-        }
         // Проверяем, что базовая валюта существует
         currencyRepository.findByCode(instrument.baseCurrency())
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(instrument.baseCurrency()));

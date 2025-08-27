@@ -56,13 +56,9 @@ public class FxSpotEntity extends InstrumentEntity {
     /** JPA-callback код перед вставкой. */
     @Override
     protected void onPrePersist() {
-        // 1) Проверяем, что валюты различаются
-        if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
-            throw new FxSpotSameCurrenciesException();
-        }
-        // 2) Устанавливаем тип инструмента
+        // Устанавливаем тип инструмента
         setType(InstrumentType.FX_SPOT);
-        // 3) Генерируем и устанавливаем код инструмента
+        // Генерируем и устанавливаем код инструмента
         String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode.name();
         setCode(instrumentCode);
     }
