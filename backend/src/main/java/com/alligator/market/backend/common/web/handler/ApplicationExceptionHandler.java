@@ -5,9 +5,9 @@ import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
+import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
@@ -45,11 +45,11 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Валюта не найдена. */
-    @ExceptionHandler(CurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(CurrencyNotFoundException ex) {
+    /** Сущность не найдена. */
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(NotFoundException ex) {
         // 404, ресурс не существует
-        log.warn("CurrencyNotFoundException: {}", ex.getMessage());
+        log.warn("NotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.notFound(ex.getMessage());
     }
 

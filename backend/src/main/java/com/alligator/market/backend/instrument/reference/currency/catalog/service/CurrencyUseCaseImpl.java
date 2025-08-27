@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
+import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
@@ -45,7 +45,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public void updateCurrency(Currency currency) {
         // Проверяем, что валюта с таким кодом существует
         currencyRepository.findByCode(currency.code())
-                .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
+                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(currency.code())));
         // Проверяем, что нет валюты с таким же названием
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
@@ -60,7 +60,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public void deleteCurrency(String code) {
         // Проверяем, что валюта с таким кодом существует
         currencyRepository.findByCode(code)
-                .orElseThrow(() -> new CurrencyNotFoundException(code));
+                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(code)));
         // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrency(code)) {
             throw new CurrencyUsedInFxSpotException(code);
