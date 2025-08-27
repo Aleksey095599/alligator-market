@@ -22,8 +22,8 @@ public interface FxSpotEntityMapper {
     @Mapping(target = "quoteCurrency", source = "quoteCurrency")
     @Mapping(target = "quoteDecimal", source = "model.quoteDecimal")
     @Mapping(target = "valueDateCode", source = "model.valueDateCode")
-    @Mapping(target = "code", expression = "java(model.code())")
-    @Mapping(target = "type", expression = "java(model.type())")
+    @Mapping(target = "code", expression = "java(model.getCode())")
+    @Mapping(target = "type", expression = "java(model.getType())")
     void updateEntity(FxSpot model,
                       CurrencyEntity baseCurrency,
                       CurrencyEntity quoteCurrency,
