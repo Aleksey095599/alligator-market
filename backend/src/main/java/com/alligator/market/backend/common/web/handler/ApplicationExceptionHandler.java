@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCu
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
+import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
@@ -37,11 +37,11 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Валюта используется в инструментах FX_SPOT. */
-    @ExceptionHandler(CurrencyUsedInFxSpotException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
+    /** Ресурс используется. */
+    @ExceptionHandler(ResourceInUseException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceInUse(ResourceInUseException ex) {
         // 409, ресурс занят
-        log.warn("CurrencyUsedInFxSpotException: {}", ex.getMessage());
+        log.warn("ResourceInUseException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
