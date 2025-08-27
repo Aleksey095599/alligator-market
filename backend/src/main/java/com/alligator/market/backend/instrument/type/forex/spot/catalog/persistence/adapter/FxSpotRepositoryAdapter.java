@@ -9,7 +9,6 @@ import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotR
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,8 +39,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public void delete(String code) {
-        jpaRepository.findByCode(code)
-                .ifPresent(e -> jpaRepository.deleteById(e.getId())); // Удаляем по ID
+        jpaRepository.deleteByCode(code); // Удаляем по коду
     }
 
     @Override
@@ -52,7 +50,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public List<FxSpot> findAll() {
-        return jpaRepository.findAll(Sort.by("code")).stream()
+        return jpaRepository.findAllByOrderByCodeAsc().stream()
                 .map(mapper::toDomain)
                 .toList();
     }
