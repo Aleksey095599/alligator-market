@@ -1,18 +1,23 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto;
 
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 /**
  * Маппер: модель ⇄ DTO.
  */
-@Mapper(componentModel = "spring")
-public interface FxSpotDtoMapper {
+@Component
+public class FxSpotDtoMapper {
 
     /** Преобразует доменную модель в основной DTO. */
-    @Mapping(target = "baseCurrency", source = "base.code")
-    @Mapping(target = "quoteCurrency", source = "quote.code")
-    FxSpotDto toDto(FxSpot model);
+    public FxSpotDto toDto(FxSpot model) {
+        // Собираем DTO из модели
+        return new FxSpotDto(
+                model.base().code(),
+                model.quote().code(),
+                model.quoteDecimal(),
+                model.valueDateCode()
+        );
+    }
 }
 
