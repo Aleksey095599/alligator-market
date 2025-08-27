@@ -37,15 +37,9 @@ public class CurrencyCatalog {
         return repository.save(currency);
     }
 
-    /** Получить валюту по коду. */
-    public Currency get(String code) {
-        return repository.findByCode(code)
-                .orElseThrow(() -> new CurrencyNotFoundException(code));
-    }
-
     /** Обновить валюту. */
     public void update(Currency currency) {
-        // Проверяем, что валюта существует
+        // Проверяем, что валюта с таким кодом существует
         repository.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
         // Проверяем, что нет валюты с таким же названием
@@ -59,8 +53,9 @@ public class CurrencyCatalog {
 
     /** Удалить валюту. */
     public void delete(String code) {
-        // Проверяем, что валюта существует
-        get(code);
+        // Проверяем, что валюта с таким кодом существует
+        repository.findByCode(code)
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
         // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrency(code)) {
             throw new CurrencyUsedInFxSpotException(code);
