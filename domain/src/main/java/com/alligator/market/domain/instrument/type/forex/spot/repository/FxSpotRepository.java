@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface FxSpotRepository {
 
     /** Сохранить инструмент. */
-    void save(FxSpot instrument);
+    void save(FxSpot fxSpot);
 
     /** Удалить инструмент по коду. */
     void delete(String code);
@@ -22,6 +22,6 @@ public interface FxSpotRepository {
     /** Вернуть все инструменты. */
     List<FxSpot> findAll();
 
-    /** Проверить, используется ли валюта в инструментах. */
+    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте. */
     boolean existsByCurrency(String currencyCode);
 }
