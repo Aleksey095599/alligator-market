@@ -1,7 +1,11 @@
 package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.reference.currency.service.CurrencyCatalog;
+import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,9 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса {@link CurrencyUseCase}.
- * Делегирует выполнение операций доменному классу {@link CurrencyCatalog},
- * который содержит бизнес-логику и проверки.
+ * Реализация сервиса {@link CurrencyUseCase}:
+ * содержит проверки и операции с валютами.
  */
 @Service
 @RequiredArgsConstructor
@@ -20,31 +23,56 @@ import java.util.List;
 @Slf4j
 public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
-    private final CurrencyCatalog domainCatalog;
+    private final CurrencyRepository currencyRepository;
+    private final FxSpotRepository fxSpotRepository;
 
     @Override
     public String createCurrency(Currency currency) {
-        String code = domainCatalog.create(currency);
+        // Проверяем, что нет валюты с таким же кодом
+        currencyRepository.findByCode(currency.code()).ifPresent(c -> {
+            throw new CurrencyDuplicateException("code", currency.code());
+        });
+        // Проверяем, что нет валюты с таким же названием
+        currencyRepository.findByName(currency.name()).ifPresent(c -> {
+            throw new CurrencyDuplicateException("name", currency.name());
+        });
+        String code = currencyRepository.save(currency);
         log.info("Currency {} created", code);
         return code;
     }
 
     @Override
     public void updateCurrency(Currency currency) {
-        domainCatalog.update(currency);
+        // Проверяем, что валюта с таким кодом существует
+        currencyRepository.findByCode(currency.code())
+                .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
+        // Проверяем, что нет валюты с таким же названием
+        currencyRepository.findByName(currency.name()).ifPresent(c -> {
+            if (!c.code().equals(currency.code())) {
+                throw new CurrencyDuplicateException("name", currency.name());
+            }
+        });
+        currencyRepository.save(currency);
         log.info("Currency {} updated", currency.code());
     }
 
     @Override
     public void deleteCurrency(String code) {
-        domainCatalog.delete(code);
+        // Проверяем, что валюта с таким кодом существует
+        currencyRepository.findByCode(code)
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
+        // Проверяем, что валюта не используется инструментами FX_SPOT
+        if (fxSpotRepository.existsByCurrency(code)) {
+            throw new CurrencyUsedInFxSpotException(code);
+        }
+        currencyRepository.deleteByCode(code);
         log.info("Currency {} deleted", code);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Currency> getAll() {
-        List<Currency> result = domainCatalog.getAll();
+        List<Currency> result = currencyRepository.findAll();
         log.debug("Found {} currencies", result.size());
         return result;
     }
