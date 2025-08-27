@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.reference.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.reference.currency.exception;
 
 /**
  * Валюта используется в инструментах FX_SPOT.

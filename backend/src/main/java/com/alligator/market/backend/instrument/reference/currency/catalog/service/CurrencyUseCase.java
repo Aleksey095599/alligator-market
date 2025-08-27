@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
-import com.alligator.market.domain.instrument.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.reference.currency.model.Currency;
 
 import java.util.List;
 

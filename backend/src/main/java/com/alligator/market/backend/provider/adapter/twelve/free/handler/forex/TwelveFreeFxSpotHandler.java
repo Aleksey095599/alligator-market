@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.quote.feed.model;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 
 /**

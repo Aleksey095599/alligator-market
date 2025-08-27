@@ -3,9 +3,8 @@ package com.alligator.market.domain.instrument.type.forex.spot.service;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import org.springframework.stereotype.Service;
 
