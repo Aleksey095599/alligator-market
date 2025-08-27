@@ -1,23 +1,44 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.api.dto;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 /**
  * Маппер: модель валюты ⇄ DTO.
  */
-@Mapper(componentModel = "spring")
-public interface CurrencyDtoMapper {
+@Component
+public class CurrencyDtoMapper {
 
     /** Преобразует основной DTO в доменную модель. */
-    Currency toDomain(CurrencyDto dto);
+    public Currency toDomain(CurrencyDto dto) {
+        // Формируем модель из DTO
+        return new Currency(
+                dto.code(),
+                dto.name(),
+                dto.country(),
+                dto.decimal()
+        );
+    }
 
     /** Преобразует DTO обновления и код в доменную модель. */
-    @Mapping(target = "code", source = "code")
-    Currency toDomain(String code, UpdateCurrencyDto dto);
+    public Currency toDomain(String code, UpdateCurrencyDto dto) {
+        // Объединяем код и данные обновления
+        return new Currency(
+                code,
+                dto.name(),
+                dto.country(),
+                dto.decimal()
+        );
+    }
 
     /** Преобразует доменную модель в основной DTO. */
-    CurrencyDto toDto(Currency currency);
+    public CurrencyDto toDto(Currency currency) {
+        // Формируем DTO из модели
+        return new CurrencyDto(
+                currency.code(),
+                currency.name(),
+                currency.country(),
+                currency.decimal()
+        );
+    }
 }
-
