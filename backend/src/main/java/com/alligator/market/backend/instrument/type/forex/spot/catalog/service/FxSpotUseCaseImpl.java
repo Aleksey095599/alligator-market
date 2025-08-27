@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;

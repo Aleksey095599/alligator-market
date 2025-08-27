@@ -1,10 +1,10 @@
-package com.alligator.market.backend.instrument.reference.currency.catalog.service;
+package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service;
 
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
-import com.alligator.market.domain.instrument.type.forex.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.instrument.type.forex.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

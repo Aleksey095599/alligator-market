@@ -1,6 +1,6 @@
-package com.alligator.market.backend.instrument.reference.currency.catalog.api.dto;
+package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.api.dto;
 
-import com.alligator.market.domain.instrument.type.forex.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
