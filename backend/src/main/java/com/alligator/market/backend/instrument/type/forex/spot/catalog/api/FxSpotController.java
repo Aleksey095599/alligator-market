@@ -9,7 +9,6 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.F
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/fx-spot")
 @RequiredArgsConstructor
-@Slf4j
 public class FxSpotController {
 
     private final FxSpotUseCase service;

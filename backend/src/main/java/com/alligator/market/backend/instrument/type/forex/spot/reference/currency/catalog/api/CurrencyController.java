@@ -10,7 +10,6 @@ import com.alligator.market.backend.instrument.type.forex.spot.reference.currenc
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
-@Slf4j
 @Validated
 public class CurrencyController {
 
