@@ -2,6 +2,7 @@ package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 
 /**
  * Модель финансового инструмента FX_SPOT.
@@ -14,6 +15,13 @@ public record FxSpot(
         Integer quoteDecimal
 
 ) implements Instrument {
+
+    // Проверяем, что валюты отличаются
+    public FxSpot {
+        if (baseCurrency.equals(quoteCurrency)) {
+            throw new FxSpotSameCurrenciesException();
+        }
+    }
 
     @Override
     public String getCode() {
