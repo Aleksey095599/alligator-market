@@ -1,23 +1,31 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
-import com.alligator.market.backend.common.jpa.BaseEntityMappingConfig;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import org.mapstruct.InheritConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
 /**
  * Маппер: модель валюты ⇄ сущность.
  */
-@Mapper(componentModel = "spring", config = BaseEntityMappingConfig.class)
-public interface CurrencyEntityMapper {
+@Component
+public class CurrencyEntityMapper {
 
     /** Преобразует сущность в модель. */
-    Currency toDomain(CurrencyEntity entity);
+    public Currency toDomain(CurrencyEntity entity) {
+        // Собираем доменную модель
+        return new Currency(
+                entity.getCode(),
+                entity.getName(),
+                entity.getCountry(),
+                entity.getDecimal()
+        );
+    }
 
     /** Обновляет сущность данными модели. */
-    @Mapping(target = "id", ignore = true)
-    @InheritConfiguration(name = "ignoreBaseEntityFields")
-    void updateEntity(Currency currency, @MappingTarget CurrencyEntity entity);
+    public void updateEntity(Currency currency, CurrencyEntity entity) {
+        // Переносим значения в JPA-сущность
+        entity.setCode(currency.code());
+        entity.setName(currency.name());
+        entity.setCountry(currency.country());
+        entity.setDecimal(currency.decimal());
+    }
 }
