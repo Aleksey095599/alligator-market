@@ -1,7 +1,11 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.spot.service.FxSpotCatalog;
+import com.alligator.market.domain.instrument.type.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,8 +15,7 @@ import java.util.List;
 
 /**
  * Реализация сервиса {@link FxSpotUseCase}.
- * Делегирует выполнение операций доменному классу {@link FxSpotCatalog},
- * который содержит бизнес-логику и проверки.
+ * Содержит проверки и операции с инструментами FX_SPOT.
  */
 @Service
 @RequiredArgsConstructor
@@ -20,31 +23,54 @@ import java.util.List;
 @Slf4j
 public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
-    private final FxSpotCatalog domainCatalog;
+    private final FxSpotRepository fxSpotRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Override
     public String create(FxSpot instrument) {
-        String code = domainCatalog.create(instrument);
-        log.info("FxSpot {} created", code);
-        return code;
+        // Проверяем, что базовая валюта существует
+        currencyRepository.findByCode(instrument.baseCurrency())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(instrument.baseCurrency()));
+        // Проверяем, что котируемая валюта существует
+        currencyRepository.findByCode(instrument.quoteCurrency())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(instrument.quoteCurrency()));
+        // Проверяем, что инструмента с таким кодом нет
+        fxSpotRepository.find(instrument.getCode()).ifPresent(i -> {
+            throw new FxSpotDuplicateException(instrument.getCode());
+        });
+        fxSpotRepository.save(instrument);
+        log.info("FxSpot {} created", instrument.getCode());
+        return instrument.getCode();
     }
 
     @Override
     public void updateQuoteDecimal(String code, int quoteDecimal) {
-        domainCatalog.updateQuoteDecimal(code, quoteDecimal);
+        // Проверяем, что инструмент существует
+        FxSpot current = fxSpotRepository.find(code)
+                .orElseThrow(() -> new FxSpotNotFoundException(code));
+        FxSpot updated = new FxSpot(
+                current.baseCurrency(),
+                current.quoteCurrency(),
+                current.valueDateCode(),
+                quoteDecimal
+        );
+        fxSpotRepository.save(updated);
         log.info("FxSpot {} updated", code);
     }
 
     @Override
     public void delete(String code) {
-        domainCatalog.delete(code);
+        // Проверяем, что инструмент существует
+        fxSpotRepository.find(code)
+                .orElseThrow(() -> new FxSpotNotFoundException(code));
+        fxSpotRepository.delete(code);
         log.info("FxSpot {} deleted", code);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<FxSpot> findAll() {
-        List<FxSpot> result = domainCatalog.getAll();
+        List<FxSpot> result = fxSpotRepository.findAll();
         log.debug("Found {} FX_SPOT instruments", result.size());
         return result;
     }
