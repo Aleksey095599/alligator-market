@@ -8,11 +8,13 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.F
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.validation.annotation.Validated;
 
 import java.net.URI;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/api/v1/fx-spot")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class FxSpotController {
 
     private final FxSpotUseCase service;
@@ -43,15 +46,17 @@ public class FxSpotController {
 
     /** Обновить точность котировки. */
     @PatchMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
-                                                                @RequestBody @Valid FxSpotUpdateDto dto) {
+    public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(
+            @PathVariable @Pattern(regexp = "^[A-Z]{6}_(TOD|TOM|SPOT)$") String code,
+            @RequestBody @Valid FxSpotUpdateDto dto) {
         service.updateQuoteDecimal(code, dto.quoteDecimal());
         return ResponseEntityFactory.ok(null);
     }
 
     /** Удалить инструмент. */
     @DeleteMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable @Pattern(regexp = "^[A-Z]{6}_(TOD|TOM|SPOT)$") String code) {
         service.delete(code);
         return ResponseEntityFactory.ok(null);
     }
