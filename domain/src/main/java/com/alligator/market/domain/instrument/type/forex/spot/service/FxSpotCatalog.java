@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
+import com.alligator.market.domain.common.exception.DuplicateEntityException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -39,7 +39,7 @@ public class FxSpotCatalog {
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(instrument.quoteCurrency()));
         // Проверяем, что инструмента с таким кодом нет
         repository.find(instrument.getCode()).ifPresent(i -> {
-            throw new FxSpotDuplicateException(instrument.getCode());
+            throw new DuplicateEntityException("FX_SPOT instrument", "code", instrument.getCode());
         });
         repository.save(instrument);
         return instrument.getCode();

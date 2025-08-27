@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
 import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.common.exception.DuplicateEntityException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
@@ -30,11 +30,11 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public String createCurrency(Currency currency) {
         // Проверяем, что нет валюты с таким же кодом
         currencyRepository.findByCode(currency.code()).ifPresent(c -> {
-            throw new CurrencyDuplicateException("code", currency.code());
+            throw new DuplicateEntityException("Currency", "code", currency.code());
         });
         // Проверяем, что нет валюты с таким же названием
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
-            throw new CurrencyDuplicateException("name", currency.name());
+            throw new DuplicateEntityException("Currency", "name", currency.name());
         });
         String code = currencyRepository.save(currency);
         log.info("Currency {} created", code);
@@ -49,7 +49,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         // Проверяем, что нет валюты с таким же названием
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
-                throw new CurrencyDuplicateException("name", currency.name());
+                throw new DuplicateEntityException("Currency", "name", currency.name());
             }
         });
         currencyRepository.save(currency);

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
+import com.alligator.market.domain.common.exception.DuplicateEntityException;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public final class ProfileContextCheck {
      * @param paramValueExtractor функция извлекает значение параметра
      * @param paramToCheck        параметр, по которому проверяем
      *
-     * @throws ContextProfileDuplicateException при обнаружении дублирования
+     * @throws DuplicateEntityException при обнаружении дублирования
      */
     private static void checkForDuplicateByParam(List<Profile> profileList,
                                                  Function<Profile, String> paramValueExtractor,
@@ -57,7 +57,7 @@ public final class ProfileContextCheck {
 
             // Если при попытке добавить значение параметра в коллекцию ошибка => нарушение уникальности
             if (!paramValues.add(value)) {
-                throw new ContextProfileDuplicateException(paramToCheck, String.valueOf(value));
+                throw new DuplicateEntityException("Provider profile", paramToCheck, String.valueOf(value));
             }
         }
     }

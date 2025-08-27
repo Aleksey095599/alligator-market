@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
-import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
+import com.alligator.market.domain.common.exception.DuplicateEntityException;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,7 +22,7 @@ public class ProviderCare {
      * @param provider провайдер для проверки
      * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
      * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
-     * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
+     * @throws DuplicateEntityException                       дублирование обработчика по типу инструмента
      */
     public void validateHandlers(MarketDataProvider provider) {
         // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
@@ -43,7 +43,7 @@ public class ProviderCare {
             // 3) Проверяем, что тип инструмента уникален
             InstrumentType instrumentType = handler.getSupportedInstrumentType();
             if (!instrumentTypes.add(instrumentType)) {
-                throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
+                throw new DuplicateEntityException("Instrument handler", "instrumentType", instrumentType.name());
             }
         }
     }
