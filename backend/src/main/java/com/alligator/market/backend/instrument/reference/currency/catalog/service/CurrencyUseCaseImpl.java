@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.reference.currency.catalog.service;
 
 import com.alligator.market.domain.common.exception.NotFoundException;
+import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.instrument.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
@@ -63,7 +63,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
                 .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(code)));
         // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrency(code)) {
-            throw new CurrencyUsedInFxSpotException(code);
+            throw new ResourceInUseException("Currency '%s'".formatted(code), "FX_SPOT instrument");
         }
         currencyRepository.deleteByCode(code);
         log.info("Currency {} deleted", code);
