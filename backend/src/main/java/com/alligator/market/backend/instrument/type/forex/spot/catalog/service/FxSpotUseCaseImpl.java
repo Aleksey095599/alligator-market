@@ -29,18 +29,21 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     @Override
     public String create(FxSpot fxSpot) {
-        // В модели уже указаны коды валют и дата валютирования
+        // Извлекаем коды валют
         String baseCode = fxSpot.base().code();
         String quoteCode = fxSpot.quote().code();
+        // Ищем сущности валют для этих кодов, если нет выбрасываем доменные исключения
         Currency base = currencyRepository.findByCode(baseCode)
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCode));
         Currency quote = currencyRepository.findByCode(quoteCode)
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCode));
+        // Собираем инструмент
         FxSpot instrument = new FxSpot(base, quote, fxSpot.valueDateCode(), fxSpot.quoteDecimal());
-        // Проверяем, что инструмента с таким кодом нет
+        // Проверяем, что инструмента с таким кодом нет, иначе выбрасываем доменное исключение
         fxSpotRepository.find(instrument.getCode()).ifPresent(i -> {
             throw new FxSpotDuplicateException(instrument.getCode());
         });
+        // Сохраняем инструмент
         fxSpotRepository.save(instrument);
         log.info("FxSpot {} created", instrument.getCode());
         return instrument.getCode();
@@ -48,17 +51,19 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     @Override
     public void updateQuoteDecimal(FxSpot fxSpot) {
-        // Из модели получаем код и новую точность
+        // Из модели извлекаем код
         String code = fxSpot.getCode();
-        // Проверяем, что инструмент существует
+        // Ищем по коду текущий инструмент
         FxSpot current = fxSpotRepository.find(code)
                 .orElseThrow(() -> new FxSpotNotFoundException(code));
+        // Формируем обновленную модель (поля для обновления из переданной модели, иные поля из текущей сущности)
         FxSpot updated = new FxSpot(
                 current.base(),
                 current.quote(),
                 current.valueDateCode(),
                 fxSpot.quoteDecimal()
         );
+        // Сохраняем обновленный инструмент
         fxSpotRepository.save(updated);
         log.info("FxSpot {} updated", code);
     }

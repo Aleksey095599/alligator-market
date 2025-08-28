@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.api;
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDto;
-import com.alligator.market.backend.provider.profile.catalog.service.crud.ProfileUseCase;
+import com.alligator.market.backend.provider.profile.catalog.service.ProfileUseCase;
 import com.alligator.market.backend.provider.profile.catalog.api.dto.ProfileDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
