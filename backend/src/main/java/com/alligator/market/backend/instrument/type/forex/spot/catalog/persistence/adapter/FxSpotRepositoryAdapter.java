@@ -10,6 +10,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotR
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,7 +52,8 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public List<FxSpot> findAll() {
-        return jpaRepository.findAllByOrderByCodeAsc().stream()
+        return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
+                .stream()
                 .map(mapper::toDomain)
                 .toList();
     }
