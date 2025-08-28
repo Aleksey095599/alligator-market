@@ -22,7 +22,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class FxSpotEntity extends InstrumentEntity {
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */

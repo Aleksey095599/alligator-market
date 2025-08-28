@@ -26,7 +26,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class CurrencyEntity extends BaseEntity {
 
     /** Суррогатный PK. */

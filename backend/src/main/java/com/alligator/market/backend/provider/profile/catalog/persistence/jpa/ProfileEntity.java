@@ -25,7 +25,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class ProfileEntity extends BaseEntity {
 
     /** Суррогатный PK. */
