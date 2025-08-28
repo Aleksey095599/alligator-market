@@ -6,7 +6,6 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCu
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +28,14 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     private final CurrencyRepository currencyRepository;
 
     @Override
-    public String create(String baseCurrency, String quoteCurrency, ValueDateCode valueDateCode, Integer quoteDecimal) {
-        Currency base = currencyRepository.findByCode(baseCurrency)
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCurrency));
-        Currency quote = currencyRepository.findByCode(quoteCurrency)
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCurrency));
-        FxSpot instrument = new FxSpot(base, quote, valueDateCode, quoteDecimal);
+    public String create(FxSpot fxSpot) {
+        String baseCode = fxSpot.base().code();
+        String quoteCode = fxSpot.quote().code();
+        Currency base = currencyRepository.findByCode(baseCode)
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCode));
+        Currency quote = currencyRepository.findByCode(quoteCode)
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCode));
+        FxSpot instrument = new FxSpot(base, quote, fxSpot.valueDateCode(), fxSpot.quoteDecimal());
         // Проверяем, что инструмента с таким кодом нет
         fxSpotRepository.find(instrument.getCode()).ifPresent(i -> {
             throw new FxSpotDuplicateException(instrument.getCode());
@@ -45,7 +46,8 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     }
 
     @Override
-    public void updateQuoteDecimal(String code, int quoteDecimal) {
+    public void updateQuoteDecimal(FxSpot fxSpot) {
+        String code = fxSpot.getCode();
         // Проверяем, что инструмент существует
         FxSpot current = fxSpotRepository.find(code)
                 .orElseThrow(() -> new FxSpotNotFoundException(code));
@@ -53,7 +55,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
                 current.base(),
                 current.quote(),
                 current.valueDateCode(),
-                quoteDecimal
+                fxSpot.quoteDecimal()
         );
         fxSpotRepository.save(updated);
         log.info("FxSpot {} updated", code);
