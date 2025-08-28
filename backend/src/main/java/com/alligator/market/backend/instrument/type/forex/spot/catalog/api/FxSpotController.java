@@ -6,9 +6,6 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.F
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +25,11 @@ public class FxSpotController {
 
     private final FxSpotUseCase service;
     private final FxSpotDtoMapper mapper;
-    private final CurrencyRepository currencyRepository;
 
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
-        Currency base = currencyRepository.findByCode(dto.baseCurrency())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(dto.baseCurrency()));
-        Currency quote = currencyRepository.findByCode(dto.quoteCurrency())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(dto.quoteCurrency()));
-        String code = service.create(base, quote, dto.valueDateCode(), dto.quoteDecimal());
+        String code = service.create(dto.baseCurrency(), dto.quoteCurrency(), dto.valueDateCode(), dto.quoteDecimal());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")
                 .buildAndExpand(code)
