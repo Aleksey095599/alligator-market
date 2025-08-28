@@ -29,6 +29,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     @Override
     public String create(FxSpot fxSpot) {
+        // В модели уже указаны коды валют и дата валютирования
         String baseCode = fxSpot.base().code();
         String quoteCode = fxSpot.quote().code();
         Currency base = currencyRepository.findByCode(baseCode)
@@ -47,6 +48,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     @Override
     public void updateQuoteDecimal(FxSpot fxSpot) {
+        // Из модели получаем код и новую точность
         String code = fxSpot.getCode();
         // Проверяем, что инструмент существует
         FxSpot current = fxSpotRepository.find(code)

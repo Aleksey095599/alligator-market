@@ -22,14 +22,17 @@ public class FxSpotDtoMapper {
         );
     }
 
-    /** Преобразует DTO обновления и код в доменную модель. */
+    /**
+     * Преобразует код инструмента и DTO обновления в доменную модель.
+     * Код имеет вид EURUSD_SPOT, где первые 3 символа — базовая валюта,
+     * следующие 3 — котируемая, далее через подчёркивание указан код даты.
+     */
     public FxSpot toDomain(String code, FxSpotUpdateDto dto) {
-        // Разбираем код инструмента
-        String[] parts = code.split("_");
-        String pair = parts[0];
-        String base = pair.substring(0, 3);
-        String quote = pair.substring(3, 6);
-        ValueDateCode valueDate = ValueDateCode.valueOf(parts[1]);
+        // Извлекаем части кода
+        String base = code.substring(0, 3);
+        String quote = code.substring(3, 6);
+        ValueDateCode valueDate = ValueDateCode.valueOf(code.substring(7));
+
         return new FxSpot(
                 new Currency(base, null, null, null),
                 new Currency(quote, null, null, null),

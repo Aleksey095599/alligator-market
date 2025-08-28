@@ -30,6 +30,7 @@ public class FxSpotController {
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
+        // Преобразуем DTO → модель и передаем её в сервис
         FxSpot fxSpot = mapper.toDomain(dto);
         String code = service.create(fxSpot);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -43,6 +44,7 @@ public class FxSpotController {
     @PatchMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
                                                                 @RequestBody @Valid FxSpotUpdateDto dto) {
+        // Собираем модель из кода и DTO и передаем в сервис
         FxSpot fxSpot = mapper.toDomain(code, dto);
         service.updateQuoteDecimal(fxSpot);
         return ResponseEntityFactory.ok(null);
