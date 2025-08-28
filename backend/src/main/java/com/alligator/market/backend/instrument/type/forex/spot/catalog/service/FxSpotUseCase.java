@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public interface FxSpotUseCase {
 
     /** Сохранить новый инструмент. */
-    String create(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal);
+    String create(String baseCurrency, String quoteCurrency, ValueDateCode valueDateCode, Integer quoteDecimal);
 
     /** Обновить точность котировки. */
     void updateQuoteDecimal(String code, int quoteDecimal);

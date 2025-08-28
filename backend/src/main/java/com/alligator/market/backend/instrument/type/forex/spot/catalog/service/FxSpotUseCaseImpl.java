@@ -1,6 +1,8 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -24,9 +26,14 @@ import java.util.List;
 public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     private final FxSpotRepository fxSpotRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Override
-    public String create(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
+    public String create(String baseCurrency, String quoteCurrency, ValueDateCode valueDateCode, Integer quoteDecimal) {
+        Currency base = currencyRepository.findByCode(baseCurrency)
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCurrency));
+        Currency quote = currencyRepository.findByCode(quoteCurrency)
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCurrency));
         FxSpot instrument = new FxSpot(base, quote, valueDateCode, quoteDecimal);
         // Проверяем, что инструмента с таким кодом нет
         fxSpotRepository.find(instrument.getCode()).ifPresent(i -> {

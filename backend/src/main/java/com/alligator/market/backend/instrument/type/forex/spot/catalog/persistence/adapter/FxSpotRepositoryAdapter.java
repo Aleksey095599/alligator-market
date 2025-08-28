@@ -7,7 +7,6 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -31,10 +30,11 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public void save(FxSpot fxSpot) {
         FxSpotEntity entity = jpaRepository.findByCode(fxSpot.getCode())
                 .orElseGet(FxSpotEntity::new);
+        // Получаем валюты (существование проверено в сервисе)
         CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.base().code()));
+                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.base().code())));
         CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quote().code())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(fxSpot.quote().code()));
+                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.quote().code())));
         mapper.updateEntity(fxSpot, base, quote, entity);
         jpaRepository.save(entity);
     }
