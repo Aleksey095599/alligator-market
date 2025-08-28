@@ -13,7 +13,6 @@ public class FxSpotDtoMapper {
 
     /** Преобразует основной DTO в доменную модель. */
     public FxSpot toDomain(FxSpotDto dto) {
-        // Формируем модель из DTO
         return new FxSpot(
                 new Currency(dto.baseCurrency(), null, null, null),
                 new Currency(dto.quoteCurrency(), null, null, null),
@@ -24,11 +23,9 @@ public class FxSpotDtoMapper {
 
     /**
      * Преобразует код инструмента и DTO обновления в доменную модель.
-     * Код имеет вид EURUSD_SPOT, где первые 3 символа — базовая валюта,
-     * следующие 3 — котируемая, далее через подчёркивание указан код даты.
      */
     public FxSpot toDomain(String code, FxSpotUpdateDto dto) {
-        // Извлекаем части кода
+        // Код инструмента однозначно связан с кодами базовой, котируемой валют и кодом даты валютирования
         String base = code.substring(0, 3);
         String quote = code.substring(3, 6);
         ValueDateCode valueDate = ValueDateCode.valueOf(code.substring(7));
@@ -43,7 +40,6 @@ public class FxSpotDtoMapper {
 
     /** Преобразует доменную модель в основной DTO. */
     public FxSpotDto toDto(FxSpot model) {
-        // Собираем DTO из модели
         return new FxSpotDto(
                 model.base().code(),
                 model.quote().code(),
