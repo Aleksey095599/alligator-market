@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.F
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,8 @@ public class FxSpotController {
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
-        String code = service.create(dto.baseCurrency(), dto.quoteCurrency(), dto.valueDateCode(), dto.quoteDecimal());
+        FxSpot fxSpot = mapper.toDomain(dto);
+        String code = service.create(fxSpot);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")
                 .buildAndExpand(code)
@@ -41,7 +43,8 @@ public class FxSpotController {
     @PatchMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
                                                                 @RequestBody @Valid FxSpotUpdateDto dto) {
-        service.updateQuoteDecimal(code, dto.quoteDecimal());
+        FxSpot fxSpot = mapper.toDomain(code, dto);
+        service.updateQuoteDecimal(fxSpot);
         return ResponseEntityFactory.ok(null);
     }
 
