@@ -23,6 +23,6 @@ public interface FxSpotRepository {
     /** Вернуть все инструменты. */
     List<FxSpot> findAll();
 
-    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте. */
+    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте FX_SPOT. */
     boolean existsByCurrency(Currency currency);
 }
