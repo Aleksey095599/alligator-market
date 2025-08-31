@@ -1,8 +1,5 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -25,28 +22,17 @@ import java.util.List;
 public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     private final FxSpotRepository fxSpotRepository;
-    private final CurrencyRepository currencyRepository;
 
     @Override
     public String create(FxSpot fxSpot) {
-        // Извлекаем коды валют
-        String baseCode = fxSpot.base().code();
-        String quoteCode = fxSpot.quote().code();
-        // Ищем сущности валют для этих кодов, если нет выбрасываем доменные исключения
-        Currency base = currencyRepository.findByCode(baseCode)
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCode));
-        Currency quote = currencyRepository.findByCode(quoteCode)
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCode));
-        // Собираем инструмент
-        FxSpot instrument = new FxSpot(base, quote, fxSpot.valueDateCode(), fxSpot.quoteDecimal());
         // Проверяем, что инструмента с таким кодом нет, иначе выбрасываем доменное исключение
-        fxSpotRepository.find(instrument.getCode()).ifPresent(i -> {
-            throw new FxSpotDuplicateException(instrument.getCode());
+        fxSpotRepository.find(fxSpot.getCode()).ifPresent(i -> {
+            throw new FxSpotDuplicateException(fxSpot.getCode());
         });
         // Сохраняем инструмент
-        fxSpotRepository.save(instrument);
-        log.info("FxSpot {} created", instrument.getCode());
-        return instrument.getCode();
+        fxSpotRepository.save(fxSpot);
+        log.info("FxSpot {} created", fxSpot.getCode());
+        return fxSpot.getCode();
     }
 
     @Override
@@ -56,12 +42,12 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         // Ищем по коду текущий инструмент
         FxSpot current = fxSpotRepository.find(code)
                 .orElseThrow(() -> new FxSpotNotFoundException(code));
-        // Формируем обновленную модель (поля для обновления из переданной модели, иные поля из текущей сущности)
+        // Создаем обновленную модель
         FxSpot updated = new FxSpot(
                 current.base(),
                 current.quote(),
                 current.valueDateCode(),
-                fxSpot.quoteDecimal()
+                fxSpot.quoteDecimal() // Берем из
         );
         // Сохраняем обновленный инструмент
         fxSpotRepository.save(updated);
