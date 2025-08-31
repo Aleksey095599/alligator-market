@@ -39,15 +39,15 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public void updateQuoteDecimal(FxSpot fxSpot) {
         // Из модели извлекаем код
         String code = fxSpot.getCode();
-        // Ищем по коду текущий инструмент
+        // Ищем текущий инструмент
         FxSpot current = fxSpotRepository.find(code)
                 .orElseThrow(() -> new FxSpotNotFoundException(code));
-        // Создаем обновленную модель
+        // Обновляем текущий инструмент
         FxSpot updated = new FxSpot(
                 current.base(),
                 current.quote(),
                 current.valueDateCode(),
-                fxSpot.quoteDecimal() // Берем из
+                fxSpot.quoteDecimal() // Берем из переданной модели
         );
         // Сохраняем обновленный инструмент
         fxSpotRepository.save(updated);

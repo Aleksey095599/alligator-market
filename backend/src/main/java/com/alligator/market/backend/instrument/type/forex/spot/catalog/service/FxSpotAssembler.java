@@ -37,13 +37,11 @@ public class FxSpotAssembler {
         String quoteCode = pair.substring(3);
         ValueDateCode valueDateCode = ValueDateCode.valueOf(parts[1]);
 
-        // Находим валюты в справочнике
         Currency base = currencyRepository.findByCode(baseCode)
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(baseCode));
         Currency quote = currencyRepository.findByCode(quoteCode)
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(quoteCode));
 
-        // Собираем доменную модель
         return new FxSpot(base, quote, valueDateCode, dto.quoteDecimal());
     }
 

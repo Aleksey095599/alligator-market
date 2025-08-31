@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * Application-сервис (use case) для операций с инструментами FX_SPOT.
- *
- * Все действия принимают или возвращают доменную модель {@link FxSpot}.
  */
 public interface FxSpotUseCase {
 
