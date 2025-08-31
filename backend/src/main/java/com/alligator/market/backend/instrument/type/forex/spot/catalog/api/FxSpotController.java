@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
@@ -26,12 +27,14 @@ public class FxSpotController {
 
     private final FxSpotUseCase service;
     private final FxSpotDtoMapper mapper;
+    private final FxSpotAssembler assembler;
 
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
-        // Преобразуем DTO → модель и передаем её в сервис
-        FxSpot fxSpot = mapper.toDomain(dto);
+        // DTO → модель
+        FxSpot fxSpot = assembler.toDomain(dto);
+        // Передаем модель сервису
         String code = service.create(fxSpot);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")
@@ -44,8 +47,9 @@ public class FxSpotController {
     @PatchMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
                                                                 @RequestBody @Valid FxSpotUpdateDto dto) {
-        // Собираем модель из кода и DTO и передаем в сервис
-        FxSpot fxSpot = mapper.toDomain(code, dto);
+        // Преобразуем код инструмента и DTO в модель
+        FxSpot fxSpot = assembler.toDomainByCode(code, dto);
+        // Передаем модель сервису
         service.updateQuoteDecimal(fxSpot);
         return ResponseEntityFactory.ok(null);
     }
