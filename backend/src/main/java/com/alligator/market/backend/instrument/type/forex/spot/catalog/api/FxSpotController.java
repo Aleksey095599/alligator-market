@@ -43,14 +43,14 @@ public class FxSpotController {
         return ResponseEntityFactory.created(location, code);
     }
 
-    /** Обновить точность котировки. */
+    /** Обновить инструмент. */
     @PatchMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> updateQuoteDecimal(@PathVariable String code,
-                                                                @RequestBody @Valid FxSpotUpdateDto dto) {
+    public ResponseEntity<ApiResponse<Void>> update(@PathVariable String code,
+                                                    @RequestBody @Valid FxSpotUpdateDto dto) {
         // Преобразуем код инструмента и DTO в модель
         FxSpot fxSpot = assembler.toDomainByCode(code, dto);
         // Передаем модель сервису
-        service.updateQuoteDecimal(fxSpot);
+        service.update(fxSpot);
         return ResponseEntityFactory.ok(null);
     }
 

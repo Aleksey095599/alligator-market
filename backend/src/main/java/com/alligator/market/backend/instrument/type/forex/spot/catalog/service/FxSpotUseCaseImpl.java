@@ -36,7 +36,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     }
 
     @Override
-    public void updateQuoteDecimal(FxSpot fxSpot) {
+    public void update(FxSpot fxSpot) {
         // Из модели извлекаем код
         String code = fxSpot.getCode();
         // Ищем текущий инструмент

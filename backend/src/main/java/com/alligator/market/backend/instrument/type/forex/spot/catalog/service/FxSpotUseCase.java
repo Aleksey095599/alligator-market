@@ -12,8 +12,8 @@ public interface FxSpotUseCase {
     /** Сохранить новый инструмент. */
     String create(FxSpot fxSpot);
 
-    /** Обновить точность котировки. */
-    void updateQuoteDecimal(FxSpot fxSpot);
+    /** Обновить инструмент. */
+    void update(FxSpot fxSpot);
 
     /** Удалить инструмент по коду. */
     void delete(String code);
