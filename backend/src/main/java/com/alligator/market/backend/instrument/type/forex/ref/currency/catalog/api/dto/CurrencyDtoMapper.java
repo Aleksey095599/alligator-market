@@ -11,7 +11,6 @@ public class CurrencyDtoMapper {
 
     /** Преобразует основной DTO в доменную модель. */
     public Currency toDomain(CurrencyDto dto) {
-        // Формируем модель из DTO
         return new Currency(
                 dto.code(),
                 dto.name(),
@@ -22,7 +21,6 @@ public class CurrencyDtoMapper {
 
     /** Преобразует DTO обновления и код в доменную модель. */
     public Currency toDomain(String code, UpdateCurrencyDto dto) {
-        // Объединяем код и данные обновления
         return new Currency(
                 code,
                 dto.name(),
@@ -33,7 +31,6 @@ public class CurrencyDtoMapper {
 
     /** Преобразует доменную модель в основной DTO. */
     public CurrencyDto toDto(Currency currency) {
-        // Формируем DTO из модели
         return new CurrencyDto(
                 currency.code(),
                 currency.name(),
