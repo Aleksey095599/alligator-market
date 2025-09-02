@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.runner;
 
 import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconcilerAdapter;
-import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
+import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,8 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
 
     // Адаптер доменного сервиса сопоставления профилей провайдеров
     private final ProfilesReconcilerAdapter reconciliationAdapter;
-    private final ProfileContextScanner contextScanner;
+    // Сканер контекста провайдеров
+    private final ProviderContextScanner providerContextScanner;
 
     @Override
     public void run(ApplicationArguments args) {

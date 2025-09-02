@@ -4,7 +4,7 @@ import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
-import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
+import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.ProfileReconciler;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +22,10 @@ public class ProfilesReconcilerAdapter {
 
     // Конструктор
     public ProfilesReconcilerAdapter(
-            ProfileContextScanner contextScanner,
+            ProviderContextScanner providerContextScanner,
             ProfileRepository repository
     ) {
-        this.reconciliation = new ProfileReconciler(contextScanner, repository);
+        this.reconciliation = new ProfileReconciler(providerContextScanner, repository);
     }
 
     /** Сравнить профили и получить расхождения в виде {@link ProfileDiff}. */
