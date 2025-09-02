@@ -3,7 +3,6 @@ package com.alligator.market.domain.provider.reconciliation;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
-import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 
 import java.util.Map;
 

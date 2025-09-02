@@ -15,9 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Компонент реализует доменный контракт сканера контекста провайдеров:
- * 1) ищет в контексте Spring все адаптеры провайдеров рыночных данных, реализующих контракт {@link MarketDataProvider};
- * 2) проверяет, что в контексте нет дублей провайдеров по кодам и именам.
+ * Компонент реализует доменный контракт сканера контекста провайдеров.
  */
 @Component
 @RequiredArgsConstructor
@@ -39,14 +37,15 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     @Override
     public Map<String, Profile> getProfiles() {
 
+        // Извлекаем профили
         List<Profile> profiles = providers.stream()
                 .map(MarketDataProvider::getProfile)
                 .toList();
 
-        // Проверка на дублирование по кодам и именам провайдеров
+        // Проверка профилей на дублирование по кодам и именам провайдеров
         profileValidator.validateNoDuplicates(profiles);
 
-        // Преобразуем список в Map по коду провайдера
+        // Возвращаем Map по коду провайдера
         return profiles.stream()
                 .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
     }
@@ -61,6 +60,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         // Проверяем обработчики каждого провайдера
         providers.forEach(handlerValidator::validateHandlers);
 
+        // Возвращаем Map по коду провайдера и типу инструмента
         return providers.stream()
                 .collect(Collectors.toMap(
                         p -> p.getProfile().providerCode(),
