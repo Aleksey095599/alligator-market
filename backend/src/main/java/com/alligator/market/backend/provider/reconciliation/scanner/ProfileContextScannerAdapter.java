@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.reconciliation.ProfileContextCheck;
 import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
 import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.service.ProviderCare;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +21,9 @@ public class ProfileContextScannerAdapter implements ProfileContextScanner {
     /** Список всех адаптеров провайдеров. */
     private final List<MarketDataProvider> providers;
 
+    /** Сервис проверки профилей. */
+    private static final ProviderCare SERVICE = new ProviderCare();
+
     /** Возвращает список профилей провайдеров. */
     @Override
     public List<Profile> getProfiles() {
@@ -30,7 +33,7 @@ public class ProfileContextScannerAdapter implements ProfileContextScanner {
                 .toList();
 
         // Проверка на дублирование по кодам и именам провайдеров
-        ProfileContextCheck.validateNoDuplicates(profiles);
+        SERVICE.validateNoDuplicates(profiles);
 
         return profiles;
     }
