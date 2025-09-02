@@ -63,7 +63,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
                 .toList();
 
         // Проверка на дублирование по кодам и именам провайдеров
-        profileValidator.validateNoDuplicates(profiles);
+        handlerValidator.validateHandlers(profiles);
 
         return providers.stream()
                 .peek(handlerValidator::validateHandlers)
