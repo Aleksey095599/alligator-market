@@ -10,8 +10,7 @@ import java.util.Map;
 public interface ProfileContextScanner {
 
     /**
-     * Вернуть карту профилей из контекста,
-     * где ключ — код провайдера.
+     * Вернуть карту профилей из контекста, где ключ — код провайдера.
      */
     Map<String, Profile> getProfiles();
 }
