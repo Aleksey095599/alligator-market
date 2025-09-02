@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.scheduler;
 
 import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconcilerAdapter;
-import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
+import com.alligator.market.domain.provider.profile.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

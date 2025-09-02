@@ -1,25 +1,17 @@
-package com.alligator.market.domain.provider.service;
+package com.alligator.market.domain.provider.handler.service;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.ProviderHandlerMismatchException;
 import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidException;
 import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
-import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
-import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
-/**
- * Сервис содержит методы для обслуживания провайдеров рыночных данных {@link MarketDataProvider}.
- */
-public class ProviderCare {
+public class HandlerCare {
 
     /**
      * Проверяет корректность набора обработчиков указанного провайдера.
@@ -52,41 +44,4 @@ public class ProviderCare {
             }
         }
     }
-
-    /** Проверяет уникальность профилей по кодам и именам. */
-    public void validateNoDuplicates(List<Profile> profiles) {
-        if (profiles == null || profiles.size() < 2) return; // Нечего проверять
-
-        checkForDuplicateByParam(profiles, Profile::providerCode, "providerCode");
-        checkForDuplicateByParam(profiles, Profile::displayName, "displayName");
-    }
-
-    /**
-     * Вспомогательный метод проверки профилей на дублирование по параметру.
-     *
-     * @param profileList список профилей для проверки
-     * @param paramValueExtractor функция извлекает значение параметра
-     * @param paramToCheck параметр, по которому проверяем
-     *
-     * @throws ContextProfileDuplicateException при обнаружении дублирования
-     */
-    private void checkForDuplicateByParam(List<Profile> profileList,
-                                          Function<Profile, String> paramValueExtractor,
-                                          String paramToCheck) {
-
-        Set<String> paramValues = new HashSet<>();
-
-        for (Profile p : profileList) {
-            String value = paramValueExtractor.apply(p);
-
-            if (value != null) {
-                value = value.trim().toLowerCase(Locale.ROOT);
-            }
-
-            if (!paramValues.add(value)) {
-                throw new ContextProfileDuplicateException(paramToCheck, String.valueOf(value));
-            }
-        }
-    }
 }
-
