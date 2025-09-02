@@ -32,7 +32,10 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     // Доменный сервис проверки обработчиков
     private static final HandlerValidator handlerValidator = new HandlerValidator();
 
-    /** Возвращает карту профилей провайдеров. */
+    /**
+     * Возвращает карту профилей из контекста,
+     * где ключ — код провайдера.
+     */
     @Override
     public Map<String, Profile> getProfiles() {
 
@@ -49,7 +52,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     }
 
     /**
-     * Возвращает обработчики (handlers) для всех финансовых инструментов,
+     * Возвращает обработчики (handlers) финансовых инструментов,
      * где первый ключ — код провайдера, второй ключ — тип инструмента.
      */
     @Override

@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.runner;
 
 import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconcilerAdapter;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
@@ -34,6 +35,10 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         Map<String, Profile> contextProfiles = providerContextScanner.getProfiles();
         log.info("Retrieved profiles for providers with codes: {}", contextProfiles.keySet());
 
+
+        // Извлекаем обработчики (handlers) финансовых инструментов,
+        // где первый ключ — код провайдера, второй ключ — тип финансового инструмента
+        Map<String, Map<String, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
 
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();

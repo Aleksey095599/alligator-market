@@ -17,8 +17,8 @@ public interface ProviderContextScanner {
     Map<String, Profile> getProfiles();
 
     /**
-     * Вернуть обработчики (handlers) для всех финансовых инструментов,
+     * Вернуть обработчики (handlers) финансовых инструментов,
      * где первый ключ — код провайдера, второй ключ — тип финансового инструмента.
-     * */
+     */
     Map<String, Map<String, InstrumentHandler>> getHandlers();
 }
