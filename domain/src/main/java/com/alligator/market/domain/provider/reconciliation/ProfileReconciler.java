@@ -5,8 +5,6 @@ import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Доменный сервис сопоставления профилей провайдеров.
@@ -32,8 +30,7 @@ public final class ProfileReconciler {
 
         ProfileDiff diff = new ProfileDiff();
 
-        Map<String, Profile> contextByCode = contextScanner.getProfiles().stream()
-                .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
+        Map<String, Profile> contextByCode = contextScanner.getProfiles();
 
         repository.findAllActive().forEach((id, repoProfile) -> {
             Profile contextProfile = contextByCode.remove(repoProfile.providerCode());

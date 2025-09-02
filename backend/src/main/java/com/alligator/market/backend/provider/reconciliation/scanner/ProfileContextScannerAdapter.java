@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Компонент реализует доменный контракт сканера контекста приложения:
@@ -24,9 +27,9 @@ public class ProfileContextScannerAdapter implements ProfileContextScanner {
     // Доменный сервис проверки профилей
     private static final ProfileValidator profileValidator = new ProfileValidator();
 
-    /** Возвращает список профилей провайдеров. */
+    /** Возвращает карту профилей провайдеров. */
     @Override
-    public List<Profile> getProfiles() {
+    public Map<String, Profile> getProfiles() {
 
         List<Profile> profiles = providers.stream()
                 .map(MarketDataProvider::getProfile)
@@ -35,8 +38,8 @@ public class ProfileContextScannerAdapter implements ProfileContextScanner {
         // Проверка на дублирование по кодам и именам провайдеров
         profileValidator.validateNoDuplicates(profiles);
 
-
-
-        return profiles;
+        // Преобразуем список в Map по коду провайдера
+        return profiles.stream()
+                .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
     }
 }
