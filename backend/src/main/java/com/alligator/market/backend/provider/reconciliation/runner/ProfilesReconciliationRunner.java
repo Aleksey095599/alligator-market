@@ -32,7 +32,11 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
 
         // Извлекаем карту профилей провайдеров из контекста, где ключ — код провайдера
         Map<String, Profile> contextProfiles = providerContextScanner.getProfiles();
-
+        // Логируем коды провайдеров, для которых извлечены профили
+        log.info(
+                "Retrieved profiles for providers with codes: {}",
+                contextProfiles.keySet()
+        );
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);
