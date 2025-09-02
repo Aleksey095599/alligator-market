@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ProfilesReconciliationRunner implements ApplicationRunner {
 
+    // Адаптер доменного сервиса сопоставления профилей провайдеров
     private final ProfilesReconcilerAdapter reconciliationAdapter;
 
     @Override
