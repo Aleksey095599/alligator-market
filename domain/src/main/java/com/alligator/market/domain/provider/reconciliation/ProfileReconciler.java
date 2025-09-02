@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.profile.reconciliation;
+package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;

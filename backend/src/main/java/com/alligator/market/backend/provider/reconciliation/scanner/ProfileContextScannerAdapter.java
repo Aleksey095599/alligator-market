@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.profile.reconciliation.ProfileContextScanner;
+import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.service.ProfileValidator;
 import lombok.RequiredArgsConstructor;
