@@ -35,6 +35,8 @@ public class ProfileContextScannerAdapter implements ProfileContextScanner {
         // Проверка на дублирование по кодам и именам провайдеров
         profileValidator.validateNoDuplicates(profiles);
 
+
+
         return profiles;
     }
 }
