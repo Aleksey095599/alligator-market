@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.reconciliation.ProfileContextScanner;
+import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.service.ProfileValidator;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Компонент реализует доменный контракт сканера контекста приложения:
+ * Компонент реализует доменный контракт сканера контекста провайдеров:
  * 1) ищет в контексте Spring все адаптеры провайдеров рыночных данных, реализующих контракт {@link MarketDataProvider};
  * 2) проверяет, что в контексте нет дублей провайдеров по кодам и именам.
  */
 @Component
 @RequiredArgsConstructor
-public class ProfileContextScannerAdapter implements ProfileContextScanner {
+public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
     // Список всех адаптеров провайдеров
     private final List<MarketDataProvider> providers;

@@ -5,9 +5,9 @@ import com.alligator.market.domain.provider.profile.model.Profile;
 import java.util.Map;
 
 /**
- * Контракт сканера контекста приложения, извлекающий профили провайдеров.
+ * Контракт сканера контекста провайдеров, извлекающего их профили.
  */
-public interface ProfileContextScanner {
+public interface ProviderContextScanner {
 
     /**
      * Вернуть карту профилей из контекста, где ключ — код провайдера.
