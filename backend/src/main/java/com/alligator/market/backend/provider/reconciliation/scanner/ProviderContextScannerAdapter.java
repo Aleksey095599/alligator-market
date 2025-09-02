@@ -58,15 +58,10 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     @Override
     public Map<String, Map<String, InstrumentHandler>> getHandlers() {
 
-        List<Profile> profiles = providers.stream()
-                .map(MarketDataProvider::getProfile)
-                .toList();
-
-        // Проверка на дублирование по кодам и именам провайдеров
-        handlerValidator.validateHandlers(profiles);
+        // Проверяем обработчики каждого провайдера
+        providers.forEach(handlerValidator::validateHandlers);
 
         return providers.stream()
-                .peek(handlerValidator::validateHandlers)
                 .collect(Collectors.toMap(
                         p -> p.getProfile().providerCode(),
                         p -> p.getHandlers().stream()
