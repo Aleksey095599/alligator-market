@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProfilesReconcilerAdapter {
 
-    /** Внутренний источник операции. */
+    // Внутренний источник операции
     private static final String via = "provider-profiles-reconciliation";
 
-    /** Доменная логика сопоставления профилей. */
+    // Доменная логика сопоставления профилей
     private final ProfileReconciler reconciliation;
 
     // Конструктор

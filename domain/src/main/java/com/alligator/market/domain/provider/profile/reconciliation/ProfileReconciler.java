@@ -13,10 +13,7 @@ import java.util.stream.Collectors;
  */
 public final class ProfileReconciler {
 
-    /** Сканер профилей из контекста приложения. */
     private final ProfileContextScanner contextScanner;
-
-    /** Репозиторий профилей провайдеров. */
     private final ProfileRepository repository;
 
     // Конструктор
@@ -32,6 +29,7 @@ public final class ProfileReconciler {
      * @return {@link ProfileDiff}
      */
     public ProfileDiff compareContextAndRepository() {
+
         ProfileDiff diff = new ProfileDiff();
 
         Map<String, Profile> contextByCode = contextScanner.getProfiles().stream()

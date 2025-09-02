@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 
-public class ProfileCare {
+public class ProfileValidator {
 
     /** Проверяет уникальность профилей по кодам и именам. */
     public void validateNoDuplicates(List<Profile> profiles) {
