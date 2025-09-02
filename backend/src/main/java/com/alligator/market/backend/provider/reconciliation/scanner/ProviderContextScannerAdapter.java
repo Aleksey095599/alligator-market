@@ -1,9 +1,11 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.service.HandlerValidator;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.service.ProfileValidator;
+import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,9 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     // Доменный сервис проверки профилей
     private static final ProfileValidator profileValidator = new ProfileValidator();
 
+    // Доменный сервис проверки обработчиков
+    private static final HandlerValidator handlerValidator = new HandlerValidator();
+
     /** Возвращает карту профилей провайдеров. */
     @Override
     public Map<String, Profile> getProfiles() {
@@ -41,5 +46,31 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
         // Преобразуем список в Map по коду провайдера
         return profiles.stream()
                 .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
+    }
+
+    /**
+     * Возвращает обработчики (handlers) для всех финансовых инструментов,
+     * где первый ключ — код провайдера, второй ключ — тип инструмента.
+     */
+    @Override
+    public Map<String, Map<String, InstrumentHandler>> getHandlers() {
+
+        List<Profile> profiles = providers.stream()
+                .map(MarketDataProvider::getProfile)
+                .toList();
+
+        // Проверка на дублирование по кодам и именам провайдеров
+        profileValidator.validateNoDuplicates(profiles);
+
+        return providers.stream()
+                .peek(handlerValidator::validateHandlers)
+                .collect(Collectors.toMap(
+                        p -> p.getProfile().providerCode(),
+                        p -> p.getHandlers().stream()
+                                .collect(Collectors.toMap(
+                                        h -> h.getSupportedInstrumentType().name(),
+                                        Function.identity()
+                                ))
+                ));
     }
 }
