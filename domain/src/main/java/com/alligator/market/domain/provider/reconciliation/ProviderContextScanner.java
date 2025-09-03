@@ -12,9 +12,9 @@ public interface ProviderContextScanner {
 
     /**
      * Вернуть карту профилей из контекста,
-     * где ключ — код провайдера.
+     * где первый ключ — технический код провайдера, второй ключ — отображаемое имя провайдера.
      */
-    Map<String, Profile> getProfiles();
+    Map<String, Map<String, Profile>> getProfiles();
 
     /**
      * Вернуть обработчики (handlers) финансовых инструментов,

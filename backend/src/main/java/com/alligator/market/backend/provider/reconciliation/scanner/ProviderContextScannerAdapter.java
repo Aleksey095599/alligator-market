@@ -27,16 +27,13 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
      * где первый ключ — технический код провайдера, второй ключ — отображаемое имя провайдера.
      */
     @Override
-    public Map<String, Profile> getProfiles() {
-
-        // Извлекаем профили
-        List<Profile> profiles = providers.stream()
+    public Map<String, Map<String, Profile>> getProfiles() {
+        return providers.stream()
                 .map(MarketDataProvider::getProfile)
-                .toList();
-
-        // Возвращаем Map по коду провайдера
-        return profiles.stream()
-                .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
+                .collect(Collectors.groupingBy(
+                        Profile::providerCode,
+                        Collectors.toMap(Profile::displayName, Function.identity())
+                ));
     }
 
     /**
@@ -45,8 +42,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
      */
     @Override
     public Map<String, Map<String, InstrumentHandler>> getHandlers() {
-
-        // Возвращаем Map по коду провайдера и типу инструмента
         return providers.stream()
                 .collect(Collectors.toMap(
                         p -> p.getProfile().providerCode(),
