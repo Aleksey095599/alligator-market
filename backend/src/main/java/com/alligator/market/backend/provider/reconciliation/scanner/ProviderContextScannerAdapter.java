@@ -24,7 +24,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
     /**
      * Возвращает карту профилей из контекста,
-     * где ключ — код провайдера.
+     * где первый ключ — технический код провайдера, второй ключ — отображаемое имя провайдера.
      */
     @Override
     public Map<String, Profile> getProfiles() {
