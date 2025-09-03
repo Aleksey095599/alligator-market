@@ -2,9 +2,7 @@ package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
-import com.alligator.market.domain.provider.handler.service.HandlerValidator;
 import com.alligator.market.domain.provider.profile.model.Profile;
-import com.alligator.market.domain.provider.profile.service.ProfileValidator;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,12 +22,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     // Список всех адаптеров провайдеров
     private final List<MarketDataProvider> providers;
 
-    // Доменный сервис проверки профилей
-    private static final ProfileValidator profileValidator = new ProfileValidator();
-
-    // Доменный сервис проверки обработчиков
-    private static final HandlerValidator handlerValidator = new HandlerValidator();
-
     /**
      * Возвращает карту профилей из контекста,
      * где ключ — код провайдера.
@@ -42,9 +34,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
                 .map(MarketDataProvider::getProfile)
                 .toList();
 
-        // Проверка профилей на дублирование по кодам и именам провайдеров
-        profileValidator.validateNoDuplicates(profiles);
-
         // Возвращаем Map по коду провайдера
         return profiles.stream()
                 .collect(Collectors.toMap(Profile::providerCode, Function.identity()));
@@ -56,9 +45,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
      */
     @Override
     public Map<String, Map<String, InstrumentHandler>> getHandlers() {
-
-        // Проверяем обработчики каждого провайдера
-        providers.forEach(handlerValidator::validateHandlers);
 
         // Возвращаем Map по коду провайдера и типу инструмента
         return providers.stream()
