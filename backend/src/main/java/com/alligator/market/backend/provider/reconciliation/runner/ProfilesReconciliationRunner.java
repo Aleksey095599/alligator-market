@@ -35,12 +35,10 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         // Извлекаем карту профилей провайдеров из контекста,
         // где первый ключ — код провайдера, второй — имя провайдера
         Map<String, Map<String, Profile>> contextProfiles = providerContextScanner.getProfiles();
-        log.info("Retrieved profiles for providers with codes: {}", contextProfiles.keySet());
 
         // Извлекаем обработчики (handlers) финансовых инструментов,
         // где первый ключ — код провайдера, второй ключ — тип финансового инструмента
         Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
-        log.info("Retrieved handlers for providers with codes: {}", contextHandlers.keySet());
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);
