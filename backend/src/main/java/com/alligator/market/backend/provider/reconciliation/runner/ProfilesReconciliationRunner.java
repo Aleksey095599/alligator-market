@@ -36,7 +36,7 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         // где первый ключ — код провайдера, второй — имя провайдера
         Map<String, Map<String, Profile>> contextProfiles = providerContextScanner.getProfiles();
 
-        // Извлекаем карту обработчиков (handlers) финансовых инструментов,
+        // Извлекаем карту обработчиков (handlers) финансовых инструментов из контекста,
         // где первый ключ — код провайдера, второй ключ — тип финансового инструмента
         Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
 
