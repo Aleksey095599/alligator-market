@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
@@ -18,7 +19,7 @@ public interface ProviderContextScanner {
 
     /**
      * Вернуть карту обработчиков (handlers) финансовых инструментов,
-     * где первый ключ — код провайдера, второй ключ — тип финансового инструмента.
+     * где первый ключ — код провайдера, второй ключ — тип финансового инструмента {@link InstrumentType}.
      */
-    Map<String, Map<String, InstrumentHandler>> getHandlers();
+    Map<String, Map<InstrumentType, InstrumentHandler>> getHandlers();
 }
