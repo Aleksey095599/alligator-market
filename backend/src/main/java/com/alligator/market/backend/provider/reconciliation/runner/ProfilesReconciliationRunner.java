@@ -38,7 +38,7 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         log.info("Retrieved profiles for providers with codes: {}", contextProfiles.keySet());
 
         // Извлекаем обработчики (handlers) финансовых инструментов,
-        // где первый ключ — код провайдера, второй ключ — тип финансового инструмента {@link InstrumentType}
+        // где первый ключ — код провайдера, второй ключ — тип финансового инструмента
         Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
         log.info("Retrieved handlers for providers with codes: {}", contextHandlers.keySet());
 
