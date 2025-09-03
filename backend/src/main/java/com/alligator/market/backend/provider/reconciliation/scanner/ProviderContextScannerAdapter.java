@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
@@ -33,13 +34,13 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     }
 
     @Override
-    public Map<String, Map<String, InstrumentHandler>> getHandlers() {
+    public Map<String, Map<InstrumentType, InstrumentHandler>> getHandlers() {
         return providers.stream()
                 .collect(Collectors.toMap(
                         p -> p.getProfile().providerCode(),
                         p -> p.getHandlers().stream()
                                 .collect(Collectors.toMap(
-                                        h -> h.getSupportedInstrumentType().name(),
+                                        InstrumentHandler::getSupportedInstrumentType,
                                         Function.identity()
                                 ))
                 ));
