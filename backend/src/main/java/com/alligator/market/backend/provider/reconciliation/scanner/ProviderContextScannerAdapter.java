@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
-    // Список всех адаптеров провайдеров
     private final List<MarketDataProvider> providers;
 
     @Override
