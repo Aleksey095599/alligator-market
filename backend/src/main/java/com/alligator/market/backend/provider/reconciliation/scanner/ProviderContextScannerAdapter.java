@@ -22,10 +22,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     // Список всех адаптеров провайдеров
     private final List<MarketDataProvider> providers;
 
-    /**
-     * Возвращает карту профилей из контекста,
-     * где первый ключ — технический код провайдера, второй ключ — отображаемое имя провайдера.
-     */
     @Override
     public Map<String, Map<String, Profile>> getProfiles() {
         return providers.stream()
@@ -36,10 +32,6 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
                 ));
     }
 
-    /**
-     * Возвращает обработчики (handlers) финансовых инструментов,
-     * где первый ключ — код провайдера, второй ключ — тип инструмента.
-     */
     @Override
     public Map<String, Map<String, InstrumentHandler>> getHandlers() {
         return providers.stream()
