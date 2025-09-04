@@ -18,6 +18,7 @@ public class HandlerValidator {
      * Проверяет корректность набора обработчиков указанного провайдера.
      *
      * @param provider провайдер для проверки
+     *
      * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
      * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
      * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
@@ -56,7 +57,7 @@ public class HandlerValidator {
             String providerCode = entry.getKey();
             Map<InstrumentType, InstrumentHandler> handlers = entry.getValue();
 
-            // Карта обработчиков не должна быть пустой и без null элементов
+            // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
             if (handlers == null || handlers.isEmpty() || handlers.values().stream().anyMatch(Objects::isNull)) {
                 throw new ProviderHandlersInvalidException();
             }
