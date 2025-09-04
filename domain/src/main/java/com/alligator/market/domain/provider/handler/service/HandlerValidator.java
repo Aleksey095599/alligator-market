@@ -30,15 +30,16 @@ public class HandlerValidator {
 
         for (Map.Entry<String, Map<InstrumentType, InstrumentHandler>> entry : contextHandlers.entrySet()) {
             String providerCode = entry.getKey();
-            Map<InstrumentType, InstrumentHandler> handlers = entry.getValue();
+            Map<InstrumentType, InstrumentHandler> handlersByInstrumentType = entry.getValue();
 
             // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
-            if (handlers == null || handlers.isEmpty() || handlers.values().stream().anyMatch(Objects::isNull)) {
+            if (handlersByInstrumentType == null || handlersByInstrumentType.isEmpty() || handlersByInstrumentType.values().stream().anyMatch(Objects::isNull)) {
                 throw new ProviderHandlersInvalidException();
             }
 
             Set<InstrumentType> instrumentTypes = new HashSet<>();
-            for (Map.Entry<InstrumentType, InstrumentHandler> handlerEntry : handlers.entrySet()) {
+
+            for (Map.Entry<InstrumentType, InstrumentHandler> handlerEntry : handlersByInstrumentType.entrySet()) {
                 InstrumentType instrumentType = handlerEntry.getKey();
                 InstrumentHandler handler = handlerEntry.getValue();
 
