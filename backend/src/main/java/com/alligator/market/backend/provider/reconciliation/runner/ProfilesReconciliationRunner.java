@@ -3,7 +3,9 @@ package com.alligator.market.backend.provider.reconciliation.runner;
 import com.alligator.market.backend.provider.reconciliation.adapter.ProfilesReconcilerAdapter;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.service.HandlerValidator;
 import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.profile.service.ProfileValidator;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,12 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         // Извлекаем карту обработчиков (handlers) финансовых инструментов из контекста,
         // где первый ключ — код провайдера, второй ключ — тип финансового инструмента
         Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
+
+        // Проверяем корректность профилей и обработчиков
+        ProfileValidator profileValidator = new ProfileValidator();
+        HandlerValidator handlerValidator = new HandlerValidator();
+        profileValidator.validateNoDuplicates(contextProfiles);
+        handlerValidator.validateHandlers(contextHandlers);
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);

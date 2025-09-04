@@ -8,6 +8,7 @@ import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerD
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -41,6 +42,30 @@ public class HandlerValidator {
             InstrumentType instrumentType = handler.getSupportedInstrumentType();
             if (!instrumentTypes.add(instrumentType)) {
                 throw new ProviderInstrumentHandlerDuplicateException(instrumentType);
+            }
+        }
+    }
+
+    /**
+     * Проверяет корректность обработчиков из контекста.
+     */
+    public void validateHandlers(Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers) {
+        if (contextHandlers == null || contextHandlers.isEmpty()) return; // Нечего проверять
+
+        for (Map.Entry<String, Map<InstrumentType, InstrumentHandler>> entry : contextHandlers.entrySet()) {
+            String providerCode = entry.getKey();
+            Map<InstrumentType, InstrumentHandler> handlers = entry.getValue();
+
+            // Карта обработчиков не должна быть пустой и без null элементов
+            if (handlers == null || handlers.isEmpty() || handlers.values().stream().anyMatch(Objects::isNull)) {
+                throw new ProviderHandlersInvalidException();
+            }
+
+            for (InstrumentHandler handler : handlers.values()) {
+                String codeFromHandler = handler.getProviderCode();
+                if (!providerCode.equals(codeFromHandler)) {
+                    throw new ProviderHandlerMismatchException(providerCode, codeFromHandler);
+                }
             }
         }
     }
