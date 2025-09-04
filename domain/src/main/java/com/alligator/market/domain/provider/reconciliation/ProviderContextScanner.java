@@ -13,9 +13,9 @@ public interface ProviderContextScanner {
 
     /**
      * Вернуть карту профилей из контекста,
-     * где первый ключ — {@link Profile#providerCode()}, второй ключ — {@link Profile#displayName()}.
+     * где ключ — {@link Profile#providerCode()}.
      */
-    Map<String, Map<String, Profile>> getProfiles();
+    Map<String, Profile> getProfiles();
 
     /**
      * Вернуть карту обработчиков (handlers) финансовых инструментов из контекста,

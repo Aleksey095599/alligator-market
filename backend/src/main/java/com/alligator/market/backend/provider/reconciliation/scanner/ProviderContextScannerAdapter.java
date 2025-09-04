@@ -23,12 +23,13 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     private final List<MarketDataProvider> providers;
 
     @Override
-    public Map<String, Map<String, Profile>> getProfiles() {
+    public Map<String, Profile> getProfiles() {
         return providers.stream()
                 .map(MarketDataProvider::getProfile)
-                .collect(Collectors.groupingBy(
+                .collect(Collectors.toMap(
                         Profile::providerCode,
-                        Collectors.toMap(Profile::displayName, Function.identity())
+                        Function.identity(),
+                        (p1, p2) -> p1
                 ));
     }
 

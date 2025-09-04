@@ -34,8 +34,8 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("Start provider profiles reconciliation");
 
-        // Извлекаем карту профилей провайдеров из контекста <providerCode, <displayName, Profile>>
-        Map<String, Map<String, Profile>> contextProfiles = providerContextScanner.getProfiles();
+        // Извлекаем карту профилей провайдеров из контекста <providerCode, Profile>
+        Map<String, Profile> contextProfiles = providerContextScanner.getProfiles();
 
         // Извлекаем карту обработчиков контекста <providerCode, <InstrumentType, InstrumentHandler>>
         Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
@@ -44,9 +44,9 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         ProfileValidator profileValidator = new ProfileValidator();
         HandlerValidator handlerValidator = new HandlerValidator();
         profileValidator.validateNoDuplicates(contextProfiles);
-        log что валидация профилей успешно
+        log.info("Profiles validation passed");
         handlerValidator.validateHandlers(contextHandlers);
-        log что валидация обработчиков успешно
+        log.info("Handlers validation passed");
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);
