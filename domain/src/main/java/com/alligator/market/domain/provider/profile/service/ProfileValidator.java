@@ -44,12 +44,9 @@ public class ProfileValidator {
     private void checkForDuplicateByParam(List<Profile> profileList,
                                           Function<Profile, String> paramValueExtractor,
                                           String paramToCheck) {
-
         Set<String> paramValues = new HashSet<>();
-
         for (Profile p : profileList) {
             String value = paramValueExtractor.apply(p);
-
             if (value != null) {
                 value = value.trim().toLowerCase(Locale.ROOT);
             }

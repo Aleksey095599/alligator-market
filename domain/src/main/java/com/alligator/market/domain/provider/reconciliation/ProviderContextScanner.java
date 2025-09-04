@@ -13,13 +13,13 @@ public interface ProviderContextScanner {
 
     /**
      * Вернуть карту профилей из контекста,
-     * где первый ключ — технический код провайдера, второй ключ — отображаемое имя провайдера.
+     * где первый ключ — {@link Profile#providerCode()}, второй ключ — {@link Profile#displayName()}.
      */
     Map<String, Map<String, Profile>> getProfiles();
 
     /**
      * Вернуть карту обработчиков (handlers) финансовых инструментов из контекста,
-     * где первый ключ — код провайдера, второй ключ — тип финансового инструмента {@link InstrumentType}.
+     * где первый ключ — {@link Profile#providerCode()}, второй ключ — {@link InstrumentType}.
      */
     Map<String, Map<InstrumentType, InstrumentHandler>> getHandlers();
 }

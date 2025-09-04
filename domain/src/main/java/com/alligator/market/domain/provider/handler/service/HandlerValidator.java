@@ -25,7 +25,7 @@ public class HandlerValidator {
     public void validateHandlers(Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers) {
         // Карта не должна быть пустой или null
         if (contextHandlers == null || contextHandlers.isEmpty()) {
-            throw new ProviderHandlersInvalidException();
+            throw new ProviderHandlersInvalidException(); // TODO: создать и заменить на ошибку типа нет ни одного обработчика инструментов
         }
 
         for (Map.Entry<String, Map<InstrumentType, InstrumentHandler>> entry : contextHandlers.entrySet()) {
