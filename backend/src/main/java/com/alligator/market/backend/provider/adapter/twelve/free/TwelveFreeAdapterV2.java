@@ -10,7 +10,6 @@ import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,14 +31,11 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     // Список для набора обработчиков
     private final Set<InstrumentHandler> handlers = new HashSet<>();
 
-    /** Сервис проверки обработчиков. */
-    private static final ProviderCare SERVICE = new ProviderCare();
-
     /**
      * Конструктор адаптера TwelveFreeAdapterV2.
      *
-     * @param props       конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
-     * @param webClient   конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
+     * @param props     конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
+     * @param webClient конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
      */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
@@ -71,12 +67,6 @@ public class TwelveFreeAdapterV2 implements MarketDataProvider {
     @Override
     public Set<InstrumentHandler> getHandlers() {
         return Collections.unmodifiableSet(handlers);
-    }
-
-    /** Проверяет корректность набора обработчиков после создания компонента. */
-    @PostConstruct
-    public void validateHandlers() {
-        validateHandlers(SERVICE);
     }
 }
 

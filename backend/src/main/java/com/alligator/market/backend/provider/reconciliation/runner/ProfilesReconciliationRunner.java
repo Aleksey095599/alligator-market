@@ -38,8 +38,9 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
 
         log.info("Start provider profiles reconciliation");
 
-        // Извлекаем и проверяем список профилей провайдеров из контекста
+        // Извлекаем список профилей провайдеров из контекста
         List<Profile> contextProfiles = providerContextScanner.getProfiles();
+        // Проверяем, что нет дублирования по Profile.providerCode и Profile.displayName
         profileValidator.validateNoDuplicates(contextProfiles);
 
         // Извлекаем список обработчиков из контекста
