@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProfileValidator {
 
@@ -17,6 +19,17 @@ public class ProfileValidator {
 
         checkForDuplicateByParam(profiles, Profile::providerCode, "providerCode");
         checkForDuplicateByParam(profiles, Profile::displayName, "displayName");
+    }
+
+    /** Проверяет уникальность профилей из контекста. */
+    public void validateNoDuplicates(Map<String, Map<String, Profile>> contextProfiles) {
+        if (contextProfiles == null || contextProfiles.isEmpty()) return; // Нечего проверять
+
+        List<Profile> profiles = contextProfiles.values().stream()
+                .flatMap(m -> m.values().stream())
+                .collect(Collectors.toList());
+
+        validateNoDuplicates(profiles);
     }
 
     /**
