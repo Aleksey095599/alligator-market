@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProfileValidator {
 
@@ -22,14 +21,28 @@ public class ProfileValidator {
     }
 
     /** Проверяет уникальность профилей из контекста. */
-    public void validateNoDuplicates(Map<String, Map<String, Profile>> contextProfiles) {
-        if (contextProfiles == null || contextProfiles.isEmpty()) return; // Нечего проверять
+    public void validateNoDuplicates(Map<String, Profile> contextProfiles) {
+        if (contextProfiles == null || contextProfiles.size() < 2) return; // Нечего проверять
 
-        List<Profile> profiles = contextProfiles.values().stream()
-                .flatMap(m -> m.values().stream())
-                .collect(Collectors.toList());
+        Set<String> codes = new HashSet<>();
+        Set<String> names = new HashSet<>();
+        for (Profile p : contextProfiles.values()) {
+            String code = p.providerCode();
+            if (code != null) {
+                code = code.trim().toLowerCase(Locale.ROOT);
+            }
+            if (!codes.add(code)) {
+                throw new ContextProfileDuplicateException("providerCode", String.valueOf(code));
+            }
 
-        validateNoDuplicates(profiles);
+            String name = p.displayName();
+            if (name != null) {
+                name = name.trim().toLowerCase(Locale.ROOT);
+            }
+            if (!names.add(name)) {
+                throw new ContextProfileDuplicateException("displayName", String.valueOf(name));
+            }
+        }
     }
 
     /**
