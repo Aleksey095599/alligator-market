@@ -8,6 +8,7 @@ import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class HandlerValidator {
@@ -32,7 +33,7 @@ public class HandlerValidator {
             Map<InstrumentType, InstrumentHandler> handlers = entry.getValue();
 
             // 1) Проверяем, что список обработчиков не пустой и не содержит null элементы
-            if (handlers == null || handlers.isEmpty() || handlers.values().stream().anyMatch(h -> h == null)) {
+            if (handlers == null || handlers.isEmpty() || handlers.values().stream().anyMatch(Objects::isNull)) {
                 throw new ProviderHandlersInvalidException();
             }
 
