@@ -6,10 +6,7 @@ import com.alligator.market.domain.provider.exception.ProviderHandlersInvalidExc
 import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class HandlerValidator {
 
@@ -18,16 +15,11 @@ public class HandlerValidator {
      *
      * @param contextHandlers карта обработчиков <providerCode, <InstrumentType, InstrumentHandler>>
      *
-     * @throws ProviderHandlersInvalidException              некорректный набор обработчиков
-     * @throws ProviderHandlerMismatchException              обработчик относится к другому провайдеру
-     * @throws ProviderInstrumentHandlerDuplicateException   дублирование обработчика по типу инструмента
+     * @throws ProviderHandlersInvalidException            некорректный набор обработчиков
+     * @throws ProviderHandlerMismatchException            обработчик относится к другому провайдеру
+     * @throws ProviderInstrumentHandlerDuplicateException дублирование обработчика по типу инструмента
      */
-    public void validateHandlers(Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers) {
-        // Карта не должна быть пустой или null
-        if (contextHandlers == null || contextHandlers.isEmpty()) {
-            throw new ProviderHandlersInvalidException();
-        }
-
+    public void validateHandlers(List<InstrumentHandler> contextHandlers) {
         for (Map.Entry<String, Map<InstrumentType, InstrumentHandler>> entry : contextHandlers.entrySet()) {
             String providerCode = entry.getKey();
             Map<InstrumentType, InstrumentHandler> handlersByInstrumentType = entry.getValue();

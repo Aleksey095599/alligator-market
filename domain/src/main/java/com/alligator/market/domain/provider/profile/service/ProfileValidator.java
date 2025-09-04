@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.Map;
 
 public class ProfileValidator {
 
@@ -20,37 +19,12 @@ public class ProfileValidator {
         checkForDuplicateByParam(profiles, Profile::displayName, "displayName");
     }
 
-    /** Проверяет уникальность профилей из контекста. */
-    public void validateNoDuplicates(Map<String, Profile> contextProfiles) {
-        if (contextProfiles == null || contextProfiles.size() < 2) return; // Нечего проверять
-
-        Set<String> codes = new HashSet<>();
-        Set<String> names = new HashSet<>();
-        for (Profile p : contextProfiles.values()) {
-            String code = p.providerCode();
-            if (code != null) {
-                code = code.trim().toLowerCase(Locale.ROOT);
-            }
-            if (!codes.add(code)) {
-                throw new ContextProfileDuplicateException("providerCode", String.valueOf(code));
-            }
-
-            String name = p.displayName();
-            if (name != null) {
-                name = name.trim().toLowerCase(Locale.ROOT);
-            }
-            if (!names.add(name)) {
-                throw new ContextProfileDuplicateException("displayName", String.valueOf(name));
-            }
-        }
-    }
-
     /**
-     * Вспомогательный метод проверки профилей на дублирование по параметру.
+     * Метод проверки профилей на дублирование по параметру.
      *
-     * @param profileList список профилей для проверки
+     * @param profileList         список профилей для проверки
      * @param paramValueExtractor функция извлекает значение параметра
-     * @param paramToCheck параметр, по которому проверяем
+     * @param paramToCheck        параметр, по которому проверяем
      *
      * @throws ContextProfileDuplicateException при обнаружении дублирования
      */

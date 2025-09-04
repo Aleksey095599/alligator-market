@@ -14,6 +14,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,21 +33,19 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        log.info("Start provider profiles reconciliation");
-
-        // Извлекаем карту профилей провайдеров из контекста <providerCode, Profile>
-        Map<String, Profile> contextProfiles = providerContextScanner.getProfiles();
-
-        // Извлекаем карту обработчиков контекста <providerCode, <InstrumentType, InstrumentHandler>>
-        Map<String, Map<InstrumentType, InstrumentHandler>> contextHandlers = providerContextScanner.getHandlers();
-
-        // Проверяем корректность профилей и обработчиков
         ProfileValidator profileValidator = new ProfileValidator();
         HandlerValidator handlerValidator = new HandlerValidator();
+
+        log.info("Start provider profiles reconciliation");
+
+        // Извлекаем и проверяем список профилей провайдеров из контекста
+        List<Profile> contextProfiles = providerContextScanner.getProfiles();
         profileValidator.validateNoDuplicates(contextProfiles);
-        log.info("Profiles validation passed");
+
+        // Извлекаем список обработчиков из контекста
+        List<InstrumentHandler> contextHandlers = providerContextScanner.getHandlers();
         handlerValidator.validateHandlers(contextHandlers);
-        log.info("Handlers validation passed");
+
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);

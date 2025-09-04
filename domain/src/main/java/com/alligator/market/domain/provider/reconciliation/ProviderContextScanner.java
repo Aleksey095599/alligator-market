@@ -1,10 +1,9 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Контракт сканера контекста провайдеров, извлекающего их профили.
@@ -12,14 +11,12 @@ import java.util.Map;
 public interface ProviderContextScanner {
 
     /**
-     * Вернуть карту профилей из контекста,
-     * где ключ — {@link Profile#providerCode()}.
+     * Вернуть список профилей из контекста.
      */
-    Map<String, Profile> getProfiles();
+    List<Profile> getProfiles();
 
     /**
-     * Вернуть карту обработчиков (handlers) финансовых инструментов из контекста,
-     * где первый ключ — {@link Profile#providerCode()}, второй ключ — {@link InstrumentType}.
+     * Вернуть список обработчиков финансовых инструментов из контекста.
      */
-    Map<String, Map<InstrumentType, InstrumentHandler>> getHandlers();
+    List<InstrumentHandler> getHandlers();
 }

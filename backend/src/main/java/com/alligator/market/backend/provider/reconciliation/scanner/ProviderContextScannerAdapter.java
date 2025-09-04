@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
@@ -9,12 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Компонент реализует доменный контракт сканера контекста провайдеров.
+ * Компонент реализует доменный контракт сканера провайдеров в контексте.
  */
 @Component
 @RequiredArgsConstructor
@@ -23,26 +20,16 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     private final List<MarketDataProvider> providers;
 
     @Override
-    public Map<String, Profile> getProfiles() {
+    public List<Profile> getProfiles() {
         return providers.stream()
                 .map(MarketDataProvider::getProfile)
-                .collect(Collectors.toMap(
-                        Profile::providerCode,
-                        Function.identity(),
-                        (p1, p2) -> p1
-                ));
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Map<String, Map<InstrumentType, InstrumentHandler>> getHandlers() {
+    public List<InstrumentHandler> getHandlers() {
         return providers.stream()
-                .collect(Collectors.toMap(
-                        p -> p.getProfile().providerCode(),
-                        p -> p.getHandlers().stream()
-                                .collect(Collectors.toMap(
-                                        InstrumentHandler::getSupportedInstrumentType,
-                                        Function.identity()
-                                ))
-                ));
+                .flatMap(p -> p.getHandlers().stream())
+                .collect(Collectors.toList());
     }
 }
