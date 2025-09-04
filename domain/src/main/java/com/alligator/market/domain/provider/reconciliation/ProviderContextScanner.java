@@ -10,13 +10,9 @@ import java.util.List;
  */
 public interface ProviderContextScanner {
 
-    /**
-     * Вернуть список профилей из контекста.
-     */
+    /** Вернуть список профилей из контекста. */
     List<Profile> getProfiles();
 
-    /**
-     * Вернуть список обработчиков финансовых инструментов из контекста.
-     */
+    /** Вернуть список обработчиков финансовых инструментов из контекста. */
     List<InstrumentHandler> getHandlers();
 }
