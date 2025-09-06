@@ -26,5 +26,4 @@ public interface MarketDataProvider {
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
     Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException;
-
 }

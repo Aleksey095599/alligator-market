@@ -27,7 +27,11 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
         this.handlers = handlers;
     }
 
-    /** Возвращает котировку. */
+    /**
+     * Возвращает котировку.
+     *
+     * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
+     */
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
         InstrumentType type = instrument.getType();
