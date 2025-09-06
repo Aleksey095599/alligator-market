@@ -37,6 +37,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
             TwelveFreeConnectionProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
+        // TODO: узнать как используется super и HashSet<>()
         super(new HashSet<>()); // Передаём набор обработчиков в базовый класс
         // Добавляем обработчики
         handlers.add(new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE));
