@@ -31,7 +31,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
         InstrumentType type = instrument.getType();
-        InstrumentHandler handler = findHandlerForInstrument(type);
+        InstrumentHandler handler = this.findHandlerForInstrument(type);
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
@@ -42,5 +42,19 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     @Override
     public Set<InstrumentHandler> getHandlers() {
         return Collections.unmodifiableSet(handlers);
+    }
+
+    /**
+     * Находит обработчик для указанного типа инструмента.
+     *
+     * @return подходящий обработчик или null
+     */
+    protected InstrumentHandler findHandlerForInstrument(InstrumentType type) {
+        for (InstrumentHandler h : handlers) {
+            if (h.getSupportedInstrumentType() == type) {
+                return h;
+            }
+        }
+        return null;
     }
 }
