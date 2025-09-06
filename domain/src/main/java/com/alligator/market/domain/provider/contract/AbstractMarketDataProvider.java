@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Базовый класс провайдеров рыночных данных.
+ * Абстрактный каркас провайдера рыночных данных.
  */
 public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 

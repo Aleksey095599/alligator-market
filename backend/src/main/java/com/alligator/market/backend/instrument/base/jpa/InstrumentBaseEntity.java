@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class InstrumentEntity extends BaseEntity {
+public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @EqualsAndHashCode.Include

@@ -13,3 +13,4 @@ public interface Instrument {
     /** Возвращает тип инструмента. */
     InstrumentType getType();
 }
+// TODO: подумать над доменной моделью классом InstrumentBase

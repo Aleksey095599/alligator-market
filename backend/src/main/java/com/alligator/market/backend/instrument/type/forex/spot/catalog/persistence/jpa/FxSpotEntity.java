@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa;
 
-import com.alligator.market.backend.instrument.base.jpa.InstrumentEntity;
+import com.alligator.market.backend.instrument.base.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FxSpotEntity extends InstrumentEntity {
+public class FxSpotEntity extends InstrumentBaseEntity {
 
     /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
