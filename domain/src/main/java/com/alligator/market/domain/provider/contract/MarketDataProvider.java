@@ -5,7 +5,8 @@ import com.alligator.market.domain.provider.exception.InstrumentNotSupportedExce
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
-import java.util.Set;
+import com.alligator.market.domain.instrument.type.InstrumentType;
+import java.util.Map;
 
 import org.reactivestreams.Publisher;
 
@@ -17,8 +18,8 @@ public interface MarketDataProvider {
     /** Возвращает профиль провайдера {@link Profile}. */
     Profile getProfile();
 
-    /** Возвращает набор обработчиков {@link InstrumentHandler}. */
-    Set<InstrumentHandler> getHandlers();
+    /** Возвращает карту обработчиков {@link InstrumentHandler}. */
+    Map<InstrumentType, InstrumentHandler> getHandlers();
 
     /**
      * Возвращает котировку.
