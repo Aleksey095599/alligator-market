@@ -29,7 +29,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     @Override
     public List<InstrumentHandler> getHandlers() {
         return providers.stream()
-                .flatMap(p -> p.getHandlers().stream())
+                .flatMap(p -> p.getHandlers().values().stream())
                 .collect(Collectors.toList());
     }
 }

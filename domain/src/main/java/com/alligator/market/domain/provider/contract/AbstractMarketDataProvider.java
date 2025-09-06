@@ -8,7 +8,7 @@ import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Абстрактный каркас провайдера рыночных данных.
@@ -18,13 +18,13 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     // Профиль провайдера
     protected final Profile profile;
 
-    // Набор обработчиков инструментов
-    protected final Set<InstrumentHandler> handlers;
+    // Карта обработчиков инструментов
+    protected final Map<InstrumentType, InstrumentHandler> handlersMap;
 
     // Конструктор
-    protected AbstractMarketDataProvider(Set<InstrumentHandler> handlers, Profile profile) {
+    protected AbstractMarketDataProvider(Map<InstrumentType, InstrumentHandler> handlersMap, Profile profile) {
         this.profile = profile;
-        this.handlers = Set.copyOf(handlers);
+        this.handlersMap = Map.copyOf(handlersMap);
     }
 
     /** Возвращает профиль провайдера. */
@@ -33,10 +33,10 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
         return profile;
     }
 
-    /** Возвращает набор обработчиков. */
+    /** Возвращает карту обработчиков. */
     @Override
-    public Set<InstrumentHandler> getHandlers() {
-        return handlers;
+    public Map<InstrumentType, InstrumentHandler> getHandlers() {
+        return handlersMap;
     }
 
     /**
@@ -47,24 +47,10 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
         InstrumentType type = instrument.getType();
-        InstrumentHandler handler = this.findHandlerForInstrument(type);
+        InstrumentHandler handler = handlersMap.get(type);
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
         return handler.getInstrumentQuote(instrument);
-    }
-
-    /**
-     * Находит обработчик для указанного типа инструмента.
-     *
-     * @return подходящий обработчик или null
-     */
-    protected InstrumentHandler findHandlerForInstrument(InstrumentType type) {
-        for (InstrumentHandler h : handlers) {
-            if (h.getSupportedInstrumentType() == type) {
-                return h;
-            }
-        }
-        return null;
     }
 }

@@ -14,9 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Адаптер для провайдера рыночных данных TwelveData (бесплатная подписка).
@@ -37,27 +36,21 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
             TwelveFreeConnectionProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
-        // TODO: узнать как используется super и HashSet<>()
-        super(new HashSet<>()); // Передаём набор обработчиков в базовый класс
-        // Добавляем обработчики
-        handlers.add(new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE));
-    }
-
-    /** Возвращает профиль провайдера. */
-    @Override
-    public Profile getProfile() {
-        Set<InstrumentType> instruments = handlers.stream()
-                .map(InstrumentHandler::getSupportedInstrumentType)
-                .collect(Collectors.toSet());
-        return new Profile(
-                ProfileStatus.ACTIVE,
-                PROVIDER_CODE,
-                "TwelveData Free Plan",
-                instruments,
-                DeliveryMode.PULL,
-                AccessMethod.API_POLL,
-                false,
-                60_000
+        super(
+                Map.<InstrumentType, InstrumentHandler>of(
+                        InstrumentType.FX_SPOT,
+                        new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE)
+                ),
+                new Profile(
+                        ProfileStatus.ACTIVE,
+                        PROVIDER_CODE,
+                        "TwelveData Free Plan",
+                        Set.of(InstrumentType.FX_SPOT),
+                        DeliveryMode.PULL,
+                        AccessMethod.API_POLL,
+                        false,
+                        60_000
+                )
         );
     }
 
