@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Адаптер для провайдера рыночных данных (далее - провайдера) TwelveData (бесплатная подписка).
+ * Адаптер для провайдера рыночных данных TwelveData (бесплатная подписка).
  */
 @Component
 public class TwelveFreeAdapterV2 implements MarketDataProvider {

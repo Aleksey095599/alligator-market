@@ -13,7 +13,9 @@ import reactor.core.publisher.Flux;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-/** Обработчик (handler) инструмента FX_SPOT для TwelveData (free). */
+/**
+ * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
+ */
 public class TwelveFreeFxSpotHandler implements InstrumentHandler {
 
     // Переменная с кодом провайдера к которому относится данный обработчик
