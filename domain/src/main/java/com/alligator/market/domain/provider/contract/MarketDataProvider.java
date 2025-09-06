@@ -8,7 +8,7 @@ import com.alligator.market.domain.quote.QuoteTick;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import java.util.Set;
 
-import reactor.core.publisher.Flux;
+import org.reactivestreams.Publisher;
 
 /**
  * Контракт провайдера рыночных данных.
@@ -26,14 +26,7 @@ public interface MarketDataProvider {
      *
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
-    default Flux<QuoteTick> getQuote(Instrument instrument) {
-        InstrumentType type = instrument.getType();
-        InstrumentHandler handler = findHandlerForInstrument(type);
-        if (handler == null) {
-            return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
-        }
-        return handler.getInstrumentQuote(instrument);
-    }
+    Publisher<QuoteTick> getQuote(Instrument instrument);
 
     /**
      * Находит обработчик для указанного типа инструмента.
