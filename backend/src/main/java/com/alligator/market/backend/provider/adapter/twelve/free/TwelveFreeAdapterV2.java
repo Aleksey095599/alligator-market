@@ -5,7 +5,6 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
-import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
@@ -37,7 +36,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         super(
-                Map.<InstrumentType, InstrumentHandler>of(
+                Map.of(
                         InstrumentType.FX_SPOT,
                         new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE)
                 ),
