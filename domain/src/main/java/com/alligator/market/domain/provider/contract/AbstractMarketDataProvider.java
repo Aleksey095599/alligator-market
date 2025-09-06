@@ -21,28 +21,19 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     // Набор обработчиков инструментов
     protected final Set<InstrumentHandler> handlers;
 
-    /**
-     * Конструктор базового провайдера.
-     *
-     * @param profile  профиль провайдера
-     * @param handlers набор обработчиков
-     */
+    // Конструктор
     protected AbstractMarketDataProvider(Set<InstrumentHandler> handlers, Profile profile) {
         this.profile = profile;
         this.handlers = Set.copyOf(handlers);
     }
 
-    /**
-     * Возвращает профиль провайдера.
-     */
+    /** Возвращает профиль провайдера. */
     @Override
     public Profile getProfile() {
         return profile;
     }
 
-    /**
-     * Возвращает набор обработчиков.
-     */
+    /** Возвращает набор обработчиков. */
     @Override
     public Set<InstrumentHandler> getHandlers() {
         return handlers;
