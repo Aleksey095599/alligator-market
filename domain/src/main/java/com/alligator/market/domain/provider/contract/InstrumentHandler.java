@@ -8,8 +8,7 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Контракт обработчика (handler) для конкретного финансового инструмента.
- * Каждый провайдер рыночных данных {@link MarketDataProvider} должен иметь как минимум один обработчик.
+ * Контракт обработчика (handler) для конкретного набора финансовых инструментов одного типа.
  */
 public interface InstrumentHandler<P extends MarketDataProvider> {
 
