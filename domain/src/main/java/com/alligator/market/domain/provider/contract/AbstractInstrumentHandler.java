@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 /**
  * Абстрактный каркас обработчика инструмента.
  */
-public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
-        implements InstrumentHandler<P> {
+public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
+        implements InstrumentHandler<P, I> {
 
     // Ссылка на провайдера
     private P provider;
@@ -19,11 +19,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
     private final InstrumentType supportedInstrumentType;
 
     // Набор поддерживаемых инструментов
-    private final Set<Instrument> supportedInstruments;
+    private final Set<I> supportedInstruments;
 
     // Конструктор
     protected AbstractInstrumentHandler(InstrumentType supportedInstrumentType,
-                                       Set<? extends Instrument> supportedInstruments) {
+                                       Set<I> supportedInstruments) {
         this.supportedInstrumentType = supportedInstrumentType;
         // Сохраняем инструменты и проверяем их тип
         this.supportedInstruments = supportedInstruments.stream()
@@ -34,7 +34,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
                         );
                     }
                 })
-                .map(i -> (Instrument) i)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
@@ -57,13 +56,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
 
     /** Возвращает набор поддерживаемых инструментов. */
     @Override
-    public Set<Instrument> getSupportedInstruments() {
+    public Set<I> getSupportedInstruments() {
         return supportedInstruments;
     }
 
     /** Проверяет поддержку указанного инструмента. */
     @Override
-    public boolean supportsInstrument(Instrument instrument) {
+    public boolean supportsInstrument(I instrument) {
         return supportedInstruments.contains(instrument);
     }
 }

@@ -18,17 +18,17 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     protected final Profile profile;
 
     // Карта обработчиков инструментов
-    protected final Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> handlersMap;
+    protected final Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap;
 
     // Конструктор
     protected AbstractMarketDataProvider(
-            Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> handlersMap,
+            Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap,
             Profile profile
     ) {
         this.profile = profile;
         this.handlersMap = Map.copyOf(handlersMap);
         this.handlersMap.values().forEach(h -> {
-            if (h instanceof AbstractInstrumentHandler<?> handler) {
+            if (h instanceof AbstractInstrumentHandler<?, ?> handler) {
                 // Передаем ссылку на провайдера
                 ((AbstractInstrumentHandler) handler).setProvider(this);
             }
@@ -43,7 +43,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Возвращает карту обработчиков. */
     @Override
-    public Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> getHandlers() {
+    public Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
         return handlersMap;
     }
 
@@ -55,10 +55,13 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
         InstrumentType type = instrument.getType();
-        InstrumentHandler<? extends MarketDataProvider> handler = handlersMap.get(type);
+        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(type);
         if (handler == null) {
             return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
         }
-        return handler.getInstrumentQuote(instrument);
+        @SuppressWarnings("unchecked")
+        InstrumentHandler<? extends MarketDataProvider, Instrument> casted =
+                (InstrumentHandler<? extends MarketDataProvider, Instrument>) handler;
+        return casted.getInstrumentQuote(instrument);
     }
 }

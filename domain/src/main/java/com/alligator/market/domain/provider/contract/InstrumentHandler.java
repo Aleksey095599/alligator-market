@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Контракт обработчика (handler) для конкретного набора финансовых инструментов одного типа.
  */
-public interface InstrumentHandler<P extends MarketDataProvider> {
+public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
     /** Возвращает провайдера, к которому относится обработчик. */
     P getProvider();
@@ -19,11 +19,11 @@ public interface InstrumentHandler<P extends MarketDataProvider> {
     InstrumentType getSupportedInstrumentType();
 
     /** Возвращает набор поддерживаемых инструментов. */
-    Set<Instrument> getSupportedInstruments();
+    Set<I> getSupportedInstruments();
 
     /** Проверяет поддержку указанного инструмента. */
-    boolean supportsInstrument(Instrument instrument);
+    boolean supportsInstrument(I instrument);
 
     /** Возвращает котировку для заданного инструмента. */
-    Publisher<QuoteTick> getInstrumentQuote(Instrument instrument);
+    Publisher<QuoteTick> getInstrumentQuote(I instrument);
 }
