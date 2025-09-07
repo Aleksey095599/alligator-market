@@ -3,7 +3,6 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.base.Instrument;
@@ -42,8 +41,8 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
             FxSpotRepository fxSpotRepository
     ) {
         Set<FxSpot> instruments = Set.copyOf(fxSpotRepository.findAll());
-        Map<InstrumentType, InstrumentHandler<TwelveFreeAdapterV2, ? extends Instrument>> handlers = Map.of(
-                InstrumentType.FX_SPOT,
+        Map<Class<? extends Instrument>, InstrumentHandler<TwelveFreeAdapterV2, ? extends Instrument>> handlers = Map.of(
+                FxSpot.class,
                 new TwelveFreeFxSpotHandler(webClient, props, instruments)
         );
         super(
@@ -52,7 +51,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
                         ProfileStatus.ACTIVE,
                         PROVIDER_CODE,
                         "TwelveData Free Plan",
-                        Set.of(InstrumentType.FX_SPOT),
+                        Set.of(FxSpot.class),
                         DeliveryMode.PULL,
                         AccessMethod.API_POLL,
                         false,

@@ -1,6 +1,4 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
-
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.ProfileStatus;
@@ -16,7 +14,7 @@ public record ProfileDto(
         @NotNull ProfileStatus profileStatus,
         @NotBlank String providerCode,
         @NotBlank String displayName,
-        @NotNull Set<InstrumentType> instrumentsSupported,
+        @NotNull Set<String> instrumentsSupported,
         @NotNull DeliveryMode deliveryMode,
         @NotNull AccessMethod accessMethod,
         boolean bulkSubscription,

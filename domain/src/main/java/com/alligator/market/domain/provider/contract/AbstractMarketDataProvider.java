@@ -1,7 +1,6 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.base.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -18,11 +17,11 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     protected final Profile profile;
 
     // Карта обработчиков инструментов
-    protected final Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap;
+    protected final Map<Class<? extends Instrument>, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap;
 
     // Конструктор
     protected AbstractMarketDataProvider(
-            Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap,
+            Map<Class<? extends Instrument>, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap,
             Profile profile
     ) {
         this.profile = profile;
@@ -43,7 +42,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Возвращает карту обработчиков. */
     @Override
-    public Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
+    public Map<Class<? extends Instrument>, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
         return handlersMap;
     }
 
@@ -54,10 +53,10 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
      */
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
-        InstrumentType type = instrument.getType();
-        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(type);
+        Class<? extends Instrument> clazz = instrument.getClass();
+        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(clazz);
         if (handler == null) {
-            return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
+            return Flux.error(new InstrumentNotSupportedException(clazz, getProfile().providerCode()));
         }
         @SuppressWarnings("unchecked")
         InstrumentHandler<? extends MarketDataProvider, Instrument> casted =

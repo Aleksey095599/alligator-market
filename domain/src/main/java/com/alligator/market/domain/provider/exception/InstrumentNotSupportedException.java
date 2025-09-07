@@ -1,12 +1,12 @@
 package com.alligator.market.domain.provider.exception;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.base.Instrument;
 
 /**
- * Неподдерживаемый тип инструмента.
+ * Неподдерживаемый класс инструмента.
  */
 public class InstrumentNotSupportedException extends RuntimeException {
-    public InstrumentNotSupportedException(InstrumentType type, String providerCode) {
-        super("Instrument type %s not supported by %s".formatted(type, providerCode));
+    public InstrumentNotSupportedException(Class<? extends Instrument> clazz, String providerCode) {
+        super("Instrument %s not supported by %s".formatted(clazz.getSimpleName(), providerCode));
     }
 }

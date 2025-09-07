@@ -1,10 +1,8 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.base.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Абстрактный каркас обработчика инструмента.
@@ -15,26 +13,17 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     // Ссылка на провайдера
     private P provider;
 
-    // Поддерживаемый тип инструмента
-    private final InstrumentType supportedInstrumentType;
+    // Поддерживаемый класс инструмента
+    private final Class<I> supportedInstrumentClass;
 
     // Набор поддерживаемых инструментов
     private final Set<I> supportedInstruments;
 
     // Конструктор
-    protected AbstractInstrumentHandler(InstrumentType supportedInstrumentType,
+    protected AbstractInstrumentHandler(Class<I> supportedInstrumentClass,
                                        Set<I> supportedInstruments) {
-        this.supportedInstrumentType = supportedInstrumentType;
-        // Сохраняем инструменты и проверяем их тип
-        this.supportedInstruments = supportedInstruments.stream()
-                .peek(i -> {
-                    if (i.getType() != supportedInstrumentType) {
-                        throw new IllegalArgumentException(
-                                "Instrument type mismatch: %s".formatted(i.getType())
-                        );
-                    }
-                })
-                .collect(Collectors.toUnmodifiableSet());
+        this.supportedInstrumentClass = supportedInstrumentClass;
+        this.supportedInstruments = Set.copyOf(supportedInstruments);
     }
 
     // Устанавливаем провайдера
@@ -48,10 +37,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return provider;
     }
 
-    /** Возвращает поддерживаемый тип инструмента. */
+    /** Возвращает поддерживаемый класс инструмента. */
     @Override
-    public InstrumentType getSupportedInstrumentType() {
-        return supportedInstrumentType;
+    public Class<I> getSupportedInstrumentClass() {
+        return supportedInstrumentClass;
     }
 
     /** Возвращает набор поддерживаемых инструментов. */
