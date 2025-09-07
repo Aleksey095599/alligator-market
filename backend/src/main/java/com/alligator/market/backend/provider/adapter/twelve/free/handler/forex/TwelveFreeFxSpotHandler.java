@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.AbstractInstrumentHandler;
@@ -19,7 +18,7 @@ import java.util.Set;
  * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
  * Тип инструмента задаётся в родительском классе.
  */
-public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2> {
+public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
 
     // Веб-клиент для запросов к провайдеру
     private final WebClient webClient;
@@ -41,12 +40,10 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
 
     /** Возвращает котировку для указанного инструмента. */
     @Override
-    public Flux<QuoteTick> getInstrumentQuote(Instrument instrument) {
-
-        FxSpot fxSpot = (FxSpot) instrument;
+    public Flux<QuoteTick> getInstrumentQuote(FxSpot instrument) {
 
         // Провайдер ожидает именно такой формат запрашиваемого символа инструмента:
-        String symbol = fxSpot.base().code() + "/" + fxSpot.quote().code();
+        String symbol = instrument.base().code() + "/" + instrument.quote().code();
 
         return webClient.get()
                 .uri(b -> b

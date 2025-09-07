@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.scanner;
 
+import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.Profile;
@@ -27,7 +28,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     }
 
     @Override
-    public List<InstrumentHandler<? extends MarketDataProvider>> getHandlers() {
+    public List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
         return providers.stream()
                 .flatMap(p -> p.getHandlers().values().stream())
                 .collect(Collectors.toList());
