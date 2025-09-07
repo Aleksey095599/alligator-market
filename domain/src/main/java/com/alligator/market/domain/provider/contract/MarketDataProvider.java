@@ -18,7 +18,7 @@ public interface MarketDataProvider {
     Profile getProfile();
 
     /** Возвращает карту обработчиков {@link InstrumentHandler}. */
-    Map<InstrumentType, InstrumentHandler> getHandlers();
+    Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> getHandlers();
 
     /**
      * Возвращает котировку.

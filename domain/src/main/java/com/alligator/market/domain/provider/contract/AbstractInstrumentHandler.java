@@ -5,7 +5,11 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 /**
  * Абстрактный каркас обработчика инструмента.
  */
-public abstract class AbstractInstrumentHandler implements InstrumentHandler {
+public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
+        implements InstrumentHandler<P> {
+
+    // Ссылка на провайдера
+    private P provider;
 
     // Код провайдера
     private final String providerCode;
@@ -17,6 +21,17 @@ public abstract class AbstractInstrumentHandler implements InstrumentHandler {
     protected AbstractInstrumentHandler(String providerCode, InstrumentType supportedInstrumentType) {
         this.providerCode = providerCode;
         this.supportedInstrumentType = supportedInstrumentType;
+    }
+
+    // Устанавливаем провайдера
+    void setProvider(P provider) {
+        this.provider = provider;
+    }
+
+    /** Возвращает ссылку на провайдера. */
+    @Override
+    public P getProvider() {
+        return provider;
     }
 
     /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */

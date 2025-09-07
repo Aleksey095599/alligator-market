@@ -9,10 +9,13 @@ import org.reactivestreams.Publisher;
  * Контракт обработчика (handler) для конкретного финансового инструмента.
  * Каждый провайдер рыночных данных {@link MarketDataProvider} должен иметь как минимум один обработчик.
  */
-public interface InstrumentHandler {
+public interface InstrumentHandler<P extends MarketDataProvider> {
 
     /** Возвращает внутренний код провайдера рыночных данных, к которому относится обработчик. */
     String getProviderCode();
+
+    /** Возвращает провайдера, к которому относится обработчик. */
+    P getProvider();
 
     /** Возвращает тип финансового инструмента, который поддерживает данный обработчик. */
     InstrumentType getSupportedInstrumentType();

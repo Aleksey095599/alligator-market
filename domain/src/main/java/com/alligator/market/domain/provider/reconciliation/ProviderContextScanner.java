@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface ProviderContextScanner {
     List<Profile> getProfiles();
 
     /** Вернуть список обработчиков финансовых инструментов из контекста. */
-    List<InstrumentHandler> getHandlers();
+    List<InstrumentHandler<? extends MarketDataProvider>> getHandlers();
 }
