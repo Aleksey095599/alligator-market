@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Set;
 
 /**
  * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
@@ -29,9 +30,10 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     // Конструктор
     public TwelveFreeFxSpotHandler(
             WebClient webClient,
-            TwelveFreeConnectionProps props
+            TwelveFreeConnectionProps props,
+            Set<FxSpot> instruments
     ) {
-        super(InstrumentType.FX_SPOT);
+        super(InstrumentType.FX_SPOT, instruments);
         this.webClient = webClient;
         this.props = props;
     }
