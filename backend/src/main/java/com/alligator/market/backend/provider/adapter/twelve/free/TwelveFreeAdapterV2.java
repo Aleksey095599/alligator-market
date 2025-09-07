@@ -4,6 +4,8 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -32,14 +34,17 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
      *
      * @param props     конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
      * @param webClient конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
+     * @param fxSpotRepository репозиторий инструментов FX_SPOT
      */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
-            @Qualifier("twelveFreeWebClient") WebClient webClient
+            @Qualifier("twelveFreeWebClient") WebClient webClient,
+            FxSpotRepository fxSpotRepository
     ) {
+        Set<FxSpot> instruments = Set.copyOf(fxSpotRepository.findAll());
         Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> handlers = Map.of(
                 InstrumentType.FX_SPOT,
-                new TwelveFreeFxSpotHandler(webClient, props)
+                new TwelveFreeFxSpotHandler(webClient, props, instruments)
         );
         super(
                 handlers,
