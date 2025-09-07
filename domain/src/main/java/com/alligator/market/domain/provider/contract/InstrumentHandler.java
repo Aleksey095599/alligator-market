@@ -11,9 +11,6 @@ import org.reactivestreams.Publisher;
  */
 public interface InstrumentHandler<P extends MarketDataProvider> {
 
-    /** Возвращает внутренний код провайдера рыночных данных, к которому относится обработчик. */
-    String getProviderCode();
-
     /** Возвращает провайдера, к которому относится обработчик. */
     P getProvider();
 
