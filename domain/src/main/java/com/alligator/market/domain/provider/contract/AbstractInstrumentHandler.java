@@ -11,15 +11,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
     // Ссылка на провайдера
     private P provider;
 
-    // Код провайдера
-    private final String providerCode;
-
     // Поддерживаемый тип инструмента
     private final InstrumentType supportedInstrumentType;
 
     // Конструктор
-    protected AbstractInstrumentHandler(String providerCode, InstrumentType supportedInstrumentType) {
-        this.providerCode = providerCode;
+    protected AbstractInstrumentHandler(InstrumentType supportedInstrumentType) {
         this.supportedInstrumentType = supportedInstrumentType;
     }
 
@@ -32,12 +28,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider>
     @Override
     public P getProvider() {
         return provider;
-    }
-
-    /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
-    @Override
-    public String getProviderCode() {
-        return providerCode;
     }
 
     /** Возвращает поддерживаемый тип инструмента. */

@@ -39,7 +39,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
     ) {
         Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider>> handlers = Map.of(
                 InstrumentType.FX_SPOT,
-                new TwelveFreeFxSpotHandler(webClient, props, PROVIDER_CODE)
+                new TwelveFreeFxSpotHandler(webClient, props)
         );
         super(
                 handlers,

@@ -16,7 +16,7 @@ import java.time.Instant;
 
 /**
  * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
- * Код провайдера и тип инструмента задаются в родительском классе.
+ * Тип инструмента задаётся в родительском классе.
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2> {
 
@@ -29,10 +29,9 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     // Конструктор
     public TwelveFreeFxSpotHandler(
             WebClient webClient,
-            TwelveFreeConnectionProps props,
-            String providerCode
+            TwelveFreeConnectionProps props
     ) {
-        super(providerCode, InstrumentType.FX_SPOT);
+        super(InstrumentType.FX_SPOT);
         this.webClient = webClient;
         this.props = props;
     }
@@ -73,7 +72,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
                 price,
                 price,
                 Instant.now(),
-                getProviderCode()
+                getProvider().getProfile().providerCode()
         );
     }
 }
