@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
+import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
@@ -17,7 +18,7 @@ import java.time.Instant;
  * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
  * Код провайдера и тип инструмента задаются в родительском классе.
  */
-public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler {
+public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2> {
 
     // Веб-клиент для запросов к провайдеру
     private final WebClient webClient;
