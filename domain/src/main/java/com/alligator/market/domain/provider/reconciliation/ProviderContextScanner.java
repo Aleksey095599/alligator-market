@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
 import java.util.List;
