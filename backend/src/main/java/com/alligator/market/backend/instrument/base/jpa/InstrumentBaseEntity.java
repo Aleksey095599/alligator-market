@@ -1,8 +1,10 @@
 package com.alligator.market.backend.instrument.base.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +33,9 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     @Column(name = "code", length = 32, nullable = false, updatable = false, unique = true)
     private String code;
 
-    /** Класс финансового инструмента. */
-    @NotBlank
-    @Column(name = "instrument_class", length = 200, nullable = false, updatable = false)
-    private String instrumentClass;
+    /** Тип финансового инструмента. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 32, nullable = false, updatable = false)
+    private InstrumentType type;
 }

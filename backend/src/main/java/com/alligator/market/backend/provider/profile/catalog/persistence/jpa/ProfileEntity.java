@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
@@ -51,8 +52,8 @@ public class ProfileEntity extends BaseEntity {
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
 
-    /** Поддерживаемые классы инструментов {@link Profile#instrumentsSupported()}. */
-    @ElementCollection
+    /** Поддерживаемые инструменты {@link Profile#instrumentsSupported()}. */
+    @ElementCollection(targetClass = InstrumentType.class)
     @CollectionTable(
             name = "profile_supported_instrument",
             joinColumns = @JoinColumn(
@@ -61,8 +62,9 @@ public class ProfileEntity extends BaseEntity {
                     foreignKey = @ForeignKey(name = "fk_profile_supported_instrument")
             )
     )
-    @Column(name = "instrument_class", length = 200, nullable = false, updatable = false)
-    private Set<String> instrumentClasses;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "instruments_supported", length = 20, nullable = false, updatable = false)
+    private Set<InstrumentType> instrumentsSupported;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link Profile#deliveryMode()}. */
     @NotNull

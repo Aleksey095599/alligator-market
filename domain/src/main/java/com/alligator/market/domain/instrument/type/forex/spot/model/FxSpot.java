@@ -1,6 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 
@@ -28,4 +29,8 @@ public record FxSpot(
         return base.code() + quote.code() + "_" + valueDateCode;
     }
 
+    @Override
+    public InstrumentType getType() {
+        return InstrumentType.FX_SPOT;
+    }
 }

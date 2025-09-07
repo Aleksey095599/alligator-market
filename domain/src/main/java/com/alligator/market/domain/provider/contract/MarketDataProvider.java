@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -17,7 +18,7 @@ public interface MarketDataProvider {
     Profile getProfile();
 
     /** Возвращает карту обработчиков {@link InstrumentHandler}. */
-    Map<Class<? extends Instrument>, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers();
+    Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers();
 
     /**
      * Возвращает котировку.

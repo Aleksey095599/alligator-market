@@ -85,10 +85,10 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    /** Класс инструмента не поддерживается провайдером. */
+    /** Тип инструмента не поддерживается провайдером. */
     @ExceptionHandler(InstrumentNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> handleInstrumentNotSupported(InstrumentNotSupportedException ex) {
-        // 400, неподдерживаемый класс инструмента
+        // 400, неподдерживаемый тип инструмента
         log.warn("InstrumentNotSupportedException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
@@ -109,7 +109,7 @@ public class ApplicationExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    /** Дублирование обработчика по классу инструмента. */
+    /** Дублирование обработчика по типу инструмента. */
     @ExceptionHandler(ProviderInstrumentHandlerDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> handleProviderInstrumentHandlerDuplicate(ProviderInstrumentHandlerDuplicateException ex) {
         // 500, ошибка конфигурации сервера

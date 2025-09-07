@@ -37,7 +37,7 @@ public class FxSpotEntityMapper {
         entity.setQuoteDecimal(model.quoteDecimal());
         entity.setValueDateCode(model.valueDateCode());
         entity.setCode(model.getCode());
-        entity.setInstrumentClass(model.getClass().getName());
+        entity.setType(model.getType());
     }
 }
 

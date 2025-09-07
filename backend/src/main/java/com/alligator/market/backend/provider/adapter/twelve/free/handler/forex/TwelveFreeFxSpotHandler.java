@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -31,7 +32,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
             TwelveFreeConnectionProps props,
             Set<FxSpot> instruments
     ) {
-        super(FxSpot.class, instruments);
+        super(InstrumentType.FX_SPOT, instruments);
         this.webClient = webClient;
         this.props = props;
     }
