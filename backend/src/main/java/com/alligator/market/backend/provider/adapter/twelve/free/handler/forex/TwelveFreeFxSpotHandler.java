@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,36 +15,25 @@ import java.time.Instant;
 
 /**
  * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
+ * Код провайдера и тип инструмента задаются в родительском классе.
  */
-public class TwelveFreeFxSpotHandler implements InstrumentHandler {
+public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler {
 
-    // Переменная с кодом провайдера к которому относится данный обработчик
-    private static final String PROVIDER_CODE = "TWELVE_FREE";
-
+    // Веб-клиент для запросов к провайдеру
     private final WebClient webClient;
-    private final TwelveFreeConnectionProps props;
-    private final String providerCode;
 
+    // Настройки подключения к провайдеру
+    private final TwelveFreeConnectionProps props;
+
+    // Конструктор
     public TwelveFreeFxSpotHandler(
             WebClient webClient,
             TwelveFreeConnectionProps props,
             String providerCode
     ) {
+        super(providerCode, InstrumentType.FX_SPOT);
         this.webClient = webClient;
         this.props = props;
-        this.providerCode = providerCode;
-    }
-
-    /** Возвращает код провайдера рыночных данных, к которому относится обработчик. */
-    @Override
-    public String getProviderCode() {
-        return PROVIDER_CODE;
-    }
-
-    /** Возвращает поддерживаемый тип инструмента. */
-    @Override
-    public InstrumentType getSupportedInstrumentType() {
-        return InstrumentType.FX_SPOT;
     }
 
 
@@ -83,7 +72,7 @@ public class TwelveFreeFxSpotHandler implements InstrumentHandler {
                 price,
                 price,
                 Instant.now(),
-                providerCode
+                getProviderCode()
         );
     }
 }
