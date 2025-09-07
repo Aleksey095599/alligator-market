@@ -1,7 +1,6 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.base.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -15,8 +14,8 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     /** Возвращает провайдера, к которому относится обработчик. */
     P getProvider();
 
-    /** Возвращает тип финансового инструмента, который поддерживает данный обработчик. */
-    InstrumentType getSupportedInstrumentType();
+    /** Возвращает класс финансового инструмента, который поддерживает данный обработчик. */
+    Class<I> getSupportedInstrumentClass();
 
     /** Возвращает набор поддерживаемых инструментов. */
     Set<I> getSupportedInstruments();

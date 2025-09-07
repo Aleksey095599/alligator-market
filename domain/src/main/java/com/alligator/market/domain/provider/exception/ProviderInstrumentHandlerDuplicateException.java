@@ -1,12 +1,12 @@
 package com.alligator.market.domain.provider.exception;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.base.Instrument;
 
 /**
- * Дублирование обработчика по типу инструмента.
+ * Дублирование обработчика по классу инструмента.
  */
 public class ProviderInstrumentHandlerDuplicateException extends RuntimeException {
-    public ProviderInstrumentHandlerDuplicateException(InstrumentType type) {
-        super("Duplicate handler for instrument type: %s".formatted(type));
+    public ProviderInstrumentHandlerDuplicateException(Class<? extends Instrument> clazz) {
+        super("Duplicate handler for instrument class: %s".formatted(clazz.getSimpleName()));
     }
 }

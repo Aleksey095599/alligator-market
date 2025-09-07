@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.profile.model;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.base.Instrument;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * @param profileStatus          Статус профиля {@link ProfileStatus}
  * @param providerCode           Технический код провайдера
  * @param displayName            Отображаемое имя провайдера (user friendly)
- * @param instrumentsSupported   Поддерживаемые инструменты {@link InstrumentType}
+ * @param instrumentsSupported   Поддерживаемые классы инструментов
  * @param deliveryMode           Режим доставки рыночных данных: PULL или PUSH {@link AccessMethod}
  * @param accessMethod           Метод доступа к рыночным данным {@link AccessMethod}
  * @param bulkSubscription       Поддержка массовой подписки одним запросом
@@ -21,7 +21,7 @@ public record Profile(
         ProfileStatus profileStatus,
         String providerCode,
         String displayName,
-        Set<InstrumentType> instrumentsSupported,
+        Set<Class<? extends Instrument>> instrumentsSupported,
         DeliveryMode deliveryMode,
         AccessMethod accessMethod,
         boolean bulkSubscription,
