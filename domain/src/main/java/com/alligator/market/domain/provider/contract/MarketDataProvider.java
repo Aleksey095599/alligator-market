@@ -20,6 +20,14 @@ public interface MarketDataProvider {
     Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers();
 
     /**
+     * Возвращает обработчик для указанного инструмента.
+     *
+     * @throws InstrumentNotSupportedException если обработчик для инструмента не найден
+     */
+    InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> getHandler(Instrument instrument)
+            throws InstrumentNotSupportedException;
+
+    /**
      * Возвращает котировку.
      *
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
