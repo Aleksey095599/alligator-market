@@ -19,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Адаптер для провайдера рыночных данных TwelveData (бесплатная подписка).
@@ -42,12 +43,12 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
             FxSpotRepository fxSpotRepository
     ) {
         Set<FxSpot> instruments = Set.copyOf(fxSpotRepository.findAll());
-        Map<InstrumentType, InstrumentHandler<TwelveFreeAdapterV2, ? extends Instrument>> handlers = Map.of(
-                InstrumentType.FX_SPOT,
-                new TwelveFreeFxSpotHandler(webClient, props, instruments)
-        );
+        TwelveFreeFxSpotHandler handler = new TwelveFreeFxSpotHandler(webClient, props, instruments);
+        // Собираем карту обработчиков
+        Map<Instrument, InstrumentHandler<TwelveFreeAdapterV2, ? extends Instrument>> handlers = new HashMap<>();
+        instruments.forEach(inst -> handlers.put(inst, handler));
         super(
-                handlers,
+                handlers.values(),
                 new Profile(
                         ProfileStatus.ACTIVE,
                         PROVIDER_CODE,

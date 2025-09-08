@@ -28,9 +28,10 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     }
 
     @Override
+    /** Возвращает обработчики без повторов. */
     public List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
         return providers.stream()
-                .flatMap(p -> p.getHandlers().values().stream())
+                .flatMap(p -> p.getHandlers().values().stream().distinct())
                 .collect(Collectors.toList());
     }
 }
