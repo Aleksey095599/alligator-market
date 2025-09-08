@@ -1,12 +1,13 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,22 +18,24 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     // Профиль провайдера
     protected final Profile profile;
 
-    // Карта обработчиков инструментов
-    protected final Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap;
+    // Карта обработчиков по инструментам
+    protected final Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap;
 
     // Конструктор
     protected AbstractMarketDataProvider(
-            Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlersMap,
+            Collection<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers,
             Profile profile
     ) {
         this.profile = profile;
-        this.handlersMap = Map.copyOf(handlersMap);
-        this.handlersMap.values().forEach(h -> {
+        Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> map = new HashMap<>();
+        handlers.forEach(h -> {
             if (h instanceof AbstractInstrumentHandler<?, ?> handler) {
                 // Передаем ссылку на провайдера
                 ((AbstractInstrumentHandler) handler).setProvider(this);
             }
+            h.getSupportedInstruments().forEach(i -> map.put(i, h));
         });
+        this.handlersMap = Map.copyOf(map);
     }
 
     /** Возвращает профиль провайдера. */
@@ -43,7 +46,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Возвращает карту обработчиков. */
     @Override
-    public Map<InstrumentType, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
+    public Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
         return handlersMap;
     }
 
@@ -54,10 +57,9 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
      */
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
-        InstrumentType type = instrument.getType();
-        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(type);
+        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(instrument);
         if (handler == null) {
-            return Flux.error(new InstrumentNotSupportedException(type, getProfile().providerCode()));
+            return Flux.error(new InstrumentNotSupportedException(instrument.getType(), getProfile().providerCode()));
         }
         @SuppressWarnings("unchecked")
         InstrumentHandler<? extends MarketDataProvider, Instrument> casted =
