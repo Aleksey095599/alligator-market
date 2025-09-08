@@ -5,7 +5,6 @@ import com.alligator.market.domain.provider.exception.InstrumentNotSupportedExce
 import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,19 +50,30 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     }
 
     /**
+     * Извлекает обработчик для указанного инструмента.
+     *
+     * @throws InstrumentNotSupportedException если обработчик не найден
+     */
+    @Override
+    public InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> getHandler(Instrument instrument)
+            throws InstrumentNotSupportedException {
+        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(instrument);
+        if (handler == null) {
+            throw new InstrumentNotSupportedException(instrument.getType(), getProfile().providerCode());
+        }
+        return handler;
+    }
+
+    /**
      * Возвращает котировку.
      *
      * @throws InstrumentNotSupportedException если подходящий обработчик инструмента не найден
      */
     @Override
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
-        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(instrument);
-        if (handler == null) {
-            return Flux.error(new InstrumentNotSupportedException(instrument.getType(), getProfile().providerCode()));
-        }
         @SuppressWarnings("unchecked")
-        InstrumentHandler<? extends MarketDataProvider, Instrument> casted =
-                (InstrumentHandler<? extends MarketDataProvider, Instrument>) handler;
-        return casted.getInstrumentQuote(instrument);
+        InstrumentHandler<? extends MarketDataProvider, Instrument> handler =
+                (InstrumentHandler<? extends MarketDataProvider, Instrument>) getHandler(instrument);
+        return handler.getInstrumentQuote(instrument);
     }
 }
