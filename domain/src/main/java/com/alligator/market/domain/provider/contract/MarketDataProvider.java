@@ -14,7 +14,7 @@ public interface MarketDataProvider {
     Profile profile();
 
     /** Набор обработчиков. */
-
+    Set<> handlers();
 
     /**
      * Возвращает обработчик для указанного инструмента.

@@ -21,16 +21,11 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     Class<I> instrumentClass();
 
     /** Набор поддерживаемых инструментов. */
-    Set<I> supportedInstruments();
+    Set<I> supportedInstruments(); // TODO не должно быть дублирований
 
     /** Котировка заданного инструмента. */
     Publisher<QuoteTick> quote(I instrument);
-
-    default boolean supports(I instrument) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
-        if (!instrumentClass().isInstance(instrument)) return false; // Инструмент не подходящего класса
-        Set<I> supported = supportedInstruments();
-        if (supported.isEmpty()) return false; // Список поддерживаемых инструментов пуст
-        return supported.contains(instrument);
-    }
+    // TODO инструмент не пустой, можно в виде Objects.requireNonNull(instrument, "instrument must not be null")
+    // TODO инструмент должен принадлежать классу instrumentClass иначе ошибка InstrumentWrongClassException
+    // TODO инструмент должен принадлежать набору supportedInstruments иначе ошибка InstrumentNotSupported
 }
