@@ -62,7 +62,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     /** Проверяет поддержку указанного инструмента. */
     @Override
-    public boolean supportsInstrument(I instrument) {
+    public boolean supportedInstrumentClass(I instrument) {
         return supportedInstruments.contains(instrument);
     }
 }

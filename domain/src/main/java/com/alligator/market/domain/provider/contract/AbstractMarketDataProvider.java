@@ -74,6 +74,6 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
         @SuppressWarnings("unchecked")
         InstrumentHandler<? extends MarketDataProvider, Instrument> handler =
                 (InstrumentHandler<? extends MarketDataProvider, Instrument>) getHandler(instrument);
-        return handler.getInstrumentQuote(instrument);
+        return handler.getQuote(instrument);
     }
 }

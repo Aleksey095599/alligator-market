@@ -40,7 +40,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
 
     /** Возвращает котировку для указанного инструмента. */
     @Override
-    public Flux<QuoteTick> getInstrumentQuote(FxSpot instrument) {
+    public Flux<QuoteTick> getQuote(FxSpot instrument) {
 
         // Провайдер ожидает именно такой формат запрашиваемого символа инструмента:
         String symbol = instrument.base().code() + "/" + instrument.quote().code();
