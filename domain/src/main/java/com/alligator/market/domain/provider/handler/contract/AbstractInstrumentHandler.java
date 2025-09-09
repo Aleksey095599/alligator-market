@@ -16,6 +16,7 @@ import java.util.Set;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
+    private final String handlerCode;
     private final P provider;
     private final Class<I> instrumentClass;
     private final Set<I> supportedInstruments;
@@ -23,13 +24,21 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /**
      * Конструктор с базовыми проверками.
      */
-    protected AbstractInstrumentHandler(P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
+    protected AbstractInstrumentHandler(String handlerCode, P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
+        this.handlerCode = Objects.requireNonNull(handlerCode,
+                "handlerCode must not be null");
         this.provider = Objects.requireNonNull(provider,
                 "provider must not be null");
         this.instrumentClass = Objects.requireNonNull(instrumentClass,
                 "instrumentClass must not be null");
         this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments,
                 "supportedInstruments must not be null"));
+    }
+
+    /** Имя обработчика. */
+    @Override
+    public String code() {
+        return handlerCode;
     }
 
     /** Провайдер, к которому относится обработчик. */
@@ -63,7 +72,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             throw new InstrumentWrongClassException(instrumentClass, instrument.getClass());
         }
         if (!supportedInstruments.contains(instrument)) {
-            throw new InstrumentNotSupportedException(instrument.code(), instrumentClass.getSimpleName(), provider.profile().providerCode());
+            throw new InstrumentNotSupportedException(instrument.code(), handlerCode, provider.profile().providerCode());
         }
         return doQuote(instrument);
     }
