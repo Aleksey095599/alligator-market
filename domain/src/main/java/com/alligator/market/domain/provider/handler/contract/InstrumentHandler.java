@@ -1,6 +1,7 @@
-package com.alligator.market.domain.provider.contract;
+package com.alligator.market.domain.provider.handler.contract;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 

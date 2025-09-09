@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.base.contract.Instrument;
 import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
-import com.alligator.market.domain.provider.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.AccessMethod;
 import com.alligator.market.domain.provider.profile.model.DeliveryMode;
 import com.alligator.market.domain.provider.profile.model.Profile;
