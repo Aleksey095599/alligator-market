@@ -7,18 +7,16 @@ import com.alligator.market.domain.provider.profile.model.Profile;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
-import java.util.Map;
-
 /**
  * Контракт провайдера рыночных данных.
  */
 public interface MarketDataProvider {
 
-    /** Возвращает профиль провайдера {@link Profile}. */
-    Profile getProfile();
+    /** Профиль провайдера {@link Profile}. */
+    Profile profile();
 
-    /** Возвращает карту обработчиков по инструментам. */
-    Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers();
+    /** Возвращает набор обработчиков. */
+
 
     /**
      * Возвращает обработчик для указанного инструмента.
