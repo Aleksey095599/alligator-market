@@ -14,17 +14,12 @@ import java.util.Set;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /** Провайдер, к которому относится обработчик. */
     private final P provider;
-
-    /** Класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
-
-    /** Набор поддерживаемых инструментов. */
     private final Set<I> supportedInstruments;
 
     /**
-     * Конструктор с базовой настройкой.
+     * Конструктор с базовыми проверками.
      */
     protected AbstractInstrumentHandler(P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
@@ -32,21 +27,25 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null"));
     }
 
+    /** Провайдер, к которому относится обработчик. */
     @Override
     public P provider() {
         return provider;
     }
 
+    /** Класс поддерживаемых инструментов. */
     @Override
     public Class<I> instrumentClass() {
         return instrumentClass;
     }
 
+    /** Набор поддерживаемых инструментов. */
     @Override
     public Set<I> supportedInstruments() {
         return supportedInstruments;
     }
 
+    /** Котировка заданного инструмента. */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
