@@ -22,9 +22,12 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      * Конструктор с базовыми проверками.
      */
     protected AbstractInstrumentHandler(P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
-        this.provider = Objects.requireNonNull(provider, "provider must not be null");
-        this.instrumentClass = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
-        this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null"));
+        this.provider = Objects.requireNonNull(provider,
+                "provider must not be null");
+        this.instrumentClass = Objects.requireNonNull(instrumentClass,
+                "instrumentClass must not be null");
+        this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments,
+                "supportedInstruments must not be null"));
     }
 
     /** Провайдер, к которому относится обработчик. */
