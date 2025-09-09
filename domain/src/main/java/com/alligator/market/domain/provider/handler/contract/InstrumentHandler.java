@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -12,6 +13,9 @@ import java.util.Set;
  * Жёстко привязан к провайдеру и к классу инструмента.
  */
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
+
+    /** Провайдер, к которому относится обработчик. */
+    P provider();
 
     /** Класс поддерживаемых инструментов. */
     Class<I> instrumentClass();
@@ -21,4 +25,12 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
 
     /** Котировка заданного инструмента. */
     Publisher<QuoteTick> quote(I instrument);
+
+    default boolean supports(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+        if (!instrumentClass().isInstance(instrument)) return false; // Инструмент не подходящего класса
+        Set<I> supported = supportedInstruments();
+        if (supported.isEmpty()) return false; // Список поддерживаемых инструментов пуст
+        return supported.contains(instrument);
+    }
 }
