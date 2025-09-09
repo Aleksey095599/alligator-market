@@ -13,6 +13,9 @@ import java.util.Set;
  */
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
+    /** Код обработчика. */
+    String code();
+
     /** Провайдер, к которому относится обработчик. */
     P provider();
 

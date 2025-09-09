@@ -1,12 +1,10 @@
 package com.alligator.market.domain.provider.exception;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
-
 /**
- * Инструмент не поддерживается.
+ * Инструмент не поддерживается обработчиком.
  */
 public class InstrumentNotSupportedException extends RuntimeException {
-    public InstrumentNotSupportedException(InstrumentType type, String providerCode) {
-        super("Instrument %s not supported by %s".formatted(type, providerCode));
+    public InstrumentNotSupportedException(String instrumentCode, String handlerCode, String providerCode) {
+        super("Instrument %s not supported by handler %s of provider %s".formatted(instrumentCode, handlerCode, providerCode));
     }
 }

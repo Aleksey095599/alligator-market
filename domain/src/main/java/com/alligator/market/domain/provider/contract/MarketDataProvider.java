@@ -22,5 +22,5 @@ public interface MarketDataProvider {
      * @throws InstrumentNotSupportedException если обработчик для инструмента не найден
      */
     InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> getHandler(Instrument instrument)
-            throws InstrumentNotSupportedException;
+            throws HandlerNotFoundException;
 }

@@ -2,6 +2,8 @@ package com.alligator.market.domain.provider.handler.contract;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -48,15 +50,20 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return supportedInstruments;
     }
 
-    /** Котировка заданного инструмента. */
+    /**
+     * Котировка заданного инструмента.
+     *
+     * @throws InstrumentWrongClassException   если класс инструмента не соответствует @instrumentClass
+     * @throws InstrumentNotSupportedException если инструмент не содержится в наборе @supportedInstruments
+     */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
         if (!instrumentClass.isInstance(instrument)) {
-            throw new IllegalArgumentException("instrument type is not supported");
+            throw new InstrumentWrongClassException(instrumentClass, instrument.getClass());
         }
         if (!supportedInstruments.contains(instrument)) {
-            throw new IllegalArgumentException("instrument is not supported");
+            throw new InstrumentNotSupportedException(instrument.code(), instrumentClass.getSimpleName(), provider.profile().providerCode());
         }
         return doQuote(instrument);
     }

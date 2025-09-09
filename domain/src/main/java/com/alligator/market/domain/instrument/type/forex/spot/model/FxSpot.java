@@ -25,12 +25,12 @@ public record FxSpot(
     }
 
     @Override
-    public String getCode() {
+    public String code() {
         return base.code() + quote.code() + "_" + valueDateCode;
     }
 
     @Override
-    public InstrumentType getType() {
+    public InstrumentType type() {
         return InstrumentType.FX_SPOT;
     }
 }

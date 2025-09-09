@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
 /**
- * Инструмент передан неправильного класса.
+ * Класс инструмента не соответствует обработчику.
  */
 public class InstrumentWrongClassException extends RuntimeException {
 

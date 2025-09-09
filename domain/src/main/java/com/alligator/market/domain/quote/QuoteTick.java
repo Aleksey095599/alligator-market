@@ -9,7 +9,7 @@ import java.time.Instant;
 /**
  * Глобальная модель тика котировки для валютной пары.
  *
- * @param instrumentCode соответствует {@link Instrument#getCode()}
+ * @param instrumentCode соответствует {@link Instrument#code()}
  * @param providerCode   соответствует {@link Profile#providerCode()}
  */
 public record QuoteTick(

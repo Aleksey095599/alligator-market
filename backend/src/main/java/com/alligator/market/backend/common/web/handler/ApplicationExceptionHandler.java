@@ -9,7 +9,6 @@ import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.exception.ProviderInstrumentHandlerDuplicateException;
 import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

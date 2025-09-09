@@ -53,7 +53,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> responseJsonToQuoteTick(json, instrument.getCode()))
+                .map(json -> responseJsonToQuoteTick(json, instrument.code()))
                 .flux();
     }
 

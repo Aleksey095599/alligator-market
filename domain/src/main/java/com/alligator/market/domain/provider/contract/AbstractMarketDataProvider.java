@@ -61,7 +61,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
             throws InstrumentNotSupportedException {
         InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(instrument);
         if (handler == null) {
-            throw new InstrumentNotSupportedException(instrument.getType(), getProfile().providerCode());
+            throw new InstrumentNotSupportedException(instrument.type(), getProfile().providerCode());
         }
         return handler;
     }

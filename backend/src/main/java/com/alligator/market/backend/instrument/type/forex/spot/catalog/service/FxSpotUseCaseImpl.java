@@ -26,19 +26,19 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     @Override
     public String create(FxSpot fxSpot) {
         // Проверяем, что инструмента с таким кодом нет, иначе выбрасываем доменное исключение
-        fxSpotRepository.find(fxSpot.getCode()).ifPresent(i -> {
-            throw new FxSpotDuplicateException(fxSpot.getCode());
+        fxSpotRepository.find(fxSpot.code()).ifPresent(i -> {
+            throw new FxSpotDuplicateException(fxSpot.code());
         });
         // Сохраняем инструмент
         fxSpotRepository.save(fxSpot);
-        log.info("FxSpot {} created", fxSpot.getCode());
-        return fxSpot.getCode();
+        log.info("FxSpot {} created", fxSpot.code());
+        return fxSpot.code();
     }
 
     @Override
     public void update(FxSpot fxSpot) {
         // Из модели извлекаем код
-        String code = fxSpot.getCode();
+        String code = fxSpot.code();
         // Ищем текущий инструмент
         FxSpot current = fxSpotRepository.find(code)
                 .orElseThrow(() -> new FxSpotNotFoundException(code));
