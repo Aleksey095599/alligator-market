@@ -4,32 +4,37 @@ import com.alligator.market.domain.instrument.base.contract.Instrument;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Контракт обработчика конкретного финансового инструмента.
- * Жестко привязан к конкретному провайдеру {@link MarketDataProvider}.
- * Жестко привязан к классу финансового инструмента.
+ * Жёстко привязан к провайдеру и к классу инструмента.
  */
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
-    /** Возвращает провайдера, к которому относится обработчик. */
-    P getProvider();
+    /** Провайдер, к которому относится обработчик. */
+    P provider();
 
-    /** Возвращает класс поддерживаемых инструментов.  */
-    Class<I> getInstrumentClass();
+    /** Класс поддерживаемых инструментов. */
+    Class<I> instrumentClass();
 
-    /** Возвращает набор поддерживаемых инструментов. */
-    Set<I> getSupportedInstruments();
+    /** Явно поддерживаемые инструменты. Если пусто значит  */
+    Set<I> supportedInstruments();
 
-    /** Проверяет, поддерживается ли заданный инструмент:
-     * 1) принадлежит ли классу {@link #getInstrumentClass()};
-     * 2) принадлежит ли набору {@link #getSupportedInstruments()}.
-     */
-    default boolean supportedInstrument(I instrument) {
+    /** Котировка заданного инструмента. */
+    Publisher<QuoteTick> quote(I instrument);
 
+    /** Проверяет поддержку указанного инструмента. */
+    default boolean supports(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+        if (!instrumentClass().isInstance(instrument)) { // Проверяем корректный ли класс
+            return false;
+        }
+        Set<I> supported = supportedInstruments();
+        if (supported.isEmpty()) { // Проверяем наличие в списке поддерживаемых инструментов
+            return false;
+        }
+        return supported.contains(instrument);
     }
-
-    /** Возвращает котировку заданного инструмента. */
-    Publisher<QuoteTick> getQuote(I instrument);
 }
