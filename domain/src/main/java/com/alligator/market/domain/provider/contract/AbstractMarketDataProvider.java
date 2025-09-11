@@ -57,7 +57,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
      * @throws InstrumentNotSupportedException если обработчик не найден
      */
     @Override
-    public InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> getHandler(Instrument instrument)
+    public InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> findHandler(Instrument instrument)
             throws InstrumentNotSupportedException {
         InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = handlersMap.get(instrument);
         if (handler == null) {
@@ -75,7 +75,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
     public Publisher<QuoteTick> getQuote(Instrument instrument) throws InstrumentNotSupportedException {
         @SuppressWarnings("unchecked")
         InstrumentHandler<? extends MarketDataProvider, Instrument> handler =
-                (InstrumentHandler<? extends MarketDataProvider, Instrument>) getHandler(instrument);
+                (InstrumentHandler<? extends MarketDataProvider, Instrument>) findHandler(instrument);
         return handler.getQuote(instrument);
     }
 }

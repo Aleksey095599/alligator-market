@@ -5,9 +5,9 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
 /**
- * Реестр обработчиков.
+ * Реестр обработчиков для заданного провайдера.
  */
-public interface InstrumentHandlerRegistry {
+public interface ProviderHandlerRegistry {
 
     /** Находит обработчик по классу инструмента. Пусто, если не зарегистрирован. */
     <P extends MarketDataProvider, I extends Instrument>
