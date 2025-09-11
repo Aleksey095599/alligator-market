@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.base.contract.Instrument;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.profile.model.Profile;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,6 +18,9 @@ public interface MarketDataProvider {
     /** Набор обработчиков. */
     Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers();
 
-    /** Возвращает обработчик для указанного инструмента. */
+    /** Карта инструмент → обработчик. */
+    Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap();
 
+    /** Возвращает обработчик для указанного инструмента. */
+    InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> findHandler(Instrument instrument);
 }
