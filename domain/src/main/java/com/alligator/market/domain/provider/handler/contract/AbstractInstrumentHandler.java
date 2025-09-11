@@ -21,9 +21,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final Class<I> instrumentClass;
     private final Set<I> supportedInstruments;
 
-    /**
-     * Конструктор с базовыми проверками.
-     */
+    // Конструктор
     protected AbstractInstrumentHandler(String handlerCode, P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
         this.handlerCode = Objects.requireNonNull(handlerCode,
                 "handlerCode must not be null");
@@ -35,7 +33,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                 "supportedInstruments must not be null"));
     }
 
-    /** Имя обработчика. */
+    /** Код обработчика. */
     @Override
     public String code() {
         return handlerCode;

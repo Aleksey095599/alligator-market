@@ -15,18 +15,23 @@ import java.util.Set;
 public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     protected final Profile profile;
-    Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers();
+    private final Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers;
+    private final Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap;
 
     // Конструктор
     protected AbstractMarketDataProvider(
-            Profile profile;
-            Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers();
+            Profile profile,
+            Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers
     ) {
-        this.profile = profile;
-        // Создаем необходимую карту
+        this.profile = Objects.requireNonNull(profile, "profile must not be null");
+        this.handlers = Set.copyOf(Objects.requireNonNull(handlers, "handlers must not be null"));
+        // Создаем карту инструментов
         Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> map = new HashMap<>();
-        // Заполняем карту
-
+        for (InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler : this.handlers) {
+            for (Instrument instrument : handler.supportedInstruments()) {
+                map.put(instrument, handler);
+            }
+        }
         this.instrumentHandlerMap = Map.copyOf(map);
     }
 
@@ -38,10 +43,13 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Набор обработчиков. */
     @Override
+    public Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers() {
+        return handlers;
+    }
 
     /** Карта инструмент → обработчик. */
     @Override
-    Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap() {
+    public Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap() {
         return instrumentHandlerMap;
     }
 
@@ -57,8 +65,8 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
         if (handler == null) {
             throw new InstrumentNotSupportedException(
                     instrument.code(),
-                    handler.code(),
-                    profile().providerCode()
+                    "unknown",
+                    profile.providerCode()
             );
         }
         return handler;
