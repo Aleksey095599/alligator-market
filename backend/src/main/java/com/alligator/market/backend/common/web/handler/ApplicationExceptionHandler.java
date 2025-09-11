@@ -8,6 +8,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSa
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
@@ -85,8 +86,16 @@ public class ApplicationExceptionHandler {
     /** Тип инструмента не поддерживается провайдером. */
     @ExceptionHandler(InstrumentNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> handleInstrumentNotSupported(InstrumentNotSupportedException ex) {
-        // 400, неподдерживаемый тип инструмента
+        // 400, неподдерживаемый инструмент
         log.warn("InstrumentNotSupportedException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** Обработчик для инструмента не найден. */
+    @ExceptionHandler(HandlerNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleHandlerNotFound(HandlerNotFoundException ex) {
+        // 400, неподдерживаемый инструмент
+        log.warn("HandlerNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
