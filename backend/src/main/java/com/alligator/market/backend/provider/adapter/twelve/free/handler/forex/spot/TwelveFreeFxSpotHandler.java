@@ -15,8 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Обработчик (handler) инструмента FX_SPOT для TwelveData (free).
- * Тип инструмента задаётся в родительском классе.
+ * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
 

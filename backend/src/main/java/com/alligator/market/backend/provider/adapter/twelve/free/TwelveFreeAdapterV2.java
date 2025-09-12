@@ -22,12 +22,11 @@ import java.util.Set;
 import java.util.HashMap;
 
 /**
- * Адаптер для провайдера рыночных данных TwelveData (бесплатная подписка).
+ * Адаптер для провайдера рыночных данных TwelveData (free).
  */
 @Component
 public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
 
-    // Переменная с кодом провайдера
     private static final String PROVIDER_CODE = "TWELVE_FREE";
 
     /**
