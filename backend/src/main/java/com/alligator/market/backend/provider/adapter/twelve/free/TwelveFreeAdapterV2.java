@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
-import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.TwelveFreeFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
