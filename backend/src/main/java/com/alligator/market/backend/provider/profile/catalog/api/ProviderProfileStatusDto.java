@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.api;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.model.info.AccessMethod;
-import com.alligator.market.domain.provider.model.info.DeliveryMode;
+import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
+import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 
 import java.util.Set;
 

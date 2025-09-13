@@ -1,9 +1,10 @@
-package com.alligator.market.domain.provider.model.handler;
+package com.alligator.market.domain.provider.handler.base;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -16,46 +17,48 @@ import java.util.Set;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
+    /* ↓↓ Базовые атрибуты обработчика */
     private final String handlerCode;
-    private final P provider;
     private final Class<I> instrumentClass;
     private final Set<I> supportedInstruments;
 
-    // Конструктор
-    protected AbstractInstrumentHandler(String handlerCode, P provider, Class<I> instrumentClass, Set<I> supportedInstruments) {
+    /* Ссылка на провайдера (проставляется провайдером через attachTo(..)) */
+    protected P provider;
+
+    /* Конструктор */
+    protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
         this.handlerCode = Objects.requireNonNull(handlerCode,
                 "handlerCode must not be null");
-        this.provider = Objects.requireNonNull(provider,
-                "provider must not be null");
         this.instrumentClass = Objects.requireNonNull(instrumentClass,
                 "instrumentClass must not be null");
         this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments,
                 "supportedInstruments must not be null"));
     }
 
-    /** Код обработчика. */
+    /** Уникальный код обработчика (для логов/метрик). */
     @Override
-    public String code() {
+    public final String handlerCode() {
         return handlerCode;
     }
 
-    /** Провайдер, к которому относится обработчик. */
-    @Override
-    public P provider() {
-        return provider;
-    }
-
-    /** Класс поддерживаемых инструментов. */
+    /** Класс поддерживаемого инструмента. */
     @Override
     public Class<I> instrumentClass() {
         return instrumentClass;
     }
 
-    /** Набор поддерживаемых инструментов. */
+    /** Конкретные инструменты, которые поддерживает обработчик. */
     @Override
     public Set<I> supportedInstruments() {
         return supportedInstruments;
     }
+
+    /** Обработчик прикрепляется к заданному провайдеру. */
+    @Override
+    public final void attachTo(P provider) {
+        this.provider = Objects.requireNonNull(provider, "provider must not be null");
+    }
+
 
     /**
      * Котировка заданного инструмента.
@@ -67,13 +70,16 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
         if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException(instrumentClass, instrument.getClass());
+            throw new InstrumentWrongClassException(
+                    instrumentClass,
+                    instrument.getClass()
+            );
         }
         if (!supportedInstruments.contains(instrument)) {
             throw new InstrumentNotSupportedException(
                     instrument.code(),
                     handlerCode,
-                    provider.staticInfo().providerCode()
+                    provider.descriptor().providerCode()
             );
         }
         return doQuote(instrument);
@@ -81,4 +87,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     /** Реализация получения котировки. */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
+
+    /** Полезный геттер для наследников. */
+    protected final P provider() {
+        return provider;
+    }
 }

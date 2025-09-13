@@ -1,9 +1,10 @@
-package com.alligator.market.domain.provider.model;
+package com.alligator.market.domain.provider.base;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,16 +16,16 @@ import java.util.Set;
  */
 public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
-    protected final ProviderStaticInfo providerStaticInfo;
+    protected final ProviderDescriptor providerDescriptor;
     private final Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers;
     private final Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap;
 
     // Конструктор
     protected AbstractMarketDataProvider(
-            ProviderStaticInfo providerStaticInfo,
+            ProviderDescriptor providerDescriptor,
             Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers
     ) {
-        this.providerStaticInfo = Objects.requireNonNull(providerStaticInfo, "providerStaticInfo must not be null");
+        this.providerDescriptor = Objects.requireNonNull(providerDescriptor, "providerDescriptor must not be null");
         this.handlers = Set.copyOf(Objects.requireNonNull(handlers, "handlers must not be null"));
         // Создаем карту инструментов
         Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> map = new HashMap<>();
@@ -38,8 +39,8 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Профиль провайдера. */
     @Override
-    public ProviderStaticInfo staticInfo() {
-        return providerStaticInfo;
+    public ProviderDescriptor descriptor() {
+        return providerDescriptor;
     }
 
     /** Набор обработчиков. */
@@ -66,7 +67,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),
-                    providerStaticInfo.providerCode()
+                    providerDescriptor.providerCode()
             );
         }
         return handler;

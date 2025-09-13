@@ -7,11 +7,11 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.base.contract.Instrument;
-import com.alligator.market.domain.provider.model.AbstractMarketDataProvider;
-import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
-import com.alligator.market.domain.provider.model.info.AccessMethod;
-import com.alligator.market.domain.provider.model.info.DeliveryMode;
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.base.AbstractMarketDataProvider;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
+import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -47,7 +47,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider {
         instruments.forEach(inst -> handlers.put(inst, handler));
         super(
                 handlers.values(),
-                new ProviderStaticInfo(
+                new ProviderDescriptor(
                         ProfileStatus.ACTIVE,
                         PROVIDER_CODE,
                         "TwelveData Free Plan",

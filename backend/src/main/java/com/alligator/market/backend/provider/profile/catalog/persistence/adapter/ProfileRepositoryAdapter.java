@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.adapte
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntityMapper;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileJpaRepository;
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,7 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, ProviderStaticInfo> findAllActive() {
+    public Map<Long, ProviderDescriptor> findAllActive() {
         return jpaRepository.findAllByProfileStatus(ProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProfileEntity::getId,
@@ -35,7 +35,7 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<ProviderStaticInfo, ProfileStatus> findAllWithStatus() {
+    public Map<ProviderDescriptor, ProfileStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
                         mapper::toDomain,
@@ -44,8 +44,8 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
     }
 
     @Override
-    public void saveAll(Collection<ProviderStaticInfo> providerStaticInfos) {
-        var entities = providerStaticInfos.stream()
+    public void saveAll(Collection<ProviderDescriptor> providerMetadata) {
+        var entities = providerMetadata.stream()
                 .map(mapper::toEntity)
                 .toList();
         jpaRepository.saveAll(entities);

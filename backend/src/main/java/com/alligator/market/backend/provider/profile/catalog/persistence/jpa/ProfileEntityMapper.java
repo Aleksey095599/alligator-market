@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class ProfileEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
-    public ProviderStaticInfo toDomain(ProfileEntity entity) {
-        return new ProviderStaticInfo(
+    public ProviderDescriptor toDomain(ProfileEntity entity) {
+        return new ProviderDescriptor(
                 entity.getProfileStatus(),
                 entity.getProviderCode(),
                 entity.getDisplayName(),
@@ -24,16 +24,16 @@ public class ProfileEntityMapper {
     }
 
     /** Преобразует доменную модель в сущность. */
-    public ProfileEntity toEntity(ProviderStaticInfo providerStaticInfo) {
+    public ProfileEntity toEntity(ProviderDescriptor providerDescriptor) {
         var entity = new ProfileEntity();
-        entity.setProfileStatus(providerStaticInfo.profileStatus());
-        entity.setProviderCode(providerStaticInfo.providerCode());
-        entity.setDisplayName(providerStaticInfo.displayName());
-        entity.setInstrumentsSupported(providerStaticInfo.instrumentsSupported());
-        entity.setDeliveryMode(providerStaticInfo.deliveryMode());
-        entity.setAccessMethod(providerStaticInfo.accessMethod());
-        entity.setBulkSubscription(providerStaticInfo.bulkSubscription());
-        entity.setMinPollMs(providerStaticInfo.minPollMs());
+        entity.setProfileStatus(providerDescriptor.profileStatus());
+        entity.setProviderCode(providerDescriptor.providerCode());
+        entity.setDisplayName(providerDescriptor.displayName());
+        entity.setInstrumentsSupported(providerDescriptor.instrumentsSupported());
+        entity.setDeliveryMode(providerDescriptor.deliveryMode());
+        entity.setAccessMethod(providerDescriptor.accessMethod());
+        entity.setBulkSubscription(providerDescriptor.bulkSubscription());
+        entity.setMinPollMs(providerDescriptor.minPollMs());
         return entity;
     }
 }

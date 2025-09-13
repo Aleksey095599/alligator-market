@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 
 import java.util.Map;
@@ -30,15 +30,15 @@ public final class ProfileReconciler {
 
         ProfileDiff diff = new ProfileDiff();
 
-        Map<String, ProviderStaticInfo> contextByCode = providerContextScanner.getProfiles();
+        Map<String, ProviderDescriptor> contextByCode = providerContextScanner.getProfiles();
 
         repository.findAllActive().forEach((id, repoProfile) -> {
-            ProviderStaticInfo contextProviderStaticInfo = contextByCode.remove(repoProfile.providerCode());
-            if (contextProviderStaticInfo == null) {
+            ProviderDescriptor contextProviderDescriptor = contextByCode.remove(repoProfile.providerCode());
+            if (contextProviderDescriptor == null) {
                 diff.putToMissingList(id);
-            } else if (!contextProviderStaticInfo.equals(repoProfile)) {
+            } else if (!contextProviderDescriptor.equals(repoProfile)) {
                 diff.putToReplaceList(id);
-                diff.putToAddList(contextProviderStaticInfo);
+                diff.putToAddList(contextProviderDescriptor);
             }
         });
 

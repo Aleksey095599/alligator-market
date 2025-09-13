@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
 import com.alligator.market.backend.provider.profile.catalog.api.ProviderProfileStatusDto;
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Component;
 public class ProfileDtoMapper {
 
     /** Преобразует доменную модель в основной DTO. */
-    public ProfileDto toDto(ProviderStaticInfo providerStaticInfo) {
+    public ProfileDto toDto(ProviderDescriptor providerDescriptor) {
         return new ProfileDto(
-                providerStaticInfo.profileStatus(),
-                providerStaticInfo.providerCode(),
-                providerStaticInfo.displayName(),
-                providerStaticInfo.instrumentsSupported(),
-                providerStaticInfo.deliveryMode(),
-                providerStaticInfo.accessMethod(),
-                providerStaticInfo.bulkSubscription(),
-                providerStaticInfo.minPollMs()
+                providerDescriptor.profileStatus(),
+                providerDescriptor.providerCode(),
+                providerDescriptor.displayName(),
+                providerDescriptor.instrumentsSupported(),
+                providerDescriptor.deliveryMode(),
+                providerDescriptor.accessMethod(),
+                providerDescriptor.bulkSubscription(),
+                providerDescriptor.minPollMs()
         );
     }
 
     /** Преобразует основной DTO в доменную модель. */
-    public ProviderStaticInfo toDomain(ProfileDto dto) {
-        return new ProviderStaticInfo(
+    public ProviderDescriptor toDomain(ProfileDto dto) {
+        return new ProviderDescriptor(
                 dto.profileStatus(),
                 dto.providerCode(),
                 dto.displayName(),
@@ -39,15 +39,15 @@ public class ProfileDtoMapper {
     }
 
     /** Преобразует доменную модель и статус в DTO для аудита. */
-    public ProviderProfileStatusDto toStatusDto(ProviderStaticInfo providerStaticInfo, ProfileStatus status) {
+    public ProviderProfileStatusDto toStatusDto(ProviderDescriptor providerDescriptor, ProfileStatus status) {
         return new ProviderProfileStatusDto(
-                providerStaticInfo.providerCode(),
-                providerStaticInfo.displayName(),
-                providerStaticInfo.instrumentsSupported(),
-                providerStaticInfo.deliveryMode(),
-                providerStaticInfo.accessMethod(),
-                providerStaticInfo.bulkSubscription(),
-                providerStaticInfo.minPollMs(),
+                providerDescriptor.providerCode(),
+                providerDescriptor.displayName(),
+                providerDescriptor.instrumentsSupported(),
+                providerDescriptor.deliveryMode(),
+                providerDescriptor.accessMethod(),
+                providerDescriptor.bulkSubscription(),
+                providerDescriptor.minPollMs(),
                 status
         );
     }

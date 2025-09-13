@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.api.dto;
+package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * касательно которых требуются действия с репозиторием для целей синхронизации с контекстом.
  */
 public record ProfileDiff(
-        List<ProviderStaticInfo> add,
+        List<ProviderDescriptor> add,
         List<Long> replaced,
         List<Long> missing
 ) {
@@ -18,8 +18,8 @@ public record ProfileDiff(
         this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
-    public void putToAddList(ProviderStaticInfo providerStaticInfo) {
-        add.add(providerStaticInfo);
+    public void putToAddList(ProviderDescriptor providerDescriptor) {
+        add.add(providerDescriptor);
     }
     public void putToReplaceList(Long id) {
         replaced.add(id);

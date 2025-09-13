@@ -1,12 +1,12 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.api;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDto;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotUpdateDto;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.api.dto.FxSpotDtoMapper;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotUpdateDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
