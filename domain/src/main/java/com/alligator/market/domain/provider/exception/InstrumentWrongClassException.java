@@ -5,7 +5,13 @@ package com.alligator.market.domain.provider.exception;
  */
 public class InstrumentWrongClassException extends RuntimeException {
 
-    public InstrumentWrongClassException(Class<?> expected, Class<?> actual) {
-        super("Instrument of class %s is not supported. Expected %s".formatted(actual.getName(), expected.getName()));
+    public InstrumentWrongClassException(
+            String instrumentCode,
+            Class<?> instrumentClass,
+            String handlerCode,
+            Class<?> expectedClass
+    ) {
+        super("Instrument %s has class %s, but provider handler %s expects %s"
+                .formatted(instrumentCode, instrumentClass.getName(), handlerCode, expectedClass.getName()));
     }
 }
