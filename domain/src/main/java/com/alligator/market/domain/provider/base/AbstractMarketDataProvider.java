@@ -30,12 +30,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
                 "providerDescriptor must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
-        // ↓↓ Собираем реестр обработчиков и "пристёгиваем" провайдера к каждому из них
+        // ↓↓ Собираем карту "инструмент → обработчик"
         Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
-        for (InstrumentHandler<P, ? extends Instrument> h : handlers) { // Перебираем набор обработчиков
+        for (InstrumentHandler<P, ? extends Instrument> h : handlers) { // Перебираем обработчики
             h.attachTo(self());
             for (Instrument ins : h.supportedInstruments()) { // Перебираем поддерживаемые обработчиком инструменты
-                // Защита от двойной регистрации одного инструмента (TODO: уточнить надо ли так как HashMap<>)
+                // Защита от повторной регистрации инструмента
                 InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(ins, h);
                 if (prev != null && prev != h) {
                     throw new IllegalStateException(
