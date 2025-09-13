@@ -71,8 +71,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         Objects.requireNonNull(instrument, "instrument must not be null");
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException(
-                    instrumentClass,
-                    instrument.getClass()
+                    instrument.code(),
+                    instrument.getClass(),
+                    handlerCode,
+                    instrumentClass
             );
         }
         if (!supportedInstruments.contains(instrument)) {
