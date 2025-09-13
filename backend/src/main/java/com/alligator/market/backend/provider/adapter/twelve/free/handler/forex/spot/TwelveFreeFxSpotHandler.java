@@ -67,7 +67,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
                 price,
                 price,
                 Instant.now(),
-                provider().profile().providerCode()
+                provider().staticInfo().providerCode()
         );
     }
 }

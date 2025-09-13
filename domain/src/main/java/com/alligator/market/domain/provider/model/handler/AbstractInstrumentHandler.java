@@ -73,7 +73,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             throw new InstrumentNotSupportedException(
                     instrument.code(),
                     handlerCode,
-                    provider.profile().providerCode()
+                    provider.staticInfo().providerCode()
             );
         }
         return doQuote(instrument);

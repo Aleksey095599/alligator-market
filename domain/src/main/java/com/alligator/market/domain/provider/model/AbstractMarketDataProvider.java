@@ -38,7 +38,7 @@ public abstract class AbstractMarketDataProvider implements MarketDataProvider {
 
     /** Профиль провайдера. */
     @Override
-    public ProviderStaticInfo profile() {
+    public ProviderStaticInfo staticInfo() {
         return providerStaticInfo;
     }
 
