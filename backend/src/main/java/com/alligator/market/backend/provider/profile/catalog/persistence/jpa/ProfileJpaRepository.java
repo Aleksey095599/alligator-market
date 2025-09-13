@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

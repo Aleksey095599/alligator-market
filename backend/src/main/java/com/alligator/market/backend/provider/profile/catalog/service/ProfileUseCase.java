@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.service;
 
-import com.alligator.market.domain.provider.profile.model.Profile;
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
+
 import java.util.Map;
 
 /**
@@ -10,8 +10,8 @@ import java.util.Map;
 public interface ProfileUseCase {
 
     /** Вернуть все активные профили вместе с PK. */
-    Map<Long, Profile> findAllActive();
+    Map<Long, ProviderStaticInfo> findAllActive();
 
     /** Вернуть все профили с их статусами. */
-    Map<Profile, ProfileStatus> findAllWithStatus();
+    Map<ProviderStaticInfo, ProfileStatus> findAllWithStatus();
 }

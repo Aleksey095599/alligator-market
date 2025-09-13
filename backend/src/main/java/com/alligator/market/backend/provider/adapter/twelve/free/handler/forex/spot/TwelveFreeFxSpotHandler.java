@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.provider.handler.contract.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.reactivestreams.Publisher;

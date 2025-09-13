@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.service;
 
-import com.alligator.market.domain.provider.profile.model.Profile;
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,12 @@ public class ProfileUseCaseImpl implements ProfileUseCase {
     private final ProfileRepository repository;
 
     @Override
-    public Map<Long, Profile> findAllActive() {
+    public Map<Long, ProviderStaticInfo> findAllActive() {
         return repository.findAllActive();
     }
 
     @Override
-    public Map<Profile, ProfileStatus> findAllWithStatus() {
+    public Map<ProviderStaticInfo, ProfileStatus> findAllWithStatus() {
         return repository.findAllWithStatus();
     }
 }

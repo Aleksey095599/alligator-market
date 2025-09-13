@@ -3,8 +3,7 @@ package com.alligator.market.backend.provider.profile.catalog.persistence.adapte
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntity;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntityMapper;
 import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileJpaRepository;
-import com.alligator.market.domain.provider.profile.model.Profile;
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, Profile> findAllActive() {
+    public Map<Long, ProviderStaticInfo> findAllActive() {
         return jpaRepository.findAllByProfileStatus(ProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
                         ProfileEntity::getId,
@@ -36,7 +35,7 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Profile, ProfileStatus> findAllWithStatus() {
+    public Map<ProviderStaticInfo, ProfileStatus> findAllWithStatus() {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
                         mapper::toDomain,
@@ -45,8 +44,8 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
     }
 
     @Override
-    public void saveAll(Collection<Profile> profiles) {
-        var entities = profiles.stream()
+    public void saveAll(Collection<ProviderStaticInfo> providerStaticInfos) {
+        var entities = providerStaticInfos.stream()
                 .map(mapper::toEntity)
                 .toList();
         jpaRepository.saveAll(entities);

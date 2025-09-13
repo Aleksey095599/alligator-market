@@ -1,8 +1,7 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
 import com.alligator.market.backend.provider.profile.catalog.api.ProviderProfileStatusDto;
-import com.alligator.market.domain.provider.profile.model.Profile;
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,22 +11,22 @@ import org.springframework.stereotype.Component;
 public class ProfileDtoMapper {
 
     /** Преобразует доменную модель в основной DTO. */
-    public ProfileDto toDto(Profile profile) {
+    public ProfileDto toDto(ProviderStaticInfo providerStaticInfo) {
         return new ProfileDto(
-                profile.profileStatus(),
-                profile.providerCode(),
-                profile.displayName(),
-                profile.instrumentsSupported(),
-                profile.deliveryMode(),
-                profile.accessMethod(),
-                profile.bulkSubscription(),
-                profile.minPollMs()
+                providerStaticInfo.profileStatus(),
+                providerStaticInfo.providerCode(),
+                providerStaticInfo.displayName(),
+                providerStaticInfo.instrumentsSupported(),
+                providerStaticInfo.deliveryMode(),
+                providerStaticInfo.accessMethod(),
+                providerStaticInfo.bulkSubscription(),
+                providerStaticInfo.minPollMs()
         );
     }
 
     /** Преобразует основной DTO в доменную модель. */
-    public Profile toDomain(ProfileDto dto) {
-        return new Profile(
+    public ProviderStaticInfo toDomain(ProfileDto dto) {
+        return new ProviderStaticInfo(
                 dto.profileStatus(),
                 dto.providerCode(),
                 dto.displayName(),
@@ -40,15 +39,15 @@ public class ProfileDtoMapper {
     }
 
     /** Преобразует доменную модель и статус в DTO для аудита. */
-    public ProviderProfileStatusDto toStatusDto(Profile profile, ProfileStatus status) {
+    public ProviderProfileStatusDto toStatusDto(ProviderStaticInfo providerStaticInfo, ProfileStatus status) {
         return new ProviderProfileStatusDto(
-                profile.providerCode(),
-                profile.displayName(),
-                profile.instrumentsSupported(),
-                profile.deliveryMode(),
-                profile.accessMethod(),
-                profile.bulkSubscription(),
-                profile.minPollMs(),
+                providerStaticInfo.providerCode(),
+                providerStaticInfo.displayName(),
+                providerStaticInfo.instrumentsSupported(),
+                providerStaticInfo.deliveryMode(),
+                providerStaticInfo.accessMethod(),
+                providerStaticInfo.bulkSubscription(),
+                providerStaticInfo.minPollMs(),
                 status
         );
     }

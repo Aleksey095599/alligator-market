@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.handler.contract;
+package com.alligator.market.domain.provider.model.handler;
 
 import com.alligator.market.domain.instrument.base.contract.Instrument;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.quote.QuoteTick;

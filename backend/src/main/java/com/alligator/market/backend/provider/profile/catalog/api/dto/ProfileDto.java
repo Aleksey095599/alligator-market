@@ -1,9 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.api.dto;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.profile.model.AccessMethod;
-import com.alligator.market.domain.provider.profile.model.DeliveryMode;
-import com.alligator.market.domain.provider.profile.model.ProfileStatus;
+import com.alligator.market.domain.provider.model.info.AccessMethod;
+import com.alligator.market.domain.provider.model.info.DeliveryMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
-import com.alligator.market.domain.provider.profile.model.Profile;
+import com.alligator.market.domain.provider.model.info.ProviderStaticInfo;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class ProfileEntityMapper {
 
     /** Преобразует сущность в доменную модель. */
-    public Profile toDomain(ProfileEntity entity) {
-        return new Profile(
+    public ProviderStaticInfo toDomain(ProfileEntity entity) {
+        return new ProviderStaticInfo(
                 entity.getProfileStatus(),
                 entity.getProviderCode(),
                 entity.getDisplayName(),
@@ -24,16 +24,16 @@ public class ProfileEntityMapper {
     }
 
     /** Преобразует доменную модель в сущность. */
-    public ProfileEntity toEntity(Profile profile) {
+    public ProfileEntity toEntity(ProviderStaticInfo providerStaticInfo) {
         var entity = new ProfileEntity();
-        entity.setProfileStatus(profile.profileStatus());
-        entity.setProviderCode(profile.providerCode());
-        entity.setDisplayName(profile.displayName());
-        entity.setInstrumentsSupported(profile.instrumentsSupported());
-        entity.setDeliveryMode(profile.deliveryMode());
-        entity.setAccessMethod(profile.accessMethod());
-        entity.setBulkSubscription(profile.bulkSubscription());
-        entity.setMinPollMs(profile.minPollMs());
+        entity.setProfileStatus(providerStaticInfo.profileStatus());
+        entity.setProviderCode(providerStaticInfo.providerCode());
+        entity.setDisplayName(providerStaticInfo.displayName());
+        entity.setInstrumentsSupported(providerStaticInfo.instrumentsSupported());
+        entity.setDeliveryMode(providerStaticInfo.deliveryMode());
+        entity.setAccessMethod(providerStaticInfo.accessMethod());
+        entity.setBulkSubscription(providerStaticInfo.bulkSubscription());
+        entity.setMinPollMs(providerStaticInfo.minPollMs());
         return entity;
     }
 }
