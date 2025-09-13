@@ -30,10 +30,10 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
                 "providerDescriptor must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
-        // ↓↓ Собираем карту "инструмент → обработчик"
+        // ↓↓ Собираем карту "инструмент → обработчик" и прикрепляем обработчики к провайдеру
         Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
         for (InstrumentHandler<P, ? extends Instrument> h : handlers) { // Перебираем обработчики
-            h.attachTo(self());
+            h.attachTo(self()); // прикрепляем обработчик к провайдеру
             for (Instrument ins : h.supportedInstruments()) { // Перебираем поддерживаемые обработчиком инструменты
                 // Защита от повторной регистрации инструмента
                 InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(ins, h);
