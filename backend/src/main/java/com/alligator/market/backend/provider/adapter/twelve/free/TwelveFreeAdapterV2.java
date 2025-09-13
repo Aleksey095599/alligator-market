@@ -6,7 +6,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.s
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.base.contract.Instrument;
+import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.base.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;

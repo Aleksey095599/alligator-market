@@ -1,6 +1,6 @@
 package com.alligator.market.domain.quote;
 
-import com.alligator.market.domain.instrument.base.contract.Instrument;
+import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 
 import java.math.BigDecimal;
