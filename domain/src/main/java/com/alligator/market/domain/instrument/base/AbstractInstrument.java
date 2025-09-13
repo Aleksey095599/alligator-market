@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 /**
  * Базовая модель инструмента с equals/hashCode по внутреннему коду инструмента.
  */
-public abstract class InstrumentBase implements Instrument {
+public abstract class AbstractInstrument implements Instrument {
 
     @Override
     public final boolean equals(Object o) {
