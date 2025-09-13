@@ -28,6 +28,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     ) {
         this.providerDescriptor = Objects.requireNonNull(providerDescriptor,
                 "providerDescriptor must not be null");
+        Objects.requireNonNull(handlers, "handlers must not be null");
 
         // ↓↓ Собираем реестр обработчиков и "пристёгиваем" провайдера к каждому из них
         Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
