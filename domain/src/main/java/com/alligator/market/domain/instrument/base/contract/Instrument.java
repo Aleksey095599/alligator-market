@@ -7,9 +7,9 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
  */
 public interface Instrument {
 
-    /** Возвращает внутренний код инструмента. */
+    /** Внутренний код инструмента. */
     String code();
 
-    /** Возвращает тип инструмента. */
+    /** Тип инструмента. */
     InstrumentType type();
 }
