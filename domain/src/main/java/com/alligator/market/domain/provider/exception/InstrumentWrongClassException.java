@@ -4,7 +4,6 @@ package com.alligator.market.domain.provider.exception;
  * Класс инструмента не соответствует обработчику.
  */
 public class InstrumentWrongClassException extends RuntimeException {
-
     public InstrumentWrongClassException(
             String instrumentCode,
             Class<?> instrumentClass,

@@ -17,15 +17,15 @@ import java.util.Set;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* ↓↓ Базовые атрибуты обработчика */
+    /* ↓↓ Базовые атрибуты обработчика. */
     private final String handlerCode;
     private final Class<I> instrumentClass;
     private final Set<I> supportedInstruments;
 
-    /* Ссылка на провайдера (проставляется провайдером через attachTo(..)) */
+    /* Ссылка на провайдера (проставляется провайдером через attachTo()). */
     protected P provider;
 
-    /* Конструктор */
+    /* Конструктор. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
         this.handlerCode = Objects.requireNonNull(handlerCode,
                 "handlerCode must not be null");
@@ -53,7 +53,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return supportedInstruments;
     }
 
-    /** Обработчик прикрепляется к заданному провайдеру. */
+    /** Прикрепить обработчик к заданному провайдеру. */
     @Override
     public final void attachTo(P provider) {
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
@@ -80,8 +80,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         if (!supportedInstruments.contains(instrument)) {
             throw new InstrumentNotSupportedException(
                     instrument.code(),
-                    handlerCode,
-                    provider.descriptor().providerCode()
+                    handlerCode
             );
         }
         return doQuote(instrument);

@@ -22,7 +22,7 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     /** Конкретные инструменты, которые поддерживает обработчик. */
     Set<I> supportedInstruments();
 
-    /** Обработчик прикрепляется к заданному провайдеру. */
+    /** Прикрепить обработчик к заданному провайдеру. */
     void attachTo(P provider);
 
     /** Котировка заданного инструмента. */

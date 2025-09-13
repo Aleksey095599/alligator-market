@@ -5,71 +5,80 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.quote.QuoteTick;
+import org.reactivestreams.Publisher;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Абстрактный каркас провайдера рыночных данных.
  */
-public abstract class AbstractMarketDataProvider implements MarketDataProvider {
+public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
 
+    /* Дескриптор провайдера. */
     protected final ProviderDescriptor providerDescriptor;
-    private final Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers;
-    private final Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap;
 
-    // Конструктор
+    /* Карта "инструмент → обработчик". После инициализации делаем неизменяемой. */
+    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlers;
+
+    /* Конструктор. */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
-            Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Передаем набор обработчиков
     ) {
         this.providerDescriptor = Objects.requireNonNull(providerDescriptor, "providerDescriptor must not be null");
-        this.handlers = Set.copyOf(Objects.requireNonNull(handlers, "handlers must not be null"));
-        // Создаем карту инструментов
-        Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> map = new HashMap<>();
-        for (InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler : this.handlers) {
-            for (Instrument instrument : handler.supportedInstruments()) {
-                map.put(instrument, handler);
+
+        // ↓↓ Собираем реестр обработчиков и "пристёгиваем" провайдера к каждому из них
+        Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
+        for (InstrumentHandler<P, ? extends Instrument> h : handlers) { // Перебираем набор обработчиков
+            h.attachTo(self());
+            for (Instrument ins : h.supportedInstruments()) { // Перебираем поддерживаемые обработчиком инструменты
+                // Защита от двойной регистрации одного инструмента (TODO: уточнить надо ли так как HashMap<>)
+                InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(ins, h);
+                if (prev != null && prev != h) {
+                    throw new IllegalStateException(
+                            "Instrument '" + ins.code() + "' is already bound to another handler (" +
+                                    prev.handlerCode() + ") for provider '" + providerDescriptor.providerCode() + "'"
+                    );
+                }
             }
         }
-        this.instrumentHandlerMap = Map.copyOf(map);
+        this.instrumentHandlers = Collections.unmodifiableMap(map);
     }
 
-    /** Профиль провайдера. */
+    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
+    protected abstract P self();
+
+    /** Дескриптор провайдера: неизменяемый набор статических атрибутов. */
     @Override
     public ProviderDescriptor descriptor() {
         return providerDescriptor;
     }
 
-    /** Набор обработчиков. */
+    /** Унифицированная операция получения котировок для любого поддерживаемого инструмента. */
     @Override
-    public Set<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> handlers() {
-        return handlers;
-    }
-
-    /** Карта инструмент → обработчик. */
-    @Override
-    public Map<Instrument, InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlerMap() {
-        return instrumentHandlerMap;
-    }
-
-    /**
-     * Возвращает обработчик для указанного инструмента.
-     *
-     * @throws HandlerNotFoundException если обработчик не найден
-     */
-    @Override
-    public InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> findHandler(Instrument instrument) {
+    public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
-        InstrumentHandler<? extends MarketDataProvider, ? extends Instrument> handler = instrumentHandlerMap.get(instrument);
+        @SuppressWarnings("unchecked")
+        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlers.get(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),
                     providerDescriptor.providerCode()
             );
         }
-        return handler;
+        return handler.quote(instrument);
+    }
+
+    /* Защищённый доступ, если нужно внутри наследников. */
+    protected final <I extends Instrument> InstrumentHandler<P, I> findHandler(I instrument) {
+        @SuppressWarnings("unchecked")
+        InstrumentHandler<P, I> h = (InstrumentHandler<P, I>) instrumentHandlers.get(instrument);
+        return h;
+    }
+
+    /* Для метрик/диагностики. */
+    protected final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap() {
+        return instrumentHandlers;
     }
 }
