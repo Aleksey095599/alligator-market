@@ -77,14 +77,21 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         return handler.quote(instrument);
     }
 
-    /* Защищённый доступ, если нужно внутри наследников. */
+    /**
+     * Возвращает обработчик для указанного инструмента или {@code null}, если обработчик не зарегистрирован.
+     * Метод предназначен для использования внутри наследников, когда требуется доступ к обработчику
+     * без генерации {@link HandlerNotFoundException}.
+     */
     protected final <I extends Instrument> InstrumentHandler<P, I> findHandler(I instrument) {
         @SuppressWarnings("unchecked")
         InstrumentHandler<P, I> h = (InstrumentHandler<P, I>) instrumentHandlers.get(instrument);
         return h;
     }
 
-    /* Для метрик/диагностики. */
+    /**
+     * Предоставляет неизменяемую карту соответствий «инструмент → обработчик».
+     * Используется наследниками для метрик, мониторинга или диагностики.
+     */
     protected final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap() {
         return instrumentHandlers;
     }
