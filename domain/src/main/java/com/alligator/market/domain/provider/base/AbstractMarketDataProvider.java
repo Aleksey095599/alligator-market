@@ -19,7 +19,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     protected final ProviderDescriptor providerDescriptor;
 
     /* Карта "инструмент → обработчик". После инициализации делаем неизменяемой. */
-    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlers;
+    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /**
      * Конструктор с проверками.
@@ -33,7 +33,8 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     ) {
         this.providerDescriptor = Objects.requireNonNull(providerDescriptor,
                 "providerDescriptor must not be null");
-        Objects.requireNonNull(handlers, "handlers must not be null");
+        Objects.requireNonNull(handlers,
+                "handlers must not be null");
 
         // ↓↓ Собираем карту "инструмент → обработчик" и прикрепляем обработчики к провайдеру
         Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
@@ -50,7 +51,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
                 }
             }
         }
-        this.instrumentHandlers = Collections.unmodifiableMap(map);
+        this.instrumentHandlerMap = Collections.unmodifiableMap(map);
     }
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
@@ -67,7 +68,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
         @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlers.get(instrument);
+        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlerMap.get(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),
@@ -84,7 +85,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
      */
     protected final <I extends Instrument> InstrumentHandler<P, I> findHandler(I instrument) {
         @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> h = (InstrumentHandler<P, I>) instrumentHandlers.get(instrument);
+        InstrumentHandler<P, I> h = (InstrumentHandler<P, I>) instrumentHandlerMap.get(instrument);
         return h;
     }
 
@@ -93,6 +94,6 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
      * Используется наследниками для метрик, мониторинга или диагностики.
      */
     protected final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap() {
-        return instrumentHandlers;
+        return instrumentHandlerMap;
     }
 }
