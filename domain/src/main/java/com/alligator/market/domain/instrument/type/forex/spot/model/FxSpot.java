@@ -18,7 +18,7 @@ public class FxSpot extends AbstractInstrument {
     private final Integer quoteDecimal;
 
     /**
-     * Конструктор инструмента.
+     * Конструктор инструмента с проверками.
      *
      * @throws FxSpotSameCurrenciesException если валюты совпадают
      * @throws NullPointerException          если параметр не передан
