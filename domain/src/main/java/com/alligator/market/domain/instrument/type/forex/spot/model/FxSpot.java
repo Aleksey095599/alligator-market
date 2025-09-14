@@ -26,10 +26,10 @@ public class FxSpot extends AbstractInstrument {
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
         // → Проверяем входные параметры
-        this.base = Objects.requireNonNull(base, "Base currency is required");
-        this.quote = Objects.requireNonNull(quote, "Quote currency is required");
-        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code is required");
-        this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal is required");
+        this.base = Objects.requireNonNull(base, "Base currency must not be null");
+        this.quote = Objects.requireNonNull(quote, "Quote currency must not be null");
+        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
+        this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
 
         // → Проверяем, что коды валют заполнены
         if (this.base.code().isBlank()) {
