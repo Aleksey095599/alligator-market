@@ -21,6 +21,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /* Карта "инструмент → обработчик". После инициализации делаем неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
+    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
+    protected abstract P self();
+
     /**
      * Конструктор с проверками.
      *
@@ -29,33 +32,63 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
-            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Передаем набор обработчиков
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
+        // ↓↓ Примитивные проверки
         this.providerDescriptor = Objects.requireNonNull(providerDescriptor,
                 "providerDescriptor must not be null");
-        Objects.requireNonNull(handlers,
-                "handlers must not be null");
+        Objects.requireNonNull(handlers, "handlers must not be null");
+        if (handlers.isEmpty()) {
+            throw new IllegalArgumentException("handlers must not be empty");
+        }
 
-        // ↓↓ Собираем карту "инструмент → обработчик" и прикрепляем обработчики к провайдеру
-        Map<Instrument, InstrumentHandler<P, ? extends Instrument>> map = new HashMap<>();
-        for (InstrumentHandler<P, ? extends Instrument> h : handlers) { // Перебираем обработчики
-            h.attachTo(self()); // прикрепляем обработчик к провайдеру
-            for (Instrument ins : h.supportedInstruments()) { // Перебираем поддерживаемые обработчиком инструменты
-                // Защита от повторной регистрации инструмента
-                InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(ins, h);
+        // 1) Проверяем уникальность handlerCode
+        var seenCodes = new java.util.HashSet<String>();
+        for (var h : handlers) {
+            var code = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null").trim();
+            if (code.isEmpty()) throw new IllegalArgumentException("handlerCode must not be blank");
+            if (!seenCodes.add(code)) {
+                throw new IllegalStateException("Duplicate handlerCode '" + code + "' in provider '" +
+                        providerDescriptor.providerCode() + "'");
+            }
+        }
+
+        // 2) Собираем карту "инструмент → обработчик" и ловим возможные пересечения по инструментам
+        var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
+        for (var h : handlers) {
+            var clazz = Objects.requireNonNull(h.instrumentClass(), "instrumentClass must not be null");
+            var supported = Objects.requireNonNull(h.supportedInstruments(),
+                    "supportedInstruments must not be null");
+
+            for (Instrument ins : supported) {
+                Objects.requireNonNull(ins, "supported instrument must not be null");
+
+                // ✓ Ранняя диагностика: инструмент должен соответствовать заявленному классу обработчика
+                if (!clazz.isInstance(ins)) {
+                    throw new IllegalStateException("Handler '" + h.handlerCode() + "' lists instrument '" +
+                            ins.code() + "' of type '" + ins.getClass().getName() +
+                            "' which is not instance of declared " + clazz.getName());
+                }
+
+                // ✓ Уникальность по равенству Instrument (equals/hashCode стандартизированы у вас)
+                var prev = map.putIfAbsent(ins, h);
                 if (prev != null && prev != h) {
-                    throw new IllegalStateException(
-                            "Instrument '" + ins.code() + "' is already bound to another handler (" +
-                                    prev.handlerCode() + ") of provider '" + providerDescriptor.providerCode() + "'"
-                    );
+                    throw new IllegalStateException("Instrument '" + ins.code() +
+                            "' is already bound to handler '" + prev.handlerCode() +
+                            "' in provider '" + providerDescriptor.providerCode() + "'");
                 }
             }
         }
-        this.instrumentHandlerMap = Collections.unmodifiableMap(map);
-    }
 
-    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
-    protected abstract P self();
+        // 3) Фиксируем инвариант: делаем карту неизменяемой
+        this.instrumentHandlerMap = java.util.Collections.unmodifiableMap(map);
+
+        // 4) После фиксации инвариантов — прикрепляем обработчики к провайдеру
+        //    (dedup, если один обработчик покрывает несколько инструментов)
+        for (var h : new java.util.LinkedHashSet<>(map.values())) {
+            h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
+        }
+    }
 
     /** Дескриптор провайдера: неизменяемый набор статических атрибутов. */
     @Override
