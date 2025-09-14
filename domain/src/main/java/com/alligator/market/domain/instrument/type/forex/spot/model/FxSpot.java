@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public class FxSpot extends AbstractInstrument {
 
+    /* ↓↓ Базовые атрибуты инструмента. */
     private final Currency base;
     private final Currency quote;
     private final ValueDateCode valueDateCode;
@@ -20,17 +21,17 @@ public class FxSpot extends AbstractInstrument {
      * Конструктор инструмента.
      *
      * @throws FxSpotSameCurrenciesException если валюты совпадают
-     * @throws NullPointerException           если параметр не передан
+     * @throws NullPointerException          если параметр не передан
      * @throws IllegalArgumentException      если код валюты пустой
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
-        // Проверяем входные параметры
+        // → Проверяем входные параметры
         this.base = Objects.requireNonNull(base, "Base currency is required");
         this.quote = Objects.requireNonNull(quote, "Quote currency is required");
         this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code is required");
         this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal is required");
 
-        // Проверяем, что коды валют заполнены
+        // → Проверяем, что коды валют заполнены
         if (this.base.code().isBlank()) {
             throw new IllegalArgumentException("Base currency code must not be blank");
         }
@@ -38,7 +39,7 @@ public class FxSpot extends AbstractInstrument {
             throw new IllegalArgumentException("Quote currency code must not be blank");
         }
 
-        // Проверяем, что валюты отличаются
+        // → Проверяем, что валюты отличаются
         if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }

@@ -25,7 +25,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Ссылка на провайдера (проставляется провайдером через attachTo()). */
     protected P provider;
 
-    /* Конструктор. */
+    /** Конструктор с примитивными проверками. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
         this.handlerCode = Objects.requireNonNull(handlerCode,
                 "handlerCode must not be null");

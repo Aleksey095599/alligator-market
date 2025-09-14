@@ -21,7 +21,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /* Карта "инструмент → обработчик". После инициализации делаем неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlers;
 
-    /* Конструктор. */
+    /**
+     * Конструктор с проверками.
+     *
+     * @throws IllegalStateException если при заполнении карты "инструмент → обработчик" происходит
+     *                               повторная регистрация инструмента
+     */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Передаем набор обработчиков
@@ -40,7 +45,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
                 if (prev != null && prev != h) {
                     throw new IllegalStateException(
                             "Instrument '" + ins.code() + "' is already bound to another handler (" +
-                                    prev.handlerCode() + ") for provider '" + providerDescriptor.providerCode() + "'"
+                                    prev.handlerCode() + ") of provider '" + providerDescriptor.providerCode() + "'"
                     );
                 }
             }
