@@ -25,21 +25,18 @@ public class FxSpot extends AbstractInstrument {
      * @throws IllegalArgumentException      если код валюты пустой
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
-        // → Проверяем входные параметры
+        // Проверяем входные параметры
         this.base = Objects.requireNonNull(base, "Base currency must not be null");
-        this.quote = Objects.requireNonNull(quote, "Quote currency must not be null");
-        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
-        this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
-
-        // → Проверяем, что коды валют заполнены
         if (this.base.code().isBlank()) {
             throw new IllegalArgumentException("Base currency code must not be blank");
         }
+        this.quote = Objects.requireNonNull(quote, "Quote currency must not be null");
         if (this.quote.code().isBlank()) {
             throw new IllegalArgumentException("Quote currency code must not be blank");
         }
-
-        // → Проверяем, что валюты отличаются
+        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
+        this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
+        // Проверяем, что валюты отличаются
         if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
