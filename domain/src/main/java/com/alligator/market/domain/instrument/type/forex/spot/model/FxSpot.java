@@ -10,16 +10,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSa
  */
 public class FxSpot extends AbstractInstrument {
 
-    /* Базовая валюта. */
     private final Currency base;
-
-    /* Котируемая валюта. */
     private final Currency quote;
-
-    /* Код даты валютирования. */
     private final ValueDateCode valueDateCode;
-
-    /* Количество знаков в котировке. */
     private final Integer quoteDecimal;
 
     /**
