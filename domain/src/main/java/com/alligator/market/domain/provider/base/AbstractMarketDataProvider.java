@@ -42,7 +42,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // 1) Проверяем уникальность handlerCode
+        // 1) Проверяем уникальность handlerCode в наборе handlers
         var seenCodes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
@@ -52,13 +52,11 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             }
         }
 
-        // 2) Собираем карту "инструмент → обработчик" и ловим возможные пересечения по инструментам
+        // 2) Собираем карту "инструмент → обработчик" и проверяем возможные пересечения инструментов у обработчиков
         var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
         for (var h : handlers) {
             var supported = h.supportedInstruments();
-
             for (Instrument ins : supported) {
-                // Уникальность по равенству Instrument (equals/hashCode стандартизированы у вас)
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null && prev != h) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
@@ -97,24 +95,5 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             );
         }
         return handler.quote(instrument);
-    }
-
-    /**
-     * Возвращает обработчик для указанного инструмента или {@code null}, если обработчик не зарегистрирован.
-     * Метод предназначен для использования внутри наследников, когда требуется доступ к обработчику
-     * без генерации {@link HandlerNotFoundException}.
-     */
-    protected final <I extends Instrument> InstrumentHandler<P, I> findHandler(I instrument) {
-        @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> h = (InstrumentHandler<P, I>) instrumentHandlerMap.get(instrument);
-        return h;
-    }
-
-    /**
-     * Предоставляет неизменяемую карту соответствий «инструмент → обработчик».
-     * Используется наследниками для метрик, мониторинга или диагностики.
-     */
-    protected final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap() {
-        return instrumentHandlerMap;
     }
 }
