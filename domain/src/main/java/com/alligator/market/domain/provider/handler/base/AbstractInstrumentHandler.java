@@ -25,14 +25,35 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Ссылка на провайдера (проставляется провайдером через attachTo()). */
     protected P provider;
 
-    /** Конструктор с примитивными проверками. */
+    /** Конструктор с проверками. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
+        // 1) Проверки handlerCode
         this.handlerCode = Objects.requireNonNull(handlerCode,
                 "handlerCode must not be null");
+        if (this.handlerCode.isBlank()) {
+            throw new IllegalArgumentException("handlerCode must not be blank");
+        }
+        // 2) Проверки instrumentClass
         this.instrumentClass = Objects.requireNonNull(instrumentClass,
                 "instrumentClass must not be null");
-        this.supportedInstruments = Set.copyOf(Objects.requireNonNull(supportedInstruments,
-                "supportedInstruments must not be null"));
+        // 3) Проверки supportedInstruments
+        Objects.requireNonNull(supportedInstruments,
+                "supportedInstruments must not be null");
+        if (supportedInstruments.isEmpty()) {
+            throw new IllegalArgumentException("supportedInstruments must not be empty");
+        }
+        for (I instrument : supportedInstruments) { // Перебираем инструменты
+            Objects.requireNonNull(instrument, "supportedInstruments must not contain null");
+            if (instrument.getClass() != instrumentClass) {
+                throw new InstrumentWrongClassException(
+                        instrument.code(),
+                        instrument.getClass(),
+                        handlerCode,
+                        instrumentClass
+                );
+            }
+        }
+        this.supportedInstruments = Set.copyOf(supportedInstruments);
     }
 
     /** Уникальный код обработчика (для логов/метрик). */
