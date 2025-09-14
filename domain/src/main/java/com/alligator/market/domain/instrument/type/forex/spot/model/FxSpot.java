@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.base.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
@@ -8,20 +8,54 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSa
 /**
  * Модель финансового инструмента FX_SPOT.
  */
-public record FxSpot(
+public class FxSpot extends AbstractInstrument {
 
-        Currency base,
-        Currency quote,
-        ValueDateCode valueDateCode,
-        Integer quoteDecimal
+    /* Базовая валюта. */
+    private final Currency base;
 
-) implements Instrument {
+    /* Котируемая валюта. */
+    private final Currency quote;
 
-    // Проверяем, что валюты отличаются
-    public FxSpot {
+    /* Код даты валютирования. */
+    private final ValueDateCode valueDateCode;
+
+    /* Количество знаков в котировке. */
+    private final Integer quoteDecimal;
+
+    /**
+     * Конструктор инструмента.
+     *
+     * @throws FxSpotSameCurrenciesException если валюты совпадают
+     */
+    public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
+        // Проверяем, что валюты отличаются
         if (base.code().equals(quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
+        this.base = base;
+        this.quote = quote;
+        this.valueDateCode = valueDateCode;
+        this.quoteDecimal = quoteDecimal;
+    }
+
+    /** Базовая валюта. */
+    public Currency base() {
+        return base;
+    }
+
+    /** Котируемая валюта. */
+    public Currency quote() {
+        return quote;
+    }
+
+    /** Код даты валютирования. */
+    public ValueDateCode valueDateCode() {
+        return valueDateCode;
+    }
+
+    /** Количество знаков в котировке. */
+    public Integer quoteDecimal() {
+        return quoteDecimal;
     }
 
     @Override
