@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.base.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
+import java.util.Objects;
 
 /**
  * Модель финансового инструмента FX_SPOT.
@@ -19,16 +20,28 @@ public class FxSpot extends AbstractInstrument {
      * Конструктор инструмента.
      *
      * @throws FxSpotSameCurrenciesException если валюты совпадают
+     * @throws NullPointerException           если параметр не передан
+     * @throws IllegalArgumentException      если код валюты пустой
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
+        // Проверяем входные параметры
+        this.base = Objects.requireNonNull(base, "Base currency is required");
+        this.quote = Objects.requireNonNull(quote, "Quote currency is required");
+        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code is required");
+        this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal is required");
+
+        // Проверяем, что коды валют заполнены
+        if (this.base.code().isBlank()) {
+            throw new IllegalArgumentException("Base currency code must not be blank");
+        }
+        if (this.quote.code().isBlank()) {
+            throw new IllegalArgumentException("Quote currency code must not be blank");
+        }
+
         // Проверяем, что валюты отличаются
-        if (base.code().equals(quote.code())) {
+        if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
-        this.base = base;
-        this.quote = quote;
-        this.valueDateCode = valueDateCode;
-        this.quoteDecimal = quoteDecimal;
     }
 
     /** Базовая валюта. */
