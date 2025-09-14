@@ -45,12 +45,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         for (I instrument : supportedInstruments) { // Перебираем инструменты
             Objects.requireNonNull(instrument, "supportedInstruments must not contain null");
             if (instrument.getClass() != instrumentClass) {
-                throw new InstrumentWrongClassException(
-                        instrument.code(),
-                        instrument.getClass(),
-                        handlerCode,
-                        instrumentClass
-                );
+                throw new IllegalStateException("supportedInstruments must contain only "
+                        + instrumentClass.getSimpleName());
             }
         }
         this.supportedInstruments = Set.copyOf(supportedInstruments);
