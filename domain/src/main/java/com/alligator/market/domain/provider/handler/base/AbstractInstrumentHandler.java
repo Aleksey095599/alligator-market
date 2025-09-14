@@ -59,7 +59,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
     }
 
-
     /**
      * Котировка заданного инструмента.
      *
