@@ -63,14 +63,14 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             for (Instrument ins : supported) {
                 Objects.requireNonNull(ins, "supported instrument must not be null");
 
-                // ✓ Ранняя диагностика: инструмент должен соответствовать заявленному классу обработчика
+                // Ранняя диагностика: инструмент должен соответствовать заявленному классу обработчика
                 if (!clazz.isInstance(ins)) {
                     throw new IllegalStateException("Handler '" + h.handlerCode() + "' lists instrument '" +
                             ins.code() + "' of type '" + ins.getClass().getName() +
                             "' which is not instance of declared " + clazz.getName());
                 }
 
-                // ✓ Уникальность по равенству Instrument (equals/hashCode стандартизированы у вас)
+                // Уникальность по равенству Instrument (equals/hashCode стандартизированы у вас)
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null && prev != h) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
@@ -83,7 +83,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         // 3) Фиксируем инвариант: делаем карту неизменяемой
         this.instrumentHandlerMap = java.util.Collections.unmodifiableMap(map);
 
-        // 4) После фиксации инвариантов — прикрепляем обработчики к провайдеру
+        // 4) После фиксации инвариантов прикрепляем обработчики к провайдеру
         //    (dedup, если один обработчик покрывает несколько инструментов)
         for (var h : new java.util.LinkedHashSet<>(map.values())) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
