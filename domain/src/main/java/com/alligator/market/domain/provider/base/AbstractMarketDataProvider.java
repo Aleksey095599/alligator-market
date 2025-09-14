@@ -45,8 +45,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         // 1) Проверяем уникальность handlerCode
         var seenCodes = new java.util.HashSet<String>();
         for (var h : handlers) {
-            var code = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null").trim();
-            if (code.isEmpty()) throw new IllegalArgumentException("handlerCode must not be blank");
+            var code = h.handlerCode();
             if (!seenCodes.add(code)) {
                 throw new IllegalStateException("Duplicate handlerCode '" + code + "' in provider '" +
                         providerDescriptor.providerCode() + "'");
@@ -56,20 +55,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         // 2) Собираем карту "инструмент → обработчик" и ловим возможные пересечения по инструментам
         var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
         for (var h : handlers) {
-            var clazz = Objects.requireNonNull(h.instrumentClass(), "instrumentClass must not be null");
-            var supported = Objects.requireNonNull(h.supportedInstruments(),
-                    "supportedInstruments must not be null");
+            var supported = h.supportedInstruments();
 
             for (Instrument ins : supported) {
-                Objects.requireNonNull(ins, "supported instrument must not be null");
-
-                // Ранняя диагностика: инструмент должен соответствовать заявленному классу обработчика
-                if (!clazz.isInstance(ins)) {
-                    throw new IllegalStateException("Handler '" + h.handlerCode() + "' lists instrument '" +
-                            ins.code() + "' of type '" + ins.getClass().getName() +
-                            "' which is not instance of declared " + clazz.getName());
-                }
-
                 // Уникальность по равенству Instrument (equals/hashCode стандартизированы у вас)
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null && prev != h) {
