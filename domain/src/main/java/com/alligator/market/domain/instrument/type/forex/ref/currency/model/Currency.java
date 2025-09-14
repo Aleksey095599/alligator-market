@@ -11,15 +11,7 @@ public record Currency(
         String country,
         Integer decimal
 ) {
-
-    /**
-     * Канонический конструктор выполняет проверки:
-     * <ul>
-     *     <li>обязательность полей;</li>
-     *     <li>отсутствие пустых строк;</li>
-     *     <li>формат кода валюты.</li>
-     * </ul>
-     */
+    /** Канонический конструктор с проверками. */
     public Currency {
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
