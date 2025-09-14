@@ -18,7 +18,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /* Дескриптор провайдера. */
     protected final ProviderDescriptor providerDescriptor;
 
-    /* Карта "инструмент → обработчик". После инициализации делаем неизменяемой. */
+    /* Карта "инструмент → обработчик". */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
