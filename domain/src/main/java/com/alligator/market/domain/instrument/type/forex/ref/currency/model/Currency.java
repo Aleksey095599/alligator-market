@@ -3,7 +3,7 @@ package com.alligator.market.domain.instrument.type.forex.ref.currency.model;
 import java.util.Objects;
 
 /**
- * Базовая модель валюты на рынке Forex.
+ * Базовая модель валюты.
  */
 public record Currency(
         String code,
