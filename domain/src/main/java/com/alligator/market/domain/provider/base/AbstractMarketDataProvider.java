@@ -18,7 +18,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /* Дескриптор провайдера. */
     protected final ProviderDescriptor providerDescriptor;
 
-    /* Карта "инструмент → обработчик". */
+    /* Карта "инструмент → обработчик".*/
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
@@ -42,7 +42,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // 1) Проверяем уникальность handlerCode в наборе handlers
+        // 1) Проверяем уникальность handlers по коду.
         var codes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
@@ -52,16 +52,16 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             }
         }
 
-        // 2) Собираем карту "инструмент → обработчик" и проверяем возможные пересечения инструментов у обработчиков
+        // 2) Собираем взаимно-однозначную карту "инструмент → обработчик".
+        //    Выбрасываем ошибку при дублировании по инструменту.
         var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
         for (var h : handlers) {
             var supported = h.supportedInstruments();
             for (Instrument ins : supported) {
                 var prev = map.putIfAbsent(ins, h);
-                if (prev != null && prev != h) {
+                if (prev != null) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
-                            "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + providerDescriptor.providerCode() + "'");
+                            "' is already bound to handler '" + prev.handlerCode() + "'");
                 }
             }
         }
