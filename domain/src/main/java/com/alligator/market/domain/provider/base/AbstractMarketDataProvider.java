@@ -42,7 +42,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // 1) Проверяем уникальность handlers по коду.
+        // 1) Проверяем уникальность handlers по коду
         var codes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
@@ -52,12 +52,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             }
         }
 
-        // 2) Собираем взаимно-однозначную карту "инструмент → обработчик".
-        //    Выбрасываем ошибку при дублировании по инструменту.
+        // 2) Собираем карту "инструмент → обработчик"
         var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
         for (var h : handlers) {
             var supported = h.supportedInstruments();
             for (Instrument ins : supported) {
+                // Обеспечиваем уникальность ключей (инструментов) в карте при сборке
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
@@ -66,11 +66,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             }
         }
 
-        // 3) Фиксируем инвариант: делаем карту неизменяемой
+        // 3) Фиксируем карту (делаем неизменяемой)
         this.instrumentHandlerMap = java.util.Collections.unmodifiableMap(map);
 
-        // 4) После фиксации инвариантов прикрепляем обработчики к провайдеру
-        //    (LinkedHashSet<> обеспечивает deduplication, если один обработчик покрывает несколько инструментов)
+        // 4) После того как карта зафиксирована, извлекаем из нее набор неповторяющихся обработчиков.
+        //    Может казаться, что мы сначала разложили обработчики из набора по инструментам,
+        //    а теперь обратно собираем в набор. Это оправдывается безопасностью.
         for (var h : new java.util.LinkedHashSet<>(map.values())) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
