@@ -25,7 +25,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     protected abstract P self();
 
     /**
-     * Конструктор с проверками.
+     * Конструктор.
      *
      * @throws IllegalStateException если при заполнении карты "инструмент → обработчик" происходит
      *                               повторная регистрация инструмента
@@ -43,12 +43,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         }
 
         // 1) Проверяем уникальность handlerCode в наборе handlers
-        var seenCodes = new java.util.HashSet<String>();
+        var codes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
-            if (!seenCodes.add(code)) {
-                throw new IllegalStateException("Duplicate handlerCode '" + code + "' in provider '" +
-                        providerDescriptor.providerCode() + "'");
+            if (!codes.add(code)) {
+                throw new IllegalStateException("Provider '" + providerDescriptor.providerCode() +
+                        "' contains multiple handlers with the same code '" + code + "'");
             }
         }
 
