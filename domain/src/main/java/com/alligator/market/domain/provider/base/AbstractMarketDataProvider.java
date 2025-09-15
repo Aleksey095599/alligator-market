@@ -70,7 +70,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         this.instrumentHandlerMap = java.util.Collections.unmodifiableMap(map);
 
         // 4) После фиксации инвариантов прикрепляем обработчики к провайдеру
-        //    (dedup, если один обработчик покрывает несколько инструментов)
+        //    (LinkedHashSet<> обеспечивает deduplication, если один обработчик покрывает несколько инструментов)
         for (var h : new java.util.LinkedHashSet<>(map.values())) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
