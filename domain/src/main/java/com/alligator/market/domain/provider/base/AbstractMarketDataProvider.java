@@ -3,6 +3,7 @@ package com.alligator.market.domain.provider.base;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -16,9 +17,9 @@ import java.util.*;
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты обработчика. */
-    protected final ProviderDescriptor providerDescriptor;
-
-    /* Карта "инструмент → обработчик". После инициализации неизменяема. */
+    protected final ProviderDescriptor descriptor;
+    protected final ProviderSettings settings;
+    // Карта "инструмент → обработчик". После инициализации неизменяема
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
@@ -32,12 +33,13 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
      * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов
      */
     protected AbstractMarketDataProvider(
-            ProviderDescriptor providerDescriptor,
+            ProviderDescriptor descriptor,
+            ProviderSettings settings,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         // ↓↓ Базовые проверки аргументов
-        this.providerDescriptor = Objects.requireNonNull(providerDescriptor,
-                "providerDescriptor must not be null");
+        this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
+        this.settings = Objects.requireNonNull(settings, "settings must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
@@ -48,7 +50,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         for (var h : handlers) {
             var code = h.handlerCode();
             if (!codes.add(code)) {
-                throw new IllegalStateException("Provider '" + providerDescriptor.providerCode() +
+                throw new IllegalStateException("Provider '" + descriptor.providerCode() +
                         "' contains multiple handlers with the same code '" + code + "'");
             }
         }
@@ -63,7 +65,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
                 if (prev != null) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
                             "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + providerDescriptor.providerCode() + "'");
+                            "' in provider '" + descriptor.providerCode() + "'");
                 }
             }
         }
@@ -85,10 +87,16 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         }
     }
 
-    /** Дескриптор провайдера: неизменяемый набор статических атрибутов. */
+    /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
     @Override
     public ProviderDescriptor descriptor() {
-        return providerDescriptor;
+        return descriptor;
+    }
+
+    /** Иммутабельные настройки провайдера. */
+    @Override
+    public ProviderSettings settings() {
+        return settings;
     }
 
     /**
@@ -105,7 +113,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),
-                    providerDescriptor.providerCode()
+                    descriptor.providerCode()
             );
         }
         return handler.quote(instrument);
