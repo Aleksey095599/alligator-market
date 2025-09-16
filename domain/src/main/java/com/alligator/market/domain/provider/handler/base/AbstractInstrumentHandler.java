@@ -36,11 +36,12 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         // 2) Проверки instrumentClass
         this.instrumentClass = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
 
-        // 3) Проверки supportedInstruments: не пустой, не содержит null, все инструменты класса instrumentClass
+        // 3) Проверки supportedInstruments
         Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null");
         if (supportedInstruments.isEmpty()) {
             throw new IllegalArgumentException("supportedInstruments must not be empty");
         }
+        // ↓↓ Все инструменты относятся к классу instrumentClass
         for (I instrument : supportedInstruments) { // Перебираем инструменты
             Objects.requireNonNull(instrument, "supportedInstruments must not contain null");
             if (instrument.getClass() != instrumentClass) {
