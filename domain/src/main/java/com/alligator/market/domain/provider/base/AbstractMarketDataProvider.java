@@ -91,7 +91,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         return providerDescriptor;
     }
 
-    /** Унифицированная операция получения котировок для любого поддерживаемого инструмента. */
+    /**
+     * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
+     *
+     * @throws NullPointerException
+     * @throws HandlerNotFoundException
+     */
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
