@@ -10,7 +10,7 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * Общая для всех провайдеров рыночных данных (далее - провайдеров) конфигурация
+ * Общая для всех провайдеров рыночных данных конфигурация
  * низкоуровневого сетевого слоя: HTTP-клиент и пул TCP-соединений.
  */
 @Configuration
