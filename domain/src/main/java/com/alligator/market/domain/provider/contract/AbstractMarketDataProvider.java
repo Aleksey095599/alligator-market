@@ -32,8 +32,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * @throws NullPointerException     если переданы null-дескриптор или набор обработчиков
      * @throws IllegalArgumentException если набор обработчиков пуст
-     * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов
-     * @throws IllegalStateException    если инструмент не соответствует декларируемому в обработчике классу
+     * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов,
+     *                                  если инструмент не соответствует декларируемому в обработчике классу
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor descriptor,
