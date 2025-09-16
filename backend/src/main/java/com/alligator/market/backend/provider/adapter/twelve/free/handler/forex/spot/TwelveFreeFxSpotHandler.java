@@ -2,9 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import com.alligator.market.domain.provider.handler.contract.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,7 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.Set;
+
+import static com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotCatalog.SUPPORTED;
 
 /**
  * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
@@ -24,14 +23,6 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     /* Уникальный код обработчика. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
-    /* ↓↓ Задаем единственный поддерживаемый инструмент EUR/USD SPOT. */
-    private static final Currency EUR = new Currency("EUR", "Euro", "European Union", 2);
-    private static final Currency USD = new Currency("USD", "United States Dollar", "United States", 2);
-    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.SPOT, 4);
-
-    /* Набор поддерживаемых инструментов. */
-    private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = Set.of(EUR_USD);
-
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
 
@@ -40,7 +31,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
             WebClient webClient,
             TwelveFreeConnectionProps props
     ) {
-        super(HANDLER_CODE, FxSpot.class, SUPPORTED_INSTRUMENTS);
+        super(HANDLER_CODE, FxSpot.class, SUPPORTED);
         this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
         this.props = Objects.requireNonNull(props, "props must not be null");
     }
