@@ -10,7 +10,7 @@ public class InstrumentWrongClassException extends RuntimeException {
             String handlerCode,
             Class<?> expectedClass
     ) {
-        super("Instrument %s has class %s, but provider handler %s expects %s"
+        super("Instrument %s has class %s, but provider handler %s expects exact class %s"
                 .formatted(instrumentCode, instrumentClass.getName(), handlerCode, expectedClass.getName()));
     }
 }
