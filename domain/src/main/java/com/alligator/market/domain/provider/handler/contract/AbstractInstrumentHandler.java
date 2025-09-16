@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Абстрактный каркас обработчика инструмента.
  */
-public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
+public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
     /* ↓↓ Базовые атрибуты обработчика. */
