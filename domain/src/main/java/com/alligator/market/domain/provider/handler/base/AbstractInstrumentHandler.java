@@ -23,7 +23,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final Set<I> supportedInstruments;
 
     /* Ссылка на провайдера (проставляется провайдером через attachTo()). */
-    protected P provider;
+    private P provider;
 
     /** Конструктор. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
@@ -70,6 +70,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /** Прикрепить обработчик к заданному провайдеру. */
     @Override
     public final void attachTo(P provider) {
+        // Запрещаем повторное прикрепление обработчика
+        if (this.provider != null) {
+            throw new IllegalStateException("Provider is already attached");
+        }
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
     }
 
