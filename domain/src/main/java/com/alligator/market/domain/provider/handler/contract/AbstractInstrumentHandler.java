@@ -1,10 +1,9 @@
-package com.alligator.market.domain.provider.handler.base;
+package com.alligator.market.domain.provider.handler.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
-import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
