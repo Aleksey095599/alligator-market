@@ -1,6 +1,5 @@
-package com.alligator.market.domain.instrument.base;
+package com.alligator.market.domain.instrument.contract;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
 import java.util.Objects;
 
 /**
@@ -15,7 +14,7 @@ public abstract class AbstractInstrument implements Instrument {
             return true;
         }
         if (!(o instanceof Instrument that)) {
-            return false; // Не инструмент
+            return false;
         }
         return code().equals(that.code()) && type() == that.type(); // Сравниваем код и тип
     }
