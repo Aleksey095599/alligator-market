@@ -10,7 +10,6 @@ import java.util.Objects;
  * Модель финансового инструмента FX_SPOT.
  */
 public class FxSpot extends AbstractInstrument {
-
     /* ↓↓ Базовые атрибуты инструмента. */
     private final Currency base;
     private final Currency quote;
@@ -25,7 +24,8 @@ public class FxSpot extends AbstractInstrument {
      * @throws IllegalArgumentException      если код валюты пустой
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, Integer quoteDecimal) {
-        // Проверяем входные параметры
+
+        // ↓↓ Базовые проверки аргументов
         this.base = Objects.requireNonNull(base, "Base currency must not be null");
         if (this.base.code().isBlank()) {
             throw new IllegalArgumentException("Base currency code must not be blank");
@@ -36,7 +36,7 @@ public class FxSpot extends AbstractInstrument {
         }
         this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
         this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
-        // Проверяем, что валюты отличаются
+        // ↓↓ Проверяем, что валюты отличаются
         if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }

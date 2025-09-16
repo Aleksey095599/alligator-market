@@ -6,6 +6,7 @@ import java.util.Objects;
  * Базовая модель валюты.
  */
 public record Currency(
+        /* ↓↓ Базовые атрибуты валюты. */
         String code,
         String name,
         String country,
@@ -13,6 +14,8 @@ public record Currency(
 ) {
     /** Канонический конструктор с проверками. */
     public Currency {
+
+        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(country, "country must not be null");
