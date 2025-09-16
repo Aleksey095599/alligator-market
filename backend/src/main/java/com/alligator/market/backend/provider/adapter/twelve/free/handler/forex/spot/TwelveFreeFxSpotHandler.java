@@ -24,14 +24,10 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     /* Уникальный код обработчика. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
-    /* Базовая валюта пары. */
+    /* ↓↓ Задаем единственный поддерживаемый инструмент EUR/USD SPOT. */
     private static final Currency EUR = new Currency("EUR", "Euro", "European Union", 2);
-
-    /* Котируемая валюта пары. */
     private static final Currency USD = new Currency("USD", "United States Dollar", "United States", 2);
-
-    /* Единственный поддерживаемый инструмент EUR/USD SPOT. */
-    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.SPOT, 5);
+    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.SPOT, 4);
 
     /* Набор поддерживаемых инструментов. */
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = Set.of(EUR_USD);
@@ -39,7 +35,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
 
-    // Конструктор
+    /** Конструктор. */
     public TwelveFreeFxSpotHandler(
             WebClient webClient,
             TwelveFreeConnectionProps props
@@ -72,9 +68,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
         if (priceNode == null) {
             throw new IllegalArgumentException("Invalid provider response: " + json);
         }
-
         BigDecimal price = new BigDecimal(priceNode.asText());
-
         return new QuoteTick(
                 instrumentCode,
                 price,

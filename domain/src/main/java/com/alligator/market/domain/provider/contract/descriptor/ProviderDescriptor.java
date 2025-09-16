@@ -19,6 +19,7 @@ public record ProviderDescriptor(
         boolean bulkSubscription
 ) {
     public ProviderDescriptor {
+
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");

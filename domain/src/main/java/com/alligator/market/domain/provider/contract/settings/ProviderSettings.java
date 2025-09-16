@@ -10,6 +10,7 @@ public record ProviderSettings(
 ) {
     // ↓↓ Базовые проверки аргументов
     public ProviderSettings {
+
         java.util.Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
         if (minUpdateInterval.isZero() || minUpdateInterval.isNegative()) {
             throw new IllegalArgumentException("minUpdateInterval must be positive");
