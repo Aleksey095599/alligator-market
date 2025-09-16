@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract.descriptor;
 import java.util.Objects;
 
 /**
- * Дескриптор провайдера: неизменяемый набор статических атрибутов.
+ * Дескриптор провайдера: иммутабельный набор статических атрибутов.
  *
  * @param providerCode           Технический код провайдера
  * @param displayName            Отображаемое имя провайдера (user friendly)
@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param bulkSubscription       Поддержка массовой подписки одним запросом
  */
 public record ProviderDescriptor(
-
         String providerCode,
         String displayName,
         DeliveryMode deliveryMode,
@@ -20,7 +19,7 @@ public record ProviderDescriptor(
         boolean bulkSubscription
 ) {
     public ProviderDescriptor {
-        // Примитивные проверки
+        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
         Objects.requireNonNull(providerCode, "providerCode must not be null");
