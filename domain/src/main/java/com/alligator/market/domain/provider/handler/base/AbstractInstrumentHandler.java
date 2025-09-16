@@ -89,6 +89,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
+        if (!attached) {
+            throw new IllegalStateException("Provider is not attached");
+        }
         Objects.requireNonNull(instrument, "instrument must not be null");
         if (instrument.getClass() != instrumentClass) {
             throw new InstrumentWrongClassException(
@@ -103,9 +106,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                     instrument.code(),
                     handlerCode
             );
-        }
-        if (!attached) {
-            throw new IllegalStateException("Provider is not attached");
         }
         return doQuote(instrument);
     }
