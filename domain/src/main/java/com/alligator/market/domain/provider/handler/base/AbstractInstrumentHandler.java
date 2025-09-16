@@ -86,7 +86,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
-        if (!instrumentClass.isInstance(instrument)) {
+        if (instrument.getClass() != instrumentClass) {
             throw new InstrumentWrongClassException(
                     instrument.code(),
                     instrument.getClass(),
