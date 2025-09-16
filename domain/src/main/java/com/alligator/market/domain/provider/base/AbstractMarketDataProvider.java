@@ -19,6 +19,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /* ↓↓ Базовые атрибуты обработчика. */
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
+
     // Карта "инструмент → обработчик". После инициализации неизменяема
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
 
