@@ -1,7 +1,6 @@
-package com.alligator.market.domain.provider.base;
+package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
@@ -15,7 +14,8 @@ import java.util.*;
 /**
  * Абстрактный каркас провайдера рыночных данных.
  */
-public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
+public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
+        implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты обработчика. */
     protected final ProviderDescriptor descriptor;
