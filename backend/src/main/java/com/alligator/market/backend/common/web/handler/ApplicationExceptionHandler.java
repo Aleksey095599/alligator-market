@@ -10,6 +10,7 @@ import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.profile.exeption.ContextProfileDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -97,6 +98,14 @@ public class ApplicationExceptionHandler {
         // 400, неподдерживаемый инструмент
         log.warn("HandlerNotFoundException: {}", ex.getMessage());
         return ResponseEntityFactory.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** Класс инструмента не соответствует ожиданиям обработчика. */
+    @ExceptionHandler(InstrumentWrongClassException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongClass(InstrumentWrongClassException ex) {
+        // 500, ошибка конфигурации сервера
+        log.error("InstrumentWrongClassException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     /** Некорректный набор обработчиков провайдера. */
