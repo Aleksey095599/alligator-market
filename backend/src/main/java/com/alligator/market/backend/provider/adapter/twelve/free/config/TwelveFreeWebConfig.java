@@ -10,18 +10,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Конфигурационный класс, который создает и настраивает WebClient для адаптера провайдера
- * рыночных данных (далее - провайдера) {@link TwelveFreeAdapterV2}.
- * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal}
- * и настройки подключения провайдера {@link TwelveFreeConnectionProps}.
+ * Конфигурационный класс создает WebClient для адаптера провайдера рыночных данных {@link TwelveFreeAdapterV2}.
+ * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal} и настройки
+ * подключения {@link TwelveFreeConnectionProps}.
  */
 @Configuration
 public class TwelveFreeWebConfig {
 
+    /* ↓↓ Базовые атрибуты конфигурации. */
     private final TwelveFreeConnectionProps props;
     private final HttpClient httpClient;
 
-    // Конструктор
+    /** Конструктор. */
     public TwelveFreeWebConfig(
             TwelveFreeConnectionProps props,
             @Qualifier("providerHttpClient") HttpClient httpClient // инжекция bean общего http-клиента провайдеров

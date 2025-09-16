@@ -36,7 +36,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     private static final ProviderSettings SETTINGS = new ProviderSettings(Duration.ofSeconds(60));
 
     /**
-     * Конструктор адаптера TwelveFreeAdapterV2.
+     * Конструктор.
      *
      * @param props     конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
      * @param webClient конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
