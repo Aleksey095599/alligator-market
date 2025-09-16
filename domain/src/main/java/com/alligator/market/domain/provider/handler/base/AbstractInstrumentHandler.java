@@ -22,11 +22,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final Class<I> instrumentClass;
     private final Set<I> supportedInstruments;
 
-    /* Ссылка на провайдера (проставляется провайдером через attachTo()). */
-    private P provider;
-
-    /* Флаг успешного прикрепления к провайдеру. */
-    private volatile boolean attached;
+    /* Ссылка на провайдера (volatile гарантирует видимость присвоения между потоками). */
+    private volatile P provider;
 
     /** Конструктор. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
@@ -78,7 +75,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             throw new IllegalStateException("Provider is already attached");
         }
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
-        attached = true;
     }
 
     /**
@@ -89,7 +85,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
-        if (!attached) {
+        P currentProvider = provider;
+        if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
         Objects.requireNonNull(instrument, "instrument must not be null");
@@ -115,9 +112,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     /** Полезный геттер для наследников. */
     protected final P provider() {
-        if (!attached) {
+        P currentProvider = provider;
+        if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
-        return provider;
+        return currentProvider;
     }
 }
