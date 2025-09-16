@@ -58,13 +58,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return handlerCode;
     }
 
-    /** Класс поддерживаемого инструмента. */
+    /** Декларируем класс поддерживаемых инструментов. */
     @Override
     public Class<I> instrumentClass() {
         return instrumentClass;
     }
 
-    /** Конкретные инструменты, которые поддерживает обработчик. */
+    /** Набор инструментов, которые поддерживает обработчик. */
     @Override
     public Set<I> supportedInstruments() {
         return supportedInstruments;

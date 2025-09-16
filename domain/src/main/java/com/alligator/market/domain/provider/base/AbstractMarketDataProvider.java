@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
+import com.alligator.market.domain.provider.handler.base.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
@@ -32,11 +33,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
      * @throws NullPointerException     если переданы null-дескриптор или набор обработчиков
      * @throws IllegalArgumentException если набор обработчиков пуст
      * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов
+     * @throws IllegalStateException    если инструмент не соответствует декларируемому в обработчике классу
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor descriptor,
             ProviderSettings settings,
-            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
+            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         // ↓↓ Базовые проверки аргументов
         this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
@@ -61,6 +63,14 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         for (var h : handlers) {
             var supported = h.supportedInstruments();
             for (Instrument ins : supported) {
+                // ↓↓ Дополнительно проверяем, что каждый инструмент соответствует декларируемому в обработчике классу
+                if (!h.instrumentClass().isInstance(ins)) {
+                    throw new IllegalStateException(
+                            "Instrument '" + ins.code() + "' must match "
+                                    + h.instrumentClass().getSimpleName()
+                                    + " for handler '" + h.handlerCode() + "'"
+                    );
+                }
                 // ↓↓ Обеспечиваем уникальность ключей (инструментов) в карте при сборке
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null) {
@@ -77,8 +87,8 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         // 4) Извлекаем набор неповторяющихся обработчиков из фиксированной карты
         var handlersFromMap = new java.util.LinkedHashSet<>(map.values());
 
-        // (!) Мы умышленно сперва "разложили" переданный в конструктор набор обработчиков handlers по инструментам,
-        // создали карту и зафиксировали карту, а затем из зафиксированной карты собрали обратно набор обработчиков.
+        // (!) Мы умышленно сперва "разложили" переданный в конструктор набор обработчиков по инструментам,
+        // создали и зафиксировали карту, а уже затем из зафиксированной карты собрали обратно набор обработчиков.
         // Это гарантирует безопасную инициализацию: обработчики получают ссылку на провайдера только после того,
         // как все инварианты проверены и структура реестра окончательно зафиксирована.
 
@@ -109,8 +119,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
-        @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentMap.get(instrument);
+        var handler = handlerOf(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),
@@ -118,5 +127,15 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
             );
         }
         return handler.quote(instrument);
+    }
+
+    /**
+     * Мост типов для извлечения обработчика под конкретный инструмент.
+     * Приведение типа безопасно: карту заполняем сами из проверенных пар (инструмент → обработчик)
+     * и фиксируем её как неизменяемую.
+     */
+    @SuppressWarnings("unchecked")
+    private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
+        return (InstrumentHandler<P, I>) instrumentMap.get(instrument);
     }
 }
