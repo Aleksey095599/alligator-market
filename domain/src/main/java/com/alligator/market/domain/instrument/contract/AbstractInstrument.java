@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Базовая модель инструмента с equals/hashCode по коду и типу инструмента.
  */
-public abstract class AbstractInstrument implements Instrument {
+public abstract non-sealed class AbstractInstrument implements Instrument {
 
     /** Сравниваем инструменты по коду и типу. */
     @Override
