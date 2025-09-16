@@ -27,9 +27,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /**
      * Конструктор.
      *
-     * @throws NullPointerException
-     * @throws IllegalArgumentException
-     * @throws IllegalStateException
+     * @throws NullPointerException      если переданы null-дескриптор или набор обработчиков
+     * @throws IllegalArgumentException  если набор обработчиков пуст
+     * @throws IllegalStateException     если обнаружены дубликаты обработчиков или инструментов
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
@@ -94,8 +94,8 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /**
      * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
      *
-     * @throws NullPointerException
-     * @throws HandlerNotFoundException
+     * @throws NullPointerException     если передан null-инструмент
+     * @throws HandlerNotFoundException если обработчик для инструмента не зарегистрирован
      */
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
