@@ -2,7 +2,9 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import com.alligator.market.domain.provider.handler.contract.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,19 +21,30 @@ import java.util.Set;
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
 
+    /* Уникальный код обработчика. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
+
+    /* Базовая валюта пары. */
+    private static final Currency EUR = new Currency("EUR", "Euro", "European Union", 2);
+
+    /* Котируемая валюта пары. */
+    private static final Currency USD = new Currency("USD", "United States Dollar", "United States", 2);
+
+    /* Единственный поддерживаемый инструмент EUR/USD SPOT. */
+    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.SPOT, 5);
+
+    /* Набор поддерживаемых инструментов. */
+    private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = Set.of(EUR_USD);
 
     private final WebClient webClient;
     private final TwelveFreeConnectionProps props;
 
     // Конструктор
     public TwelveFreeFxSpotHandler(
-            TwelveFreeAdapterV2 provider,
-            Set<FxSpot> instruments,
             WebClient webClient,
             TwelveFreeConnectionProps props
     ) {
-        super(HANDLER_CODE, provider, FxSpot.class, instruments);
+        super(HANDLER_CODE, FxSpot.class, SUPPORTED_INSTRUMENTS);
         this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
         this.props = Objects.requireNonNull(props, "props must not be null");
     }
