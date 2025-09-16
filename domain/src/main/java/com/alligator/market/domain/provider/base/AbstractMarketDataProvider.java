@@ -15,11 +15,11 @@ import java.util.*;
  */
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
 
-    /* Дескриптор провайдера. */
+    /* ↓↓ Базовые атрибуты обработчика. */
     protected final ProviderDescriptor providerDescriptor;
 
-    /* Карта "инструмент → обработчик".*/
-    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
+    /* Карта "инструмент → обработчик". После инициализации неизменяема. */
+    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
     protected abstract P self();
@@ -27,14 +27,15 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /**
      * Конструктор.
      *
-     * @throws IllegalStateException если при заполнении карты "инструмент → обработчик" происходит
-     *                               повторная регистрация инструмента
+     * @throws NullPointerException
+     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
-        // ↓↓ Примитивные проверки
+        // ↓↓ Базовые проверки аргументов
         this.providerDescriptor = Objects.requireNonNull(providerDescriptor,
                 "providerDescriptor must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
@@ -57,22 +58,29 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
         for (var h : handlers) {
             var supported = h.supportedInstruments();
             for (Instrument ins : supported) {
-                // Обеспечиваем уникальность ключей (инструментов) в карте при сборке
+                // ↓↓ Обеспечиваем уникальность ключей (инструментов) в карте при сборке
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
-                            "' is already bound to handler '" + prev.handlerCode() + "'");
+                            "' is already bound to handler '" + prev.handlerCode() +
+                            "' in provider '" + providerDescriptor.providerCode() + "'");
                 }
             }
         }
 
         // 3) Фиксируем карту (делаем неизменяемой)
-        this.instrumentHandlerMap = java.util.Collections.unmodifiableMap(map);
+        this.instrumentMap = java.util.Collections.unmodifiableMap(map);
 
-        // 4) После того как карта зафиксирована, извлекаем из нее набор неповторяющихся обработчиков.
-        //    Может казаться, что мы сначала разложили обработчики из набора по инструментам,
-        //    а теперь обратно собираем в набор. Это хорошая практика, так безопаснее.
-        for (var h : new java.util.LinkedHashSet<>(map.values())) {
+        // 4) Извлекаем набор неповторяющихся обработчиков из фиксированной карты
+        var handlersFromMap = new java.util.LinkedHashSet<>(map.values());
+
+        // (!) Мы умышленно сперва "разложили" переданный в конструктор набор обработчиков handlers по инструментам,
+        // создали карту и зафиксировали карту, а затем из зафиксированной карты собрали обратно набор обработчиков.
+        // Это гарантирует безопасную инициализацию: обработчики получают ссылку на провайдера только после того,
+        // как все инварианты проверены и структура реестра окончательно зафиксирована.
+
+        // 5) Перебираем обработчики и прикрепляем их к провайдеру
+        for (var h : handlersFromMap) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
     }
@@ -88,7 +96,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
         @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlerMap.get(instrument);
+        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentMap.get(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(
                     instrument.code(),

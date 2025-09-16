@@ -28,17 +28,14 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /** Конструктор с проверками. */
     protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
         // 1) Проверки handlerCode
-        this.handlerCode = Objects.requireNonNull(handlerCode,
-                "handlerCode must not be null");
+        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         if (this.handlerCode.isBlank()) {
             throw new IllegalArgumentException("handlerCode must not be blank");
         }
         // 2) Проверки instrumentClass
-        this.instrumentClass = Objects.requireNonNull(instrumentClass,
-                "instrumentClass must not be null");
+        this.instrumentClass = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
         // 3) Проверки supportedInstruments: не пустой, не содержит null, все инструменты класса instrumentClass
-        Objects.requireNonNull(supportedInstruments,
-                "supportedInstruments must not be null");
+        Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null");
         if (supportedInstruments.isEmpty()) {
             throw new IllegalArgumentException("supportedInstruments must not be empty");
         }
