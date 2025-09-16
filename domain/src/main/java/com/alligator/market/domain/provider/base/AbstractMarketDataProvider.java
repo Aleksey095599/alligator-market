@@ -27,9 +27,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> i
     /**
      * Конструктор.
      *
-     * @throws NullPointerException      если переданы null-дескриптор или набор обработчиков
-     * @throws IllegalArgumentException  если набор обработчиков пуст
-     * @throws IllegalStateException     если обнаружены дубликаты обработчиков или инструментов
+     * @throws NullPointerException     если переданы null-дескриптор или набор обработчиков
+     * @throws IllegalArgumentException если набор обработчиков пуст
+     * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов
      */
     protected AbstractMarketDataProvider(
             ProviderDescriptor providerDescriptor,
