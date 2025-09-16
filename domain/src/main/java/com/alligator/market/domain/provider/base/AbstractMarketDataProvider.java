@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Абстрактный каркас провайдера рыночных данных.
  */
-public abstract class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
+public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider> implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты обработчика. */
     protected final ProviderDescriptor descriptor;
