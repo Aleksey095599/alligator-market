@@ -110,6 +110,12 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return settings;
     }
 
+    /** Иммутабельный набор поддерживаемых провайдером инструментов. */
+    @Override
+    public Set<Instrument> instruments() {
+        return instrumentMap.keySet();
+    }
+
     /**
      * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
      *
