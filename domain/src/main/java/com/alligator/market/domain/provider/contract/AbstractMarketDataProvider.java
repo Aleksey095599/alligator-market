@@ -22,8 +22,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
 
-    // Карта "инструмент → обработчик". После инициализации становится неизменяемой.
+    /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
+
+    /* ↓↓ Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
     private final Set<String> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
 
