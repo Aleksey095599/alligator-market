@@ -3,7 +3,8 @@ package com.alligator.market.domain.instrument.contract;
 import java.util.Objects;
 
 /**
- * Базовая модель инструмента с equals/hashCode по коду и типу инструмента.
+ * Абстрактный каркас модели финансового инструмента.
+ * Задает метод сравнения инструментов и расчета хэш значения инструмента.
  */
 public abstract non-sealed class AbstractInstrument implements Instrument {
 
