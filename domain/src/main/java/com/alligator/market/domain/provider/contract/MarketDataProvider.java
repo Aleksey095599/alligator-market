@@ -6,6 +6,8 @@ import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
+import java.util.Set;
+
 /**
  * Контракт провайдера рыночных данных.
  */
@@ -16,6 +18,9 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
     /** Иммутабельные настройки провайдера. */
     ProviderSettings settings();
+
+    /** Иммутабельный набор поддерживаемых провайдером инструментов. */
+    Set<Instrument> instruments();
 
     /** Унифицированная операция получения котировок для любого поддерживаемого инструмента. */
     <I extends Instrument> Publisher<QuoteTick> quote(I instrument);
