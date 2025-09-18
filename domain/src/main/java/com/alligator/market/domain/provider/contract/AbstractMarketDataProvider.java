@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
@@ -23,6 +24,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     // Карта "инструмент → обработчик". После инициализации становится неизменяемой.
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
+    private final Set<String> instrumentCodes;
+    private final Set<InstrumentType> instrumentTypes;
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
     protected abstract P self();
@@ -49,10 +52,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         // 1) Проверяем уникальность handlers по коду
-        var codes = new java.util.HashSet<String>();
+        var handlerCodes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
-            if (!codes.add(code)) {
+            if (!handlerCodes.add(code)) {
                 throw new IllegalStateException("Provider '" + descriptor.providerCode() +
                         "' contains multiple handlers with the same code '" + code + "'");
             }
@@ -81,10 +84,20 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             }
         }
 
-        // 3) Фиксируем карту (делаем неизменяемой)
-        this.instrumentMap = java.util.Collections.unmodifiableMap(map);
+        // 3) Извлекаем набор кодов и типов инструментов из карты
+        var instrumentCodes = new java.util.LinkedHashSet<String>();
+        var instrumentTypes = java.util.EnumSet.noneOf(InstrumentType.class);
+        for (Instrument instrument : map.keySet()) {
+            instrumentCodes.add(instrument.code());
+            instrumentTypes.add(instrument.type());
+        }
 
-        // 4) Извлекаем набор неповторяющихся обработчиков из фиксированной карты
+        // 4) Фиксируем структуру неизменяемых коллекций
+        this.instrumentMap = java.util.Collections.unmodifiableMap(map);
+        this.instrumentCodes = java.util.Collections.unmodifiableSet(instrumentCodes);
+        this.instrumentTypes = java.util.Collections.unmodifiableSet(instrumentTypes);
+
+        // 5) Извлекаем набор неповторяющихся обработчиков из фиксированной карты
         var handlersFromMap = new java.util.LinkedHashSet<>(map.values());
 
         // (!) Мы умышленно сперва "разложили" переданный в конструктор набор обработчиков по инструментам,
@@ -92,7 +105,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         // Это гарантирует безопасную инициализацию: обработчики получают ссылку на провайдера только после того,
         // как все инварианты проверены и структура реестра окончательно зафиксирована.
 
-        // 5) Перебираем обработчики и прикрепляем их к провайдеру
+        // 6) Перебираем обработчики и прикрепляем их к провайдеру
         for (var h : handlersFromMap) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
@@ -110,10 +123,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return settings;
     }
 
-    /** Иммутабельный набор поддерживаемых провайдером инструментов. */
+    /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
     @Override
-    public Set<Instrument> instruments() {
-        return instrumentMap.keySet();
+    public Set<String> instrumentsCodes() {
+        return instrumentCodes;
+    }
+
+    /** Иммутабельный набор типов поддерживаемых провайдером инструментов. */
+    @Override
+    public Set<InstrumentType> instrumentsTypes() {
+        return instrumentTypes;
     }
 
     /**
