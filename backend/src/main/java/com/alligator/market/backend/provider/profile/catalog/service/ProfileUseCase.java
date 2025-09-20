@@ -9,9 +9,6 @@ import java.util.Map;
  */
 public interface ProfileUseCase {
 
-    /** Вернуть все активные профили вместе с PK. */
+    /** Вернуть все . */
     Map<Long, ProviderDescriptor> findAllActive();
-
-    /** Вернуть все профили с их статусами. */
-    Map<ProviderDescriptor, ProfileStatus> findAllWithStatus();
 }

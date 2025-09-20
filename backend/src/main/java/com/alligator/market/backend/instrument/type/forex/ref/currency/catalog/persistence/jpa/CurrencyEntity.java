@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Сущность валюты.
+ * JPA-сущность валюты {@link Currency}.
  */
 @Entity
 @Table(

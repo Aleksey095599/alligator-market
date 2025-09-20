@@ -20,10 +20,5 @@ public class ProfileUseCaseImpl implements ProfileUseCase {
     public Map<Long, ProviderDescriptor> findAllActive() {
         return repository.findAllActive();
     }
-
-    @Override
-    public Map<ProviderDescriptor, ProfileStatus> findAllWithStatus() {
-        return repository.findAllWithStatus();
-    }
 }
 

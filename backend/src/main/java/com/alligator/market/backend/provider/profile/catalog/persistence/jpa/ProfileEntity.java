@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entity профиля провайдера.
+ * Сущность дескриптора провайдера {@link ProviderDescriptor}.
  */
 @Entity
 @Table(name = "provider_descriptor")
