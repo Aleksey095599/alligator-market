@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -14,13 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 /**
  * Entity профиля провайдера.
  */
 @Entity
-@Table(name = "provider_profile")
+@Table(name = "provider_descriptor")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,12 +30,6 @@ public class ProfileEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Статус профиля {@link ProviderDescriptor#profileStatus()}. */
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "profile_status", length = 10, nullable = false)
-    private ProfileStatus profileStatus;
-
     /** Технический код провайдера {@link ProviderDescriptor#providerCode()}. */
     @NotBlank
     @Size(max = 50)
@@ -50,20 +41,6 @@ public class ProfileEntity extends BaseEntity {
     @Size(max = 50)
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
-
-    /** Поддерживаемые инструменты {@link ProviderDescriptor#instrumentsSupported()}. */
-    @ElementCollection(targetClass = InstrumentType.class)
-    @CollectionTable(
-            name = "profile_supported_instrument",
-            joinColumns = @JoinColumn(
-                    name = "profile_id",
-                    referencedColumnName = "id",
-                    foreignKey = @ForeignKey(name = "fk_profile_supported_instrument")
-            )
-    )
-    @Enumerated(EnumType.STRING)
-    @Column(name = "instruments_supported", length = 20, nullable = false, updatable = false)
-    private Set<InstrumentType> instrumentsSupported;
 
     /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderDescriptor#deliveryMode()}. */
     @NotNull
@@ -80,9 +57,5 @@ public class ProfileEntity extends BaseEntity {
     /** Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}. */
     @Column(name = "bulk_subscription", nullable = false, updatable = false)
     private boolean bulkSubscription;
-
-    /** Минимально допустимый интервал опроса в миллисекундах {@link ProviderDescriptor#minPollMs()}. */
-    @Column(name = "min_poll_ms", nullable = false, updatable = false)
-    private int minPollMs;
 }
 
