@@ -21,7 +21,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     private final List<MarketDataProvider> providers;
 
     @Override
-    public List<ProviderDescriptor> getProfiles() {
+    public List<ProviderDescriptor> providerDescriptors() {
         return providers.stream()
                 .map(MarketDataProvider::getProfile)
                 .collect(Collectors.toList());
@@ -29,7 +29,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
 
     @Override
     /** Возвращает обработчики без повторов. */
-    public List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers() {
+    public List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlers() {
         return providers.stream()
                 .flatMap(p -> p.getHandlers().values().stream().distinct())
                 .collect(Collectors.toList());

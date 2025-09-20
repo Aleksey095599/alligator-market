@@ -7,7 +7,6 @@ import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.profile.service.ProfileValidator;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
-import com.alligator.market.domain.provider.reconciliation.ProfileDiff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -36,13 +35,13 @@ public class ProfilesReconciliationRunner implements ApplicationRunner {
         log.info("Start provider profiles reconciliation");
 
         // Извлекаем список профилей провайдеров из контекста
-        List<ProviderDescriptor> contextProviderMetadata = providerContextScanner.getProfiles();
+        List<ProviderDescriptor> contextProviderMetadata = providerContextScanner.providerDescriptors();
         // Проверяем, что нет дублирования по ProviderDescriptor.providerCode и ProviderDescriptor.displayName
         profileValidator.validateNoDuplicates(contextProviderMetadata);
 
         // Извлекаем список обработчиков из контекста
         // TODO: вероятно не нужен метод getHandlers так как теперь есть абстрактная модель провайдера, в которой есть карта обработчиков
-        List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> contextHandlers = providerContextScanner.getHandlers();
+        List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> contextHandlers = providerContextScanner.instrumentHandlers();
 
         ProfileDiff diff = reconciliationAdapter.compareContextAndRepository();
         reconciliationAdapter.applyContextDiffToStorage(diff);

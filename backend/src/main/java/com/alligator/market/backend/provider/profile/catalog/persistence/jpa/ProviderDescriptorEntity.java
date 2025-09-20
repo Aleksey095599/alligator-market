@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Сущность дескриптора провайдера {@link ProviderDescriptor}.
+ * JPA-сущность дескриптора провайдера {@link ProviderDescriptor}.
  */
 @Entity
 @Table(name = "provider_descriptor")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProfileEntity extends BaseEntity {
+public class ProviderDescriptorEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @EqualsAndHashCode.Include

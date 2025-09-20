@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
  * Маппер: сущность ⇄ доменная модель.
  */
 @Component
-public class ProfileEntityMapper {
+public class ProviderDescriptorEntityMapper {
 
     /** Сущность ⇒ доменная модель. */
-    public ProviderDescriptor toDomain(ProfileEntity entity) {
+    public ProviderDescriptor toDomain(ProviderDescriptorEntity entity) {
         return new ProviderDescriptor(
                 entity.getProviderCode(),
                 entity.getDisplayName(),
@@ -21,8 +21,8 @@ public class ProfileEntityMapper {
     }
 
     /** Преобразует доменную модель в сущность. */
-    public ProfileEntity toEntity(ProviderDescriptor providerDescriptor) {
-        var entity = new ProfileEntity();
+    public ProviderDescriptorEntity toEntity(ProviderDescriptor providerDescriptor) {
+        var entity = new ProviderDescriptorEntity();
         entity.setProviderCode(providerDescriptor.providerCode());
         entity.setDisplayName(providerDescriptor.displayName());
         entity.setDeliveryMode(providerDescriptor.deliveryMode());

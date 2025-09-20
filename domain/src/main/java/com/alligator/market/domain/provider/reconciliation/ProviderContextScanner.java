@@ -8,13 +8,13 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import java.util.List;
 
 /**
- * Контракт сканера контекста провайдеров, извлекающего их профили.
+ * Контракт сканера контекста приложения касательно данных о провайдерах рыночных данных.
  */
 public interface ProviderContextScanner {
 
-    /** Вернуть список профилей из контекста. */
-    List<ProviderDescriptor> getProfiles();
+    /** Вернуть список дескрипторов провайдеров {@link ProviderDescriptor}. */
+    List<ProviderDescriptor> providerDescriptors();
 
-    /** Вернуть список обработчиков финансовых инструментов из контекста. */
-    List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> getHandlers();
+    /** Вернуть список обработчиков {@link InstrumentHandler}. */
+    List<InstrumentHandler<? extends MarketDataProvider, ? extends Instrument>> instrumentHandlers();
 }

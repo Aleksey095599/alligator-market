@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.profile.catalog.persistence.adapter;
 
-import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntity;
-import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileEntityMapper;
-import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProfileJpaRepository;
+import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderDescriptorEntity;
+import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderDescriptorEntityMapper;
+import com.alligator.market.backend.provider.profile.catalog.persistence.jpa.ProviderDescriptorJpaRepository;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +20,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProfileRepositoryAdapter implements ProfileRepository {
 
-    private final ProfileJpaRepository jpaRepository;
-    private final ProfileEntityMapper mapper;
+    private final ProviderDescriptorJpaRepository jpaRepository;
+    private final ProviderDescriptorEntityMapper mapper;
 
     @Override
     @Transactional(readOnly = true)
     public Map<Long, ProviderDescriptor> findAllActive() {
         return jpaRepository.findAllByProfileStatus(ProfileStatus.ACTIVE).stream()
                 .collect(Collectors.toMap(
-                        ProfileEntity::getId,
+                        ProviderDescriptorEntity::getId,
                         mapper::toDomain
                 ));
     }
@@ -39,7 +39,7 @@ public class ProfileRepositoryAdapter implements ProfileRepository {
         return jpaRepository.findAll().stream()
                 .collect(Collectors.toMap(
                         mapper::toDomain,
-                        ProfileEntity::getProfileStatus
+                        ProviderDescriptorEntity::getProfileStatus
                 ));
     }
 
