@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import org.springframework.stereotype.Component;
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
  * Маппер: сущность ⇄ доменная модель.
  */
 @Component
-public class ProviderDescriptorEntityMapper {
+public class DescriptorEntityMapper {
 
     /** Сущность ⇒ доменная модель. */
-    public ProviderDescriptor toDomain(ProviderDescriptorEntity entity) {
+    public ProviderDescriptor toDomain(DescriptorEntity entity) {
         return new ProviderDescriptor(
                 entity.getProviderCode(),
                 entity.getDisplayName(),
@@ -21,8 +21,8 @@ public class ProviderDescriptorEntityMapper {
     }
 
     /** Преобразует доменную модель в сущность. */
-    public ProviderDescriptorEntity toEntity(ProviderDescriptor providerDescriptor) {
-        var entity = new ProviderDescriptorEntity();
+    public DescriptorEntity toEntity(ProviderDescriptor providerDescriptor) {
+        var entity = new DescriptorEntity();
         entity.setProviderCode(providerDescriptor.providerCode());
         entity.setDisplayName(providerDescriptor.displayName());
         entity.setDeliveryMode(providerDescriptor.deliveryMode());

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProviderDescriptorEntity extends BaseEntity {
+public class DescriptorEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @EqualsAndHashCode.Include

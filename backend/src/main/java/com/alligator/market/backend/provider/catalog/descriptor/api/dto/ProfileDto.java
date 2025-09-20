@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.profile.catalog.api.dto;
+package com.alligator.market.backend.provider.catalog.descriptor.api.dto;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
