@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.info.service;
+package com.alligator.market.backend.provider.catalog.descriptor.service;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.profile.repository.ProfileRepository;
