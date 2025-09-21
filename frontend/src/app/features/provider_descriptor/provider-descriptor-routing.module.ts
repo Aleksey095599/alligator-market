@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/profile-list/profile-list.component')
-        .then(c => c.ProfileListComponent)
+      import('./pages/descriptor-list/descriptor-list.component')
+        .then(c => c.DescriptorListComponent)
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProviderProfileRoutingModule {}
+export class ProviderDescriptorRoutingModule {}

@@ -17,10 +17,10 @@ export const routes: Routes = [
       import('./features/fx_outright/fx-outright.module').then(m => m.FxOutrightModule)
   },
   {
-    path: 'providers',
+    path: 'provider-descriptors',
     loadChildren: () =>
-      import('./features/provider_profile/provider-profile.module')
-        .then(m => m.ProviderProfileModule)
+      import('./features/provider_descriptor/provider-descriptor.module')
+        .then(m => m.ProviderDescriptorModule)
   },
   {
     path: '',
