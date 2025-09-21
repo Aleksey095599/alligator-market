@@ -19,7 +19,7 @@ public class FxSpotAssembler {
 
     private final CurrencyRepository currencyRepository;
 
-    /** Преобразует основной DTO в доменную модель. */
+    /** Основной DTO ⇒ доменная модель. */
     public FxSpot toDomain(FxSpotDto dto) {
         Currency base = currencyRepository.findByCode(dto.baseCurrency())
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(dto.baseCurrency()));
@@ -28,7 +28,7 @@ public class FxSpotAssembler {
         return new FxSpot(base, quote, dto.valueDateCode(), dto.quoteDecimal());
     }
 
-    /** Преобразует код инструмента и DTO для обновления в доменную модель. */
+    /** Код инструмента + DTO обновления ⇒ доменная модель. */
     public FxSpot toDomainByCode(String instrumentCode, FxSpotUpdateDto dto) {
         // Разделяем код на валюты и дату валютирования
         String[] parts = instrumentCode.split("_");
