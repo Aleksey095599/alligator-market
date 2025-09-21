@@ -28,6 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class DescriptorEntity extends BaseEntity {
 
     /** Суррогатный PK. */
