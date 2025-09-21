@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер профилей провайдеров.
+ * REST-контроллер дескрипторов.
  */
 @RestController
 @RequestMapping("/api/v1/providers")
@@ -33,12 +33,6 @@ public class ProfileController {
         return ResponseEntityFactory.ok(list);
     }
 
-    /** Вернуть все профили со статусами. */
-    @GetMapping("/audit")
-    public ResponseEntity<ApiResponse<List<ProviderProfileStatusDto>>> getAllWithStatus() {
-        List<ProviderProfileStatusDto> list = service.findAllWithStatus().entrySet().stream()
-                .map(e -> mapper.toStatusDto(e.getKey(), e.getValue()))
-                .toList();
-        return ResponseEntityFactory.ok(list);
-    }
+    /** Вернуть все дескрипторы. */
+
 }

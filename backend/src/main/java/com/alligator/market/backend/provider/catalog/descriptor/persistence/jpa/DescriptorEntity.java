@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * JPA-сущность описания провайдера.
+ * JPA-сущность дескриптора.
+ * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
  */
 @Entity
 @Table(name = "provider_descriptor")

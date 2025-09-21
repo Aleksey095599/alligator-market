@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract.descriptor;
 import java.util.Objects;
 
 /**
- * Иммутабельный набор статических атрибутов.
+ * Дескриптор провайдера: иммутабельный набор статических атрибутов.
  *
  * @param providerCode           Технический код провайдера
  * @param displayName            Отображаемое имя провайдера (user friendly)
