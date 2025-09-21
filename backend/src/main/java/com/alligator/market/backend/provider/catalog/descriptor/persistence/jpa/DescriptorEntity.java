@@ -18,7 +18,12 @@ import lombok.Setter;
  * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
  */
 @Entity
-@Table(name = "provider_descriptor")
+@Table(
+        name = "provider_descriptor",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_provider_descriptor_provider_code", columnNames = "provider_code")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
