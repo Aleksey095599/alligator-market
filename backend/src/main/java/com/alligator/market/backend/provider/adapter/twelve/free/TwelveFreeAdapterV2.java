@@ -33,13 +33,15 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     );
 
     /* Иммутабельные настройки провайдера. */
-    private static final ProviderSettings SETTINGS = new ProviderSettings(Duration.ofSeconds(60));
+    private static final ProviderSettings SETTINGS = new ProviderSettings(
+            Duration.ofSeconds(60)
+    );
 
     /**
      * Конструктор.
      *
-     * @param props     конфигурационные настройки подключения {@link TwelveFreeConnectionProps}
-     * @param webClient конфигурационный класс веб-клиента {@link TwelveFreeWebConfig}
+     * @param props     конфигурационные настройки подключения
+     * @param webClient веб-клиент
      */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
