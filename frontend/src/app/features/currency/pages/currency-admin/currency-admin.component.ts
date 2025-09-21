@@ -10,7 +10,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CurrencyDto} from '../../models/currency.model';
 import {CurrencyService} from '../../services/currency.service';
 import {MatCardModule} from "@angular/material/card";
-import {CurrencyUpdateDto} from "../../models/currency-update.model";
+import {UpdateCurrencyDto} from "../../models/currency-update.model";
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -145,11 +145,11 @@ export class CurrencyAdminComponent implements OnInit {
 
     this.locked = true;
 
-    const dto: CurrencyUpdateDto = {
+    const dto: UpdateCurrencyDto = {
       name: this.form.controls['name'].value,
       country: this.form.controls['country'].value,
       decimal: this.form.controls['decimal'].value
-    } as CurrencyUpdateDto;
+    } as UpdateCurrencyDto;
 
     this.service.update(this.editCode, dto).subscribe({
       next: () => {
