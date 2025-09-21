@@ -11,4 +11,5 @@ public interface DescriptorUseCase {
 
     /** Вернуть все дескрипторы. */
 
+    /** Удалить все дескрипторы. */
 }
