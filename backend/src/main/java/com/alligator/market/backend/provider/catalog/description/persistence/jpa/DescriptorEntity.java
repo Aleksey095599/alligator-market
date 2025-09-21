@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.description.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * JPA-сущность дескриптора провайдера {@link ProviderDescriptor}.
+ * JPA-сущность описания провайдера.
  */
 @Entity
-@Table(name = "provider_descriptor")
+@Table(name = "provider_description")
 @Getter
 @Setter
 @NoArgsConstructor

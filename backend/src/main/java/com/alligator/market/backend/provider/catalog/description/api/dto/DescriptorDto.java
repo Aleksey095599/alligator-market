@@ -1,23 +1,18 @@
-package com.alligator.market.backend.provider.catalog.descriptor.api.dto;
+package com.alligator.market.backend.provider.catalog.description.api.dto;
 
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.Set;
 
 /**
- * Основной DTO профиля провайдера.
+ * Основной DTO для дескриптора провайдера {@link ProviderDescriptor}.
  */
-public record ProfileDto(
-
-        @NotNull ProfileStatus profileStatus,
+public record DescriptorDto(
         @NotBlank String providerCode,
         @NotBlank String displayName,
-        @NotNull Set<InstrumentType> instrumentsSupported,
         @NotNull DeliveryMode deliveryMode,
         @NotNull AccessMethod accessMethod,
-        boolean bulkSubscription,
-        int minPollMs
+        boolean bulkSubscription
 ) {}

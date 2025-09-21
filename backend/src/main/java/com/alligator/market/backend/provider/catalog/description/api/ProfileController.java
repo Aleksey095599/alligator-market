@@ -1,10 +1,10 @@
-package com.alligator.market.backend.provider.catalog.descriptor.api;
+package com.alligator.market.backend.provider.catalog.description.api;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.catalog.descriptor.api.dto.ProfileDto;
-import com.alligator.market.backend.provider.catalog.descriptor.service.DescriptorUseCase;
-import com.alligator.market.backend.provider.catalog.descriptor.api.dto.ProfileDtoMapper;
+import com.alligator.market.backend.provider.catalog.description.api.dto.DescriptorDto;
+import com.alligator.market.backend.provider.catalog.description.service.DescriptorUseCase;
+import com.alligator.market.backend.provider.catalog.description.api.dto.DescriptorDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +22,12 @@ import java.util.List;
 public class ProfileController {
 
     private final DescriptorUseCase service;
-    private final ProfileDtoMapper mapper;
+    private final DescriptorDtoMapper mapper;
 
     /** Вернуть все активные профили. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProfileDto>>> getAll() {
-        List<ProfileDto> list = service.findAllActive().values().stream()
+    public ResponseEntity<ApiResponse<List<DescriptorDto>>> getAll() {
+        List<DescriptorDto> list = service.findAllActive().values().stream()
                 .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);

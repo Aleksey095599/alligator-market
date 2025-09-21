@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.description.persistence.jpa;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class DescriptorEntityMapper {
         );
     }
 
-    /** Преобразует доменную модель в сущность. */
+    /** Доменная модель ⇒ сущность. */
     public DescriptorEntity toEntity(ProviderDescriptor providerDescriptor) {
         var entity = new DescriptorEntity();
         entity.setProviderCode(providerDescriptor.providerCode());
