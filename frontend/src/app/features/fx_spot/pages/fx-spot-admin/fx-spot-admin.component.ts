@@ -83,7 +83,7 @@ export class FxSpotAdminComponent implements OnInit {
       ],
 
       valueDateCode: [
-        ValueDateCode.SPOT,
+        ValueDateCode.TOD,
         [Validators.required]
       ]
     });
@@ -121,7 +121,7 @@ export class FxSpotAdminComponent implements OnInit {
           baseCurrency: '',
           quoteCurrency: '',
           quoteDecimal: 4,
-          valueDateCode: ValueDateCode.SPOT
+          valueDateCode: ValueDateCode.TOD
         });
         this.locked = false;
       },
@@ -182,7 +182,7 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: '',
       quoteCurrency: '',
       quoteDecimal: 4,
-      valueDateCode: ValueDateCode.SPOT
+      valueDateCode: ValueDateCode.TOD
     });
     this.form.controls['baseCurrency'].enable();
     this.form.controls['quoteCurrency'].enable();
