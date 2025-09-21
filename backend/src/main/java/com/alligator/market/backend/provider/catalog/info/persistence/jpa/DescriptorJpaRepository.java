@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.description.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.info.persistence.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
