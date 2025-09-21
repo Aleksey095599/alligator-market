@@ -12,11 +12,6 @@ export const routes: Routes = [
       import('./features/currency_pair/pair.module').then(m => m.PairModule)
   },
   {
-    path: 'fx-outright-instrument',
-    loadChildren: () =>
-      import('./features/fx_outright/fx-outright.module').then(m => m.FxOutrightModule)
-  },
-  {
     path: 'provider-descriptors',
     loadChildren: () =>
       import('./features/provider_descriptor/provider-descriptor.module')
