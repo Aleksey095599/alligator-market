@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Spring Data JPA-репозиторий дескрипторов провайдеров.
+ * Spring Data JPA-репозиторий дескрипторов.
  */
 public interface DescriptorJpaRepository extends JpaRepository<DescriptorEntity, Long> {
 

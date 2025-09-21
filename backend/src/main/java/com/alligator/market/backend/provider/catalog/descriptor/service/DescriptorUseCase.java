@@ -5,10 +5,10 @@ import com.alligator.market.domain.provider.contract.descriptor.ProviderDescript
 import java.util.Map;
 
 /**
- * Application-сервис (use case) для операций профилями провайдеров.
+ * Application-сервис (use case) для операций с дескрипторами.
  */
 public interface DescriptorUseCase {
 
-    /** Вернуть все . */
-    Map<Long, ProviderDescriptor> findAllActive();
+    /** Вернуть все дескрипторы. */
+
 }
