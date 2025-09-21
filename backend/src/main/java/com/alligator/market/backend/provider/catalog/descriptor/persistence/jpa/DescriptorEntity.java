@@ -21,7 +21,8 @@ import lombok.Setter;
 @Table(
         name = "provider_descriptor",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_provider_descriptor_provider_code", columnNames = "provider_code")
+                @UniqueConstraint(name = "uq_provider_descriptor_provider_code", columnNames = "provider_code"),
+                @UniqueConstraint(name = "uq_provider_descriptor_display_name", columnNames = "display_name")
         }
 )
 @Getter
