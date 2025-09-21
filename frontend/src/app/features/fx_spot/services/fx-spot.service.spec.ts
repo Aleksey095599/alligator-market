@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PairService } from './pair.service';
+import { FxSpotService } from './fx-spot.service';
 
-describe('PairService', () => {
-  let service: PairService;
+describe('FxSpotService', () => {
+  let service: FxSpotService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PairService);
+    service = TestBed.inject(FxSpotService);
   });
 
   it('should be created', () => {

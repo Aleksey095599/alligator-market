@@ -7,9 +7,9 @@ export const routes: Routes = [
       import('./features/currency/currency.module').then(m => m.CurrencyModule)
   },
   {
-    path: 'pairs',
+    path: 'fx-spot',
     loadChildren: () =>
-      import('./features/currency_pair/pair.module').then(m => m.PairModule)
+      import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
   },
   {
     path: 'provider-descriptors',

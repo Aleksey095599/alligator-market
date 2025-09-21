@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/pair-admin/pair-admin.component')
-        .then(c => c.PairAdminComponent)
+      import('./pages/fx-spot-admin/fx-spot-admin.component')
+        .then(c => c.FxSpotAdminComponent)
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PairRoutingModule { }
+export class FxSpotRoutingModule { }

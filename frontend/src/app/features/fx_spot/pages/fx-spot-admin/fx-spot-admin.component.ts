@@ -1,0 +1,216 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { FxSpotItemDto } from '../../models/fx-spot.model';
+import { FxSpotCreateDto } from '../../models/fx-spot-create.model';
+import { FxSpotService } from '../../services/fx-spot.service';
+import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
+import { CurrencyService } from '../../../currency/services/currency.service';
+import { CurrencyDto } from '../../../currency/models/currency.model';
+import { RouterLink } from '@angular/router';
+import { ValueDateCode } from '../../models/value-date-code.model';
+
+@Component({
+  selector: 'app-fx-spot-admin',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatCardModule,
+    RouterLink
+  ],
+  templateUrl: './fx-spot-admin.component.html',
+  styleUrl: './fx-spot-admin.component.scss'
+})
+export class FxSpotAdminComponent implements OnInit {
+
+  //=================
+  // Табличные данные
+  //=================
+  displayed: string[] = ['instrumentCode', 'baseCurrency', 'quoteCurrency', 'valueDateCode', 'quoteDecimal', 'actions'];
+  dataSource  = new MatTableDataSource<FxSpotItemDto>([]);
+
+  //=========================================
+  // Форма добавления инструмента FX_SPOT
+  //=========================================
+  form: FormGroup;
+
+  locked = false; // флаг блокировки кнопки Add
+  editing = false; // режим редактирования
+  editInstrumentCode: string | null = null; // код инструмента для редактирования
+  currencies: CurrencyDto[] = [];
+  valueDateCodes = Object.values(ValueDateCode);
+
+  constructor(
+    private readonly service: FxSpotService,
+    private readonly fb: FormBuilder,
+    private readonly snack: MatSnackBar,
+    private readonly currencyService: CurrencyService
+  ) {
+    this.form = this.fb.group({
+      baseCurrency: [
+        '',
+        [Validators.required]
+      ],
+
+      quoteCurrency: [
+        '',
+        [Validators.required]
+      ],
+
+      quoteDecimal: [
+        4,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(10)
+        ]
+      ],
+
+      valueDateCode: [
+        ValueDateCode.SPOT,
+        [Validators.required]
+      ]
+    });
+  }
+
+  //=======================
+  // Активность на странице
+  //=======================
+
+  /* загрузка списка при открытии страницы */
+  ngOnInit(): void {
+    this.refresh();
+    this.currencyService.list().subscribe({
+      next: c => this.currencies = c,
+      error: err => this.snack.open(err.message ?? 'Load currencies failed', 'Close')
+    });
+  }
+
+  /* нажата кнопка Add */
+  onAdd(): void {
+    if (this.form.invalid || this.locked) { return; }
+
+    this.locked = true; // блокируем кнопку
+
+    const dto = this.form.getRawValue() as FxSpotCreateDto;
+
+    this.service.add(dto).subscribe({
+      next: instrumentCode => {
+        // Если все ОК
+        this.snack.open(
+          `FX Spot '${instrumentCode}' added`, 'OK', { duration: 2500 }
+        );
+        this.refresh();
+        this.form.reset({
+          baseCurrency: '',
+          quoteCurrency: '',
+          quoteDecimal: 4,
+          valueDateCode: ValueDateCode.SPOT
+        });
+        this.locked = false;
+      },
+      error: err => {
+        const msg = err.error?.message ?? err.message ?? 'Add failed';
+        const ref =
+          this.snack.open(msg, 'Close', { duration: 0 });
+        ref.afterDismissed().subscribe(() => this.locked = false);
+      }
+    });
+  }
+
+  /* клик по иконке Edit */
+  onEdit(spot: FxSpotItemDto): void {
+    this.editing = true;
+    this.editInstrumentCode = spot.instrumentCode;
+    this.form.setValue({
+      baseCurrency: spot.baseCurrency,
+      quoteCurrency: spot.quoteCurrency,
+      quoteDecimal: spot.quoteDecimal,
+      valueDateCode: spot.valueDateCode
+    });
+    this.form.controls['baseCurrency'].disable();
+    this.form.controls['quoteCurrency'].disable();
+    this.form.controls['valueDateCode'].disable();
+  }
+
+  /* нажата кнопка Save */
+  onSave(): void {
+    if (this.form.invalid || this.locked || !this.editInstrumentCode) { return; }
+
+    this.locked = true;
+
+    const dto: FxSpotUpdateDto = {
+      quoteDecimal: this.form.controls['quoteDecimal'].value
+    } as FxSpotUpdateDto;
+
+    this.service.update(this.editInstrumentCode, dto).subscribe({
+      next: () => {
+        this.snack.open(`FX Spot '${this.editInstrumentCode}' updated`, 'OK', { duration: 2500 });
+        this.refresh();
+        this.cancelEdit();
+        this.locked = false;
+      },
+      error: err => {
+        const msg = err.error?.message ?? err.message ?? 'Update failed';
+        const ref = this.snack.open(msg, 'Close', { duration: 0 });
+        ref.afterDismissed().subscribe(() => this.locked = false);
+      }
+    });
+  }
+
+  /* нажата кнопка Cancel */
+  cancelEdit(): void {
+    this.editing = false;
+    this.editInstrumentCode = null;
+    this.form.reset({
+      baseCurrency: '',
+      quoteCurrency: '',
+      quoteDecimal: 4,
+      valueDateCode: ValueDateCode.SPOT
+    });
+    this.form.controls['baseCurrency'].enable();
+    this.form.controls['quoteCurrency'].enable();
+    this.form.controls['valueDateCode'].enable();
+    this.locked = false;
+  }
+
+  /* клик по иконке Delete */
+  onDelete(instrumentCode: string): void {
+    this.service.delete(instrumentCode).subscribe({
+      next: () => {
+        this.snack.open(`FX Spot '${instrumentCode}' deleted`, 'OK', { duration: 2500 });
+        this.refresh();
+      },
+      error: err =>
+        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close')
+    });
+  }
+
+  //========================
+  // Вспомогательные утилиты
+  //========================
+  /* утилита: перезагрузить список */
+  private refresh(): void {
+    this.service.list().subscribe({
+      next: list => this.dataSource.data = list,
+      error: err => this.snack.open(err.message ?? 'Load failed', 'Close')
+    });
+  }
+
+}

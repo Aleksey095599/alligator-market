@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PairRoutingModule } from './pair-routing.module';
+import { FxSpotRoutingModule } from './fx-spot-routing.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    PairRoutingModule,
+    FxSpotRoutingModule,
   ]
 })
-export class PairModule { }
+export class FxSpotModule { }
