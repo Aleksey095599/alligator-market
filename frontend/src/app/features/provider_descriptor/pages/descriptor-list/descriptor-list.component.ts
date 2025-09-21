@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { ProviderDescriptorService } from '../../services/provider-descriptor.service';
-import { DescriptorEntityDto } from '../../models/descriptor-entity.model';
+import { DescriptorDto } from '../../models/descriptor-dto.model';
 
 @Component({
   selector: 'app-provider-descriptor-list',
@@ -23,7 +23,7 @@ export class DescriptorListComponent implements OnInit {
     'bulkSubscription'
   ];
   /* Источник данных для таблицы. */
-  dataSource = new MatTableDataSource<DescriptorEntityDto>([]);
+  dataSource = new MatTableDataSource<DescriptorDto>([]);
 
   constructor(private readonly service: ProviderDescriptorService) {}
 
