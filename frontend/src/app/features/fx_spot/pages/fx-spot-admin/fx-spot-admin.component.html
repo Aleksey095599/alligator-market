@@ -1,52 +1,63 @@
 <div class="center-box">
 
-  <h1 class="mat-headline-4">Currency Pairs Administration</h1>
+  <h1 class="mat-headline-4">FX Spot Instruments Administration</h1>
 
   <!-- карточка с формой добавления -->
   <mat-card class="toolbar-card">
     <mat-card-header>
-      <mat-card-title>Currency Pair Toolbar</mat-card-title>
+      <mat-card-title>FX Spot Toolbar</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" class="toolbar">
 
-
         <mat-form-field appearance="outline">
           <mat-label>Base Currency</mat-label>
-          <mat-select formControlName="base">
+          <mat-select formControlName="baseCurrency">
             <mat-option *ngFor="let c of currencies" [value]="c.code">
               {{ c.code }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['base'].hasError('required')">
+          <mat-error *ngIf="form.controls['baseCurrency'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Quote Currency</mat-label>
-          <mat-select formControlName="quote">
+          <mat-select formControlName="quoteCurrency">
             <mat-option *ngFor="let c of currencies" [value]="c.code">
               {{ c.code }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['quote'].hasError('required')">
+          <mat-error *ngIf="form.controls['quoteCurrency'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Rate Decimal</mat-label>
+          <mat-label>Value Date</mat-label>
+          <mat-select formControlName="valueDateCode">
+            <mat-option *ngFor="let code of valueDateCodes" [value]="code">
+              {{ code }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls['valueDateCode'].hasError('required')">
+            Is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Quote Decimal</mat-label>
           <input
             matInput
             type="number"
-            formControlName="decimal"
+            formControlName="quoteDecimal"
           />
-          <mat-error *ngIf="form.controls['decimal'].hasError('required')">
+          <mat-error *ngIf="form.controls['quoteDecimal'].hasError('required')">
             Is required
           </mat-error>
-          <mat-error *ngIf="form.controls['decimal'].hasError('min')
-               || form.controls['decimal'].hasError('max')">
+          <mat-error *ngIf="form.controls['quoteDecimal'].hasError('min')
+               || form.controls['quoteDecimal'].hasError('max')">
             0 – 10 allowed
           </mat-error>
         </mat-form-field>
@@ -68,41 +79,46 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- карточка со списком пар -->
+  <!-- карточка со списком инструментов -->
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Currency Pairs</mat-card-title>
+      <mat-card-title>FX Spot Instruments</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
-        <ng-container matColumnDef="pairCode">
-          <th mat-header-cell *matHeaderCellDef> Pair Code</th>
-          <td mat-cell *matCellDef="let p"> {{ p.pairCode }}</td>
+        <ng-container matColumnDef="instrumentCode">
+          <th mat-header-cell *matHeaderCellDef> Instrument Code</th>
+          <td mat-cell *matCellDef="let spot"> {{ spot.instrumentCode }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="base">
+        <ng-container matColumnDef="baseCurrency">
           <th mat-header-cell *matHeaderCellDef> Base Currency</th>
-          <td mat-cell *matCellDef="let p"> {{ p.base }}</td>
+          <td mat-cell *matCellDef="let spot"> {{ spot.baseCurrency }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="quote">
+        <ng-container matColumnDef="quoteCurrency">
           <th mat-header-cell *matHeaderCellDef> Quote Currency</th>
-          <td mat-cell *matCellDef="let p"> {{ p.quote }}</td>
+          <td mat-cell *matCellDef="let spot"> {{ spot.quoteCurrency }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="decimal">
-          <th mat-header-cell *matHeaderCellDef> Rate Decimal</th>
-          <td mat-cell *matCellDef="let p"> {{ p.decimal }}</td>
+        <ng-container matColumnDef="valueDateCode">
+          <th mat-header-cell *matHeaderCellDef> Value Date</th>
+          <td mat-cell *matCellDef="let spot"> {{ spot.valueDateCode }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quoteDecimal">
+          <th mat-header-cell *matHeaderCellDef> Quote Decimal</th>
+          <td mat-cell *matCellDef="let spot"> {{ spot.quoteDecimal }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let p">
-            <button mat-icon-button color="primary" (click)="onEdit(p)">
+          <td mat-cell *matCellDef="let spot">
+            <button mat-icon-button color="primary" (click)="onEdit(spot)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="onDelete(p.pairCode)">
+            <button mat-icon-button color="warn" (click)="onDelete(spot.instrumentCode)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

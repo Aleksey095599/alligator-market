@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PairAdminComponent } from './pair-admin.component';
+import { FxSpotAdminComponent } from './fx-spot-admin.component';
 
-describe('PairAdminComponent', () => {
-  let component: PairAdminComponent;
-  let fixture: ComponentFixture<PairAdminComponent>;
+describe('FxSpotAdminComponent', () => {
+  let component: FxSpotAdminComponent;
+  let fixture: ComponentFixture<FxSpotAdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PairAdminComponent]
+      imports: [FxSpotAdminComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PairAdminComponent);
+    fixture = TestBed.createComponent(FxSpotAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
