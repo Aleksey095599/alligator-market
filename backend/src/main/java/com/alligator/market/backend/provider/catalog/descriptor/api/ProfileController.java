@@ -24,15 +24,6 @@ public class ProfileController {
     private final DescriptorUseCase service;
     private final DescriptorDtoMapper mapper;
 
-    /** Вернуть все активные профили. */
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<DescriptorDto>>> getAll() {
-        List<DescriptorDto> list = service.findAllActive().values().stream()
-                .map(mapper::toDto)
-                .toList();
-        return ResponseEntityFactory.ok(list);
-    }
-
     /** Вернуть все дескрипторы. */
 
 }
