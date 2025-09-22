@@ -34,7 +34,12 @@ public class ProviderDescriptorSynchronizer {
         // Загружаем дескрипторы из контекста
         var descriptors = contextScanner.providerDescriptors();
 
-        // ↓↓ Проверяем отсутствие дубликатов по providerCode
+        // Проверяем, что список не пуст
+        if (descriptors.isEmpty()) {
+            throw new IllegalStateException("No provider descriptors found");
+        }
+
+        // Проверяем отсутствие дубликатов по providerCode
         var uniqueDescriptors = deduplicateDescriptors(descriptors);
 
         repository.deleteAll();                // Полностью очищаем репозиторий
