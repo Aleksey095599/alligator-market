@@ -34,10 +34,10 @@ public class ProviderDescriptorSynchronizer {
         // Загружаем дескрипторы из контекста
         var descriptors = contextScanner.providerDescriptors();
 
-        // ↓↓ Проверяем отсутствие дубликатов по providerCode, сохраняя порядок регистрации.
+        // ↓↓ Проверяем отсутствие дубликатов по providerCode
         var uniqueDescriptors = deduplicateDescriptors(descriptors);
 
-        repository.deleteAll(); // Полностью очищаем репозиторий
+        repository.deleteAll();                // Полностью очищаем репозиторий
         repository.saveAll(uniqueDescriptors); // Сохраняем обновлённый набор дескрипторов
     }
 
