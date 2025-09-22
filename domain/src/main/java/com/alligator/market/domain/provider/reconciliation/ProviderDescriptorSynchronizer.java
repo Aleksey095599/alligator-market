@@ -37,17 +37,16 @@ public class ProviderDescriptorSynchronizer {
         // Загружаем дескрипторы из контекста
         var descriptors = contextScanner.providerDescriptors();
 
-        // ↓↓ Устраняем дубликаты по providerCode, сохраняя порядок регистрации.
+        // ↓↓ Проверяем отсутствие дубликатов по providerCode, сохраняя порядок регистрации.
         var deduplicated = new LinkedHashMap<String, ProviderDescriptor>();
-        var duplicates = 0;
         for (var descriptor : descriptors) {
-            var previous = deduplicated.put(descriptor.providerCode(), descriptor);
-            if (previous != null) {
-                duplicates++;
+            var providerCode = descriptor.providerCode();
+            if (deduplicated.containsKey(providerCode)) {
+                var message = "Duplicate provider descriptor detected for provider code: " + providerCode;
+                log.error(message);
+                throw new IllegalStateException(message);
             }
-        }
-        if (duplicates > 0) {
-            log.warn("Duplicate provider descriptors detected: {} duplicates removed", duplicates);
+            deduplicated.put(providerCode, descriptor);
         }
 
         var uniqueDescriptors = new ArrayList<>(deduplicated.values());
