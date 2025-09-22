@@ -35,13 +35,14 @@ public class ProviderDescriptorSynchronizer {
         var descriptors = contextScanner.providerDescriptors();
 
         // ↓↓ Проверяем отсутствие дубликатов по providerCode, сохраняя порядок регистрации.
-        var uniqueDescriptors = getProviderDescriptors(descriptors);
+        var uniqueDescriptors = deduplicateDescriptors(descriptors);
 
         repository.deleteAll(); // Полностью очищаем репозиторий
         repository.saveAll(uniqueDescriptors); // Сохраняем обновлённый набор дескрипторов
     }
 
-    private static ArrayList<ProviderDescriptor> getProviderDescriptors(List<ProviderDescriptor> descriptors) {
+    /** Статический метод проверки дескрипторов на дублирование по кодам провайдеров. */
+    private static ArrayList<ProviderDescriptor> deduplicateDescriptors(List<ProviderDescriptor> descriptors) {
         var deduplicated = new LinkedHashMap<String, ProviderDescriptor>();
         for (var descriptor : descriptors) {
             var providerCode = descriptor.providerCode();
@@ -51,7 +52,6 @@ public class ProviderDescriptorSynchronizer {
             }
             deduplicated.put(providerCode, descriptor);
         }
-
         return new ArrayList<>(deduplicated.values());
     }
 }
