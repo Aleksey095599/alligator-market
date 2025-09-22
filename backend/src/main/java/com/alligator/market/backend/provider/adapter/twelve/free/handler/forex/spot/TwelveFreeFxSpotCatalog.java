@@ -20,7 +20,7 @@ public final class TwelveFreeFxSpotCatalog {
     private static final Currency USD = new Currency("USD", "United States Dollar", "United States", 2);
 
     /* ↓↓ Инструменты. */
-    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.SPOT, 4);
+    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, ValueDateCode.TOM, 4);
 
     /** Набор поддерживаемых инструментов провайдера. */
     public static final Set<FxSpot> SUPPORTED = Set.of(EUR_USD);
