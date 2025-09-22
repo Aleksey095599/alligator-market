@@ -18,7 +18,7 @@ import java.util.*;
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* ↓↓ Базовые атрибуты обработчика. */
+    /* ↓↓ Базовые атрибуты провайдера. */
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
 
