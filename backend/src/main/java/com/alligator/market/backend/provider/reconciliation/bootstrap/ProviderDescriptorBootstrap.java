@@ -19,7 +19,7 @@ public class ProviderDescriptorBootstrap implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(ProviderDescriptorBootstrap.class);
 
-    /* ↓↓ Доменный сервис синхронизации дескрипторов. */
+    /* Доменный сервис синхронизации дескрипторов. */
     private final ProviderDescriptorSynchronizer synchronizer;
 
     @Override

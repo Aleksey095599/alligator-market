@@ -17,12 +17,13 @@ public class ProviderDescriptorSynchronizer {
 
     private static final Logger log = LoggerFactory.getLogger(ProviderDescriptorSynchronizer.class);
 
-    /* ↓↓ Сканер контекста приложения: предоставляет актуальные дескрипторы провайдеров. */
+    /* Сканер контекста приложения: предоставляет актуальные дескрипторы провайдеров. */
     private final ProviderContextScanner contextScanner;
 
-    /* ↓↓ Репозиторий дескрипторов провайдеров. */
+    /* Репозиторий дескрипторов провайдеров. */
     private final ProviderDescriptorRepository repository;
 
+    /** Конструктор. */
     public ProviderDescriptorSynchronizer(
             ProviderContextScanner contextScanner,
             ProviderDescriptorRepository repository
@@ -33,7 +34,8 @@ public class ProviderDescriptorSynchronizer {
 
     /** Выполнить синхронизацию дескрипторов провайдеров. */
     public void synchronize() {
-        var descriptors = contextScanner.providerDescriptors(); // Загружаем дескрипторы из контекста
+        // Загружаем дескрипторы из контекста
+        var descriptors = contextScanner.providerDescriptors();
 
         // ↓↓ Устраняем дубликаты по providerCode, сохраняя порядок регистрации.
         var deduplicated = new LinkedHashMap<String, ProviderDescriptor>();
