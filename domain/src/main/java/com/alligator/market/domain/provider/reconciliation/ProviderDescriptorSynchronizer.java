@@ -34,7 +34,7 @@ public class ProviderDescriptorSynchronizer {
         // Загружаем дескрипторы из контекста
         var descriptors = contextScanner.providerDescriptors();
 
-        // Проверяем, что список не пуст
+        // Проверяем, что список дескрипторов не пуст
         if (descriptors.isEmpty()) {
             throw new IllegalStateException("No provider descriptors found");
         }
