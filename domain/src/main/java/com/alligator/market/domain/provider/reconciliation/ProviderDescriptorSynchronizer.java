@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * Доменный сервис синхронизации дескрипторов провайдеров рыночных данных.
+ * Доменный сервис синхронизации дескрипторов из контекста и базы данных.
  */
 public class ProviderDescriptorSynchronizer {
 
