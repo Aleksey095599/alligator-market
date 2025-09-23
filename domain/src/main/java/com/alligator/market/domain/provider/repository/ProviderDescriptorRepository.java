@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reppository;
+package com.alligator.market.domain.provider.repository;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 

@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.reppository.ProviderDescriptorRepository;
+import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ProviderDescriptorSynchronizer {
 
-    /* Сканер контекста приложения: предоставляет актуальные дескрипторы провайдеров. */
+    /* Сканер, извлекающий дескрипторы из контекста приложения. */
     private final ProviderContextScanner contextScanner;
 
     /* Репозиторий дескрипторов провайдеров. */

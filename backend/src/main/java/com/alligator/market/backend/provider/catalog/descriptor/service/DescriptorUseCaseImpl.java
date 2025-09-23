@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.descriptor.service;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.reppository.ProviderDescriptorRepository;
+import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa.
 import com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa.DescriptorEntityMapper;
 import com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa.DescriptorJpaRepository;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.reppository.ProviderDescriptorRepository;
+import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
