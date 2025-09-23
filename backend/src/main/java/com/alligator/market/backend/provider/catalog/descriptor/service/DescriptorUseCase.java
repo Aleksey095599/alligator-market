@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.descriptor.service;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Application-сервис (use case) для операций с дескрипторами.
@@ -10,6 +10,8 @@ import java.util.Map;
 public interface DescriptorUseCase {
 
     /** Вернуть все дескрипторы. */
+    List<ProviderDescriptor> getAll();
 
     /** Удалить все дескрипторы. */
+    void clear();
 }
