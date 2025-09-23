@@ -2,8 +2,6 @@ package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.reppository.ProviderDescriptorRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.List;
 /**
  * Доменный сервис синхронизации дескрипторов провайдеров рыночных данных.
  */
-@Service
 public class ProviderDescriptorSynchronizer {
 
     /* Сканер контекста приложения: предоставляет актуальные дескрипторы провайдеров. */
