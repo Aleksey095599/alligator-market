@@ -8,9 +8,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSa
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
-import com.alligator.market.domain.provider.contract.exeption.HandlerNotFoundException;
-import com.alligator.market.domain.provider.handler.contract.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.handler.contract.exception.InstrumentWrongClassException;
+import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
+import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
+import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

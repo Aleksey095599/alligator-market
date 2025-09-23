@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.exception;
+package com.alligator.market.domain.provider.exception;
 
 /**
  * Дублирующий дескриптор провайдера.

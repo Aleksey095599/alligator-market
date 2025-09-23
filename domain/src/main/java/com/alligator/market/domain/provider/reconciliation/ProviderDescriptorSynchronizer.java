@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.reconciliation.exception.ProviderDescriptorDuplicateException;
+import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicateException;
 import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

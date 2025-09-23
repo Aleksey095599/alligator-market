@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.handler.contract.exception;
+package com.alligator.market.domain.provider.exception;
 
 /**
  * Класс инструмента не соответствует обработчику.
