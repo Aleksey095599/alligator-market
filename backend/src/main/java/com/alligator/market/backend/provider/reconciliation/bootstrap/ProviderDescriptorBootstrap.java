@@ -34,6 +34,8 @@ public class ProviderDescriptorBootstrap implements ApplicationRunner {
         } catch (RuntimeException ex) {
             log.error("Provider descriptors synchronization failed", ex);
             throw ex;
+        } finally {
+            AuditContextHolder.set(previousContext);
         }
     }
 }
