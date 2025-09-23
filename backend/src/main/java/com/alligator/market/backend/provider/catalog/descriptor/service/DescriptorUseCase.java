@@ -11,7 +11,4 @@ public interface DescriptorUseCase {
 
     /** Вернуть все дескрипторы. */
     List<ProviderDescriptor> getAll();
-
-    /** Удалить все дескрипторы. */
-    void clear();
 }

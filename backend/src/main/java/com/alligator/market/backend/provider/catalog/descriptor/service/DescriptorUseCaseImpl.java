@@ -26,12 +26,5 @@ public class DescriptorUseCaseImpl implements DescriptorUseCase {
         log.debug("Found {} provider descriptors", descriptors.size());
         return descriptors;
     }
-
-    @Override
-    @Transactional
-    public void clear() {
-        repository.deleteAll();
-        log.info("Provider descriptors cleared");
-    }
 }
 
