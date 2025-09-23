@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурации бинов для доменных сервисов, используемых в процессах реконсиляции данных
- * о провайдерах рыночных данных.
+ * Конфигурация бинов доменных сервисов, используемых в процессах реконсиляции данных о провайдерах рыночных данных.
  */
 @Configuration
 public class ProviderReconciliationConfiguration {

@@ -1,5 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.bootstrap;
 
+import com.alligator.market.backend.config.audit.AuditContext;
+import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.domain.provider.reconciliation.ProviderDescriptorSynchronizer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,6 +26,8 @@ public class ProviderDescriptorBootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        AuditContext previousContext = AuditContextHolder.get();
+        AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-descriptor-bootstrap"));
         try {
             synchronizer.synchronize();
             log.info("Provider descriptors synchronization completed");
