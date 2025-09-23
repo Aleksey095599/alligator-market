@@ -26,6 +26,8 @@ public class ProviderDescriptorBootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        log.info("Starting provider descriptors synchronization");
+        // ↓↓ Добавляем контекст для аудита
         AuditContext previousContext = AuditContextHolder.get();
         AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-descriptor-bootstrap"));
         try {
