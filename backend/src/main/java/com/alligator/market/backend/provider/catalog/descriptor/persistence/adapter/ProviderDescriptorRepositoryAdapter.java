@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository
 @RequiredArgsConstructor
-public class DescriptorRepositoryAdapter implements ProviderDescriptorRepository {
+public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRepository {
 
     private final DescriptorJpaRepository jpaRepository;
     private final DescriptorEntityMapper mapper;

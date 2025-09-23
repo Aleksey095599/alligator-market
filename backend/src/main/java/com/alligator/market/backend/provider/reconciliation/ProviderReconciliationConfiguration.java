@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация бинов доменного уровня для синхронизации дескрипторов провайдеров.
+ * Конфигурации бинов для доменных сервисов, используемых в процессах реконсиляции данных
+ * о провайдерах рыночных данных.
  */
 @Configuration
 public class ProviderReconciliationConfiguration {
 
-    /** Бин доменного сервиса синхронизации дескрипторов провайдеров. */
+    /** Бин доменного сервиса синхронизации дескрипторов провайдеров в контексте и репозитории. */
     @Bean
     public ProviderDescriptorSynchronizer providerDescriptorSynchronizer(
             ProviderContextScanner scanner,
