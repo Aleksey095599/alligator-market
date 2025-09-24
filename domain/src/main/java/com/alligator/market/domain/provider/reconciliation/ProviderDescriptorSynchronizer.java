@@ -68,11 +68,14 @@ public class ProviderDescriptorSynchronizer {
             // Получаем дескриптор из карты репозитория с таким же индексом
             ProviderDescriptor maybeRepoDescriptor = repoMap.get(currentIndex);
             if (maybeRepoDescriptor == null // Значит это новый дескриптор в контексте
-                    || !maybeRepoDescriptor.equals(CurrentCtxDescriptor) // Значит дескриптор обновился
+                    || !maybeRepoDescriptor.equals(CurrentCtxDescriptor) // Значит дескриптор изменился
             ) {
                 descriptorsToUpsert.add(CurrentCtxDescriptor);
             }
         }
+
+        // Для страховки проверим, что descriptorsToUpsert уникальны по коду провайдера
+        assertUniqueByCode(descriptorsToUpsert);
 
         // Применяем изменения
         if (!codesToDelete.isEmpty()) repository.deleteAllByProviderCodes(codesToDelete);
