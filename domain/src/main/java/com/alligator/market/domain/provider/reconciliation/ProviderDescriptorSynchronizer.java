@@ -28,9 +28,9 @@ public class ProviderDescriptorSynchronizer {
 
     /** Выполнить синхронизацию дескрипторов провайдеров. */
     public void synchronize() {
-        // Снимок дескрипторов из контекста
+        // Список дескрипторов из контекста
         List<ProviderDescriptor> contextDescriptors = contextScanner.providerDescriptors();
-        // Снимок дескрипторов из репозитория
+        // Список дескрипторов из репозитория
         List<ProviderDescriptor> repositoryDescriptors = repository.findAll();
 
         // Если контекст пуст — очищаем репозиторий и выходим
@@ -45,7 +45,7 @@ public class ProviderDescriptorSynchronizer {
         assertUniqueByCode(contextDescriptors);
         assertUniqueByCode(repositoryDescriptors);
 
-        // ↓↓ Индексируем списки по коду провайдера
+        // ↓↓ Индексируем списки по коду провайдера (индекс = код провайдера)
         Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
         Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
 
@@ -54,18 +54,23 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // К удалению: что есть в репозитории, но нет в контексте
+        // Если в repoMap есть такие индексы, которых нет в ctxMap, — связанные с ними дескрипторы нужно удалить
         Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet());
         codesToDelete.removeAll(ctxMap.keySet());
 
-        // На upsert: новые или изменившиеся значения
+        // На upsert: новые или изменившиеся дескрипторы
         List<ProviderDescriptor> descriptorsToUpsert = new ArrayList<>();
-        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) {
-            String code = e.getKey();
-            ProviderDescriptor newDesc = e.getValue();
-            ProviderDescriptor oldDesc = repoMap.get(code);
-            if (oldDesc == null || !oldDesc.equals(newDesc)) {
-                descriptorsToUpsert.add(newDesc);
+        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем карту контекста
+            // Текущий индекс из карты контекста
+            String currentIndex = e.getKey();
+            // Текущий дескриптор из карты контекста
+            ProviderDescriptor CurrentCtxDescriptor = e.getValue();
+            // Получаем дескриптор из карты репозитория с таким же индексом
+            ProviderDescriptor maybeRepoDescriptor = repoMap.get(currentIndex);
+            if (maybeRepoDescriptor == null // Значит это новый дескриптор в контексте
+                    || !maybeRepoDescriptor.equals(CurrentCtxDescriptor) // Значит дескриптор обновился
+            ) {
+                descriptorsToUpsert.add(CurrentCtxDescriptor);
             }
         }
 
