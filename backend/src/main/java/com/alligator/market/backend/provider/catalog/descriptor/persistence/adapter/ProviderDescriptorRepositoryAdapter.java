@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,6 +33,14 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
     public void deleteAll() {
         // Удаляем все записи таблицы без постраничного обхода
         jpaRepository.deleteAllInBatch();
+    }
+
+    @Override
+    public void deleteAllByProviderCodes(Collection<String> providerCodes) {
+        if (providerCodes.isEmpty()) {
+            return; // Нечего удалять
+        }
+        jpaRepository.deleteAllByProviderCodeIn(providerCodes);
     }
 
     @Override

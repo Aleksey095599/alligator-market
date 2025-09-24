@@ -5,7 +5,9 @@ import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicat
 import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Доменный сервис синхронизации дескрипторов провайдеров в контексте приложения и в репозитории.
@@ -30,18 +32,70 @@ public class ProviderDescriptorSynchronizer {
     /** Выполнить синхронизацию дескрипторов провайдеров. */
     public void synchronize() {
         // Загружаем дескрипторы из контекста
-        var descriptors = contextScanner.providerDescriptors();
+        var contextDescriptors = contextScanner.providerDescriptors();
 
         // Проверяем, что список дескрипторов не пуст
-        if (descriptors.isEmpty()) {
+        if (contextDescriptors.isEmpty()) {
             throw new IllegalStateException("No provider descriptors found");
         }
 
         // Проверяем отсутствие дубликатов по providerCode
-        var uniqueDescriptors = deduplicateDescriptors(descriptors);
+        var uniqueDescriptors = deduplicateDescriptors(contextDescriptors);
 
-        repository.deleteAll();                // Полностью очищаем репозиторий
-        repository.saveAll(uniqueDescriptors); // Сохраняем обновлённый набор дескрипторов
+        // Загружаем сохранённые ранее дескрипторы
+        var repositoryDescriptors = repository.findAll();
+
+        // Оптимизация: если наборы совпадают, то повторное сохранение не требуется
+        if (repositoryDescriptors.size() == uniqueDescriptors.size()
+                && repositoryDescriptors.containsAll(uniqueDescriptors)
+                && uniqueDescriptors.containsAll(repositoryDescriptors)) {
+            return;
+        }
+
+        // Собираем карту дескрипторов из репозитория по коду провайдера для быстрых проверок
+        var repositoryMap = new LinkedHashMap<String, ProviderDescriptor>();
+        for (var descriptor : repositoryDescriptors) {
+            repositoryMap.put(descriptor.providerCode(), descriptor);
+        }
+
+        // Формируем списки на удаление и добавление
+        var descriptorsToSave = new ArrayList<ProviderDescriptor>();
+        Set<String> codesToDelete = new LinkedHashSet<>();
+
+        for (var descriptor : uniqueDescriptors) {
+            var providerCode = descriptor.providerCode();
+            var existing = repositoryMap.get(providerCode);
+
+            if (existing == null) { // Новый код
+                descriptorsToSave.add(descriptor);
+                continue;
+            }
+
+            if (!existing.equals(descriptor)) { // Код есть, но данные изменились
+                descriptorsToSave.add(descriptor);
+                codesToDelete.add(providerCode);
+            }
+        }
+
+        // Вычисляем коды, которые присутствуют в репозитории, но отсутствуют в контексте
+        var contextCodes = new LinkedHashSet<String>();
+        for (var descriptor : uniqueDescriptors) {
+            contextCodes.add(descriptor.providerCode());
+        }
+        for (var descriptor : repositoryDescriptors) {
+            var providerCode = descriptor.providerCode();
+            if (!contextCodes.contains(providerCode)) {
+                codesToDelete.add(providerCode);
+            }
+        }
+
+        if (!codesToDelete.isEmpty()) {
+            repository.deleteAllByProviderCodes(codesToDelete); // Удаляем изменившиеся и устаревшие дескрипторы
+        }
+
+        if (!descriptorsToSave.isEmpty()) {
+            repository.saveAll(descriptorsToSave); // Добавляем новые или обновлённые дескрипторы
+        }
     }
 
     /** Статический метод проверки дескрипторов на дублирование по кодам провайдеров. */
