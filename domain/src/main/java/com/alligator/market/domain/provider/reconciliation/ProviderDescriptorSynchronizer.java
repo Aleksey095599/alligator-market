@@ -60,14 +60,14 @@ public class ProviderDescriptorSynchronizer {
 
         // На upsert: новые или изменившиеся дескрипторы
         List<ProviderDescriptor> descriptorsToUpsert = new ArrayList<>();
-        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем карту контекста
-            // Текущий индекс из карты контекста
+        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты контекста
+            // Текущий индекс элемента
             String currentIndex = e.getKey();
-            // Текущий дескриптор из карты контекста
+            // Текущий дескриптор элемента
             ProviderDescriptor CurrentCtxDescriptor = e.getValue();
-            // Получаем дескриптор из карты репозитория с таким же индексом
+            // Получаем дескриптор из карты репозитория с таким же индексом (если он есть)
             ProviderDescriptor maybeRepoDescriptor = repoMap.get(currentIndex);
-            if (maybeRepoDescriptor == null // Значит это новый дескриптор в контексте
+            if (maybeRepoDescriptor == null // Значит это новый дескриптор
                     || !maybeRepoDescriptor.equals(CurrentCtxDescriptor) // Значит дескриптор изменился
             ) {
                 descriptorsToUpsert.add(CurrentCtxDescriptor);
