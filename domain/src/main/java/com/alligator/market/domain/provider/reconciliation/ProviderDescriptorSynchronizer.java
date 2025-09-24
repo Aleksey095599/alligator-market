@@ -74,11 +74,16 @@ public class ProviderDescriptorSynchronizer {
         if (!descriptorsToUpsert.isEmpty()) repository.saveAll(descriptorsToUpsert);
     }
 
+    /* Нормализуем код провайдера: убираем пробелы и приводим к верхнему регистру. */
+    private static String norm(String code) {
+        return code == null ? null : code.trim().toUpperCase(Locale.ROOT);
+    }
+
     /* Проверка уникальности кодов провайдеров. */
     private static void assertUniqueByCode(List<ProviderDescriptor> descriptors) {
         Set<String> seen = new HashSet<>();
         for (ProviderDescriptor d : descriptors) {
-            String code = d.providerCode();
+            String code = norm(d.providerCode());
             if (!seen.add(code)) {
                 throw new ProviderDescriptorDuplicateException(code);
             }
@@ -89,7 +94,7 @@ public class ProviderDescriptorSynchronizer {
     private static Map<String, ProviderDescriptor> toMapByCode(List<ProviderDescriptor> list) {
         Map<String, ProviderDescriptor> map = new LinkedHashMap<>(); // сохраняем порядок для предсказуемых логов
         for (ProviderDescriptor d : list) {
-            map.put(d.providerCode(), d);
+            map.put(norm(d.providerCode()), d);
         }
         return map;
     }
