@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Bootstrap-компонент: выполняет синхронизацию дескрипторов провайдеров при старте приложения.
+ * Bootstrap-компонент: выполняет реконсиляцию данных о провайдерах рыночных данных при старте приложения.
  */
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class ProviderDescriptorBootstrap implements ApplicationRunner {
+public class ProviderReconciliationBootstrap implements ApplicationRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(ProviderDescriptorBootstrap.class);
+    private static final Logger log = LoggerFactory.getLogger(ProviderReconciliationBootstrap.class);
 
     /* Доменный сервис синхронизации дескрипторов. */
     private final ProviderDescriptorSynchronizer synchronizer;
