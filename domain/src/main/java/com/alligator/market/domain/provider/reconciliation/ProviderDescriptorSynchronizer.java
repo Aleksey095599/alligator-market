@@ -85,11 +85,11 @@ public class ProviderDescriptorSynchronizer {
         Set<String> seenProviderCodes = new HashSet<>();
         Set<String> seenDisplayNames = new HashSet<>();
         for (ProviderDescriptor d : descriptors) {
-            String code = normProviderCode(d.providerCode());
+            String code = d.providerCode();
             if (!seenProviderCodes.add(code)) {
                 throw new ProviderDescriptorDuplicateException(d.providerCode(), d.displayName());
             }
-            String displayName = normDisplayName(d.displayName());
+            String displayName = d.displayName();
             if (!seenDisplayNames.add(displayName)) {
                 throw new ProviderDescriptorDuplicateException(d.providerCode(), d.displayName());
             }
@@ -100,18 +100,8 @@ public class ProviderDescriptorSynchronizer {
     private static Map<String, ProviderDescriptor> toMapByCode(List<ProviderDescriptor> list) {
         Map<String, ProviderDescriptor> map = new LinkedHashMap<>(); // сохраняем порядок для предсказуемых логов
         for (ProviderDescriptor d : list) {
-            map.put(normProviderCode(d.providerCode()), d);
+            map.put(d.providerCode(), d);
         }
         return map;
-    }
-
-    /* Нормализуем код провайдера: убираем пробелы и приводим к верхнему регистру. */
-    private static String normProviderCode(String code) {
-        return code == null ? null : code.trim().toUpperCase(Locale.ROOT);
-    }
-
-    /* Нормализуем отображаемое имя провайдера: убираем пробелы. */
-    private static String normDisplayName(String displayName) {
-        return displayName == null ? null : displayName.trim();
     }
 }
