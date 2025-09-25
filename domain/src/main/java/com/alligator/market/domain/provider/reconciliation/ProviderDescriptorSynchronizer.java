@@ -41,18 +41,26 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // ↓↓ Проверяем отсутствие дубликатов по коду провайдера
+        // Проверка уникальности дескрипторов из контекста по коду провайдера
         assertUniqueByCode(contextDescriptors);
-        assertUniqueByCode(repositoryDescriptors);
-
-        // ↓↓ Индексируем списки по коду провайдера (индекс = код провайдера)
+        // Строим карту
         Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
+
+        // Проверка уникальности дескрипторов из репозитория по коду провайдера
+        assertUniqueByCode(repositoryDescriptors);
+        // Строим карту
         Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
 
-        // Ранний выход: снимки идентичны по ключам и значениям
+        // Ранний выход: карты идентичны по ключам и значениям
         if (repoMap.equals(ctxMap)) {
             return;
         }
+
+
+        // Комментарий:
+        // Репозиторий: D1:{providerCode1; ...}, D2:{providerCode2; ...}, D3:{providerCode3; ...}
+        // Контекст:
+
 
         // Если в repoMap есть такие индексы, которых нет в ctxMap, — связанные с ними дескрипторы нужно удалить
         Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet());
