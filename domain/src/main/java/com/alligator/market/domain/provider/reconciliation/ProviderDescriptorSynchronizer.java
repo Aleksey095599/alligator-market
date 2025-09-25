@@ -61,23 +61,29 @@ public class ProviderDescriptorSynchronizer {
         // ... вычитаем из него множество кодов провайдеров в ctxMap — получаем коды к удалению из репозитория
         codesToDelete.removeAll(ctxMap.keySet());
 
-        // Upsert: новые или изменившиеся дескрипторы (Insert/Update)
-        List<ProviderDescriptor> descriptorsToUpsert = new ArrayList<>();
+        // ↓↓ Список для новых дескрипторов и набор для кодов дескрипторов к обновлению
+        List<ProviderDescriptor> descriptorsToAdd = new ArrayList<>();
+        Set<String> codesToUpdate = new LinkedHashSet<>();
+
         for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты ctxMap
-            // ↓↓ Текущие индекс и элемент карты ctxMap
+            // ↓↓ Текущие индекс (он же код провайдера) и элемент карты ctxMap
             String ctxProviderCode = e.getKey();
             ProviderDescriptor ctxDescriptor = e.getValue();
             // В карте repoMap ищем дескриптор с таким же кодом провайдера
             ProviderDescriptor maybeRepoDescriptor = repoMap.get(ctxProviderCode);
-            // Если не найден или найден, но не совпадает — значит новый или изменившийся
-            if (maybeRepoDescriptor == null || !maybeRepoDescriptor.equals(ctxDescriptor)) {
-                descriptorsToUpsert.add(ctxDescriptor);
+            if (maybeRepoDescriptor == null) { // Значит ctxDescriptor новый дескриптор
+                descriptorsToAdd.add(ctxDescriptor);
+            } else {
+                if (!maybeRepoDescriptor.equals(ctxDescriptor) { // Значит ctxDescriptor нужно обновить
+                    codesToUpdate.add(ctxProviderCode);
+                } else {} // ничего делать не нужно — ctxDescriptor уже есть в репозитории
             }
         }
 
         // Применяем изменения
         if (!codesToDelete.isEmpty()) repository.deleteAllByProviderCodes(codesToDelete);
-        if (!descriptorsToUpsert.isEmpty()) repository.saveAll(descriptorsToUpsert);
+        if (!codesToUpdate) repository.
+        if (!descriptorsToAdd.isEmpty()) repository.
     }
 
     /* Проверка уникальности кодов провайдеров и отображаемых имен. */
