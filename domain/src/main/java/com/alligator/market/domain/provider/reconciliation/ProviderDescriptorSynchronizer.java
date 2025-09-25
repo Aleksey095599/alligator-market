@@ -41,13 +41,13 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // Проверка уникальности дескрипторов из контекста по коду провайдера
-        assertUniqueByCode(contextDescriptors);
+        // Проверка уникальности дескрипторов из контекста по коду провайдера и отображаемому имени
+        assertUniqueByCodeAndName(contextDescriptors);
         // Строим карту
         Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
 
-        // Проверка уникальности дескрипторов из репозитория по коду провайдера
-        assertUniqueByCode(repositoryDescriptors);
+        // Проверка уникальности дескрипторов из репозитория по коду провайдера и отображаемому имени
+        assertUniqueByCodeAndName(repositoryDescriptors);
         // Строим карту
         Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
 
@@ -82,8 +82,8 @@ public class ProviderDescriptorSynchronizer {
             }
         }
 
-        // Для страховки проверим, что descriptorsToUpsert уникальны по коду провайдера
-        assertUniqueByCode(descriptorsToUpsert);
+        // Для страховки проверим, что descriptorsToUpsert уникальны по коду провайдера и отображаемому имени
+        assertUniqueByCodeAndName(descriptorsToUpsert);
 
         // Применяем изменения
         if (!codesToDelete.isEmpty()) repository.deleteAllByProviderCodes(codesToDelete);
@@ -95,15 +95,26 @@ public class ProviderDescriptorSynchronizer {
         return code == null ? null : code.trim().toUpperCase(Locale.ROOT);
     }
 
-    /* Проверка уникальности кодов провайдеров. */
-    private static void assertUniqueByCode(List<ProviderDescriptor> descriptors) {
-        Set<String> seen = new HashSet<>();
+    /* Проверка уникальности кодов провайдеров и отображаемых имен. */
+    private static void assertUniqueByCodeAndName(List<ProviderDescriptor> descriptors) {
+        Set<String> seenCodes = new HashSet<>();
+        Set<String> seenDisplayNames = new HashSet<>();
         for (ProviderDescriptor d : descriptors) {
             String code = norm(d.providerCode());
-            if (!seen.add(code)) {
-                throw new ProviderDescriptorDuplicateException(code);
+            if (!seenCodes.add(code)) {
+                throw new ProviderDescriptorDuplicateException(code, d.displayName());
+            }
+
+            String displayName = normDisplayName(d.displayName());
+            if (!seenDisplayNames.add(displayName)) {
+                throw new ProviderDescriptorDuplicateException(d.providerCode(), d.displayName());
             }
         }
+    }
+
+    /* Нормализуем отображаемое имя провайдера: убираем пробелы. */
+    private static String normDisplayName(String displayName) {
+        return displayName == null ? null : displayName.trim();
     }
 
     /* Построить карту: providerCode ⇒ descriptor. */
