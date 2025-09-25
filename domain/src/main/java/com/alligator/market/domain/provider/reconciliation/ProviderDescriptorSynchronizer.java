@@ -61,7 +61,7 @@ public class ProviderDescriptorSynchronizer {
         // ... вычитаем из него множество кодов провайдеров в ctxMap — получаем коды к удалению из репозитория
         codesToDelete.removeAll(ctxMap.keySet());
 
-        // На upsert: новые или изменившиеся дескрипторы
+        // Upsert: новые или изменившиеся дескрипторы (Insert/Update)
         List<ProviderDescriptor> descriptorsToUpsert = new ArrayList<>();
         for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты ctxMap
             // ↓↓ Текущие индекс и элемент карты ctxMap
