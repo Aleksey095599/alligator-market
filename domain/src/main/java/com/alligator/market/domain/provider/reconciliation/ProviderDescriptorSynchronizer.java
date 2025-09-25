@@ -33,7 +33,7 @@ public class ProviderDescriptorSynchronizer {
         // Список дескрипторов из репозитория
         List<ProviderDescriptor> repositoryDescriptors = repository.findAll();
 
-        // Если контекст пуст — очищаем репозиторий и выходим
+        // Если contextDescriptors пуст — очищаем репозиторий и выходим
         if (contextDescriptors.isEmpty()) {
             if (!repositoryDescriptors.isEmpty()) {
                 repository.deleteAll();
@@ -41,70 +41,54 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // Проверка уникальности дескрипторов из контекста по коду провайдера и отображаемому имени
+        // Проверка уникальности contextDescriptors по коду провайдера и отображаемому имени
         assertUniqueByCodeAndName(contextDescriptors);
-        // Строим карту
+        // Строим карту репозитория: <код провайдера, дескриптор в репозитории>
         Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
 
-        // Проверка уникальности дескрипторов из репозитория по коду провайдера и отображаемому имени
+        // Проверка уникальности repositoryDescriptors по коду провайдера и отображаемому имени
         assertUniqueByCodeAndName(repositoryDescriptors);
-        // Строим карту
-        Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
+        // Строим карту контекста: <код провайдера, дескриптор в контексте>
+        Map<String, ProviderDescriptor> ctxMap = toMapByCode(contextDescriptors);
 
         // Ранний выход: карты идентичны по ключам и значениям
         if (repoMap.equals(ctxMap)) {
             return;
         }
 
-
-        // Комментарий:
-        // Репозиторий: D1:{providerCode1; ...}, D2:{providerCode2; ...}, D3:{providerCode3; ...}
-        // Контекст:
-
-
-        // Если в repoMap есть такие индексы, которых нет в ctxMap, — связанные с ними дескрипторы нужно удалить
+        // Берем множество кодов провайдеров в repoMap...
         Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet());
+        // ... вычитаем из него множество кодов провайдеров в ctxMap — получаем коды к удалению из репозитория
         codesToDelete.removeAll(ctxMap.keySet());
 
         // На upsert: новые или изменившиеся дескрипторы
         List<ProviderDescriptor> descriptorsToUpsert = new ArrayList<>();
-        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты контекста
-            // Текущий индекс элемента
-            String currentIndex = e.getKey();
-            // Текущий дескриптор элемента
-            ProviderDescriptor CurrentCtxDescriptor = e.getValue();
-            // Получаем дескриптор из карты репозитория с таким же индексом (если он есть)
-            ProviderDescriptor maybeRepoDescriptor = repoMap.get(currentIndex);
-            if (maybeRepoDescriptor == null // Значит это новый дескриптор
-                    || !maybeRepoDescriptor.equals(CurrentCtxDescriptor) // Значит дескриптор изменился
-            ) {
-                descriptorsToUpsert.add(CurrentCtxDescriptor);
+        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты ctxMap
+            // ↓↓ Текущие индекс и элемент карты ctxMap
+            String ctxProviderCode = e.getKey();
+            ProviderDescriptor ctxDescriptor = e.getValue();
+            // В карте repoMap ищем дескриптор с таким же кодом провайдера
+            ProviderDescriptor maybeRepoDescriptor = repoMap.get(ctxProviderCode);
+            // Если не найден или найден, но не совпадает — значит новый или изменившийся
+            if (maybeRepoDescriptor == null || !maybeRepoDescriptor.equals(ctxDescriptor)) {
+                descriptorsToUpsert.add(ctxDescriptor);
             }
         }
-
-        // Для страховки проверим, что descriptorsToUpsert уникальны по коду провайдера и отображаемому имени
-        assertUniqueByCodeAndName(descriptorsToUpsert);
 
         // Применяем изменения
         if (!codesToDelete.isEmpty()) repository.deleteAllByProviderCodes(codesToDelete);
         if (!descriptorsToUpsert.isEmpty()) repository.saveAll(descriptorsToUpsert);
     }
 
-    /* Нормализуем код провайдера: убираем пробелы и приводим к верхнему регистру. */
-    private static String norm(String code) {
-        return code == null ? null : code.trim().toUpperCase(Locale.ROOT);
-    }
-
     /* Проверка уникальности кодов провайдеров и отображаемых имен. */
     private static void assertUniqueByCodeAndName(List<ProviderDescriptor> descriptors) {
-        Set<String> seenCodes = new HashSet<>();
+        Set<String> seenProviderCodes = new HashSet<>();
         Set<String> seenDisplayNames = new HashSet<>();
         for (ProviderDescriptor d : descriptors) {
-            String code = norm(d.providerCode());
-            if (!seenCodes.add(code)) {
-                throw new ProviderDescriptorDuplicateException(code, d.displayName());
+            String code = normProviderCode(d.providerCode());
+            if (!seenProviderCodes.add(code)) {
+                throw new ProviderDescriptorDuplicateException(d.providerCode(), d.displayName());
             }
-
             String displayName = normDisplayName(d.displayName());
             if (!seenDisplayNames.add(displayName)) {
                 throw new ProviderDescriptorDuplicateException(d.providerCode(), d.displayName());
@@ -112,17 +96,22 @@ public class ProviderDescriptorSynchronizer {
         }
     }
 
-    /* Нормализуем отображаемое имя провайдера: убираем пробелы. */
-    private static String normDisplayName(String displayName) {
-        return displayName == null ? null : displayName.trim();
-    }
-
-    /* Построить карту: providerCode ⇒ descriptor. */
+    /* Построить карту: providerCode ⇒ ProviderDescriptor. */
     private static Map<String, ProviderDescriptor> toMapByCode(List<ProviderDescriptor> list) {
         Map<String, ProviderDescriptor> map = new LinkedHashMap<>(); // сохраняем порядок для предсказуемых логов
         for (ProviderDescriptor d : list) {
-            map.put(norm(d.providerCode()), d);
+            map.put(normProviderCode(d.providerCode()), d);
         }
         return map;
+    }
+
+    /* Нормализуем код провайдера: убираем пробелы и приводим к верхнему регистру. */
+    private static String normProviderCode(String code) {
+        return code == null ? null : code.trim().toUpperCase(Locale.ROOT);
+    }
+
+    /* Нормализуем отображаемое имя провайдера: убираем пробелы. */
+    private static String normDisplayName(String displayName) {
+        return displayName == null ? null : displayName.trim();
     }
 }
