@@ -85,7 +85,7 @@ public class ProviderDescriptorSynchronizer {
             repository.deleteAllByProviderCodes(codesToRemoveFirst);
         }
 
-        // 5.2) Формируем единый список для UPSERT: новые + изменившиеся
+        // 5.2) Формируем единый список для INSERT: новые + изменившиеся
         if (!descriptorsToAdd.isEmpty() || !codesToUpdate.isEmpty()) {
             List<ProviderDescriptor> toInsert = new ArrayList<>(descriptorsToAdd);
             for (String code : codesToUpdate) {
