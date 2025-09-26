@@ -19,14 +19,16 @@ public class ProviderDescriptorSyncService {
     @Transactional
     public void runSync() {
         ProviderDescriptorSyncResult result = synchronizer.synchronize();
-        log.info(
-                "Provider descriptors sync: context={}, repoBefore={}, deleted={}, insertedNew={}, reinsertedUpdated={}, changed={}",
-                result.inContext(),
-                result.inRepoBefore(),
-                result.deleted(),
-                result.insertedNew(),
-                result.reinsertedUpdated(),
-                result.changed()
-        );
+        if (result.changed()) {
+            log.info("Provider descriptors sync applied: " +
+                            "context={}, repoBefore={}, deleted={}, insertedNew={}, reinsertedUpdated={}",
+                    result.inContext(),
+                    result.inRepoBefore(),
+                    result.deleted(),
+                    result.insertedNew(),
+                    result.reinsertedUpdated());
+        } else {
+            log.info("Provider descriptors already in sync: count={}", result.inContext());
+        }
     }
 }
