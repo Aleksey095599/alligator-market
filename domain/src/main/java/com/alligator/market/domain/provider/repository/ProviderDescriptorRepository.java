@@ -10,15 +10,18 @@ import java.util.List;
  */
 public interface ProviderDescriptorRepository {
 
-    /** Загрузить все дескрипторы провайдеров. */
+    /** Получить все дескрипторы провайдеров. */
     List<ProviderDescriptor> findAll();
 
-    /** Полностью очистить таблицу дескрипторов. */
+    /** Полностью очистить таблицу дескрипторов (админ/служебная операция). */
     void deleteAll();
 
     /** Удалить дескрипторы по списку кодов провайдеров. */
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
-    /** Пакетно сохранить список дескрипторов. */
+    /**
+     * Пакетно сохранить список дескрипторов.
+     * Семантика: UPSERT по providerCode (новые вставляются, существующие перезаписываются).
+     */
     void saveAll(List<ProviderDescriptor> descriptors);
 }

@@ -28,12 +28,11 @@ public class ProviderDescriptorSynchronizer {
 
     /** Выполнить синхронизацию дескрипторов провайдеров. */
     public void synchronize() {
-        // Список дескрипторов из контекста
+        // 0) Считываем оба источника
         List<ProviderDescriptor> contextDescriptors = contextScanner.providerDescriptors();
-        // Список дескрипторов из репозитория
         List<ProviderDescriptor> repositoryDescriptors = repository.findAll();
 
-        // Если contextDescriptors пуст — очищаем репозиторий и выходим
+        // 1) Если в контексте пусто — очищаем репозиторий и выходим
         if (contextDescriptors.isEmpty()) {
             if (!repositoryDescriptors.isEmpty()) {
                 repository.deleteAll();
@@ -41,25 +40,26 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // Проверка уникальности contextDescriptors по коду провайдера и отображаемому имени
+        // 2) Проверяем инварианты уникальности наборов (код провайдера и имя провайдера)
         assertUniqueByCodeAndName(contextDescriptors);
-        // Строим карту репозитория: <код провайдера, дескриптор в репозитории>
-        Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
-
-        // Проверка уникальности repositoryDescriptors по коду провайдера и отображаемому имени
         assertUniqueByCodeAndName(repositoryDescriptors);
-        // Строим карту контекста: <код провайдера, дескриптор в контексте>
-        Map<String, ProviderDescriptor> ctxMap = toMapByCode(contextDescriptors);
 
-        // Ранний выход: карты идентичны по ключам и значениям
+        // 3) Строим карты по коду провайдера (далее просто код)
+        Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
+        Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
+
+        // Ранний выход: карты идентичны по ключам (кодам) и значениям (дескрипторам)
         if (repoMap.equals(ctxMap)) {
             return;
         }
 
-        // Берем множество кодов провайдеров в repoMap...
-        Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet());
-        // ... вычитаем из него множество кодов провайдеров в ctxMap — получаем коды к удалению из репозитория
-        codesToDelete.removeAll(ctxMap.keySet());
+        // 4.1) К удалению — дескрипторы в репозитории с кодами, которых больше нет в контексте
+        Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet()); // Берем множество кодов в repoMap
+        codesToDelete.removeAll(ctxMap.keySet()); // "Вычитаем" из него множество кодов в ctxMap
+
+
+
+
 
         // ↓↓ Список для новых дескрипторов и набор для кодов дескрипторов к обновлению
         List<ProviderDescriptor> descriptorsToAdd = new ArrayList<>();
