@@ -28,17 +28,29 @@ public class ProviderDescriptorSynchronizer {
     }
 
     /** Выполнить синхронизацию дескрипторов провайдеров. */
-    public void synchronize() {
+    public ProviderDescriptorSyncResult synchronize() {
         // 0) Считываем оба источника
         List<ProviderDescriptor> contextDescriptors = contextScanner.providerDescriptors();
         List<ProviderDescriptor> repositoryDescriptors = repository.findAll();
+
+        int inContext = contextDescriptors.size();
+        int inRepoBefore = repositoryDescriptors.size();
 
         // 1) Если в контексте пусто (нет дескрипторов) — очищаем репозиторий и выходим
         if (contextDescriptors.isEmpty()) {
             if (!repositoryDescriptors.isEmpty()) {
                 repository.deleteAll();
+                int deleted = repositoryDescriptors.size();
+                return new ProviderDescriptorSyncResult(
+                        inContext,
+                        inRepoBefore,
+                        deleted,
+                        0,
+                        0,
+                        deleted > 0
+                );
             }
-            return;
+            return new ProviderDescriptorSyncResult(inContext, inRepoBefore, 0, 0, 0, false);
         }
 
         // 2) Проверяем инварианты уникальности наборов (код провайдера и имя провайдера)
@@ -51,7 +63,7 @@ public class ProviderDescriptorSynchronizer {
 
         // Ранний выход: карты идентичны по ключам (кодам) и значениям (дескрипторам)
         if (repoMap.equals(ctxMap)) {
-            return;
+            return new ProviderDescriptorSyncResult(inContext, inRepoBefore, 0, 0, 0, false);
         }
 
         // 4.1) К удалению: дескрипторы в репозитории с кодами, которых больше нет в контексте
@@ -97,6 +109,18 @@ public class ProviderDescriptorSynchronizer {
             repository.insertAll(toInsert); // выполняется пакетный INSERT
         }
         // Готово
+        int deleted = codesToRemoveFirst.size();
+        int insertedNew = descriptorsToAdd.size();
+        int reinsertedUpdated = codesToUpdate.size();
+        boolean changed = deleted > 0 || insertedNew > 0 || reinsertedUpdated > 0;
+        return new ProviderDescriptorSyncResult(
+                inContext,
+                inRepoBefore,
+                deleted,
+                insertedNew,
+                reinsertedUpdated,
+                changed
+        );
     }
 
     /* Проверка уникальности кодов провайдеров и отображаемых имен. */
