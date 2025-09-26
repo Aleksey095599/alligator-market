@@ -32,7 +32,7 @@ public class ProviderDescriptorSynchronizer {
         List<ProviderDescriptor> contextDescriptors = contextScanner.providerDescriptors();
         List<ProviderDescriptor> repositoryDescriptors = repository.findAll();
 
-        // 1) Если в контексте пусто — очищаем репозиторий и выходим
+        // 1) Если в контексте пусто (нет дескрипторов) — очищаем репозиторий и выходим
         if (contextDescriptors.isEmpty()) {
             if (!repositoryDescriptors.isEmpty()) {
                 repository.deleteAll();
@@ -44,7 +44,7 @@ public class ProviderDescriptorSynchronizer {
         assertUniqueByCodeAndName(contextDescriptors);
         assertUniqueByCodeAndName(repositoryDescriptors);
 
-        // 3) Строим карты по коду провайдера (далее просто код)
+        // 3) Строим карты по коду провайдера (далее для краткости "код провайдера" = "код")
         Map<String, ProviderDescriptor> repoMap = toMapByCode(repositoryDescriptors);
         Map<String, ProviderDescriptor> ctxMap  = toMapByCode(contextDescriptors);
 
@@ -53,37 +53,47 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // 4.1) К удалению — дескрипторы в репозитории с кодами, которых больше нет в контексте
-        Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet()); // Берем множество кодов в repoMap
-        codesToDelete.removeAll(ctxMap.keySet()); // "Вычитаем" из него множество кодов в ctxMap
+        // 4.1) К удалению: дескрипторы в репозитории с кодами, которых больше нет в контексте
+        Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet()); // Берем множество кодов из repoMap
+        codesToDelete.removeAll(ctxMap.keySet()); // "Вычитаем" множество кодов из ctxMap
 
-
-
-
-
-        // ↓↓ Список для новых дескрипторов и набор для кодов дескрипторов к обновлению
-        List<ProviderDescriptor> descriptorsToAdd = new ArrayList<>();
-        Set<String> codesToUpdate = new LinkedHashSet<>();
-
-        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) { // Перебираем элементы карты ctxMap
-            // ↓↓ Текущие индекс (он же код провайдера) и элемент карты ctxMap
-            String ctxProviderCode = e.getKey();
-            ProviderDescriptor ctxDescriptor = e.getValue();
-            // В карте repoMap ищем дескриптор с таким же кодом провайдера
+        // 4.2) К добавлению/обновлению: новые и изменившиеся дескрипторы
+        List<ProviderDescriptor> descriptorsToAdd = new ArrayList<>(); // список для новых дескрипторов
+        Set<String> codesToUpdate = new LinkedHashSet<>(); // набор для кодов изменившиеся дескрипторов
+        // ↓↓ Перебираем элементы карты ctxMap
+        for (Map.Entry<String, ProviderDescriptor> e : ctxMap.entrySet()) {
+            String ctxProviderCode = e.getKey(); // Текущий индекс (он же код)
+            ProviderDescriptor ctxDescriptor = e.getValue(); // Текущий элемент (он же дескриптор)
+            // В карте repoMap ищем дескриптор с таким же кодом
             ProviderDescriptor maybeRepoDescriptor = repoMap.get(ctxProviderCode);
-            if (maybeRepoDescriptor == null) { // Значит ctxDescriptor новый дескриптор
-                descriptorsToAdd.add(ctxDescriptor);
-            } else {
-                if (!maybeRepoDescriptor.equals(ctxDescriptor) { // Значит ctxDescriptor нужно обновить
-                    codesToUpdate.add(ctxProviderCode);
-                } else {} // ничего делать не нужно — ctxDescriptor уже есть в репозитории
-            }
+            if (maybeRepoDescriptor == null) {
+                descriptorsToAdd.add(ctxDescriptor); // Значит ctxDescriptor — новый дескриптор
+            } else if (maybeRepoDescriptor != ctxDescriptor) {
+                codesToUpdate.add(ctxProviderCode); // Значит ctxDescriptor изменился
+            } // else — идентичен, ничего не делаем
         }
 
-        // Применяем изменения
-        if (!codesToDelete.isEmpty()) repository.deleteAllByProviderCodes(codesToDelete);
-        if (!codesToUpdate) repository.
-        if (!descriptorsToAdd.isEmpty()) repository.
+        // 5) Применяем изменения атомарно (одна транзакция на весь блок).
+        //    Стратегия: сначала удаляем из репозитория исчезнувшие и изменившиеся дескрипторы,
+        //    затем выполняем batch UPSERT для новых и изменившихся дескрипторов.
+        //    Такой порядок прост и исключает конфликты уникальности.
+
+        // 5.1) Собираем всё, что нужно удалить перед вставкой
+        Set<String> codesToRemoveFirst = new LinkedHashSet<>(codesToDelete);
+        codesToRemoveFirst.addAll(codesToUpdate);
+        if (!codesToRemoveFirst.isEmpty()) {
+            repository.deleteAllByProviderCodes(codesToRemoveFirst);
+        }
+
+        // 5.2) Формируем единый список для UPSERT: новые + изменившиеся
+        if (!descriptorsToAdd.isEmpty() || !codesToUpdate.isEmpty()) {
+            List<ProviderDescriptor> toUpsert = new ArrayList<>(descriptorsToAdd);
+            for (String code : codesToUpdate) {
+                toUpsert.add(ctxMap.get(code));
+            }
+            repository.saveAll(toUpsert); // семантика UPSERT по providerCode
+        }
+        // Готово
     }
 
     /* Проверка уникальности кодов провайдеров и отображаемых имен. */
