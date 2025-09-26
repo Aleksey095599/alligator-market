@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Bootstrap-компонент: выполняет реконсиляцию данных о провайдерах рыночных данных при старте приложения.
+ * Bootstrap-компонент: запускает сервисы реконсиляции данных о провайдерах рыночных данных при старте приложения.
  */
 @Component
 @RequiredArgsConstructor

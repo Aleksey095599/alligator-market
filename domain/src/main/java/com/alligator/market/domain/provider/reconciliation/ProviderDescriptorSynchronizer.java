@@ -68,7 +68,7 @@ public class ProviderDescriptorSynchronizer {
             ProviderDescriptor maybeRepoDescriptor = repoMap.get(ctxProviderCode);
             if (maybeRepoDescriptor == null) {
                 descriptorsToAdd.add(ctxDescriptor); // Значит ctxDescriptor — новый дескриптор
-            } else if (maybeRepoDescriptor != ctxDescriptor) {
+            } else if (!Objects.equals(maybeRepoDescriptor, ctxDescriptor)) {
                 codesToUpdate.add(ctxProviderCode); // Значит ctxDescriptor изменился
             } // else — идентичен, ничего не делаем
         }

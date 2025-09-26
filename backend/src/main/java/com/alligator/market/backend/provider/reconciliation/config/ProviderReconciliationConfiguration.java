@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.reconciliation;
+package com.alligator.market.backend.provider.reconciliation.config;
 
 import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;

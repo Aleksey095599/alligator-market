@@ -41,6 +41,7 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
             return; // Нечего удалять
         }
         jpaRepository.deleteAllByProviderCodeIn(providerCodes);
+        jpaRepository.flush();
     }
 
     @Override
