@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.catalog.descriptor.api;
+package com.alligator.market.backend.provider.catalog.descriptor.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.catalog.descriptor.api.dto.DescriptorDto;
-import com.alligator.market.backend.provider.catalog.descriptor.api.dto.DescriptorDtoMapper;
+import com.alligator.market.backend.provider.catalog.descriptor.web.dto.DescriptorDto;
+import com.alligator.market.backend.provider.catalog.descriptor.web.dto.DescriptorDtoMapper;
 import com.alligator.market.backend.provider.catalog.descriptor.service.DescriptorUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

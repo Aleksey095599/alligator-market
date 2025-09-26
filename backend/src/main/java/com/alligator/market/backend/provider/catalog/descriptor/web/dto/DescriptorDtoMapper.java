@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.descriptor.api.dto;
+package com.alligator.market.backend.provider.catalog.descriptor.web.dto;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import org.springframework.stereotype.Component;
