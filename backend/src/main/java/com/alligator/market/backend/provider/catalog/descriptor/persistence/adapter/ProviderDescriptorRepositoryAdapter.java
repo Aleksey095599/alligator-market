@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Адаптер, реализующий порт {@link ProviderDescriptorRepository} через Spring Data JPA.
+ * Адаптер, реализующий порт доменного репозитория для дескрипторов через Spring Data JPA.
  */
 @Repository
 @RequiredArgsConstructor
@@ -37,19 +37,18 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
 
     @Override
     public void deleteAllByProviderCodes(Collection<String> providerCodes) {
-        if (providerCodes.isEmpty()) {
-            return; // Нечего удалять
-        }
+        if (providerCodes.isEmpty()) return; // Нечего удалять
         jpaRepository.deleteAllByProviderCodeIn(providerCodes);
-        jpaRepository.flush();
+        jpaRepository.flush(); // важно для порядка операций
     }
 
     @Override
     public void saveAll(List<ProviderDescriptor> descriptors) {
-        // Готовим список сущностей и сохраняем пакетно через JPA
+        if (descriptors.isEmpty()) return; // Нечего вставлять
         List<DescriptorEntity> entities = descriptors.stream()
                 .map(mapper::toEntity)
                 .toList();
         jpaRepository.saveAll(entities);
+        jpaRepository.flush();
     }
 }

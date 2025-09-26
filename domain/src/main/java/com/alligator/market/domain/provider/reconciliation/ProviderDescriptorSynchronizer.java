@@ -75,7 +75,7 @@ public class ProviderDescriptorSynchronizer {
 
         // 5) Применяем изменения атомарно (одна транзакция на весь блок).
         //    Стратегия: сначала удаляем из репозитория исчезнувшие и изменившиеся дескрипторы,
-        //    затем выполняем batch UPSERT для новых и изменившихся дескрипторов.
+        //    затем выполняем batch INSERT для новых и изменившихся дескрипторов.
         //    Такой порядок прост и исключает конфликты уникальности.
 
         // 5.1) Собираем всё, что нужно удалить перед вставкой
@@ -91,7 +91,9 @@ public class ProviderDescriptorSynchronizer {
             for (String code : codesToUpdate) {
                 toUpsert.add(ctxMap.get(code));
             }
-            repository.saveAll(toUpsert); // семантика UPSERT по providerCode
+            // На крайний случай проверяем инварианты уникальности перед вставкой
+            assertUniqueByCodeAndName(toUpsert);
+            repository.saveAll(toUpsert);
         }
         // Готово
     }

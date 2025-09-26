@@ -31,6 +31,7 @@ public class ProviderReconciliationBootstrap implements ApplicationRunner {
         try {
             syncService.runSync();
             log.info("Provider descriptors synchronization completed");
+            // TODO: добавить в лог выше данные о том какие изменения произошли
         } catch (RuntimeException ex) {
             log.error("Provider descriptors synchronization failed", ex);
             throw ex;

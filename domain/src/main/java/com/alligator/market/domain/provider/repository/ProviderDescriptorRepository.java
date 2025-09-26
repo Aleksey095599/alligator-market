@@ -19,9 +19,6 @@ public interface ProviderDescriptorRepository {
     /** Удалить дескрипторы по списку кодов провайдеров. */
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
-    /**
-     * Пакетно сохранить список дескрипторов.
-     * Семантика: UPSERT по providerCode (новые вставляются, существующие перезаписываются).
-     */
+    /** INSERT после предварительного удаления; не upsert. Дубликаты providerCode → ошибка UNIQUE. */
     void saveAll(List<ProviderDescriptor> descriptors);
 }
