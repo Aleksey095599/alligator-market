@@ -2,27 +2,25 @@ package com.alligator.market.backend.provider.reconciliation.bootstrap;
 
 import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
-import com.alligator.market.domain.provider.reconciliation.ProviderDescriptorSynchronizer;
+import com.alligator.market.backend.provider.reconciliation.service.ProviderDescriptorSyncService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Bootstrap-компонент: запускает сервисы реконсиляции данных о провайдерах рыночных данных при старте приложения.
  */
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class ProviderReconciliationBootstrap implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(ProviderReconciliationBootstrap.class);
 
-    /* Доменный сервис синхронизации дескрипторов. */
-    private final ProviderDescriptorSynchronizer synchronizer;
+    /* Сервис для запуска транзакционной синхронизации дескрипторов. */
+    private final ProviderDescriptorSyncService syncService;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -31,7 +29,7 @@ public class ProviderReconciliationBootstrap implements ApplicationRunner {
         AuditContext previousContext = AuditContextHolder.get();
         AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-descriptor-bootstrap"));
         try {
-            synchronizer.synchronize();
+            syncService.runSync();
             log.info("Provider descriptors synchronization completed");
         } catch (RuntimeException ex) {
             log.error("Provider descriptors synchronization failed", ex);
