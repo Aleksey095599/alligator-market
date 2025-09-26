@@ -87,13 +87,13 @@ public class ProviderDescriptorSynchronizer {
 
         // 5.2) Формируем единый список для UPSERT: новые + изменившиеся
         if (!descriptorsToAdd.isEmpty() || !codesToUpdate.isEmpty()) {
-            List<ProviderDescriptor> toUpsert = new ArrayList<>(descriptorsToAdd);
+            List<ProviderDescriptor> toInsert = new ArrayList<>(descriptorsToAdd);
             for (String code : codesToUpdate) {
-                toUpsert.add(ctxMap.get(code));
+                toInsert.add(ctxMap.get(code));
             }
             // На крайний случай проверяем инварианты уникальности перед вставкой
-            assertUniqueByCodeAndName(toUpsert);
-            repository.saveAll(toUpsert);
+            assertUniqueByCodeAndName(toInsert);
+            repository.insertAll(toInsert); // выполняется пакетный INSERT
         }
         // Готово
     }

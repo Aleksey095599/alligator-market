@@ -43,7 +43,7 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
     }
 
     @Override
-    public void saveAll(List<ProviderDescriptor> descriptors) {
+    public void insertAll(List<ProviderDescriptor> descriptors) {
         if (descriptors.isEmpty()) return; // Нечего вставлять
         List<DescriptorEntity> entities = descriptors.stream()
                 .map(mapper::toEntity)

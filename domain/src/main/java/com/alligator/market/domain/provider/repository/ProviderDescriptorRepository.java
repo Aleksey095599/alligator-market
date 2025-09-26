@@ -20,5 +20,5 @@ public interface ProviderDescriptorRepository {
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
     /** INSERT после предварительного удаления; не upsert. Дубликаты providerCode → ошибка UNIQUE. */
-    void saveAll(List<ProviderDescriptor> descriptors);
+    void insertAll(List<ProviderDescriptor> descriptors);
 }

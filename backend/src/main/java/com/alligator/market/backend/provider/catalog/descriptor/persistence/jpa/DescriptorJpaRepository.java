@@ -12,4 +12,3 @@ public interface DescriptorJpaRepository extends JpaRepository<DescriptorEntity,
     /** Удалить дескрипторы по списку кодов провайдеров. */
     void deleteAllByProviderCodeIn(Collection<String> providerCodes);
 }
-
