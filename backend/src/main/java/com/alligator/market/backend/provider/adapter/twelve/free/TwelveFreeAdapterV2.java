@@ -58,6 +58,5 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     protected TwelveFreeAdapterV2 self() {
         return this;
     }
-
 }
 
