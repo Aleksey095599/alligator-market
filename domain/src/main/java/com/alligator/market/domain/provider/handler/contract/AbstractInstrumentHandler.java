@@ -44,7 +44,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         for (I instrument : supportedInstruments) { // Перебираем инструменты
             Objects.requireNonNull(instrument, "supportedInstruments must not contain null");
             if (instrument.getClass() != instrumentClass) {
-                throw new IllegalStateException("supportedInstruments must contain only "
+                throw new IllegalStateException("All elements of supportedInstruments must be instances of "
                         + instrumentClass.getSimpleName());
             }
         }
