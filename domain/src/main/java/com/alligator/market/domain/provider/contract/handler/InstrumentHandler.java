@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.handler.contract;
+package com.alligator.market.domain.provider.contract.handler;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;

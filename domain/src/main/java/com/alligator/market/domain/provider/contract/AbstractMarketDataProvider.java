@@ -5,8 +5,8 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.handler.contract.AbstractInstrumentHandler;
-import com.alligator.market.domain.provider.handler.contract.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
