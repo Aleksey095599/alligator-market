@@ -50,7 +50,14 @@ public class ProviderDescriptorSynchronizer {
                         deleted > 0
                 );
             }
-            return new ProviderDescriptorSyncResult(inContext, inRepoBefore, 0, 0, 0, false);
+            return new ProviderDescriptorSyncResult(
+                    inContext,
+                    inRepoBefore,
+                    0,
+                    0,
+                    0,
+                    false
+            );
         }
 
         // 2) Проверяем инварианты уникальности наборов (код провайдера и имя провайдера)
@@ -63,7 +70,14 @@ public class ProviderDescriptorSynchronizer {
 
         // Ранний выход: карты идентичны по ключам (кодам) и значениям (дескрипторам)
         if (repoMap.equals(ctxMap)) {
-            return new ProviderDescriptorSyncResult(inContext, inRepoBefore, 0, 0, 0, false);
+            return new ProviderDescriptorSyncResult(
+                    inContext,
+                    inRepoBefore,
+                    0,
+                    0,
+                    0,
+                    false
+            );
         }
 
         // 4.1) К удалению: дескрипторы в репозитории с кодами, которых больше нет в контексте
