@@ -14,6 +14,8 @@ import java.util.Set;
  */
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
+
+
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
     ProviderDescriptor descriptor();
 

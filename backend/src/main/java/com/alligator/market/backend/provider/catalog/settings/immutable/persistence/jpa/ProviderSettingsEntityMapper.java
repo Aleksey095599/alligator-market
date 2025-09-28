@@ -23,7 +23,7 @@ public class ProviderSettingsEntityMapper {
     public ProviderSettingsEntity toEntity(ProviderSettings settings) {
         var entity = new ProviderSettingsEntity();
         entity.setProviderCode(settings.providerCode());
-        entity.setMinUpdateIntervalSeconds(settings.minUpdateInterval().getSeconds());
+        entity.setMinUpdateIntervalSeconds(settings.minUpdateIntervalSec().getSeconds());
         return entity;
     }
 }

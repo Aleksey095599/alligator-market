@@ -39,7 +39,7 @@ public class ProviderSettingsEntity extends BaseEntity {
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
-    /** Минимальный интервал обновления котировки в секундах {@link ProviderSettings#minUpdateInterval()}. */
+    /** Минимальный интервал обновления котировки в секундах {@link ProviderSettings#minUpdateIntervalSec()}. */
     @NotNull
     @Min(1)
     @Column(name = "min_update_interval_seconds", nullable = false, updatable = false)

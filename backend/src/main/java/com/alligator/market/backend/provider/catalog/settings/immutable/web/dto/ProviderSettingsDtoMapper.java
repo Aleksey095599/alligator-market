@@ -15,7 +15,7 @@ public class ProviderSettingsDtoMapper {
     public ProviderSettingsDto toDto(ProviderSettings settings) {
         return new ProviderSettingsDto(
                 settings.providerCode(),
-                settings.minUpdateInterval().getSeconds()
+                settings.minUpdateIntervalSec().getSeconds()
         );
     }
 
