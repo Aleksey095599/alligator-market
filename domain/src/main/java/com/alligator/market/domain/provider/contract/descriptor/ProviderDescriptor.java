@@ -6,14 +6,12 @@ import java.util.Objects;
 /**
  * Дескриптор провайдера: иммутабельный набор статических атрибутов.
  *
- * @param providerCode           Технический код провайдера
  * @param displayName            Отображаемое имя провайдера (user friendly)
  * @param deliveryMode           Режим доставки рыночных данных: PULL или PUSH {@link AccessMethod}
  * @param accessMethod           Метод доступа к рыночным данным {@link AccessMethod}
  * @param bulkSubscription       Поддержка массовой подписки одним запросом
  */
 public record ProviderDescriptor(
-        String providerCode,
         String displayName,
         DeliveryMode deliveryMode,
         AccessMethod accessMethod,

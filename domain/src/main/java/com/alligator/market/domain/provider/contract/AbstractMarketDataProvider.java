@@ -19,6 +19,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты провайдера. */
+    String providerCode;
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
 
@@ -41,24 +42,34 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *                                  если инструмент не соответствует декларируемому в обработчике классу
      */
     protected AbstractMarketDataProvider(
+            String providerCode,
             ProviderDescriptor descriptor,
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
-        // ↓↓ Базовые проверки аргументов
-        this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
-        this.settings = Objects.requireNonNull(settings, "settings must not be null");
-        Objects.requireNonNull(handlers, "handlers must not be null");
+        // ↓↓ Предусловия
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(descriptor,   "descriptor must not be null");
+        Objects.requireNonNull(settings,     "settings must not be null");
+        Objects.requireNonNull(handlers,     "handlers must not be null");
+        if (providerCode.isBlank()) {
+            throw new IllegalArgumentException("providerCode must not be blank");
+        }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
         }
+
+        // ↓↓ Инициализация полей
+        this.providerCode = providerCode;
+        this.descriptor   = descriptor;
+        this.settings     = settings;
 
         // 1) Проверяем уникальность handlers по коду
         var handlerCodes = new java.util.HashSet<String>();
         for (var h : handlers) {
             var code = h.handlerCode();
             if (!handlerCodes.add(code)) {
-                throw new IllegalStateException("Provider '" + descriptor.providerCode() +
+                throw new IllegalStateException("Provider '" + providerCode +
                         "' contains multiple handlers with the same code '" + code + "'");
             }
         }
@@ -71,9 +82,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                 // ↓↓ Дополнительно проверяем, что каждый инструмент соответствует декларируемому в обработчике классу
                 if (!h.instrumentClass().isInstance(ins)) {
                     throw new IllegalStateException(
-                            "Instrument '" + ins.code() + "' must match "
-                                    + h.instrumentClass().getSimpleName()
-                                    + " for handler '" + h.handlerCode() + "'"
+                            "Instrument '" + ins.code() +
+                                    "' must match '" + h.instrumentClass().getSimpleName()
+                                    + "' for handler '" + h.handlerCode() + "'"
                     );
                 }
                 // ↓↓ Обеспечиваем уникальность ключей (инструментов) в карте при сборке
@@ -81,7 +92,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                 if (prev != null) {
                     throw new IllegalStateException("Instrument '" + ins.code() +
                             "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + descriptor.providerCode() + "'");
+                            "' in provider '" + providerCode + "'");
                 }
             }
         }
@@ -148,10 +159,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         Objects.requireNonNull(instrument, "instrument must not be null");
         var handler = handlerOf(instrument);
         if (handler == null) {
-            throw new HandlerNotFoundException(
-                    instrument.code(),
-                    descriptor.providerCode()
-            );
+            throw new HandlerNotFoundException(instrument.code(), providerCode);
         }
         return handler.quote(instrument);
     }
