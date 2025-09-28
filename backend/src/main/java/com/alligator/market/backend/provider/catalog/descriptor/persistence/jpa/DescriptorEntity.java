@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -35,7 +36,7 @@ public class DescriptorEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link ProviderDescriptor#providerCode()}. */
+    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)

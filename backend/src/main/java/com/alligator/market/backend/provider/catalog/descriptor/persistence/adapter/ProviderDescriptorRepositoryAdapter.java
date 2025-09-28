@@ -9,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Адаптер, реализующий порт доменного репозитория для дескрипторов через Spring Data JPA.
@@ -23,31 +22,39 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
     private final DescriptorEntityMapper mapper;
 
     @Override
-    public List<ProviderDescriptor> findAll() {
-        return jpaRepository.findAll(Sort.by("providerCode")).stream()
-                .map(mapper::toDomain)
-                .toList();
+    public Map<String, ProviderDescriptor> findAll() {
+        var result = new LinkedHashMap<String, ProviderDescriptor>();
+        for (var entity : jpaRepository.findAll(Sort.by("providerCode"))) {
+            var key = entity.getProviderCode();
+            var value = mapper.toDomain(entity);
+            if (result.putIfAbsent(key, value) != null) { // Если вдруг дубликат по ключу
+                throw new IllegalStateException("Duplicate provider code: " + key);
+            }
+        }
+        return result;
     }
 
     @Override
     public void deleteAll() {
         // Удаляем все записи таблицы без постраничного обхода
         jpaRepository.deleteAllInBatch();
+        jpaRepository.flush();
     }
 
     @Override
     public void deleteAllByProviderCodes(Collection<String> providerCodes) {
-        if (providerCodes.isEmpty()) return; // Нечего удалять
+        if (providerCodes == null || providerCodes.isEmpty()) return; // Нечего удалять
         jpaRepository.deleteAllByProviderCodeIn(providerCodes);
         jpaRepository.flush(); // важно для порядка операций
     }
 
     @Override
-    public void insertAll(List<ProviderDescriptor> descriptors) {
-        if (descriptors.isEmpty()) return; // Нечего вставлять
-        List<DescriptorEntity> entities = descriptors.stream()
-                .map(mapper::toEntity)
-                .toList();
+    public void insertAll(Map<String, ProviderDescriptor> descriptors) {
+        if (descriptors == null || descriptors.isEmpty()) return; // Нечего вставлять
+        var entities = new ArrayList<DescriptorEntity>(descriptors.size());
+        for (var e : descriptors.entrySet()) {
+            entities.add(mapper.toEntity(e.getKey(), e.getValue()));
+        }
         jpaRepository.saveAll(entities);
         jpaRepository.flush();
     }

@@ -12,7 +12,6 @@ public class DescriptorEntityMapper {
     /** Сущность ⇒ доменная модель. */
     public ProviderDescriptor toDomain(DescriptorEntity entity) {
         return new ProviderDescriptor(
-                entity.getProviderCode(),
                 entity.getDisplayName(),
                 entity.getDeliveryMode(),
                 entity.getAccessMethod(),
@@ -21,9 +20,9 @@ public class DescriptorEntityMapper {
     }
 
     /** Доменная модель ⇒ сущность. */
-    public DescriptorEntity toEntity(ProviderDescriptor providerDescriptor) {
+    public DescriptorEntity toEntity(String providerCode, ProviderDescriptor providerDescriptor) {
         var entity = new DescriptorEntity();
-        entity.setProviderCode(providerDescriptor.providerCode());
+        entity.setProviderCode(providerCode);
         entity.setDisplayName(providerDescriptor.displayName());
         entity.setDeliveryMode(providerDescriptor.deliveryMode());
         entity.setAccessMethod(providerDescriptor.accessMethod());
