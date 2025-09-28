@@ -1,10 +1,10 @@
-package com.alligator.market.backend.provider.catalog.settings.web;
+package com.alligator.market.backend.provider.catalog.settings.immutable.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.catalog.settings.service.ProviderSettingsUseCase;
-import com.alligator.market.backend.provider.catalog.settings.web.dto.ProviderSettingsDto;
-import com.alligator.market.backend.provider.catalog.settings.web.dto.ProviderSettingsDtoMapper;
+import com.alligator.market.backend.provider.catalog.settings.immutable.service.ProviderSettingsUseCase;
+import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.ProviderSettingsDto;
+import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.ProviderSettingsDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

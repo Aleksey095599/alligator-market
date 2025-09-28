@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.catalog.settings.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa;
 
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

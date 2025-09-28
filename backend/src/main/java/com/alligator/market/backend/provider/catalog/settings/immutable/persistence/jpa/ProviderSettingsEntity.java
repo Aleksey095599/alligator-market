@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.catalog.settings.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

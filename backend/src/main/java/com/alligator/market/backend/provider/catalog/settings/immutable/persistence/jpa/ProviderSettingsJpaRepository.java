@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.settings.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

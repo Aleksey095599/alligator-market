@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.catalog.settings.web.dto;
+package com.alligator.market.backend.provider.catalog.settings.immutable.web.dto;
 
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

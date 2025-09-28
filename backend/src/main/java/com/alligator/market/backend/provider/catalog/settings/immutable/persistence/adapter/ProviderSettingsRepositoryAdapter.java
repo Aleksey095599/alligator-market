@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.catalog.settings.persistence.adapter;
+package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.adapter;
 
-import com.alligator.market.backend.provider.catalog.settings.persistence.jpa.ProviderSettingsEntity;
-import com.alligator.market.backend.provider.catalog.settings.persistence.jpa.ProviderSettingsEntityMapper;
-import com.alligator.market.backend.provider.catalog.settings.persistence.jpa.ProviderSettingsJpaRepository;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsEntity;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsEntityMapper;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsJpaRepository;
+import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import com.alligator.market.domain.provider.repository.ProviderSettingsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

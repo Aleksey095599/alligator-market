@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.contract.settings;
+package com.alligator.market.domain.provider.contract.settings.immutable;
 
 import java.time.Duration;
 import java.util.Locale;

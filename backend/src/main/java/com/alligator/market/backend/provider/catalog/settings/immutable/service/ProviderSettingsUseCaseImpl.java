@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.catalog.settings.service;
+package com.alligator.market.backend.provider.catalog.settings.immutable.service;
 
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import com.alligator.market.domain.provider.repository.ProviderSettingsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
