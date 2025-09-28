@@ -4,14 +4,15 @@ import com.alligator.market.domain.provider.contract.settings.immutable.Provider
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Порт репозитория настроек провайдеров.
  */
 public interface ProviderSettingsRepository {
 
-    /** Получить все настройки провайдеров. */
-    List<ProviderSettings> findAll();
+    /** Получить карту настроек провайдеров, индексированную по коду провайдера. */
+    Map<String, ProviderSettings> findAll();
 
     /** Полностью очистить таблицу настроек (админ/служебная операция). */
     void deleteAll();
@@ -20,5 +21,5 @@ public interface ProviderSettingsRepository {
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
     /** INSERT после предварительного удаления; не upsert. Дубликаты providerCode → ошибка UNIQUE. */
-    void insertAll(List<ProviderSettings> settings);
+    void insertAll(Map<String, ProviderSettings> settings);
 }
