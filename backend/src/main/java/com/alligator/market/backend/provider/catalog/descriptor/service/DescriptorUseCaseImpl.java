@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Реализация сервиса {@link DescriptorUseCase}.
@@ -21,8 +21,8 @@ public class DescriptorUseCaseImpl implements DescriptorUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProviderDescriptor> getAll() {
-        List<ProviderDescriptor> descriptors = repository.findAll();
+    public Map<String, ProviderDescriptor> getAll() {
+        Map<String, ProviderDescriptor> descriptors = repository.findAll();
         log.debug("Found {} provider descriptors", descriptors.size());
         return descriptors;
     }

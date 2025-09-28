@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 public class DescriptorDtoMapper {
 
     /** Доменная модель ⇒ основной DTO. */
-    public DescriptorDto toDto(ProviderDescriptor providerDescriptor) {
+    public DescriptorDto toDto(String providerCode, ProviderDescriptor providerDescriptor) {
         return new DescriptorDto(
-                providerDescriptor.providerCode(),
+                providerCode,
                 providerDescriptor.displayName(),
                 providerDescriptor.deliveryMode(),
                 providerDescriptor.accessMethod(),
@@ -23,7 +23,6 @@ public class DescriptorDtoMapper {
     /** Основной DTO ⇒ доменная модель. */
     public ProviderDescriptor toDomain(DescriptorDto dto) {
         return new ProviderDescriptor(
-                dto.providerCode(),
                 dto.displayName(),
                 dto.deliveryMode(),
                 dto.accessMethod(),

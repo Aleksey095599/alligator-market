@@ -35,7 +35,7 @@ public class DescriptorEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link ProviderDescriptor#providerCode()}. */
+    /** Технический код провайдера {@link com.alligator.market.domain.provider.contract.MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
