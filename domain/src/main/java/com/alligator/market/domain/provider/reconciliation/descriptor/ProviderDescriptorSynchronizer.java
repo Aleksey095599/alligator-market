@@ -102,8 +102,8 @@ public class ProviderDescriptorSynchronizer {
         //    Такой порядок прост и исключает конфликты уникальности.
 
         // 5.1) Собираем всё, что нужно удалить перед вставкой
-        Set<String> codesToRemoveFirst = new LinkedHashSet<>(codesToDelete);
-        codesToRemoveFirst.addAll(codesToUpdate);
+        Set<String> codesToRemoveFirst = new LinkedHashSet<>(codesToDelete); // Берем коды к удалению
+        codesToRemoveFirst.addAll(codesToUpdate); // Добавляем коды изменившихся дескрипторов
         if (!codesToRemoveFirst.isEmpty()) {
             repository.deleteAllByProviderCodes(codesToRemoveFirst);
         }
