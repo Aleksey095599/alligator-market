@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ProviderContextScanner {
 
-    /** Вернуть список дескрипторов провайдеров {@link ProviderDescriptor}. */
+    /** Вернуть список дескрипторов провайдеров. */
     List<ProviderDescriptor> providerDescriptors();
 }
