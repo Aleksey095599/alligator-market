@@ -1,0 +1,29 @@
+package com.alligator.market.backend.provider.catalog.settings.web.dto;
+
+import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+
+/**
+ * Маппер: DTO ⇄ доменная модель.
+ */
+@Component
+public class ProviderSettingsDtoMapper {
+
+    /** Доменная модель ⇒ основной DTO. */
+    public ProviderSettingsDto toDto(ProviderSettings settings) {
+        return new ProviderSettingsDto(
+                settings.providerCode(),
+                settings.minUpdateInterval().getSeconds()
+        );
+    }
+
+    /** Основной DTO ⇒ доменная модель. */
+    public ProviderSettings toDomain(ProviderSettingsDto dto) {
+        return new ProviderSettings(
+                dto.providerCode(),
+                Duration.ofSeconds(dto.minUpdateIntervalSeconds())
+        );
+    }
+}
