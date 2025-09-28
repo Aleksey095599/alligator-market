@@ -47,7 +47,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
-        // ↓↓ Предусловия
+        // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(descriptor,   "descriptor must not be null");
         Objects.requireNonNull(settings,     "settings must not be null");
@@ -55,12 +55,18 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
+        if (providerCode.chars().anyMatch(Character::isWhitespace)) {
+            throw new IllegalArgumentException("providerCode must not contain whitespaces");
+        }
+        if (!providerCode.equals(providerCode.toUpperCase(Locale.ROOT))) {
+            throw new IllegalArgumentException("providerCode must be upper case");
+        }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
         // ↓↓ Инициализация полей
-        this.providerCode = providerCode;
+        this.providerCode = providerCode.trim();
         this.descriptor   = descriptor;
         this.settings     = settings;
 
@@ -122,6 +128,12 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         for (var h : handlersFromMap) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
+    }
+
+    /** Технический код провайдера. */
+    @Override
+    public String providerCode() {
+        return providerCode;
     }
 
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */

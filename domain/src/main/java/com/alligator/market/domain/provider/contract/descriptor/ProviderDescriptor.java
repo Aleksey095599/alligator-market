@@ -1,6 +1,5 @@
 package com.alligator.market.domain.provider.contract.descriptor;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -18,28 +17,14 @@ public record ProviderDescriptor(
         boolean bulkSubscription
 ) {
     public ProviderDescriptor {
-        // ↓↓ null-проверки аргументов
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
-
-        // Убираем пробелы по краям
-        providerCode = providerCode.trim();
-        displayName = displayName.trim();
-
-        // ↓↓ Базовая валидация аргументов
-        if (providerCode.isBlank()) {
-            throw new IllegalArgumentException("providerCode must not be blank");
-        }
-        if (providerCode.chars().anyMatch(Character::isWhitespace)) {
-            throw new IllegalArgumentException("providerCode must not contain whitespaces");
-        }
-        if (!providerCode.equals(providerCode.toUpperCase(Locale.ROOT))) {
-            throw new IllegalArgumentException("providerCode must be upper case");
-        }
         if (displayName.isBlank()) {
             throw new IllegalArgumentException("displayName must not be blank");
         }
+
+        displayName = displayName.trim(); // Убираем пробелы по краям
     }
 }
