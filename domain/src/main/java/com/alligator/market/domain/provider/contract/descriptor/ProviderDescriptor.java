@@ -20,15 +20,17 @@ public record ProviderDescriptor(
         boolean bulkSubscription
 ) {
     public ProviderDescriptor {
-        // ↓↓ Базовые проверки аргументов
+        // ↓↓ null-проверки аргументов
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
 
+        // Убираем пробелы по краям
         providerCode = providerCode.trim();
         displayName = displayName.trim();
 
+        // ↓↓ Базовая валидация аргументов
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
