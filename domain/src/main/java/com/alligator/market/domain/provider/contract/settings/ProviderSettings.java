@@ -40,7 +40,7 @@ public record ProviderSettings(
             throw new IllegalArgumentException("minUpdateInterval must be positive");
         }
         if (minUpdateInterval.compareTo(MIN_ALLOWED_UPDATE_INTERVAL) < 0) {
-            throw new IllegalArgumentException("minUpdateInterval must be greater or equal to PT1S");
+            throw new IllegalArgumentException("minUpdateInterval must be greater than or equal to 1 second");
         }
     }
 }
