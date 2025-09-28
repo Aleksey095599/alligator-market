@@ -3,7 +3,6 @@ package com.alligator.market.domain.provider.repository;
 import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
