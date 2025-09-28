@@ -19,6 +19,6 @@ public interface ProviderSettingsRepository {
     /** Удалить настройки по списку кодов провайдеров. */
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
-    /** INSERT после предварительного удаления; не upsert. Дубликаты providerCode → ошибка UNIQUE. */
+    /** INSERT после предварительного удаления (не UPSERT). Дубликаты providerCode → ошибка UNIQUE. */
     void insertAll(Map<String, ProviderSettings> settings);
 }
