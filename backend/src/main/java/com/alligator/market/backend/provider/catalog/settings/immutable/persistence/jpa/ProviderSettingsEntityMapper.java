@@ -20,9 +20,9 @@ public class ProviderSettingsEntityMapper {
     }
 
     /** Доменная модель ⇒ сущность. */
-    public ProviderSettingsEntity toEntity(ProviderSettings settings) {
+    public ProviderSettingsEntity toEntity(String providerCode, ProviderSettings settings) {
         var entity = new ProviderSettingsEntity();
-        entity.setMinUpdateIntervalSeconds(settings.minUpdateIntervalSec().getSeconds());
+        entity.setMinUpdateIntervalSeconds(settings.minUpdateIntervalSec());
         return entity;
     }
 }
