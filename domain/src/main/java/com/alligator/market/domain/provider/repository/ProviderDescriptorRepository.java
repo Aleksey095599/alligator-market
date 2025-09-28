@@ -3,15 +3,15 @@ package com.alligator.market.domain.provider.repository;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Порт репозитория дескрипторов провайдеров.
  */
 public interface ProviderDescriptorRepository {
 
-    /** Получить все дескрипторы провайдеров. */
-    List<ProviderDescriptor> findAll();
+    /** Получить карту дескрипторов провайдеров, индексированную по коду провайдера. */
+    Map<String, ProviderDescriptor> findAll();
 
     /** Полностью очистить таблицу дескрипторов (админ/служебная операция). */
     void deleteAll();
@@ -20,5 +20,5 @@ public interface ProviderDescriptorRepository {
     void deleteAllByProviderCodes(Collection<String> providerCodes);
 
     /** INSERT после предварительного удаления; не upsert. Дубликаты providerCode → ошибка UNIQUE. */
-    void insertAll(List<ProviderDescriptor> descriptors);
+    void insertAll(Map<String, ProviderDescriptor> descriptors);
 }

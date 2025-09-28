@@ -10,7 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Адаптер, реализующий порт доменного репозитория для дескрипторов через Spring Data JPA.
@@ -23,10 +26,16 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
     private final DescriptorEntityMapper mapper;
 
     @Override
-    public List<ProviderDescriptor> findAll() {
+    public Map<String, ProviderDescriptor> findAll() {
         return jpaRepository.findAll(Sort.by("providerCode")).stream()
-                .map(mapper::toDomain)
-                .toList();
+                .collect(Collectors.toMap(
+                        DescriptorEntity::getProviderCode,
+                        mapper::toDomain,
+                        (left, right) -> {
+                            throw new IllegalStateException("Duplicate provider code found in repository");
+                        },
+                        LinkedHashMap::new
+                ));
     }
 
     @Override
@@ -43,10 +52,10 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
     }
 
     @Override
-    public void insertAll(List<ProviderDescriptor> descriptors) {
+    public void insertAll(Map<String, ProviderDescriptor> descriptors) {
         if (descriptors.isEmpty()) return; // Нечего вставлять
-        List<DescriptorEntity> entities = descriptors.stream()
-                .map(mapper::toEntity)
+        List<DescriptorEntity> entities = descriptors.entrySet().stream()
+                .map(e -> mapper.toEntity(e.getKey(), e.getValue()))
                 .toList();
         jpaRepository.saveAll(entities);
         jpaRepository.flush();
