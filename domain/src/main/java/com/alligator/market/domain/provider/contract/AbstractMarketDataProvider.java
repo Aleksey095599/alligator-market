@@ -19,7 +19,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты провайдера. */
-    String providerCode;
+    protected final String providerCode;
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
 
