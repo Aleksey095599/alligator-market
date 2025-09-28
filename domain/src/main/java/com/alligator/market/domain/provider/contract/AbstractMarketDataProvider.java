@@ -65,7 +65,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // ↓↓ Инициализация полей
+        // ↓↓ Инициализация базовых атрибутов провайдера
         this.providerCode = providerCode.trim();
         this.descriptor   = descriptor;
         this.settings     = settings;
