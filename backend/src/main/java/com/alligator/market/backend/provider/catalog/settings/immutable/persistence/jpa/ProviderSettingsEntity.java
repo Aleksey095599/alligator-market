@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -33,7 +34,7 @@ public class ProviderSettingsEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link ProviderSettings#providerCode()}. */
+    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)

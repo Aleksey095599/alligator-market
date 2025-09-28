@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.Duration;
 import java.util.Set;
 
 /**
@@ -24,7 +23,6 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
 
     /* Статический дескриптор провайдера. */
     private static final ProviderDescriptor DESCRIPTOR = new ProviderDescriptor(
-            PROVIDER_CODE,
             "TwelveData Free Plan",
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
@@ -32,10 +30,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     );
 
     /* Иммутабельные настройки провайдера. */
-    private static final ProviderSettings SETTINGS = new ProviderSettings(
-            PROVIDER_CODE,
-            Duration.ofSeconds(60)
-    );
+    private static final ProviderSettings SETTINGS = new ProviderSettings(60);
 
     /**
      * Конструктор.
@@ -48,6 +43,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
         super(
+                PROVIDER_CODE,
                 DESCRIPTOR,
                 SETTINGS,
                 Set.of(new TwelveFreeFxSpotHandler(webClient, props))
