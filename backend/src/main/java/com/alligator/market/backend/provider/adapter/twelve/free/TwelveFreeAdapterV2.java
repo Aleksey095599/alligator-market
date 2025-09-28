@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
-import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeWebConfig;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
 import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
@@ -34,6 +33,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
 
     /* Иммутабельные настройки провайдера. */
     private static final ProviderSettings SETTINGS = new ProviderSettings(
+            PROVIDER_CODE,
             Duration.ofSeconds(60)
     );
 
@@ -59,4 +59,3 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
         return this;
     }
 }
-

@@ -21,10 +21,10 @@ public record ProviderDescriptor(
 ) {
     public ProviderDescriptor {
         // ↓↓ Базовые проверки аргументов
-        Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
-        Objects.requireNonNull(accessMethod, "accessMethod must not be null");
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
+        Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
+        Objects.requireNonNull(accessMethod, "accessMethod must not be null");
 
         providerCode = providerCode.trim();
         displayName = displayName.trim();
