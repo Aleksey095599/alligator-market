@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.reconciliation.descriptor;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
-import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
+import com.alligator.market.domain.provider.repository.ProviderRepository;
 
 import java.util.*;
 
@@ -16,12 +16,12 @@ public class ProviderDescriptorSynchronizer {
     private final ProviderContextScanner contextScanner;
 
     /* Репозиторий дескрипторов провайдеров. */
-    private final ProviderDescriptorRepository repository;
+    private final ProviderRepository repository;
 
     /* Конструктор. */
     public ProviderDescriptorSynchronizer(
             ProviderContextScanner contextScanner,
-            ProviderDescriptorRepository repository
+            ProviderRepository repository
     ) {
         this.contextScanner = contextScanner;
         this.repository = repository;
@@ -29,6 +29,12 @@ public class ProviderDescriptorSynchronizer {
 
     /** Выполнить синхронизацию. */
     public ProviderDescriptorSyncResult synchronize() {
+
+
+
+
+
+
         // 1) Считываем оба источника и получаем карты <код провайдера, дескриптор>
         Map<String, ProviderDescriptor> ctxMap = contextScanner.providerDescriptors();
         Map<String, ProviderDescriptor> repoMap = repository.findAll();

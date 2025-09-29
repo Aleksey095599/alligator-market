@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Порт репозитория дескрипторов провайдеров.
  */
-public interface ProviderDescriptorRepository {
+public interface ProviderRepository {
 
     /** Получить карту дескрипторов провайдеров, индексированную по коду провайдера. */
     Map<String, ProviderDescriptor> findAll();
