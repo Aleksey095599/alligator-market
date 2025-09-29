@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
@@ -22,7 +22,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected final String providerCode;
     protected final String displayName;
     protected final ProviderDescriptor descriptor;
-    protected final ProviderSettings settings;
+    protected final ProviderPolicy settings;
 
     /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
@@ -46,7 +46,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             String providerCode,
             String displayName,
             ProviderDescriptor descriptor,
-            ProviderSettings settings,
+            ProviderPolicy settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         // ↓↓ Базовая валидация аргументов
@@ -157,7 +157,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /** Иммутабельные настройки провайдера. */
     @Override
-    public ProviderSettings settings() {
+    public ProviderPolicy settings() {
         return settings;
     }
 

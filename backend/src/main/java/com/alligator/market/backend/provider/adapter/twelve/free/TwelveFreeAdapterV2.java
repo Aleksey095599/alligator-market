@@ -6,7 +6,7 @@ import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -30,7 +30,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     );
 
     /* Иммутабельные настройки провайдера. */
-    private static final ProviderSettings SETTINGS = new ProviderSettings(60);
+    private static final ProviderPolicy SETTINGS = new ProviderPolicy(60);
 
     /**
      * Конструктор.

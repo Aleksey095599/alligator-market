@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -24,7 +24,7 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     ProviderDescriptor descriptor();
 
     /** Иммутабельные настройки провайдера. */
-    ProviderSettings settings();
+    ProviderPolicy settings();
 
     /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
     Set<String> instrumentsCodes();
