@@ -1,13 +1,8 @@
 package com.alligator.market.backend.provider.catalog.descriptor.service;
 
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 /**
  * Реализация сервиса {@link DescriptorUseCase}.
@@ -17,14 +12,5 @@ import java.util.Map;
 @Slf4j
 public class DescriptorUseCaseImpl implements DescriptorUseCase {
 
-    private final ProviderDescriptorRepository repository;
-
-    @Override
-    @Transactional(readOnly = true)
-    public Map<String, ProviderDescriptor> getAll() {
-        Map<String, ProviderDescriptor> descriptors = repository.findAll();
-        log.debug("Found {} provider descriptors", descriptors.size());
-        return descriptors;
-    }
 }
 
