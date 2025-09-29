@@ -11,11 +11,13 @@ public class DescriptorEntityMapper {
 
     /** Сущность ⇒ доменная модель. */
     public ProviderDescriptor toDomain(DescriptorEntity entity) {
+        DescriptorEmbedded descriptor = entity.getDescriptor();
+
         return new ProviderDescriptor(
-                entity.getDisplayName(),
-                entity.getDeliveryMode(),
-                entity.getAccessMethod(),
-                entity.isBulkSubscription()
+                descriptor.getDisplayName(),
+                descriptor.getDeliveryMode(),
+                descriptor.getAccessMethod(),
+                descriptor.isBulkSubscription()
         );
     }
 
@@ -23,10 +25,14 @@ public class DescriptorEntityMapper {
     public DescriptorEntity toEntity(String providerCode, ProviderDescriptor providerDescriptor) {
         DescriptorEntity entity = new DescriptorEntity();
         entity.setProviderCode(providerCode);
-        entity.setDisplayName(providerDescriptor.displayName());
-        entity.setDeliveryMode(providerDescriptor.deliveryMode());
-        entity.setAccessMethod(providerDescriptor.accessMethod());
-        entity.setBulkSubscription(providerDescriptor.bulkSubscription());
+
+        DescriptorEmbedded descriptor = new DescriptorEmbedded();
+        descriptor.setDisplayName(providerDescriptor.displayName());
+        descriptor.setDeliveryMode(providerDescriptor.deliveryMode());
+        descriptor.setAccessMethod(providerDescriptor.accessMethod());
+        descriptor.setBulkSubscription(providerDescriptor.bulkSubscription());
+
+        entity.setDescriptor(descriptor);
         return entity;
     }
 }
