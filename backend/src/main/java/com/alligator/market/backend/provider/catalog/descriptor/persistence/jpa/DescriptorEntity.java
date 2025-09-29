@@ -33,6 +33,11 @@ public class DescriptorEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
+    /** Статус актуальности дескриптора. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 8, nullable = false)
+    private DescriptorStatus status;
+
     /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
@@ -42,10 +47,5 @@ public class DescriptorEntity extends BaseEntity {
     /** Встраиваемый компонент со статическими атрибутами дескриптора. */
     @Embedded
     private DescriptorEmbedded descriptor;
-
-    /** Статус актуальности дескриптора. */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 20, nullable = false)
-    private DescriptorStatus status = DescriptorStatus.ACTIVE;
 }
 
