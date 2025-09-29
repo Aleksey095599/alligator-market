@@ -19,4 +19,10 @@ public class DescriptorEntityMapper {
     }
 
     /** Обновление JPA-сущности. */
+    public void updateEntity(ProviderDescriptor descriptor, DescriptorEntity entity) {
+        // Переносим значения доменной модели в JPA-сущность
+        entity.setDeliveryMode(descriptor.deliveryMode());
+        entity.setAccessMethod(descriptor.accessMethod());
+        entity.setBulkSubscription(descriptor.bulkSubscription());
+    }
 }
