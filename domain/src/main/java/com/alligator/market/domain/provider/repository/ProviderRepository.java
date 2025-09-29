@@ -4,11 +4,15 @@ import com.alligator.market.domain.provider.contract.descriptor.ProviderDescript
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Порт репозитория дескрипторов провайдеров.
  */
 public interface ProviderRepository {
+
+    /** Получить все коды провайдеров. */
+    Set<String> findAllCodes();
 
     /** Получить карту дескрипторов провайдеров, индексированную по коду провайдера. */
     Map<String, ProviderDescriptor> findAll();
