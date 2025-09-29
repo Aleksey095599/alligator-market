@@ -13,7 +13,12 @@ import lombok.Setter;
  * Абстрактная родительская сущность финансового инструмента.
  */
 @Entity
-@Table(name = "instrument")
+@Table(
+        name = "instrument",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
+        }
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
@@ -28,7 +33,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /** Внутренний код инструмента (уникален). */
     @NotBlank
-    @Column(name = "code", length = 32, nullable = false, updatable = false, unique = true)
+    @Column(name = "code", length = 32, nullable = false, updatable = false)
     private String code;
 
     /** Тип финансового инструмента. */

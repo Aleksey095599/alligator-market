@@ -1,11 +1,11 @@
 package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
 
-import com.alligator.market.backend.common.jpa.BaseEntity;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.backend.provider.catalog.base.ProviderBaseEntity;
+import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
+import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,37 +15,27 @@ import lombok.Setter;
  * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
  */
 @Entity
-@Table(
-        name = "provider_descriptor",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "uq_provider_descriptor_provider_code", columnNames = "provider_code"),
-                @UniqueConstraint(name = "uq_provider_descriptor_display_name", columnNames = "display_name")
-        }
-)
+@Table(name = "provider_descriptor")
+@PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
 @NoArgsConstructor
-public class DescriptorEntity extends BaseEntity {
+public class DescriptorEntity extends ProviderBaseEntity {
 
-    /** Суррогатный PK. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    /** Статус актуальности дескриптора. */
+    /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderDescriptor#deliveryMode()}. */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 8, nullable = false)
-    private DescriptorStatus status;
+    @Column(name = "delivery_mode", length = 10, nullable = false, updatable = false)
+    private DeliveryMode deliveryMode;
 
-    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
-    @NotBlank
-    @Size(max = 50)
-    @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
-    private String providerCode;
+    /** Метод доступа к рыночным данным {@link ProviderDescriptor#accessMethod()}. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_method", length = 20, nullable = false, updatable = false)
+    private AccessMethod accessMethod;
 
-    /** Встраиваемый компонент со статическими атрибутами дескриптора. */
-    @Embedded
-    private DescriptorEmbedded descriptor;
+    /** Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}. */
+    @Column(name = "bulk_subscription", nullable = false, updatable = false)
+    private boolean bulkSubscription;
 }
 
