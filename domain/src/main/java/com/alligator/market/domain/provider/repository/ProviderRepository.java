@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Порт репозитория дескрипторов провайдеров.
+ * Порт репозитория провайдеров рыночных данных.
  */
 public interface ProviderRepository {
 
