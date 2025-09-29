@@ -42,5 +42,10 @@ public class DescriptorEntity extends BaseEntity {
     /** Встраиваемый компонент со статическими атрибутами дескриптора. */
     @Embedded
     private DescriptorEmbedded descriptor;
+
+    /** Статус актуальности дескриптора. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 20, nullable = false)
+    private DescriptorStatus status = DescriptorStatus.ACTIVE;
 }
 

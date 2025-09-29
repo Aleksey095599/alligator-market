@@ -33,6 +33,7 @@ public class DescriptorEntityMapper {
         descriptor.setBulkSubscription(providerDescriptor.bulkSubscription());
 
         entity.setDescriptor(descriptor);
+        entity.setStatus(DescriptorStatus.ACTIVE); // Сохраняем дескриптор как активный
         return entity;
     }
 }
