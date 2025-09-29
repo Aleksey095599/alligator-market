@@ -23,12 +23,12 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
     @Override
     public Map<String, ProviderDescriptor> providerDescriptors() {
         Map<String, ProviderDescriptor> descriptors = new LinkedHashMap<>();
-        for (MarketDataProvider provider : providers) {
-            String providerCode = provider.providerCode();
-            ProviderDescriptor descriptor = provider.descriptor();
+        for (MarketDataProvider p : providers) {
+            String providerCode = p.providerCode();
+            ProviderDescriptor descriptor = p.descriptor();
             ProviderDescriptor previous = descriptors.put(providerCode, descriptor);
             if (previous != null) {
-                throw new ProviderDescriptorDuplicateException(providerCode, descriptor.displayName());
+                throw new ProviderDescriptorDuplicateException(providerCode, p.displayName());
             }
         }
         return descriptors;
