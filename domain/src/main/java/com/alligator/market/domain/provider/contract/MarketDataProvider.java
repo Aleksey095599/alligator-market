@@ -17,6 +17,9 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     /** Технический код провайдера. */
     String providerCode();
 
+    /** Отображаемое имя провайдера (user friendly). */
+    String displayName();
+
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
     ProviderDescriptor descriptor();
 
