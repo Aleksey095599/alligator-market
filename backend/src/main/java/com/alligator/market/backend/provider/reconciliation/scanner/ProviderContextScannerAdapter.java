@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class ProviderContextScannerAdapter implements ProviderContextScanner {
             ProviderDescriptor descriptor = p.descriptor();
             ProviderDescriptor previous = descriptors.put(providerCode, descriptor);
             if (previous != null) {
-                throw new ProviderDescriptorDuplicateException(providerCode, p.displayName());
+                throw new ProviderCodeDuplicateException(providerCode);
             }
         }
         return descriptors;
