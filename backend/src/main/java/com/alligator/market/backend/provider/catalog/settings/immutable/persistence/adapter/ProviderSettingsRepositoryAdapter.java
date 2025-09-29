@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.catalog.settings.immutable.persistence.adapter;
 
-import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsEntity;
-import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsEntityMapper;
-import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.ProviderSettingsJpaRepository;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.SettingsEntity;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.SettingsEntityMapper;
+import com.alligator.market.backend.provider.catalog.settings.immutable.persistence.jpa.SettingsJpaRepository;
 import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import com.alligator.market.domain.provider.repository.ProviderSettingsRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProviderSettingsRepositoryAdapter implements ProviderSettingsRepository {
 
-    private final ProviderSettingsJpaRepository jpaRepository;
-    private final ProviderSettingsEntityMapper mapper;
+    private final SettingsJpaRepository jpaRepository;
+    private final SettingsEntityMapper mapper;
 
     @Override
     public List<ProviderSettings> findAll() {
@@ -44,7 +44,7 @@ public class ProviderSettingsRepositoryAdapter implements ProviderSettingsReposi
     @Override
     public void insertAll(List<ProviderSettings> settings) {
         if (settings.isEmpty()) return; // Нечего вставлять
-        List<ProviderSettingsEntity> entities = settings.stream()
+        List<SettingsEntity> entities = settings.stream()
                 .map(mapper::toEntity)
                 .toList();
         jpaRepository.saveAll(entities);

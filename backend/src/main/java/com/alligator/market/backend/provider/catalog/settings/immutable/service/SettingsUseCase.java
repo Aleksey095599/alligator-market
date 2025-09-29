@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Application-сервис (use case) для операций с настройками провайдеров.
  */
-public interface ProviderSettingsUseCase {
+public interface SettingsUseCase {
 
     /** Вернуть все настройки. */
     List<ProviderSettings> getAll();

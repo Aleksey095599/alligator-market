@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * Основной DTO для настроек провайдера {@link ProviderSettings}.
  */
-public record ProviderSettingsDto(
+public record SettingsDto(
         @NotBlank String providerCode,
         @Min(1) long minUpdateIntervalSeconds
 ) {}

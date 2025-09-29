@@ -26,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProviderSettingsEntity extends BaseEntity {
+public class SettingsEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @Id

@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * Spring Data JPA-репозиторий настроек провайдеров.
  */
-public interface ProviderSettingsJpaRepository extends JpaRepository<ProviderSettingsEntity, Long> {
+public interface SettingsJpaRepository extends JpaRepository<SettingsEntity, Long> {
 
     /** Удалить настройки по списку кодов провайдеров. */
     void deleteAllByProviderCodeIn(Collection<String> providerCodes);

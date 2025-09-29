@@ -3,24 +3,22 @@ package com.alligator.market.backend.provider.catalog.settings.immutable.persist
 import com.alligator.market.domain.provider.contract.settings.immutable.ProviderSettings;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-
 /**
  * Маппер: сущность ⇄ доменная модель.
  */
 @Component
-public class ProviderSettingsEntityMapper {
+public class SettingsEntityMapper {
 
     /** Сущность ⇒ доменная модель. */
-    public ProviderSettings toDomain(ProviderSettingsEntity entity) {
+    public ProviderSettings toDomain(SettingsEntity entity) {
         return new ProviderSettings(
                 entity.getMinUpdateIntervalSeconds()
         );
     }
 
     /** Доменная модель ⇒ сущность. */
-    public ProviderSettingsEntity toEntity(String providerCode, ProviderSettings settings) {
-        var entity = new ProviderSettingsEntity();
+    public SettingsEntity toEntity(String providerCode, ProviderSettings settings) {
+        var entity = new SettingsEntity();
         entity.setProviderCode(providerCode);
         entity.setMinUpdateIntervalSeconds(settings.minUpdateIntervalSeconds());
         return entity;

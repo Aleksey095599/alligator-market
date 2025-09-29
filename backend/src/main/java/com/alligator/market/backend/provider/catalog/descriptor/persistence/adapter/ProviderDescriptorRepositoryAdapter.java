@@ -23,11 +23,12 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
 
     @Override
     public Map<String, ProviderDescriptor> findAll() {
-        var result = new LinkedHashMap<String, ProviderDescriptor>();
-        for (var entity : jpaRepository.findAll(Sort.by("providerCode"))) {
-            var key = entity.getProviderCode();
-            var value = mapper.toDomain(entity);
-            if (result.putIfAbsent(key, value) != null) { // Если вдруг дубликат по ключу
+        List<DescriptorEntity> entities = jpaRepository.findAll(Sort.by("providerCode"));
+        Map<String, ProviderDescriptor> result = new LinkedHashMap<>();
+        for (DescriptorEntity e : entities) {
+            String key = e.getProviderCode();
+            ProviderDescriptor value = mapper.toDomain(e);
+            if (result.putIfAbsent(key, value) != null) {
                 throw new IllegalStateException("Duplicate provider code: " + key);
             }
         }
@@ -36,24 +37,29 @@ public class ProviderDescriptorRepositoryAdapter implements ProviderDescriptorRe
 
     @Override
     public void deleteAll() {
-        // Удаляем все записи таблицы без постраничного обхода
         jpaRepository.deleteAllInBatch();
         jpaRepository.flush();
     }
 
     @Override
     public void deleteAllByProviderCodes(Collection<String> providerCodes) {
-        if (providerCodes == null || providerCodes.isEmpty()) return; // Нечего удалять
+        if (providerCodes == null || providerCodes.isEmpty()) return;
         jpaRepository.deleteAllByProviderCodeIn(providerCodes);
-        jpaRepository.flush(); // важно для порядка операций
+        jpaRepository.flush();
     }
 
     @Override
     public void insertAll(Map<String, ProviderDescriptor> descriptors) {
-        if (descriptors == null || descriptors.isEmpty()) return; // Нечего вставлять
-        var entities = new ArrayList<DescriptorEntity>(descriptors.size());
-        for (var e : descriptors.entrySet()) {
-            entities.add(mapper.toEntity(e.getKey(), e.getValue()));
+        if (descriptors == null || descriptors.isEmpty()) return;
+        List<DescriptorEntity> entities = new ArrayList<>(descriptors.size());
+        for (Map.Entry<String, ProviderDescriptor> entry : descriptors.entrySet()) {
+            String providerCode = entry.getKey();
+            ProviderDescriptor descriptor = entry.getValue();
+            if (providerCode == null || descriptor == null) {
+                throw new IllegalArgumentException("providerCode and descriptor must not be null");
+            }
+            DescriptorEntity entity = mapper.toEntity(providerCode, descriptor);
+            entities.add(entity);
         }
         jpaRepository.saveAll(entities);
         jpaRepository.flush();

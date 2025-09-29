@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Реализация сервиса {@link ProviderSettingsUseCase}.
+ * Реализация сервиса {@link SettingsUseCase}.
  */
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProviderSettingsUseCaseImpl implements ProviderSettingsUseCase {
+public class SettingsUseCaseImpl implements SettingsUseCase {
 
     private final ProviderSettingsRepository repository;
 

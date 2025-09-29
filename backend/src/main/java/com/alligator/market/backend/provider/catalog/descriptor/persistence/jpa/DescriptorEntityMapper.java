@@ -21,7 +21,7 @@ public class DescriptorEntityMapper {
 
     /** Доменная модель ⇒ сущность. */
     public DescriptorEntity toEntity(String providerCode, ProviderDescriptor providerDescriptor) {
-        var entity = new DescriptorEntity();
+        DescriptorEntity entity = new DescriptorEntity();
         entity.setProviderCode(providerCode);
         entity.setDisplayName(providerDescriptor.displayName());
         entity.setDeliveryMode(providerDescriptor.deliveryMode());

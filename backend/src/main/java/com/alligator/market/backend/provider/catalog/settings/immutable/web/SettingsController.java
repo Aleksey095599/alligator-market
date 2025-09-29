@@ -2,9 +2,9 @@ package com.alligator.market.backend.provider.catalog.settings.immutable.web;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.provider.catalog.settings.immutable.service.ProviderSettingsUseCase;
-import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.ProviderSettingsDto;
-import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.ProviderSettingsDtoMapper;
+import com.alligator.market.backend.provider.catalog.settings.immutable.service.SettingsUseCase;
+import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.SettingsDto;
+import com.alligator.market.backend.provider.catalog.settings.immutable.web.dto.SettingsDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/provider-settings")
 @RequiredArgsConstructor
-public class ProviderSettingsController {
+public class SettingsController {
 
-    private final ProviderSettingsUseCase service;
-    private final ProviderSettingsDtoMapper mapper;
+    private final SettingsUseCase service;
+    private final SettingsDtoMapper mapper;
 
     /** Вернуть все настройки. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProviderSettingsDto>>> getAll() {
-        List<ProviderSettingsDto> settings = service.getAll().stream()
+    public ResponseEntity<ApiResponse<List<SettingsDto>>> getAll() {
+        List<SettingsDto> settings = service.getAll().stream()
                 .map(mapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(settings);
