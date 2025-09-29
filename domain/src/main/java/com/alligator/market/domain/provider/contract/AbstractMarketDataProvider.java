@@ -20,6 +20,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /* ↓↓ Базовые атрибуты провайдера. */
     protected final String providerCode;
+    protected final String displayName;
     protected final ProviderDescriptor descriptor;
     protected final ProviderSettings settings;
 
@@ -43,12 +44,14 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      */
     protected AbstractMarketDataProvider(
             String providerCode,
+            String displayName,
             ProviderDescriptor descriptor,
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(descriptor,   "descriptor must not be null");
         Objects.requireNonNull(settings,     "settings must not be null");
         Objects.requireNonNull(handlers,     "handlers must not be null");
@@ -61,12 +64,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         if (!providerCode.equals(providerCode.toUpperCase(Locale.ROOT))) {
             throw new IllegalArgumentException("providerCode must be upper case");
         }
+        if (displayName.isBlank()) {
+            throw new IllegalArgumentException("displayName must not be blank");
+        }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
         // ↓↓ Инициализация базовых атрибутов провайдера
         this.providerCode = providerCode.trim();
+        this.displayName  = displayName.trim();
         this.descriptor   = descriptor;
         this.settings     = settings;
 
@@ -134,6 +141,12 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public String providerCode() {
         return providerCode;
+    }
+
+    /** Отображаемое имя провайдера (user friendly). */
+    @Override
+    public String displayName() {
+        return displayName;
     }
 
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
