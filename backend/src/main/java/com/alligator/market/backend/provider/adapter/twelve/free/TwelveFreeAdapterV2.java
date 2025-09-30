@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
+import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,11 +20,15 @@ import java.util.Set;
 @Component
 public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAdapterV2> {
 
+    /* Технический код провайдера. */
     private static final String PROVIDER_CODE = "TWELVE_FREE";
+
+    /* Отображаемое имя провайдера. */
+    private static final String DISPLAY_NAME = "TwelveData Free Plan";
 
     /* Статический дескриптор провайдера. */
     private static final ProviderDescriptor DESCRIPTOR = new ProviderDescriptor(
-            "TwelveData Free Plan",
+            DISPLAY_NAME,
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
             false
@@ -31,6 +36,9 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
 
     /* Иммутабельные настройки провайдера. */
     private static final ProviderPolicy POLICY = new ProviderPolicy(60);
+
+    /* Заглушка для настраиваемых параметров провайдера. */
+    private static final ProviderSettings SETTINGS = ProviderSettings.empty();
 
     /**
      * Конструктор.
@@ -44,6 +52,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     ) {
         super(
                 PROVIDER_CODE,
+                DISPLAY_NAME,
                 DESCRIPTOR,
                 POLICY,
                 SETTINGS,
