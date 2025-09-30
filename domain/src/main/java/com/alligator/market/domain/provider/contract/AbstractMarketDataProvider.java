@@ -20,7 +20,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /* ↓↓ Базовые атрибуты провайдера. */
     protected final String providerCode;
-    protected final String displayName;
     protected final ProviderDescriptor descriptor;
     protected final ProviderPolicy settings;
 
@@ -73,7 +72,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // ↓↓ Инициализация базовых атрибутов провайдера
         this.providerCode = providerCode.trim();
-        this.displayName  = displayName.trim();
         this.descriptor   = descriptor;
         this.settings     = settings;
 
@@ -141,12 +139,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public String providerCode() {
         return providerCode;
-    }
-
-    /** Отображаемое имя провайдера (user friendly). */
-    @Override
-    public String displayName() {
-        return displayName;
     }
 
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
