@@ -24,7 +24,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected final String providerCode;
     protected final ProviderDescriptor descriptor;
     protected final ProviderPolicy policy;
-    // Храним настройки в атомарной ссылке, чтобы позже можно было безопасно их обновлять из наследников.
     private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
@@ -148,29 +147,21 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return providerCode;
     }
 
-    /** Дескриптор провайдера: иммутабельный набор статических атрибутов (для информации/отображения). */
+    /** Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
     @Override
     public ProviderDescriptor descriptor() {
         return descriptor;
     }
 
-    /** Политика провайдера: фиксированные (immutable) параметры, которые использует бизнес-логика. */
+    /** Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     public ProviderPolicy policy() {
         return policy;
     }
 
-    /** Настройки провайдера: параметры, которые разрешено менять из frontend (read/write). */
+    /** Настройки провайдера: параметры, которые разрешено менять из frontend. */
     @Override
     public ProviderSettings settings() {
         return settingsRef.get();
-    }
-
-    /**
-     * Обновляет настройки провайдера. Метод защищённый, чтобы управлять жизненным циклом из наследника.
-     */
-    protected final void replaceSettings(ProviderSettings newSettings) {
-        Objects.requireNonNull(newSettings, "newSettings must not be null");
-        settingsRef.set(newSettings);
     }
 
     /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
@@ -199,6 +190,12 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             throw new HandlerNotFoundException(instrument.code(), providerCode);
         }
         return handler.quote(instrument);
+    }
+
+    /** Обновляет настройки провайдера. Метод защищённый, чтобы управлять жизненным циклом из наследника. */
+    protected final void replaceSettings(ProviderSettings newSettings) {
+        Objects.requireNonNull(newSettings, "newSettings must not be null");
+        settingsRef.set(newSettings);
     }
 
     /**
