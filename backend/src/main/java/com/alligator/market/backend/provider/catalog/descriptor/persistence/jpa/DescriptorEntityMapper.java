@@ -12,6 +12,7 @@ public class DescriptorEntityMapper {
     /** Сущность ⇒ доменная модель. */
     public ProviderDescriptor toDomain(DescriptorEntity entity) {
         return new ProviderDescriptor(
+                entity.getDisplayName(),
                 entity.getDeliveryMode(),
                 entity.getAccessMethod(),
                 entity.isBulkSubscription()

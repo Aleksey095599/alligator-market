@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.catalog.base.jpa;
 
+import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,15 +16,14 @@ import lombok.Setter;
 @Table(
         name = "market_data_provider",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_provider_code", columnNames = "providerCode"),
-                @UniqueConstraint(name = "uq_display_name", columnNames = "displayName")
+                @UniqueConstraint(name = "uq_provider_code", columnNames = "providerCode")
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProviderBaseEntity {
+public class ProviderBaseEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @Id
@@ -36,10 +36,4 @@ public class ProviderBaseEntity {
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false)
     private String providerCode;
-
-    /** Отображаемое имя провайдера (user friendly) {@link MarketDataProvider#displayName()}. */
-    @NotBlank
-    @Size(max = 50)
-    @Column(name = "display_name", length = 50, nullable = false)
-    private String displayName;
 }
