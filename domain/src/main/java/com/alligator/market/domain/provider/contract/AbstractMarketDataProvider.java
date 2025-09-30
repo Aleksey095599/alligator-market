@@ -12,6 +12,7 @@ import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Абстрактный каркас провайдера рыночных данных.
@@ -23,7 +24,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected final String providerCode;
     protected final ProviderDescriptor descriptor;
     protected final ProviderPolicy policy;
-    protected final ProviderSettings settings;
+    // Храним настройки в атомарной ссылке, чтобы позже можно было безопасно их обновлять из наследников.
+    private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
@@ -78,7 +80,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.providerCode = providerCode.trim();
         this.descriptor   = descriptor;
         this.policy       = policy;
-        this.settings     = settings;
+        this.settingsRef  = new AtomicReference<>(settings);
 
         // 1) Проверяем уникальность handlers по коду
         var handlerCodes = new java.util.HashSet<String>();
@@ -160,7 +162,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /** Настройки провайдера: параметры, которые разрешено менять из frontend (read/write). */
     @Override
     public ProviderSettings settings() {
-        return settings;
+        return settingsRef.get();
+    }
+
+    /**
+     * Обновляет настройки провайдера. Метод защищённый, чтобы управлять жизненным циклом из наследника.
+     */
+    protected final void replaceSettings(ProviderSettings newSettings) {
+        Objects.requireNonNull(newSettings, "newSettings must not be null");
+        settingsRef.set(newSettings);
     }
 
     /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
