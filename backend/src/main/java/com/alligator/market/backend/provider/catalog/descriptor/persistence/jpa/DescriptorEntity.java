@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.descriptor.persistence.jpa;
 
-import com.alligator.market.backend.provider.catalog.base.ProviderBaseEntity;
+import com.alligator.market.backend.provider.catalog.base.jpa.ProviderBaseEntity;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;

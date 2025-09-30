@@ -3,7 +3,6 @@ package com.alligator.market.backend.provider.reconciliation.scanner;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
-import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

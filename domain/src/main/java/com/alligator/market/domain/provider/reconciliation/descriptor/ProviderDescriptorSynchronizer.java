@@ -1,7 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation.descriptor;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.exception.ProviderDescriptorDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 

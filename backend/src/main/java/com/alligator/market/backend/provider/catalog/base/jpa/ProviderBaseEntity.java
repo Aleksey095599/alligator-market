@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.base;
+package com.alligator.market.backend.provider.catalog.base.jpa;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import jakarta.persistence.*;

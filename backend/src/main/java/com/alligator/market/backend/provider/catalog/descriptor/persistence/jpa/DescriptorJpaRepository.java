@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Spring Data JPA-репозиторий дескрипторов.
  */
-public interface DescriptorJpaRepository extends JpaRepository<DescriptorEntity, Long> {
-
-}
+public interface DescriptorJpaRepository extends JpaRepository<DescriptorEntity, Long> {}

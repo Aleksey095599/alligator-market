@@ -10,7 +10,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class DescriptorUseCaseImpl implements DescriptorUseCase {
-
-}
+public class DescriptorUseCaseImpl implements DescriptorUseCase {}
 
