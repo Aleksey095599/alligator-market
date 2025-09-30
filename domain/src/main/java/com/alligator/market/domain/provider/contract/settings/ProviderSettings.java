@@ -15,12 +15,11 @@ public interface ProviderSettings {
 
     /**
      * Заглушка без параметров.
+     * Будет заменена при реализации механизмов изменения параметров провайдера.
      */
     final class EmptyProviderSettings implements ProviderSettings {
 
         private static final EmptyProviderSettings INSTANCE = new EmptyProviderSettings();
-
-        private EmptyProviderSettings() {
-        }
+        private EmptyProviderSettings() {}
     }
 }
