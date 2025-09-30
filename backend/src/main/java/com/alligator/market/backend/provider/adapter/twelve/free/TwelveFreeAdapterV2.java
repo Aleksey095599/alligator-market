@@ -35,7 +35,7 @@ public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAd
     );
 
     /* Иммутабельные настройки провайдера. */
-    private static final ProviderPolicy POLICY = new ProviderPolicy(60);
+    private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(60);
 
     /* Заглушка для настраиваемых параметров провайдера. */
     private static final ProviderSettings SETTINGS = ProviderSettings.empty();
