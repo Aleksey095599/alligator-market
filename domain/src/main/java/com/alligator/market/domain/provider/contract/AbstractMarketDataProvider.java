@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
+import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
@@ -21,7 +22,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* ↓↓ Базовые атрибуты провайдера. */
     protected final String providerCode;
     protected final ProviderDescriptor descriptor;
-    protected final ProviderPolicy settings;
+    protected final ProviderPolicy policy;
+    protected final ProviderSettings settings;
 
     /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
@@ -45,15 +47,17 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             String providerCode,
             String displayName,
             ProviderDescriptor descriptor,
-            ProviderPolicy settings,
+            ProviderPolicy policy,
+            ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         // ↓↓ Базовая валидация аргументов
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
-        Objects.requireNonNull(displayName, "displayName must not be null");
-        Objects.requireNonNull(descriptor,   "descriptor must not be null");
-        Objects.requireNonNull(settings,     "settings must not be null");
-        Objects.requireNonNull(handlers,     "handlers must not be null");
+        Objects.requireNonNull(providerCode,"providerCode must not be null");
+        Objects.requireNonNull(displayName,"displayName must not be null");
+        Objects.requireNonNull(descriptor,"descriptor must not be null");
+        Objects.requireNonNull(policy,"policy must not be null");
+        Objects.requireNonNull(settings,"settings must not be null");
+        Objects.requireNonNull(handlers,"handlers must not be null");
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
@@ -73,6 +77,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         // ↓↓ Инициализация базовых атрибутов провайдера
         this.providerCode = providerCode.trim();
         this.descriptor   = descriptor;
+        this.policy       = policy;
         this.settings     = settings;
 
         // 1) Проверяем уникальность handlers по коду
@@ -141,15 +146,20 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return providerCode;
     }
 
-    /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
+    /** Дескриптор провайдера: иммутабельный набор статических атрибутов (для информации/отображения). */
     @Override
     public ProviderDescriptor descriptor() {
         return descriptor;
     }
 
-    /** Иммутабельные настройки провайдера. */
+    /** Политика провайдера: фиксированные (immutable) параметры, которые использует бизнес-логика. */
+    public ProviderPolicy policy() {
+        return policy;
+    }
+
+    /** Настройки провайдера: параметры, которые разрешено менять из frontend (read/write). */
     @Override
-    public ProviderPolicy settings() {
+    public ProviderSettings settings() {
         return settings;
     }
 

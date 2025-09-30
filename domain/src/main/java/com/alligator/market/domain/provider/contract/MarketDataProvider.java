@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
+import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -17,11 +18,14 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     /** Технический код провайдера. */
     String providerCode();
 
-    /** Дескриптор провайдера: иммутабельный набор статических атрибутов. */
+    /** Дескриптор провайдера: иммутабельный набор статических атрибутов (для информации/отображения). */
     ProviderDescriptor descriptor();
 
-    /** Иммутабельные настройки провайдера. */
-    ProviderPolicy settings();
+    /** Политика провайдера: фиксированные (immutable) параметры, которые использует бизнес-логика. */
+    ProviderPolicy policy();
+
+    /** Настройки провайдера: параметры, которые разрешено менять из frontend (read/write). */
+    ProviderSettings settings();
 
     /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
     Set<String> instrumentsCodes();
