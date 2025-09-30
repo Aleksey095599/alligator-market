@@ -29,6 +29,7 @@ public class DescriptorController {
     /** Вернуть все дескрипторы. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<DescriptorDto>>> getAll() {
+        // Сервис возвращает доменные дескрипторы, индексированные по коду провайдера
         Map<String, ProviderDescriptor> descriptors = service.getAll();
         List<DescriptorDto> response = descriptors.entrySet().stream()
                 .map(e -> mapper.toDto(e.getKey(), e.getValue()))
