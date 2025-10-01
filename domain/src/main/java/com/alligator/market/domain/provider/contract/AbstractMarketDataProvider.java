@@ -198,11 +198,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         settingsRef.set(newSettings);
     }
 
-    /**
-     * Мост типов для извлечения обработчика под конкретный инструмент.
-     * Приведение типа безопасно: карту заполняем сами из проверенных пар (инструмент → обработчик)
-     * и фиксируем её как неизменяемую.
-     */
+    /** Мост типов для извлечения обработчика под конкретный инструмент. */
     @SuppressWarnings("unchecked")
     private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
         return (InstrumentHandler<P, I>) instrumentMap.get(instrument);
