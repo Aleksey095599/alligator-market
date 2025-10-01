@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.contract.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
+
 import java.util.Objects;
 
 /**
@@ -42,22 +43,30 @@ public class FxSpot extends AbstractInstrument {
         }
     }
 
-    /** Базовая валюта. */
+    /**
+     * Базовая валюта.
+     */
     public Currency base() {
         return base;
     }
 
-    /** Котируемая валюта. */
+    /**
+     * Котируемая валюта.
+     */
     public Currency quote() {
         return quote;
     }
 
-    /** Код даты валютирования. */
+    /**
+     * Код даты валютирования.
+     */
     public ValueDateCode valueDateCode() {
         return valueDateCode;
     }
 
-    /** Количество знаков в котировке. */
+    /**
+     * Количество знаков в котировке.
+     */
     public Integer quoteDecimal() {
         return quoteDecimal;
     }

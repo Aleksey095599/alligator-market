@@ -12,7 +12,9 @@ public record Currency(
         String country,
         Integer decimal
 ) {
-    /** Канонический конструктор с проверками. */
+    /**
+     * Канонический конструктор с проверками.
+     */
     public Currency {
 
         // ↓↓ Базовые проверки аргументов

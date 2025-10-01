@@ -1,20 +1,19 @@
 package com.alligator.market.domain.provider.contract.settings;
 
 /**
- * Настройки провайдера: параметры, которые разрешено менять из frontend (read/write).
- * Пока что это заглушка: отдельные реализации появятся, когда появятся реальные управляемые параметры.
+ * Настройки провайдера: параметры, которые разрешено менять из frontend.
  */
 public interface ProviderSettings {
 
     /**
-     * Возвращает пустой набор настроек (заглушка по умолчанию).
+     * Возвращает заглушку.
      */
     static ProviderSettings empty() {
         return EmptyProviderSettings.INSTANCE;
     }
 
     /**
-     * Заглушка без параметров.
+     * Заглушка.
      */
     final class EmptyProviderSettings implements ProviderSettings {
 

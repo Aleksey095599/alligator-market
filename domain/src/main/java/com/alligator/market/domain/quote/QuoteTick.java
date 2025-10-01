@@ -19,4 +19,5 @@ public record QuoteTick(
         BigDecimal ask,
         Instant timestamp,
         String providerCode
-) {}
+) {
+}

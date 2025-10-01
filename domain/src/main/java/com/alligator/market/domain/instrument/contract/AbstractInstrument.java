@@ -8,7 +8,9 @@ import java.util.Objects;
  */
 public abstract non-sealed class AbstractInstrument implements Instrument {
 
-    /** Сравниваем инструменты по коду и типу. */
+    /**
+     * Сравниваем инструменты по коду и типу.
+     */
     @Override
     public final boolean equals(Object o) {
         if (this == o) {
@@ -20,7 +22,9 @@ public abstract non-sealed class AbstractInstrument implements Instrument {
         return code().equals(that.code()) && type() == that.type(); // Сравниваем код и тип
     }
 
-    /** Хэш по коду и типу. */
+    /**
+     * Хэш по коду и типу.
+     */
     @Override
     public final int hashCode() {
         return Objects.hash(code(), type());

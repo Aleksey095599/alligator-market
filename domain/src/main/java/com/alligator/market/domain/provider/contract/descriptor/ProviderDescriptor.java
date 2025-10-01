@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract.descriptor;
 import java.util.Objects;
 
 /**
- * Дескриптор провайдера: иммутабельный набор статических атрибутов (для информации/отображения).
+ * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
  *
  * @param displayName        Отображаемое имя провайдера (user friendly)
  * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH {@link AccessMethod}

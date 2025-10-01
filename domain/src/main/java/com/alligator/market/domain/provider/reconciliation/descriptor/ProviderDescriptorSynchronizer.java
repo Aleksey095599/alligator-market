@@ -26,12 +26,27 @@ public class ProviderDescriptorSynchronizer {
         this.repository = repository;
     }
 
-    /** Выполнить синхронизацию. */
+    /* Проверка уникальности кодов провайдеров и отображаемых имен. */
+    private static void assertUniqueByCodeAndName(Map<String, ProviderDescriptor> descriptors) {
+        Set<String> seenProviderCodes = new HashSet<>();
+        Set<String> seenDisplayNames = new HashSet<>();
+        for (Map.Entry<String, ProviderDescriptor> entry : descriptors.entrySet()) {
+            String code = entry.getKey();
+            if (!seenProviderCodes.add(code)) {
+                throw new ProviderDescriptorDuplicateException(code, entry.getValue().displayName());
+            }
+            ProviderDescriptor descriptor = entry.getValue();
+            String displayName = descriptor.displayName();
+            if (!seenDisplayNames.add(displayName)) {
+                throw new ProviderDescriptorDuplicateException(code, displayName);
+            }
+        }
+    }
+
+    /**
+     * Выполнить синхронизацию.
+     */
     public ProviderDescriptorSyncResult synchronize() {
-
-
-
-
 
 
         // 1) Считываем оба источника и получаем карты <код провайдера, дескриптор>
@@ -136,22 +151,5 @@ public class ProviderDescriptorSynchronizer {
                 reinsertedUpdated,
                 changed
         );
-    }
-
-    /* Проверка уникальности кодов провайдеров и отображаемых имен. */
-    private static void assertUniqueByCodeAndName(Map<String, ProviderDescriptor> descriptors) {
-        Set<String> seenProviderCodes = new HashSet<>();
-        Set<String> seenDisplayNames = new HashSet<>();
-        for (Map.Entry<String, ProviderDescriptor> entry : descriptors.entrySet()) {
-            String code = entry.getKey();
-            if (!seenProviderCodes.add(code)) {
-                throw new ProviderDescriptorDuplicateException(code, entry.getValue().displayName());
-            }
-            ProviderDescriptor descriptor = entry.getValue();
-            String displayName = descriptor.displayName();
-            if (!seenDisplayNames.add(displayName)) {
-                throw new ProviderDescriptorDuplicateException(code, displayName);
-            }
-        }
     }
 }

@@ -12,5 +12,7 @@ public record ProviderDescriptorSyncResult(
         int reinsertedUpdated, // codesToUpdate.size()
         boolean changed        // deleted > 0 || insertedNew > 0 || reinsertedUpdated > 0
 ) {
-    public int totalInserted() { return insertedNew + reinsertedUpdated; }
+    public int totalInserted() {
+        return insertedNew + reinsertedUpdated;
+    }
 }

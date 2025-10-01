@@ -15,5 +15,6 @@ public record InstrumentFeed(
         Instrument instrument,
         MarketDataProvider provider,
         int priority
-) {}
+) {
+}
 

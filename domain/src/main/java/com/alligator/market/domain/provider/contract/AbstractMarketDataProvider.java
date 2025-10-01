@@ -3,15 +3,18 @@ package com.alligator.market.domain.provider.contract;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -192,7 +195,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return handler.quote(instrument);
     }
 
-    /** Обновляет настройки провайдера. Метод защищённый, чтобы управлять жизненным циклом из наследника. */
+    /**
+     * Атомарно применяет новые настройки. Только для наследников, переопределять нельзя.
+     */
+    @SuppressWarnings("unused")
     protected final void replaceSettings(ProviderSettings newSettings) {
         Objects.requireNonNull(newSettings, "newSettings must not be null");
         settingsRef.set(newSettings);
