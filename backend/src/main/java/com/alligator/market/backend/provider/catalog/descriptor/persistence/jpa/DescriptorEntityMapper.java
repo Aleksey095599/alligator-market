@@ -19,6 +19,14 @@ public class DescriptorEntityMapper {
         );
     }
 
+    /** Доменная модель ⇒ новая JPA-сущность. */
+    public DescriptorEntity toEntity(String providerCode, ProviderDescriptor descriptor) {
+        DescriptorEntity entity = new DescriptorEntity();
+        entity.setProviderCode(providerCode);
+        updateEntity(descriptor, entity);
+        return entity;
+    }
+
     /** Обновление JPA-сущности. */
     public void updateEntity(ProviderDescriptor descriptor, DescriptorEntity entity) {
         entity.setDisplayName(descriptor.displayName());
