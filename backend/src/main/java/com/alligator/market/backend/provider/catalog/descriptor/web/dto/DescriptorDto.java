@@ -8,8 +8,11 @@ import jakarta.validation.constraints.NotNull;
 
 /**
  * Основной DTO для дескриптора провайдера {@link ProviderDescriptor}.
+ *
+ * @param providerCode Технический код провайдера.
  */
 public record DescriptorDto(
+        @NotBlank String providerCode,
         @NotBlank String displayName,
         @NotNull DeliveryMode deliveryMode,
         @NotNull AccessMethod accessMethod,
