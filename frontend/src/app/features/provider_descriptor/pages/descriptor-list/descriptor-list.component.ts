@@ -10,7 +10,7 @@ import { DescriptorDto } from '../../models/descriptor-dto.model';
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule],
   templateUrl: './descriptor-list.component.html',
-  styleUrl: './descriptor-list.component.scss'
+  styleUrls: ['./descriptor-list.component.scss']
 })
 export class DescriptorListComponent implements OnInit {
 
