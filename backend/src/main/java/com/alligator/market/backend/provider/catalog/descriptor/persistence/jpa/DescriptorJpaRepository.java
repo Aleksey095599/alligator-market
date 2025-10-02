@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface DescriptorJpaRepository extends JpaRepository<DescriptorEntity, Long> {
 
-    /** Найти сущность дескриптора по коду провайдера. */
+    /** Найти JPA-сущность дескриптора по коду провайдера. */
     Optional<DescriptorEntity> findByProviderCode(String providerCode);
 
     /** Удалить все сущности с кодами из коллекции. */

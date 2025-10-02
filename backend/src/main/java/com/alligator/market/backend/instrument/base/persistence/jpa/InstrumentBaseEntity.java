@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Абстрактная родительская сущность финансового инструмента.
+ * Абстрактная родительская JPA-сущность финансового инструмента.
  */
 @Entity
 @Table(

@@ -9,10 +9,10 @@ import java.util.Optional;
  */
 public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Long> {
 
-    /** Найти сущность валюты по ISO-коду. */
+    /** Найти JPA-сущность валюты по ISO-коду. */
     Optional<CurrencyEntity> findByCode(String code);
 
-    /** Найти сущность валюты по имени. */
+    /** Найти JPA-сущность валюты по имени. */
     Optional<CurrencyEntity> findByName(String name);
 
     /** Удалить запись валюты по ISO-коду. */

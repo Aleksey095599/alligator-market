@@ -25,7 +25,7 @@ public class DescriptorRepositoryAdapter implements ProviderDescriptorRepository
     /* JPA-репозиторий дескрипторов. */
     private final DescriptorJpaRepository jpaRepository;
 
-    /* Маппер сущность ⇄ доменная модель. */
+    /* Маппер JPA-сущность ⇄ доменная модель. */
     private final DescriptorEntityMapper mapper;
 
     @Override

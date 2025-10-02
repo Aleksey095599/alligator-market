@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * Маппер: сущность ⇄ доменная модель.
+ * Маппер: JPA-сущность ⇄ доменная модель.
  */
 @Component
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ public class FxSpotEntityMapper {
 
     private final CurrencyEntityMapper currencyMapper;
 
-    /** Сущность ⇒ доменная модель. */
+    /** JPA-сущность ⇒ доменная модель. */
     public FxSpot toDomain(FxSpotEntity entity) {
         // Собираем доменную модель
         return new FxSpot(

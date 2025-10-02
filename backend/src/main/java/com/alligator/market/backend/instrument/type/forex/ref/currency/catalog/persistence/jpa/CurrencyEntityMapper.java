@@ -4,12 +4,12 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import org.springframework.stereotype.Component;
 
 /**
- * Маппер: сущность ⇄ доменная модель.
+ * Маппер: JPA-сущность ⇄ доменная модель.
  */
 @Component
 public class CurrencyEntityMapper {
 
-    /** Сущность ⇒ доменная модель. */
+    /** JPA-сущность ⇒ доменная модель. */
     public Currency toDomain(CurrencyEntity entity) {
         // Собираем доменную модель
         return new Currency(

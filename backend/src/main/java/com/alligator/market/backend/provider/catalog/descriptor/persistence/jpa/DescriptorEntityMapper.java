@@ -4,12 +4,12 @@ import com.alligator.market.domain.provider.contract.descriptor.ProviderDescript
 import org.springframework.stereotype.Component;
 
 /**
- * Маппер: сущность ⇄ доменная модель.
+ * Маппер: JPA-сущность ⇄ доменная модель.
  */
 @Component
 public class DescriptorEntityMapper {
 
-    /** Сущность ⇒ доменная модель. */
+    /** JPA-сущность ⇒ доменная модель. */
     public ProviderDescriptor toDomain(DescriptorEntity entity) {
         return new ProviderDescriptor(
                 entity.getDisplayName(),
