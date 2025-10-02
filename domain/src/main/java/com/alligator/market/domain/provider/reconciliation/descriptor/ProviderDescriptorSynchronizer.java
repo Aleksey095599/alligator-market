@@ -26,9 +26,7 @@ public class ProviderDescriptorSynchronizer {
         this.repository = repository;
     }
 
-    /**
-     * Выполнить синхронизацию.
-     */
+    /** Выполнить синхронизацию. */
     public void synchronize() {
 
         // 1) Считываем оба источника и получаем карты <код провайдера, дескриптор>
@@ -71,40 +69,26 @@ public class ProviderDescriptorSynchronizer {
             } // else — идентичен, ничего не делаем
         }
 
-        // 4) Применяем изменения:
-        //    Стратегия delete → insert: сначала удаляем из репозитория исчезнувшие и изменившиеся дескрипторы,
-        //    затем выполняем batch INSERT для новых и изменившихся дескрипторов.
-        //    Такой порядок прост и исключает конфликты уникальности.
+        // Далее применяем изменения:
+        // Стратегия delete → insert: сначала удаляем из репозитория исчезнувшие и изменившиеся дескрипторы,
+        // затем выполняем batch INSERT для новых и изменившихся дескрипторов.
+        // Такой порядок прост и исключает конфликты уникальности.
 
-        // 5.1) Собираем всё, что нужно удалить перед вставкой
+        // 4.1) Собираем всё, что нужно удалить перед вставкой
         Set<String> codesToRemoveFirst = new LinkedHashSet<>(codesToDelete); // Берем коды к удалению
         codesToRemoveFirst.addAll(codesToUpdate); // Добавляем коды изменившихся дескрипторов
         if (!codesToRemoveFirst.isEmpty()) {
             repository.deleteAllByProviderCodes(codesToRemoveFirst);
         }
 
-        // 5.2) Формируем единый список для INSERT: новые + изменившиеся
+        // 4.2) Формируем единый список для INSERT: новые + изменившиеся
         if (!descriptorsToAdd.isEmpty() || !codesToUpdate.isEmpty()) {
             Map<String, ProviderDescriptor> toInsert = new LinkedHashMap<>(descriptorsToAdd);
             for (String code : codesToUpdate) {
                 toInsert.put(code, ctxMap.get(code));
             }
-            // На крайний случай проверяем инварианты уникальности перед вставкой
-            assertUniqueByCodeAndName(toInsert);
             repository.insertAll(toInsert); // выполняется пакетный INSERT
         }
         // Готово
-        int deleted = codesToRemoveFirst.size();
-        int insertedNew = descriptorsToAdd.size();
-        int reinsertedUpdated = codesToUpdate.size();
-        boolean changed = deleted > 0 || insertedNew > 0 || reinsertedUpdated > 0;
-        return new ProviderDescriptorSyncResult(
-                inContext,
-                inRepoBefore,
-                deleted,
-                insertedNew,
-                reinsertedUpdated,
-                changed
-        );
     }
 }
