@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation.descriptor;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.reconciliation.scaner.ProviderContextScanner;
+import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 
 import java.util.*;

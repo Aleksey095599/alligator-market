@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.config;
 
 import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
-import com.alligator.market.domain.provider.reconciliation.scaner.ProviderContextScanner;
+import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.descriptor.ProviderDescriptorSynchronizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

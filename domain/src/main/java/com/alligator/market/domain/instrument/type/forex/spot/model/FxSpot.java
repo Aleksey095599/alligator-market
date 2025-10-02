@@ -43,30 +43,22 @@ public class FxSpot extends AbstractInstrument {
         }
     }
 
-    /**
-     * Базовая валюта.
-     */
+    /** Базовая валюта. */
     public Currency base() {
         return base;
     }
 
-    /**
-     * Котируемая валюта.
-     */
+    /** Котируемая валюта. */
     public Currency quote() {
         return quote;
     }
 
-    /**
-     * Код даты валютирования.
-     */
+    /** Код даты валютирования. */
     public ValueDateCode valueDateCode() {
         return valueDateCode;
     }
 
-    /**
-     * Количество знаков в котировке.
-     */
+    /** Количество знаков в котировке. */
     public Integer quoteDecimal() {
         return quoteDecimal;
     }

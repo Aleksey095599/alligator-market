@@ -11,9 +11,7 @@ import java.util.Optional;
  */
 public interface FxSpotRepository {
 
-    /**
-     * Сохранить инструмент.
-     */
+    /** Сохранить инструмент. */
     void save(FxSpot fxSpot);
 
     /** Удалить инструмент по коду. */
