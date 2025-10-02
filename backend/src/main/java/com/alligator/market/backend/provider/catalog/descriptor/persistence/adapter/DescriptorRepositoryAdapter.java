@@ -35,4 +35,10 @@ public class DescriptorRepositoryAdapter implements ProviderDescriptorRepository
         }
         return descriptors;
     }
+
+    /* Удаляем все дескрипторы одним батчем. */
+    @Override
+    public void deleteAll() {
+        jpaRepository.deleteAllInBatch();
+    }
 }
