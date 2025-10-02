@@ -9,8 +9,6 @@ import java.util.Map;
  */
 public interface ProviderContextScanner {
 
-    /**
-     * Вернуть карту дескрипторов провайдеров, индексированную по коду провайдера.
-     */
+    /** Вернуть карту дескрипторов провайдеров, индексированную по коду провайдера. */
     Map<String, ProviderDescriptor> providerDescriptors();
 }

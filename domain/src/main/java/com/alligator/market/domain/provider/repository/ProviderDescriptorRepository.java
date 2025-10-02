@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.repository;
 /**
  * Порт репозитория провайдеров рыночных данных.
  */
-public interface ProviderRepository {
+public interface ProviderDescriptorRepository {
 
     /** Получить все коды провайдеров. */
 

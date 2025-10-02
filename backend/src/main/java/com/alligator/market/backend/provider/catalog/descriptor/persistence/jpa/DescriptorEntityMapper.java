@@ -21,6 +21,7 @@ public class DescriptorEntityMapper {
 
     /** Обновление JPA-сущности. */
     public void updateEntity(ProviderDescriptor descriptor, DescriptorEntity entity) {
+        entity.setDisplayName(descriptor.displayName());
         entity.setDeliveryMode(descriptor.deliveryMode());
         entity.setAccessMethod(descriptor.accessMethod());
         entity.setBulkSubscription(descriptor.bulkSubscription());

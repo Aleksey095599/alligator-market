@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.policy.persistence.jpa;
 
-import com.alligator.market.backend.provider.catalog.base.jpa.ProviderBaseEntity;
+import com.alligator.market.backend.provider.catalog.base.persistence.jpa.ProviderBaseEntity;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

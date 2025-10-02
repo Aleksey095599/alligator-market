@@ -25,7 +25,8 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     ProviderPolicy policy();
 
     /** Настройки провайдера: параметры, которые разрешено менять из frontend. */
-    ProviderSettings settings();
+    @SuppressWarnings( "unused")
+    ProviderSettings settings(); // Пока что заглушка в качестве реализации
 
     /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
     Set<String> instrumentsCodes();

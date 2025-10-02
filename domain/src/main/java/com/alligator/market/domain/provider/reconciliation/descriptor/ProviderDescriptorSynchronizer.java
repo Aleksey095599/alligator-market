@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.reconciliation.descriptor;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.reconciliation.ProviderContextScanner;
-import com.alligator.market.domain.provider.repository.ProviderRepository;
+import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
 
 import java.util.*;
 
@@ -15,12 +15,12 @@ public class ProviderDescriptorSynchronizer {
     private final ProviderContextScanner contextScanner;
 
     /* Репозиторий дескрипторов провайдеров. */
-    private final ProviderRepository repository;
+    private final ProviderDescriptorRepository repository;
 
     /* Конструктор. */
     public ProviderDescriptorSynchronizer(
             ProviderContextScanner contextScanner,
-            ProviderRepository repository
+            ProviderDescriptorRepository repository
     ) {
         this.contextScanner = contextScanner;
         this.repository = repository;
