@@ -26,23 +26,6 @@ public class ProviderDescriptorSynchronizer {
         this.repository = repository;
     }
 
-    /* Проверка уникальности кодов провайдеров и отображаемых имен. */
-    private static void assertUniqueByCodeAndName(Map<String, ProviderDescriptor> descriptors) {
-        Set<String> seenProviderCodes = new HashSet<>();
-        Set<String> seenDisplayNames = new HashSet<>();
-        for (Map.Entry<String, ProviderDescriptor> entry : descriptors.entrySet()) {
-            String code = entry.getKey();
-            if (!seenProviderCodes.add(code)) {
-                throw new ProviderDescriptorDuplicateException(code, entry.getValue().displayName());
-            }
-            ProviderDescriptor descriptor = entry.getValue();
-            String displayName = descriptor.displayName();
-            if (!seenDisplayNames.add(displayName)) {
-                throw new ProviderDescriptorDuplicateException(code, displayName);
-            }
-        }
-    }
-
     /**
      * Выполнить синхронизацию.
      */
@@ -51,6 +34,9 @@ public class ProviderDescriptorSynchronizer {
         // 1) Считываем оба источника и получаем карты <код провайдера, дескриптор>
         Map<String, ProviderDescriptor> ctxMap = contextScanner.providerDescriptors();
         Map<String, ProviderDescriptor> repoMap = repository.findAll();
+
+        // Проверки на уникальность кодов и имен провайдеров НЕ НУЖНЫ: для ctxMap это гарантирует сканер,
+        //                                                             для repoMap — структура таблицы БД.
 
         // 2) Если в контексте нет дескрипторов — очищаем репозиторий и выходим
         if (ctxMap.isEmpty()) {
