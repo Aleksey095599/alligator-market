@@ -13,21 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProviderDescriptorSyncService {
 
     /* Доменный сервис синхронизации дескрипторов. */
-    private final ProviderDescriptorSynchronizer synchronizer;
+    private final ProviderDescriptorSynchronizer descriptorSynchronizer;
 
+    /** Запустить процесс синхронизации дескрипторов. */
     @Transactional
-    public void runSync() {
-        ProviderDescriptorSyncResult result = synchronizer.synchronize();
-        if (result.changed()) {
-            log.info("Provider descriptors sync applied: " +
-                            "context={}, repoBefore={}, deleted={}, insertedNew={}, reinsertedUpdated={}",
-                    result.inContext(),
-                    result.inRepoBefore(),
-                    result.deleted(),
-                    result.insertedNew(),
-                    result.reinsertedUpdated());
-        } else {
-            log.info("Provider descriptors already in sync: count={}", result.inContext());
-        }
+    public void runDescriptorSync() {
+        descriptorSynchronizer.synchronize();
     }
 }

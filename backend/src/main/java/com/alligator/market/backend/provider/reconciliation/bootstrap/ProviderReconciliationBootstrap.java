@@ -29,7 +29,7 @@ public class ProviderReconciliationBootstrap implements ApplicationRunner {
         AuditContext previousContext = AuditContextHolder.get();
         AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-descriptor-bootstrap"));
         try {
-            syncService.runSync();
+            syncService.runDescriptorSync();
             log.info("Provider descriptors synchronization completed");
         } catch (RuntimeException ex) {
             log.error("Provider descriptors synchronization failed", ex);
