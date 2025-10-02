@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Адаптер, реализующий доменный порт {@link ProviderDescriptorRepository} через Spring Data JPA.
@@ -40,5 +42,27 @@ public class DescriptorRepositoryAdapter implements ProviderDescriptorRepository
     @Override
     public void deleteAll() {
         jpaRepository.deleteAllInBatch();
+    }
+
+    /** Удаляем дескрипторы по кодам провайдеров одним батчем. */
+    @Override
+    public void deleteAllByProviderCodes(Set<String> providerCodes) {
+        if (providerCodes.isEmpty()) {
+            return;
+        }
+        jpaRepository.deleteAllByProviderCodeIn(providerCodes);
+    }
+
+    /** Выполняем пакетную вставку дескрипторов. */
+    @Override
+    public void insertAll(Map<String, ProviderDescriptor> descriptors) {
+        if (descriptors.isEmpty()) {
+            return;
+        }
+        List<DescriptorEntity> entities = new ArrayList<>(descriptors.size());
+        for (Map.Entry<String, ProviderDescriptor> entry : descriptors.entrySet()) {
+            entities.add(mapper.toEntity(entry.getKey(), entry.getValue()));
+        }
+        jpaRepository.saveAllAndFlush(entities);
     }
 }
