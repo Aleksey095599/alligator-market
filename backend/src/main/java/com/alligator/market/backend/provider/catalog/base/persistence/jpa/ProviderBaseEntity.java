@@ -16,7 +16,7 @@ import lombok.Setter;
 @Table(
         name = "market_data_provider",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_provider_code", columnNames = "providerCode")
+                @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code")
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
