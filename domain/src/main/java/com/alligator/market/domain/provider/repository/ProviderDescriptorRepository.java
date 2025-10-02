@@ -5,9 +5,6 @@ package com.alligator.market.domain.provider.repository;
  */
 public interface ProviderDescriptorRepository {
 
-    /** Получить все коды провайдеров. */
-
-
     /** Получить карту дескрипторов, индексированную по коду провайдера. */
 
 }
