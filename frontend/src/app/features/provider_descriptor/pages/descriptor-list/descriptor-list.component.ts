@@ -16,6 +16,7 @@ export class DescriptorListComponent implements OnInit {
 
   /* Список колонок таблицы. */
   displayed: string[] = [
+    'providerCode',
     'displayName',
     'deliveryMode',
     'accessMethod',
