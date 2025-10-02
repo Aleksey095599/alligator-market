@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.reconciliation.service;
 
-import com.alligator.market.domain.provider.reconciliation.descriptor.ProviderDescriptorSyncResult;
 import com.alligator.market.domain.provider.reconciliation.descriptor.ProviderDescriptorSynchronizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

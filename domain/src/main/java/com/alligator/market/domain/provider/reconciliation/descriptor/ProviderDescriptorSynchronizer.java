@@ -46,38 +46,18 @@ public class ProviderDescriptorSynchronizer {
     /**
      * Выполнить синхронизацию.
      */
-    public ProviderDescriptorSyncResult synchronize() {
-
+    public void synchronize() {
 
         // 1) Считываем оба источника и получаем карты <код провайдера, дескриптор>
         Map<String, ProviderDescriptor> ctxMap = contextScanner.providerDescriptors();
         Map<String, ProviderDescriptor> repoMap = repository.findAll();
 
-        int inContext = ctxMap.size();
-        int inRepoBefore = repoMap.size();
-
         // 2) Если в контексте нет дескрипторов — очищаем репозиторий и выходим
         if (ctxMap.isEmpty()) {
             if (!repoMap.isEmpty()) {
                 repository.deleteAll();
-                int deleted = repoMap.size();
-                return new ProviderDescriptorSyncResult(
-                        inContext,
-                        inRepoBefore,
-                        deleted,
-                        0,
-                        0,
-                        deleted > 0
-                );
             }
-            return new ProviderDescriptorSyncResult(
-                    inContext,
-                    inRepoBefore,
-                    0,
-                    0,
-                    0,
-                    false
-            );
+            return;
         }
 
         // 3) Проверяем уникальности кода и имени провайдера в обеих картах
@@ -86,14 +66,7 @@ public class ProviderDescriptorSynchronizer {
 
         // Ранний выход: карты идентичны по ключам (кодам провайдеров) и значениям (дескрипторам)
         if (repoMap.equals(ctxMap)) {
-            return new ProviderDescriptorSyncResult(
-                    inContext,
-                    inRepoBefore,
-                    0,
-                    0,
-                    0,
-                    false
-            );
+            return;
         }
 
         // 4.1) К удалению: дескрипторы в репозитории с "устаревшими" кодами провайдеров
