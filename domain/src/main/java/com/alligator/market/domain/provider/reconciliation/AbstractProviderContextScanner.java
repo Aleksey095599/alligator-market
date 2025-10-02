@@ -11,13 +11,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Абстрактный сканер контекста приложения, содержащий доменную проверку на уникальность кода и отображаемого имени провайдера.
+ * Абстрактный сканер контекста приложения.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
     /** Вернуть последовательность провайдеров для построения карты дескрипторов. */
     protected abstract Iterable<MarketDataProvider> providers();
 
+    /**
+     * Вернуть карту дескрипторов провайдеров, индексированную по коду провайдера.
+     * Метод содержит проверки на дублирование по коду и имени провайдера.
+     */
     @Override
     public final Map<String, ProviderDescriptor> providerDescriptors() {
         Map<String, ProviderDescriptor> descriptors = new LinkedHashMap<>();
