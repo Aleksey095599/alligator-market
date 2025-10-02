@@ -49,11 +49,11 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // 3.1) К удалению: дескрипторы в репозитории с "устаревшими" кодами провайдеров
-        Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet()); // Берем все коды провайдеров из repoMap
-        codesToDelete.removeAll(ctxMap.keySet()); // Удаляем из них те коды, которые встречаются ctxMap
+        // 3.1) Дескрипторы в репозитории с "устаревшими" кодами провайдеров
+        Set<String> obsoleteCodes = new LinkedHashSet<>(repoMap.keySet()); // Берем все коды провайдеров из repoMap
+        obsoleteCodes.removeAll(ctxMap.keySet()); // Удаляем из них те коды, которые встречаются ctxMap
 
-        // 3.2) К добавлению/обновлению: новые и изменившиеся дескрипторы
+        // 3.2) Новые или изменившиеся дескрипторы
         Map<String, ProviderDescriptor> descriptorsToAdd = new LinkedHashMap<>(); // карта для новых дескрипторов
         Set<String> codesToUpdate = new LinkedHashSet<>(); // набор для кодов изменившихся дескрипторов
         // ↓↓ Перебираем элементы карты ctxMap
@@ -75,10 +75,10 @@ public class ProviderDescriptorSynchronizer {
         // Такой порядок прост и исключает конфликты уникальности.
 
         // 4.1) Собираем всё, что нужно удалить перед вставкой
-        Set<String> codesToRemoveFirst = new LinkedHashSet<>(codesToDelete); // Берем коды к удалению
-        codesToRemoveFirst.addAll(codesToUpdate); // Добавляем коды изменившихся дескрипторов
-        if (!codesToRemoveFirst.isEmpty()) {
-            repository.deleteAllByProviderCodes(codesToRemoveFirst);
+        Set<String> codesToDelete = new LinkedHashSet<>(obsoleteCodes); // Берем "устаревшие" коды
+        codesToDelete.addAll(codesToUpdate); // Добавляем коды изменившихся дескрипторов
+        if (!codesToDelete.isEmpty()) {
+            repository.deleteAllByProviderCodes(codesToDelete); // Производим удаление дескрипторов по кодам
         }
 
         // 4.2) Формируем единый список для INSERT: новые + изменившиеся
