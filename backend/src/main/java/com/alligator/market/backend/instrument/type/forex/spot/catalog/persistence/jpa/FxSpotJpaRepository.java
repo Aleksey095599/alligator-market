@@ -8,11 +8,11 @@ import java.util.Optional;
  */
 public interface FxSpotJpaRepository extends JpaRepository<FxSpotEntity, Long> {
 
-    /** Удалить инструмент по коду. */
-    void deleteByCode(String code);
-
-    /** Найти инструмент по коду. */
+    /** Найти сущность инструмента по коду. */
     Optional<FxSpotEntity> findByCode(String code);
+
+    /** Удалить запись инструмента по коду. */
+    void deleteByCode(String code);
 
     /** Проверить, используется ли заданная валюта хотя бы в одном инструменте. */
     boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(String baseCurrency, String quoteCurrency);
