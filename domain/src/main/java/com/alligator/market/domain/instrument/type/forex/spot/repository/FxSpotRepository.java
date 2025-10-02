@@ -16,23 +16,15 @@ public interface FxSpotRepository {
      */
     void save(FxSpot fxSpot);
 
-    /**
-     * Удалить инструмент по коду.
-     */
+    /** Удалить инструмент по коду. */
     void delete(String code);
 
-    /**
-     * Найти инструмент по коду.
-     */
+    /** Найти инструмент по коду. */
     Optional<FxSpot> find(String code);
 
-    /**
-     * Вернуть все инструменты.
-     */
+    /** Вернуть все инструменты. */
     List<FxSpot> findAll();
 
-    /**
-     * Проверить, используется ли заданная валюта хотя бы в одном инструменте FX_SPOT.
-     */
+    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте FX_SPOT. */
     boolean existsByCurrency(Currency currency);
 }
