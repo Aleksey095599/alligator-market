@@ -16,6 +16,10 @@ public class ProviderContextScannerAdapter extends AbstractProviderContextScanne
 
     private final List<MarketDataProvider> providers;
 
+    /**
+     * Переназначаем метод {@link AbstractProviderContextScanner#providers()} из абстрактного доменного сканера.
+     * Остальные методы заданы в абстрактном доменном сканере.
+     */
     @Override
     protected Iterable<MarketDataProvider> providers() {
         return providers;

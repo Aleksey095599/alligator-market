@@ -8,10 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Базовая (non-sealed) реализация доменного сканера контекста.
- * <p>
- * Инкапсулирует проверку уникальности кода провайдера, чтобы правило домена
- * выполнялось в одном месте независимо от конкретной инфраструктурной реализации.
+ * Абстрактный сканер контекста приложения, содержащий доменную проверку на уникальность кода провайдера.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 

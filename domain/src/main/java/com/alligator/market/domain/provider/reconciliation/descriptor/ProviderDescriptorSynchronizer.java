@@ -17,7 +17,7 @@ public class ProviderDescriptorSynchronizer {
     /* Репозиторий дескрипторов провайдеров. */
     private final ProviderDescriptorRepository repository;
 
-    /* Конструктор. */
+    /** Конструктор. */
     public ProviderDescriptorSynchronizer(
             ProviderContextScanner contextScanner,
             ProviderDescriptorRepository repository
@@ -35,8 +35,8 @@ public class ProviderDescriptorSynchronizer {
         Map<String, ProviderDescriptor> ctxMap = contextScanner.providerDescriptors();
         Map<String, ProviderDescriptor> repoMap = repository.findAll();
 
-        // Проверки на уникальность кодов и имен провайдеров НЕ НУЖНЫ: для ctxMap это гарантирует сканер,
-        //                                                             для repoMap — структура таблицы БД.
+        // Проверки на уникальность кодов и имен провайдеров не нужны:
+        // для ctxMap это гарантирует сканер, для repoMap — структура таблицы БД.
 
         // 2) Если в контексте нет дескрипторов — очищаем репозиторий и выходим
         if (ctxMap.isEmpty()) {
@@ -46,20 +46,16 @@ public class ProviderDescriptorSynchronizer {
             return;
         }
 
-        // 3) Проверяем уникальности кода и имени провайдера в обеих картах
-        assertUniqueByCodeAndName(ctxMap);
-        assertUniqueByCodeAndName(repoMap);
-
-        // Ранний выход: карты идентичны по ключам (кодам провайдеров) и значениям (дескрипторам)
+        // Ранний выход, если карты идентичны
         if (repoMap.equals(ctxMap)) {
             return;
         }
 
-        // 4.1) К удалению: дескрипторы в репозитории с "устаревшими" кодами провайдеров
+        // 3.1) К удалению: дескрипторы в репозитории с "устаревшими" кодами провайдеров
         Set<String> codesToDelete = new LinkedHashSet<>(repoMap.keySet()); // Берем все коды провайдеров из repoMap
         codesToDelete.removeAll(ctxMap.keySet()); // Удаляем из них те коды, которые встречаются ctxMap
 
-        // 4.2) К добавлению/обновлению: новые и изменившиеся дескрипторы
+        // 3.2) К добавлению/обновлению: новые и изменившиеся дескрипторы
         Map<String, ProviderDescriptor> descriptorsToAdd = new LinkedHashMap<>(); // карта для новых дескрипторов
         Set<String> codesToUpdate = new LinkedHashSet<>(); // набор для кодов изменившихся дескрипторов
         // ↓↓ Перебираем элементы карты ctxMap
@@ -75,7 +71,7 @@ public class ProviderDescriptorSynchronizer {
             } // else — идентичен, ничего не делаем
         }
 
-        // 5) Применяем изменения:
+        // 4) Применяем изменения:
         //    Стратегия delete → insert: сначала удаляем из репозитория исчезнувшие и изменившиеся дескрипторы,
         //    затем выполняем batch INSERT для новых и изменившихся дескрипторов.
         //    Такой порядок прост и исключает конфликты уникальности.
