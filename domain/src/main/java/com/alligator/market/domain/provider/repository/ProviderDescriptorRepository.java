@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.contract.descriptor.ProviderDescript
 import java.util.Map;
 
 /**
- * Порт репозитория провайдеров рыночных данных.
+ * Порт репозитория дескрипторов провайдеров.
  */
 public interface ProviderDescriptorRepository {
 
