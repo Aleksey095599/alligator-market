@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "provider_descriptor",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_display_name", columnNames = "displayName")
+                @UniqueConstraint(name = "uq_display_name", columnNames = "display_name")
         })
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
