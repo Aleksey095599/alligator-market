@@ -6,7 +6,7 @@ import java.util.Objects;
  * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
  *
  * @param displayName        Отображаемое имя провайдера (user friendly)
- * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH {@link AccessMethod}
+ * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH {@link DeliveryMode}
  * @param accessMethod       Метод доступа к рыночным данным {@link AccessMethod}
  * @param bulkSubscription   Поддержка массовой подписки одним запросом
  */
