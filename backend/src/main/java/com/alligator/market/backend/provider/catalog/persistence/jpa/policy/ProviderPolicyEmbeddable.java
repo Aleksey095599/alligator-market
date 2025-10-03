@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
 
+import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.utility.DurationToSecondsConverter;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.Column;

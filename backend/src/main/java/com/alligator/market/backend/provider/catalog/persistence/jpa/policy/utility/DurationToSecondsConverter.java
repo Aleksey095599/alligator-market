@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
+package com.alligator.market.backend.provider.catalog.persistence.jpa.policy.utility;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
