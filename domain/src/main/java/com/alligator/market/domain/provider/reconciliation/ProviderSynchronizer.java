@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.descriptor;
+package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
@@ -7,9 +7,10 @@ import com.alligator.market.domain.provider.repository.ProviderDescriptorReposit
 import java.util.*;
 
 /**
- * Доменный сервис синхронизации дескрипторов провайдеров в контексте приложения и в репозитории.
+ * Доменный сервис синхронизации провайдеров в контексте приложения и в репозитории.
+ * TODO: требуется расширить логику не только для дескрипторов но и с учётом всей сущности ProviderEntity.
  */
-public class ProviderDescriptorSynchronizer {
+public class ProviderSynchronizer {
 
     /* Сканер, извлекающий дескрипторы из контекста приложения. */
     private final ProviderContextScanner contextScanner;
@@ -18,7 +19,7 @@ public class ProviderDescriptorSynchronizer {
     private final ProviderDescriptorRepository repository;
 
     /** Конструктор. */
-    public ProviderDescriptorSynchronizer(
+    public ProviderSynchronizer(
             ProviderContextScanner contextScanner,
             ProviderDescriptorRepository repository
     ) {

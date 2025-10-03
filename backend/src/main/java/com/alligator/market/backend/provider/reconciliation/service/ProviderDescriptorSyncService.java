@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.service;
 
-import com.alligator.market.domain.provider.reconciliation.descriptor.ProviderDescriptorSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProviderDescriptorSyncService {
 
     /* Доменный сервис синхронизации дескрипторов. */
-    private final ProviderDescriptorSynchronizer descriptorSynchronizer;
+    private final ProviderSynchronizer descriptorSynchronizer;
 
     /** Запустить процесс синхронизации дескрипторов. */
     @Transactional

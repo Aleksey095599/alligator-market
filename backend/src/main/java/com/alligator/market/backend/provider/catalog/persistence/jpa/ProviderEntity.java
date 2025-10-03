@@ -1,6 +1,8 @@
-package com.alligator.market.backend.provider.catalog.base.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Базовая родительская JPA-сущность провайдера рыночных данных.
+ * JPA-сущность провайдера рыночных данных.
  */
 @Entity
 @Table(
@@ -19,11 +21,10 @@ import lombok.Setter;
                 @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code")
         }
 )
-@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProviderBaseEntity extends BaseEntity {
+public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
     @Id
@@ -36,4 +37,12 @@ public class ProviderBaseEntity extends BaseEntity {
     @Size(max = 50)
     @Column(name = "provider_code", length = 50, nullable = false)
     private String providerCode;
+
+    /** Иммутабельный дескриптор. */
+    @Embedded
+    private ProviderDescriptorEmbeddable descriptor;
+
+    /** Иммутабельный набор параметров политики провайдера. */
+    @Embedded
+    private ProviderPolicyEmbeddable policy;
 }
