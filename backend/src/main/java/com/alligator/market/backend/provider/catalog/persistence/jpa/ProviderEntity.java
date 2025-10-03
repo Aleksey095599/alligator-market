@@ -4,6 +4,8 @@ import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,9 +21,15 @@ import java.util.Objects;
 /**
  * JPA-сущность провайдера рыночных данных.
  * 1) Все поля данной JPA-сущности и встроенных JPA-сущностей не обновляемые: логика синхронизации с контекстом
- * приложения использует стратегию delete → insert {@link ProviderSynchronizer}.
- * 2) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы чтобы ...
- * 3) Данная JPA-сущность и встроенные JPA-сущности содержат фабрики чтобы ...
+ *    приложения использует стратегию delete → insert {@link ProviderSynchronizer}.
+ * 2) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы, чтобы обеспечить fail-fast проверку
+ *    инвариантов (non-null, not blank, допустимые диапазоны) и формирование полностью инициализированного,
+ *    иммутабельного состояния без сеттеров.
+ * 3) Данная JPA-сущность и встроенные JPA-сущности содержат фабрики, чтобы упростить и стандартизировать создание
+ *    из доменных моделей, инкапсулировать маппинг и повторно использовать валидацию: см.
+ *    {@link #of(String, ProviderDescriptorEmbeddable, ProviderPolicyEmbeddable)},
+ *    {@link ProviderDescriptorEmbeddable#from(ProviderDescriptor)},
+ *    {@link ProviderPolicyEmbeddable#from(ProviderPolicy)}.
  */
 @Entity
 @Table(
