@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.domain.instrument.InstrumentCodeFactory;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
@@ -57,7 +58,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         // Устанавливаем тип инструмента
         setType(InstrumentType.FX_SPOT);
         // Генерируем и устанавливаем код инструмента
-        String instrumentCode = baseCurrency.getCode() + quoteCurrency.getCode() + "_" + valueDateCode.name();
+        String instrumentCode = InstrumentCodeFactory.fxSpotCode(
+                baseCurrency.getCode(),
+                quoteCurrency.getCode(),
+                valueDateCode
+        );
         setCode(instrumentCode);
     }
 }
