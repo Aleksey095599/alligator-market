@@ -13,12 +13,20 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
 
 /**
- * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot}.
+ * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
-@Table(name = "fx_spot")
+@Table(name = "fx_spot", uniqueConstraints = {
+        @UniqueConstraint(name = "uq_fx_spot_pair_value_date", columnNames = {
+                "base_currency",
+                "quote_currency",
+                "value_date_code"
+        })
+})
+@Check(constraints = "base_currency <> quote_currency")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
