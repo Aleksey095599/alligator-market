@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,8 +17,9 @@ import java.util.Objects;
 
 /**
  * JPA-сущность провайдера рыночных данных.
- * Поле с кодом провайдера не обновляемое: логика синхронизации с контекстом приложения использует
+ * 1) Поле с кодом провайдера не обновляемое: логика синхронизации с контекстом приложения использует
  * стратегию delete → insert {@link ProviderSynchronizer}.
+ * 2)
  */
 @Entity
 @Table(
@@ -44,10 +46,12 @@ public class ProviderEntity extends BaseEntity {
 
     /** Иммутабельный дескриптор. */
     @Embedded
+    @NotNull
     private ProviderDescriptorEmbeddable descriptor;
 
     /** Иммутабельный набор параметров политики провайдера. */
     @Embedded
+    @NotNull
     private ProviderPolicyEmbeddable policy;
 
     /** Конструктор. */
