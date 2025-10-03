@@ -50,6 +50,7 @@ public class ProviderDescriptorEmbeddable {
     @Column(name = "bulk_subscription", nullable = false, updatable = false)
     private boolean bulkSubscription;
 
+    /** Конструктор. */
     ProviderDescriptorEmbeddable(
             String displayName,
             DeliveryMode deliveryMode,

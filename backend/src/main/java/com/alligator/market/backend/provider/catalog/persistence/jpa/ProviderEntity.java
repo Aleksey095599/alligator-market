@@ -50,6 +50,7 @@ public class ProviderEntity extends BaseEntity {
     @Embedded
     private ProviderPolicyEmbeddable policy;
 
+    /** Конструктор. */
     ProviderEntity(
             String providerCode,
             ProviderDescriptorEmbeddable descriptor,

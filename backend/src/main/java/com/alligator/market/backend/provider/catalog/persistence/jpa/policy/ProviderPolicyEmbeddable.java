@@ -32,6 +32,7 @@ public class ProviderPolicyEmbeddable {
     @Column(name = "min_update_interval", nullable = false, updatable = false)
     private Duration minUpdateInterval;
 
+    /** Конструктор. */
     ProviderPolicyEmbeddable(Duration minUpdateInterval) {
         this.minUpdateInterval = Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
     }
