@@ -20,7 +20,8 @@ import java.util.Objects;
  * JPA-сущность провайдера рыночных данных.
  * 1) Поле с кодом провайдера не обновляемое: логика синхронизации с контекстом приложения использует
  * стратегию delete → insert {@link ProviderSynchronizer}.
- * 2)
+ * 2) Содержит конструктор чтобы ...
+ * 3) Содержит фабрику чтобы ...
  */
 @Entity
 @Table(
@@ -31,7 +32,7 @@ import java.util.Objects;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Access(AccessType.FIELD)
+@Access(AccessType.FIELD) // Доступ только через поля (игнорирование геттеров/сеттеров)
 public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -40,10 +41,10 @@ public class ProviderEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link MarketDataProvider#providerCode()} с natural id для быстрого поиска. */
+    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
-    @NaturalId(mutable = false)
+    @NaturalId(mutable = false) // Для быстрого поиска и доступа
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
@@ -64,6 +65,9 @@ public class ProviderEntity extends BaseEntity {
             ProviderPolicyEmbeddable policy
     ) {
         this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
+        if (this.providerCode.isBlank()) {
+            throw new IllegalArgumentException("providerCode must not be blank");
+        }
         this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
         this.policy = Objects.requireNonNull(policy, "policy must not be null");
     }

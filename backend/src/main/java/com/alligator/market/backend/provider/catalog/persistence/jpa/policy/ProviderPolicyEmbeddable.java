@@ -29,7 +29,7 @@ public class ProviderPolicyEmbeddable {
      * {@link ProviderPolicy#minUpdateInterval()}. */
     @DurationMin(seconds = 1)
     @Convert(converter = DurationToSecondsConverter.class)
-    @Column(name = "min_update_interval", nullable = false, updatable = false)
+    @Column(name = "min_update_interval_seconds", nullable = false, updatable = false)
     private Duration minUpdateInterval;
 
     /** Конструктор. */
