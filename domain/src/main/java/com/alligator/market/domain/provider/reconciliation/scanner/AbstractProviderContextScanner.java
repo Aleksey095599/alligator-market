@@ -35,7 +35,7 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
                 throw new ProviderCodeDuplicateException(providerCode);
             }
             String displayName = descriptor.displayName();
-            // Сравниваем имена провайдеров в нижнем регистре, чтобы обеспечить регистронезависимую уникальность.
+            // Сравниваем имена провайдеров в нижнем регистре
             String displayNameLowerCase = displayName.toLowerCase(Locale.ROOT);
             if (!displayNamesLowerCase.add(displayNameLowerCase)) {
                 throw new ProviderDisplayNameDuplicateException(displayName);
