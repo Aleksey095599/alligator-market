@@ -58,6 +58,9 @@ public class ProviderDescriptorEmbeddable {
             boolean bulkSubscription
     ) {
         this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
+        if (this.displayName.isBlank()) {
+            throw new IllegalArgumentException("displayName must not be blank");
+        }
         this.deliveryMode = Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         this.accessMethod = Objects.requireNonNull(accessMethod, "accessMethod must not be null");
         this.bulkSubscription = bulkSubscription;

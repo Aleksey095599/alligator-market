@@ -30,6 +30,9 @@ import java.util.Objects;
                 @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code")
         }
 )
+@org.hibernate.annotations.Check(
+        constraints = "min_update_interval_seconds >= 1" // Проверка на уровне БД для дополнительной безопасности
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD) // Доступ только через поля (игнорирование геттеров/сеттеров)
