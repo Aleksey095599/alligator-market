@@ -20,8 +20,6 @@ import java.util.Objects;
 /**
  * Embeddable JPA-сущность дескриптора.
  * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
- * Все поля не обновляемые: логика синхронизации с контекстом приложения использует
- * стратегию delete → insert {@link ProviderSynchronizer}.
  */
 @Embeddable
 @Getter

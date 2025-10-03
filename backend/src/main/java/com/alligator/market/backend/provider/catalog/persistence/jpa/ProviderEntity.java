@@ -18,10 +18,10 @@ import java.util.Objects;
 
 /**
  * JPA-сущность провайдера рыночных данных.
- * 1) Поле с кодом провайдера не обновляемое: логика синхронизации с контекстом приложения использует
- * стратегию delete → insert {@link ProviderSynchronizer}.
- * 2) Содержит конструктор чтобы ...
- * 3) Содержит фабрику чтобы ...
+ * 1) Все поля данной JPA-сущности и встроенных JPA-сущностей не обновляемые: логика синхронизации с контекстом
+ * приложения использует стратегию delete → insert {@link ProviderSynchronizer}.
+ * 2) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы чтобы ...
+ * 3) Данная JPA-сущность и встроенные JPA-сущности содержат фабрики чтобы ...
  */
 @Entity
 @Table(
@@ -47,7 +47,7 @@ public class ProviderEntity extends BaseEntity {
     /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
-    @NaturalId(mutable = false) // Для быстрого поиска и доступа
+    @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 

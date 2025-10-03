@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 /**
  * Абстрактная родительская JPA-сущность финансового инструмента.
@@ -33,6 +34,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /** Внутренний код инструмента (уникален). */
     @NotBlank
+    @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 32, nullable = false, updatable = false)
     private String code;
 

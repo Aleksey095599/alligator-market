@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 /**
  * JPA-сущность валюты {@link Currency}.
@@ -37,6 +38,7 @@ public class CurrencyEntity extends BaseEntity {
     /** ISO-4217 код валюты. */
     @NotBlank
     @Pattern(regexp = "^[A-Z]{3}$")
+    @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
     private String code;
 

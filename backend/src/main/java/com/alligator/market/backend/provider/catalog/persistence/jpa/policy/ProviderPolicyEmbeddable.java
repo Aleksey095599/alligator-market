@@ -17,8 +17,6 @@ import java.util.Objects;
 /**
  * Embeddable JPA-сущность для параметров политики провайдера.
  * Набор полей аналогичен доменной модели {@link ProviderPolicy}.
- * Все поля не обновляемые: логика синхронизации с контекстом приложения использует
- * стратегию delete → insert {@link ProviderSynchronizer}.
  */
 @Embeddable
 @Getter
