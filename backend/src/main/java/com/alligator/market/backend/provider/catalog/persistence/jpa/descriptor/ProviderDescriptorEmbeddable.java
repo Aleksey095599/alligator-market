@@ -5,18 +5,22 @@ import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.NoArgsConstructor;
 
 /**
  * Embeddable JPA-сущность дескриптора.
  * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
- * Все поля не обновляемые (updatable = false): логика синхронизации с контекстом приложения использует
+ * Все поля не обновляемые: логика синхронизации с контекстом приложения использует
  * стратегию delete → insert {@link ProviderSynchronizer}.
  */
+@Embeddable
+@NoArgsConstructor
 public class ProviderDescriptorEmbeddable {
 
     /** Отображаемое имя провайдера (user friendly) {@link ProviderDescriptor#displayName()}. */
