@@ -3,8 +3,9 @@ package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.Positive;
+import org.hibernate.validator.constraints.time.DurationMin;
 import lombok.NoArgsConstructor;
 
 import java.time.Duration;
@@ -21,7 +22,8 @@ public class ProviderPolicyEmbeddable {
 
     /** Минимальный интервал обновления котировок (независимо от режима доставки)
      * {@link ProviderPolicy#minUpdateInterval()}. */
-    @Positive
+    @DurationMin(seconds = 1)
+    @Convert(converter = DurationToSecondsConverter.class)
     @Column(name = "min_update_interval", nullable = false, updatable = false)
     private Duration minUpdateInterval;
 }
