@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
+import java.util.Objects;
+
 /**
  * JPA-сущность валюты {@link Currency}.
  */
@@ -58,4 +60,22 @@ public class CurrencyEntity extends BaseEntity {
     @Max(10)
     @Column(name = "decimal_value", nullable = false)
     private Integer decimal;
+
+    /** Сравниваем сущности по ISO-4217 коду. */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CurrencyEntity that)) {
+            return false;
+        }
+        return Objects.equals(code, that.code);
+    }
+
+    /** Хеш-код зависит только от ISO-4217 кода. */
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 }
