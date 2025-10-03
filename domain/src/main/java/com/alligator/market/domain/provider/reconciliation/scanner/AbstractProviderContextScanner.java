@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplica
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
     @Override
     public final Map<String, ProviderDescriptor> providerDescriptors() {
         Map<String, ProviderDescriptor> descriptors = new LinkedHashMap<>();
-        Set<String> displayNames = new HashSet<>();
+        Set<String> displayNamesLowerCase = new HashSet<>();
         for (MarketDataProvider provider : providers()) {
             String providerCode = provider.providerCode();
             ProviderDescriptor descriptor = provider.descriptor();
@@ -34,7 +35,9 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
                 throw new ProviderCodeDuplicateException(providerCode);
             }
             String displayName = descriptor.displayName();
-            if (!displayNames.add(displayName)) {
+            // Сравниваем имена провайдеров в нижнем регистре, чтобы обеспечить регистронезависимую уникальность.
+            String displayNameLowerCase = displayName.toLowerCase(Locale.ROOT);
+            if (!displayNamesLowerCase.add(displayNameLowerCase)) {
                 throw new ProviderDisplayNameDuplicateException(displayName);
             }
         }
