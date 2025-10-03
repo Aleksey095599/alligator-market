@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Абстрактная родительская JPA-сущность провайдера рыночных данных.
+ * Базовая родительская JPA-сущность провайдера рыночных данных.
  */
 @Entity
 @Table(
