@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ import java.util.Objects;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Access(AccessType.FIELD)
 public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -38,9 +40,10 @@ public class ProviderEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
+    /** Технический код провайдера {@link MarketDataProvider#providerCode()} с natural id для быстрого поиска. */
     @NotBlank
     @Size(max = 50)
+    @NaturalId(mutable = false)
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
