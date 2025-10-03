@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
-import com.alligator.market.domain.instrument.InstrumentCodeFactory;
+import com.alligator.market.domain.instrument.utility.InstrumentCodeFactory;
 import com.alligator.market.domain.instrument.contract.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;

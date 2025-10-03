@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument;
+package com.alligator.market.domain.instrument.utility;
 
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 
