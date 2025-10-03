@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
+import java.util.Objects;
+
 /**
  * Абстрактная родительская JPA-сущность финансового инструмента.
  */
@@ -43,4 +45,21 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 32, nullable = false, updatable = false)
     private InstrumentType type;
+
+    /** Сравниваем сущности по коду и типу. */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof InstrumentBaseEntity that)) {
+            return false;
+        }
+        return Objects.equals(code, that.code) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, type);
+    }
 }
