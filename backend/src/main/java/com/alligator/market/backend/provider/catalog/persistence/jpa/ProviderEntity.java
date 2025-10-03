@@ -8,9 +8,11 @@ import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.Objects;
 
 /**
  * JPA-сущность провайдера рыночных данных.
@@ -25,8 +27,7 @@ import lombok.Setter;
         }
 )
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -48,4 +49,23 @@ public class ProviderEntity extends BaseEntity {
     /** Иммутабельный набор параметров политики провайдера. */
     @Embedded
     private ProviderPolicyEmbeddable policy;
+
+    ProviderEntity(
+            String providerCode,
+            ProviderDescriptorEmbeddable descriptor,
+            ProviderPolicyEmbeddable policy
+    ) {
+        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
+        this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
+        this.policy = Objects.requireNonNull(policy, "policy must not be null");
+    }
+
+    /** Фабрика для создания иммутабельной сущности провайдера. */
+    public static ProviderEntity of(
+            String providerCode,
+            ProviderDescriptorEmbeddable descriptor,
+            ProviderPolicyEmbeddable policy
+    ) {
+        return new ProviderEntity(providerCode, descriptor, policy);
+    }
 }

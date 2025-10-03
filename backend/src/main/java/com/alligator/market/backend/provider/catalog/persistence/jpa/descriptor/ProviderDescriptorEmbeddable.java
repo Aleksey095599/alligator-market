@@ -11,7 +11,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 /**
  * Embeddable JPA-сущность дескриптора.
@@ -20,7 +24,8 @@ import lombok.NoArgsConstructor;
  * стратегию delete → insert {@link ProviderSynchronizer}.
  */
 @Embeddable
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProviderDescriptorEmbeddable {
 
     /** Отображаемое имя провайдера (user friendly) {@link ProviderDescriptor#displayName()}. */
@@ -44,4 +49,27 @@ public class ProviderDescriptorEmbeddable {
     /** Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}. */
     @Column(name = "bulk_subscription", nullable = false, updatable = false)
     private boolean bulkSubscription;
+
+    ProviderDescriptorEmbeddable(
+            String displayName,
+            DeliveryMode deliveryMode,
+            AccessMethod accessMethod,
+            boolean bulkSubscription
+    ) {
+        this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
+        this.deliveryMode = Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
+        this.accessMethod = Objects.requireNonNull(accessMethod, "accessMethod must not be null");
+        this.bulkSubscription = bulkSubscription;
+    }
+
+    /** Фабрика создания иммутабельного embeddable из доменного дескриптора. */
+    public static ProviderDescriptorEmbeddable from(ProviderDescriptor descriptor) {
+        Objects.requireNonNull(descriptor, "descriptor must not be null");
+        return new ProviderDescriptorEmbeddable(
+                descriptor.displayName(),
+                descriptor.deliveryMode(),
+                descriptor.accessMethod(),
+                descriptor.bulkSubscription()
+        );
+    }
 }
