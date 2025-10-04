@@ -34,4 +34,22 @@ public record Currency(
             throw new IllegalArgumentException("country must not be blank");
         }
     }
+
+    /** Сравниваем валюты по коду. */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Currency that)) {
+            return false;
+        }
+        return code().equals(that.code());
+    }
+
+    /** Хэш по коду. */
+    @Override
+    public int hashCode() {
+        return Objects.hash(code());
+    }
 }
