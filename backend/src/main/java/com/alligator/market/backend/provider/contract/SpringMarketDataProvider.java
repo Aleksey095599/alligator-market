@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Spring-адаптер каркаса провайдера с проверкой имени бина.
+ * Spring-адаптер каркаса провайдера с проверкой уникальности имени бина, равной коду провайдера.
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>
@@ -23,9 +23,7 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     /* Имя бина, которое назначил Spring. */
     private String beanName;
 
-    /**
-     * Конструктор.
-     */
+    /** Конструктор. */
     protected SpringMarketDataProvider(
             String providerCode,
             String displayName,
