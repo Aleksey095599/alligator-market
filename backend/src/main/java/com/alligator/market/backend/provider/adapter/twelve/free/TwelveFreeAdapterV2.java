@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.twelve.free;
 
+import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
-import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -17,8 +17,8 @@ import java.util.Set;
 /**
  * Адаптер для провайдера рыночных данных TwelveData (free).
  */
-@Component
-public class TwelveFreeAdapterV2 extends AbstractMarketDataProvider<TwelveFreeAdapterV2> {
+@Component("TWELVE_FREE")
+public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdapterV2> {
 
     /* Технический код провайдера. */
     private static final String PROVIDER_CODE = "TWELVE_FREE";
