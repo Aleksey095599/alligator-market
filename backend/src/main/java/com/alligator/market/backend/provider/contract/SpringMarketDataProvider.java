@@ -7,8 +7,10 @@ import com.alligator.market.domain.provider.contract.descriptor.ProviderDescript
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 import java.util.Set;
@@ -36,9 +38,15 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     }
 
     @Override
-    public void setBeanName(String name) {
+    public void setBeanName(@NonNull @NotBlank String name) {
         // Сохраняем имя бина до хука afterPropertiesSet
-        this.beanName = Objects.requireNonNull(name, "beanName must not be null");
+        final var validatedBeanName = Objects.requireNonNull(name, "beanName must not be null");
+
+        if (validatedBeanName.isBlank()) {
+            throw new IllegalArgumentException("Bean name must not be blank");
+        }
+
+        this.beanName = validatedBeanName;
     }
 
     @Override
