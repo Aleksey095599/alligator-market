@@ -32,11 +32,16 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** Внутренний код инструмента (уникален). */
+    /** Внутренний код инструмента (уникален в контексте приложения). */
     @NotBlank
     @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 32, nullable = false, updatable = false)
     private String code;
+
+    /** Символ инструмента для отображения в UI. */
+    @NotBlank
+    @Column(name = "symbol", length = 32, nullable = false, updatable = false)
+    private String symbol;
 
     /** Тип финансового инструмента. */
     @NotNull

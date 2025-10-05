@@ -7,8 +7,11 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
  */
 public sealed interface Instrument permits AbstractInstrument {
 
-    /** Уникальный внутренний код инструмента. */
+    /** Внутренний код инструмента (уникален в контексте приложения). */
     String code();
+
+    /** Символ инструмента для отображения в UI. */
+    String symbol();
 
     /** Тип инструмента. */
     InstrumentType type();

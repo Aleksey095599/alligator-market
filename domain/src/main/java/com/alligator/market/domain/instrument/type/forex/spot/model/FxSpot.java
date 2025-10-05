@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
-import com.alligator.market.domain.instrument.utility.InstrumentCodeFactory;
+import com.alligator.market.domain.instrument.type.forex.spot.utility.FxSpotNaming;
 import com.alligator.market.domain.instrument.contract.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
@@ -66,7 +66,12 @@ public class FxSpot extends AbstractInstrument {
 
     @Override
     public String code() {
-        return InstrumentCodeFactory.fxSpotCode(base.code(), quote.code(), valueDateCode);
+        return FxSpotNaming.fxSpotCode(base.code(), quote.code(), valueDateCode);
+    }
+
+    @Override
+    public String symbol() {
+        return FxSpotNaming.fxSpotSymbol(base.code(), quote.code(), valueDateCode);
     }
 
     @Override
