@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { FxSpotItemDto } from '../../models/fx-spot.model';
+import { FxSpotListItemDto } from '../../models/fx-spot.model';
 import { FxSpotCreateDto } from '../../models/fx-spot-create.model';
 import { FxSpotService } from '../../services/fx-spot.service';
 import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
@@ -42,8 +42,8 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['instrumentCode', 'baseCurrency', 'quoteCurrency', 'valueDateCode', 'quoteDecimal', 'actions'];
-  dataSource  = new MatTableDataSource<FxSpotItemDto>([]);
+  displayed: string[] = ['code', 'symbol', 'baseCurrency', 'quoteCurrency', 'valueDateCode', 'quoteDecimal', 'actions'];
+  dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================
   // Форма добавления инструмента FX_SPOT
@@ -52,7 +52,8 @@ export class FxSpotAdminComponent implements OnInit {
 
   locked = false; // флаг блокировки кнопки Add
   editing = false; // режим редактирования
-  editInstrumentCode: string | null = null; // код инструмента для редактирования
+  editCode: string | null = null; // код инструмента для редактирования
+  editSymbol: string | null = null; // символ инструмента для уведомления
   currencies: CurrencyDto[] = [];
   valueDateCodes = Object.values(ValueDateCode);
 
@@ -111,10 +112,10 @@ export class FxSpotAdminComponent implements OnInit {
     const dto = this.form.getRawValue() as FxSpotCreateDto;
 
     this.service.add(dto).subscribe({
-      next: instrumentCode => {
+      next: code => {
         // Если все ОК
         this.snack.open(
-          `FX Spot '${instrumentCode}' added`, 'OK', { duration: 2500 }
+          `FX Spot '${code}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();
         this.form.reset({
@@ -135,9 +136,10 @@ export class FxSpotAdminComponent implements OnInit {
   }
 
   /* клик по иконке Edit */
-  onEdit(spot: FxSpotItemDto): void {
+  onEdit(spot: FxSpotListItemDto): void {
     this.editing = true;
-    this.editInstrumentCode = spot.instrumentCode;
+    this.editCode = spot.code;
+    this.editSymbol = spot.symbol;
     this.form.setValue({
       baseCurrency: spot.baseCurrency,
       quoteCurrency: spot.quoteCurrency,
@@ -151,7 +153,7 @@ export class FxSpotAdminComponent implements OnInit {
 
   /* нажата кнопка Save */
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editInstrumentCode) { return; }
+    if (this.form.invalid || this.locked || !this.editCode) { return; }
 
     this.locked = true;
 
@@ -159,9 +161,10 @@ export class FxSpotAdminComponent implements OnInit {
       quoteDecimal: this.form.controls['quoteDecimal'].value
     } as FxSpotUpdateDto;
 
-    this.service.update(this.editInstrumentCode, dto).subscribe({
+    this.service.update(this.editCode, dto).subscribe({
       next: () => {
-        this.snack.open(`FX Spot '${this.editInstrumentCode}' updated`, 'OK', { duration: 2500 });
+        const title = this.editSymbol ?? this.editCode;
+        this.snack.open(`FX Spot '${title}' updated`, 'OK', { duration: 2500 });
         this.refresh();
         this.cancelEdit();
         this.locked = false;
@@ -177,7 +180,8 @@ export class FxSpotAdminComponent implements OnInit {
   /* нажата кнопка Cancel */
   cancelEdit(): void {
     this.editing = false;
-    this.editInstrumentCode = null;
+    this.editCode = null;
+    this.editSymbol = null;
     this.form.reset({
       baseCurrency: '',
       quoteCurrency: '',
@@ -191,10 +195,11 @@ export class FxSpotAdminComponent implements OnInit {
   }
 
   /* клик по иконке Delete */
-  onDelete(instrumentCode: string): void {
-    this.service.delete(instrumentCode).subscribe({
+  onDelete(spot: FxSpotListItemDto): void {
+    this.service.delete(spot.code).subscribe({
       next: () => {
-        this.snack.open(`FX Spot '${instrumentCode}' deleted`, 'OK', { duration: 2500 });
+        const title = spot.symbol ?? spot.code;
+        this.snack.open(`FX Spot '${title}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
       error: err =>

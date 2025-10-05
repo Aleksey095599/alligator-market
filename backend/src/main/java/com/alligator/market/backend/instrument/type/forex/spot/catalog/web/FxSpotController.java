@@ -7,6 +7,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.F
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotDtoMapper;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.FxSpotListItemDto;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -63,9 +64,9 @@ public class FxSpotController {
 
     /** Вернуть все инструменты. */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FxSpotDto>>> getAll() {
-        List<FxSpotDto> list = service.findAll().stream()
-                .map(mapper::toDto)
+    public ResponseEntity<ApiResponse<List<FxSpotListItemDto>>> getAll() {
+        List<FxSpotListItemDto> list = service.findAll().stream()
+                .map(mapper::toListItemDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
