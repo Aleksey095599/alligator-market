@@ -86,22 +86,4 @@ public class ProviderEntity extends BaseEntity {
     ) {
         return new ProviderEntity(providerCode, descriptor, policy);
     }
-
-    /** Сравниваем сущности по техническому коду провайдера. */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ProviderEntity that)) {
-            return false;
-        }
-        return Objects.equals(providerCode, that.providerCode);
-    }
-
-    /** Хеш-код зависит только от технического кода провайдера. */
-    @Override
-    public int hashCode() {
-        return Objects.hash(providerCode);
-    }
 }

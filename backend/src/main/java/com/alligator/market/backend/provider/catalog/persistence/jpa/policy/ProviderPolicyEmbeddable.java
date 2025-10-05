@@ -32,7 +32,8 @@ public class ProviderPolicyEmbeddable {
 
     /** Конструктор. */
     ProviderPolicyEmbeddable(Duration minUpdateInterval) {
-        this.minUpdateInterval = Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
+        this.minUpdateInterval = Objects.requireNonNull(minUpdateInterval,
+                "minUpdateInterval must not be null");
     }
 
     /** Фабрика создания иммутабельного embeddable из доменной политики. */
