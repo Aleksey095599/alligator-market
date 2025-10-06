@@ -11,7 +11,7 @@ public enum InstrumentType {
     /* Поле enum. */
     private final String code; // Строковое представление значения
 
-    /* ↓↓ Конструктор enum (всегда неявно private). */
+    /** Конструктор enum (всегда неявно private). */
     InstrumentType(String code) {
         this.code = code;
     }

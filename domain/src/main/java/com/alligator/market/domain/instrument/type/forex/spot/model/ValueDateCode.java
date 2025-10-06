@@ -12,7 +12,7 @@ public enum ValueDateCode {
     /* Поле enum. */
     private final String code; // Строковая переменная
 
-    /* ↓↓ Конструктор enum (всегда неявно private) */
+    /** Конструктор enum (всегда неявно private). */
     ValueDateCode(String code) {
         this.code = code;
     }

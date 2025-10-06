@@ -11,7 +11,7 @@ public enum DeliveryMode {
     /* Поле enum. */
     private final String code; // Строковое представление значения
 
-    /* ↓↓ Конструктор enum (всегда неявно private). */
+    /** Конструктор enum (всегда неявно private). */
     DeliveryMode(String code) {
         this.code = code;
     }
