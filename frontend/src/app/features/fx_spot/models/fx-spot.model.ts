@@ -12,11 +12,9 @@ export interface FxSpotDto {
   valueDateCode: ValueDateCode;
 }
 
-/** DTO строки списка с фактическим кодом и символом. */
+/** DTO строки списка с символом инструмента. */
 export interface FxSpotListItemDto {
-  /* Код инструмента от backend */
-  code: string;
-  /* Символ инструмента (например, EUR/USD TOD) */
+  /* Символ инструмента (например, EURUSD_TOD) */
   symbol: string;
   /* Код базовой валюты */
   baseCurrency: string;
