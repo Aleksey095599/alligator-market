@@ -29,13 +29,7 @@ public class FxSpot extends AbstractInstrument {
 
         // ↓↓ Базовые проверки аргументов
         this.base = Objects.requireNonNull(base, "Base currency must not be null");
-        if (this.base.code().isBlank()) {
-            throw new IllegalArgumentException("Base currency code must not be blank");
-        }
         this.quote = Objects.requireNonNull(quote, "Quote currency must not be null");
-        if (this.quote.code().isBlank()) {
-            throw new IllegalArgumentException("Quote currency code must not be blank");
-        }
         this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
         this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
         if (this.quoteDecimal < 0) {
