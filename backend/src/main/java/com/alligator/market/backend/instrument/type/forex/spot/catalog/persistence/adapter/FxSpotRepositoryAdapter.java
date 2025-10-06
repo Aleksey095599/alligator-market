@@ -31,10 +31,10 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         FxSpotEntity entity = jpaRepository.findByCode(fxSpot.code())
                 .orElseGet(FxSpotEntity::new);
         // Получаем валюты (существование проверено в сервисе)
-        CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code())
-                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.base().code())));
-        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quote().code())
-                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.quote().code())));
+        CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code().value())
+                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.base().code().value())));
+        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quote().code().value())
+                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.quote().code().value())));
         mapper.updateEntity(fxSpot, base, quote, entity);
         jpaRepository.save(entity);
     }
@@ -60,7 +60,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public boolean existsByCurrency(Currency currency) {
-        String code = currency.code();
+        String code = currency.code().value();
         return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(code, code);
     }
 }

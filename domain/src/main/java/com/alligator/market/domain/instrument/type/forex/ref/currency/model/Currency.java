@@ -7,7 +7,7 @@ import java.util.Objects;
  */
 public record Currency(
         /* ↓↓ Базовые атрибуты валюты. */
-        String code,
+        CurrencyCode code,
         String name,
         String country,
         Integer decimal
@@ -21,12 +21,6 @@ public record Currency(
         Objects.requireNonNull(country, "country must not be null");
         Objects.requireNonNull(decimal, "decimal must not be null");
 
-        if (code.isBlank()) {
-            throw new IllegalArgumentException("code must not be blank");
-        }
-        if (!code.matches("^[A-Z]{3}$")) {
-            throw new IllegalArgumentException("code must match ^[A-Z]{3}$");
-        }
         if (name.isBlank()) {
             throw new IllegalArgumentException("name must not be blank");
         }
