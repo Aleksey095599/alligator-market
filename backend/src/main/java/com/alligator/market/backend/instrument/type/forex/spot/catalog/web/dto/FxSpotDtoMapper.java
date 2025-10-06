@@ -9,16 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FxSpotDtoMapper {
 
-    /** Преобразует доменную модель в основной DTO. */
-    public FxSpotDto toDto(FxSpot model) {
-        return new FxSpotDto(
-                model.base().code().value(),
-                model.quote().code().value(),
-                model.quoteDecimal(),
-                model.valueDateCode()
-        );
-    }
-
     /** Преобразует доменную модель в DTO элемента списка. */
     public FxSpotListItemDto toListItemDto(FxSpot model) {
         return new FxSpotListItemDto(
