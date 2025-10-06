@@ -23,7 +23,7 @@ public final class FxSpotCodec {
         Objects.requireNonNull(base, "Base currency code must not be null");
         Objects.requireNonNull(quote, "Quote currency code must not be null");
         Objects.requireNonNull(valueDate, "Value date code must not be null");
-        return base.toUpperCase() + quote.toUpperCase() + "_" + valueDate.name();
+        return base.toUpperCase() + quote.toUpperCase() + "_" + valueDate.code();
     }
 
     /** Формирует код инструмента FX_SPOT из параметров доменной модели. */
@@ -67,7 +67,7 @@ public final class FxSpotCodec {
 
     private static ValueDateCode parseValueDate(String valueDate) {
         try {
-            return ValueDateCode.valueOf(valueDate);
+            return ValueDateCode.fromCode(valueDate);
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Unsupported value date code: " + valueDate, ex);
         }
