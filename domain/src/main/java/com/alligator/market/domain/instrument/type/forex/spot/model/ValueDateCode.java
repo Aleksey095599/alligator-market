@@ -4,17 +4,20 @@ package com.alligator.market.domain.instrument.type.forex.spot.model;
  * Коды дат валютирования инструмента FX_SPOT.
  */
 public enum ValueDateCode {
+    /* ↓↓ Константы. */
     TOD("TOD"),
     TOM("TOM"),
     SPOT("SPOT");
 
-    private final String code;
+    /* Поле enum. */
+    private final String code; // Строковая переменная
 
+    /* ↓↓ Конструктор enum (всегда неявно private) */
     ValueDateCode(String code) {
         this.code = code;
     }
 
-    /** Строковый код для форматирования и парсинга. */
+    /** Возвращает строковый код. */
     public String code() {
         return code;
     }
