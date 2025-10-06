@@ -38,7 +38,10 @@ public class FxSpot extends AbstractInstrument {
         }
         this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
         this.quoteDecimal = Objects.requireNonNull(quoteDecimal, "Quote decimal must not be null");
-        // ↓↓ Проверяем, что валюты отличаются
+        if (this.quoteDecimal < 0) {
+            throw new IllegalArgumentException("Quote decimal must not be negative");
+        }
+        // Валюты должны отличиться
         if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
@@ -59,7 +62,7 @@ public class FxSpot extends AbstractInstrument {
         return valueDateCode;
     }
 
-    /** Количество знаков в котировке. */
+    /** Количество знаков после запятой в котировке (согласно рыночной практике). */
     public Integer quoteDecimal() {
         return quoteDecimal;
     }
