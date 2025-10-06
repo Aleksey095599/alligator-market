@@ -18,14 +18,6 @@ public final class FxSpotCodec {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /** Формирует код инструмента FX_SPOT. */
-    public static String fxSpotCode(String base, String quote, ValueDateCode valueDate) {
-        Objects.requireNonNull(base, "Base currency code must not be null");
-        Objects.requireNonNull(quote, "Quote currency code must not be null");
-        Objects.requireNonNull(valueDate, "Value date code must not be null");
-        return TYPE_PREFIX + fxSpotSymbol(base, quote, valueDate);
-    }
-
     /** Формирует символ инструмента FX_SPOT. */
     public static String fxSpotSymbol(String base, String quote, ValueDateCode valueDate) {
         Objects.requireNonNull(base, "Base currency code must not be null");
@@ -34,7 +26,18 @@ public final class FxSpotCodec {
         return base.toUpperCase() + quote.toUpperCase() + "_" + valueDate.name();
     }
 
-    /** Разбирает код инструмента FX_SPOT на составные части. */
+    /** Формирует код инструмента FX_SPOT из параметров доменной модели. */
+    public static String fxSpotCode(String base, String quote, ValueDateCode valueDate) {
+        Objects.requireNonNull(base, "Base currency code must not be null");
+        Objects.requireNonNull(quote, "Quote currency code must not be null");
+        Objects.requireNonNull(valueDate, "Value date code must not be null");
+        return TYPE_PREFIX + fxSpotSymbol(base, quote, valueDate);
+    }
+
+    /**
+     * Разбирает код инструмента FX_SPOT на параметры доменной модели.
+     * Обратная функция {@link #fxSpotCode(String, String, ValueDateCode)}.
+     */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
 
