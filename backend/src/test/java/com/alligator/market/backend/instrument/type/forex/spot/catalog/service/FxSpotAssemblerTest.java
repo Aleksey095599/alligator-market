@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
-import com.alligator.market.domain.instrument.type.forex.spot.utility.FxSpotCodec;
+import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

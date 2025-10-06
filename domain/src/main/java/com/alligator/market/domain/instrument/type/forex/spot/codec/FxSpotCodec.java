@@ -1,12 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.spot.utility;
+package com.alligator.market.domain.instrument.type.forex.spot.codec;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 
 import java.util.Objects;
 
 /**
- * Утилита задаёт правила кодирования и декодирования инструмента FX_SPOT.
+ * Утилита задаёт логику преобразования ключевых атрибутов доменной модели финансового инструмента FX_SPOT
+ * в атрибуты базовой модели финансового инструмента:
+ * {@link FxSpot}
  */
 public final class FxSpotCodec {
 

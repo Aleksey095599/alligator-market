@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
-import com.alligator.market.domain.instrument.type.forex.spot.utility.FxSpotCodec;
+import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.contract.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
@@ -64,16 +64,19 @@ public class FxSpot extends AbstractInstrument {
         return quoteDecimal;
     }
 
+    /** Внутренний код инструмента (уникален в контексте приложения). */
     @Override
     public String code() {
         return FxSpotCodec.fxSpotCode(base.code(), quote.code(), valueDateCode);
     }
 
+    /** Символ инструмента для отображения в UI. */
     @Override
     public String symbol() {
         return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), valueDateCode);
     }
 
+    /** Тип инструмента. */
     @Override
     public InstrumentType type() {
         return InstrumentType.FX_SPOT;
