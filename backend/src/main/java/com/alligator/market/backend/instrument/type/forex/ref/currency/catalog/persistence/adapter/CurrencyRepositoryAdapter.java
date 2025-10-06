@@ -24,7 +24,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     @Override
     public String save(Currency currency) {
-        CurrencyEntity entity = jpaRepository.findByCode(currency.code())
+        CurrencyEntity entity = jpaRepository.findByCode(currency.code().value())
                 .orElseGet(CurrencyEntity::new);
         mapper.updateEntity(currency, entity);
         return jpaRepository.save(entity).getCode();

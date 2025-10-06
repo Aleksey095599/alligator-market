@@ -29,8 +29,8 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     @Override
     public String createCurrency(Currency currency) {
         // Проверяем, что нет валюты с таким же кодом
-        currencyRepository.findByCode(currency.code()).ifPresent(c -> {
-            throw new CurrencyDuplicateException("code", currency.code());
+        currencyRepository.findByCode(currency.code().value()).ifPresent(c -> {
+            throw new CurrencyDuplicateException("code", currency.code().value());
         });
         // Проверяем, что нет валюты с таким же названием
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
@@ -44,8 +44,8 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     @Override
     public void updateCurrency(Currency currency) {
         // Проверяем, что валюта с таким кодом существует
-        currencyRepository.findByCode(currency.code())
-                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(currency.code())));
+        currencyRepository.findByCode(currency.code().value())
+                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(currency.code().value())));
         // Проверяем, что нет валюты с таким же названием
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
@@ -53,7 +53,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
             }
         });
         currencyRepository.save(currency);
-        log.info("Currency {} updated", currency.code());
+        log.info("Currency {} updated", currency.code().value());
     }
 
     @Override
