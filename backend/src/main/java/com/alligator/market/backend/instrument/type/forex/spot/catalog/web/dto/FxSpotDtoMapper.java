@@ -12,8 +12,8 @@ public class FxSpotDtoMapper {
     /** Преобразует доменную модель в основной DTO. */
     public FxSpotDto toDto(FxSpot model) {
         return new FxSpotDto(
-                model.base().code(),
-                model.quote().code(),
+                model.base().code().value(),
+                model.quote().code().value(),
                 model.quoteDecimal(),
                 model.valueDateCode()
         );
@@ -24,8 +24,8 @@ public class FxSpotDtoMapper {
         return new FxSpotListItemDto(
                 model.code(),
                 model.symbol(),
-                model.base().code(),
-                model.quote().code(),
+                model.base().code().value(),
+                model.quote().code().value(),
                 model.quoteDecimal(),
                 model.valueDateCode()
         );

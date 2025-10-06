@@ -32,11 +32,10 @@ public class FxSpotAssembler {
     public FxSpot toDomainByCode(String instrumentCode, FxSpotUpdateDto dto) {
         FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
 
-        Currency base = currencyRepository.findByCode(parts.baseCode())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.baseCode()));
-        Currency quote = currencyRepository.findByCode(parts.quoteCode())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.quoteCode()));
-
+        Currency base = currencyRepository.findByCode(parts.baseCode().toString())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.baseCode().toString()));
+        Currency quote = currencyRepository.findByCode(parts.quoteCode().toString())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.quoteCode().value()));
         return new FxSpot(base, quote, parts.valueDate(), dto.quoteDecimal());
     }
 }

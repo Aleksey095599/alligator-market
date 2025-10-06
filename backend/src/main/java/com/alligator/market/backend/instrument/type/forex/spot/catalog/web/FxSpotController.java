@@ -48,7 +48,7 @@ public class FxSpotController {
     @PatchMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> update(@PathVariable String code,
                                                     @RequestBody @Valid FxSpotUpdateDto dto) {
-        // Преобразуем код инструмента и DTO в модель
+        // код и DTO → модель
         FxSpot fxSpot = assembler.toDomainByCode(code, dto);
         // Передаем модель сервису
         service.update(fxSpot);
