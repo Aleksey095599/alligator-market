@@ -30,14 +30,13 @@ public class FxSpotAssembler {
 
     /** Код инструмента + DTO обновления ⇒ доменная модель. */
     public FxSpot toDomainByCode(String instrumentCode, FxSpotUpdateDto dto) {
-        FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
+        FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
 
-        Currency base = currencyRepository.findByCode(parts.base())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.base()));
-        Currency quote = currencyRepository.findByCode(parts.quote())
-                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.quote()));
+        Currency base = currencyRepository.findByCode(parts.baseCode())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.baseCode()));
+        Currency quote = currencyRepository.findByCode(parts.quoteCode())
+                .orElseThrow(() -> new FxSpotCurrencyNotFoundException(parts.quoteCode()));
 
         return new FxSpot(base, quote, parts.valueDate(), dto.quoteDecimal());
     }
-
 }

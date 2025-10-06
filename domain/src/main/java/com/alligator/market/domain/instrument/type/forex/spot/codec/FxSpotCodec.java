@@ -21,11 +21,11 @@ public final class FxSpotCodec {
     }
 
     /** Формирует символ FX_SPOT из атрибутов доменной модели. */
-    public static String fxSpotSymbol(Currency base, Currency quote, ValueDateCode valueDate) {
-        Objects.requireNonNull(base, "Base currency must not be null");
-        Objects.requireNonNull(quote, "Quote currency must not be null");
-        Objects.requireNonNull(valueDate, "Value date code must not be null");
-        return base.code() + quote.code() + SEP + valueDate.code();
+    public static String fxSpotSymbol(Currency baseCurrency, Currency quoteCurrency, ValueDateCode valueDate) {
+        Objects.requireNonNull(baseCurrency, "Base currency must not be null");
+        Objects.requireNonNull(quoteCurrency, "Quote currency must not be null");
+        Objects.requireNonNull(valueDate, "Value date must not be null");
+        return baseCurrency.code() + quoteCurrency.code() + SEP + valueDate.code();
     }
 
     /** Формирует внутренний код FX_SPOT из атрибутов доменной модели. */
