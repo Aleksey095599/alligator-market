@@ -7,7 +7,6 @@ import jakarta.validation.constraints.*;
  * Основной DTO инструмента FX_SPOT.
  */
 public record FxSpotDto(
-
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
         String baseCurrency,
