@@ -1,15 +1,11 @@
-package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto;
+package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in;
 
 import jakarta.validation.constraints.*;
 
 /**
- * Основной DTO валюты.
+ * DTO обновления.
  */
-public record CurrencyDto(
-
-        @NotBlank
-        @Pattern(regexp = "^[A-Z]{3}$")
-        String code,
+public record UpdateCurrencyDto(
 
         @NotBlank
         @Size(max = 50)
@@ -23,4 +19,3 @@ public record CurrencyDto(
         @Min(0) @Max(10)
         Integer decimal
 ) {}
-

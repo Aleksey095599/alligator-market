@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in;
 
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 import jakarta.validation.constraints.*;

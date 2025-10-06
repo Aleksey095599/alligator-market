@@ -2,9 +2,9 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.CurrencyDto;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.UpdateCurrencyDto;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.CurrencyDtoMapper;
+import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.common.CurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in.UpdateCurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service.CurrencyUseCase;
 import jakarta.validation.Valid;

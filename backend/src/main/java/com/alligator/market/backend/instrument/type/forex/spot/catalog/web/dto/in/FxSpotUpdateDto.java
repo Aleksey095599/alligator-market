@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

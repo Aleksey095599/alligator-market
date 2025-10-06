@@ -1,5 +1,6 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.mapper;
 
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotListItemDto;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.springframework.stereotype.Component;
 
