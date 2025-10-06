@@ -37,11 +37,12 @@ public class FxSpotController {
         FxSpot fxSpot = assembler.toDomain(dto);
         // Передаем модель сервису
         String code = service.create(fxSpot);
+        String symbol = fxSpot.symbol();
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{code}")
                 .buildAndExpand(code)
                 .toUri();
-        return ResponseEntityFactory.created(location, code);
+        return ResponseEntityFactory.created(location, symbol);
     }
 
     /** Обновить инструмент. */

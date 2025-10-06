@@ -12,7 +12,6 @@ public class FxSpotDtoMapper {
     /** Преобразует доменную модель в DTO элемента списка. */
     public FxSpotListItemDto toListItemDto(FxSpot model) {
         return new FxSpotListItemDto(
-                model.code(),
                 model.symbol(),
                 model.base().code().value(),
                 model.quote().code().value(),
