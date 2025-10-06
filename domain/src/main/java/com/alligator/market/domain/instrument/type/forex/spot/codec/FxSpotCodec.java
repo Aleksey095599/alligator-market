@@ -1,6 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.codec;
 
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
 
 import java.util.Objects;
@@ -10,33 +11,30 @@ import java.util.Objects;
  */
 public final class FxSpotCodec {
 
-    private static final String TYPE_PREFIX = InstrumentType.FX_SPOT + "_";
+    private static final String TYPE_PREFIX = InstrumentType.FX_SPOT.code() + "_";
+    private static final char SEP = '_';
     private static final int CURRENCY_CODE_LENGTH = 3;
-    private static final int CURRENCY_PAIR_LENGTH = CURRENCY_CODE_LENGTH * 2;
+    private static final int CURRENCY_PAIR_LENGTH = 6;
 
     private FxSpotCodec() {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /** Формирует символ инструмента FX_SPOT. */
-    public static String fxSpotSymbol(String base, String quote, ValueDateCode valueDate) {
-        Objects.requireNonNull(base, "Base currency code must not be null");
-        Objects.requireNonNull(quote, "Quote currency code must not be null");
+    /** Формирует символ FX_SPOT из атрибутов доменной модели. */
+    public static String fxSpotSymbol(Currency base, Currency quote, ValueDateCode valueDate) {
+        Objects.requireNonNull(base, "Base currency must not be null");
+        Objects.requireNonNull(quote, "Quote currency must not be null");
         Objects.requireNonNull(valueDate, "Value date code must not be null");
-        return base.toUpperCase() + quote.toUpperCase() + "_" + valueDate.code();
+        return base.code() + quote.code() + SEP + valueDate.code();
     }
 
-    /** Формирует код инструмента FX_SPOT из параметров доменной модели. */
-    public static String fxSpotCode(String base, String quote, ValueDateCode valueDate) {
-        Objects.requireNonNull(base, "Base currency code must not be null");
-        Objects.requireNonNull(quote, "Quote currency code must not be null");
-        Objects.requireNonNull(valueDate, "Value date code must not be null");
+    /** Формирует внутренний код FX_SPOT из атрибутов доменной модели. */
+    public static String fxSpotCode(Currency base, Currency quote, ValueDateCode valueDate) {
         return TYPE_PREFIX + fxSpotSymbol(base, quote, valueDate);
     }
 
     /**
-     * Разбирает код инструмента FX_SPOT на параметры доменной модели.
-     * Обратная функция {@link #fxSpotCode(String, String, ValueDateCode)}.
+     * Разбирает внутренний код FX_SPOT на строковые составные части.
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
@@ -45,31 +43,26 @@ public final class FxSpotCodec {
             throw new IllegalArgumentException("Instrument code must start with " + TYPE_PREFIX);
         }
 
-        // Отбрасываем префикс типа инструмента и делим строку на символ и дату валютирования
-        String[] parts = instrumentCode.substring(TYPE_PREFIX.length()).split("_");
-        if (parts.length != 2) {
-            throw new IllegalArgumentException("Instrument code must contain currency pair and value date");
+        final int start = TYPE_PREFIX.length();
+        final int sep = instrumentCode.indexOf(SEP, start);
+        if (sep < 0) {
+            throw new IllegalArgumentException("Instrument code must contain separator '_'");
         }
 
-        String symbol = parts[0];
-        if (symbol.length() != CURRENCY_PAIR_LENGTH) {
+        final String pair = instrumentCode.substring(start, sep);
+        if (pair.length() != CURRENCY_PAIR_LENGTH) {
             throw new IllegalArgumentException("Currency pair must contain " + CURRENCY_PAIR_LENGTH + " characters");
         }
 
-        ValueDateCode valueDateCode = parseValueDate(parts[1]);
+        // Разделяем на AAA и BBB (дополнительных проверок не делаем — это задача Currency)
+        final String baseCode = pair.substring(0, CURRENCY_CODE_LENGTH);
+        final String quoteCode = pair.substring(CURRENCY_CODE_LENGTH);
+        final String valueDateRaw = instrumentCode.substring(sep + 1);
+        final ValueDateCode valueDate = ValueDateCode.fromCode(valueDateRaw);
 
-        // Разделяем символ на коды валют
-        String base = symbol.substring(0, CURRENCY_CODE_LENGTH);
-        String quote = symbol.substring(CURRENCY_CODE_LENGTH, CURRENCY_PAIR_LENGTH);
-
-        return new FxSpotCodeParts(base, quote, valueDateCode);
+        return new FxSpotCodeParts(baseCode, quoteCode, valueDate);
     }
 
-    private static ValueDateCode parseValueDate(String valueDate) {
-        try {
-            return ValueDateCode.fromCode(valueDate);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Unsupported value date code: " + valueDate, ex);
-        }
-    }
+    /** Разложение кода FX_SPOT на строковые составляющие (без построения модели Currency). */
+    public record FxSpotCodeParts(String baseCode, String quoteCode, ValueDateCode valueDate) { }
 }

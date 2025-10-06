@@ -7,7 +7,6 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.repository
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodeParts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

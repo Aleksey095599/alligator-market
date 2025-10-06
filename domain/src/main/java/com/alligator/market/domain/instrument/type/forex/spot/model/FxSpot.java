@@ -35,8 +35,7 @@ public class FxSpot extends AbstractInstrument {
         if (this.quoteDecimal < 0) {
             throw new IllegalArgumentException("Quote decimal must not be negative");
         }
-        // Валюты должны отличиться
-        if (this.base.code().equals(this.quote.code())) {
+        if (this.base.code().equals(this.quote.code())) { // Валюты должны отличиться
             throw new FxSpotSameCurrenciesException();
         }
     }
@@ -64,13 +63,13 @@ public class FxSpot extends AbstractInstrument {
     /** Внутренний код инструмента (уникален в контексте приложения). */
     @Override
     public String code() {
-        return FxSpotCodec.fxSpotCode(base.code(), quote.code(), valueDateCode);
+        return FxSpotCodec.fxSpotCode(base, quote, valueDateCode);
     }
 
     /** Символ инструмента для отображения в UI. */
     @Override
     public String symbol() {
-        return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), valueDateCode);
+        return FxSpotCodec.fxSpotSymbol(base, quote, valueDateCode);
     }
 
     /** Тип инструмента. */
