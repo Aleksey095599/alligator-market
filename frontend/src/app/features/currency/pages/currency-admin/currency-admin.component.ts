@@ -36,7 +36,7 @@ export class CurrencyAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['code', 'name', 'country', 'decimal', 'actions'];
+  displayed: string[] = ['code', 'name', 'country', 'defaultFractionDigits', 'actions'];
   dataSource  = new MatTableDataSource<CurrencyDto>([]);
 
   //========================
@@ -78,7 +78,7 @@ export class CurrencyAdminComponent implements OnInit {
         ]
       ],
 
-      decimal: [
+      defaultFractionDigits: [
         2,
         [
           Validators.required,
@@ -113,7 +113,7 @@ export class CurrencyAdminComponent implements OnInit {
           `Currency '${code}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();                    // обновляем таблицу
-        this.form.reset({ decimal: 2 });   // оставляем decimal по-умолчанию
+        this.form.reset({ defaultFractionDigits: 2 });   // оставляем количество знаков по-умолчанию
         this.locked = false;               // разблокируем кнопку
       },
       error: err => {
@@ -134,7 +134,7 @@ export class CurrencyAdminComponent implements OnInit {
       code: c.code,
       name: c.name,
       country: c.country,
-      decimal: c.decimal
+      defaultFractionDigits: c.defaultFractionDigits
     });
     this.form.controls['code'].disable();
   }
@@ -148,7 +148,7 @@ export class CurrencyAdminComponent implements OnInit {
     const dto: UpdateCurrencyDto = {
       name: this.form.controls['name'].value,
       country: this.form.controls['country'].value,
-      decimal: this.form.controls['decimal'].value
+      defaultFractionDigits: this.form.controls['defaultFractionDigits'].value
     } as UpdateCurrencyDto;
 
     this.service.update(this.editCode, dto).subscribe({
@@ -170,7 +170,7 @@ export class CurrencyAdminComponent implements OnInit {
   cancelEdit(): void {
     this.editing = false;
     this.editCode = null;
-    this.form.reset({ code: '', name: '', country: '', decimal: 2 });
+    this.form.reset({ code: '', name: '', country: '', defaultFractionDigits: 2 });
     this.form.controls['code'].enable();
     this.locked = false;
   }

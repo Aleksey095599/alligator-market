@@ -50,17 +50,17 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Decimal</mat-label>
+          <mat-label>Default fraction digits</mat-label>
           <input
             matInput
             type="number"
-            formControlName="decimal"
+            formControlName="defaultFractionDigits"
           />
-          <mat-error *ngIf="form.controls['decimal'].hasError('required')">
+          <mat-error *ngIf="form.controls['defaultFractionDigits'].hasError('required')">
             Is required
           </mat-error>
-          <mat-error *ngIf="form.controls['decimal'].hasError('min')
-               || form.controls['decimal'].hasError('max')">
+          <mat-error *ngIf="form.controls['defaultFractionDigits'].hasError('min')
+               || form.controls['defaultFractionDigits'].hasError('max')">
             0 – 10 allowed
           </mat-error>
         </mat-form-field>
@@ -105,9 +105,9 @@
           <td mat-cell *matCellDef="let c"> {{ c.country }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="decimal">
-          <th mat-header-cell *matHeaderCellDef> Decimal</th>
-          <td mat-cell *matCellDef="let c"> {{ c.decimal }}</td>
+        <ng-container matColumnDef="defaultFractionDigits">
+          <th mat-header-cell *matHeaderCellDef> Default fraction digits</th>
+          <td mat-cell *matCellDef="let c"> {{ c.defaultFractionDigits }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
