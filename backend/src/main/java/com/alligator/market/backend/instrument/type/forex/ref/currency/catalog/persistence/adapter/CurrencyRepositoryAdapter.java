@@ -6,7 +6,6 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -17,17 +16,19 @@ import java.util.Optional;
  * Адаптер, реализующий доменный порт {@link CurrencyRepository} через Spring Data JPA.
  */
 @Repository
-@RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     private final CurrencyJpaRepository jpaRepository;
-    private final CurrencyEntityMapper mapper;
+
+    public CurrencyRepositoryAdapter(CurrencyJpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
 
     @Override
     public String save(Currency currency) {
         CurrencyEntity entity = jpaRepository.findByCode(currency.code())
                 .orElseGet(CurrencyEntity::new);
-        mapper.updateEntity(currency, entity);
+        CurrencyEntityMapper.updateEntity(currency, entity);
         return jpaRepository.save(entity).getCode().value();
     }
 
@@ -38,18 +39,18 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     @Override
     public Optional<Currency> findByCode(String code) {
-        return jpaRepository.findByCode(CurrencyCode.of(code)).map(mapper::toDomain);
+        return jpaRepository.findByCode(CurrencyCode.of(code)).map(CurrencyEntityMapper::toDomain);
     }
 
     @Override
     public Optional<Currency> findByName(String name) {
-        return jpaRepository.findByName(name).map(mapper::toDomain);
+        return jpaRepository.findByName(name).map(CurrencyEntityMapper::toDomain);
     }
 
     @Override
     public List<Currency> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
-                .map(mapper::toDomain)
+                .map(CurrencyEntityMapper::toDomain)
                 .toList();
     }
 }

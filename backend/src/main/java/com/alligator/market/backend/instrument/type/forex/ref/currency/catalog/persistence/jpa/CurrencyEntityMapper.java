@@ -1,18 +1,18 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import org.springframework.stereotype.Component;
-
 import java.util.Objects;
 
 /**
  * Маппер: JPA-сущность ⇄ доменная модель.
  */
-@Component
-public class CurrencyEntityMapper {
+public final class CurrencyEntityMapper {
+
+    private CurrencyEntityMapper() {
+    }
 
     /** JPA-сущность ⇒ доменная модель. */
-    public Currency toDomain(CurrencyEntity e) {
+    public static Currency toDomain(CurrencyEntity e) {
         int digits = Objects.requireNonNull(e.getDefaultFractionDigits(),
                 "defaultFractionDigits must not be null");
         return new Currency(
@@ -24,7 +24,7 @@ public class CurrencyEntityMapper {
     }
 
     /** Обновление JPA-сущности. */
-    public void updateEntity(Currency c, CurrencyEntity e) {
+    public static void updateEntity(Currency c, CurrencyEntity e) {
         Objects.requireNonNull(c, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
         // Код валюты неизменяемый (updatable = false)

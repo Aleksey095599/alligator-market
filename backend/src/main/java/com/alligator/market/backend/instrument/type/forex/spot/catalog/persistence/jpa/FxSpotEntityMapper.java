@@ -3,24 +3,20 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
  * Маппер: JPA-сущность ⇄ доменная модель.
  */
 @Component
-@RequiredArgsConstructor
 public class FxSpotEntityMapper {
-
-    private final CurrencyEntityMapper currencyMapper;
 
     /** JPA-сущность ⇒ доменная модель. */
     public FxSpot toDomain(FxSpotEntity entity) {
         // Собираем доменную модель
         return new FxSpot(
-                currencyMapper.toDomain(entity.getBaseCurrency()),
-                currencyMapper.toDomain(entity.getQuoteCurrency()),
+                CurrencyEntityMapper.toDomain(entity.getBaseCurrency()),
+                CurrencyEntityMapper.toDomain(entity.getQuoteCurrency()),
                 entity.getValueDateCode(),
                 entity.getQuoteDecimal()
         );
