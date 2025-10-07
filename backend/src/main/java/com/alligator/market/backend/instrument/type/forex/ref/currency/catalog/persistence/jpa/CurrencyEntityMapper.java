@@ -27,7 +27,7 @@ public class CurrencyEntityMapper {
     public void updateEntity(Currency c, CurrencyEntity e) {
         Objects.requireNonNull(c, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
-        // Код валюты неизменяемый (см. updatable = false), поэтому пропускаем его.
+        // Код валюты неизменяемый (updatable = false)
         e.setName(c.name());
         e.setCountry(c.country());
         e.setDefaultFractionDigits(c.defaultFractionDigits());
