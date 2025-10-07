@@ -18,8 +18,10 @@ import java.util.Optional;
 @Repository
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
+    //
     private final CurrencyJpaRepository jpaRepository;
 
+    /** Конструктор. */
     public CurrencyRepositoryAdapter(CurrencyJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
