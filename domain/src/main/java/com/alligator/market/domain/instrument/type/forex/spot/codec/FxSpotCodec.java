@@ -8,7 +8,8 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCod
 import java.util.Objects;
 
 /**
- * Утилита для форматирования и парсинга атрибутов {@code code} и {@code symbol} инструмента FX_SPOT
+ * Утилита содержит методы формирования атрибутов {@code code} и {@code symbol} инструмента FX_SPOT и
+ * метод разложения строкового кода {@code code} инструмента FX_SPOT на составные компоненты.
  */
 public final class FxSpotCodec {
 
@@ -65,7 +66,7 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<ValueDateCode>} на составные части.
+     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<ValueDateCode>} на составные компоненты.
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");

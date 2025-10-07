@@ -8,8 +8,7 @@ import java.util.Objects;
  */
 public final class CurrencyEntityMapper {
 
-    private CurrencyEntityMapper() {
-    }
+    private CurrencyEntityMapper() { throw new UnsupportedOperationException("Utility class"); }
 
     /** JPA-сущность ⇒ доменная модель. */
     public static Currency toDomain(CurrencyEntity e) {
