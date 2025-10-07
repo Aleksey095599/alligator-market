@@ -13,6 +13,12 @@ public interface CurrencyRepository {
     /** Сохранить валюту. */
     String save(Currency currency);
 
+    /** Создать новую валюту. */
+    Currency create(Currency currency);
+
+    /** Обновить существующую валюту. */
+    Currency update(Currency currency);
+
     /** Удалить валюту по коду. */
     void deleteByCode(String code);
 

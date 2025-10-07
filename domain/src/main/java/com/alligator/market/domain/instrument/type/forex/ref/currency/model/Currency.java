@@ -40,9 +40,4 @@ public record Currency(
         this.country = nCountry;
         this.defaultFractionDigits = defaultFractionDigits;
     }
-
-    /** Совпадают ли по доменной идентичности (коду). */
-    public boolean sameCode(Currency other) {
-        return other != null && this.code.equals(other.code);
-    }
 }

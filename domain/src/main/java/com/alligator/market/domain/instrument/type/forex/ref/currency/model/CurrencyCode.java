@@ -11,7 +11,6 @@ import java.util.Objects;
 public record CurrencyCode(
         String value
 ) {
-
     /** Локальная проверка: три заглавные латинские буквы. */
     private static boolean isIso4217(String s) {
         return s.length() == 3
@@ -22,6 +21,7 @@ public record CurrencyCode(
 
     /** Конструктор с проверками. */
     public CurrencyCode {
+        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(value, "Currency code must not be null");
         if (!isIso4217(value)) {
             throw new IllegalArgumentException("Currency code must match [A-Z]{3}");
@@ -30,9 +30,4 @@ public record CurrencyCode(
 
     /** Фабрика для создания модели из строкового кода. */
     public static CurrencyCode of(String code) { return new CurrencyCode(code); }
-
-    /** Возвращает строковое представление кода. */
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public String toString() { return value; }
 }
