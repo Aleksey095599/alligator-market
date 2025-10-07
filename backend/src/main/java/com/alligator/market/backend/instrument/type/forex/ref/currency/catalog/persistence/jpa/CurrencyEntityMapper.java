@@ -25,6 +25,8 @@ public class CurrencyEntityMapper {
 
     /** Обновление JPA-сущности. */
     public void updateEntity(Currency c, CurrencyEntity e) {
+        Objects.requireNonNull(c, "model must not be null");
+        Objects.requireNonNull(e, "entity must not be null");
         e.setCode(c.code());
         e.setName(c.name());
         e.setCountry(c.country());
