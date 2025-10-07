@@ -41,21 +41,8 @@ public record Currency(
         this.defaultFractionDigits = defaultFractionDigits;
     }
 
-    /** Сравниваем валюты по коду. */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Currency that)) {
-            return false;
-        }
-        return code().equals(that.code());
-    }
-
-    /** Хэш по коду. */
-    @Override
-    public int hashCode() {
-        return Objects.hash(code());
+    /** Совпадают ли по доменной идентичности (коду). */
+    public boolean sameCode(Currency other) {
+        return other != null && this.code.equals(other.code);
     }
 }
