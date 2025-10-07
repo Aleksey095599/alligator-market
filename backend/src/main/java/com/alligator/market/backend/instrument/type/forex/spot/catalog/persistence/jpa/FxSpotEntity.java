@@ -19,6 +19,7 @@ import org.hibernate.annotations.Check;
  * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
+@Check(constraints = "base_currency <> quote_currency")
 @Table(name = "fx_spot", uniqueConstraints = {
         @UniqueConstraint(name = "uq_fx_spot_pair_value_date", columnNames = {
                 "base_currency",
@@ -26,7 +27,6 @@ import org.hibernate.annotations.Check;
                 "value_date_code"
         })
 })
-@Check(constraints = "base_currency <> quote_currency")
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter

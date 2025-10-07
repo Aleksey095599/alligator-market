@@ -11,12 +11,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.NaturalId;
 
 /**
  * JPA-сущность валюты {@link Currency}.
  */
 @Entity
+@Check(constraints = "default_fraction_digits BETWEEN 0 AND 10")
 @Table(
         name = "currency",
         uniqueConstraints = {
