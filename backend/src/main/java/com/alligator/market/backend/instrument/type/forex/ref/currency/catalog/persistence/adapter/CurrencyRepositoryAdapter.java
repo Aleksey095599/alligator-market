@@ -4,6 +4,7 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -24,20 +25,20 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     @Override
     public String save(Currency currency) {
-        CurrencyEntity entity = jpaRepository.findByCode(currency.code().value())
+        CurrencyEntity entity = jpaRepository.findByCode(currency.code())
                 .orElseGet(CurrencyEntity::new);
         mapper.updateEntity(currency, entity);
-        return jpaRepository.save(entity).getCode();
+        return jpaRepository.save(entity).getCode().value();
     }
 
     @Override
     public void deleteByCode(String code) {
-        jpaRepository.deleteByCode(code);
+        jpaRepository.deleteByCode(CurrencyCode.of(code));
     }
 
     @Override
     public Optional<Currency> findByCode(String code) {
-        return jpaRepository.findByCode(code).map(mapper::toDomain);
+        return jpaRepository.findByCode(CurrencyCode.of(code)).map(mapper::toDomain);
     }
 
     @Override

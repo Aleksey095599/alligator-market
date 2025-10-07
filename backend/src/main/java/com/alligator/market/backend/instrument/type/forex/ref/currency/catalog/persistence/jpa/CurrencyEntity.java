@@ -2,12 +2,12 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 
 import com.alligator.market.backend.common.jpa.BaseEntity;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,11 +36,11 @@ public class CurrencyEntity extends BaseEntity {
     private Long id;
 
     /** ISO-4217 код валюты. */
-    @NotBlank
-    @Pattern(regexp = "^[A-Z]{3}$")
+    @NotNull
+    @Convert(converter = CurrencyCodeConverter.class)
     @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
-    private String code;
+    private CurrencyCode code;
 
     /** Наименование валюты. */
     @NotBlank
