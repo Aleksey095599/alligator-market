@@ -17,7 +17,7 @@ public class CurrencyEntityMapper {
                 CurrencyCode.of(entity.getCode()),
                 entity.getName(),
                 entity.getCountry(),
-                entity.getDecimal()
+                entity.getDefaultFractionDigits()
         );
     }
 
@@ -27,6 +27,6 @@ public class CurrencyEntityMapper {
         entity.setCode(currency.code().value());
         entity.setName(currency.name());
         entity.setCountry(currency.country());
-        entity.setDecimal(currency.decimal());
+        entity.setDefaultFractionDigits(currency.defaultFractionDigits());
     }
 }

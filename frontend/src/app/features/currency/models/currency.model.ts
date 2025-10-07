@@ -3,5 +3,5 @@ export interface CurrencyDto {
   code: string;
   name: string;
   country: string;
-  decimal: number;
+  defaultFractionDigits: number;
 }

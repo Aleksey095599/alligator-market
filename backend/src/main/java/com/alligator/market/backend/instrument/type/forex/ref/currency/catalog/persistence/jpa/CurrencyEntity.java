@@ -56,6 +56,6 @@ public class CurrencyEntity extends BaseEntity {
     @NotNull
     @Min(0)
     @Max(10)
-    @Column(name = "decimal_value", nullable = false)
-    private Integer decimal;
+    @Column(name = "default_fraction_digits", nullable = false)
+    private Integer defaultFractionDigits;
 }

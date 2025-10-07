@@ -18,7 +18,7 @@ public class CurrencyDtoMapper {
                 CurrencyCode.of(dto.code()),
                 dto.name(),
                 dto.country(),
-                dto.decimal()
+                dto.defaultFractionDigits()
         );
     }
 
@@ -28,7 +28,7 @@ public class CurrencyDtoMapper {
                 CurrencyCode.of(code),
                 dto.name(),
                 dto.country(),
-                dto.decimal()
+                dto.defaultFractionDigits()
         );
     }
 
@@ -38,7 +38,7 @@ public class CurrencyDtoMapper {
                 currency.code().value(),
                 currency.name(),
                 currency.country(),
-                currency.decimal()
+                currency.defaultFractionDigits()
         );
     }
 }

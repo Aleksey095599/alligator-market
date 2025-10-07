@@ -17,5 +17,5 @@ public record UpdateCurrencyDto(
 
         @NotNull
         @Min(0) @Max(10)
-        Integer decimal
+        Integer defaultFractionDigits
 ) {}
