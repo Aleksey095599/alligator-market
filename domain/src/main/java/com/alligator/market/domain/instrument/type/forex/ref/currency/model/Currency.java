@@ -5,6 +5,11 @@ import java.util.Objects;
 /**
  * Базовая модель валюты.
  * Используется для создания валютных пар.
+ *
+ * @param code                    ISO-4217 код валюты.
+ * @param name                    Наименование валюты.
+ * @param country                 Страна или регион обращения.
+ * @param defaultFractionDigits   Количество знаков после запятой для денежных сумм.
  */
 public record Currency(
         CurrencyCode code,
