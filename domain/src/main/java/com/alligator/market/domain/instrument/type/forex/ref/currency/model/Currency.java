@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Базовая модель валюты.
+ * Используется для создания валютных пар.
  */
 public record Currency(
         CurrencyCode code,
