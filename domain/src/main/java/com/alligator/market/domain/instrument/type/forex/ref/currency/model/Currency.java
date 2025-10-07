@@ -9,15 +9,14 @@ public record Currency(
         CurrencyCode code,
         String name,
         String country,
-        Integer decimal
+        int decimal
 ) {
     /** Конструктор с проверками. */
-    public Currency (CurrencyCode code, String name, String country, Integer decimal) {
+    public Currency (CurrencyCode code, String name, String country, int decimal) {
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(country, "country must not be null");
-        Objects.requireNonNull(decimal, "decimal must not be null");
 
         // ↓↓ Нормализуем и проверяем строковые переменные
         final String nName = name.strip();
