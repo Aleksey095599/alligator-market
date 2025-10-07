@@ -6,27 +6,34 @@ import java.util.Objects;
  * Базовая модель валюты.
  */
 public record Currency(
-        /* ↓↓ Базовые атрибуты валюты. */
         CurrencyCode code,
         String name,
         String country,
         Integer decimal
 ) {
-    /** Канонический конструктор с проверками. */
-    public Currency {
-
+    /** Конструктор с проверками. */
+    public Currency (CurrencyCode code, String name, String country, Integer decimal) {
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(country, "country must not be null");
         Objects.requireNonNull(decimal, "decimal must not be null");
 
-        if (name.isBlank()) {
-            throw new IllegalArgumentException("name must not be blank");
+        // ↓↓ Нормализуем и проверяем строковые переменные
+        final String nName = name.strip();
+        final String nCountry = country.strip();
+        if (nName.isEmpty()) throw new IllegalArgumentException("name must not be blank");
+        if (nCountry.isEmpty()) throw new IllegalArgumentException("country must not be blank");
+
+        // Ограничение на количество знаков после запятой
+        if (decimal < 0 || decimal > 10) {
+            throw new IllegalArgumentException("decimal must be between 0 and 10");
         }
-        if (country.isBlank()) {
-            throw new IllegalArgumentException("country must not be blank");
-        }
+
+        this.code = code;
+        this.name = nName;
+        this.country = nCountry;
+        this.decimal = decimal;
     }
 
     /** Сравниваем валюты по коду. */
