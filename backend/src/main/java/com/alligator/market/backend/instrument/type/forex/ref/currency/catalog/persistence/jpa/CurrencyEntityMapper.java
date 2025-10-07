@@ -12,6 +12,7 @@ public final class CurrencyEntityMapper {
 
     /** JPA-сущность ⇒ доменная модель. */
     public static Currency toDomain(CurrencyEntity e) {
+        Objects.requireNonNull(e, "entity must not be null");
         int digits = Objects.requireNonNull(e.getDefaultFractionDigits(),
                 "defaultFractionDigits must not be null");
         return new Currency(
@@ -26,6 +27,10 @@ public final class CurrencyEntityMapper {
     public static void updateEntity(Currency c, CurrencyEntity e) {
         Objects.requireNonNull(c, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
+        // модель и сущность должны соответствовать одной валюте
+        if (!e.getCode().equals(c.code())) {
+            throw new IllegalStateException("Currency code mismatch: " + e.getCode() + " vs " + c.code());
+        }
         // Код валюты неизменяемый (updatable = false)
         e.setName(c.name());
         e.setCountry(c.country());

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,6 +43,7 @@ public class CurrencyEntity extends BaseEntity {
     @Convert(converter = CurrencyCodeConverter.class)
     @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
     private CurrencyCode code;
 
     /** Наименование валюты. */
