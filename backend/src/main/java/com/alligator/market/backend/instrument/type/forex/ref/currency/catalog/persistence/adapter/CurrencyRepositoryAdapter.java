@@ -3,13 +3,17 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,12 +30,21 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         this.jpaRepository = jpaRepository;
     }
 
+    /** Создать новую валюту. */
     @Override
-    public String save(Currency currency) {
-        CurrencyEntity entity = jpaRepository.findByCode(currency.code())
-                .orElseGet(CurrencyEntity::new);
-        CurrencyEntityMapper.updateEntity(currency, entity);
-        return jpaRepository.save(entity).getCode().value();
+    @Transactional
+    public Currency create(Currency currency) {
+        Objects.requireNonNull(currency, "currency must not be null");
+
+        CurrencyEntity entity = CurrencyEntityMapper.newEntity(currency);
+
+        try {
+            // Сохраняем и сразу flush: уникальный индекс по code сразу же проверится
+            CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // INSERT + FLUSH
+            return CurrencyEntityMapper.toDomain(saved);
+        } catch (DataIntegrityViolationException ex) {
+            throw new CurrencyCreateException(currency.code(), ex);
+        }
     }
 
     @Override

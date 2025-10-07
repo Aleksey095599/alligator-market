@@ -12,14 +12,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Check;
 import org.hibernate.annotations.NaturalId;
+
+import java.util.Objects;
 
 /**
  * JPA-сущность валюты {@link Currency}.
  */
 @Entity
-@Check(constraints = "default_fraction_digits BETWEEN 0 AND 10")
 @Table(
         name = "currency",
         uniqueConstraints = {
@@ -29,7 +29,7 @@ import org.hibernate.annotations.NaturalId;
 )
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← Не "светим наружу" JPA-конструктор
 public class CurrencyEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -39,11 +39,11 @@ public class CurrencyEntity extends BaseEntity {
     private Long id;
 
     /** ISO-4217 код валюты. */
+    @Setter(AccessLevel.NONE) // ← Код неизменяем после создания
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
-    @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
+    @NaturalId() // ← Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
-    @Setter(AccessLevel.NONE)
     private CurrencyCode code;
 
     /** Наименование валюты. */
@@ -62,4 +62,9 @@ public class CurrencyEntity extends BaseEntity {
     @Max(10)
     @Column(name = "default_fraction_digits", nullable = false)
     private Integer defaultFractionDigits;
+
+    /** Дополнительный конструктор для создания JPA-сущности с заданным кодом валюты. */
+    public CurrencyEntity(CurrencyCode code) {
+        this.code = Objects.requireNonNull(code, "code must not be null");
+    }
 }

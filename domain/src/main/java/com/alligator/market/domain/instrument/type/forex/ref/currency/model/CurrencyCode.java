@@ -21,8 +21,8 @@ public record CurrencyCode(
 
     /** Конструктор с проверками. */
     public CurrencyCode {
-        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(value, "Currency code must not be null");
+        // Соответствие стандартам ISO-4217
         if (!isIso4217(value)) {
             throw new IllegalArgumentException("Currency code must match [A-Z]{3}");
         }
