@@ -2,6 +2,8 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+
 import java.util.Optional;
 
 /**
@@ -10,11 +12,11 @@ import java.util.Optional;
 public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Long> {
 
     /** Найти JPA-сущность валюты по ISO-коду. */
-    Optional<CurrencyEntity> findByCode(String code);
+    Optional<CurrencyEntity> findByCode(CurrencyCode code);
 
     /** Найти JPA-сущность валюты по имени. */
     Optional<CurrencyEntity> findByName(String name);
 
     /** Удалить запись валюты по ISO-коду. */
-    void deleteByCode(String code);
+    void deleteByCode(CurrencyCode code);
 }

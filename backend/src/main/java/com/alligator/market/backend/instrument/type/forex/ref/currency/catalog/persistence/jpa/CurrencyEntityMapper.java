@@ -1,7 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +13,7 @@ public class CurrencyEntityMapper {
     public Currency toDomain(CurrencyEntity entity) {
         // Собираем доменную модель
         return new Currency(
-                CurrencyCode.of(entity.getCode()),
+                entity.getCode(),
                 entity.getName(),
                 entity.getCountry(),
                 entity.getDefaultFractionDigits()
@@ -24,7 +23,7 @@ public class CurrencyEntityMapper {
     /** Обновление JPA-сущности. */
     public void updateEntity(Currency currency, CurrencyEntity entity) {
         // Переносим значения в JPA-сущность
-        entity.setCode(currency.code().value());
+        entity.setCode(currency.code());
         entity.setName(currency.name());
         entity.setCountry(currency.country());
         entity.setDefaultFractionDigits(currency.defaultFractionDigits());
