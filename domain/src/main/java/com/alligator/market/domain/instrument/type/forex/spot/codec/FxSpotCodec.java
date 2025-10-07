@@ -36,11 +36,6 @@ public final class FxSpotCodec {
         return baseCode.value() + quoteCode.value() + SEP + valueDate.code();
     }
 
-    /* ↪ Перегрузка для случая строковых значений валют. */
-    public static String fxSpotSymbol(String base, String quote, ValueDateCode valueDate) {
-        return fxSpotSymbol(CurrencyCode.of(base), CurrencyCode.of(quote), valueDate);
-    }
-
     /* ↪ Перегрузка для случая доменных моделей валют. */
     public static String fxSpotSymbol(Currency base, Currency quote, ValueDateCode valueDate) {
         Objects.requireNonNull(base, "Base currency must not be null");
@@ -51,11 +46,6 @@ public final class FxSpotCodec {
     /** Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования. */
     public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, ValueDateCode valueDate) {
         return TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate);
-    }
-
-    /* ↪ Перегрузка для случая строковых значений валют. */
-    public static String fxSpotCode(String base, String quote, ValueDateCode valueDate) {
-        return fxSpotCode(CurrencyCode.of(base), CurrencyCode.of(quote), valueDate);
     }
 
     /* ↪ Перегрузка для случая доменных моделей валют. */
