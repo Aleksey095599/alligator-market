@@ -30,19 +30,22 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         this.jpaRepository = jpaRepository;
     }
 
+    /** Создать новую валюту. */
     @Override
     @Transactional
-    public Currency create(Currency currency) {
-        Objects.requireNonNull(currency, "currency must not be null");
+    public Currency create(Currency c) {
+        Objects.requireNonNull(c, "currency must not be null");
+        Objects.requireNonNull(c.code(), "currency code must not be null");
 
-        CurrencyEntity entity = CurrencyEntityMapper.newEntity(currency);
+        // Создаем JPA-сущность, используя специальный метод
+        CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
         try {
             // Сохраняем и сразу flush: уникальный индекс по code сразу же проверится
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // INSERT + FLUSH
             return CurrencyEntityMapper.toDomain(saved);
         } catch (DataIntegrityViolationException ex) {
-            throw new CurrencyCreateException(currency.code(), ex);
+            throw new CurrencyCreateException(c.code(), ex);
         }
     }
 

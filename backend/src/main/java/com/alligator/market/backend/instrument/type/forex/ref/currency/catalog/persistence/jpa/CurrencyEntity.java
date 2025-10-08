@@ -39,10 +39,10 @@ public class CurrencyEntity extends BaseEntity {
     private Long id;
 
     /** ISO-4217 код валюты. */
-    @Setter(AccessLevel.NONE) // ← Код неизменяем после создания
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
-    @NaturalId() // ← Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
+    @NaturalId() // ← Помечаем поле как натуральный ключ («естественный» неизменяемый ключ)
     @Column(name = "code", length = 3, nullable = false, updatable = false)
     private CurrencyCode code;
 
@@ -63,7 +63,11 @@ public class CurrencyEntity extends BaseEntity {
     @Column(name = "default_fraction_digits", nullable = false)
     private Integer defaultFractionDigits;
 
-    /** Дополнительный конструктор для создания JPA-сущности с заданным кодом валюты. */
+    /**
+     * Специальный конструктор для создания JPA-сущности с заданным натуральным ключом (кодом валюты).
+     * Данный конструктор — единственный способ создать JPA-сущность (стандартный конструктор AccessLevel.PROTECTED)
+     * и обеспечивает "одноразовость" (сеттер AccessLevel.NONE) установления натурального ключа.
+     */
     public CurrencyEntity(CurrencyCode code) {
         this.code = Objects.requireNonNull(code, "code must not be null");
     }

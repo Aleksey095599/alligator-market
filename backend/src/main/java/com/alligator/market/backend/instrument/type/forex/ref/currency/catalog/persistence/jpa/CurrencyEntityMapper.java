@@ -15,8 +15,7 @@ public final class CurrencyEntityMapper {
     public static CurrencyEntity newEntity(Currency c) {
         Objects.requireNonNull(c, "model must not be null");
 
-        // Устанавливаем natural id (code) через конструктор.
-        // После создания менять нельзя (нет сеттера, updatable=false).
+        // Создаем JPA-сущность с заданным натуральным ключом
         var e = new CurrencyEntity(c.code());
 
         apply(c, e); // ← Копируем прочие поля из модели
@@ -26,7 +25,8 @@ public final class CurrencyEntityMapper {
     /** JPA-сущность ⇒ доменная модель. */
     public static Currency toDomain(CurrencyEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
-        Objects.requireNonNull(e.getCode(), "code must not be null");
+
+        // defaultFractionDigits задана как Integer в JPA-сущности и как int в Currency => нужна проверка
         int digits = Objects.requireNonNull(e.getDefaultFractionDigits(),
                 "defaultFractionDigits must not be null");
 
@@ -37,7 +37,6 @@ public final class CurrencyEntityMapper {
     public static void apply(Currency c, CurrencyEntity e) {
         Objects.requireNonNull(c, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
-        Objects.requireNonNull(e.getCode(), "entity code must not be null");
 
         // Модель и сущность должны соответствовать одной валюте
         if (!e.getCode().equals(c.code())) {
