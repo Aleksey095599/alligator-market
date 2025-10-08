@@ -35,21 +35,41 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     @Transactional
     public Currency create(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
-        Objects.requireNonNull(c.code(), "currency code must not be null");
 
         // Создаем JPA-сущность, используя специальный метод
         CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
         try {
-            // Сохраняем и сразу flush: уникальный индекс по code сразу же проверится
-            CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // INSERT + FLUSH
+            CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // flush ⇒ ошибки БД всплывут сразу
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (DataIntegrityViolationException ex) {
+        } catch (javax.validation.ConstraintViolationException ex) { // Bean Validation (до SQL)
+            throw new CurrencyCreateException(c.code(), ex);
+        } catch (org.springframework.dao.DataAccessException ex) {     // ORM/БД ошибки (перевод Spring)
             throw new CurrencyCreateException(c.code(), ex);
         }
     }
 
+    /* Обновить существующую валюту. */
+    @Override
+    @Transactional
+    public Currency update(Currency c) {
+        Objects.requireNonNull(c, "currency must not be null");
 
+        // Ищем JPA-сущность по коду валюты (натуральный ключ)
+        CurrencyEntity e = jpaRepository.findByCode(c.code())
+                .orElseThrow(() -> new CurrencyNotFoundException(c.code()));
+
+        // Копируем только неклюевые поля; код не меняем
+        CurrencyEntityMapper.apply(c, e);
+
+        try {
+            CurrencyEntity saved = jpaRepository.saveAndFlush(e); // flush ⇒ ошибки БД сразу здесь
+            return CurrencyEntityMapper.toDomain(saved);
+        } catch (javax.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            // Bean Validation / любые ORM/БД ошибки (перевод Spring)
+            throw new CurrencyUpdateException(c.code(), ex);
+        }
+    }
 
     @Override
     public void deleteByCode(String code) {
