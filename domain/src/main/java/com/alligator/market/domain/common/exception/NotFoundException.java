@@ -25,8 +25,8 @@ public class NotFoundException extends RuntimeException {
         this.selector = selector;
     }
 
-    public String resource() { return resource; }
-    public String selector() { return selector; }
+    public String getResource() { return resource; }
+    public String getSelector() { return selector; }
 
     /* ↓↓ Удобные фабрики — чтобы не плодить строки в коде. */
 

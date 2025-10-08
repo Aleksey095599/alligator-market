@@ -49,7 +49,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         }
     }
 
-    /* Обновить существующую валюту. */
+    /** Обновить существующую валюту. */
     @Override
     @Transactional
     public Currency update(Currency c) {
