@@ -18,7 +18,7 @@ public final class CurrencyEntityMapper {
         // Создаем JPA-сущность с заданным натуральным ключом
         var e = new CurrencyEntity(c.code());
 
-        apply(c, e); // ← Копируем прочие поля из модели
+        apply(c, e); // ← Заполняем изменяемые поля из переданной модели
         return e;
     }
 
