@@ -8,6 +8,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -42,9 +43,9 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // flush ⇒ ошибки БД всплывут сразу
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (javax.validation.ConstraintViolationException ex) { // Bean Validation (до SQL)
+        } catch (ConstraintViolationException ex) { // Bean Validation (до SQL)
             throw new CurrencyCreateException(c.code(), ex);
-        } catch (org.springframework.dao.DataAccessException ex) {     // ORM/БД ошибки (перевод Spring)
+        } catch (DataAccessException ex) {     // ORM/БД ошибки (перевод Spring)
             throw new CurrencyCreateException(c.code(), ex);
         }
     }

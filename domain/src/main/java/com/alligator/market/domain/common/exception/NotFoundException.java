@@ -1,6 +1,8 @@
 package com.alligator.market.domain.common.exception;
 
-/** Базовое исключение для случаев, когда ресурс не найден. */
+/**
+ * Базовое исключение для случаев, когда ресурс не найден.
+ */
 public class NotFoundException extends RuntimeException {
 
     /* Имя ресурса (например, "Currency", "FxSpot"). */
@@ -27,21 +29,4 @@ public class NotFoundException extends RuntimeException {
 
     public String getResource() { return resource; }
     public String getSelector() { return selector; }
-
-    /* ↓↓ Удобные фабрики — чтобы не плодить строки в коде. */
-
-    /** Фабрика для валюты. */
-    public static NotFoundException currency(String code) {
-        return new NotFoundException("Currency", "code=" + code);
-    }
-
-    /** Фабрика для инструмента FX_SPOT. */
-    public static NotFoundException currencyPair(String baseCode, String quoteCode) {
-        return new NotFoundException("CurrencyPair", "baseCode=" + baseCode + ", quoteCode=" + quoteCode);
-    }
-
-    /** Общая фабрика по типу класса. */
-    public static NotFoundException of(Class<?> type, String selector) {
-        return new NotFoundException(type.getSimpleName(), selector);
-    }
 }
