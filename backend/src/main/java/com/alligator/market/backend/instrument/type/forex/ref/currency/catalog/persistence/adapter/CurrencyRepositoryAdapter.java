@@ -22,7 +22,7 @@ import java.util.Optional;
 @Repository
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
-    //
+    /* JPA-репозиторий. */
     private final CurrencyJpaRepository jpaRepository;
 
     /** Конструктор. */
@@ -30,7 +30,6 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         this.jpaRepository = jpaRepository;
     }
 
-    /** Создать новую валюту. */
     @Override
     @Transactional
     public Currency create(Currency currency) {
@@ -46,6 +45,8 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
             throw new CurrencyCreateException(currency.code(), ex);
         }
     }
+
+
 
     @Override
     public void deleteByCode(String code) {
