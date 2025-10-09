@@ -17,6 +17,12 @@ public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Lon
     /** Найти JPA-сущность валюты по имени. */
     Optional<CurrencyEntity> findByName(String name);
 
+    /** Проверить наличие записи валюты по коду. */
+    boolean existsByCode(CurrencyCode code);
+
+    /** Проверить наличие записи валюты по имени. */
+    boolean existsByName(String name);
+
     /** Удалить запись валюты по коду. */
     void deleteByCode(CurrencyCode code);
 }
