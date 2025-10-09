@@ -104,6 +104,22 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
                 .map(CurrencyEntityMapper::toDomain);
     }
 
+    /** Проверить наличие валюты по коду. */
+    @Override
+    public boolean existsByCode(CurrencyCode code) {
+        Objects.requireNonNull(code, "code must not be null");
+
+        return jpaRepository.existsByCode(code);
+    }
+
+    /** Проверить наличие валюты по имени. */
+    @Override
+    public boolean existsByName(String name) {
+        Objects.requireNonNull(name, "name must not be null");
+
+        return jpaRepository.existsByName(name);
+    }
+
     /** Вернуть все валюты (отсортированы по коду). */
     @Override
     public List<Currency> findAll() {
