@@ -2,8 +2,11 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyAlreadyExistsException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNameDuplicateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Реализация сервиса {@link CurrencyUseCase}:
@@ -19,43 +23,55 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     private final CurrencyRepository currencyRepository;
     private final FxSpotRepository fxSpotRepository;
 
+    /** Создать новую валюту. */
     @Override
-    public String createCurrency(Currency currency) {
-        // Проверяем, что нет валюты с таким же кодом
-        currencyRepository.findByCode(currency.code().value()).ifPresent(c -> {
-            throw new CurrencyDuplicateException("code", currency.code().value());
-        });
+    @Transactional
+    public Currency createCurrency(Currency currency) {
+        Objects.requireNonNull(currency, "currency must not be null");
+
+        // Проверяем по коду валюты (натуральный ключ), что такой валюты еще нет
+        if (currencyRepository.existsByCode(currency.code())) {
+            throw new CurrencyAlreadyExistsException(currency.code());
+        }
+
         // Проверяем, что нет валюты с таким же названием
-        currencyRepository.findByName(currency.name()).ifPresent(c -> {
-            throw new CurrencyDuplicateException("name", currency.name());
-        });
-        String code = currencyRepository.save(currency);
-        log.info("Currency {} created", code);
-        return code;
+        if (currencyRepository.existsByName(currency.name())) {
+            throw new CurrencyNameDuplicateException(currency.name());
+        }
+
+        Currency created = currencyRepository.create(currency);
+        log.info("Currency {} created", created.code().value());
+        return created;
     }
 
+    /** Обновить существующую валюту. */
     @Override
     public void updateCurrency(Currency currency) {
-        // Проверяем, что валюта с таким кодом существует
-        currencyRepository.findByCode(currency.code().value())
-                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(currency.code().value())));
-        // Проверяем, что нет валюты с таким же названием
+        Objects.requireNonNull(currency, "currency must not be null");
+
+        // Проверяем по коду валюты (натуральный ключ), что валюта с таким кодом существует
+        if (!currencyRepository.existsByCode(currency.code())) {
+            throw new CurrencyNotFoundException(currency.code());
+        }
+
+        // Проверяем, что обновление не приведет к дублированию по имени валюты
         currencyRepository.findByName(currency.name()).ifPresent(c -> {
             if (!c.code().equals(currency.code())) {
                 throw new CurrencyDuplicateException("name", currency.name());
             }
         });
+
         currencyRepository.save(currency);
         log.info("Currency {} updated", currency.code().value());
     }
 
+    /** Удалить валюту по коду. */
     @Override
     public void deleteCurrency(String code) {
         // Проверяем, что валюта с таким кодом существует
@@ -69,6 +85,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         log.info("Currency {} deleted", code);
     }
 
+    /** Вернуть все валюты. */
     @Override
     @Transactional(readOnly = true)
     public List<Currency> getAll() {

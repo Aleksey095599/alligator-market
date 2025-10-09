@@ -17,7 +17,7 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      */
     private static String msg(String name) {
         String n = Objects.requireNonNull(name, "name must not be null");
-        return "Currency already exists (name='" + n + "')";
+        return "Currency with the same name already exists (name='" + n + "')";
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.ref.currency.repository;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +18,10 @@ public interface CurrencyRepository {
     Currency update(Currency currency);
 
     /** Удалить валюту по коду. */
-    void deleteByCode(String code);
+    void deleteByCode(CurrencyCode code);
 
     /** Найти валюту по коду. */
-    Optional<Currency> findByCode(String code);
+    Optional<Currency> findByCode(CurrencyCode code);
 
     /** Найти валюту по имени. */
     Optional<Currency> findByName(String name);

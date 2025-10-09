@@ -7,7 +7,6 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDu
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDuplicateException;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;

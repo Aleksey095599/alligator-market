@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface CurrencyUseCase {
 
-    /** Сохранить новую валюту. */
+    /** Создать новую валюту. */
     String createCurrency(Currency currency);
 
     /** Обновить существующую валюту. */

@@ -4,12 +4,12 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDeleteException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyUpdateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +32,6 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     /** Создать новую валюту. */
     @Override
-    @Transactional
     public Currency create(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
 
@@ -50,11 +49,10 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     /** Обновить существующую валюту. */
     @Override
-    @Transactional
     public Currency update(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
 
-        // Ищем JPA-сущность по коду валюты
+        // Ищем JPA-сущность по коду валюты иначе бросаем ошибку
         CurrencyEntity e = jpaRepository.findByCode(c.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(c.code()));
 
@@ -70,21 +68,43 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         }
     }
 
+    /** Удалить валюту по коду. */
     @Override
-    public void deleteByCode(String code) {
-        jpaRepository.deleteByCode(CurrencyCode.of(code));
+    public void deleteByCode(CurrencyCode code) {
+        Objects.requireNonNull(code, "code must not be null");
+
+        // Ищем JPA-сущность по коду валюты иначе бросаем ошибку
+        CurrencyEntity e = jpaRepository.findByCode(code)
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
+
+        // Пробуем удалить валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
+        try {
+            jpaRepository.delete(e);
+            jpaRepository.flush();
+        } catch (org.springframework.dao.DataAccessException ex) {
+            throw new CurrencyDeleteException(code, ex);
+        }
     }
 
+    /** Найти валюту по коду. */
     @Override
-    public Optional<Currency> findByCode(String code) {
-        return jpaRepository.findByCode(CurrencyCode.of(code)).map(CurrencyEntityMapper::toDomain);
+    public Optional<Currency> findByCode(CurrencyCode code) {
+        Objects.requireNonNull(code, "code must not be null");
+
+        return jpaRepository.findByCode(code)
+                .map(CurrencyEntityMapper::toDomain);
     }
 
+    /** Найти валюту по имени. */
     @Override
     public Optional<Currency> findByName(String name) {
-        return jpaRepository.findByName(name).map(CurrencyEntityMapper::toDomain);
+        Objects.requireNonNull(name, "name must not be null");
+
+        return jpaRepository.findByName(name)
+                .map(CurrencyEntityMapper::toDomain);
     }
 
+    /** Вернуть все валюты (отсортированы по коду). */
     @Override
     public List<Currency> findAll() {
         return jpaRepository.findAll(Sort.by("code")).stream()
