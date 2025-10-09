@@ -23,9 +23,6 @@ public interface CurrencyRepository {
     /** Найти валюту по коду. */
     Optional<Currency> findByCode(CurrencyCode code);
 
-    /** Найти валюту по имени. */
-    Optional<Currency> findByName(String name);
-
     /** Проверить наличие валюты по коду. */
     boolean existsByCode(CurrencyCode code);
 

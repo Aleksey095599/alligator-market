@@ -5,9 +5,9 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import java.util.Objects;
 
 /**
- * Ошибка: валюта используется в FX spot инструменте.
+ * Ошибка: валюта используется в FX_SPOT инструменте.
  */
-public final class CurrencyUsedInFxSpotInstrumentException extends RuntimeException {
+public final class CurrencyUsedInFxSpotException extends RuntimeException {
 
     private final CurrencyCode code;
 
@@ -19,7 +19,7 @@ public final class CurrencyUsedInFxSpotInstrumentException extends RuntimeExcept
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency used in FX spot instrument (code=" + c.value() + ")";
+        return "Currency used in FX_SPOT instrument (code=" + c.value() + ")";
     }
 
     /**
@@ -27,7 +27,7 @@ public final class CurrencyUsedInFxSpotInstrumentException extends RuntimeExcept
      *
      * @param code код валюты
      */
-    public CurrencyUsedInFxSpotInstrumentException(CurrencyCode code) {
+    public CurrencyUsedInFxSpotException(CurrencyCode code) {
         super(msg(code));
         this.code = code;
     }
@@ -38,7 +38,7 @@ public final class CurrencyUsedInFxSpotInstrumentException extends RuntimeExcept
      * @param code код валюты
      * @param cause причина ошибки
      */
-    public CurrencyUsedInFxSpotInstrumentException(CurrencyCode code, Throwable cause) {
+    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
         super(msg(code), cause);
         this.code = code;
     }

@@ -7,6 +7,7 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.w
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service.CurrencyUseCase;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,13 @@ public class CurrencyController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
         Currency currency = mapper.toDomain(dto);
-        String code = service.create(currency);
+        Currency created = service.create(currency);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
-                .buildAndExpand(code)
+                .buildAndExpand(created.code().value())
                 .toUri();
-        return ResponseEntityFactory.created(location, code);
+        return ResponseEntityFactory.created(location, created.code().value());
     }
 
     /** Обновить валюту. */
@@ -49,7 +50,7 @@ public class CurrencyController {
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
             @RequestBody @Valid UpdateCurrencyDto dto) {
         Currency currency = mapper.toDomain(code, dto);
-        service.update(currency);
+        Currency updated = service.update(currency);
         return ResponseEntityFactory.ok(null);
     }
 
@@ -57,7 +58,7 @@ public class CurrencyController {
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
-        service.delete(code);
+        service.delete(CurrencyCode.of(code));
         return ResponseEntityFactory.ok(null);
     }
 

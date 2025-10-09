@@ -1,10 +1,9 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service;
 
-import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.common.exception.ResourceInUseException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNameDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
@@ -52,6 +51,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     /** Обновить существующую валюту. */
     @Override
+    @Transactional
     public Currency update(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
@@ -72,6 +72,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     /** Удалить валюту по коду. */
     @Override
+    @Transactional
     public void delete(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
@@ -82,10 +83,11 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
         // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrencyCode(code)) {
-            throw new ResourceInUseException("Currency '%s'".formatted(code), "FX_SPOT instrument");
+            throw new CurrencyUsedInFxSpotException(code);
         }
+
         currencyRepository.deleteByCode(code);
-        log.info("Currency {} deleted", code);
+        log.info("Currency {} deleted", code.value());
     }
 
     /** Вернуть все валюты. */

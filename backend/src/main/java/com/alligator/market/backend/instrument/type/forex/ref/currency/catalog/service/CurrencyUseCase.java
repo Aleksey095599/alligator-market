@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 
 import java.util.List;
 
@@ -10,13 +11,13 @@ import java.util.List;
 public interface CurrencyUseCase {
 
     /** Создать новую валюту. */
-    String create(Currency currency);
+    Currency create(Currency currency);
 
     /** Обновить существующую валюту. */
-    void update(Currency currency);
+    Currency update(Currency currency);
 
     /** Удалить валюту по коду. */
-    void delete(String code);
+    void delete(CurrencyCode code);
 
     /** Вернуть все валюты. */
     List<Currency> getAll();
