@@ -4,7 +4,6 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.common.exception.ResourceCreationException;
 import com.alligator.market.domain.common.exception.ResourceUpdateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
@@ -43,13 +42,12 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Создаем JPA-сущность, используя специальный метод
         CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
+        // Пробуем создать валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
         try {
-            CurrencyEntity saved = jpaRepository.saveAndFlush(entity); // flush ⇒ ошибки БД сразу всплывут
+            CurrencyEntity saved = jpaRepository.saveAndFlush(entity);
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (ConstraintViolationException ex) { // Bean Validation (до SQL)
-            throw new ResourceCreationException("Currency with code=" + c.code().value(), ex.getMessage(), ex);
-        } catch (DataAccessException ex) { // ORM/БД ошибки (перевод Spring)
-            throw new ResourceCreationException("Currency with code=" + c.code().value(), ex.getMessage(), ex);
+        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            throw new CurrencyCreateException(c.code(), ex);
         }
     }
 
@@ -66,8 +64,9 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Заполняем изменяемые поля из переданной модели
         CurrencyEntityMapper.apply(c, e);
 
+        // Пробуем сохранить валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
         try {
-            CurrencyEntity saved = jpaRepository.saveAndFlush(e); // flush ⇒ ошибки БД сразу всплывут
+            CurrencyEntity saved = jpaRepository.saveAndFlush(e);
             return CurrencyEntityMapper.toDomain(saved);
         } catch (ConstraintViolationException ex) { // Bean Validation (до SQL)
             throw new ResourceUpdateException("Currency", ex.getMessage(), ex);

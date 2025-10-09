@@ -26,7 +26,7 @@ public final class CurrencyEntityMapper {
     public static Currency toDomain(CurrencyEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
-        // defaultFractionDigits задана как Integer в JPA-сущности и как int в Currency => нужна проверка
+        // defaultFractionDigits задана как Integer в JPA-сущности и как int в Currency ⇒ нужна проверка
         int digits = Objects.requireNonNull(e.getDefaultFractionDigits(),
                 "defaultFractionDigits must not be null");
 

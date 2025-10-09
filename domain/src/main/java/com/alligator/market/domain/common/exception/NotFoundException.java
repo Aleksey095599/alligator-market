@@ -1,32 +1,41 @@
 package com.alligator.market.domain.common.exception;
 
+import java.util.Objects;
+
 /**
  * Базовое исключение для случаев, когда ресурс не найден.
  */
 public class NotFoundException extends RuntimeException {
 
-    /* Имя ресурса (например, "Currency", "FxSpot"). */
+    /* Имя ресурса (например, "Currency" или "FxSpot"). */
     private final String resource;
 
-    /* Селектор/ключ поиска (например, код валюты или код финансового инструмента). */
-    private final String selector;
+    /* Критерий поиска (например, код валюты). */
+    private final String criteria;
+
+    /* Сообщение. */
+    private static String msg(String resource, String criteria) {
+        Objects.requireNonNull(resource, "resource must not be null");
+        if (criteria == null || criteria.isBlank()) {
+            return "Resource not found: " + resource;
+        }
+        return "Resource not found: " + resource + " (by criteria: " + criteria + ")";
+    }
 
     /** Конструктор с деталями. */
-    public NotFoundException(String resource, String selector) {
-        super("Resource not found: " + resource +
-                (selector == null || selector.isBlank() ? "" : " [" + selector + "]"));
+    public NotFoundException(String resource, String criteria) {
+        super(msg(resource, criteria));
         this.resource = resource;
-        this.selector = selector;
+        this.criteria = criteria;
     }
 
     /** Конструктор с первопричиной (если нужно прокинуть cause). */
-    public NotFoundException(String resource, String selector, Throwable cause) {
-        super("Resource not found: " + resource +
-                (selector == null || selector.isBlank() ? "" : " [" + selector + "]"), cause);
+    public NotFoundException(String resource, String criteria, Throwable cause) {
+        super(msg(resource, criteria), cause);
         this.resource = resource;
-        this.selector = selector;
+        this.criteria = criteria;
     }
 
     public String getResource() { return resource; }
-    public String getSelector() { return selector; }
+    public String getCriteria() { return criteria; }
 }
