@@ -55,13 +55,13 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public Currency update(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        // Проверяем по коду валюты (натуральный ключ), что валюта с таким кодом существует
-        if (!currencyRepository.existsByCode(currency.code())) {
-            throw new CurrencyNotFoundException(currency.code());
-        }
+        // Находим валюту к обновлению
+        Currency current = currencyRepository.findByCode(currency.code())
+                .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
-        // Проверяем, что обновление не приведет к дублированию по имени валюты
-        if (currencyRepository.existsByName(currency.name())) {
+        // Если имя меняется — проверяем, что новое имя никем не занято
+        if (!current.name().equals(currency.name())
+                && currencyRepository.existsByName(currency.name())) {
             throw new CurrencyNameDuplicateException(currency.name());
         }
 
