@@ -10,13 +10,13 @@ import java.util.List;
 public interface CurrencyUseCase {
 
     /** Создать новую валюту. */
-    String createCurrency(Currency currency);
+    String create(Currency currency);
 
     /** Обновить существующую валюту. */
-    void updateCurrency(Currency currency);
+    void update(Currency currency);
 
     /** Удалить валюту по коду. */
-    void deleteCurrency(String code);
+    void delete(String code);
 
     /** Вернуть все валюты. */
     List<Currency> getAll();

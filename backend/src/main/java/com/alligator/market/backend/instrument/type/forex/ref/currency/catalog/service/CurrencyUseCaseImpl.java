@@ -32,12 +32,12 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     /** Создать новую валюту. */
     @Override
     @Transactional
-    public Currency createCurrency(Currency currency) {
+    public Currency create(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
         // Проверяем по коду валюты (натуральный ключ), что такой валюты еще нет
         if (currencyRepository.existsByCode(currency.code())) {
-            throw new CurrencyAlreadyExistsException(currency.code());
+            throw new CurrencyAlreadyExistsException(currency.code()); //
         }
 
         // Проверяем, что нет валюты с таким же названием
@@ -52,7 +52,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     /** Обновить существующую валюту. */
     @Override
-    public void updateCurrency(Currency currency) {
+    public Currency update(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
         // Проверяем по коду валюты (натуральный ключ), что валюта с таким кодом существует
@@ -61,22 +61,25 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         }
 
         // Проверяем, что обновление не приведет к дублированию по имени валюты
-        currencyRepository.findByName(currency.name()).ifPresent(c -> {
-            if (!c.code().equals(currency.code())) {
-                throw new CurrencyDuplicateException("name", currency.name());
-            }
-        });
+        if (currencyRepository.existsByName(currency.name())) {
+            throw new CurrencyNameDuplicateException(currency.name());
+        }
 
-        currencyRepository.save(currency);
+        Currency updated = currencyRepository.update(currency);
         log.info("Currency {} updated", currency.code().value());
+        return updated;
     }
 
     /** Удалить валюту по коду. */
     @Override
-    public void deleteCurrency(String code) {
-        // Проверяем, что валюта с таким кодом существует
-        Currency currency = currencyRepository.findByCode(code)
-                .orElseThrow(() -> new NotFoundException("Currency '%s' not found".formatted(code)));
+    public void delete(CurrencyCode code) {
+        Objects.requireNonNull(code, "code must not be null");
+
+        // Проверяем по коду валюты (натуральный ключ), что валюта с таким кодом существует
+        if (!currencyRepository.existsByCode(code)) {
+            throw new CurrencyNotFoundException(code);
+        }
+
         // Проверяем, что валюта не используется инструментами FX_SPOT
         if (fxSpotRepository.existsByCurrency(currency)) {
             throw new ResourceInUseException("Currency '%s'".formatted(code), "FX_SPOT instrument");

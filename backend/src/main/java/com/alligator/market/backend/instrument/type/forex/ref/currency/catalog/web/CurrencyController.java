@@ -34,7 +34,7 @@ public class CurrencyController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
         Currency currency = mapper.toDomain(dto);
-        String code = service.createCurrency(currency);
+        String code = service.create(currency);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
@@ -49,7 +49,7 @@ public class CurrencyController {
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
             @RequestBody @Valid UpdateCurrencyDto dto) {
         Currency currency = mapper.toDomain(code, dto);
-        service.updateCurrency(currency);
+        service.update(currency);
         return ResponseEntityFactory.ok(null);
     }
 
@@ -57,7 +57,7 @@ public class CurrencyController {
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
-        service.deleteCurrency(code);
+        service.delete(code);
         return ResponseEntityFactory.ok(null);
     }
 
