@@ -25,6 +25,7 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      *
      * @param name имя валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyNameDuplicateException(String name) {
         super(msg(name));
         this.name = name;
@@ -36,6 +37,7 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      * @param name  имя валюты
      * @param cause причина ошибки
      */
+    @SuppressWarnings("unused")
     public CurrencyNameDuplicateException(String name, Throwable cause) {
         super(msg(name), cause);
         this.name = name;

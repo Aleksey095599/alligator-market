@@ -27,6 +27,7 @@ public final class CurrencyCreateException extends RuntimeException {
      *
      * @param code код валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCreateException(CurrencyCode code) {
         super(msg(code));
         this.code = code;
@@ -38,6 +39,7 @@ public final class CurrencyCreateException extends RuntimeException {
      * @param code код валюты
      * @param cause причина ошибки
      */
+    @SuppressWarnings("unused")
     public CurrencyCreateException(CurrencyCode code, Throwable cause) {
         super(msg(code), cause);
         this.code = code;
