@@ -3,15 +3,13 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
-import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.common.exception.ResourceUpdateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyUpdateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +23,6 @@ import java.util.Optional;
 @Repository
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
-    /* JPA-репозиторий. */
     private final CurrencyJpaRepository jpaRepository;
 
     /** Конструктор. */
@@ -57,9 +54,9 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     public Currency update(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
 
-        // Ищем JPA-сущность по коду валюты (натуральный ключ)
+        // Ищем JPA-сущность по коду валюты
         CurrencyEntity e = jpaRepository.findByCode(c.code())
-                .orElseThrow(() -> new NotFoundException("Currency", c.code().value()));
+                .orElseThrow(() -> new CurrencyNotFoundException(c.code()));
 
         // Заполняем изменяемые поля из переданной модели
         CurrencyEntityMapper.apply(c, e);
@@ -68,10 +65,8 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(e);
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (ConstraintViolationException ex) { // Bean Validation (до SQL)
-            throw new ResourceUpdateException("Currency", ex.getMessage(), ex);
-        } catch (DataAccessException ex) { // ORM/БД ошибки (перевод Spring)
-            throw new CurrencyCreateException(c.code(), ex);
+        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            throw new CurrencyUpdateException(c.code(), ex);
         }
     }
 
