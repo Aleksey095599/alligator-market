@@ -5,7 +5,6 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -60,8 +59,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public boolean existsByCurrency(Currency currency) {
-        CurrencyCode code = currency.code();
-        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(code, code);
+    public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
+        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
     }
 }

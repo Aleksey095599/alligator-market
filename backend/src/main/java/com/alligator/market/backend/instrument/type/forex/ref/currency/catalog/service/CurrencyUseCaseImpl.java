@@ -81,7 +81,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         }
 
         // Проверяем, что валюта не используется инструментами FX_SPOT
-        if (fxSpotRepository.existsByCurrency(currency)) {
+        if (fxSpotRepository.existsByCurrencyCode(code)) {
             throw new ResourceInUseException("Currency '%s'".formatted(code), "FX_SPOT instrument");
         }
         currencyRepository.deleteByCode(code);
