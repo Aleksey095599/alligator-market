@@ -35,7 +35,8 @@ public class FxSpot extends AbstractInstrument {
         if (this.quoteDecimal < 0) {
             throw new IllegalArgumentException("Quote decimal must not be negative");
         }
-        if (this.base.code().equals(this.quote.code())) { // Валюты должны отличиться
+        // Валюты должны отличиться
+        if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
     }
