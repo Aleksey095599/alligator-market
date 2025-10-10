@@ -25,7 +25,7 @@ public class FxSpotAssembler {
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(dto.baseCurrency()));
         Currency quote = currencyRepository.findByCode(dto.quoteCurrency())
                 .orElseThrow(() -> new FxSpotCurrencyNotFoundException(dto.quoteCurrency()));
-        return new FxSpot(base, quote, dto.valueDateCode(), dto.quoteDecimal());
+        return new FxSpot(base, quote, dto.valueDate(), dto.quoteDecimal());
     }
 
     /** Код инструмента + DTO обновления ⇒ доменная модель. */

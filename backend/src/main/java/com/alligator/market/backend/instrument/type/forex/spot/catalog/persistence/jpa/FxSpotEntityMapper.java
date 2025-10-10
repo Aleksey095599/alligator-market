@@ -17,8 +17,8 @@ public class FxSpotEntityMapper {
         return new FxSpot(
                 CurrencyEntityMapper.toDomain(entity.getBaseCurrency()),
                 CurrencyEntityMapper.toDomain(entity.getQuoteCurrency()),
-                entity.getValueDateCode(),
-                entity.getQuoteDecimal()
+                entity.getValueDate(),
+                entity.getDefaultQuoteFractionDigits()
         );
     }
 
@@ -30,8 +30,8 @@ public class FxSpotEntityMapper {
         // Переносим значения в JPA-сущность
         entity.setBaseCurrency(base);
         entity.setQuoteCurrency(quote);
-        entity.setQuoteDecimal(model.defaultQuoteFractionDigits());
-        entity.setValueDateCode(model.valueDateCode());
+        entity.setDefaultQuoteFractionDigits(model.defaultQuoteFractionDigits());
+        entity.setValueDate(model.valueDateCode());
         entity.setCode(model.code());
         entity.setType(model.type());
     }

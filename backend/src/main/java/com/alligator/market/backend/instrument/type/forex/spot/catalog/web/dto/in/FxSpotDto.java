@@ -20,5 +20,5 @@ public record FxSpotDto(
         Integer quoteDecimal,
 
         @NotNull
-        FxSpotValueDate valueDateCode
+        FxSpotValueDate valueDate
 ) {}

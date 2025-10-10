@@ -50,15 +50,15 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /** Код даты расчетов. */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "value_date_code", length = 4, updatable = false, nullable = false)
-    private FxSpotValueDate valueDateCode;
+    @Column(name = "value_date", length = 4, updatable = false, nullable = false)
+    private FxSpotValueDate valueDate;
 
     /** Количество знаков после запятой для курса. */
     @NotNull
     @Min(0)
     @Max(10)
-    @Column(name = "quote_decimal", nullable = false)
-    private Integer quoteDecimal;
+    @Column(name = "quote_fraction_digits", nullable = false)
+    private Integer defaultQuoteFractionDigits;
 
     /** JPA-callback код перед вставкой. */
     @Override
@@ -67,14 +67,14 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         String instrumentCode = FxSpotCodec.fxSpotCode(
                 baseCurrency.getCode(),
                 quoteCurrency.getCode(),
-                valueDateCode
+                valueDate
         );
         setCode(instrumentCode);
         // 2) Генерируем и устанавливаем символ инструмента
         String instrumentSymbol = FxSpotCodec.fxSpotSymbol(
                 baseCurrency.getCode(),
                 quoteCurrency.getCode(),
-                valueDateCode
+                valueDate
         );
         setSymbol(instrumentSymbol);
         // 3) Устанавливаем тип инструмента
