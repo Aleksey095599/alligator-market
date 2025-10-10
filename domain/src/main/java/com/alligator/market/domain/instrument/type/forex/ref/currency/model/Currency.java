@@ -9,16 +9,16 @@ import java.util.Objects;
  * @param code                    ISO-4217 код валюты
  * @param name                    Наименование валюты
  * @param country                 Страна или регион обращения
- * @param defaultFractionDigits   Количество знаков после запятой для денежных сумм
+ * @param fractionDigits          Количество знаков после запятой для денежных сумм
  */
 public record Currency(
         CurrencyCode code,
         String name,
         String country,
-        int defaultFractionDigits
+        int fractionDigits
 ) {
     /** Конструктор с проверками. */
-    public Currency (CurrencyCode code, String name, String country, int defaultFractionDigits) {
+    public Currency (CurrencyCode code, String name, String country, int fractionDigits) {
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
@@ -31,13 +31,13 @@ public record Currency(
         if (nCountry.isEmpty()) throw new IllegalArgumentException("country must not be blank");
 
         // Ограничение на стандартное количество знаков после запятой в суммах в данной валюте
-        if (defaultFractionDigits < 0 || defaultFractionDigits > 10) {
-            throw new IllegalArgumentException("defaultFractionDigits must be between 0 and 10");
+        if (fractionDigits < 0 || fractionDigits > 10) {
+            throw new IllegalArgumentException("fractionDigits must be between 0 and 10");
         }
 
         this.code = code;
         this.name = nName;
         this.country = nCountry;
-        this.defaultFractionDigits = defaultFractionDigits;
+        this.fractionDigits = fractionDigits;
     }
 }

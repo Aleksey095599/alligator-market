@@ -2,5 +2,5 @@
 export interface UpdateCurrencyDto {
   name: string;
   country: string;
-  defaultFractionDigits: number;
+  fractionDigits: number;
 }

@@ -26,9 +26,9 @@ public final class CurrencyEntityMapper {
     public static Currency toDomain(CurrencyEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
-        // defaultFractionDigits задана как Integer в JPA-сущности и как int в Currency ⇒ нужна проверка
-        int digits = Objects.requireNonNull(e.getDefaultFractionDigits(),
-                "defaultFractionDigits must not be null");
+        // fractionDigits задана как Integer в JPA-сущности и как int в Currency ⇒ нужна проверка
+        int digits = Objects.requireNonNull(e.getFractionDigits(),
+                "fractionDigits must not be null");
 
         return new Currency(e.getCode(), e.getName(), e.getCountry(), digits);
     }
@@ -46,6 +46,6 @@ public final class CurrencyEntityMapper {
         // Код валюты неизменяемый (updatable = false)
         e.setName(c.name());
         e.setCountry(c.country());
-        e.setDefaultFractionDigits(c.defaultFractionDigits());
+        e.setFractionDigits(c.fractionDigits());
     }
 }
