@@ -3,7 +3,7 @@ package com.alligator.market.domain.instrument.type.forex.spot.codec;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 
 import java.util.Objects;
 
@@ -29,7 +29,7 @@ public final class FxSpotCodec {
     }
 
     /** Формирует символ инструмента из доменных моделей кодов валют и даты валютирования. */
-    public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, ValueDateCode valueDate) {
+    public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
         Objects.requireNonNull(baseCode, "Base currency code must not be null");
         Objects.requireNonNull(quoteCode, "Quote currency code must not be null");
         Objects.requireNonNull(valueDate, "Value date must not be null");
@@ -37,26 +37,26 @@ public final class FxSpotCodec {
     }
 
     /* ↪ Перегрузка для случая доменных моделей валют. */
-    public static String fxSpotSymbol(Currency base, Currency quote, ValueDateCode valueDate) {
+    public static String fxSpotSymbol(Currency base, Currency quote, FxSpotValueDate valueDate) {
         Objects.requireNonNull(base, "Base currency must not be null");
         Objects.requireNonNull(quote, "Quote currency must not be null");
         return fxSpotSymbol(base.code(), quote.code(), valueDate);
     }
 
     /** Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования. */
-    public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, ValueDateCode valueDate) {
+    public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
         return TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate);
     }
 
     /* ↪ Перегрузка для случая доменных моделей валют. */
-    public static String fxSpotCode(Currency base, Currency quote, ValueDateCode valueDate) {
+    public static String fxSpotCode(Currency base, Currency quote, FxSpotValueDate valueDate) {
         Objects.requireNonNull(base, "Base currency must not be null");
         Objects.requireNonNull(quote, "Quote currency must not be null");
         return fxSpotCode(base.code(), quote.code(), valueDate);
     }
 
     /**
-     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<ValueDateCode>} на составные компоненты.
+     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotValueDate>} на составные компоненты.
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
@@ -91,11 +91,11 @@ public final class FxSpotCodec {
         final CurrencyCode quoteCode = CurrencyCode.of(quoteRaw);
 
         // Валидация даты валютирования
-        final ValueDateCode valueDate = ValueDateCode.fromCode(valueDateRaw);
+        final FxSpotValueDate valueDate = FxSpotValueDate.fromCode(valueDateRaw);
 
         return new FxSpotCodeParts(baseCode, quoteCode, valueDate);
     }
 
     /** Модель разложения кода инструмента на валюты и дату валютирования. */
-    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, ValueDateCode valueDate) { }
+    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) { }
 }
