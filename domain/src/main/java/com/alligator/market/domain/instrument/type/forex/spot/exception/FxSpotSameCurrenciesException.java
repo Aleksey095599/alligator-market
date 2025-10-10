@@ -66,4 +66,3 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
      */
     public CurrencyCode getQuote() { return quote; }
 }
-
