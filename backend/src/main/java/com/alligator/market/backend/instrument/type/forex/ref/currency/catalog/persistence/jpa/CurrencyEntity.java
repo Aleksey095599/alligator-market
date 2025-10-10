@@ -63,7 +63,7 @@ public class CurrencyEntity extends BaseEntity {
     @Min(0)
     @Max(10)
     @Column(name = "default_fraction_digits", nullable = false)
-    private Integer defaultFractionDigits;
+    private Integer fractionDigits;
 
     /**
      * Специальный конструктор для создания JPA-сущности с заданным натуральным ключом (кодом валюты).
