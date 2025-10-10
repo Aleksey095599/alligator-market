@@ -1,10 +1,10 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
-import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.contract.AbstractInstrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
+import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public class FxSpot extends AbstractInstrument {
     /* ↓↓ Базовые атрибуты инструмента. */
     private final Currency base;
     private final Currency quote;
-    private final ValueDateCode valueDateCode;
+    private final FxSpotValueDate valueDateCode;
     private final int defaultQuoteFractionDigits;
 
     /**
@@ -25,7 +25,7 @@ public class FxSpot extends AbstractInstrument {
      * @throws NullPointerException          если параметр не передан
      * @throws IllegalArgumentException      если код валюты пустой
      */
-    public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, int defaultQuoteFractionDigits) {
+    public FxSpot(Currency base, Currency quote, FxSpotValueDate valueDateCode, int defaultQuoteFractionDigits) {
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
@@ -58,7 +58,7 @@ public class FxSpot extends AbstractInstrument {
     }
 
     /** Код даты валютирования. */
-    public ValueDateCode valueDateCode() {
+    public FxSpotValueDate valueDateCode() {
         return valueDateCode;
     }
 

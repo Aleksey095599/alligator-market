@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out;
 
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 
 /**
  * DTO для передачи списка инструментов FX_SPOT.
@@ -10,5 +10,5 @@ public record FxSpotListItemDto(
         String baseCurrency,
         String quoteCurrency,
         Integer quoteDecimal,
-        ValueDateCode valueDateCode
+        FxSpotValueDate valueDateCode
 ) {}

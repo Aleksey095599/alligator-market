@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -51,7 +51,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date_code", length = 4, updatable = false, nullable = false)
-    private ValueDateCode valueDateCode;
+    private FxSpotValueDate valueDateCode;
 
     /** Количество знаков после запятой для курса. */
     @NotNull

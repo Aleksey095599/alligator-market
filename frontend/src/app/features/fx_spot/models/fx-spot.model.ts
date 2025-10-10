@@ -1,4 +1,4 @@
-import { ValueDateCode } from './value-date-code.model';
+import { FxSpotValueDate } from './fx-spot-value-date.model';
 
 /** Основной DTO инструмента FX_SPOT аналогичный backend. */
 export interface FxSpotDto {
@@ -9,7 +9,7 @@ export interface FxSpotDto {
   /* Количество знаков после запятой */
   quoteDecimal: number;
   /* Код даты валютирования */
-  valueDateCode: ValueDateCode;
+  valueDateCode: FxSpotValueDate;
 }
 
 /** DTO строки списка с символом инструмента. */
@@ -23,5 +23,5 @@ export interface FxSpotListItemDto {
   /* Количество знаков после запятой */
   quoteDecimal: number;
   /* Код даты валютирования */
-  valueDateCode: ValueDateCode;
+  valueDateCode: FxSpotValueDate;
 }

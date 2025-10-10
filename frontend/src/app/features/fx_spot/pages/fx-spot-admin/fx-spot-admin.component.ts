@@ -16,7 +16,7 @@ import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
 import { CurrencyService } from '../../../currency/services/currency.service';
 import { CurrencyDto } from '../../../currency/models/currency.model';
 import { RouterLink } from '@angular/router';
-import { ValueDateCode } from '../../models/value-date-code.model';
+import { FxSpotValueDate } from '../../models/fx-spot-value-date.model';
 
 @Component({
   selector: 'app-fx-spot-admin',
@@ -55,7 +55,7 @@ export class FxSpotAdminComponent implements OnInit {
   editCode: string | null = null; // внутренний код инструмента для редактирования (собирается на UI)
   editSymbol: string | null = null; // символ инструмента для уведомления
   currencies: CurrencyDto[] = [];
-  valueDateCodes = Object.values(ValueDateCode);
+  valueDateCodes = Object.values(FxSpotValueDate);
 
   constructor(
     private readonly service: FxSpotService,
@@ -84,7 +84,7 @@ export class FxSpotAdminComponent implements OnInit {
       ],
 
       valueDateCode: [
-        ValueDateCode.TOD,
+        FxSpotValueDate.TOD,
         [Validators.required]
       ]
     });
@@ -122,7 +122,7 @@ export class FxSpotAdminComponent implements OnInit {
           baseCurrency: '',
           quoteCurrency: '',
           quoteDecimal: 4,
-          valueDateCode: ValueDateCode.TOD
+          valueDateCode: FxSpotValueDate.TOD
         });
         this.locked = false;
       },
@@ -186,7 +186,7 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: '',
       quoteCurrency: '',
       quoteDecimal: 4,
-      valueDateCode: ValueDateCode.TOD
+      valueDateCode: FxSpotValueDate.TOD
     });
     this.form.controls['baseCurrency'].enable();
     this.form.controls['quoteCurrency'].enable();

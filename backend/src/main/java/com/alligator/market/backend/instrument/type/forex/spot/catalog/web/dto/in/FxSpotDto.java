@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in;
 
-import com.alligator.market.domain.instrument.type.forex.spot.model.ValueDateCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 import jakarta.validation.constraints.*;
 
 /**
@@ -20,5 +20,5 @@ public record FxSpotDto(
         Integer quoteDecimal,
 
         @NotNull
-        ValueDateCode valueDateCode
+        FxSpotValueDate valueDateCode
 ) {}
