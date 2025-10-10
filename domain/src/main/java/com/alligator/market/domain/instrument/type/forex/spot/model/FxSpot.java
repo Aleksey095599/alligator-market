@@ -26,22 +26,25 @@ public class FxSpot extends AbstractInstrument {
      * @throws IllegalArgumentException      если код валюты пустой
      */
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, int defaultQuoteFractionDigits) {
-
         // ↓↓ Базовые проверки аргументов
-        this.base = Objects.requireNonNull(base, "base must not be null");
-        this.quote = Objects.requireNonNull(quote, "quote must not be null");
-        this.valueDateCode = Objects.requireNonNull(valueDateCode, "valueDateCode must not be null");
-        this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
+        Objects.requireNonNull(base, "base must not be null");
+        Objects.requireNonNull(quote, "quote must not be null");
+        Objects.requireNonNull(valueDateCode, "valueDateCode must not be null");
 
         // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
-        if (this.defaultQuoteFractionDigits < 0 || this.defaultQuoteFractionDigits > 10) {
+        if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
             throw new IllegalArgumentException("defaultQuoteFractionDigits must be between 0 and 10");
         }
 
-        // Валюты должны отличиться
-        if (this.base.code().equals(this.quote.code())) {
+        // Валюты не должны совпадать
+        if (base.code().equals(quote.code())) {
             throw new FxSpotSameCurrenciesException();
         }
+
+        this.base = base;
+        this.quote = quote;
+        this.valueDateCode = valueDateCode;
+        this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
     }
 
     /** Базовая валюта. */

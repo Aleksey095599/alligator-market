@@ -62,7 +62,7 @@ public class CurrencyEntity extends BaseEntity {
     @NotNull
     @Min(0)
     @Max(10)
-    @Column(name = "default_fraction_digits", nullable = false)
+    @Column(name = "fraction_digits", nullable = false)
     private Integer fractionDigits;
 
     /**
