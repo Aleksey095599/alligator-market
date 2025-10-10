@@ -46,7 +46,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         FxSpot updated = new FxSpot(
                 current.base(),
                 current.quote(),
-                current.valueDateCode(),
+                current.valueDate(),
                 fxSpot.defaultQuoteFractionDigits() // Берем из переданной модели
         );
         // Сохраняем обновленный инструмент

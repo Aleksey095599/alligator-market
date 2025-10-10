@@ -15,21 +15,15 @@ public class FxSpot extends AbstractInstrument {
     /* ↓↓ Базовые атрибуты инструмента. */
     private final Currency base;
     private final Currency quote;
-    private final FxSpotValueDate valueDateCode;
+    private final FxSpotValueDate valueDate;
     private final int defaultQuoteFractionDigits;
 
-    /**
-     * Конструктор инструмента с проверками.
-     *
-     * @throws FxSpotSameCurrenciesException если валюты совпадают
-     * @throws NullPointerException          если параметр не передан
-     * @throws IllegalArgumentException      если код валюты пустой
-     */
-    public FxSpot(Currency base, Currency quote, FxSpotValueDate valueDateCode, int defaultQuoteFractionDigits) {
+    /** Конструктор с проверками. */
+    public FxSpot(Currency base, Currency quote, FxSpotValueDate valueDate, int defaultQuoteFractionDigits) {
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
-        Objects.requireNonNull(valueDateCode, "valueDateCode must not be null");
+        Objects.requireNonNull(valueDate, "valueDateCode must not be null");
 
         // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
         if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
@@ -43,7 +37,7 @@ public class FxSpot extends AbstractInstrument {
 
         this.base = base;
         this.quote = quote;
-        this.valueDateCode = valueDateCode;
+        this.valueDate = valueDate;
         this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
     }
 
@@ -58,8 +52,8 @@ public class FxSpot extends AbstractInstrument {
     }
 
     /** Код даты валютирования. */
-    public FxSpotValueDate valueDateCode() {
-        return valueDateCode;
+    public FxSpotValueDate valueDate() {
+        return valueDate;
     }
 
     /** Количество знаков после запятой в котировке согласно рыночной практике (по умолчанию). */
@@ -70,13 +64,13 @@ public class FxSpot extends AbstractInstrument {
     /** Внутренний код инструмента (уникален в контексте приложения). */
     @Override
     public String code() {
-        return FxSpotCodec.fxSpotCode(base, quote, valueDateCode);
+        return FxSpotCodec.fxSpotCode(base, quote, valueDate);
     }
 
     /** Символ инструмента для отображения в UI. */
     @Override
     public String symbol() {
-        return FxSpotCodec.fxSpotSymbol(base, quote, valueDateCode);
+        return FxSpotCodec.fxSpotSymbol(base, quote, valueDate);
     }
 
     /** Тип инструмента. */
