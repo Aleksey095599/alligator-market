@@ -38,7 +38,7 @@ public class FxSpot extends AbstractInstrument {
 
         // Валюты не должны совпадать
         if (base.code().equals(quote.code())) {
-            throw new FxSpotSameCurrenciesException();
+            throw new FxSpotSameCurrenciesException(base.code(), quote.code());
         }
 
         this.base = base;
