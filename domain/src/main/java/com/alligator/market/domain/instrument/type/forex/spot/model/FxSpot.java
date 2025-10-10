@@ -11,18 +11,19 @@ import java.util.Objects;
 /**
  * Модель финансового инструмента FX_SPOT.
  *
- * @param base
- * @param quote
- * @param valueDate
- * @param defaultQuoteFractionDigits
+ * @param base                         Базовая валюта
+ * @param quote                        Котируемая валюта
+ * @param valueDate                    Дата валютирования
+ * @param defaultQuoteFractionDigits   Количество знаков после запятой в котировке по умолчанию
  *
- * @see Instrument
+ * @see Instrument                     Часть параметров переопределены из базового контракта
  */
 public record FxSpot(
         Currency base,
         Currency quote,
         FxSpotValueDate valueDate,
-        int defaultQuoteFractionDigits) implements Instrument {
+        int defaultQuoteFractionDigits
+) implements Instrument {
 
     /** Конструктор с проверками. */
     public FxSpot {
@@ -40,39 +41,6 @@ public record FxSpot(
         if (base.code().equals(quote.code())) {
             throw new FxSpotSameCurrenciesException(base.code(), quote.code());
         }
-
-    }
-
-    /**
-     * Базовая валюта.
-     */
-    @Override
-    public Currency base() {
-        return base;
-    }
-
-    /**
-     * Котируемая валюта.
-     */
-    @Override
-    public Currency quote() {
-        return quote;
-    }
-
-    /**
-     * Код даты валютирования.
-     */
-    @Override
-    public FxSpotValueDate valueDate() {
-        return valueDate;
-    }
-
-    /**
-     * Количество знаков после запятой в котировке согласно рыночной практике (по умолчанию).
-     */
-    @Override
-    public int defaultQuoteFractionDigits() {
-        return defaultQuoteFractionDigits;
     }
 
     /** Внутренний код инструмента (уникален в контексте приложения). */
