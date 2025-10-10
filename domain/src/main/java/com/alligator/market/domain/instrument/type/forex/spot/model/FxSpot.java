@@ -33,10 +33,11 @@ public class FxSpot extends AbstractInstrument {
         this.valueDateCode = Objects.requireNonNull(valueDateCode, "valueDateCode must not be null");
         this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
 
-        // Ограничение на стандартное количество знаков после запятой в котировке
+        // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
         if (this.defaultQuoteFractionDigits < 0 || this.defaultQuoteFractionDigits > 10) {
             throw new IllegalArgumentException("defaultQuoteFractionDigits must be between 0 and 10");
         }
+
         // Валюты должны отличиться
         if (this.base.code().equals(this.quote.code())) {
             throw new FxSpotSameCurrenciesException();
@@ -58,7 +59,7 @@ public class FxSpot extends AbstractInstrument {
         return valueDateCode;
     }
 
-    /** Количество знаков после запятой в котировке (согласно рыночной практике). */
+    /** Количество знаков после запятой в котировке согласно рыночной практике (по умолчанию). */
     public int defaultQuoteFractionDigits() {
         return defaultQuoteFractionDigits;
     }
