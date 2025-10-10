@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 /**
  * Базовый контракт финансового инструмента.
  */
-public sealed interface Instrument permits AbstractInstrument {
+public interface Instrument {
 
     /** Внутренний код инструмента (уникален в контексте приложения). */
     String code();
