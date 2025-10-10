@@ -19,10 +19,12 @@ import java.util.Objects;
  * @see Instrument                     Часть параметров переопределены из базового контракта
  */
 public record FxSpot(
+
         Currency base,
         Currency quote,
         FxSpotValueDate valueDate,
         int defaultQuoteFractionDigits
+
 ) implements Instrument {
 
     /** Конструктор с проверками. */

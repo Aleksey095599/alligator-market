@@ -12,10 +12,12 @@ import java.util.Objects;
  * @param fractionDigits   Количество знаков после запятой для денежных сумм
  */
 public record Currency(
+
         CurrencyCode code,
         String name,
         String country,
         int fractionDigits
+
 ) {
     /** Конструктор с проверками. */
     public Currency (CurrencyCode code, String name, String country, int fractionDigits) {
