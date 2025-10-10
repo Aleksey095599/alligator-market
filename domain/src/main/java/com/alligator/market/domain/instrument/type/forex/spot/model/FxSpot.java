@@ -28,12 +28,14 @@ public class FxSpot extends AbstractInstrument {
     public FxSpot(Currency base, Currency quote, ValueDateCode valueDateCode, int defaultQuoteFractionDigits) {
 
         // ↓↓ Базовые проверки аргументов
-        this.base = Objects.requireNonNull(base, "Base currency must not be null");
-        this.quote = Objects.requireNonNull(quote, "Quote currency must not be null");
-        this.valueDateCode = Objects.requireNonNull(valueDateCode, "Value date code must not be null");
+        this.base = Objects.requireNonNull(base, "base must not be null");
+        this.quote = Objects.requireNonNull(quote, "quote must not be null");
+        this.valueDateCode = Objects.requireNonNull(valueDateCode, "valueDateCode must not be null");
         this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
-        if (this.defaultQuoteFractionDigits < 0) {
-            throw new IllegalArgumentException("Quote decimal must not be negative");
+
+        // Ограничение на стандартное количество знаков после запятой в котировке
+        if (this.defaultQuoteFractionDigits < 0 || this.defaultQuoteFractionDigits > 10) {
+            throw new IllegalArgumentException("defaultQuoteFractionDigits must be between 0 and 10");
         }
         // Валюты должны отличиться
         if (this.base.code().equals(this.quote.code())) {
@@ -57,7 +59,7 @@ public class FxSpot extends AbstractInstrument {
     }
 
     /** Количество знаков после запятой в котировке (согласно рыночной практике). */
-    public int quoteDecimal() {
+    public int defaultQuoteFractionDigits() {
         return defaultQuoteFractionDigits;
     }
 

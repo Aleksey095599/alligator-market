@@ -30,7 +30,7 @@ public record Currency(
         if (nName.isEmpty()) throw new IllegalArgumentException("name must not be blank");
         if (nCountry.isEmpty()) throw new IllegalArgumentException("country must not be blank");
 
-        // Ограничение на количество знаков после запятой
+        // Ограничение на стандартное количество знаков после запятой в суммах в данной валюте
         if (defaultFractionDigits < 0 || defaultFractionDigits > 10) {
             throw new IllegalArgumentException("defaultFractionDigits must be between 0 and 10");
         }

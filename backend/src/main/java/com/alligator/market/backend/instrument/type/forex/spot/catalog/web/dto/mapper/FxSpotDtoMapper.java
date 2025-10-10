@@ -16,7 +16,7 @@ public class FxSpotDtoMapper {
                 model.symbol(),
                 model.base().code().value(),
                 model.quote().code().value(),
-                model.quoteDecimal(),
+                model.defaultQuoteFractionDigits(),
                 model.valueDateCode()
         );
     }

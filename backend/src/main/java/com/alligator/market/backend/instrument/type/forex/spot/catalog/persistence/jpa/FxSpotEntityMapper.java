@@ -30,7 +30,7 @@ public class FxSpotEntityMapper {
         // Переносим значения в JPA-сущность
         entity.setBaseCurrency(base);
         entity.setQuoteCurrency(quote);
-        entity.setQuoteDecimal(model.quoteDecimal());
+        entity.setQuoteDecimal(model.defaultQuoteFractionDigits());
         entity.setValueDateCode(model.valueDateCode());
         entity.setCode(model.code());
         entity.setType(model.type());
