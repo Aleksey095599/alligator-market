@@ -94,7 +94,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         Objects.requireNonNull(instrument, "instrument must not be null");
         if (instrument.getClass() != instrumentClass) {
             throw new InstrumentWrongClassException(
-                    instrument.code(),
+                    instrument.instrumentCode(),
                     instrument.getClass(),
                     handlerCode,
                     instrumentClass
@@ -102,7 +102,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         }
         if (!supportedInstruments.contains(instrument)) {
             throw new InstrumentNotSupportedException(
-                    instrument.code(),
+                    instrument.instrumentCode(),
                     handlerCode
             );
         }

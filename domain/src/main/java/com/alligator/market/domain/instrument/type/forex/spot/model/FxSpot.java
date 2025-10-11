@@ -47,19 +47,19 @@ public record FxSpot(
 
     /** Внутренний код инструмента (уникален в контексте приложения). */
     @Override
-    public String code() {
+    public String instrumentCode() {
         return FxSpotCodec.fxSpotCode(base, quote, valueDate);
     }
 
     /** Символ инструмента для отображения в UI. */
     @Override
-    public String symbol() {
+    public String instrumentSymbol() {
         return FxSpotCodec.fxSpotSymbol(base, quote, valueDate);
     }
 
     /** Тип инструмента. */
     @Override
-    public InstrumentType type() {
+    public InstrumentType instrumentType() {
         return InstrumentType.FX_SPOT;
     }
 }

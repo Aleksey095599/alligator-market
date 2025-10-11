@@ -102,7 +102,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                 // ↓↓ Дополнительно проверяем, что каждый инструмент соответствует декларируемому в обработчике классу
                 if (!h.instrumentClass().isInstance(ins)) {
                     throw new IllegalStateException(
-                            "Instrument '" + ins.code() +
+                            "Instrument '" + ins.instrumentCode() +
                                     "' must match '" + h.instrumentClass().getSimpleName()
                                     + "' for handler '" + h.handlerCode() + "'"
                     );
@@ -110,7 +110,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                 // ↓↓ Обеспечиваем уникальность ключей (инструментов) в карте при сборке
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null) {
-                    throw new IllegalStateException("Instrument '" + ins.code() +
+                    throw new IllegalStateException("Instrument '" + ins.instrumentCode() +
                             "' is already bound to handler '" + prev.handlerCode() +
                             "' in provider '" + providerCode + "'");
                 }
@@ -121,8 +121,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         var instrumentCodes = new java.util.LinkedHashSet<String>();
         var instrumentTypes = java.util.EnumSet.noneOf(InstrumentType.class);
         for (Instrument instrument : map.keySet()) {
-            instrumentCodes.add(instrument.code());
-            instrumentTypes.add(instrument.type());
+            instrumentCodes.add(instrument.instrumentCode());
+            instrumentTypes.add(instrument.instrumentType());
         }
 
         // 4) Фиксируем структуру неизменяемых коллекций
@@ -190,7 +190,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         Objects.requireNonNull(instrument, "instrument must not be null");
         var handler = handlerOf(instrument);
         if (handler == null) {
-            throw new HandlerNotFoundException(instrument.code(), providerCode);
+            throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
         }
         return handler.quote(instrument);
     }

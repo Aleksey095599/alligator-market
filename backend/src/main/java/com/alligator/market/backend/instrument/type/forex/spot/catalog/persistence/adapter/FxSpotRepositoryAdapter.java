@@ -28,7 +28,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public void save(FxSpot fxSpot) {
-        FxSpotEntity entity = jpaRepository.findByCode(fxSpot.code())
+        FxSpotEntity entity = jpaRepository.findByCode(fxSpot.instrumentCode())
                 .orElseGet(FxSpotEntity::new);
         // Получаем валюты (существование проверено в сервисе)
         CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code())

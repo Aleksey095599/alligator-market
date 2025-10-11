@@ -40,16 +40,16 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
         // Провайдер ожидает формат символа инструмента: BASE/QUOTE
-        String symbol = instrument.base().code() + "/" + instrument.quote().code();
+        String instrumentSymbol = instrument.base().code() + "/" + instrument.quote().code();
         return webClient.get()
                 .uri(b -> b
                         .path("/price")
-                        .queryParam("symbol", symbol)
+                        .queryParam("symbol", instrumentSymbol)
                         .queryParam("apikey", props.apiKey())
                         .build())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
-                .map(json -> responseJsonToQuoteTick(json, instrument.code()))
+                .map(json -> responseJsonToQuoteTick(json, instrument.instrumentCode()))
                 .flux();
     }
 
