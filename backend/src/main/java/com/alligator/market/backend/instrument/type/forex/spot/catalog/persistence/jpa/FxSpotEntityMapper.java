@@ -32,8 +32,8 @@ public class FxSpotEntityMapper {
         entity.setQuoteCurrency(quote);
         entity.setDefaultQuoteFractionDigits(model.defaultQuoteFractionDigits());
         entity.setValueDate(model.valueDate());
-        entity.setCode(model.code());
-        entity.setType(model.type());
+        entity.setCode(model.instrumentCode());
+        entity.setType(model.instrumentType());
     }
 }
 

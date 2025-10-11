@@ -26,22 +26,22 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     @Override
     public String create(FxSpot fxSpot) {
         // Проверяем, что инструмента с таким кодом нет, иначе выбрасываем доменное исключение
-        fxSpotRepository.find(fxSpot.code()).ifPresent(i -> {
-            throw new FxSpotDuplicateException(fxSpot.code());
+        fxSpotRepository.find(fxSpot.instrumentCode()).ifPresent(i -> {
+            throw new FxSpotDuplicateException(fxSpot.instrumentCode());
         });
         // Сохраняем инструмент
         fxSpotRepository.save(fxSpot);
-        log.info("FxSpot {} created", fxSpot.code());
-        return fxSpot.code();
+        log.info("FxSpot {} created", fxSpot.instrumentCode());
+        return fxSpot.instrumentCode();
     }
 
     @Override
     public void update(FxSpot fxSpot) {
         // Из модели извлекаем код
-        String code = fxSpot.code();
+        String instrumentCode = fxSpot.instrumentCode();
         // Ищем текущий инструмент
-        FxSpot current = fxSpotRepository.find(code)
-                .orElseThrow(() -> new FxSpotNotFoundException(code));
+        FxSpot current = fxSpotRepository.find(instrumentCode)
+                .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
         // Обновляем текущий инструмент
         FxSpot updated = new FxSpot(
                 current.base(),
@@ -51,7 +51,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         );
         // Сохраняем обновленный инструмент
         fxSpotRepository.save(updated);
-        log.info("FxSpot {} updated", code);
+        log.info("FxSpot {} updated", instrumentCode);
     }
 
     @Override
