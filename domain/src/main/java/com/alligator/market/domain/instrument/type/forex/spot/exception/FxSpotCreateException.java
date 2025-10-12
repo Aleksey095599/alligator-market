@@ -17,7 +17,7 @@ public final class FxSpotCreateException extends RuntimeException {
      */
     private static String msg(String instrumentCode) {
         String code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "Failed to create FxSpot (code=" + code + ")";
+        return "Failed to create FX_SPOT instrument (code=" + code + ")";
     }
 
     /**

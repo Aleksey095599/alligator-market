@@ -38,7 +38,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Создаем JPA-сущность, используя специальный метод
         CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
-        // Пробуем сохранить новую валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить новую сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity);
             return CurrencyEntityMapper.toDomain(saved);
@@ -59,7 +59,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Заполняем изменяемые поля из переданной модели
         CurrencyEntityMapper.apply(c, e);
 
-        // Пробуем сохранить обновленную валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(e);
             return CurrencyEntityMapper.toDomain(saved);
@@ -77,7 +77,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         CurrencyEntity e = jpaRepository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
-        // Пробуем удалить валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем удалить запись (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             jpaRepository.delete(e);
             jpaRepository.flush();

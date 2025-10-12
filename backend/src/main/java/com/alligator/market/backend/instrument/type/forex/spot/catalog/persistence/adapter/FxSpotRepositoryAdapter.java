@@ -8,6 +8,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCreateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.springframework.data.domain.Sort;
@@ -66,7 +67,18 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
         // Ищем JPA-сущность инструмента FX_SPOT к обновлению
         FxSpotEntity e = jpaRepository.findByCode(m.instrumentCode())
-                .orElseThrow(() -> new )
+                .orElseThrow(() -> new FxSpotNotFoundException(m.instrumentCode()));
+
+        // Заполняем изменяемые поля из переданной модели
+        FxSpotEntityMapper.apply(m, e);
+
+        // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        try {
+            FxSpotEntity saved = jpaRepository.saveAndFlush(e);
+            return mapper.toDomain(saved);
+        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            throw new
+        }
     }
 
     @Override

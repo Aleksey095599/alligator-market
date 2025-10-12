@@ -3,11 +3,11 @@ package com.alligator.market.domain.instrument.type.forex.spot.exception;
 import java.util.Objects;
 
 /**
- * Инструмент FxSpot не найден.
+ * Ошибка поиска инструмента FX_SPOT.
  */
 public final class FxSpotNotFoundException extends RuntimeException {
 
-    private final String code;
+    private final String instrumentCode;
 
     /**
      * Формирует сообщение об ошибке.
@@ -17,7 +17,7 @@ public final class FxSpotNotFoundException extends RuntimeException {
      */
     private static String msg(String instrumentCode) {
         String c = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "FxSpot instrument not found (code=" + c + ")";
+        return "FX_SPOT instrument not found (code=" + c + ")";
     }
 
     /**
@@ -28,7 +28,7 @@ public final class FxSpotNotFoundException extends RuntimeException {
     @SuppressWarnings("unused")
     public FxSpotNotFoundException(String instrumentCode) {
         super(msg(instrumentCode));
-        this.code = instrumentCode;
+        this.instrumentCode = instrumentCode;
     }
 
     /**
@@ -40,7 +40,7 @@ public final class FxSpotNotFoundException extends RuntimeException {
     @SuppressWarnings("unused")
     public FxSpotNotFoundException(String instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
-        this.code = instrumentCode;
+        this.instrumentCode = instrumentCode;
     }
 
     /**
@@ -48,5 +48,5 @@ public final class FxSpotNotFoundException extends RuntimeException {
      *
      * @return код инструмента
      */
-    public String getCode() { return code; }
+    public String getInstrumentCode() { return instrumentCode; }
 }
