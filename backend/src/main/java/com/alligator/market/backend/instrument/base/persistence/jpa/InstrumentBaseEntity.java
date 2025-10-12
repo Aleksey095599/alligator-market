@@ -58,6 +58,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     private InstrumentType type;
 
     /** Однократная инициализация идентичности сущности. */
+    @SuppressWarnings("SameParameterValue") // Сейчас метод вызывается только инструмента FX_SPOT (других еще нет)
     protected final void initIdentity(String code, String symbol, InstrumentType type) {
         // Защита от повторной инициализации
         if (this.code != null || this.symbol != null || this.type != null) {
