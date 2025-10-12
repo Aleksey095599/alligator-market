@@ -15,7 +15,7 @@ public final class CurrencyEntityMapper {
     public static CurrencyEntity newEntity(Currency c) {
         Objects.requireNonNull(c, "model must not be null");
 
-        // Создаем JPA-сущность используя специальный конструктор
+        // Создаем JPA-сущность, используя специальный безопасный конструктор
         CurrencyEntity e = new CurrencyEntity(c.code());
 
         apply(c, e); // ← Заполняем изменяемые поля из переданной модели

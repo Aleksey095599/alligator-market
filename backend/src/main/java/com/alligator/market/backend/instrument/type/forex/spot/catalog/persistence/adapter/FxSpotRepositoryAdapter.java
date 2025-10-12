@@ -5,39 +5,60 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный порт {@link FxSpotRepository} через Spring Data JPA.
+ * Адаптер, реализующий доменный порт репозитория инструментов типа FX_SPOT через Spring Data JPA.
  */
 @Repository
-@RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
     private final FxSpotEntityMapper mapper;
 
-    @Override
-    public void save(FxSpot fxSpot) {
-        FxSpotEntity entity = jpaRepository.findByCode(fxSpot.instrumentCode())
-                .orElseGet(FxSpotEntity::new);
-        // Получаем валюты (существование проверено в сервисе)
-        CurrencyEntity base = currencyRepository.findByCode(fxSpot.base().code())
-                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.base().code().value())));
-        CurrencyEntity quote = currencyRepository.findByCode(fxSpot.quote().code())
-                .orElseThrow(() -> new IllegalStateException("Currency '%s' not found".formatted(fxSpot.quote().code().value())));
-        mapper.updateEntity(fxSpot, base, quote, entity);
-        jpaRepository.save(entity);
+    /** Конструктор. */
+    public FxSpotRepositoryAdapter(FxSpotJpaRepository jpaRepository,
+                                   CurrencyJpaRepository currencyRepository,
+                                   FxSpotEntityMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.currencyRepository = currencyRepository;
+        this.mapper = mapper;
     }
+
+    /** Создать новый FX_SPOT инструмент. */
+    @Override
+    public FxSpot create(FxSpot m) {
+        Objects.requireNonNull(m, "FxSpot model must not be null");
+
+        // Ищем JPA-сущности составных валют
+        CurrencyEntity be = currencyRepository.findByCode(m.base().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(m.base().code()));
+        CurrencyEntity qe = currencyRepository.findByCode(m.quote().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(m.quote().code()));
+
+        // Создаем JPA-сущность, используя специальный метод
+        FxSpotEntity entity = FxSpotEntityMapper.newEntity(m, be, qe);
+
+        // Пробуем сохранить созданную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        try {
+            FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
+            return mapper.toDomain(saved);
+        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            throw
+        }
+    }
+
+
 
     @Override
     public void deleteByCode(String instrumentCode) {

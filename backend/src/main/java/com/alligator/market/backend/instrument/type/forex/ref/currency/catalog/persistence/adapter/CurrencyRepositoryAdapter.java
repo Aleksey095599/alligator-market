@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный порт {@link CurrencyRepository} через Spring Data JPA.
+ * Адаптер, реализующий доменный порт репозитория валют через Spring Data JPA.
  */
 @Repository
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
@@ -38,7 +38,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Создаем JPA-сущность, используя специальный метод
         CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
-        // Пробуем создать валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
+        // Пробуем сохранить новую валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity);
             return CurrencyEntityMapper.toDomain(saved);
@@ -59,7 +59,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Заполняем изменяемые поля из переданной модели
         CurrencyEntityMapper.apply(c, e);
 
-        // Пробуем сохранить валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
+        // Пробуем сохранить обновленную валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(e);
             return CurrencyEntityMapper.toDomain(saved);
@@ -77,7 +77,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         CurrencyEntity e = jpaRepository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
 
-        // Пробуем удалить валюту или ловим наиболее вероятные ошибки и пробрасываем их выше
+        // Пробуем удалить валюту (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             jpaRepository.delete(e);
             jpaRepository.flush();

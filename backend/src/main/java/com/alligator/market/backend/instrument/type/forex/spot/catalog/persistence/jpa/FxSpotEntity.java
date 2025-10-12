@@ -38,6 +38,7 @@ import java.util.Objects;
 )
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
 public class FxSpotEntity extends InstrumentBaseEntity {
 
@@ -74,17 +75,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /** Специальный конструктор — единственный безопасный способ создать сущность. */
     public FxSpotEntity(CurrencyEntity baseCurrency,
                         CurrencyEntity quoteCurrency,
-                        FxSpotValueDate valueDate,
-                        int defaultQuoteFractionDigits) {
+                        FxSpotValueDate valueDate) {
         // ↓↓ Базовые проверки
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
-
-        // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
-        if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
-            throw new IllegalArgumentException("quoteFractionDigits must be between 0 and 10");
-        }
 
         // Валюты не должны совпадать
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
@@ -94,7 +89,6 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         this.baseCurrency = baseCurrency;
         this.quoteCurrency = quoteCurrency;
         this.valueDate = valueDate;
-        this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
 
         // ↓↓ Создаем код и символ инструмента
         final String code = FxSpotCodec.fxSpotCode(

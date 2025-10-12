@@ -19,19 +19,18 @@ public class FxSpotEntityMapper {
     /** Создать новую JPA-сущность из доменной модели. */
     public static FxSpotEntity newEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
         // ↓↓ Базовые проверки аргументов
-        Objects.requireNonNull(model, "model must not be null");
+        Objects.requireNonNull(model, "FxSpot model must not be null");
         Objects.requireNonNull(baseEntity, "entity of base currency must not be null");
         Objects.requireNonNull(quoteEntity, "entity of quote currency must not be null");
 
-        // Создаем JPA-сущность используя специальный конструктор
+        // Создаем JPA-сущность, используя специальный безопасный конструктор
         FxSpotEntity entity = new FxSpotEntity(
                 baseEntity,
                 quoteEntity,
-                model.valueDate(),
-                model.defaultQuoteFractionDigits()
+                model.valueDate()
         );
 
-        apply(model, entity); // ← На всякий случай синхронизируем изменяемые поля
+        apply(model, entity); // ← Заполняем изменяемые поля из переданной модели
         return entity;
     }
 
@@ -65,6 +64,8 @@ public class FxSpotEntityMapper {
         }
 
         // ↓↓ Копируем в JPA-сущность поля из доменной модели
+        // Коды базовой м котируемой валют, а также дата валютирования неизменяемые поля (updatable = false)
+        e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
 }
 
