@@ -59,6 +59,12 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         Currency current = currencyRepository.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
+        // Если изменений нет — возвращаем текущее состояние без записи в БД
+        if (current.equals(currency)) {
+            log.debug("Currency {} update skipped: nothing to change", currency.code().value());
+            return current;
+        }
+
         // Если имя меняется — проверяем, что новое имя никем не занято
         if (!current.name().equals(currency.name())
                 && currencyRepository.existsByName(currency.name())) {
