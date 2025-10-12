@@ -15,8 +15,8 @@ public final class CurrencyEntityMapper {
     public static CurrencyEntity newEntity(Currency c) {
         Objects.requireNonNull(c, "model must not be null");
 
-        // Создаем JPA-сущность с заданным натуральным ключом
-        var e = new CurrencyEntity(c.code());
+        // Создаем JPA-сущность используя специальный конструктор
+        CurrencyEntity e = new CurrencyEntity(c.code());
 
         apply(c, e); // ← Заполняем изменяемые поля из переданной модели
         return e;
@@ -26,10 +26,10 @@ public final class CurrencyEntityMapper {
     public static Currency toDomain(CurrencyEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
-        // fractionDigits задана как Integer в JPA-сущности и как int в Currency ⇒ нужна проверка
-        int digits = Objects.requireNonNull(e.getFractionDigits(),
-                "fractionDigits must not be null");
+        // fractionDigits задана как Integer в JPA-сущности и как int в Currency ⇒ нужна null проверка
+        int digits = Objects.requireNonNull(e.getFractionDigits(), "fractionDigits must not be null");
 
+        // Собираем и возвращаем доменную модель валюты
         return new Currency(e.getCode(), e.getName(), e.getCountry(), digits);
     }
 
@@ -38,11 +38,12 @@ public final class CurrencyEntityMapper {
         Objects.requireNonNull(c, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
 
-        // Модель и сущность должны соответствовать одной валюте
+        // Модель и сущность должны соответствовать одной и той же валюте
         if (!e.getCode().equals(c.code())) {
             throw new IllegalStateException("Currency code mismatch: " + e.getCode() + " vs " + c.code());
         }
 
+        // ↓↓ Копируем в JPA-сущность поля из доменной модели
         // Код валюты неизменяемый (updatable = false)
         e.setName(c.name());
         e.setCountry(c.country());
