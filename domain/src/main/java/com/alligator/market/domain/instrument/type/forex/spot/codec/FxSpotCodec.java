@@ -8,8 +8,8 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
 import java.util.Objects;
 
 /**
- * Утилита содержит методы формирования атрибутов {@code code} и {@code symbol} инструмента FX_SPOT и
- * метод разложения строкового кода {@code code} инструмента FX_SPOT на составные компоненты.
+ * Утилита содержит методы формирования кода и символа инструмента FX_SPOT, а также
+ * метод разложения строкового кода инструмента FX_SPOT на составные компоненты.
  */
 public final class FxSpotCodec {
 

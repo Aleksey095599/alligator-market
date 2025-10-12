@@ -10,30 +10,37 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
+
+import java.util.Objects;
 
 /**
  * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
 @Check(constraints = "base_currency <> quote_currency")
-@Table(name = "fx_spot", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_fx_spot_pair_value_date", columnNames = {
-                "base_currency",
-                "quote_currency",
-                "value_date_code"
-        })
-})
+@Table(
+        name = "fx_spot",
+        uniqueConstraints = {
+        @UniqueConstraint(name = "uq_fx_spot_pair_value_date",
+                columnNames = {"base_currency", "quote_currency", "value_date_code"})
+        },
+        indexes = {
+                @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
+                @Index(name = "idx_fx_spot_quote", columnList = "quote_currency")
+        }
+)
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
 public class FxSpotEntity extends InstrumentBaseEntity {
 
     /** Уникальный код базовой валюты (FK на "code" в таблице "currency"). */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
@@ -41,6 +48,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity baseCurrency;
 
     /** Уникальный код котируемой валюты (FK на "code" в таблице "currency"). */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
@@ -48,6 +56,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity quoteCurrency;
 
     /** Код даты расчетов. */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date", length = 4, updatable = false, nullable = false)
@@ -60,24 +69,44 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @Column(name = "quote_fraction_digits", nullable = false)
     private Integer defaultQuoteFractionDigits;
 
-    /** JPA-callback код перед вставкой. */
-    @Override
-    protected void onPrePersist() {
-        // 1) Генерируем и устанавливаем код инструмента
-        String instrumentCode = FxSpotCodec.fxSpotCode(
-                baseCurrency.getCode(),
-                quoteCurrency.getCode(),
-                valueDate
+    /** Специальный конструктор — единственный безопасный способ создать сущность. */
+    public FxSpotEntity(CurrencyEntity baseCurrency,
+                        CurrencyEntity quoteCurrency,
+                        FxSpotValueDate valueDate,
+                        int defaultQuoteFractionDigits) {
+        // ↓↓ Базовые проверки
+        Objects.requireNonNull(baseCurrency, "base must not be null");
+        Objects.requireNonNull(quoteCurrency, "quote must not be null");
+        Objects.requireNonNull(valueDate, "valueDate must not be null");
+
+        // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
+        if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
+            throw new IllegalArgumentException("quoteFractionDigits must be between 0 and 10");
+        }
+
+        // Валюты не должны совпадать
+        if (this.baseCurrency.getCode().equals(this.quoteCurrency.getCode())) {
+            throw new IllegalArgumentException("base and quote currencies must be different");
+        }
+
+        this.baseCurrency = baseCurrency;
+        this.quoteCurrency = quoteCurrency;
+        this.valueDate = valueDate;
+        this.defaultQuoteFractionDigits = defaultQuoteFractionDigits;
+
+        // ↓↓ Создаем код и символ инструмента
+        final String code = FxSpotCodec.fxSpotCode(
+                this.baseCurrency.getCode(),
+                this.quoteCurrency.getCode(),
+                this.valueDate
         );
-        setCode(instrumentCode);
-        // 2) Генерируем и устанавливаем символ инструмента
-        String instrumentSymbol = FxSpotCodec.fxSpotSymbol(
-                baseCurrency.getCode(),
-                quoteCurrency.getCode(),
-                valueDate
+        final String symbol = FxSpotCodec.fxSpotSymbol(
+                this.baseCurrency.getCode(),
+                this.quoteCurrency.getCode(),
+                this.valueDate
         );
-        setSymbol(instrumentSymbol);
-        // 3) Устанавливаем тип инструмента
-        setType(InstrumentType.FX_SPOT);
+
+        // Однократно инициализируем идентичность сущности базового класса
+        initIdentity(code, symbol, InstrumentType.FX_SPOT);
     }
 }
