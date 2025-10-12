@@ -2,8 +2,6 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;

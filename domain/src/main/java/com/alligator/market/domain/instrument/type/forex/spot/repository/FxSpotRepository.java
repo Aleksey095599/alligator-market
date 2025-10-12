@@ -11,19 +11,19 @@ import java.util.Optional;
  */
 public interface FxSpotRepository {
 
-    /** Создать новый инструмент. */
+    /** Создать новый FX_SPOT инструмент. */
     FxSpot create(FxSpot fxSpot);
 
-    /** Обновить существующий инструмент.*/
+    /** Обновить существующий FX_SPOT инструмент. */
     FxSpot update(FxSpot fxSpot);
 
-    /** Удалить инструмент по коду. */
+    /** Удалить инструмент FX_SPOT по коду. */
     void deleteByCode(String instrumentCode);
 
-    /** Найти инструмент по коду. */
+    /** Найти инструмент FX_SPOT по коду. */
     Optional<FxSpot> findByCode(String instrumentCode);
 
-    /** Вернуть все инструменты. */
+    /** Вернуть все инструменты FX_SPOT. */
     List<FxSpot> findAll();
 
     /** Проверить, используется ли заданный код валюты хотя бы в одном инструменте. */

@@ -8,7 +8,9 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCreateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDeleteException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotUpdateException;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.springframework.data.domain.Sort;
@@ -77,21 +79,38 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
             return mapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
-            throw new
+            throw new FxSpotUpdateException(m.instrumentCode(), ex);
         }
     }
 
+    /** Удалить инструмент FX_SPOT по коду. */
     @Override
     public void deleteByCode(String instrumentCode) {
-        jpaRepository.deleteByCode(instrumentCode); // Удаляем по коду
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        // Ищем JPA-сущность по коду инструмента иначе бросаем ошибку
+        FxSpotEntity e = jpaRepository.findByCode(instrumentCode)
+                        .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
+
+        // Пробуем удалить запись (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        try {
+            jpaRepository.delete(e);
+            jpaRepository.flush();
+        } catch (org.springframework.dao.DataAccessException ex) {
+            throw new FxSpotDeleteException(instrumentCode, ex);
+        }
     }
 
+    /** Найти инструмент FX_SPOT по коду. */
     @Override
     public Optional<FxSpot> findByCode(String instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
         return jpaRepository.findByCode(instrumentCode)
                 .map(mapper::toDomain);
     }
 
+    /** Вернуть все инструменты FX_SPOT. */
     @Override
     public List<FxSpot> findAll() {
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
@@ -100,6 +119,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .toList();
     }
 
+    /** Проверить, используется ли заданный код валюты хотя бы в одном инструменте. */
     @Override
     public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
         return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);

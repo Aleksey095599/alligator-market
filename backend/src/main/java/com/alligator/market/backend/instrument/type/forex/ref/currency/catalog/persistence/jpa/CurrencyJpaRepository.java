@@ -22,7 +22,4 @@ public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Lon
 
     /** Проверить наличие записи валюты по имени. */
     boolean existsByName(String name);
-
-    /** Удалить запись валюты по коду. */
-    void deleteByCode(CurrencyCode code);
 }
