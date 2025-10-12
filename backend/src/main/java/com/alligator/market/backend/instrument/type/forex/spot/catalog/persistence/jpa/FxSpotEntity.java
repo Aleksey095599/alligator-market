@@ -22,12 +22,14 @@ import java.util.Objects;
  * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
-@Check(constraints = "base_currency <> quote_currency")
+@Check(constraints =
+        "base_currency <> quote_currency" + "AND quote_fraction_digits BETWEEN 0 AND 10"
+)
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
         @UniqueConstraint(name = "uq_fx_spot_pair_value_date",
-                columnNames = {"base_currency", "quote_currency", "value_date_code"})
+                columnNames = {"base_currency", "quote_currency", "value_date"})
         },
         indexes = {
                 @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
@@ -75,8 +77,8 @@ public class FxSpotEntity extends InstrumentBaseEntity {
                         FxSpotValueDate valueDate,
                         int defaultQuoteFractionDigits) {
         // ↓↓ Базовые проверки
-        Objects.requireNonNull(baseCurrency, "base must not be null");
-        Objects.requireNonNull(quoteCurrency, "quote must not be null");
+        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
+        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
 
         // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
@@ -85,7 +87,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         }
 
         // Валюты не должны совпадать
-        if (this.baseCurrency.getCode().equals(this.quoteCurrency.getCode())) {
+        if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
             throw new IllegalArgumentException("base and quote currencies must be different");
         }
 

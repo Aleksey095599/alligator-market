@@ -40,13 +40,13 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public void delete(String code) {
-        jpaRepository.deleteByCode(code); // Удаляем по коду
+    public void deleteByCode(String instrumentCode) {
+        jpaRepository.deleteByCode(instrumentCode); // Удаляем по коду
     }
 
     @Override
-    public Optional<FxSpot> find(String code) {
-        return jpaRepository.findByCode(code)
+    public Optional<FxSpot> findByCode(String instrumentCode) {
+        return jpaRepository.findByCode(instrumentCode)
                 .map(mapper::toDomain);
     }
 

@@ -30,17 +30,18 @@ public final class FxSpotCodec {
 
     /** Формирует символ инструмента из доменных моделей кодов валют и даты валютирования. */
     public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
-        Objects.requireNonNull(baseCode, "Base currency code must not be null");
-        Objects.requireNonNull(quoteCode, "Quote currency code must not be null");
-        Objects.requireNonNull(valueDate, "Value date must not be null");
+        Objects.requireNonNull(baseCode, "baseCode must not be null");
+        Objects.requireNonNull(quoteCode, "quoteCode must not be null");
+        Objects.requireNonNull(valueDate, "valueDate must not be null");
         return baseCode.value() + quoteCode.value() + SEP + valueDate.code();
     }
 
     /* ↪ Перегрузка для случая доменных моделей валют. */
-    public static String fxSpotSymbol(Currency base, Currency quote, FxSpotValueDate valueDate) {
-        Objects.requireNonNull(base, "Base currency must not be null");
-        Objects.requireNonNull(quote, "Quote currency must not be null");
-        return fxSpotSymbol(base.code(), quote.code(), valueDate);
+    public static String fxSpotSymbol(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
+        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
+        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
+        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        return fxSpotSymbol(baseCurrency.code(), quoteCurrency.code(), valueDate);
     }
 
     /** Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования. */
@@ -50,10 +51,11 @@ public final class FxSpotCodec {
     }
 
     /* ↪ Перегрузка для случая доменных моделей валют. */
-    public static String fxSpotCode(Currency base, Currency quote, FxSpotValueDate valueDate) {
-        Objects.requireNonNull(base, "Base currency must not be null");
-        Objects.requireNonNull(quote, "Quote currency must not be null");
-        return fxSpotCode(base.code(), quote.code(), valueDate);
+    public static String fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
+        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
+        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
+        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        return fxSpotCode(baseCurrency.code(), quoteCurrency.code(), valueDate);
     }
 
     /**

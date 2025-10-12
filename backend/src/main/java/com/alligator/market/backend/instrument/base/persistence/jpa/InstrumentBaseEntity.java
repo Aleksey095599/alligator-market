@@ -23,11 +23,13 @@ import java.util.Objects;
         name = "instrument",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
+        },
+        indexes = {
+                @Index(name = "idx_instrument_type", columnList = "type")
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
 public abstract class InstrumentBaseEntity extends BaseEntity {
 
