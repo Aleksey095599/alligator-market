@@ -32,7 +32,7 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← Не "светим наружу" JPA-конструктор
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
 public class CurrencyEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -67,9 +67,9 @@ public class CurrencyEntity extends BaseEntity {
     private Integer fractionDigits;
 
     /**
-     * Специальный конструктор для создания JPA-сущности с заданным натуральным ключом (кодом валюты).
-     * Данный конструктор — единственный способ создать JPA-сущность (стандартный конструктор AccessLevel.PROTECTED),
-     * что обеспечивает "одноразовость" (сеттер AccessLevel.NONE) установления натурального ключа.
+     * Специальный конструктор — единственный безопасный способ создать сущность.
+     *
+     * @param code   Код валюты (натуральный ключ)
      */
     public CurrencyEntity(CurrencyCode code) {
         this.code = Objects.requireNonNull(code, "code must not be null");

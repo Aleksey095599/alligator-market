@@ -6,6 +6,7 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +26,7 @@ import org.hibernate.annotations.NaturalId;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
 public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -35,17 +36,20 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     private Long id;
 
     /** Внутренний код инструмента (уникален в контексте приложения). */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером
     @NotBlank
     @NaturalId() // ← Помечаем поле как натуральный ключ
     @Column(name = "code", length = 32, nullable = false, updatable = false)
     private String code;
 
     /** Символ инструмента для отображения в UI. */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером
     @NotBlank
     @Column(name = "symbol", length = 32, nullable = false, updatable = false)
     private String symbol;
 
     /** Тип финансового инструмента. */
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 32, nullable = false, updatable = false)
