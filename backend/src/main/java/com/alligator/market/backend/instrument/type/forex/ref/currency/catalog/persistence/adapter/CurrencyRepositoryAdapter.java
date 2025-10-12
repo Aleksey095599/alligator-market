@@ -52,7 +52,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     public Currency update(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
 
-        // Ищем JPA-сущность по коду валюты иначе бросаем ошибку
+        // Ищем JPA-сущность валюты к обновлению
         CurrencyEntity e = jpaRepository.findByCode(c.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(c.code()));
 
