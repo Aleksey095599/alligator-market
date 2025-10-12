@@ -53,15 +53,15 @@ public class FxSpotEntityMapper {
     }
 
     /** Копирует в JPA-сущность изменяемые поля из доменной модели. */
-    public static void apply(FxSpot model, FxSpotEntity e) {
+    public static void apply(FxSpot m, FxSpotEntity e) {
         // ↓↓ Базовые проверки аргументов
-        Objects.requireNonNull(model, "model must not be null");
+        Objects.requireNonNull(m, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
 
         // Модель и сущность должны соответствовать одному и тому же инструменту
-        if (!e.getCode().equals(model.instrumentCode())) {
+        if (!e.getCode().equals(m.instrumentCode())) {
             throw new IllegalStateException("Instrument code mismatch: " + e.getCode() + " vs " +
-                    model.instrumentCode());
+                    m.instrumentCode());
         }
 
         // ↓↓ Копируем в JPA-сущность поля из доменной модели
