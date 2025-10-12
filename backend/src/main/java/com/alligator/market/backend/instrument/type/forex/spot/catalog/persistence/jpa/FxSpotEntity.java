@@ -33,14 +33,14 @@ import org.hibernate.annotations.Check;
 @NoArgsConstructor
 public class FxSpotEntity extends InstrumentBaseEntity {
 
-    /** ISO-4217 код базовой валюты (FK на "code" в таблице "currency"). */
+    /** Уникальный код базовой валюты (FK на "code" в таблице "currency"). */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_spot_base"), updatable = false, nullable = false)
     private CurrencyEntity baseCurrency;
 
-    /** ISO-4217 код котируемой валюты (FK на "code" в таблице "currency"). */
+    /** Уникальный код котируемой валюты (FK на "code" в таблице "currency"). */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",

@@ -32,7 +32,7 @@ public record FxSpot(
         // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
-        Objects.requireNonNull(valueDate, "valueDateCode must not be null");
+        Objects.requireNonNull(valueDate, "valueDate must not be null");
 
         // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
         if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {

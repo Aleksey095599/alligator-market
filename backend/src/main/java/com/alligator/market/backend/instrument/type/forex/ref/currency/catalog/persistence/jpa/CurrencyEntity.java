@@ -18,7 +18,8 @@ import org.hibernate.annotations.NaturalId;
 import java.util.Objects;
 
 /**
- * JPA-сущность валюты {@link Currency}.
+ * JPA-сущность валюты.
+ * Соответствует доменной модели {@link Currency}.
  */
 @Entity
 @Check(constraints = "default_fraction_digits BETWEEN 0 AND 10")
@@ -40,11 +41,11 @@ public class CurrencyEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    /** ISO-4217 код валюты. */
+    /** Уникальный код валюты. */
     @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
-    @NaturalId() // ← Помечаем поле как натуральный ключ («естественный» неизменяемый ключ)
+    @NaturalId() // ← Помечаем поле как натуральный ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
     private CurrencyCode code;
 
@@ -67,8 +68,8 @@ public class CurrencyEntity extends BaseEntity {
 
     /**
      * Специальный конструктор для создания JPA-сущности с заданным натуральным ключом (кодом валюты).
-     * Данный конструктор — единственный способ создать JPA-сущность (стандартный конструктор AccessLevel.PROTECTED)
-     * и обеспечивает "одноразовость" (сеттер AccessLevel.NONE) установления натурального ключа.
+     * Данный конструктор — единственный способ создать JPA-сущность (стандартный конструктор AccessLevel.PROTECTED),
+     * что обеспечивает "одноразовость" (сеттер AccessLevel.NONE) установления натурального ключа.
      */
     public CurrencyEntity(CurrencyCode code) {
         this.code = Objects.requireNonNull(code, "code must not be null");

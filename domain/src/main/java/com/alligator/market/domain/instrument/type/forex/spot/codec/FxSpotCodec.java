@@ -19,13 +19,13 @@ public final class FxSpotCodec {
     /* Разделитель между парой и кодом даты. */
     private static final char SEP = '_';
 
-    /* Длина ISO-кода и пары. */
+    /* Длина буквенного кода валюты и валютной пары. */
     private static final int CURRENCY_CODE_LENGTH = 3;
     private static final int CURRENCY_PAIR_LENGTH = 2 * CURRENCY_CODE_LENGTH;
 
-    /** Приватный конструктор (запрещает создание экземпляров). */
+    /** Приватный конструктор. */
     private FxSpotCodec() {
-        throw new UnsupportedOperationException("Utility class");
+        throw new UnsupportedOperationException("Utility class"); // Запрещаем создание экземпляров
     }
 
     /** Формирует символ инструмента из доменных моделей кодов валют и даты валютирования. */
@@ -45,6 +45,7 @@ public final class FxSpotCodec {
 
     /** Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования. */
     public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+        // Добавляем префикс к символу
         return TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate);
     }
 

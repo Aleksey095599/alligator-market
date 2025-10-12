@@ -13,6 +13,6 @@ public interface Instrument {
     /** Символ инструмента для отображения в UI. */
     String instrumentSymbol();
 
-    /** Тип инструмента. */
+    /** Тип финансового инструмента. */
     InstrumentType instrumentType();
 }

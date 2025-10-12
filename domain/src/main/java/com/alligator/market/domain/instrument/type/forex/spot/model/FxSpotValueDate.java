@@ -1,34 +1,27 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Коды дат валютирования инструмента FX_SPOT.
  */
 public enum FxSpotValueDate {
-    /* ↓↓ Константы. */
-    TOD("TOD"),
-    TOM("TOM"),
-    SPOT("SPOT");
+    /* Константы. */
+    TOD, TOM, SPOT;
 
-    /* Поле enum. */
-    private final String code; // Строковая переменная
-
-    /** Конструктор enum (всегда неявно private). */
-    FxSpotValueDate(String code) {
-        this.code = code;
-    }
-
-    /** Возвращает строковый код. */
+    /** Возвращает строковый код (совпадает с именем константы). */
     public String code() {
-        return code;
+        return name();
     }
 
-    /** Ищет значение enum по строковому коду. */
+    /** Парсит строковый код в enum (игнорирует регистр и пробелы). */
     public static FxSpotValueDate fromCode(String code) {
-        for (FxSpotValueDate value : values()) {
-            if (value.code.equals(code)) {
-                return value;
-            }
+        Objects.requireNonNull(code, "code must not be null");
+        try {
+            return FxSpotValueDate.valueOf(code.strip().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Unsupported FX_SPOT value date code: " + code, ex);
         }
-        throw new IllegalArgumentException("Unsupported FX spot value date code: " + code);
     }
 }
