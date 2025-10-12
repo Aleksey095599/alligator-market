@@ -42,7 +42,7 @@ public class CurrencyEntity extends BaseEntity {
     private Long id;
 
     /** Уникальный код валюты. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
     @NaturalId() // ← Помечаем поле как натуральный ключ

@@ -40,7 +40,7 @@ import java.util.Objects;
 public class FxSpotEntity extends InstrumentBaseEntity {
 
     /** Уникальный код базовой валюты (FK на "code" в таблице "currency"). */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
@@ -48,7 +48,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity baseCurrency;
 
     /** Уникальный код котируемой валюты (FK на "code" в таблице "currency"). */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
@@ -56,7 +56,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity quoteCurrency;
 
     /** Код даты расчетов. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз в конструкторе
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date", length = 4, updatable = false, nullable = false)
