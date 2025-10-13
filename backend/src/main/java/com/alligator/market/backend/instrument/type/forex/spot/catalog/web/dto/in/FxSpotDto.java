@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
  * Основной DTO инструмента FX_SPOT.
  */
 public record FxSpotDto(
+
         @NotBlank
         @Pattern(regexp = "^[A-Z]{3}$")
         String baseCurrency,
@@ -16,9 +17,9 @@ public record FxSpotDto(
         String quoteCurrency,
 
         @NotNull
-        @Min(0) @Max(10)
-        Integer quoteDecimal,
+        FxSpotValueDate valueDate,
 
         @NotNull
-        FxSpotValueDate valueDate
+        @Min(0) @Max(10)
+        Integer defaultQuoteFractionDigits
 ) {}

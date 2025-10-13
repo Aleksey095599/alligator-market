@@ -33,6 +33,9 @@ public class FxSpotController {
     /** Создать инструмент. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
+
+        FxSpot created = service.create(assembler.toDomain(dto));
+
         // DTO → модель
         FxSpot fxSpot = assembler.toDomain(dto);
         // Передаем модель сервису

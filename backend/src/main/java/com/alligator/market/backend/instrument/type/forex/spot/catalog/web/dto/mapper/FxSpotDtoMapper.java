@@ -4,20 +4,27 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.o
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 /**
  * Маппер: модель ⇄ DTO.
  */
 @Component
 public class FxSpotDtoMapper {
 
-    /** Преобразует доменную модель в DTO элемента списка. */
-    public FxSpotListItemDto toListItemDto(FxSpot model) {
+    /** Приватный конструктор (запрещает создание экземпляров). */
+    private FxSpotDtoMapper() { throw new UnsupportedOperationException("Utility class"); }
+
+    /** Преобразует доменную модель в DTO для списка. */
+    public FxSpotListItemDto toListItemDto(FxSpot fxSpot) {
+        Objects.requireNonNull(fxSpot, "fxSpot must not be null");
+
         return new FxSpotListItemDto(
-                model.instrumentSymbol(),
-                model.base().code().value(),
-                model.quote().code().value(),
-                model.defaultQuoteFractionDigits(),
-                model.valueDate()
+                fxSpot.instrumentSymbol(),
+                fxSpot.base().code().value(),
+                fxSpot.quote().code().value(),
+                fxSpot.defaultQuoteFractionDigits(),
+                fxSpot.valueDate()
         );
     }
 }
