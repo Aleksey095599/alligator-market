@@ -1,7 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -23,7 +22,6 @@ import java.util.Objects;
 public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     private final FxSpotRepository fxSpotRepository;
-    private final CurrencyRepository currencyRepository;
 
     @Override
     @Transactional
@@ -35,18 +33,15 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
             throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode());
         }
 
-        // ↓↓ Проверяем, что существуют составные валюты
-        if (!currencyRepository.existsByCode(fxSpot.base().code())) {
-            throw new CurrencyNotFoundException(fxSpot.base().code());
+        // Сохраняем инструмент (адаптер проверит, что обе валюты существуют)
+        try {
+            FxSpot created = fxSpotRepository.create(fxSpot);
+            log.info("FxSpot instrument {} created", created.instrumentCode());
+            return created;
+        } catch (CurrencyNotFoundException ex) {
+            log.warn("Unable to create FX_SPOT {}: currency is missing", fxSpot.instrumentCode(), ex);
+            throw ex;
         }
-        if (!currencyRepository.existsByCode(fxSpot.quote().code())) {
-            throw new CurrencyNotFoundException(fxSpot.quote().code());
-        }
-
-        // Сохраняем инструмент
-        FxSpot created = fxSpotRepository.create(fxSpot);
-        log.info("FxSpot instrument {} created", created.instrumentCode());
-        return created;
     }
 
     @Override
