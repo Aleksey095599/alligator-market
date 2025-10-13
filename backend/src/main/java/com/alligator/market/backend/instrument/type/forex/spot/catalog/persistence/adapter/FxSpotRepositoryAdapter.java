@@ -106,6 +106,13 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
+    public boolean existsByInstrumentCode(String instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        return jpaRepository.existsByCode(instrumentCode);
+    }
+
+    @Override
     public List<FxSpot> findAll() {
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
                 .stream()
