@@ -22,7 +22,7 @@ import java.util.Objects;
  * Соответствует доменной модели {@link Currency}.
  */
 @Entity
-@Check(constraints = "default_fraction_digits BETWEEN 0 AND 10")
+@Check(constraints = "fraction_digits BETWEEN 0 AND 10")
 @Table(
         name = "currency",
         uniqueConstraints = {

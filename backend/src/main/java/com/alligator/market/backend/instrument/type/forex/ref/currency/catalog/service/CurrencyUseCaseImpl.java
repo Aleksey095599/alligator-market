@@ -34,7 +34,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
         // Проверяем по коду валюты (натуральный ключ), что такой валюты еще нет
         if (currencyRepository.existsByCode(currency.code())) {
-            throw new CurrencyAlreadyExistsException(currency.code()); //
+            throw new CurrencyAlreadyExistsException(currency.code());
         }
 
         // Проверяем, что нет валюты с таким же названием

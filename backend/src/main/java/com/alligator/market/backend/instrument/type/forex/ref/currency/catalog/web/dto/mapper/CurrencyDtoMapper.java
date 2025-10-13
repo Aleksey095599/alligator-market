@@ -32,6 +32,7 @@ public class CurrencyDtoMapper {
     /** Преобразует DTO обновления и код в доменную модель. */
     public Currency toDomain(String code, UpdateCurrencyDto dto) {
         Objects.requireNonNull(code, "code must not be null");
+        Objects.requireNonNull(dto, "dto must not be null");
 
         return new Currency(
                 CurrencyCode.of(code),
