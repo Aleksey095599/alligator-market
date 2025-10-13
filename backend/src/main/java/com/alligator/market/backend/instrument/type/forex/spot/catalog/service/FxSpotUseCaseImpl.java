@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Реализация сервиса {@link FxSpotUseCase}.
@@ -23,11 +24,15 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     private final FxSpotRepository fxSpotRepository;
 
     @Override
-    public String create(FxSpot fxSpot) {
-        // Проверяем, что инструмента с таким кодом нет, иначе выбрасываем доменное исключение
-        fxSpotRepository.findByCode(fxSpot.instrumentCode()).ifPresent(i -> {
-            throw new FxSpotDuplicateException(fxSpot.instrumentCode());
-        });
+    public FxSpot create(FxSpot fxSpot) {
+        Objects.requireNonNull(fxSpot, "fxSpot must not be null");
+
+        // Проверяем по коду инструмента (натуральный ключ), что такого инструмента еще нет
+        if (fxSpotRepository.) {
+            throw new
+        }
+
+
         // Сохраняем инструмент
         fxSpotRepository.save(fxSpot);
         log.info("FxSpot {} created", fxSpot.instrumentCode());

@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface FxSpotUseCase {
 
-    /** Создать новый FX_SPOT инструмент. */
+    /** Создать новый инструмент. */
     FxSpot create(FxSpot fxSpot);
 
-    /** Обновить существующий FX_SPOT инструмент. */
+    /** Обновить существующий инструмент. */
     FxSpot update(FxSpot fxSpot);
 
-    /** Удалить инструмент FX_SPOT по коду. */
+    /** Удалить инструмент по коду. */
     void delete(String instrumentCode);
 
-    /** Вернуть все инструменты FX_SPOT. */
+    /** Вернуть все инструменты. */
     List<FxSpot> findAll();
 }

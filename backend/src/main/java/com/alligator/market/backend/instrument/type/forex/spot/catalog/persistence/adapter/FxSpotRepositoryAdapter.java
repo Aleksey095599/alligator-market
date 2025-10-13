@@ -30,7 +30,6 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     private final CurrencyJpaRepository currencyRepository;
     private final FxSpotEntityMapper mapper;
 
-    /** Конструктор. */
     public FxSpotRepositoryAdapter(FxSpotJpaRepository jpaRepository,
                                    CurrencyJpaRepository currencyRepository,
                                    FxSpotEntityMapper mapper) {
@@ -39,51 +38,48 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         this.mapper = mapper;
     }
 
-    /** Создать новый FX_SPOT инструмент. */
     @Override
-    public FxSpot create(FxSpot model) {
-        Objects.requireNonNull(model, "FxSpot model must not be null");
+    public FxSpot create(FxSpot fxSpot) {
+        Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Ищем JPA-сущности составных валют
-        CurrencyEntity baseEntity = currencyRepository.findByCode(model.base().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(model.base().code()));
-        CurrencyEntity quoteEntity = currencyRepository.findByCode(model.quote().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(model.quote().code()));
+        CurrencyEntity baseEntity = currencyRepository.findByCode(fxSpot.base().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.base().code()));
+        CurrencyEntity quoteEntity = currencyRepository.findByCode(fxSpot.quote().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.quote().code()));
 
         // Создаем JPA-сущность, используя специальный метод
-        FxSpotEntity entity = FxSpotEntityMapper.newEntity(model, baseEntity, quoteEntity);
+        FxSpotEntity entity = FxSpotEntityMapper.newEntity(fxSpot, baseEntity, quoteEntity);
 
         // Пробуем сохранить созданную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
             return mapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
-            throw new FxSpotCreateException(model.instrumentCode(), ex);
+            throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
         }
     }
 
-    /** Обновить существующий FX_SPOT инструмент. */
     @Override
-    public FxSpot update(FxSpot m) {
-        Objects.requireNonNull(m, "FxSpot model must not be null");
+    public FxSpot update(FxSpot fxSpot) {
+        Objects.requireNonNull(fxSpot, "fxSpot model must not be null");
 
         // Ищем JPA-сущность инструмента FX_SPOT к обновлению
-        FxSpotEntity e = jpaRepository.findByCode(m.instrumentCode())
-                .orElseThrow(() -> new FxSpotNotFoundException(m.instrumentCode()));
+        FxSpotEntity e = jpaRepository.findByCode(fxSpot.instrumentCode())
+                .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 
         // Заполняем изменяемые поля из переданной модели
-        FxSpotEntityMapper.apply(m, e);
+        FxSpotEntityMapper.apply(fxSpot, e);
 
         // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
             return mapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
-            throw new FxSpotUpdateException(m.instrumentCode(), ex);
+            throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         }
     }
 
-    /** Удалить инструмент FX_SPOT по коду. */
     @Override
     public void deleteByCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -101,7 +97,6 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         }
     }
 
-    /** Найти инструмент FX_SPOT по коду. */
     @Override
     public Optional<FxSpot> findByCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -110,7 +105,6 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .map(mapper::toDomain);
     }
 
-    /** Вернуть все инструменты FX_SPOT. */
     @Override
     public List<FxSpot> findAll() {
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
@@ -119,7 +113,6 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .toList();
     }
 
-    /** Проверить, используется ли заданный код валюты хотя бы в одном инструменте. */
     @Override
     public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
         return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
