@@ -41,24 +41,24 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     /** Создать новый FX_SPOT инструмент. */
     @Override
-    public FxSpot create(FxSpot m) {
-        Objects.requireNonNull(m, "FxSpot model must not be null");
+    public FxSpot create(FxSpot model) {
+        Objects.requireNonNull(model, "FxSpot model must not be null");
 
         // Ищем JPA-сущности составных валют
-        CurrencyEntity be = currencyRepository.findByCode(m.base().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(m.base().code()));
-        CurrencyEntity qe = currencyRepository.findByCode(m.quote().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(m.quote().code()));
+        CurrencyEntity baseEntity = currencyRepository.findByCode(model.base().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(model.base().code()));
+        CurrencyEntity quoteEntity = currencyRepository.findByCode(model.quote().code())
+                .orElseThrow(() -> new CurrencyNotFoundException(model.quote().code()));
 
         // Создаем JPA-сущность, используя специальный метод
-        FxSpotEntity entity = FxSpotEntityMapper.newEntity(m, be, qe);
+        FxSpotEntity entity = FxSpotEntityMapper.newEntity(model, baseEntity, quoteEntity);
 
         // Пробуем сохранить созданную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
             return mapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
-            throw new FxSpotCreateException(m.instrumentCode(), ex);
+            throw new FxSpotCreateException(model.instrumentCode(), ex);
         }
     }
 

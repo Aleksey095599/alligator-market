@@ -54,12 +54,12 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     }
 
     @Override
-    public void delete(String code) {
+    public void delete(String instrumentCode) {
         // Проверяем, что инструмент существует
-        fxSpotRepository.findByCode(code)
-                .orElseThrow(() -> new FxSpotNotFoundException(code));
-        fxSpotRepository.deleteByCode(code);
-        log.info("FxSpot {} deleted", code);
+        fxSpotRepository.findByCode(instrumentCode)
+                .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
+        fxSpotRepository.deleteByCode(instrumentCode);
+        log.info("FxSpot {} deleted", instrumentCode);
     }
 
     @Override
