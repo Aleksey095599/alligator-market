@@ -30,7 +30,6 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
-    private final FxSpotEntityMapper mapper;
 
     @Override
     public FxSpot create(FxSpot fxSpot) {
@@ -48,7 +47,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Пробуем сохранить созданную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
-            return mapper.toDomain(saved);
+            return FxSpotEntityMapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
             throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
         }
@@ -68,7 +67,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
-            return mapper.toDomain(saved);
+            return FxSpotEntityMapper.toDomain(saved);
         } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         }
@@ -96,7 +95,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return jpaRepository.findByCode(instrumentCode)
-                .map(mapper::toDomain);
+                .map(FxSpotEntityMapper::toDomain);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public List<FxSpot> findAll() {
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
                 .stream()
-                .map(mapper::toDomain)
+                .map(FxSpotEntityMapper::toDomain)
                 .toList();
     }
 

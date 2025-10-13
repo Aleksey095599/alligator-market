@@ -3,14 +3,11 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import org.springframework.stereotype.Component;
-
 import java.util.Objects;
 
 /**
  * Маппер: JPA-сущность ⇄ доменная модель.
  */
-@Component
 public class FxSpotEntityMapper {
 
     /** Приватный конструктор (запрещает создание экземпляров). */
@@ -35,7 +32,7 @@ public class FxSpotEntityMapper {
     }
 
     /** JPA-сущность ⇒ доменная модель. */
-    public FxSpot toDomain(FxSpotEntity e) {
+    public static FxSpot toDomain(FxSpotEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
         // defaultQuoteFractionDigits задана как Integer в JPA-сущности и как int в модели ⇒ нужна null проверка

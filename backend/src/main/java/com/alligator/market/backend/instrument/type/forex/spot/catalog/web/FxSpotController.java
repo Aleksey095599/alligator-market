@@ -27,7 +27,6 @@ import java.util.List;
 public class FxSpotController {
 
     private final FxSpotUseCase service;
-    private final FxSpotDtoMapper mapper;
     private final FxSpotAssembler assembler;
 
     /** Создать инструмент. */
@@ -65,7 +64,7 @@ public class FxSpotController {
     public ResponseEntity<ApiResponse<List<FxSpotListItemDto>>> getAll() {
 
         List<FxSpotListItemDto> list = service.findAll().stream()
-                .map(mapper::toListItemDto)
+                .map(FxSpotDtoMapper::toListItemDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
