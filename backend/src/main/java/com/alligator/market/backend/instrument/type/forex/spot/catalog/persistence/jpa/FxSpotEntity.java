@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 @Entity
 @Check(constraints =
-        "base_currency <> quote_currency" + "AND quote_fraction_digits BETWEEN 0 AND 10"
+        "base_currency <> quote_currency AND (quote_fraction_digits BETWEEN 0 AND 10)"
 )
 @Table(
         name = "fx_spot",
