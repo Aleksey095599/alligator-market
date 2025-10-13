@@ -53,10 +53,10 @@ public class FxSpotController {
     }
 
     /** Удалить инструмент. */
-    @DeleteMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
+    @DeleteMapping("/{instrumentCode}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String instrumentCode) {
 
-        service.delete(code);
+        service.delete(instrumentCode);
         return ResponseEntityFactory.ok(null);
     }
 
