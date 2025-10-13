@@ -23,6 +23,11 @@ public final class ResponseEntityFactory {
                 .body(ApiResponse.build(data, "created"));
     }
 
+    /** Успех: частный случай - 204 No Content. */
+    public static ResponseEntity<ApiResponse<Void>> noContent() {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     /** Ошибка: общая. */
     public static ResponseEntity<ApiResponse<Void>> error(HttpStatus status, String message) {
         return ResponseEntity.status(status)
