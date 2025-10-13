@@ -23,6 +23,9 @@ public interface FxSpotRepository {
     /** Найти инструмент по коду. */
     Optional<FxSpot> findByCode(String instrumentCode);
 
+    /** Проверить существование инструмента по его коду. */
+    boolean existsByInstrumentCode(String instrumentCode);
+
     /** Вернуть все инструменты. */
     List<FxSpot> findAll();
 
