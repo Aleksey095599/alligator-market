@@ -51,7 +51,7 @@ public class CurrencyController {
             @RequestBody @Valid UpdateCurrencyDto dto) {
 
         service.update(mapper.toDomain(code, dto));
-        return ResponseEntity.noContent().build();
+        return ResponseEntityFactory.ok((Void) null);
     }
 
     /** Удалить валюту. */
