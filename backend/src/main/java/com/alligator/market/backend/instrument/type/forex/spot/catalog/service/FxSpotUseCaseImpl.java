@@ -31,7 +31,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Проверяем по коду инструмента (натуральный ключ), что такого инструмента еще нет
-        if (fxSpotRepository.existsByCurrencyCode(fxSpot.base().code())) {
+        if (fxSpotRepository.existsByInstrumentCode(fxSpot.instrumentCode())) {
             throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode());
         }
 
