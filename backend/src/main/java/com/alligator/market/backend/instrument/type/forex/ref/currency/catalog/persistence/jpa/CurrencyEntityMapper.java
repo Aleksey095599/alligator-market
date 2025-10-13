@@ -1,11 +1,14 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
 /**
  * Маппер: JPA-сущность ⇄ доменная модель.
  */
+@Component
 public final class CurrencyEntityMapper {
 
     /** Приватный конструктор (запрещает создание экземпляров). */
