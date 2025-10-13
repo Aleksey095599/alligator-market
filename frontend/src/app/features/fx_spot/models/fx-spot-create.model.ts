@@ -8,6 +8,6 @@ export interface FxSpotCreateDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   quoteDecimal: number;
-  /* Код даты валютирования */
-  valueDateCode: FxSpotValueDate;
+  /* Дата валютирования */
+  valueDate: FxSpotValueDate;
 }

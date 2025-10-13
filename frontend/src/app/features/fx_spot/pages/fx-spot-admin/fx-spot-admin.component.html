@@ -36,12 +36,12 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Value Date</mat-label>
-          <mat-select formControlName="valueDateCode">
-            <mat-option *ngFor="let code of valueDateCodes" [value]="code">
-              {{ code }}
+          <mat-select formControlName="valueDate">
+            <mat-option *ngFor="let date of valueDates" [value]="date">
+              {{ date }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['valueDateCode'].hasError('required')">
+          <mat-error *ngIf="form.controls['valueDate'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
@@ -102,9 +102,9 @@
           <td mat-cell *matCellDef="let spot"> {{ spot.quoteCurrency }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="valueDateCode">
+        <ng-container matColumnDef="valueDate">
           <th mat-header-cell *matHeaderCellDef> Value Date</th>
-          <td mat-cell *matCellDef="let spot"> {{ spot.valueDateCode }}</td>
+          <td mat-cell *matCellDef="let spot"> {{ spot.valueDate }}</td>
         </ng-container>
 
         <ng-container matColumnDef="quoteDecimal">
