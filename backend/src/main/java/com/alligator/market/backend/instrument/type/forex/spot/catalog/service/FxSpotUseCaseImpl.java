@@ -45,7 +45,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
         // Сохраняем инструмент
         FxSpot created = fxSpotRepository.create(fxSpot);
-        log.info("FxSpot instrument {} created", fxSpot.instrumentCode());
+        log.info("FxSpot instrument {} created", created.instrumentCode());
         return created;
     }
 
@@ -65,7 +65,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         }
 
         FxSpot updated = fxSpotRepository.update(fxSpot);
-        log.info("FxSpot instrument {} updated", fxSpot.instrumentCode());
+        log.info("FxSpot instrument {} updated", updated.instrumentCode());
         return updated;
     }
 

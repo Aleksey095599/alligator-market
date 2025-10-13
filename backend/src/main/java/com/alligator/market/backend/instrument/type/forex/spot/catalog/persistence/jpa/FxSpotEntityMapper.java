@@ -61,7 +61,7 @@ public class FxSpotEntityMapper {
         }
 
         // ↓↓ Копируем в JPA-сущность поля из доменной модели
-        // Коды базовой м котируемой валют, а также дата валютирования неизменяемые поля (updatable = false)
+        // Коды базовой и котируемой валют, а также дата валютирования неизменяемые поля (updatable = false)
         e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
 }

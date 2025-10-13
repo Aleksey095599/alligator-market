@@ -115,6 +115,8 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
+        Objects.requireNonNull(currencyCode, "currencyCode must not be null");
+
         return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
     }
 }

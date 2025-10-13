@@ -69,7 +69,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         }
 
         Currency updated = currencyRepository.update(currency);
-        log.info("Currency {} updated", currency.code().value());
+        log.info("Currency {} updated", updated.code().value());
         return updated;
     }
 
