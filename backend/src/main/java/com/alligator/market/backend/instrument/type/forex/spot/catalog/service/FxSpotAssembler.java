@@ -41,13 +41,13 @@ public class FxSpotAssembler {
 
         FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
 
-        String baseCode = parts.baseCode().value();
-        String quoteCode = parts.quoteCode().value();
+        CurrencyCode baseCode = parts.baseCode();
+        CurrencyCode quoteCode = parts.quoteCode();
 
-        Currency base = currencyRepository.findByCode(CurrencyCode.of(baseCode))
-                .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(baseCode)));
-        Currency quote = currencyRepository.findByCode(CurrencyCode.of(quoteCode))
-                .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(quoteCode)));
+        Currency base = currencyRepository.findByCode(baseCode)
+                .orElseThrow(() -> new CurrencyNotFoundException(baseCode));
+        Currency quote = currencyRepository.findByCode(quoteCode)
+                .orElseThrow(() -> new CurrencyNotFoundException(quoteCode));
         return new FxSpot(base, quote, parts.valueDate(), dto.defaultQuoteFractionDigits());
     }
 }
