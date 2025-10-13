@@ -36,10 +36,10 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         // Сохраняем инструмент (адаптер проверит, что обе валюты существуют)
         try {
             FxSpot created = fxSpotRepository.create(fxSpot);
-            log.info("FxSpot instrument {} created", created.instrumentCode());
+            log.info("FX_SPOT instrument {} created", created.instrumentCode());
             return created;
         } catch (CurrencyNotFoundException ex) {
-            log.warn("Unable to create FX_SPOT {}: currency is missing", fxSpot.instrumentCode(), ex);
+            log.warn("Unable to create FX_SPOT instrument {}: currency is missing", fxSpot.instrumentCode(), ex);
             throw ex;
         }
     }
@@ -55,12 +55,12 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
         // Если изменений нет — возвращаем текущее состояние без записи в БД
         if (current.equals(fxSpot)) {
-            log.debug("FxSpot {} update skipped: nothing to change", fxSpot.instrumentCode());
+            log.debug("FX_SPOT instrument {} update skipped: nothing to change", fxSpot.instrumentCode());
             return current;
         }
 
         FxSpot updated = fxSpotRepository.update(fxSpot);
-        log.info("FxSpot instrument {} updated", updated.instrumentCode());
+        log.info("FX_SPOT instrument {} updated", updated.instrumentCode());
         return updated;
     }
 
@@ -75,7 +75,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         }
 
         fxSpotRepository.deleteByCode(instrumentCode);
-        log.info("FxSpot instrument {} deleted", instrumentCode);
+        log.info("FX_SPOT instrument {} deleted", instrumentCode);
     }
 
     @Override
