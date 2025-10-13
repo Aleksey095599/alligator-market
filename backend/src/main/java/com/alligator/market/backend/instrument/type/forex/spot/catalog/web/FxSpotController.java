@@ -36,8 +36,8 @@ public class FxSpotController {
         FxSpot created = service.create(assembler.toDomain(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{instrumentSymbol}")
-                .buildAndExpand(created.instrumentSymbol())
+                .path("/{instrumentCode}")
+                .buildAndExpand(created.instrumentCode())
                 .toUri();
         return ResponseEntityFactory.created(location, created.instrumentSymbol());
     }
