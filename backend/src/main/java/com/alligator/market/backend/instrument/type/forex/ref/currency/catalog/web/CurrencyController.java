@@ -29,13 +29,12 @@ import java.util.List;
 public class CurrencyController {
 
     private final CurrencyUseCase service;
-    private final CurrencyDtoMapper mapper;
 
     /** Создать валюту. */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
-        Currency created = service.create(mapper.toDomain(dto));
+        Currency created = service.create(CurrencyDtoMapper.toDomain(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
@@ -50,7 +49,7 @@ public class CurrencyController {
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
             @RequestBody @Valid UpdateCurrencyDto dto) {
 
-        service.update(mapper.toDomain(code, dto));
+        service.update(CurrencyDtoMapper.toDomain(code, dto));
         return ResponseEntityFactory.ok(null);
     }
 
@@ -69,7 +68,7 @@ public class CurrencyController {
 
         List<CurrencyDto> currencyDtoList = service.findAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(CurrencyDtoMapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(currencyDtoList);
     }
