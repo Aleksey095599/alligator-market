@@ -50,7 +50,7 @@ public class CurrencyController {
             @RequestBody @Valid UpdateCurrencyDto dto) {
 
         service.update(CurrencyDtoMapper.toDomain(code, dto));
-        return ResponseEntityFactory.ok(null);
+        return ResponseEntityFactory.noContent();
     }
 
     /** Удалить валюту. */
@@ -59,7 +59,7 @@ public class CurrencyController {
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
 
         service.delete(CurrencyCode.of(code));
-        return ResponseEntityFactory.ok(null);
+        return ResponseEntityFactory.noContent();
     }
 
     /** Вернуть все валюты. */

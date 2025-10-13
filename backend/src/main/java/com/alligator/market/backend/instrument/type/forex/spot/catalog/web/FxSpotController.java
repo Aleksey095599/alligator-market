@@ -48,7 +48,7 @@ public class FxSpotController {
                                                     @RequestBody @Valid FxSpotUpdateDto dto) {
 
         service.update(assembler.toDomainByCode(instrumentCode, dto));
-        return ResponseEntityFactory.ok(null);
+        return ResponseEntityFactory.noContent();
     }
 
     /** Удалить инструмент. */
@@ -56,7 +56,7 @@ public class FxSpotController {
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String instrumentCode) {
 
         service.delete(instrumentCode);
-        return ResponseEntityFactory.ok(null);
+        return ResponseEntityFactory.noContent();
     }
 
     /** Вернуть все инструменты. */
