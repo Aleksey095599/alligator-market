@@ -10,6 +10,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -21,14 +22,10 @@ import java.util.Optional;
  * Адаптер, реализующий доменный порт репозитория валют через Spring Data JPA.
  */
 @Repository
+@RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
     private final CurrencyJpaRepository jpaRepository;
-
-    /** Конструктор. */
-    public CurrencyRepositoryAdapter(CurrencyJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
-    }
 
     /** Создать новую валюту. */
     @Override

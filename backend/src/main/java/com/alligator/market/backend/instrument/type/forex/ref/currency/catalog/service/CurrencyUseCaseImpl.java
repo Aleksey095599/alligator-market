@@ -17,18 +17,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Реализация сервиса {@link CurrencyUseCase}:
- * содержит проверки и операции с валютами.
+ * Реализация сервиса {@link CurrencyUseCase}.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     private final CurrencyRepository currencyRepository;
     private final FxSpotRepository fxSpotRepository;
 
-    /** Создать новую валюту. */
     @Override
     @Transactional
     public Currency create(Currency currency) {
@@ -49,7 +47,6 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         return created;
     }
 
-    /** Обновить существующую валюту. */
     @Override
     @Transactional
     public Currency update(Currency currency) {
@@ -76,7 +73,6 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         return updated;
     }
 
-    /** Удалить валюту по коду. */
     @Override
     @Transactional
     public void delete(CurrencyCode code) {
@@ -96,10 +92,9 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         log.info("Currency {} deleted", code.value());
     }
 
-    /** Вернуть все валюты. */
     @Override
     @Transactional(readOnly = true)
-    public List<Currency> getAll() {
+    public List<Currency> findAll() {
         List<Currency> result = currencyRepository.findAll();
         log.debug("Found {} currencies", result.size());
         return result;

@@ -20,5 +20,5 @@ public interface CurrencyUseCase {
     void delete(CurrencyCode code);
 
     /** Вернуть все валюты. */
-    List<Currency> getAll();
+    List<Currency> findAll();
 }

@@ -1,5 +1,8 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
@@ -13,58 +16,71 @@ import java.util.Objects;
 
 /**
  * Реализация сервиса {@link FxSpotUseCase}.
- * Содержит проверки и операции с инструментами FX_SPOT.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
-@Slf4j
 public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     private final FxSpotRepository fxSpotRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Override
+    @Transactional
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Проверяем по коду инструмента (натуральный ключ), что такого инструмента еще нет
-        if (fxSpotRepository.) {
-            throw new
+        if (fxSpotRepository.existsByCurrencyCode(fxSpot.base().code())) {
+            throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode());
         }
 
+        // ↓↓ Проверяем, что существуют составные валюты
+        if (!currencyRepository.existsByCode(fxSpot.base().code())) {
+            throw new CurrencyNotFoundException(fxSpot.base().code());
+        }
+        if (!currencyRepository.existsByCode(fxSpot.quote().code())) {
+            throw new CurrencyNotFoundException(fxSpot.quote().code());
+        }
 
         // Сохраняем инструмент
-        fxSpotRepository.save(fxSpot);
-        log.info("FxSpot {} created", fxSpot.instrumentCode());
-        return fxSpot.instrumentCode();
+        FxSpot created = fxSpotRepository.create(fxSpot);
+        log.info("FxSpot instrument {} created", fxSpot.instrumentCode());
+        return created;
     }
 
     @Override
-    public void update(FxSpot fxSpot) {
-        // Из модели извлекаем код
-        String instrumentCode = fxSpot.instrumentCode();
-        // Ищем текущий инструмент
-        FxSpot current = fxSpotRepository.findByCode(instrumentCode)
-                .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
-        // Обновляем текущий инструмент
-        FxSpot updated = new FxSpot(
-                current.base(),
-                current.quote(),
-                current.valueDate(),
-                fxSpot.defaultQuoteFractionDigits() // Берем из переданной модели
-        );
-        // Сохраняем обновленный инструмент
-        fxSpotRepository.save(updated);
-        log.info("FxSpot {} updated", instrumentCode);
+    @Transactional
+    public FxSpot update(FxSpot fxSpot) {
+        Objects.requireNonNull(fxSpot, "fxSpot must not be null");
+
+        // Ищем инструмент к обновлению
+        FxSpot current = fxSpotRepository.findByCode(fxSpot.instrumentCode())
+                .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
+
+        // Если изменений нет — возвращаем текущее состояние без записи в БД
+        if (current.equals(fxSpot)) {
+            log.debug("FxSpot {} update skipped: nothing to change", fxSpot.instrumentCode());
+            return current;
+        }
+
+        FxSpot updated = fxSpotRepository.update(fxSpot);
+        log.info("FxSpot instrument {} updated", fxSpot.instrumentCode());
+        return updated;
     }
 
     @Override
+    @Transactional
     public void delete(String instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
         // Проверяем, что инструмент существует
-        fxSpotRepository.findByCode(instrumentCode)
-                .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
+        if (!fxSpotRepository.existsByInstrumentCode(instrumentCode)) {
+            throw new FxSpotNotFoundException(instrumentCode);
+        }
+
         fxSpotRepository.deleteByCode(instrumentCode);
-        log.info("FxSpot {} deleted", instrumentCode);
+        log.info("FxSpot instrument {} deleted", instrumentCode);
     }
 
     @Override

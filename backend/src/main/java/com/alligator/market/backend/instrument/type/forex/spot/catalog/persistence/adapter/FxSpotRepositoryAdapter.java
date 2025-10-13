@@ -13,6 +13,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNo
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotUpdateException;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -24,19 +25,12 @@ import java.util.Optional;
  * Адаптер, реализующий доменный порт репозитория инструментов типа FX_SPOT через Spring Data JPA.
  */
 @Repository
+@RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
     private final FxSpotEntityMapper mapper;
-
-    public FxSpotRepositoryAdapter(FxSpotJpaRepository jpaRepository,
-                                   CurrencyJpaRepository currencyRepository,
-                                   FxSpotEntityMapper mapper) {
-        this.jpaRepository = jpaRepository;
-        this.currencyRepository = currencyRepository;
-        this.mapper = mapper;
-    }
 
     @Override
     public FxSpot create(FxSpot fxSpot) {
