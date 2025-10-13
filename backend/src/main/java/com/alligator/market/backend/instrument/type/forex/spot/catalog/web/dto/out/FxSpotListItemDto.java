@@ -11,5 +11,5 @@ public record FxSpotListItemDto(
         String baseCurrency,
         String quoteCurrency,
         Integer defaultQuoteFractionDigits,
-        FxSpotValueDate valueDateCode
+        FxSpotValueDate valueDate
 ) {}

@@ -8,8 +8,8 @@ export interface FxSpotDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   quoteDecimal: number;
-  /* Код даты валютирования */
-  valueDateCode: FxSpotValueDate;
+  /* Дата валютирования */
+  valueDate: FxSpotValueDate;
 }
 
 /** DTO строки списка с символом инструмента. */
@@ -22,6 +22,6 @@ export interface FxSpotListItemDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   quoteDecimal: number;
-  /* Код даты валютирования */
-  valueDateCode: FxSpotValueDate;
+  /* Дата валютирования */
+  valueDate: FxSpotValueDate;
 }

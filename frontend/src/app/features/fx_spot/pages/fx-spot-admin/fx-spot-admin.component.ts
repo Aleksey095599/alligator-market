@@ -42,7 +42,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['symbol', 'baseCurrency', 'quoteCurrency', 'valueDateCode', 'quoteDecimal', 'actions'];
+  displayed: string[] = ['symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'quoteDecimal', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================
@@ -55,7 +55,7 @@ export class FxSpotAdminComponent implements OnInit {
   editCode: string | null = null; // внутренний код инструмента для редактирования (собирается на UI)
   editSymbol: string | null = null; // символ инструмента для уведомления
   currencies: CurrencyDto[] = [];
-  valueDateCodes = Object.values(FxSpotValueDate);
+  valueDates = Object.values(FxSpotValueDate);
 
   constructor(
     private readonly service: FxSpotService,
@@ -83,7 +83,7 @@ export class FxSpotAdminComponent implements OnInit {
         ]
       ],
 
-      valueDateCode: [
+      valueDate: [
         FxSpotValueDate.TOD,
         [Validators.required]
       ]
@@ -122,7 +122,7 @@ export class FxSpotAdminComponent implements OnInit {
           baseCurrency: '',
           quoteCurrency: '',
           quoteDecimal: 4,
-          valueDateCode: FxSpotValueDate.TOD
+          valueDate: FxSpotValueDate.TOD
         });
         this.locked = false;
       },
@@ -144,11 +144,11 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: spot.baseCurrency,
       quoteCurrency: spot.quoteCurrency,
       quoteDecimal: spot.quoteDecimal,
-      valueDateCode: spot.valueDateCode
+      valueDate: spot.valueDate
     });
     this.form.controls['baseCurrency'].disable();
     this.form.controls['quoteCurrency'].disable();
-    this.form.controls['valueDateCode'].disable();
+    this.form.controls['valueDate'].disable();
   }
 
   /* нажата кнопка Save */
@@ -186,11 +186,11 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: '',
       quoteCurrency: '',
       quoteDecimal: 4,
-      valueDateCode: FxSpotValueDate.TOD
+      valueDate: FxSpotValueDate.TOD
     });
     this.form.controls['baseCurrency'].enable();
     this.form.controls['quoteCurrency'].enable();
-    this.form.controls['valueDateCode'].enable();
+    this.form.controls['valueDate'].enable();
     this.locked = false;
   }
 
@@ -219,8 +219,8 @@ export class FxSpotAdminComponent implements OnInit {
   }
 
   /** Собираем внутренний код инструмента для запросов к backend. */
-  private composeCode(spot: Pick<FxSpotListItemDto, 'baseCurrency' | 'quoteCurrency' | 'valueDateCode'>): string {
-    return `FX_SPOT_${spot.baseCurrency}${spot.quoteCurrency}_${spot.valueDateCode}`;
+  private composeCode(spot: Pick<FxSpotListItemDto, 'baseCurrency' | 'quoteCurrency' | 'valueDate'>): string {
+    return `FX_SPOT_${spot.baseCurrency}${spot.quoteCurrency}_${spot.valueDate}`;
   }
 
 }
