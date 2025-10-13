@@ -35,33 +35,27 @@ public class FxSpotController {
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
 
         FxSpot created = service.create(assembler.toDomain(dto));
-
-        // DTO → модель
-        FxSpot fxSpot = assembler.toDomain(dto);
-        // Передаем модель сервису
-        String code = service.create(fxSpot);
-        String instrumentSymbol = fxSpot.instrumentSymbol();
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{code}")
-                .buildAndExpand(code)
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{instrumentSymbol}")
+                .buildAndExpand(created.instrumentSymbol())
                 .toUri();
-        return ResponseEntityFactory.created(location, instrumentSymbol);
+        return ResponseEntityFactory.created(location, created.instrumentSymbol());
     }
 
     /** Обновить инструмент. */
-    @PatchMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> update(@PathVariable String code,
+    @PatchMapping("/{instrumentCode}")
+    public ResponseEntity<ApiResponse<Void>> update(@PathVariable String instrumentCode,
                                                     @RequestBody @Valid FxSpotUpdateDto dto) {
-        // код и DTO → модель
-        FxSpot fxSpot = assembler.toDomainByCode(code, dto);
-        // Передаем модель сервису
-        service.update(fxSpot);
+
+        service.update(assembler.toDomainByCode(instrumentCode, dto));
         return ResponseEntityFactory.ok(null);
     }
 
     /** Удалить инструмент. */
     @DeleteMapping("/{code}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String code) {
+
         service.delete(code);
         return ResponseEntityFactory.ok(null);
     }
@@ -69,6 +63,7 @@ public class FxSpotController {
     /** Вернуть все инструменты. */
     @GetMapping
     public ResponseEntity<ApiResponse<List<FxSpotListItemDto>>> getAll() {
+
         List<FxSpotListItemDto> list = service.findAll().stream()
                 .map(mapper::toListItemDto)
                 .toList();
