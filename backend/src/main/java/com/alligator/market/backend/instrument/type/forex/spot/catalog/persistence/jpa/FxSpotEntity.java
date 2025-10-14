@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
-import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 import jakarta.persistence.*;
@@ -22,8 +22,9 @@ import java.util.Objects;
  * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
-@Check(constraints =
-        "base_currency <> quote_currency AND (quote_fraction_digits BETWEEN 0 AND 10)"
+@Check(constraints = "(base_currency <> quote_currency) " +
+        "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
+        "AND (value_date IN ('TOD','TOM','SPOT'))"
 )
 @Table(
         name = "fx_spot",
