@@ -49,19 +49,14 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public FxSpot update(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Ищем инструмент к обновлению
-        FxSpot current = fxSpotRepository.findByCode(fxSpot.instrumentCode())
-                .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
-
-        // Если изменений нет — возвращаем текущее состояние без записи в БД
-        if (current.equals(fxSpot)) {
-            log.debug("FX_SPOT instrument {} update skipped: nothing to change", fxSpot.instrumentCode());
-            return current;
+        try {
+            FxSpot updated = fxSpotRepository.update(fxSpot);
+            log.info("FX_SPOT instrument {} updated", updated.instrumentCode());
+            return updated;
+        } catch (FxSpotNotFoundException ex) {
+            log.warn("Unable to update FX_SPOT instrument {}: instrument is missing", fxSpot.instrumentCode(), ex);
+            throw ex;
         }
-
-        FxSpot updated = fxSpotRepository.update(fxSpot);
-        log.info("FX_SPOT instrument {} updated", updated.instrumentCode());
-        return updated;
     }
 
     @Override
@@ -69,13 +64,13 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public void delete(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Проверяем, что инструмент существует
-        if (!fxSpotRepository.existsByInstrumentCode(instrumentCode)) {
-            throw new FxSpotNotFoundException(instrumentCode);
+        try {
+            fxSpotRepository.deleteByCode(instrumentCode);
+            log.info("FX_SPOT instrument {} deleted", instrumentCode);
+        } catch (FxSpotNotFoundException ex) {
+            log.warn("Unable to delete FX_SPOT instrument {}: instrument is missing", instrumentCode, ex);
+            throw ex;
         }
-
-        fxSpotRepository.deleteByCode(instrumentCode);
-        log.info("FX_SPOT instrument {} deleted", instrumentCode);
     }
 
     @Override
