@@ -1,5 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.adapter;
 
+import com.alligator.market.backend.common.persistence.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
@@ -7,13 +8,12 @@ import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.p
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotCreateException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotDeleteException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotUpdateException;
+import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +28,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
+    /* Натуральный ключ инструмента (совпадает с бизнес‑идентичностью). */
+    private static final String UQ_INSTRUMENT_CODE = "uq_instrument_code";
+
+    // ↓↓ Репозитории для инструментов FX_SPOT и валют
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
 
@@ -35,7 +39,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Ищем JPA-сущности составных валют
+        // ↓↓ Ищем JPA-сущности составных валют (бизнес‑ошибки при отсутствии)
         CurrencyEntity baseEntity = currencyRepository.findByCode(fxSpot.base().code())
                 .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.base().code()));
         CurrencyEntity quoteEntity = currencyRepository.findByCode(fxSpot.quote().code())
@@ -44,11 +48,20 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Создаем JPA-сущность, используя специальный метод
         FxSpotEntity entity = FxSpotEntityMapper.newEntity(fxSpot, baseEntity, quoteEntity);
 
-        // Пробуем сохранить созданную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить созданную сущность
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
-            return FxSpotEntityMapper.toDomain(saved);
-        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            return FxSpotEntityMapper.toDomain(saved); // Успех
+        } catch (DataIntegrityViolationException ex) {
+            if (DbErrors.isViolationOf(ex, UQ_INSTRUMENT_CODE)) {
+                throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode()); // Бизнес‑ошибка: дубликат
+            }
+            throw new FxSpotCreateException(fxSpot.instrumentCode(), ex); // Иные ошибки целостности
+        } catch (jakarta.validation.ConstraintViolationException ex) {
+            // Bean Validation на entity: @NotNull/@Min/@Max и т.п. → техническая ошибка создания
+            throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
+        } catch (DataAccessException ex) {
+            // Любые прочие ошибки доступа к данным (тайм-ауты, deadlock, Bad SQL и т.д.)
             throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
         }
     }

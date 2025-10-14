@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
-import com.alligator.market.backend.common.jpa.BaseEntity;
+import com.alligator.market.backend.common.persistence.jpa.BaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;

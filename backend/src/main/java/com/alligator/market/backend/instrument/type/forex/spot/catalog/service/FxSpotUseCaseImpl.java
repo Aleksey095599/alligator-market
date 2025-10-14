@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
@@ -28,20 +26,9 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Проверяем по коду инструмента (натуральный ключ), что такого инструмента еще нет
-        if (fxSpotRepository.existsByInstrumentCode(fxSpot.instrumentCode())) {
-            throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode());
-        }
-
-        // Сохраняем инструмент (адаптер проверит, что обе валюты существуют)
-        try {
-            FxSpot created = fxSpotRepository.create(fxSpot);
-            log.info("FX_SPOT instrument {} created", created.instrumentCode());
-            return created;
-        } catch (CurrencyNotFoundException ex) {
-            log.warn("Unable to create FX_SPOT instrument {}: currency is missing", fxSpot.instrumentCode(), ex);
-            throw ex;
-        }
+        FxSpot created = fxSpotRepository.create(fxSpot);
+        log.info("FX_SPOT instrument {} created", created.instrumentCode());
+        return created;
     }
 
     @Override
@@ -68,11 +55,6 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     @Transactional
     public void delete(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-
-        // Проверяем, что инструмент существует
-        if (!fxSpotRepository.existsByInstrumentCode(instrumentCode)) {
-            throw new FxSpotNotFoundException(instrumentCode);
-        }
 
         fxSpotRepository.deleteByCode(instrumentCode);
         log.info("FX_SPOT instrument {} deleted", instrumentCode);

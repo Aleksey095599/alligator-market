@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.jpa;
+package com.alligator.market.backend.common.persistence.jpa;
 
 import com.alligator.market.backend.config.audit.AuditContextHolder;
 import jakarta.persistence.*;
