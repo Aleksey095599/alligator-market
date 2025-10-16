@@ -11,6 +11,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -57,7 +58,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode()); // Бизнес‑ошибка: дубликат
             }
             throw new FxSpotCreateException(fxSpot.instrumentCode(), ex); // Иные ошибки целостности
-        } catch (jakarta.validation.ConstraintViolationException ex) {
+        } catch (ConstraintViolationException ex) {
             // Bean Validation на entity: @NotNull/@Min/@Max и т.п. → техническая ошибка создания
             throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
         } catch (DataAccessException ex) {
@@ -80,8 +81,16 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
-            return FxSpotEntityMapper.toDomain(saved);
-        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+            return FxSpotEntityMapper.toDomain(saved); // Успех
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            // Любые ошибки целостности данных (уникальности/ограничения на уровне БД)
+            // Для update бизнес-уникальность не меняется, поэтому мапим в техническую ошибку обновления
+            throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
+        } catch (jakarta.validation.ConstraintViolationException ex) {
+            // Bean Validation на entity: @NotNull/@Min/@Max и т.п. → техническая ошибка обновления
+            throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
+        } catch (org.springframework.dao.DataAccessException ex) {
+            // Прочие ошибки доступа к данным (тайм-ауты, deadlock, Bad SQL и т.д.)
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         }
     }
@@ -98,7 +107,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         try {
             jpaRepository.delete(e);
             jpaRepository.flush();
-        } catch (org.springframework.dao.DataAccessException ex) {
+        } catch (DataAccessException ex) {
             throw new FxSpotDeleteException(instrumentCode, ex);
         }
     }
