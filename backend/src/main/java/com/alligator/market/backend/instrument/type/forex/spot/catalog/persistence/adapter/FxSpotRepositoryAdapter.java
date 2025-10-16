@@ -82,14 +82,14 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
             return FxSpotEntityMapper.toDomain(saved); // Успех
-        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             // Любые ошибки целостности данных (уникальности/ограничения на уровне БД)
             // Для update бизнес-уникальность не меняется, поэтому мапим в техническую ошибку обновления
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
-        } catch (jakarta.validation.ConstraintViolationException ex) {
+        } catch (ConstraintViolationException ex) {
             // Bean Validation на entity: @NotNull/@Min/@Max и т.п. → техническая ошибка обновления
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
-        } catch (org.springframework.dao.DataAccessException ex) {
+        } catch (DataAccessException ex) {
             // Прочие ошибки доступа к данным (тайм-ауты, deadlock, Bad SQL и т.д.)
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         }
