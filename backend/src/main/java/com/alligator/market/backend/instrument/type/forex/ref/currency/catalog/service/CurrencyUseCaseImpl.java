@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyAlreadyExistsException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNameDuplicateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
@@ -32,16 +30,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public Currency create(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        // Проверяем по коду валюты (натуральный ключ), что такой валюты еще нет
-        if (currencyRepository.existsByCode(currency.code())) {
-            throw new CurrencyAlreadyExistsException(currency.code());
-        }
-
-        // Проверяем, что нет валюты с таким же названием
-        if (currencyRepository.existsByName(currency.name())) {
-            throw new CurrencyNameDuplicateException(currency.name());
-        }
-
+        // Без пред‑проверок на уникальность (устраняем TOCTOU) — уникальные ключи распознаёт адаптер
         Currency created = currencyRepository.create(currency);
         log.info("Currency {} created", created.code().value());
         return created;
@@ -62,12 +51,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
             return current;
         }
 
-        // Если имя меняется — проверяем, что новое имя никем не занято
-        if (!current.name().equals(currency.name())
-                && currencyRepository.existsByName(currency.name())) {
-            throw new CurrencyNameDuplicateException(currency.name());
-        }
-
+        // Уникальность имени проверит БД, адаптер распознает и замаппит в доменную ошибку
         Currency updated = currencyRepository.update(currency);
         log.info("Currency {} updated", updated.code().value());
         return updated;
@@ -78,16 +62,12 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public void delete(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        // Проверяем по коду валюты (натуральный ключ), что валюта с таким кодом существует
-        if (!currencyRepository.existsByCode(code)) {
-            throw new CurrencyNotFoundException(code);
-        }
-
-        // Проверяем, что валюта не используется инструментами FX_SPOT
+        // Бизнес‑правило: валюта не должна использоваться в FX_SPOT
         if (fxSpotRepository.existsByCurrencyCode(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }
 
+        // Отсутствие валюты определит адаптер (CurrencyNotFoundException)
         currencyRepository.deleteByCode(code);
         log.info("Currency {} deleted", code.value());
     }
@@ -95,6 +75,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     @Override
     @Transactional(readOnly = true)
     public List<Currency> findAll() {
+
         List<Currency> result = currencyRepository.findAll();
         log.debug("Found {} currencies", result.size());
         return result;

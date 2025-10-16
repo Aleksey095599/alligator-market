@@ -1,16 +1,17 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.adapter;
 
+import com.alligator.market.backend.common.persistence.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDeleteException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyUpdateException;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -25,9 +26,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
+    /* Имена UQ ограничений (проверьте, что совпадают с фактическими именами в DDL/схеме). */
+    private static final String UQ_CURRENCY_CODE = "uq_currency_code";
+    private static final String UQ_CURRENCY_NAME = "uq_currency_name";
+
     private final CurrencyJpaRepository jpaRepository;
 
-    /** Создать новую валюту. */
     @Override
     public Currency create(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
@@ -35,16 +39,30 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Создаем JPA-сущность, используя специальный метод
         CurrencyEntity entity = CurrencyEntityMapper.newEntity(c);
 
-        // Пробуем сохранить новую сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить созданную сущность и маппим наиболее вероятные ошибки
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity);
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+        } catch (DataIntegrityViolationException ex) {
+            // Нарушение натурального ключа (code) → AlreadyExists
+            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_CODE)) {
+                throw new CurrencyAlreadyExistsException(c.code());
+            }
+            // Нарушение уникальности имени → NameDuplicate
+            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
+                throw new CurrencyNameDuplicateException(c.name());
+            }
+            // Иные ошибки целостности → техническая ошибка создания
+            throw new CurrencyCreateException(c.code(), ex);
+        } catch (ConstraintViolationException ex) {
+            // Bean Validation (аннотации на entity)
+            throw new CurrencyCreateException(c.code(), ex);
+        } catch (DataAccessException ex) {
+            // Прочие ошибки доступа к данным
             throw new CurrencyCreateException(c.code(), ex);
         }
     }
 
-    /** Обновить существующую валюту. */
     @Override
     public Currency update(Currency c) {
         Objects.requireNonNull(c, "currency must not be null");
@@ -56,16 +74,26 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         // Заполняем изменяемые поля из переданной модели
         CurrencyEntityMapper.apply(c, e);
 
-        // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить обновленную сущность и маппим наиболее вероятные ошибки
         try {
             CurrencyEntity saved = jpaRepository.saveAndFlush(e);
             return CurrencyEntityMapper.toDomain(saved);
-        } catch (jakarta.validation.ConstraintViolationException | org.springframework.dao.DataAccessException ex) {
+        } catch (DataIntegrityViolationException ex) {
+            // Для update код неизменяем (натуральный ключ), значит ловим только UQ по имени
+            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
+                throw new CurrencyNameDuplicateException(c.name());
+            }
+            // Иные ошибки целостности → техническая ошибка создания
+            throw new CurrencyUpdateException(c.code(), ex);
+        } catch (ConstraintViolationException ex) {
+            // Bean Validation (аннотации на entity)
+            throw new CurrencyUpdateException(c.code(), ex);
+        } catch (DataAccessException ex) {
+            // Прочие ошибки доступа к данным
             throw new CurrencyUpdateException(c.code(), ex);
         }
     }
 
-    /** Удалить валюту по коду. */
     @Override
     public void deleteByCode(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
@@ -78,21 +106,18 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         try {
             jpaRepository.delete(e);
             jpaRepository.flush();
-        } catch (org.springframework.dao.DataAccessException ex) {
+        } catch (DataAccessException ex) {
             throw new CurrencyDeleteException(code, ex);
         }
     }
 
-    /** Найти валюту по коду. */
     @Override
     public Optional<Currency> findByCode(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        return jpaRepository.findByCode(code)
-                .map(CurrencyEntityMapper::toDomain);
+        return jpaRepository.findByCode(code).map(CurrencyEntityMapper::toDomain);
     }
 
-    /** Проверить наличие валюты по коду. */
     @Override
     public boolean existsByCode(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
@@ -100,7 +125,6 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         return jpaRepository.existsByCode(code);
     }
 
-    /** Проверить наличие валюты по имени. */
     @Override
     public boolean existsByName(String name) {
         Objects.requireNonNull(name, "name must not be null");
@@ -108,10 +132,11 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
         return jpaRepository.existsByName(name);
     }
 
-    /** Вернуть все валюты (отсортированы по коду). */
     @Override
     public List<Currency> findAll() {
-        return jpaRepository.findAll(Sort.by("code")).stream()
+
+        return jpaRepository.findAll(Sort.by("code"))
+                .stream()
                 .map(CurrencyEntityMapper::toDomain)
                 .toList();
     }

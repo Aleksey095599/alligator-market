@@ -49,7 +49,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Создаем JPA-сущность, используя специальный метод
         FxSpotEntity entity = FxSpotEntityMapper.newEntity(fxSpot, baseEntity, quoteEntity);
 
-        // Пробуем сохранить созданную сущность
+        // Пробуем сохранить созданную сущность и маппим наиболее вероятные ошибки
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
             return FxSpotEntityMapper.toDomain(saved); // Успех
@@ -78,13 +78,13 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         // Заполняем изменяемые поля из переданной модели
         FxSpotEntityMapper.apply(fxSpot, e);
 
-        // Пробуем сохранить обновленную сущность (ловим наиболее вероятные ошибки и пробрасываем их выше)
+        // Пробуем сохранить обновленную сущность и маппим наиболее вероятные ошибки
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
             return FxSpotEntityMapper.toDomain(saved); // Успех
         } catch (DataIntegrityViolationException ex) {
             // Любые ошибки целостности данных (уникальности/ограничения на уровне БД)
-            // Для update бизнес-уникальность не меняется, поэтому мапим в техническую ошибку обновления
+            // Для update бизнес-уникальность не меняется, поэтому маппим в техническую ошибку обновления
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         } catch (ConstraintViolationException ex) {
             // Bean Validation на entity: @NotNull/@Min/@Max и т.п. → техническая ошибка обновления
@@ -129,7 +129,8 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     @Override
     public List<FxSpot> findAll() {
-        return jpaRepository.findAll(Sort.by(Sort.Order.asc("code"))) // Сортируем по коду
+
+        return jpaRepository.findAll(Sort.by(Sort.Order.asc("code")))
                 .stream()
                 .map(FxSpotEntityMapper::toDomain)
                 .toList();
