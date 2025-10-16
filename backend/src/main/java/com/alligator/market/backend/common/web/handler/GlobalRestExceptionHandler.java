@@ -2,17 +2,16 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.ApiResponse;
 import com.alligator.market.backend.common.web.ResponseEntityFactory;
-import com.alligator.market.domain.common.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +54,28 @@ public class GlobalRestExceptionHandler {
         );
     }
 
+    /** Тело запроса не удалось распарсить 400. */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getMostSpecificCause();
+        String message = cause != null ? cause.getMessage() : ex.getMessage();
+        log.warn("HttpMessageNotReadableException: {}", message);
+        return ResponseEntityFactory.error(
+                HttpStatus.BAD_REQUEST,
+                "Request body is not readable"
+        );
+    }
+
+    /** Ошибки клиента при передаче аргументов 400. */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
+        log.warn("IllegalArgumentException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+    }
+
     /** Конфликт целостности данных 409. */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
@@ -65,11 +86,14 @@ public class GlobalRestExceptionHandler {
         );
     }
 
-    /** Ресурс не найден 404. */
-    @ExceptionHandler({NotFoundException.class, NoSuchElementException.class})
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(RuntimeException ex) {
-        log.warn("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-        return ResponseEntityFactory.notFound(ex.getMessage());
+    /** Некорректное состояние сервера 500. */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalState(IllegalStateException ex) {
+        log.error("IllegalStateException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getMessage()
+        );
     }
 
     /** Непредвиденные ошибки 500. */
