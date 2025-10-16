@@ -14,7 +14,6 @@ public interface FxSpotUseCase {
 
     /**
      * Обновить существующий инструмент.
-     * Возвращаем void, так как REST-клиенту достаточно статуса выполнения.
      */
     void update(FxSpot fxSpot);
 

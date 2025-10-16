@@ -15,7 +15,6 @@ public interface CurrencyUseCase {
 
     /**
      * Обновить существующую валюту.
-     * Возвращает управление без результата, т.к. контроллеру достаточно статуса операции.
      */
     void update(Currency currency);
 
