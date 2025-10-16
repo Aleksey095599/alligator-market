@@ -89,7 +89,7 @@ public final class DbErrors {
             if (t instanceof ConstraintViolationException cve) {
                 final String name = cve.getConstraintName();
                 if (name != null && name.equalsIgnoreCase(needle)) {
-                    return true; // ← самый надёжный признак: имя констрейнта от Hibernate
+                    return true; // ← Самый надёжный признак: имя констрейнта от Hibernate
                 }
             }
         }
