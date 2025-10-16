@@ -61,19 +61,19 @@ public class ApplicationExceptionHandler {
     /** Ошибка создания валюты. */
     @ExceptionHandler(CurrencyCreateException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyCreate(CurrencyCreateException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Ошибка обновления валюты. */
     @ExceptionHandler(CurrencyUpdateException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyUpdate(CurrencyUpdateException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Ошибка удаления валюты. */
     @ExceptionHandler(CurrencyDeleteException.class)
     public ResponseEntity<ApiResponse<Void>> handleCurrencyDelete(CurrencyDeleteException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Валюта не найдена. */
@@ -103,13 +103,13 @@ public class ApplicationExceptionHandler {
     /** Ошибка создания ресурса. */
     @ExceptionHandler(ResourceCreationException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceCreation(ResourceCreationException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Ошибка обновления ресурса. */
     @ExceptionHandler(ResourceUpdateException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceUpdate(ResourceUpdateException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Сущность не найдена. */
@@ -127,19 +127,19 @@ public class ApplicationExceptionHandler {
     /** Ошибка создания инструмента FX_SPOT. */
     @ExceptionHandler(FxSpotCreateException.class)
     public ResponseEntity<ApiResponse<Void>> handleFxSpotCreate(FxSpotCreateException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Ошибка обновления инструмента FX_SPOT. */
     @ExceptionHandler(FxSpotUpdateException.class)
     public ResponseEntity<ApiResponse<Void>> handleFxSpotUpdate(FxSpotUpdateException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Ошибка удаления инструмента FX_SPOT. */
     @ExceptionHandler(FxSpotDeleteException.class)
     public ResponseEntity<ApiResponse<Void>> handleFxSpotDelete(FxSpotDeleteException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /** Инструмент FX_SPOT не найден. */
@@ -169,7 +169,7 @@ public class ApplicationExceptionHandler {
     /** Класс инструмента не соответствует ожиданиям обработчика. */
     @ExceptionHandler(InstrumentWrongClassException.class)
     public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongClass(InstrumentWrongClassException ex) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        return error(ex);
     }
 
     /**
@@ -198,12 +198,11 @@ public class ApplicationExceptionHandler {
     /**
      * Формирует ответ с уровнем логирования ERROR и стеком исключения.
      *
-     * @param status HTTP-статус
-     * @param ex     доменное исключение
+     * @param ex доменное исключение
      * @return готовый HTTP-ответ
      */
-    private ResponseEntity<ApiResponse<Void>> error(HttpStatus status, RuntimeException ex) {
+    private ResponseEntity<ApiResponse<Void>> error(RuntimeException ex) {
         log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
-        return ResponseEntityFactory.error(status, ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 }
