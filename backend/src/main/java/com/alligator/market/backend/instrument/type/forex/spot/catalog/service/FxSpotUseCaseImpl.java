@@ -34,7 +34,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
     @Override
     @Transactional
-    public FxSpot update(FxSpot fxSpot) {
+    public void update(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Ищем инструмент к обновлению
@@ -44,7 +44,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         // Если изменений нет — возвращаем текущее состояние без записи в БД
         if (current.equals(fxSpot)) {
             log.debug("FX_SPOT instrument {} update skipped: nothing to change", fxSpot.instrumentCode());
-            return current;
+            return;
         }
 
         // Проверки целостности (валидация JPA/ограничения БД) и маппинг ошибок выполнит адаптер.
@@ -52,7 +52,6 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         // в случае сбоев адаптер бросит FxSpotUpdateException.
         FxSpot updated = fxSpotRepository.update(fxSpot);
         log.info("FX_SPOT instrument {} updated", updated.instrumentCode());
-        return updated;
     }
 
     @Override

@@ -12,8 +12,11 @@ public interface FxSpotUseCase {
     /** Создать новый инструмент. */
     FxSpot create(FxSpot fxSpot);
 
-    /** Обновить существующий инструмент. */
-    FxSpot update(FxSpot fxSpot);
+    /**
+     * Обновить существующий инструмент.
+     * Возвращаем void, так как REST-клиенту достаточно статуса выполнения.
+     */
+    void update(FxSpot fxSpot);
 
     /** Удалить инструмент по коду. */
     void delete(String instrumentCode);

@@ -13,8 +13,11 @@ public interface CurrencyUseCase {
     /** Создать новую валюту. */
     Currency create(Currency currency);
 
-    /** Обновить существующую валюту. */
-    Currency update(Currency currency);
+    /**
+     * Обновить существующую валюту.
+     * Возвращает управление без результата, т.к. контроллеру достаточно статуса операции.
+     */
+    void update(Currency currency);
 
     /** Удалить валюту по коду. */
     void delete(CurrencyCode code);
