@@ -83,7 +83,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(c.name());
             }
-            // Иные ошибки целостности → техническая ошибка создания
+            // Иные ошибки целостности → техническая ошибка обновления
             throw new CurrencyUpdateException(c.code(), ex);
         } catch (ConstraintViolationException ex) {
             // Bean Validation (аннотации на entity)
