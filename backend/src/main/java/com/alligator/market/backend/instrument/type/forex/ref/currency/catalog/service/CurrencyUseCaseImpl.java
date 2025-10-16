@@ -38,7 +38,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
 
     @Override
     @Transactional
-    public Currency update(Currency currency) {
+    public void update(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
         // Находим валюту к обновлению
@@ -48,13 +48,12 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         // Если изменений нет — возвращаем текущее состояние без записи в БД
         if (current.equals(currency)) {
             log.debug("Currency {} update skipped: nothing to change", currency.code().value());
-            return current;
+            return;
         }
 
         // Уникальность имени проверит БД, адаптер распознает и замаппит в доменную ошибку
         Currency updated = currencyRepository.update(currency);
         log.info("Currency {} updated", updated.code().value());
-        return updated;
     }
 
     @Override
