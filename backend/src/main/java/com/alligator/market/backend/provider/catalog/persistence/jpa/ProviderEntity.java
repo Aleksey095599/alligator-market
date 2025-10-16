@@ -50,7 +50,7 @@ public class ProviderEntity extends BaseEntity {
     /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
-    @NaturalId() // Полезно, так как по сути данное поле это «естественный» неизменяемый ключ
+    @NaturalId() // ← Помечаем поле как натуральный ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
@@ -64,18 +64,29 @@ public class ProviderEntity extends BaseEntity {
     @NotNull
     private ProviderPolicyEmbeddable policy;
 
-    /** Конструктор. */
+    /**
+     * Специальный конструктор — единственный безопасный способ создать сущность.
+     *
+     * @param providerCode   Технический код провайдера
+     * @param descriptor     Иммутабельный дескриптор
+     * @param policy         Иммутабельный набор параметров политики провайдера
+     */
     ProviderEntity(
             String providerCode,
             ProviderDescriptorEmbeddable descriptor,
             ProviderPolicyEmbeddable policy
     ) {
-        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
-        if (this.providerCode.isBlank()) {
+        // ↓↓ Базовая валидация аргументов
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(descriptor, "descriptor must not be null");
+        Objects.requireNonNull(policy, "policy must not be null");
+        if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
-        this.descriptor = Objects.requireNonNull(descriptor, "descriptor must not be null");
-        this.policy = Objects.requireNonNull(policy, "policy must not be null");
+
+        this.providerCode = providerCode;
+        this.descriptor = descriptor;
+        this.policy = policy;
     }
 
     /** Фабрика для создания иммутабельной сущности провайдера. */
