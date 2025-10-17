@@ -6,13 +6,16 @@ import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.Prov
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import java.util.Objects;
 
@@ -39,6 +42,13 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD) // Доступ только через поля (игнорирование геттеров/сеттеров)
+@Immutable
+@Cacheable
+@org.hibernate.annotations.Cache(
+        usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY,
+        region = "provider"
+)
+@NaturalIdCache
 public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -57,11 +67,13 @@ public class ProviderEntity extends BaseEntity {
     /** Иммутабельный дескриптор. */
     @Embedded
     @NotNull
+    @Valid // ← включаем JSR-380 валидацию вложенных полей при persist/merge
     private ProviderDescriptorEmbeddable descriptor;
 
     /** Иммутабельный набор параметров политики провайдера. */
     @Embedded
     @NotNull
+    @Valid // ← включаем JSR-380 валидацию вложенных полей при persist/merge
     private ProviderPolicyEmbeddable policy;
 
     /**
