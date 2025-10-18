@@ -37,18 +37,20 @@ import java.util.Objects;
         }
 )
 @org.hibernate.annotations.Check(
-        constraints = "min_update_interval_seconds >= 1" // Проверка на уровне БД для дополнительной безопасности
+        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
+        // при отключённой — служит «живой спецификацией» для миграций.
+        constraints = "min_update_interval_seconds >= 1"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Access(AccessType.FIELD) // Доступ только через поля (игнорирование геттеров/сеттеров)
-@Immutable
-@Cacheable
-@org.hibernate.annotations.Cache(
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
+@Access(AccessType.FIELD) // ← Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
+@Immutable // ← Делает сущность read-only для ORM: Hibernate не генерирует UPDATE; изменения игнорируются на flush
+@Cacheable // ← Подключаем 2-й уровень кэша (если включен в конфигурации)
+@org.hibernate.annotations.Cache( // ← Стратегия 2L-кэша: только чтение; отдельный регион
         usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY,
         region = "provider"
 )
-@NaturalIdCache
+@NaturalIdCache // ← Кеширование обращений по натуральному ключу (provider_code)
 public class ProviderEntity extends BaseEntity {
 
     /** Суррогатный PK. */
@@ -67,13 +69,13 @@ public class ProviderEntity extends BaseEntity {
     /** Иммутабельный дескриптор. */
     @Embedded
     @NotNull
-    @Valid // ← включаем JSR-380 валидацию вложенных полей при persist/merge
+    @Valid // ← Каскадная валидация вложенного embeddable
     private ProviderDescriptorEmbeddable descriptor;
 
     /** Иммутабельный набор параметров политики провайдера. */
     @Embedded
     @NotNull
-    @Valid // ← включаем JSR-380 валидацию вложенных полей при persist/merge
+    @Valid // ← Каскадная валидация вложенного embeddable
     private ProviderPolicyEmbeddable policy;
 
     /**

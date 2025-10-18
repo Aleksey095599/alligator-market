@@ -22,7 +22,10 @@ import java.util.Objects;
  * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
  */
 @Entity
-@Check(constraints = "(base_currency <> quote_currency) " +
+@Check(
+        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
+        // при отключённой — служит «живой спецификацией» для миграций.
+        constraints = "(base_currency <> quote_currency) " +
         "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
         "AND (value_date IN ('TOD','TOM','SPOT'))"
 )
@@ -40,7 +43,7 @@ import java.util.Objects;
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
 public class FxSpotEntity extends InstrumentBaseEntity {
 
     /** Уникальный код базовой валюты (FK на "code" в таблице "currency"). */

@@ -22,7 +22,11 @@ import java.util.Objects;
  * Соответствует доменной модели {@link Currency}.
  */
 @Entity
-@Check(constraints = "fraction_digits BETWEEN 0 AND 10")
+@Check(
+        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
+        // при отключённой — служит «живой спецификацией» для миграций.
+        constraints = "fraction_digits BETWEEN 0 AND 10"
+)
 @Table(
         name = "currency",
         uniqueConstraints = {
@@ -32,7 +36,7 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
 public class CurrencyEntity extends BaseEntity {
 
     /** Суррогатный PK. */
