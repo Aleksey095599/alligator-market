@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.web;
+package com.alligator.market.backend.common.web.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

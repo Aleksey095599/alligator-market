@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,7 +11,10 @@ import java.util.Optional;
  */
 public interface ProviderJpaRepository extends JpaRepository<ProviderEntity, Long> {
 
-    /** Найти JPA-сущность провайдера по техническому коду с пессимистической блокировкой записи. */
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    /** Найти JPA-сущность провайдера по техническому коду. */
     Optional<ProviderEntity> findByProviderCode(String providerCode);
+
+    /** TODO: дописать JavaDoc и узнать зачем аннотация @Query. */
+    @Query("select p.providerCode from ProviderEntity p")
+    List<String> findAllCodes();
 }

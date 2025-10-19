@@ -49,7 +49,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      */
     protected AbstractMarketDataProvider(
             String providerCode,
-            String displayName,
             ProviderDescriptor descriptor,
             ProviderPolicy policy,
             ProviderSettings settings,
@@ -57,7 +56,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     ) {
         // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(providerCode,"providerCode must not be null");
-        Objects.requireNonNull(displayName,"displayName must not be null");
         Objects.requireNonNull(descriptor,"descriptor must not be null");
         Objects.requireNonNull(policy,"policy must not be null");
         Objects.requireNonNull(settings,"settings must not be null");
@@ -70,9 +68,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
         if (!providerCode.equals(providerCode.toUpperCase(Locale.ROOT))) {
             throw new IllegalArgumentException("providerCode must be upper case");
-        }
-        if (displayName.isBlank()) {
-            throw new IllegalArgumentException("displayName must not be blank");
         }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
@@ -156,7 +151,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return descriptor;
     }
 
-    /** Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
+    /** "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
     public ProviderPolicy policy() {
         return policy;
     }

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.common.web.handler;
 
-import com.alligator.market.backend.common.web.ApiResponse;
-import com.alligator.market.backend.common.web.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.http.ApiResponse;
+import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.NotFoundException;
 import com.alligator.market.domain.common.exception.ResourceCreationException;
 import com.alligator.market.domain.common.exception.ResourceInUseException;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
-import com.alligator.market.backend.common.persistence.jpa.BaseEntity;
+import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +23,7 @@ import java.util.Objects;
 /**
  * JPA-сущность провайдера рыночных данных.
  * <p>
- * 1) По бизнес логике таблица статичная и служит только для вывода информации о провайдерах во frontend.
+ * 1) По бизнес логике таблица статическая и служит только для вывода информации о провайдерах во frontend.
  * 2) Все поля данной JPA-сущности и встроенных JPA-сущностей не обновляемые: логика синхронизации с контекстом
  *    приложения использует стратегию DELETE → INSERT {@link ProviderSynchronizer}.
  * 3) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы, чтобы обеспечить fail-fast проверку
@@ -41,7 +42,9 @@ import java.util.Objects;
 @org.hibernate.annotations.Check(
         // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
         // при отключённой — служит «живой спецификацией» для миграций.
-        constraints = "min_update_interval_seconds >= 1"
+        constraints = "min_update_interval_seconds >= 1 " +
+                "AND provider_code = upper(provider_code) " +
+                "AND provider_code NOT LIKE '% %'"
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
@@ -64,6 +67,7 @@ public class ProviderEntity extends BaseEntity {
     /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
     @NotBlank
     @Size(max = 50)
+    @Pattern(regexp = "^[A-Z0-9_.-]+$") // ← Ранняя валидация до БД (только буквы A - Z, цифры и знаки "_ . -")
     @NaturalId() // ← Помечаем поле как натуральный ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
@@ -74,7 +78,7 @@ public class ProviderEntity extends BaseEntity {
     @Valid // ← Каскадная валидация вложенного embeddable
     private ProviderDescriptorEmbeddable descriptor;
 
-    /** Иммутабельный набор параметров политики провайдера. */
+    /** Иммутабельный набор параметров "политики провайдера". */
     @Embedded
     @NotNull
     @Valid // ← Каскадная валидация вложенного embeddable
@@ -85,7 +89,7 @@ public class ProviderEntity extends BaseEntity {
      *
      * @param providerCode   Технический код провайдера
      * @param descriptor     Иммутабельный дескриптор
-     * @param policy         Иммутабельный набор параметров политики провайдера
+     * @param policy         Иммутабельный набор параметров "политики провайдера"
      */
     ProviderEntity(
             String providerCode,
