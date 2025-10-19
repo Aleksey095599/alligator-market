@@ -52,7 +52,6 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
     ) {
         super(
                 PROVIDER_CODE,
-                DISPLAY_NAME,
                 DESCRIPTOR,
                 POLICY,
                 SETTINGS,

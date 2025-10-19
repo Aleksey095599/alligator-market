@@ -12,6 +12,11 @@ import java.util.Optional;
 public interface ProviderJpaRepository extends JpaRepository<ProviderEntity, Long> {
 
     /** Найти JPA-сущность провайдера по техническому коду. */
+    @org.springframework.data.jpa.repository.QueryHints( // TODO: Понять зачем эта аннотация
+            @jakarta.persistence.QueryHint(
+                    name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"
+            )
+    )
     Optional<ProviderEntity> findByProviderCode(String providerCode);
 
     /** TODO: дописать JavaDoc и узнать зачем аннотация @Query. */

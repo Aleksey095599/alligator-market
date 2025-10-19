@@ -28,13 +28,12 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     /** Конструктор. */
     protected SpringMarketDataProvider(
             String providerCode,
-            String displayName,
             ProviderDescriptor descriptor,
             ProviderPolicy policy,
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
-        super(providerCode, displayName, descriptor, policy, settings, handlers);
+        super(providerCode, descriptor, policy, settings, handlers);
     }
 
     @Override
