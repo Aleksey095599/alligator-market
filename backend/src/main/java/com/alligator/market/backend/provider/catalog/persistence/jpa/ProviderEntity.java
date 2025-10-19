@@ -44,7 +44,9 @@ import java.util.Objects;
         // при отключённой — служит «живой спецификацией» для миграций.
         constraints = "min_update_interval_seconds >= 1 " +
                 "AND provider_code = upper(provider_code) " +
-                "AND provider_code NOT LIKE '% %'"
+                "AND provider_code ~ '^[A-Z0-9_.-]+$' " +
+                "AND delivery_mode IN ('PULL', 'PUSH') " +
+                "AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')"
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников

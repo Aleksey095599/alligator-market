@@ -18,7 +18,6 @@ CREATE TABLE market_data_provider (
     CONSTRAINT chk_market_data_provider CHECK (
         min_update_interval_seconds >= 1
         AND provider_code = UPPER(provider_code)
-        AND provider_code NOT LIKE '% %'
         AND provider_code ~ '^[A-Z0-9_.-]+$'
         AND delivery_mode IN ('PULL', 'PUSH')
         AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')
