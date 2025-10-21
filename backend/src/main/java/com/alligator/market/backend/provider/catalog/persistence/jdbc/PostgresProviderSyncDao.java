@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,32 +17,31 @@ import java.util.Objects;
  *
  * <p><b>Задача и назначение:</b>
  * <ul>
- *   <li>Пакетная загрузка снимков провайдеров {@link ProviderSnapshot} из контекста приложения в БД;</li>
- *   <li>Атомарная операция «вставить или обновить» по натуральному ключу {@code provider_code}
- *       — с помощью PostgreSQL-конструкции {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE ...};</li>
+ *   <li>Пакетная загрузка снимков провайдеров {@link ProviderSnapshot} в базу данных;</li>
+ *   <li>Атомарная операция «вставить или обновить» по натуральному ключу {@code provider_code} с помощью
+ *       PostgreSQL-конструкции {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE ...};</li>
  *   <li>Удаление устаревших записей по набору кодов.</li>
  * </ul>
  *
- * <p><b>Почему это удобно и безопасно:</b>
+ * <p><b>Преимущества подхода:</b>
  * <ul>
  *   <li><i>Стабильность PK (id):</i> UPSERT обновляет существующую строку — внешние ключи не ломаются.</li>
  *   <li><i>Простота и атомарность:</i> одна SQL-операция покрывает «создать/обновить».</li>
  *   <li><i>Совместимость с JPA-immutability:</i> сущность {@code ProviderEntity} помечена {@code @Immutable};
- *       мы пишем напрямую SQL, не полагаясь на ORM-апдейты. Имена колонок соответствуют entity. </li>
+ *          мы пишем напрямую SQL, не полагаясь на ORM-апдейты. Имена колонок соответствуют entity. </li>
  * </ul>
  *
  * <p><b>Инварианты и нормализация данных:</b>
  * <ul>
  *   <li>Валидация и UPPER‑нормализация кода выполняются в {@link ProviderSnapshot}.</li>
- *   <li>Преобразование {@code Duration→seconds} выполняется через общий конвертер {@link DurationToSecondsConverter}.</li>
+ *   <li>Преобразование {@code Duration} в количество секунд выполняется через конвертер {@link DurationToSecondsConverter}.</li>
  * </ul>
  *
  * <p><b>Системные предпосылки:</b>
  * <ul>
- *   <li>PostgreSQL (используется {@code ON CONFLICT ... DO UPDATE});</li>
- *   <li>{@code provider_code} уникален (уникальный индекс/констрейнт);</li>
- *   <li>Колонки схемы совпадают с {@link ProviderEntity}: {@code display_name}, {@code delivery_mode}, {@code access_method},
- *       {@code bulk_subscription}, {@code min_update_interval_seconds}, {@code provider_code}. </li>
+ *   <li>База данных — PostgreSQL;</li>
+ *   <li>{@code provider_code} — уникальный констрейнт в таблице {@code market_data_provider};</li>
+ *   <li>Колонки в SQL запросе соответствуют реальной схеме {@code market_data_provider}. </li>
  * </ul>
  */
 @Repository
@@ -50,21 +49,20 @@ public class PostgresProviderSyncDao {
 
     private final JdbcTemplate jdbc;
 
-    // ↓ Универсальный конвертер Duration ↔ seconds, общий с JPA
+    // Конвертер Duration ↔ seconds
     private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
 
+    /* Конструктор. */
     public PostgresProviderSyncDao(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
-
-    /* ---------- Публичные методы ---------- */
 
     /**
      * Пакетное удаление провайдеров по набору технических кодов.
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
      *
      * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
-     * @throws org.springframework.dao.DataAccessException если БД вернула ошибку
+     * @throws DataAccessException если БД вернула ошибку
      */
     public void deleteByCodes(Collection<String> codes) {
         if (codes == null || codes.isEmpty()) return;
@@ -93,7 +91,7 @@ public class PostgresProviderSyncDao {
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
      *
      * @param snapshots коллекция снимков ({@link ProviderSnapshot}) для вставки/обновления
-     * @throws org.springframework.dao.DataAccessException если БД вернула ошибку
+     * @throws DataAccessException если БД вернула ошибку
      */
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
@@ -124,8 +122,6 @@ public class PostgresProviderSyncDao {
             @Override public int getBatchSize() { return list.length; }
         });
     }
-
-    /* ---------- Привязка параметров ---------- */
 
     /**
      * Привязка параметров для одной строки UPSERT.
