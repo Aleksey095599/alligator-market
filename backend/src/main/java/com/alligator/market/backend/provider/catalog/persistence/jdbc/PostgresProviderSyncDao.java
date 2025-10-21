@@ -27,20 +27,28 @@ import java.util.Objects;
  * <p><b>Преимущества подхода:</b>
  * <ul>
  *   <li><b>Разовая операция на старте.</b> Это инициализация каталога при запуске — не нужен «долгоживущий» сервис.
- *       Достаточно один раз выполнить продуманный SQL.</li>
- *   <li><b>Всё прозрачно.</b> SQL собран в одном месте, легко сверяется со схемой/миграциями.</li>
+ *       Достаточно один раз выполнить продуманный SQL-команду.</li>
+ *   <li><b>Всё прозрачно.</b> SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями.</li>
  *   <li><b>Полный контроль записи.</b> Пишем напрямую в БД (UPSERT/DELETE), JPA остаётся read‑only (@Immutable).</li>
  *   <li><b>Быстро и предсказуемо.</b> Batch + ON CONFLICT работают без накладных расходов ORM.</li>
  *   <li><b>Безопасно для связей.</b> UPSERT по provider_code не меняет PK — внешние ключи не страдают.</li>
  *   <li><b>Просто тестировать.</b> DAO легко проверить изолированно (например, через Testcontainers).</li>
  * </ul>
  *
+ * <p><b>Потокобезопасность:</b>
+ * DAO без состояния; JdbcTemplate потокобезопасен. Методы допустимо вызывать из разных потоков,
+ * но по смыслу синхронизация выполняется один раз при старте и целиком в @Transactional-сервисе.
+ * В кластере запускайте синк только на «лидере» (ShedLock/PG advisory lock), чтобы избежать гонок.
+ * UPSERT идемпотентен, удаление безопасно при одинаковом входном наборе кодов.
+ *
  * <p><b>Ограничения:</b>
  * <ul>
  *   <li>БД — PostgreSQL;</li>
- *   <li>{@code provider_code} — уникальный констрейнт в таблице {@code market_data_provider};</li>
- *   <li>Колонки в SQL запросе соответствуют реальной схеме {@code market_data_provider}. </li>
+ *   <li>{@code provider_code} — уникальное ограничение в таблице {@code market_data_provider};</li>
+ *   <li>Колонки в SQL-команде соответствуют реальной схеме {@code market_data_provider}. </li>
  * </ul>
+ *
+ * @see ProviderSnapshot
  */
 @Repository
 public class PostgresProviderSyncDao {
@@ -66,14 +74,12 @@ public class PostgresProviderSyncDao {
     public void deleteByCodes(Collection<String> codes) {
         if (codes == null || codes.isEmpty()) return;
 
-        // SQL команда
+        // SQL-команда
         final String sql = "DELETE FROM market_data_provider WHERE provider_code = ?";
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
-        var arr = codes.stream()
-                .filter(Objects::nonNull)
-                .toArray(String[]::new);
+        var arr = codes.stream().filter(Objects::nonNull).toArray(String[]::new);
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -98,7 +104,7 @@ public class PostgresProviderSyncDao {
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
 
-        // SQL команда
+        // SQL-команда
         final String sql = """
             INSERT INTO market_data_provider(
               provider_code,
@@ -129,7 +135,7 @@ public class PostgresProviderSyncDao {
     }
 
     /**
-     * Привязка параметров для одной строки UPSERT (заполнение параметров "?" в SQL конкретными значениями).
+     * Привязка параметров для одной строки UPSERT (заполнение параметров "?" в SQL-команде конкретными значениями).
      */
     private void bindUpsert(PreparedStatement ps, ProviderSnapshot s) throws SQLException {
         Objects.requireNonNull(s, "snapshot must not be null");
