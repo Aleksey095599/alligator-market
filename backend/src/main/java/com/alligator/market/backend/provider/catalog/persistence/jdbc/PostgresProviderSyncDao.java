@@ -13,11 +13,12 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * DAO (Data Access Object) для пакетного UPSERT/DELETE провайдеров в таблице {@code market_data_provider} (PostgreSQL).
+ * DAO (Data Access Object) для пакетного UPSERT/DELETE провайдеров в таблице {@code market_data_provider}.
+ * Подходит только для базы данных (далее БД) PostgreSQL.
  *
- * <p><b>Задача и назначение:</b>
+ * <p><b>Назначение:</b>
  * <ul>
- *   <li>Пакетная загрузка снимков провайдеров {@link ProviderSnapshot} в базу данных;</li>
+ *   <li>Пакетная загрузка "снимков провайдеров" {@link ProviderSnapshot} в базу данных;</li>
  *   <li>Атомарная операция «вставить или обновить» по натуральному ключу {@code provider_code} с помощью
  *       PostgreSQL-конструкции {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE ...};</li>
  *   <li>Удаление устаревших записей по набору кодов.</li>
@@ -25,21 +26,18 @@ import java.util.Objects;
  *
  * <p><b>Преимущества подхода:</b>
  * <ul>
- *   <li><i>Стабильность PK (id):</i> UPSERT обновляет существующую строку — внешние ключи не ломаются.</li>
- *   <li><i>Простота и атомарность:</i> одна SQL-операция покрывает «создать/обновить».</li>
- *   <li><i>Совместимость с JPA-immutability:</i> сущность {@code ProviderEntity} помечена {@code @Immutable};
- *          мы пишем напрямую SQL, не полагаясь на ORM-апдейты. Имена колонок соответствуют entity. </li>
+ *   <li><b>Разовая операция на старте.</b> Это инициализация каталога при запуске — не нужен «долгоживущий» сервис.
+ *       Достаточно один раз выполнить продуманный SQL.</li>
+ *   <li><b>Всё прозрачно.</b> SQL собран в одном месте, легко сверяется со схемой/миграциями.</li>
+ *   <li><b>Полный контроль записи.</b> Пишем напрямую в БД (UPSERT/DELETE), JPA остаётся read‑only (@Immutable).</li>
+ *   <li><b>Быстро и предсказуемо.</b> Batch + ON CONFLICT работают без накладных расходов ORM.</li>
+ *   <li><b>Безопасно для связей.</b> UPSERT по provider_code не меняет PK — внешние ключи не страдают.</li>
+ *   <li><b>Просто тестировать.</b> DAO легко проверить изолированно (например, через Testcontainers).</li>
  * </ul>
  *
- * <p><b>Инварианты и нормализация данных:</b>
+ * <p><b>Ограничения:</b>
  * <ul>
- *   <li>Корректность данных содержащихся в {@link ProviderSnapshot} гарантирована самой моделью.</li>
- *   <li>Преобразование {@code Duration} в количество секунд выполняется через конвертер {@link DurationToSecondsConverter}.</li>
- * </ul>
- *
- * <p><b>Системные предпосылки:</b>
- * <ul>
- *   <li>База данных — PostgreSQL;</li>
+ *   <li>БД — PostgreSQL;</li>
  *   <li>{@code provider_code} — уникальный констрейнт в таблице {@code market_data_provider};</li>
  *   <li>Колонки в SQL запросе соответствуют реальной схеме {@code market_data_provider}. </li>
  * </ul>
@@ -47,6 +45,7 @@ import java.util.Objects;
 @Repository
 public class PostgresProviderSyncDao {
 
+    // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException → DataAccessException.
     private final JdbcTemplate jdbc;
 
     // Конвертер Duration ↔ seconds
@@ -58,7 +57,7 @@ public class PostgresProviderSyncDao {
     }
 
     /**
-     * Пакетное удаление провайдеров по набору технических кодов.
+     * Пакетное удаление провайдеров по набору уникальных технических кодов.
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
      *
      * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
@@ -67,16 +66,19 @@ public class PostgresProviderSyncDao {
     public void deleteByCodes(Collection<String> codes) {
         if (codes == null || codes.isEmpty()) return;
 
+        // SQL команда
         final String sql = "DELETE FROM market_data_provider WHERE provider_code = ?";
 
-        // Предполагаем, что коды пришли из БД / ProviderSnapshot и уже нормализованы.
+        // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
+        // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
         var arr = codes.stream()
                 .filter(Objects::nonNull)
                 .toArray(String[]::new);
 
+        // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, arr[i]); // provider_code
+                ps.setString(1, arr[i]);
             }
             @Override public int getBatchSize() { return arr.length; }
         });
@@ -86,7 +88,7 @@ public class PostgresProviderSyncDao {
      * Пакетный UPSERT всех переданных снимков провайдеров.
      * <p>
      * Логика {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE SET ...}: если записи с таким
-     * {@code provider_code} нет — вставка; если есть — обновление указанных полей.
+     * {@code provider_code} нет — вставка; если есть — обновление нужных полей из переданного {@code snapshot}.
      * </p>
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
      *
@@ -96,6 +98,7 @@ public class PostgresProviderSyncDao {
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
 
+        // SQL команда
         final String sql = """
             INSERT INTO market_data_provider(
               provider_code,
@@ -113,25 +116,26 @@ public class PostgresProviderSyncDao {
               min_update_interval_seconds = EXCLUDED.min_update_interval_seconds
             """;
 
-        var list = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
+        // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
+        var arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
 
+        // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override public void setValues(PreparedStatement ps, int i) throws SQLException {
-                bindUpsert(ps, list[i]); // ← Связываем параметры одной строки UPSERT
+                bindUpsert(ps, arr[i]);
             }
-            @Override public int getBatchSize() { return list.length; }
+            @Override public int getBatchSize() { return arr.length; }
         });
     }
 
     /**
-     * Привязка параметров для одной строки UPSERT.
-     * Ожидается, что {@link ProviderSnapshot} уже прошёл валидацию/нормализацию.
+     * Привязка параметров для одной строки UPSERT (заполнение параметров "?" в SQL конкретными значениями).
      */
     private void bindUpsert(PreparedStatement ps, ProviderSnapshot s) throws SQLException {
-        // Снимок не должен быть null — этого достаточно (остальное гарантирует сам snapshot)
         Objects.requireNonNull(s, "snapshot must not be null");
+        // Иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
 
-        // 1) provider_code (натуральный ключ) — уже UPPER и проверен в ProviderSnapshot
+        // 1) provider_code (натуральный ключ)
         ps.setString(1, s.code());
 
         // 2) descriptor.*
@@ -141,7 +145,7 @@ public class PostgresProviderSyncDao {
         ps.setString(4, d.accessMethod().name()); // access_method (EnumType.STRING)
         ps.setBoolean(5, d.bulkSubscription());   // bulk_subscription
 
-        // 3) policy.*  (Duration → seconds через общий конвертер; NOT NULL гарантирует snapshot)
+        // 3) policy.*  (Duration → seconds через общий конвертер)
         var p = s.policy();
         Long seconds = DUR2SEC.convertToDatabaseColumn(p.minUpdateInterval());
         ps.setLong(6, seconds);                   // min_update_interval_seconds

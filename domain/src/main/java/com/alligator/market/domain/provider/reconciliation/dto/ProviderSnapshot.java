@@ -19,12 +19,12 @@ public record ProviderSnapshot(
         Objects.requireNonNull(descriptor, "descriptor must not be null");
         Objects.requireNonNull(policy, "policy must not be null");
 
+        // ↓↓ Нормализуем код провайдера
         String c = code.strip(); // Обрезаем пробелы
         if (c.isEmpty()) throw new IllegalArgumentException("code must not be blank");
-        // Нормализуем код до UPPER CASE (БД требует upper(provider_code), см. CHECK)
-        c = c.toUpperCase(Locale.ROOT);
+        c = c.toUpperCase(Locale.ROOT); // UPPER CASE
 
-        // Присваиваем нормализованное/проверенное значение в поле code
+        // Присваиваем проверенное и нормализованное значение
         code = c;
     }
 }

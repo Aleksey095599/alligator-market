@@ -24,33 +24,16 @@ import java.util.Objects;
  *       которые включают имя ограничения в текст ошибки (Oracle, MySQL и др.).</li>
  * </ol>
  *
- * <p><b>Почему по имени ограничения:</b> коды ошибок и SQLState зависят от СУБД, а имя ограничения
+ * <p><b>Преимущества подхода:</b> коды ошибок и SQLState зависят от СУБД, а имя ограничения
  * стабильно и контролируется вами. Рекомендуется явно задавать имена ограничений в DDL/аннотациях.</p>
  *
  * <p><b>Потокобезопасность:</b> класс stateless, методы не имеют побочных эффектов и потокобезопасны.</p>
- *
- * <p><b>Пример:</b></p>
- * <pre>{@code
- * try {
- *     var saved = jpaRepository.saveAndFlush(entity);
- *     return mapper.toDomain(saved);
- * } catch (org.springframework.dao.DataIntegrityViolationException ex) {
- *     if (DbErrors.isViolationOf(ex, "uq_instrument_code")) {
- *         throw new FxSpotAlreadyExistsException(model.instrumentCode());
- *     }
- *     throw new FxSpotCreateException(model.instrumentCode(), ex);
- * }
- * }</pre>
  *
  * <p><b>Ограничения:</b> метод опирается на наличие осмысленного имени ограничения. Если драйвер/диалект
  * не передаёт имя и оно не фигурирует в сообщении исключения, метод вернёт {@code false};
  * такой случай следует трактовать как техническую ошибку сохранения.</p>
  *
- * @implNote Намеренно не используем SQLState/вендорные коды (они нестабильны между СУБД);
- * распознавание выполнено по имени ограничения и, при необходимости, по тексту сообщения.
- *
  * @see ConstraintViolationException
- * @see org.springframework.dao.DataIntegrityViolationException
  * @see NestedExceptionUtils
  */
 public final class DbErrors {
