@@ -18,13 +18,13 @@ public class ProviderSynchronizer {
     /* Репозиторий → извлекает коды провайдеров. */
     private final ProviderRepository repository;
 
-    /* Прямой доступ к БД для UPSERT/DELETE. */
-    private final PostgresProviderSyncDao syncDao;
+    /* Контракт синхронизации провайдеров в БД. */
+    private final ProviderSyncDao syncDao;
 
     /* Конструктор. */
     public ProviderSynchronizer(ProviderContextScanner contextScanner,
                                 ProviderRepository repository,
-                                PostgresProviderSyncDao syncDao) {
+                                ProviderSyncDao syncDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
         this.syncDao = syncDao;
