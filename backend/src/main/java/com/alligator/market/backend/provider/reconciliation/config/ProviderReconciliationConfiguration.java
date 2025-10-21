@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.config;
 
-import com.alligator.market.domain.provider.repository.ProviderDescriptorRepository;
+import com.alligator.market.domain.provider.repository.ProviderRepository;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ public class ProviderReconciliationConfiguration {
     @Bean
     public ProviderSynchronizer providerDescriptorSynchronizer(
             ProviderContextScanner scanner,
-            ProviderDescriptorRepository repository
+            ProviderRepository repository
     ) {
         return new ProviderSynchronizer(scanner, repository);
     }

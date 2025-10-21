@@ -32,7 +32,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     /* Натуральный ключ инструмента (совпадает с бизнес‑идентичностью). */
     private static final String UQ_INSTRUMENT_CODE = "uq_instrument_code";
 
-    // ↓↓ Репозитории для инструментов FX_SPOT и валют
+    /* ↓↓ JPA-репозитории для инструментов FX_SPOT и валют. */
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyRepository;
 

@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
+import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -20,27 +20,31 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Вернуть карту дескрипторов провайдеров, индексированную по коду провайдера.
-     * Метод содержит проверки на дублирование по коду и имени провайдера.
+     * Вернуть карту снимков провайдеров (descriptor + policy), индексированную по коду.
+     * Содержит проверки на дублирование по коду и отображаемому имени.
      */
     @Override
-    public final Map<String, ProviderDescriptor> providerDescriptors() {
-        Map<String, ProviderDescriptor> descriptors = new LinkedHashMap<>();
-        Set<String> displayNamesLowerCase = new HashSet<>();
+    public final Map<String, ProviderSnapshot> providerSnapshots() {
+        Map<String, ProviderSnapshot> snapshots = new LinkedHashMap<>();
+        Set<String> displayNamesLower = new HashSet<>();
+
         for (MarketDataProvider provider : providers()) {
-            String providerCode = provider.providerCode();
-            ProviderDescriptor descriptor = provider.descriptor();
-            ProviderDescriptor previous = descriptors.put(providerCode, descriptor);
-            if (previous != null) {
-                throw new ProviderCodeDuplicateException(providerCode);
+            String code = provider.providerCode();
+            var descriptor = provider.descriptor();
+            var policy = provider.policy();
+
+            // Проверка дублей по коду
+            ProviderSnapshot prev = snapshots.put(code, new ProviderSnapshot(code, descriptor, policy));
+            if (prev != null) {
+                throw new ProviderCodeDuplicateException(code);
             }
-            String displayName = descriptor.displayName();
-            // Сравниваем имена провайдеров в нижнем регистре
-            String displayNameLowerCase = displayName.toLowerCase(Locale.ROOT);
-            if (!displayNamesLowerCase.add(displayNameLowerCase)) {
-                throw new ProviderDisplayNameDuplicateException(displayName);
+
+            // Проверка дублей по отображаемому имени (без учёта регистра)
+            String nameLower = descriptor.displayName().toLowerCase(Locale.ROOT);
+            if (!displayNamesLower.add(nameLower)) {
+                throw new ProviderDisplayNameDuplicateException(descriptor.displayName());
             }
         }
-        return descriptors;
+        return snapshots;
     }
 }

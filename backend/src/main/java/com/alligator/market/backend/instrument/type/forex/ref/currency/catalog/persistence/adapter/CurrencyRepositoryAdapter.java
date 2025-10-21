@@ -30,6 +30,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     private static final String UQ_CURRENCY_CODE = "uq_currency_code";
     private static final String UQ_CURRENCY_NAME = "uq_currency_name";
 
+    /* JPA-репозиторий. */
     private final CurrencyJpaRepository jpaRepository;
 
     @Override

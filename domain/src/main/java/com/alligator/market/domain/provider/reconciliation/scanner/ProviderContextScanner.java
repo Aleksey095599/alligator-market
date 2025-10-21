@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation.scanner;
 
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
 import java.util.Map;
 
@@ -9,6 +9,6 @@ import java.util.Map;
  */
 public sealed interface ProviderContextScanner permits AbstractProviderContextScanner {
 
-    /** Вернуть карту дескрипторов провайдеров, индексированную по коду провайдера. */
-    Map<String, ProviderDescriptor> providerDescriptors();
+    /** Вернуть карту снимков провайдеров (descriptor + policy), индексированную по коду провайдера. */
+    Map<String, ProviderSnapshot> providerSnapshots();
 }
