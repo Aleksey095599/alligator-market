@@ -31,12 +31,6 @@ import java.util.Objects;
  *          мы пишем напрямую SQL, не полагаясь на ORM-апдейты. Имена колонок соответствуют entity. </li>
  * </ul>
  *
- * <p><b>Инварианты и нормализация данных:</b>
- * <ul>
- *   <li>Валидация и UPPER‑нормализация кода выполняются в {@link ProviderSnapshot}.</li>
- *   <li>Преобразование {@code Duration} в количество секунд выполняется через конвертер {@link DurationToSecondsConverter}.</li>
- * </ul>
- *
  * <p><b>Системные предпосылки:</b>
  * <ul>
  *   <li>База данных — PostgreSQL;</li>
