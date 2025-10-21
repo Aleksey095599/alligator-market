@@ -1,8 +1,9 @@
 package com.alligator.market.backend.provider.reconciliation.config;
 
 import com.alligator.market.domain.provider.repository.ProviderRepository;
-import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
+import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,8 +17,9 @@ public class ProviderReconciliationConfiguration {
     @Bean
     public ProviderSynchronizer providerDescriptorSynchronizer(
             ProviderContextScanner scanner,
-            ProviderRepository repository
+            ProviderRepository repository,
+            ProviderSyncDao syncDao
     ) {
-        return new ProviderSynchronizer(scanner, repository);
+        return new ProviderSynchronizer(scanner, repository, syncDao);
     }
 }

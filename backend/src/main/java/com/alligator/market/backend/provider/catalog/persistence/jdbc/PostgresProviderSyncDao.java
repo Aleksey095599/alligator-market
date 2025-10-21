@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
+import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -51,7 +52,7 @@ import java.util.Objects;
  * @see ProviderSnapshot
  */
 @Repository
-public class PostgresProviderSyncDao {
+public class PostgresProviderSyncDao implements ProviderSyncDao {
 
     // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException → DataAccessException.
     private final JdbcTemplate jdbc;
@@ -71,6 +72,7 @@ public class PostgresProviderSyncDao {
      * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
      * @throws DataAccessException если БД вернула ошибку
      */
+    @Override
     public void deleteByCodes(Collection<String> codes) {
         if (codes == null || codes.isEmpty()) return;
 
@@ -99,6 +101,7 @@ public class PostgresProviderSyncDao {
      * @param snapshots коллекция снимков ({@link ProviderSnapshot}) для вставки/обновления
      * @throws DataAccessException если БД вернула ошибку
      */
+    @Override
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
 
