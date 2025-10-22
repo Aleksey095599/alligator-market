@@ -53,7 +53,7 @@ import java.util.Objects;
  * @see ProviderSnapshot
  */
 @Repository
-public class PostgresProviderSyncDao implements ProviderSyncDao {
+public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
     // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException → DataAccessException.
     private final JdbcTemplate jdbc;
@@ -62,7 +62,7 @@ public class PostgresProviderSyncDao implements ProviderSyncDao {
     private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
 
     /* Конструктор. */
-    public PostgresProviderSyncDao(JdbcTemplate jdbc) {
+    public ProviderSyncDaoPostgresAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

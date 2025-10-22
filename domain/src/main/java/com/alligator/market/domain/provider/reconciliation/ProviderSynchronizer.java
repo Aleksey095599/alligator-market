@@ -3,12 +3,11 @@ package com.alligator.market.domain.provider.reconciliation;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
-import jakarta.transaction.Transactional;
 
 import java.util.*;
 
 /**
- * Доменный сервис синхронизации провайдеров в контексте приложения и репозитории.
+ * Доменный сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
  */
 public class ProviderSynchronizer {
 
@@ -31,7 +30,6 @@ public class ProviderSynchronizer {
     }
 
     /** Выполнить синхронизацию (одна атомарная транзакция). */
-    @Transactional
     public void synchronize() {
 
         // 1) Читаем снимки из контекста и коды из БД
