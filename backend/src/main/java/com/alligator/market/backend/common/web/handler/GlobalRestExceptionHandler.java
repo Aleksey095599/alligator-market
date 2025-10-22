@@ -96,6 +96,16 @@ public class GlobalRestExceptionHandler {
         );
     }
 
+    /** Операция не поддерживается 500. */
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUnsupportedOperation(UnsupportedOperationException ex) {
+        log.error("UnsupportedOperationException: {}", ex.getMessage());
+        return ResponseEntityFactory.error(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getMessage()
+        );
+    }
+
     /** Непредвиденные ошибки 500. */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
