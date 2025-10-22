@@ -26,7 +26,7 @@ public enum FxSpotValueDate {
         Objects.requireNonNull(code, "code must not be null");
 
         // ↓↓ Нормализация (trim + upper case) и "isEmpty" проверка
-        String normalized = (code.strip()).toUpperCase(Locale.ROOT);
+        String normalized = code.strip().toUpperCase(Locale.ROOT);
         if (normalized.isEmpty()) {
             throw new IllegalArgumentException("FxSpotValueDate code is blank");
         }
@@ -43,6 +43,6 @@ public enum FxSpotValueDate {
     /** Возвращает список поддерживаемых кодов (для валидации/документации). */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
-        return Arrays.stream(values()).map(Enum::name).toList();
+        return SUPPORTED_CODES;
     }
 }
