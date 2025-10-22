@@ -48,5 +48,6 @@ public final class FxSpotUpdateException extends RuntimeException {
      *
      * @return код инструмента
      */
+    @SuppressWarnings("unused")
     public String getInstrumentCode() { return instrumentCode; }
 }

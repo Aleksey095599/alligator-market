@@ -55,6 +55,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      *
      * @return код инструмента
      */
+    @SuppressWarnings("unused")
     public String getInstrumentCode() { return instrumentCode; }
 
     /**
@@ -62,5 +63,6 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      *
      * @return код обработчика
      */
+    @SuppressWarnings("unused")
     public String getHandlerCode() { return handlerCode; }
 }
