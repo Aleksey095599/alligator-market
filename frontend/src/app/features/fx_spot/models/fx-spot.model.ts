@@ -7,7 +7,7 @@ export interface FxSpotDto {
   /* Код котируемой валюты */
   quoteCurrency: string;
   /* Количество знаков после запятой */
-  quoteDecimal: number;
+  defaultQuoteFractionDigits: number;
   /* Дата валютирования */
   valueDate: FxSpotValueDate;
 }
@@ -21,7 +21,7 @@ export interface FxSpotListItemDto {
   /* Код котируемой валюты */
   quoteCurrency: string;
   /* Количество знаков после запятой */
-  quoteDecimal: number;
+  defaultQuoteFractionDigits: number;
   /* Дата валютирования */
   valueDate: FxSpotValueDate;
 }

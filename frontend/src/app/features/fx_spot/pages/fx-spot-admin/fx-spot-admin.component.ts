@@ -42,7 +42,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'quoteDecimal', 'actions'];
+  displayed: string[] = ['symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'defaultQuoteFractionDigits', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================
@@ -74,7 +74,7 @@ export class FxSpotAdminComponent implements OnInit {
         [Validators.required]
       ],
 
-      quoteDecimal: [
+      defaultQuoteFractionDigits: [
         4,
         [
           Validators.required,
@@ -121,7 +121,7 @@ export class FxSpotAdminComponent implements OnInit {
         this.form.reset({
           baseCurrency: '',
           quoteCurrency: '',
-          quoteDecimal: 4,
+          defaultQuoteFractionDigits: 4,
           valueDate: FxSpotValueDate.TOD
         });
         this.locked = false;
@@ -143,7 +143,7 @@ export class FxSpotAdminComponent implements OnInit {
     this.form.setValue({
       baseCurrency: spot.baseCurrency,
       quoteCurrency: spot.quoteCurrency,
-      quoteDecimal: spot.quoteDecimal,
+      defaultQuoteFractionDigits: spot.defaultQuoteFractionDigits,
       valueDate: spot.valueDate
     });
     this.form.controls['baseCurrency'].disable();
@@ -158,7 +158,7 @@ export class FxSpotAdminComponent implements OnInit {
     this.locked = true;
 
     const dto: FxSpotUpdateDto = {
-      quoteDecimal: this.form.controls['quoteDecimal'].value
+      defaultQuoteFractionDigits: this.form.controls['defaultQuoteFractionDigits'].value
     } as FxSpotUpdateDto;
 
     this.service.update(this.editCode, dto).subscribe({
@@ -185,7 +185,7 @@ export class FxSpotAdminComponent implements OnInit {
     this.form.reset({
       baseCurrency: '',
       quoteCurrency: '',
-      quoteDecimal: 4,
+      defaultQuoteFractionDigits: 4,
       valueDate: FxSpotValueDate.TOD
     });
     this.form.controls['baseCurrency'].enable();
