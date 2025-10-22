@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** Сервис запускает доменную логику синхронизации данных провайдеров {@link ProviderSynchronizer}. */
+/**
+ * Сервис запускает доменную логику синхронизации данных провайдеров {@link ProviderSynchronizer}.
+ * Метод {@code runSync} отмечен как {@code @Transactional}.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProviderSyncService {

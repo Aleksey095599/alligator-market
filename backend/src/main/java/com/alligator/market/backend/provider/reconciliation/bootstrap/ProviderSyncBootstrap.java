@@ -11,7 +11,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Bootstrap-компонент: запускает процесс синхронизации данных провайдеров при старте приложения.
+ * Bootstrap-компонент: запускает сервис {@link ProviderSyncService} при старте приложения.
  */
 @Component
 @RequiredArgsConstructor
