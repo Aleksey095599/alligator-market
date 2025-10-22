@@ -35,14 +35,14 @@ export class CurrencyService {
   delete(code: string): Observable<void> {
     return this.http
       .delete<ApiResponse<void>>(`${this.baseUrl}/${code}`)
-      .pipe(map(res => res.data));
+      .pipe(map(() => undefined));
   }
 
   /* Обновить валюту по коду */
   update(code: string, dto: UpdateCurrencyDto): Observable<void> {
     return this.http
       .put<ApiResponse<void>>(`${this.baseUrl}/${code}`, dto)
-      .pipe(map(res => res.data));
+      .pipe(map(() => undefined));
   }
 
 }
