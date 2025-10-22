@@ -1,16 +1,111 @@
 package com.alligator.market.domain.provider.exception;
 
+import java.util.Objects;
+
 /**
  * Класс инструмента не соответствует обработчику.
  */
-public class InstrumentWrongClassException extends RuntimeException {
+public final class InstrumentWrongClassException extends RuntimeException {
+
+    private final String instrumentCode;
+    private final Class<?> instrumentClass;
+    private final String handlerCode;
+    private final Class<?> expectedClass;
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента
+     * @param instrumentClass фактический класс инструмента
+     * @param handlerCode код обработчика
+     * @param expectedClass ожидаемый класс инструмента
+     * @return текст сообщения
+     */
+    private static String msg(
+            String instrumentCode,
+            Class<?> instrumentClass,
+            String handlerCode,
+            Class<?> expectedClass
+    ) {
+        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        Class<?> actual = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
+        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        Class<?> expected = Objects.requireNonNull(expectedClass, "expectedClass must not be null");
+        return "Instrument class mismatch (instrumentCode=" + ic + ", actualClass=" + actual.getName()
+                + ", handlerCode=" + hc + ", expectedClass=" + expected.getName() + ")";
+    }
+
+    /**
+     * Создает исключение.
+     *
+     * @param instrumentCode код инструмента
+     * @param instrumentClass фактический класс инструмента
+     * @param handlerCode код обработчика
+     * @param expectedClass ожидаемый класс инструмента
+     */
+    @SuppressWarnings("unused")
     public InstrumentWrongClassException(
             String instrumentCode,
             Class<?> instrumentClass,
             String handlerCode,
             Class<?> expectedClass
     ) {
-        super("Instrument %s has class %s, but provider handler %s expects exact class %s"
-                .formatted(instrumentCode, instrumentClass.getName(), handlerCode, expectedClass.getName()));
+        super(msg(instrumentCode, instrumentClass, handlerCode, expectedClass));
+        this.instrumentCode = instrumentCode;
+        this.instrumentClass = instrumentClass;
+        this.handlerCode = handlerCode;
+        this.expectedClass = expectedClass;
     }
+
+    /**
+     * Создает исключение с причиной.
+     *
+     * @param instrumentCode код инструмента
+     * @param instrumentClass фактический класс инструмента
+     * @param handlerCode код обработчика
+     * @param expectedClass ожидаемый класс инструмента
+     * @param cause причина ошибки
+     */
+    @SuppressWarnings("unused")
+    public InstrumentWrongClassException(
+            String instrumentCode,
+            Class<?> instrumentClass,
+            String handlerCode,
+            Class<?> expectedClass,
+            Throwable cause
+    ) {
+        super(msg(instrumentCode, instrumentClass, handlerCode, expectedClass), cause);
+        this.instrumentCode = instrumentCode;
+        this.instrumentClass = instrumentClass;
+        this.handlerCode = handlerCode;
+        this.expectedClass = expectedClass;
+    }
+
+    /**
+     * Возвращает код инструмента.
+     *
+     * @return код инструмента
+     */
+    public String getInstrumentCode() { return instrumentCode; }
+
+    /**
+     * Возвращает фактический класс инструмента.
+     *
+     * @return фактический класс инструмента
+     */
+    public Class<?> getInstrumentClass() { return instrumentClass; }
+
+    /**
+     * Возвращает код обработчика.
+     *
+     * @return код обработчика
+     */
+    public String getHandlerCode() { return handlerCode; }
+
+    /**
+     * Возвращает ожидаемый класс инструмента.
+     *
+     * @return ожидаемый класс инструмента
+     */
+    public Class<?> getExpectedClass() { return expectedClass; }
 }
