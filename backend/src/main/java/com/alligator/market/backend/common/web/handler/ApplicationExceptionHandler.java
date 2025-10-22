@@ -2,10 +2,6 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
-import com.alligator.market.domain.common.exception.NotFoundException;
-import com.alligator.market.domain.common.exception.ResourceCreationException;
-import com.alligator.market.domain.common.exception.ResourceInUseException;
-import com.alligator.market.domain.common.exception.ResourceUpdateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyDeleteException;
@@ -92,30 +88,6 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(ProviderDisplayNameDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> handleProviderDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
         return warn(HttpStatus.CONFLICT, ex);
-    }
-
-    /** Ресурс используется. */
-    @ExceptionHandler(ResourceInUseException.class)
-    public ResponseEntity<ApiResponse<Void>> handleResourceInUse(ResourceInUseException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
-    }
-
-    /** Ошибка создания ресурса. */
-    @ExceptionHandler(ResourceCreationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleResourceCreation(ResourceCreationException ex) {
-        return error(ex);
-    }
-
-    /** Ошибка обновления ресурса. */
-    @ExceptionHandler(ResourceUpdateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleResourceUpdate(ResourceUpdateException ex) {
-        return error(ex);
-    }
-
-    /** Сущность не найдена. */
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(NotFoundException ex) {
-        return notFound(ex);
     }
 
     /** Инструмент FX_SPOT уже существует. */
