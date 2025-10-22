@@ -12,7 +12,7 @@ public enum FxSpotValueDate {
     /* Константы: коды дат валютирования */
     TOD, TOM, SPOT;
 
-    /* ↓↓ Поддерживаемые коды в виде массива и строки (для сообщений об ошибках). */
+    /* ↓↓ Поддерживаемые коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES =  Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
@@ -25,11 +25,14 @@ public enum FxSpotValueDate {
     public static FxSpotValueDate fromCode(String code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        // ↓↓ Нормализация (trim + upper case) и "isEmpty" проверка
-        String normalized = code.strip().toUpperCase(Locale.ROOT);
-        if (normalized.isEmpty()) {
+        // Обрезаем пробелы
+        String trimmed = code.strip();
+        if (trimmed.isEmpty()) {
             throw new IllegalArgumentException("FxSpotValueDate code is blank");
         }
+
+        // Делаем нормализацию регистра
+        String normalized = trimmed.toUpperCase(Locale.ROOT);
 
         // Парсинг
         try {
