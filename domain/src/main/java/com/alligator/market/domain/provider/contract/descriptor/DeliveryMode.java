@@ -1,33 +1,53 @@
 package com.alligator.market.domain.provider.contract.descriptor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Список возможных режимов доставки данных провайдерами рыночных данных.
  */
 public enum DeliveryMode {
-    /* ↓↓ Константы. */
-    PUSH("PUSH"), // Провайдер активно отправляет данные при их появлении
-    PULL("PULL"); // Клиент периодически запрашивает актуальные данные
+    /* ↓↓ Константы: коды режимов доставки (далее — коды). */
+    PUSH, // Провайдер активно отправляет данные при их появлении
+    PULL; // Клиент периодически запрашивает актуальные данные
 
-    /* Поле enum. */
-    private final String code; // Строковое представление значения
+    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
+    private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
+    private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
-    /** Конструктор enum (всегда неявно private). */
-    DeliveryMode(String code) {
-        this.code = code;
-    }
-
-    /** Возвращает строковый код. */
+    /** Возвращает строковый код (= имя константы). */
     public String code() {
-        return code;
+        return name();
     }
 
-    /** Ищет значение enum по строковому коду. */
+    /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    @SuppressWarnings("unused")
     public static DeliveryMode fromCode(String code) {
-        for (DeliveryMode value : values()) {
-            if (value.code.equals(code)) {
-                return value;
-            }
+        Objects.requireNonNull(code, "DeliveryMode code must not be null");
+
+        // Обрезаем пробелы
+        String trimmed = code.strip();
+        if (trimmed.isEmpty()) {
+            throw new IllegalArgumentException("DeliveryMode code is blank");
         }
-        throw new IllegalArgumentException("Unsupported delivery mode: " + code);
+
+        // Делаем нормализацию регистра
+        String normalized = trimmed.toUpperCase(Locale.ROOT);
+
+        // Парсинг
+        try {
+            return DeliveryMode.valueOf(normalized);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(
+                    "Unsupported DeliveryMode code: '" + code + "'. Supported: " + SUPPORTED_CODES_JOINED, ex);
+        }
+    }
+
+    /** Возвращает список поддерживаемых кодов (для валидации/документации). */
+    @SuppressWarnings("unused")
+    public static List<String> supportedCodes() {
+        return SUPPORTED_CODES;
     }
 }
