@@ -6,15 +6,15 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Список методов доступа к рыночным данным.
+ * Коды поддерживаемых методов доступа провайдеров к рыночным данным.
  */
 public enum AccessMethod {
-    /* ↓↓ Константы: поддерживаемые методы доступа. */
-    API_POLL,    // Метод периодического опроса API провайдера для получения рыночных данных
-    WEBSOCKET,   // Метод получения данных через WebSocket соединение в режиме реального времени
-    FIX_PROTOCOL;// Метод доступа через FIX протокол для высокочастотной торговли
+    /* ↓↓ Константы: коды методов доступа (далее — коды). */
+    API_POLL,       // Метод периодического опроса API провайдера для получения рыночных данных
+    WEBSOCKET,      // Метод получения данных через WebSocket соединение в режиме реального времени
+    FIX_PROTOCOL;   // Метод доступа через FIX протокол для высокочастотной торговли
 
-    /* ↓↓ Поддерживаемые коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
@@ -25,7 +25,7 @@ public enum AccessMethod {
 
     /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
     public static AccessMethod fromCode(String code) {
-        Objects.requireNonNull(code, "code must not be null");
+        Objects.requireNonNull(code, "AccessMethod code must not be null");
 
         // Обрезаем пробелы
         String trimmed = code.strip();

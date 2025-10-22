@@ -9,10 +9,10 @@ import java.util.Objects;
  * Коды дат валютирования инструмента FX_SPOT.
  */
 public enum FxSpotValueDate {
-    /* Константы: коды дат валютирования */
+    /* Константы: коды дат валютирования для инструмента FX_SPOT (далее — коды). */
     TOD, TOM, SPOT;
 
-    /* ↓↓ Поддерживаемые коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES =  Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
@@ -23,7 +23,7 @@ public enum FxSpotValueDate {
 
     /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
     public static FxSpotValueDate fromCode(String code) {
-        Objects.requireNonNull(code, "code must not be null");
+        Objects.requireNonNull(code, "FxSpotValueDate code must not be null");
 
         // Обрезаем пробелы
         String trimmed = code.strip();
