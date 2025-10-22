@@ -1,33 +1,53 @@
 package com.alligator.market.domain.instrument.type;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Типы финансовых инструментов.
  */
 public enum InstrumentType {
-    /* ↓↓ Константы. */
-    FX_SPOT("FX_SPOT"),
-    FX_SWAP("FX_SWAP");
+    /* ↓↓ Константы: коды типов инструментов (далее — коды). */
+    FX_SPOT,
+    FX_SWAP;
 
-    /* Поле enum. */
-    private final String code; // Строковое представление значения
+    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
+    private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
+    private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
-    /** Конструктор enum (всегда неявно private). */
-    InstrumentType(String code) {
-        this.code = code;
-    }
-
-    /** Возвращает строковый код. */
+    /** Возвращает строковый код (= имя константы). */
     public String code() {
-        return code;
+        return name();
     }
 
-    /** Ищет значение enum по строковому коду. */
+    /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    @SuppressWarnings("unused")
     public static InstrumentType fromCode(String code) {
-        for (InstrumentType value : values()) {
-            if (value.code.equals(code)) {
-                return value;
-            }
+        Objects.requireNonNull(code, "InstrumentType code must not be null");
+
+        // Обрезаем пробелы
+        String trimmed = code.strip();
+        if (trimmed.isEmpty()) {
+            throw new IllegalArgumentException("InstrumentType code is blank");
         }
-        throw new IllegalArgumentException("Unsupported instrument type: " + code);
+
+        // Делаем нормализацию регистра
+        String normalized = trimmed.toUpperCase(Locale.ROOT);
+
+        // Парсинг
+        try {
+            return InstrumentType.valueOf(normalized);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(
+                    "Unsupported InstrumentType code: '" + code + "'. Supported: " + SUPPORTED_CODES_JOINED, ex);
+        }
+    }
+
+    /** Возвращает список поддерживаемых кодов (для валидации/документации). */
+    @SuppressWarnings("unused")
+    public static List<String> supportedCodes() {
+        return SUPPORTED_CODES;
     }
 }
