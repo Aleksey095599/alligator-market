@@ -24,6 +24,7 @@ public enum AccessMethod {
     }
 
     /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    @SuppressWarnings("unused")
     public static AccessMethod fromCode(String code) {
         Objects.requireNonNull(code, "AccessMethod code must not be null");
 

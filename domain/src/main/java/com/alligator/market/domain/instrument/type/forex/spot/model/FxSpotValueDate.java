@@ -22,6 +22,7 @@ public enum FxSpotValueDate {
     }
 
     /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    @SuppressWarnings("unused")
     public static FxSpotValueDate fromCode(String code) {
         Objects.requireNonNull(code, "FxSpotValueDate code must not be null");
 
