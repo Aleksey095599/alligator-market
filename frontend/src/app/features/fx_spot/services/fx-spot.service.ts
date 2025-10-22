@@ -35,13 +35,13 @@ export class FxSpotService {
   delete(code: string): Observable<void> {
     return this.http
       .delete<ApiResponse<void>>(`${this.baseUrl}/${code}`)
-      .pipe(map(res => res.data));
+      .pipe(map(() => undefined));
   }
 
   /* Обновить инструмент FX_SPOT по коду */
   update(code: string, dto: FxSpotUpdateDto): Observable<void> {
     return this.http
       .patch<ApiResponse<void>>(`${this.baseUrl}/${code}`, dto)
-      .pipe(map(res => res.data));
+      .pipe(map(() => undefined));
   }
 }
