@@ -57,6 +57,7 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
      *
      * @return код базовой валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCode getBase() { return base; }
 
     /**
@@ -64,5 +65,6 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
      *
      * @return код котируемой валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCode getQuote() { return quote; }
 }

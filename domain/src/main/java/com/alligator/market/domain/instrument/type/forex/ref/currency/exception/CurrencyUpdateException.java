@@ -50,5 +50,6 @@ public final class CurrencyUpdateException extends RuntimeException {
      *
      * @return код валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCode getCode() { return code; }
 }

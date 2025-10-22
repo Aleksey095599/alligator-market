@@ -86,6 +86,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      *
      * @return код инструмента
      */
+    @SuppressWarnings("unused")
     public String getInstrumentCode() { return instrumentCode; }
 
     /**
@@ -93,6 +94,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      *
      * @return фактический класс инструмента
      */
+    @SuppressWarnings("unused")
     public Class<?> getInstrumentClass() { return instrumentClass; }
 
     /**
@@ -100,6 +102,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      *
      * @return код обработчика
      */
+    @SuppressWarnings("unused")
     public String getHandlerCode() { return handlerCode; }
 
     /**
@@ -107,5 +110,6 @@ public final class InstrumentWrongClassException extends RuntimeException {
      *
      * @return ожидаемый класс инструмента
      */
+    @SuppressWarnings("unused")
     public Class<?> getExpectedClass() { return expectedClass; }
 }

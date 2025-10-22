@@ -48,5 +48,6 @@ public final class ProviderDisplayNameDuplicateException extends RuntimeExceptio
      *
      * @return отображаемое имя провайдера
      */
+    @SuppressWarnings("unused")
     public String getDisplayName() { return displayName; }
 }
