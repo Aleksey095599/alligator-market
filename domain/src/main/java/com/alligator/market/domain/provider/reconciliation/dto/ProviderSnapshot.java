@@ -22,7 +22,7 @@ public record ProviderSnapshot(
         // ↓↓ Нормализуем код провайдера
         String c = code.strip(); // Обрезаем пробелы
         if (c.isEmpty()) throw new IllegalArgumentException("code must not be blank");
-        c = c.toUpperCase(Locale.ROOT); // UPPER CASE
+        c = c.toUpperCase(Locale.ROOT); // UPPER-CASE
 
         // Присваиваем проверенное и нормализованное значение
         code = c;
