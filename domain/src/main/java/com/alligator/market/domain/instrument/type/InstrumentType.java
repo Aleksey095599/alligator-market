@@ -6,12 +6,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Типы финансовых инструментов.
+ * Коды типов финансовых инструментов.
  */
 public enum InstrumentType {
-    /* ↓↓ Константы: коды типов инструментов (далее — коды). */
-    FX_SPOT,
-    FX_SWAP;
+    /* Константы: коды типов инструментов (далее — коды). */
+    FX_SPOT, FX_SWAP;
 
     /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
