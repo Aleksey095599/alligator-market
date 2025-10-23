@@ -47,7 +47,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Quote Decimal</mat-label>
+          <mat-label>Default Quote Fraction Digits</mat-label>
           <input
             matInput
             type="number"
@@ -108,7 +108,7 @@
         </ng-container>
 
         <ng-container matColumnDef="defaultQuoteFractionDigits">
-          <th mat-header-cell *matHeaderCellDef> Quote Decimal</th>
+          <th mat-header-cell *matHeaderCellDef> Default Quote Fraction Digits</th>
           <td mat-cell *matCellDef="let spot"> {{ spot.defaultQuoteFractionDigits }}</td>
         </ng-container>
 
