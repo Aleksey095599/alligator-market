@@ -3,7 +3,7 @@ CREATE TABLE instrument (
     code VARCHAR(32) NOT NULL,
     symbol VARCHAR(32) NOT NULL,
     type VARCHAR(32) NOT NULL,
-    version BIGINT NOT NULL DEFAULT 0,
+    version BIGINT NOT NULL,
     created_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
     created_by VARCHAR(255) NOT NULL,
     created_via VARCHAR(255) NOT NULL,
