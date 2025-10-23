@@ -22,6 +22,8 @@ public record ProviderSnapshot(
         // ↓↓ Нормализуем код провайдера
         String c = code.strip(); // Обрезаем пробелы
         if (c.isEmpty()) throw new IllegalArgumentException("code must not be blank");
+        // Проверяем ограничение домена: максимум 50 символов
+        if (c.length() > 50) throw new IllegalArgumentException("code length must be less or equal to 50 characters");
         c = c.toUpperCase(Locale.ROOT); // UPPER-CASE
 
         // Присваиваем проверенное и нормализованное значение
