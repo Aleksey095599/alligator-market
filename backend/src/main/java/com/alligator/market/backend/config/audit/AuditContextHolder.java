@@ -12,7 +12,7 @@ public final class AuditContextHolder {
 
     // Дефолты дев-режима
     private static final String DEV_ACTOR = "dev_admin";
-    private static final String DEV_VIA   = "rest-api-dev";
+    private static final String DEV_VIA   = "dev_process";
     private static final AuditContext DEV_DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
 
     // Зарезервированный системный актор для внутренних процессов
