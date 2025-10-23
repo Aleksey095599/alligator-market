@@ -15,15 +15,15 @@ public record ProviderSnapshot(
     /** Конструктор с проверками и нормализацией. */
     public ProviderSnapshot {
         // ↓↓ fail-fast проверки
-        Objects.requireNonNull(code, "code must not be null");
-        Objects.requireNonNull(descriptor, "descriptor must not be null");
-        Objects.requireNonNull(policy, "policy must not be null");
+        Objects.requireNonNull(code, "Provider code must not be null");
+        Objects.requireNonNull(descriptor, "Provider descriptor must not be null");
+        Objects.requireNonNull(policy, "Provider policy must not be null");
 
         // ↓↓ Нормализуем код провайдера
         String c = code.strip(); // Обрезаем пробелы
-        if (c.isEmpty()) throw new IllegalArgumentException("code must not be blank");
+        if (c.isEmpty()) throw new IllegalArgumentException("Provider code must not be blank");
         // Проверяем ограничение домена: максимум 50 символов
-        if (c.length() > 50) throw new IllegalArgumentException("code length must be less or equal to 50 characters");
+        if (c.length() > 50) throw new IllegalArgumentException("Provider code length must be less or equal to 50 characters");
         c = c.toUpperCase(Locale.ROOT); // UPPER-CASE
 
         // Присваиваем проверенное и нормализованное значение
