@@ -4,31 +4,43 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Optional;
+
 /**
  * ThreadLocal-холдер контекста аудита.
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // ← Конструктор только внутри самого класса
 public final class AuditContextHolder {
 
-    // Дефолты дев-режима
-    private static final String DEV_ACTOR = "dev_admin";
-    private static final String DEV_VIA   = "dev_process";
-    private static final AuditContext DEV_DEFAULTS = new AuditContext(DEV_ACTOR, DEV_VIA);
-
-    // Зарезервированный системный актор для внутренних процессов
+    /* Зарезервированный системный актор для внутренних процессов. */
     public static final String SYSTEM_ACTOR = "system";
 
-    /** Локальное хранилище контекста для текущего потока. */
-    private static final ThreadLocal<AuditContext> contextThreadLocal = new ThreadLocal<>();
+    /* Фолбэки, если контекст не задан. */
+    public static final String FALLBACK_ACTOR = "default";
+    public static final String FALLBACK_VIA   = "default";
+
+    /* Локальное хранилище контекста для текущего потока. */
+    private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
 
     /** Установить контекст. */
     public static void set(@NonNull AuditContext ctx) {
-        contextThreadLocal.set(ctx);
+        CTX.set(ctx);
     }
 
-    /** Получить текущий контекст. */
-    public static AuditContext get() {
-        AuditContext ctx = contextThreadLocal.get();
-        return (ctx != null) ? ctx : DEV_DEFAULTS; // Если контекст пуст, вернет дефолтный контекст дев-режима
+    /** Получить текущий контекст как Optional (может отсутствовать). */
+    public static Optional<AuditContext> getOptional() {
+        return Optional.ofNullable(CTX.get());
+    }
+
+    /** Получить текущий контекст или фолбэк. */
+    public static String actorOrFallback() {
+        return getOptional().map(AuditContext::actorId)
+                .filter(a -> !a.isBlank())
+                .orElse(FALLBACK_ACTOR);
+    }
+
+    /** Сбросить контекст. */
+    public static void clear() {
+        CTX.remove();
     }
 }
