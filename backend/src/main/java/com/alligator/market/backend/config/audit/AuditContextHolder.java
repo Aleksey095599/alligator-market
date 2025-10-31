@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.Optional;
-
 /**
  * ThreadLocal-холдер контекста аудита.
  */
@@ -16,8 +14,12 @@ public final class AuditContextHolder {
     public static final String SYSTEM_ACTOR = "system";
 
     /* Фолбэки, если контекст не задан. */
-    public static final String FALLBACK_ACTOR = "default";
-    public static final String FALLBACK_VIA   = "default";
+    public static final String FALLBACK_ACTOR = "fallback_actor";
+    public static final String FALLBACK_VIA   = "fallback_via";
+
+    /* Готовый общий фолбэк-контекст. */
+    private static final AuditContext FALLBACK_CTX =
+            new AuditContext(FALLBACK_ACTOR, FALLBACK_VIA);
 
     /* Локальное хранилище контекста для текущего потока. */
     private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
@@ -27,27 +29,34 @@ public final class AuditContextHolder {
         CTX.set(ctx);
     }
 
-    /** Получить актора или фолбэк. */
-    public static String actorOrFallback() {
-        return getOptional().map(AuditContext::actorId)
-                .filter(a -> !a.isBlank())
-                .orElse(FALLBACK_ACTOR);
+    /** Текущий контекст или фолбэк. */
+    public static AuditContext currentOrFallback() {
+        // Извлекаем контекст
+        var ctx = CTX.get();
+
+        // Если контекст null, возвращаем фолбэк контекст
+        if (ctx == null) return FALLBACK_CTX;
+
+        // (*) Если есть недостающие компоненты, заполняем их фолбэками
+        String actor = (ctx.actorId() != null && !ctx.actorId().isBlank())
+                ? ctx.actorId() : FALLBACK_ACTOR;
+        String via = (ctx.via() != null && !ctx.via().isBlank())
+                ? ctx.via() : FALLBACK_VIA;
+
+
+        if (actor.equals(ctx.actorId()) && via.equals(ctx.via())) {
+            return ctx; // Если шаг (*) ничего не изменил
+        } else {
+            return new AuditContext(actor, via); // Иначе создаем и возвращаем новый контекст
+        }
     }
+
+    /** Получить актора или фолбэк. */
+    public static String actorOrFallback() { return currentOrFallback().actorId(); }
 
     /** Получить источник/канал или фолбэк. */
-    public static String viaOrFallback() {
-        return getOptional().map(AuditContext::via)
-                .filter(v -> !v.isBlank())
-                .orElse(FALLBACK_VIA);
-    }
+    public static String viaOrFallback() { return currentOrFallback().via(); }
 
     /** Сбросить контекст. */
-    public static void clear() {
-        CTX.remove();
-    }
-
-    /** Получить текущий контекст как Optional (может отсутствовать). */
-    private static Optional<AuditContext> getOptional() {
-        return Optional.ofNullable(CTX.get());
-    }
+    public static void clear() { CTX.remove(); }
 }

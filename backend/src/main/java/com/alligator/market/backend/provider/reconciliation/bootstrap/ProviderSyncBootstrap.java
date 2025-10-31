@@ -26,7 +26,7 @@ public class ProviderSyncBootstrap implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("Starting provider synchronization");
         // ↓↓ Добавляем контекст для аудита
-        AuditContext previousContext = AuditContextHolder.get();
+        AuditContext previousContext = AuditContextHolder.getOptional().orElse(null);
         AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-bootstrap"));
         try {
             syncService.runSync();
