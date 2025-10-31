@@ -2,12 +2,13 @@ package com.alligator.market.backend.config.audit;
 
 /**
  * Контекст аудита приложения.
- * Важно помнить, что из коробки Spring Data JPA поддерживает только @CreatedBy/@LastModifiedBy и даты,
- * то есть
+ * Содержит два компонента: {@code actorId} — кто выполняет действие, {@code via} — посредством чего (канал/источник).
  *
- * @param actorId кто осуществляет действие
- * @param via     посредством чего осуществляется действие
+ * @param actorId идентификатор актора, инициировавшего действие
+ * @param via     источник/канал
+ * @see AuditContextHolder
  */
-public record AuditContext(String actorId, String via) {}
-
-
+public record AuditContext(
+        String actorId,
+        String via
+) {}

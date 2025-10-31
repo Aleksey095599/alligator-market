@@ -12,7 +12,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE) // ← Конструктор только внутри самого класса
 public final class AuditContextHolder {
 
-    /* Зарезервированный системный актор для внутренних процессов. */
+    /* Зарезервированный системный актор. */
     public static final String SYSTEM_ACTOR = "system";
 
     /* Фолбэки, если контекст не задан. */
@@ -27,20 +27,27 @@ public final class AuditContextHolder {
         CTX.set(ctx);
     }
 
-    /** Получить текущий контекст как Optional (может отсутствовать). */
-    public static Optional<AuditContext> getOptional() {
-        return Optional.ofNullable(CTX.get());
-    }
-
-    /** Получить текущий контекст или фолбэк. */
+    /** Получить актора или фолбэк. */
     public static String actorOrFallback() {
         return getOptional().map(AuditContext::actorId)
                 .filter(a -> !a.isBlank())
                 .orElse(FALLBACK_ACTOR);
     }
 
+    /** Получить источник/канал или фолбэк. */
+    public static String viaOrFallback() {
+        return getOptional().map(AuditContext::via)
+                .filter(v -> !v.isBlank())
+                .orElse(FALLBACK_VIA);
+    }
+
     /** Сбросить контекст. */
     public static void clear() {
         CTX.remove();
+    }
+
+    /** Получить текущий контекст как Optional (может отсутствовать). */
+    private static Optional<AuditContext> getOptional() {
+        return Optional.ofNullable(CTX.get());
     }
 }
