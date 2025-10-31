@@ -56,7 +56,4 @@ public final class AuditContextHolder {
 
     /** Получить источник/канал или фолбэк. */
     public static String viaOrFallback() { return currentOrFallback().via(); }
-
-    /** Сбросить контекст. */
-    public static void clear() { CTX.remove(); }
 }
