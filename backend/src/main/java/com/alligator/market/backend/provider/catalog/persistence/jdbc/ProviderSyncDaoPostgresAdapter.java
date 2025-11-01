@@ -119,14 +119,25 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
               delivery_mode,
               access_method,
               bulk_subscription,
-              min_update_interval_seconds
-            ) VALUES (?, ?, ?, ?, ?, ?)
+              min_update_interval_seconds,
+              version,
+              created_timestamp,
+              created_by,
+              created_via,
+              updated_timestamp,
+              updated_by,
+              updated_via
+            ) VALUES (?, ?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
             ON CONFLICT (provider_code) DO UPDATE SET
               display_name = EXCLUDED.display_name,
               delivery_mode = EXCLUDED.delivery_mode,
               access_method = EXCLUDED.access_method,
               bulk_subscription = EXCLUDED.bulk_subscription,
-              min_update_interval_seconds = EXCLUDED.min_update_interval_seconds
+              min_update_interval_seconds = EXCLUDED.min_update_interval_seconds,
+              version = market_data_provider.version + 1,
+              updated_timestamp = CURRENT_TIMESTAMP,
+              updated_by = EXCLUDED.updated_by,
+              updated_via = EXCLUDED.updated_via
             """;
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
@@ -135,7 +146,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override public void setValues(@NonNull PreparedStatement ps, int i) throws SQLException {
-                bindUpsert(ps, arr[i]);
+                bindUpsert(ps, arr[i], actor, via);
             }
             @Override public int getBatchSize() { return arr.length; }
         });
@@ -146,6 +157,8 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
      */
     private void bindUpsert(PreparedStatement ps, ProviderSnapshot s, String actor, String via) throws SQLException {
         Objects.requireNonNull(s, "snapshot must not be null");
+        Objects.requireNonNull(actor, "actor must not be null");
+        Objects.requireNonNull(via, "via must not be null");
         // Иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
 
         // 1) provider_code (натуральный ключ)
@@ -162,5 +175,11 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         var p = s.policy();
         Long seconds = DUR2SEC.convertToDatabaseColumn(p.minUpdateInterval());
         ps.setLong(6, seconds);                   // min_update_interval_seconds
+
+        // 4) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.
+        ps.setString(7, actor);                   // created_by
+        ps.setString(8, via);                     // created_via
+        ps.setString(9, actor);                   // updated_by
+        ps.setString(10, via);                    // updated_via
     }
 }
