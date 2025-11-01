@@ -15,14 +15,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 
 /**
- * Родительский класс для всех сущностей в проекте.
- * Содержит поля для отслеживания изменений (JPA Audit) и управления версиями (Version).
+ * Родительская сущность: аудит и версия.
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
 @Getter
-@Setter
 @NoArgsConstructor
+@Access(AccessType.FIELD) // ← Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public abstract class BaseEntity {
 
     @Version
@@ -37,7 +36,7 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdBy;
 
-    @Setter(AccessLevel.NONE) // доступа нет, только callback ниже может заполнять поле
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, только callback
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
@@ -49,11 +48,11 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private String updatedBy;
 
-    @Setter(AccessLevel.NONE) // доступа нет, только callback ниже может заполнять поле
+    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, только callback
     @Column(nullable = false)
     private String updatedVia;
 
-    /* JPA-callback: при вставке берем из контекста. */
+    /* (JPA-callback) При вставке: via ставим из AuditContextHolder. */
     @PrePersist
     private void __onCreateAudit() {
         String via = AuditContextHolder.viaOrFallback();
@@ -62,20 +61,14 @@ public abstract class BaseEntity {
         onPrePersist();
     }
 
-    /* JPA-callback: при обновлении берем из контекста. */
+    /* (JPA-callback) При обновлении: via ставим из AuditContextHolder. */
     @PreUpdate
     private void __onUpdateAudit() {
         this.updatedVia = AuditContextHolder.viaOrFallback();
         onPreUpdate();
     }
 
-    /* Хук для PrePersist в наследниках. */
-    protected void onPrePersist() {
-        // no-op
-    }
-
-    /* Хук для PreUpdate в наследниках. */
-    protected void onPreUpdate() {
-        // no-op
-    }
+    /* Хуки для наследников. */
+    protected void onPrePersist() { /* no-op */ }
+    protected void onPreUpdate()  { /* no-op */ }
 }
