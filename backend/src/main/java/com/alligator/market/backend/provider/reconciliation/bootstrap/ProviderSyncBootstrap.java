@@ -4,20 +4,18 @@ import com.alligator.market.backend.config.audit.AuditContext;
 import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.backend.provider.reconciliation.service.ProviderSyncService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Bootstrap-компонент: запускает сервис {@link ProviderSyncService} при старте приложения.
+ * Bootstrap-компонент: запускает процесс синхронизации провайдеров рыночных данных при старте приложения.
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProviderSyncBootstrap implements ApplicationRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(ProviderSyncBootstrap.class);
 
     /* Backend реализация сервиса синхронизации. */
     private final ProviderSyncService syncService;
@@ -25,17 +23,13 @@ public class ProviderSyncBootstrap implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         log.info("Starting provider synchronization");
-        // ↓↓ Добавляем контекст для аудита
-        AuditContext previousContext = AuditContextHolder.currentOrFallback();
-        AuditContextHolder.set(new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "provider-bootstrap"));
-        try {
+
+        // Задаем контекст для аудита
+        AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-sync");
+
+        AuditContextHolder.runWith(ctx, () -> {
             syncService.runSync();
             log.info("Provider synchronization completed");
-        } catch (RuntimeException ex) {
-            log.error("Provider synchronization failed", ex);
-            throw ex;
-        } finally {
-            AuditContextHolder.set(previousContext);
-        }
+        });
     }
 }

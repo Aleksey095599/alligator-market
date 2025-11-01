@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
+import com.alligator.market.backend.config.audit.AuditContextHolder;
 import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
@@ -106,6 +107,10 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
 
+        // ↓↓ Берём аудит-атрибуты из контекст-холдера
+        final String actor = AuditContextHolder.actorOrFallback();
+        final String via   = AuditContextHolder.viaOrFallback();
+
         // SQL-команда
         final String sql = """
             INSERT INTO market_data_provider(
@@ -139,7 +144,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
     /**
      * Привязка параметров для одной строки UPSERT (заполнение параметров "?" в SQL-команде конкретными значениями).
      */
-    private void bindUpsert(PreparedStatement ps, ProviderSnapshot s) throws SQLException {
+    private void bindUpsert(PreparedStatement ps, ProviderSnapshot s, String actor, String via) throws SQLException {
         Objects.requireNonNull(s, "snapshot must not be null");
         // Иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
 
