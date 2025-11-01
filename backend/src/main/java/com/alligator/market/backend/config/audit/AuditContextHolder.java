@@ -5,31 +5,37 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
- * ThreadLocal-холдер контекста аудита.
+ * ThreadLocal-холдер контекста аудита (актор + источник/канал via).
+ * <p>Хранит значение per-thread и предоставляет фолбэки.</p>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE) // ← Конструктор только внутри самого класса
 public final class AuditContextHolder {
 
-    /* Зарезервированный системный актор. */
+    /* Зарезервированный системный актор для внутренних процессов. */
     public static final String SYSTEM_ACTOR = "system";
 
-    /* Фолбэки, если контекст не задан. */
+    /* Фолбэк для актора при отсутствующем/пустом контексте. */
     public static final String FALLBACK_ACTOR = "fallback_actor";
+
+    /* Фолбэк для via при отсутствующем/пустом контексте. */
     public static final String FALLBACK_VIA   = "fallback_via";
 
-    /* Готовый общий фолбэк-контекст. */
+    /* Предсозданный фолбэк‑контекст (record иммутабелен). */
     private static final AuditContext FALLBACK_CTX =
             new AuditContext(FALLBACK_ACTOR, FALLBACK_VIA);
 
-    /* Локальное хранилище контекста для текущего потока. */
+    /* Переменная на поток для хранения текущего {@link AuditContext}. */
     private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
 
-    /** Установить контекст. */
+    /** Устанавливает контекст для текущего потока. */
     public static void set(@NonNull AuditContext ctx) {
         CTX.set(ctx);
     }
 
-    /** Текущий контекст или фолбэк. */
+    /**
+     * Возвращает текущий контекст, подставляя фолбэки для пустых компонентов.
+     * Никогда не возвращает {@code null}.
+     */
     public static AuditContext currentOrFallback() {
         // Извлекаем контекст
         var ctx = CTX.get();
@@ -51,9 +57,40 @@ public final class AuditContextHolder {
         }
     }
 
-    /** Получить актора или фолбэк. */
+    /** Возвращает текущего актора или фолбэк. */
     public static String actorOrFallback() { return currentOrFallback().actorId(); }
 
-    /** Получить источник/канал или фолбэк. */
+    /** Возвращает текущее via или фолбэк. */
     public static String viaOrFallback() { return currentOrFallback().via(); }
+
+    /** Очищает контекст текущего потока. */
+    public static void clear() { CTX.remove(); }
+
+    /**
+     * Выполняет функцию в заданном {@link AuditContext} и возвращает её результат.
+     * Гарантированно восстанавливает прежний контекст (или очищает, если его не было).
+     *
+     * @param ctx    временный контекст для текущего потока
+     * @param action функция, выполняемая в этом контексте
+     * @param <T>    тип результата
+     * @return результат, возвращённый {@code action}
+     */
+    public static <T> T runWith(AuditContext ctx, java.util.function.Supplier<T> action) {
+        var prev = CTX.get();
+        try { set(ctx); return action.get(); }
+        finally { if (prev != null) CTX.set(prev); else clear(); }
+    }
+
+    /**
+     * Выполняет действие в заданном {@link AuditContext} без результата.
+     * Гарантированно восстанавливает прежний контекст (или очищает, если его не было).
+     *
+     * @param ctx    временный контекст для текущего потока
+     * @param action действие, выполняемое в этом контексте
+     */
+    public static void runWith(AuditContext ctx, Runnable action) {
+        var prev = CTX.get();
+        try { set(ctx); action.run(); }
+        finally { if (prev != null) CTX.set(prev); else clear(); }
+    }
 }
