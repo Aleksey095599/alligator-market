@@ -45,7 +45,7 @@ public class CurrencyController {
 
     /** Обновить валюту. */
     @PutMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> update(
+    public ResponseEntity<Void> update(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
             @RequestBody @Valid UpdateCurrencyDto dto) {
 
@@ -55,7 +55,7 @@ public class CurrencyController {
 
     /** Удалить валюту. */
     @DeleteMapping("/{code}")
-    public ResponseEntity<ApiResponse<Void>> delete(
+    public ResponseEntity<Void> delete(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
 
         service.delete(CurrencyCode.of(code));

@@ -23,8 +23,11 @@ public final class ResponseEntityFactory {
                 .body(ApiResponse.build(data, "created"));
     }
 
-    /** Успех: частный случай - 204 No Content. */
-    public static ResponseEntity<ApiResponse<Void>> noContent() {
+    /**
+     * Успех: частный случай - 204 No Content.
+     * Возвращаем ответ без конверта, потому что тело должно отсутствовать.
+     */
+    public static ResponseEntity<Void> noContent() {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
