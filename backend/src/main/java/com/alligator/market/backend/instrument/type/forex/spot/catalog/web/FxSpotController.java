@@ -44,8 +44,8 @@ public class FxSpotController {
 
     /** Обновить инструмент. */
     @PatchMapping("/{instrumentCode}")
-    public ResponseEntity<ApiResponse<Void>> update(@PathVariable String instrumentCode,
-                                                    @RequestBody @Valid FxSpotUpdateDto dto) {
+    public ResponseEntity<Void> update(@PathVariable String instrumentCode,
+                                       @RequestBody @Valid FxSpotUpdateDto dto) {
 
         service.update(assembler.toDomainByCode(instrumentCode, dto));
         return ResponseEntityFactory.noContent();
@@ -53,7 +53,7 @@ public class FxSpotController {
 
     /** Удалить инструмент. */
     @DeleteMapping("/{instrumentCode}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String instrumentCode) {
+    public ResponseEntity<Void> delete(@PathVariable String instrumentCode) {
 
         service.delete(instrumentCode);
         return ResponseEntityFactory.noContent();
