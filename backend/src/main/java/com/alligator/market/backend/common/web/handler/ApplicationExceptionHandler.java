@@ -18,6 +18,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotUp
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
+import com.alligator.market.domain.provider.exception.InstrumentWrongTypeException;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
 import lombok.extern.slf4j.Slf4j;
@@ -141,6 +142,12 @@ public class ApplicationExceptionHandler {
     /** Класс инструмента не соответствует ожиданиям обработчика. */
     @ExceptionHandler(InstrumentWrongClassException.class)
     public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongClass(InstrumentWrongClassException ex) {
+        return error(ex);
+    }
+
+    /** Тип инструмента не соответствует ожиданиям обработчика. */
+    @ExceptionHandler(InstrumentWrongTypeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongType(InstrumentWrongTypeException ex) {
         return error(ex);
     }
 
