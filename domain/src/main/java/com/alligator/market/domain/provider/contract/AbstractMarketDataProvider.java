@@ -32,6 +32,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
     private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
 
+    /* Карта "код инструмента → обработчик". После инициализации становится неизменяемой. */
+    private final Map<String, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
+
     /* ↓↓ Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
     private final Set<String> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
@@ -89,8 +92,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             }
         }
 
-        // 2) Собираем карту "инструмент → обработчик"
+        // 2) Собираем карты "инструмент → обработчик" и "код инструмента → обработчик"
         var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
+        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>();
+
         for (var h : handlers) {
             var supported = h.supportedInstruments();
             for (Instrument ins : supported) {
