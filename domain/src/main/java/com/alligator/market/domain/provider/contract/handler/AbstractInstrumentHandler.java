@@ -79,8 +79,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * Котировка заданного инструмента.
      *
      * @throws IllegalStateException           если нет ссылки на провайдера
-     * @throws InstrumentWrongClassException   если класс инструмента не соответствует @instrumentClass
-     * @throws InstrumentNotSupportedException если инструмент не содержится в наборе @supportedInstruments
+     * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@code instrumentClass}
+     * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@code instrumentType}
+     * @throws InstrumentNotSupportedException если инструмент не содержится в наборе {@code nSupportedInstrumentCodes}
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
