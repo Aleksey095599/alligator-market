@@ -22,6 +22,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     private final String nHandlerCode;
     private final Class<I> instrumentClass;
     private final InstrumentType instrumentType;
+
+    /* Нормализованные (UPPERCASE) и неизменяемые коды поддерживаемых инструментов. */
     private final Set<String> nSupportedInstrumentCodes;
 
     /* Ссылка на провайдера (volatile гарантирует видимость присвоения между потоками). */
@@ -52,11 +54,19 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         this.nSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
     }
 
+    /** Уникальный код обработчика (для логов/метрик). */
     @Override public final String handlerCode() { return nHandlerCode; }
+
+    /** Декларируем класс поддерживаемых инструментов. */
     @Override public Class<I> instrumentClass() { return instrumentClass; }
+
+    /** Тип поддерживаемых инструментов. */
     @Override public final InstrumentType instrumentType() { return instrumentType; }
+
+    /** Набор кодов инструментов, которые поддерживает обработчик (UPPERCASE, неизменяемый). */
     @Override public final Set<String> supportedInstrumentCodes() { return nSupportedInstrumentCodes; }
 
+    /** Прикрепить обработчик к заданному провайдеру. */
     @Override
     public final void attachTo(P provider) {
         if (this.provider != null) {
@@ -68,6 +78,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Котировка заданного инструмента.
      *
+     * @throws IllegalStateException           если нет ссылки на провайдера
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует @instrumentClass
      * @throws InstrumentNotSupportedException если инструмент не содержится в наборе @supportedInstruments
      */
@@ -77,14 +88,24 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
         P currentProvider = provider;
         if (currentProvider == null) {
-            throw new IllegalStateException("Provider is not attached");
+            throw new IllegalStateException("There is null link to provider");
         }
-        if (instrument.getClass() != instrumentClass) {
-            throw new InstrumentWrongClassException( // Инструмент не соответствует требуемому классу
+
+        // ↓↓ Проверки инструмента
+        if (!instrumentClass.isInstance(instrument)) {
+            throw new InstrumentWrongClassException(
                     instrument.instrumentCode(),
                     instrument.getClass(),
                     nHandlerCode,
                     instrumentClass
+            );
+        }
+        if (instrument.instrumentType() != instrumentType) {
+            throw new InstrumentWrongTypeException(
+                    instrument.instrumentCode(),
+                    instrument.instrumentType(),
+                    nHandlerCode,
+                    instrumentType
             );
         }
         var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);

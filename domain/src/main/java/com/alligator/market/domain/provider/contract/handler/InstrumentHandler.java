@@ -25,7 +25,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     /** Тип поддерживаемых инструментов. */
     InstrumentType instrumentType();
 
-    /** Набор кодов инструментов, которые поддерживает обработчик. */
+    /** Набор кодов инструментов, которые поддерживает обработчик (UPPERCASE, неизменяемый). */
     Set<String> supportedInstrumentCodes();
 
     /** Прикрепить обработчик к заданному провайдеру. */
