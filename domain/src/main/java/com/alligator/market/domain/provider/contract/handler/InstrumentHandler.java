@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.contract.handler;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
@@ -21,8 +22,11 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     /** Декларируем класс поддерживаемых инструментов. */
     Class<I> instrumentClass();
 
-    /** Набор инструментов, которые поддерживает обработчик. */
-    Set<I> supportedInstruments();
+    /** Тип поддерживаемых инструментов. */
+    InstrumentType instrumentType();
+
+    /** Набор кодов инструментов, которые поддерживает обработчик. */
+    Set<String> supportedInstrumentCodes();
 
     /** Прикрепить обработчик к заданному провайдеру. */
     void attachTo(P provider);

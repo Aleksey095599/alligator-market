@@ -13,8 +13,8 @@ public final class InstrumentNotSupportedException extends RuntimeException {
     /**
      * Формирует сообщение об ошибке.
      *
-     * @param instrumentCode код инструмента
-     * @param handlerCode код обработчика
+     * @param instrumentCode код инструмента, который не поддерживается
+     * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      * @return текст сообщения
      */
     private static String msg(String instrumentCode, String handlerCode) {
@@ -26,8 +26,8 @@ public final class InstrumentNotSupportedException extends RuntimeException {
     /**
      * Создает исключение.
      *
-     * @param instrumentCode код инструмента
-     * @param handlerCode код обработчика
+     * @param instrumentCode код инструмента, который не поддерживается
+     * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      */
     @SuppressWarnings("unused")
     public InstrumentNotSupportedException(String instrumentCode, String handlerCode) {
@@ -39,8 +39,8 @@ public final class InstrumentNotSupportedException extends RuntimeException {
     /**
      * Создает исключение с причиной.
      *
-     * @param instrumentCode код инструмента
-     * @param handlerCode код обработчика
+     * @param instrumentCode код инструмента, который не поддерживается
+     * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      * @param cause причина ошибки
      */
     @SuppressWarnings("unused")

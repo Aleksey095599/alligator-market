@@ -28,10 +28,10 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     @SuppressWarnings( "unused")
     ProviderSettings settings(); // Точка роста, без реализации (заглушка)
 
-    /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
+    /** Иммутабельный набор кодов поддерживаемых инструментов. */
     Set<String> instrumentsCodes();
 
-    /** Иммутабельный набор типов поддерживаемых провайдером инструментов. */
+    /** Иммутабельный набор типов поддерживаемых инструментов. */
     Set<InstrumentType> instrumentsTypes();
 
     /** Унифицированная операция получения котировок для любого поддерживаемого инструмента. */

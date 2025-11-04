@@ -1,12 +1,14 @@
 package com.alligator.market.domain.provider.contract.handler;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,62 +19,46 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         implements InstrumentHandler<P, I> {
 
     /* ↓↓ Базовые атрибуты обработчика. */
-    private final String handlerCode;
+    private final String nHandlerCode;
     private final Class<I> instrumentClass;
-    private final Set<I> supportedInstruments;
+    private final InstrumentType instrumentType;
+    private final Set<String> nSupportedInstrumentCodes;
 
     /* Ссылка на провайдера (volatile гарантирует видимость присвоения между потоками). */
     private volatile P provider;
 
     /** Конструктор. */
-    protected AbstractInstrumentHandler(String handlerCode, Class<I> instrumentClass, Set<I> supportedInstruments) {
-        // 1) Проверки handlerCode
-        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        if (this.handlerCode.isBlank()) {
+    protected AbstractInstrumentHandler(
+            String handlerCode,
+            Class<I> instrumentClass,
+            InstrumentType instrumentType,
+            Set<String> supportedInstrumentCodes
+    ) {
+        Objects.requireNonNull(handlerCode,"handlerCode must not be null");
+        Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
+        Objects.requireNonNull(instrumentType, "instrumentType must not be null");
+        Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
+
+        if (handlerCode.isBlank()) {
             throw new IllegalArgumentException("handlerCode must not be blank");
         }
-
-        // 2) Проверки instrumentClass
-        this.instrumentClass = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
-
-        // 3) Проверки supportedInstruments
-        Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null");
-        if (supportedInstruments.isEmpty()) {
-            throw new IllegalArgumentException("supportedInstruments must not be empty");
+        if (supportedInstrumentCodes.isEmpty()) {
+            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
         }
-        // ↓↓ Все инструменты относятся к классу instrumentClass
-        for (I instrument : supportedInstruments) { // Перебираем инструменты
-            Objects.requireNonNull(instrument, "supportedInstruments must not contain null");
-            if (instrument.getClass() != instrumentClass) {
-                throw new IllegalStateException("All elements of supportedInstruments must be instances of "
-                        + instrumentClass.getSimpleName());
-            }
-        }
-        this.supportedInstruments = Set.copyOf(supportedInstruments);
+
+        this.nHandlerCode = normalizeCode(handlerCode);
+        this.instrumentClass = instrumentClass;
+        this.instrumentType = instrumentType;
+        this.nSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
     }
 
-    /** Уникальный код обработчика (для логов/метрик). */
-    @Override
-    public final String handlerCode() {
-        return handlerCode;
-    }
+    @Override public final String handlerCode() { return nHandlerCode; }
+    @Override public Class<I> instrumentClass() { return instrumentClass; }
+    @Override public final InstrumentType instrumentType() { return instrumentType; }
+    @Override public final Set<String> supportedInstrumentCodes() { return nSupportedInstrumentCodes; }
 
-    /** Декларируем класс поддерживаемых инструментов. */
-    @Override
-    public Class<I> instrumentClass() {
-        return instrumentClass;
-    }
-
-    /** Набор инструментов, которые поддерживает обработчик. */
-    @Override
-    public Set<I> supportedInstruments() {
-        return supportedInstruments;
-    }
-
-    /** Прикрепить обработчик к заданному провайдеру. */
     @Override
     public final void attachTo(P provider) {
-        // Запрещаем повторное прикрепление обработчика
         if (this.provider != null) {
             throw new IllegalStateException("Provider is already attached");
         }
@@ -87,24 +73,23 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+
         P currentProvider = provider;
         if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
-        Objects.requireNonNull(instrument, "instrument must not be null");
         if (instrument.getClass() != instrumentClass) {
-            throw new InstrumentWrongClassException(
+            throw new InstrumentWrongClassException( // Инструмент не соответствует требуемому классу
                     instrument.instrumentCode(),
                     instrument.getClass(),
-                    handlerCode,
+                    nHandlerCode,
                     instrumentClass
             );
         }
-        if (!supportedInstruments.contains(instrument)) {
-            throw new InstrumentNotSupportedException(
-                    instrument.instrumentCode(),
-                    handlerCode
-            );
+        var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+        if (!nSupportedInstrumentCodes.contains(codeUpper)) {
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), nHandlerCode);
         }
         return doQuote(instrument);
     }
@@ -112,12 +97,29 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /** Реализация получения котировки. */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
-    /** Полезный геттер для наследников. */
-    protected final P provider() {
-        P currentProvider = provider;
-        if (currentProvider == null) {
-            throw new IllegalStateException("Provider is not attached");
+
+
+    //=================================================================================================================
+    //                                          Вспомогательные методы
+    //=================================================================================================================
+
+    /** Получаем набор нормализованных кодов инструментов (trim + upper case). */
+    private static LinkedHashSet<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
+        var codes = new LinkedHashSet<String>();
+        for (String code : supportedInstrumentCodes) {
+            if (code == null || code.isBlank()) {
+                throw new IllegalStateException("supportedInstrumentCodes must not contain null/blank");
+            }
+            var upper = code.trim().toUpperCase(java.util.Locale.ROOT);
+            if (!codes.add(upper)) {
+                throw new IllegalStateException("Duplicate instrumentCode '" + upper + "' in supportedInstrumentCodes");
+            }
         }
-        return currentProvider;
+        return codes;
+    }
+
+    /** Нормализовать код: trim + upper case. */
+    private static String normalizeCode(String code) {
+        return code.trim().toUpperCase(java.util.Locale.ROOT);
     }
 }
