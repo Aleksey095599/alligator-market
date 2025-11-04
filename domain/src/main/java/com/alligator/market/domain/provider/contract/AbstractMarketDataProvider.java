@@ -107,11 +107,21 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                                     + "' for handler '" + h.handlerCode() + "'"
                     );
                 }
-                // ↓↓ Обеспечиваем уникальность ключей (инструментов) в карте при сборке
+                // ↓↓ Собираем карту "инструмент → обработчик"
                 var prev = map.putIfAbsent(ins, h);
                 if (prev != null) {
+                    // Запрещаем связывать один и тот же инструмент с разными обработчиками
                     throw new IllegalStateException("Instrument '" + ins.instrumentCode() +
                             "' is already bound to handler '" + prev.handlerCode() +
+                            "' in provider '" + providerCode + "'");
+                }
+                // ↓↓ Собираем карту "код инструмента → обработчик"
+                var codeUpper = ins.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+                var prevByCode = mapByCode.putIfAbsent(codeUpper, h);
+                if (prevByCode != null && prevByCode != h) {
+                    // Запрещаем связывать один и тот же код с разными обработчиками
+                    throw new IllegalStateException("Instrument code '" + codeUpper +
+                            "' is already bound to handler '" + prevByCode.handlerCode() +
                             "' in provider '" + providerCode + "'");
                 }
             }
@@ -127,6 +137,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // 4) Фиксируем структуру неизменяемых коллекций
         this.instrumentMap = java.util.Collections.unmodifiableMap(map);
+        this.instrumentMapByCode = java.util.Collections.unmodifiableMap(mapByCode);
         this.instrumentCodes = java.util.Collections.unmodifiableSet(instrumentCodes);
         this.instrumentTypes = java.util.Collections.unmodifiableSet(instrumentTypes);
 
