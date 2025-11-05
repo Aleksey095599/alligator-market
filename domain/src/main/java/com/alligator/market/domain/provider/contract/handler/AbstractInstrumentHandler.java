@@ -21,12 +21,16 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     /* Нормализованный (UPPERCASE) код обработчика, формат [A-Z0-9_]+. */
     private final String normHandlerCode;
+
     /* Декларируемый класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
+
     /* Декларируемый тип поддерживаемых инструментов. */
     private final InstrumentType instrumentType;
+
     /* Нормализованные (UPPERCASE) и неизменяемые коды поддерживаемых инструментов. */
     private final Set<String> normSupportedInstrumentCodes;
+
     /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
 
@@ -100,7 +104,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * @throws IllegalStateException           если провайдер не прикреплён
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
      * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws IllegalArgumentException        если instrumentCode пустой
+     * @throws IllegalArgumentException        если instrumentCode null или пустой
      * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
@@ -179,7 +183,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
      *
-     * @throws IllegalArgumentException если код пустой/неверного формата
+     * @throws IllegalArgumentException если код не соответствует формату
      */
     private static String normalizeHandlerCode(String code) {
         // Нормализуем код обработчика
