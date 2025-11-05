@@ -90,7 +90,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
         P currentProvider = provider;
         if (currentProvider == null) {
-            throw new IllegalStateException("There is null link to provider");
+            throw new IllegalStateException("Provider is not attached");
         }
 
         // ↓↓ Проверки инструмента
@@ -110,7 +110,12 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
                     instrumentType
             );
         }
-        var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+        // Безопасно читаем и нормализуем код из объекта instrument
+        var rawCode = instrument.instrumentCode();
+        if (rawCode == null || rawCode.isBlank()) {
+            throw new IllegalArgumentException("instrumentCode must not be blank");
+        }
+        var codeUpper = rawCode.trim().toUpperCase(java.util.Locale.ROOT);
         if (!nSupportedInstrumentCodes.contains(codeUpper)) {
             throw new InstrumentNotSupportedException(instrument.instrumentCode(), nHandlerCode); // Не поддерживается
         }
@@ -126,8 +131,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //                                          Вспомогательные методы
     //=================================================================================================================
 
-    /** Получаем набор нормализованных кодов инструментов (trim + upper case). */
-    private static LinkedHashSet<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
+    /** Получаем неизменяемый набор нормализованных кодов (trim + upper case). */
+    private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
         var codes = new LinkedHashSet<String>();
         for (String code : supportedInstrumentCodes) {
             if (code == null || code.isBlank()) {
@@ -138,7 +143,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
                 throw new IllegalStateException("Duplicate instrumentCode '" + upper + "' in supportedInstrumentCodes");
             }
         }
-        return codes;
+        return java.util.Collections.unmodifiableSet(codes); // Фиксируем неизменяемость
     }
 
     /** Нормализовать код: trim + upper case. */
