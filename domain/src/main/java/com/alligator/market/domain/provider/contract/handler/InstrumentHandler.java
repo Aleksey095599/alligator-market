@@ -16,13 +16,13 @@ import java.util.Set;
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {
 
-    /** Уникальный код обработчика (для логов/метрик). */
+    /** Уникальный код обработчика (UPPERCASE). */
     String handlerCode();
 
     /** Декларируем класс поддерживаемых инструментов. */
     Class<I> instrumentClass();
 
-    /** Тип поддерживаемых инструментов. */
+    /** Тип поддерживаемых инструментов {@link InstrumentType}. */
     InstrumentType instrumentType();
 
     /** Набор кодов инструментов, которые поддерживает обработчик (UPPERCASE, неизменяемый). */

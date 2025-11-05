@@ -19,18 +19,18 @@ import java.util.Set;
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* ↓↓ Базовые атрибуты обработчика. */
+    /* Нормализованный UPPERCASE код обработчика. */
     private final String nHandlerCode;
+    /* Класс инструмента. */
     private final Class<I> instrumentClass;
+    /* Тип инструмента. */
     private final InstrumentType instrumentType;
-
     /* Нормализованные (UPPERCASE) и неизменяемые коды поддерживаемых инструментов. */
     private final Set<String> nSupportedInstrumentCodes;
-
     /* Ссылка на провайдера (volatile гарантирует видимость присвоения между потоками). */
     private volatile P provider;
 
-    /** Конструктор. */
+    /** Конструктор с проверками и нормализацией кода обработчика и кодов поддерживаемых инструментов. */
     protected AbstractInstrumentHandler(
             String handlerCode,
             Class<I> instrumentClass,
@@ -95,7 +95,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
         // ↓↓ Проверки инструмента
         if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException(
+            throw new InstrumentWrongClassException( // Неверный класс
                     instrument.instrumentCode(),
                     instrument.getClass(),
                     nHandlerCode,
@@ -103,7 +103,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             );
         }
         if (instrument.instrumentType() != instrumentType) {
-            throw new InstrumentWrongTypeException(
+            throw new InstrumentWrongTypeException( // Неверный тип
                     instrument.instrumentCode(),
                     instrument.instrumentType(),
                     nHandlerCode,
@@ -112,7 +112,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         }
         var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
         if (!nSupportedInstrumentCodes.contains(codeUpper)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), nHandlerCode);
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), nHandlerCode); // Не поддерживается
         }
         return doQuote(instrument);
     }
