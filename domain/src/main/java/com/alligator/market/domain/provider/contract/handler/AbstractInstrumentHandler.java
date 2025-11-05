@@ -14,23 +14,33 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Абстрактный каркас обработчика инструмента.
+ * Абстрактный каркас для обработчика инструмента.
  */
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* Нормализованный UPPERCASE код обработчика. */
-    private final String nHandlerCode;
-    /* Класс инструмента. */
+    /* Нормализованный (UPPERCASE) код обработчика, формат [A-Z0-9_]+. */
+    private final String normHandlerCode;
+    /* Декларируемый класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
-    /* Тип инструмента. */
+    /* Декларируемый тип поддерживаемых инструментов. */
     private final InstrumentType instrumentType;
     /* Нормализованные (UPPERCASE) и неизменяемые коды поддерживаемых инструментов. */
-    private final Set<String> nSupportedInstrumentCodes;
-    /* Ссылка на провайдера (volatile гарантирует видимость присвоения между потоками). */
+    private final Set<String> normSupportedInstrumentCodes;
+    /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
 
-    /** Конструктор с проверками и нормализацией кода обработчика и кодов поддерживаемых инструментов. */
+
+    /**
+     * Конструктор с проверками инвариантов.
+     *
+     * @param handlerCode               код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
+     * @param instrumentClass           класс поддерживаемых инструментов
+     * @param instrumentType            тип поддерживаемых инструментов
+     * @param supportedInstrumentCodes  набор кодов инструментов; нормализуются в UPPERCASE; формат [A-Z0-9_]+; без дублей
+     * @throws NullPointerException     если любой параметр равен null
+     * @throws IllegalArgumentException если код пустой/с пробелами/не соответствует формату; набор пуст; содержит null/blank/дубликаты
+     */
     protected AbstractInstrumentHandler(
             String handlerCode,
             Class<I> instrumentClass,
@@ -49,25 +59,30 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
         }
 
-        this.nHandlerCode = normalizeCode(handlerCode);
+        this.normHandlerCode = normalizeHandlerCode(handlerCode);
         this.instrumentClass = instrumentClass;
         this.instrumentType = instrumentType;
-        this.nSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
+        this.normSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
     }
 
-    /** Уникальный код обработчика (для логов/метрик). */
-    @Override public final String handlerCode() { return nHandlerCode; }
+    /** Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
+    @Override public final String handlerCode() { return normHandlerCode; }
 
     /** Декларируем класс поддерживаемых инструментов. */
     @Override public Class<I> instrumentClass() { return instrumentClass; }
 
-    /** Тип поддерживаемых инструментов. */
+    /** Декларируемый тип поддерживаемых инструментов. */
     @Override public final InstrumentType instrumentType() { return instrumentType; }
 
-    /** Набор кодов инструментов, которые поддерживает обработчик (UPPERCASE, неизменяемый). */
-    @Override public final Set<String> supportedInstrumentCodes() { return nSupportedInstrumentCodes; }
+    /** Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+. */
+    @Override public final Set<String> supportedInstrumentCodes() { return normSupportedInstrumentCodes; }
 
-    /** Прикрепить обработчик к заданному провайдеру. */
+    /**
+     * Однократное прикрепление обработчика к провайдеру.
+     *
+     * @throws IllegalStateException если провайдер уже прикреплён
+     * @throws NullPointerException  если provider == null
+     */
     @Override
     public final void attachTo(P provider) {
         if (this.provider != null) {
@@ -79,10 +94,14 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Котировка заданного инструмента.
      *
-     * @throws IllegalStateException           если нет ссылки на провайдера
-     * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@code instrumentClass}
-     * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@code instrumentType}
-     * @throws InstrumentNotSupportedException если инструмент не содержится в наборе {@code nSupportedInstrumentCodes}
+     * @param instrument инструмент, для которого требуется котировка
+     * @return поток котировок
+     * @throws NullPointerException            если instrument == null
+     * @throws IllegalStateException           если провайдер не прикреплён
+     * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
+     * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
+     * @throws IllegalArgumentException        если instrumentCode пустой
+     * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
@@ -93,12 +112,12 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new IllegalStateException("Provider is not attached");
         }
 
-        // ↓↓ Проверки инструмента
+        // ↓↓ Проверки инструмента и его кода
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException( // Неверный класс
                     instrument.instrumentCode(),
                     instrument.getClass(),
-                    nHandlerCode,
+                    normHandlerCode,
                     instrumentClass
             );
         }
@@ -106,48 +125,71 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new InstrumentWrongTypeException( // Неверный тип
                     instrument.instrumentCode(),
                     instrument.instrumentType(),
-                    nHandlerCode,
+                    normHandlerCode,
                     instrumentType
             );
         }
-        // Безопасно читаем и нормализуем код из объекта instrument
         var rawCode = instrument.instrumentCode();
         if (rawCode == null || rawCode.isBlank()) {
-            throw new IllegalArgumentException("instrumentCode must not be blank");
+            throw new IllegalArgumentException("instrumentCode must not be null or blank"); // null или пустой код
         }
-        var codeUpper = rawCode.trim().toUpperCase(java.util.Locale.ROOT);
-        if (!nSupportedInstrumentCodes.contains(codeUpper)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), nHandlerCode); // Не поддерживается
+        var normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // Нормализуем код
+        if (!normSupportedInstrumentCodes.contains(normCode)) {
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), normHandlerCode); // Не поддерживается
         }
         return doQuote(instrument);
     }
 
-    /** Реализация получения котировки. */
+    /**
+     * Реальная логика получения котировки для конкретного типа инструмента.
+     * Гарантируется, что все инварианты уже проверены.
+     */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
-
-
     //=================================================================================================================
-    //                                          Вспомогательные методы
+    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
     //=================================================================================================================
 
-    /** Получаем неизменяемый набор нормализованных кодов (trim + upper case). */
+    /**
+     * Нормализует и валидирует набор кодов инструментов: trim → UPPERCASE → проверка формата [A-Z0-9_]+ → проверка на дубли.
+     *
+     * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
+     */
     private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
         var codes = new LinkedHashSet<String>();
         for (String code : supportedInstrumentCodes) {
+            // ↓↓ Набор не должен содержать null или пустые коды инструментов
             if (code == null || code.isBlank()) {
-                throw new IllegalStateException("supportedInstrumentCodes must not contain null/blank");
+                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
             }
-            var upper = code.trim().toUpperCase(java.util.Locale.ROOT);
-            if (!codes.add(upper)) {
-                throw new IllegalStateException("Duplicate instrumentCode '" + upper + "' in supportedInstrumentCodes");
+            var norm = code.trim().toUpperCase(java.util.Locale.ROOT);
+            // Разрешены только латинские заглавные, цифры и подчёркивание
+            if (!norm.chars().allMatch(ch ->
+                    (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+                throw new IllegalArgumentException("Instrument code must match [A-Z0-9_]+: '" + norm + "'");
+            }
+            if (!codes.add(norm)) {
+                // Набор не должен содержать дублирующиеся коды инструментов
+                throw new IllegalArgumentException("Duplicate instrumentCode '" + norm + "' in supportedInstrumentCodes");
             }
         }
         return java.util.Collections.unmodifiableSet(codes); // Фиксируем неизменяемость
     }
 
-    /** Нормализовать код: trim + upper case. */
-    private static String normalizeCode(String code) {
-        return code.trim().toUpperCase(java.util.Locale.ROOT);
+    /**
+     * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     *
+     * @throws IllegalArgumentException если код пустой/неверного формата
+     */
+    private static String normalizeHandlerCode(String code) {
+        // Нормализуем код обработчика
+        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        // Разрешены только латинские заглавные, цифры и подчёркивание
+        if (!normalized.chars().allMatch(ch ->
+                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+            throw new IllegalArgumentException(
+                    "Code must match pattern [A-Z0-9_]+: '" + normalized + "'");
+        }
+        return normalized;
     }
 }
