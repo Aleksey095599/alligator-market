@@ -11,28 +11,24 @@ import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.reactivestreams.Publisher;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Абстрактный каркас провайдера рыночных данных.
+ * Абстрактный каркас для интерфейса провайдера рыночных данных {@link MarketDataProvider}.
  */
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
     /* ↓↓ Базовые атрибуты провайдера. */
-    protected final String providerCode;
+    protected final String normProviderCode;
     protected final ProviderDescriptor descriptor;
     protected final ProviderPolicy policy;
     private final AtomicReference<ProviderSettings> settingsRef;
 
-    /* Карта "инструмент → обработчик". После инициализации становится неизменяемой. */
-    private final Map<Instrument, InstrumentHandler<P, ? extends Instrument>> instrumentMap;
-
-    /* Карта "код инструмента → обработчик". После инициализации становится неизменяемой. */
+    /* Карта "код инструмента (UPPERCASE) → обработчик". После инициализации становится неизменяемой. */
     private final Map<String, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
 
     /* ↓↓ Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
@@ -43,12 +39,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected abstract P self();
 
     /**
-     * Конструктор.
+     * Конструктор с проверками инвариантов.
      *
-     * @throws NullPointerException     если переданы null-дескриптор или набор обработчиков
-     * @throws IllegalArgumentException если набор обработчиков пуст
-     * @throws IllegalStateException    если обнаружены дубликаты обработчиков или инструментов,
-     *                                  если инструмент не соответствует декларируемому в обработчике классу
+     * @param providerCode код провайдера (UPPERCASE, формат [A-Z0-9_]+)
+     * @param descriptor   дескриптор провайдера
+     * @param policy       политика провайдера
+     * @param settings     настройки провайдера
+     * @throws NullPointerException     если переданы null-аргументы
+     * @throws IllegalArgumentException если передан blank код провайдера или пустой набор обработчиков
+     * @throws IllegalStateException    если обнаружены дубликаты обработчиков по коду или пересечения кодов инструментов
      */
     protected AbstractMarketDataProvider(
             String providerCode,
@@ -57,27 +56,21 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
-        // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(providerCode,"providerCode must not be null");
         Objects.requireNonNull(descriptor,"descriptor must not be null");
         Objects.requireNonNull(policy,"policy must not be null");
         Objects.requireNonNull(settings,"settings must not be null");
         Objects.requireNonNull(handlers,"handlers must not be null");
+
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
-        }
-        if (providerCode.chars().anyMatch(Character::isWhitespace)) {
-            throw new IllegalArgumentException("providerCode must not contain whitespaces");
-        }
-        if (!providerCode.equals(providerCode.toUpperCase(Locale.ROOT))) {
-            throw new IllegalArgumentException("providerCode must be upper case");
         }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
         // ↓↓ Инициализация базовых атрибутов провайдера
-        this.providerCode = providerCode.trim();
+        this.normProviderCode = normalizeProviderCode(providerCode);
         this.descriptor   = descriptor;
         this.policy       = policy;
         this.settingsRef  = new AtomicReference<>(settings);
@@ -92,65 +85,35 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             }
         }
 
-        // 2) Собираем карты "инструмент → обработчик" и "код инструмента → обработчик"
-        var map = new java.util.LinkedHashMap<Instrument, InstrumentHandler<P, ? extends Instrument>>();
-        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>();
+        // 2) Собираем карту "код инструмента → обработчик" и агрегируем наборы кодов/типов
+        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>(); // Карта
+        var allCodes  = new java.util.LinkedHashSet<String>(); // Набор всех кодов инструментов
+        var types     = java.util.EnumSet.noneOf(InstrumentType.class); // Набор всех типов инструментов
 
         for (var h : handlers) {
-            var supported = h.supportedInstruments();
-            for (Instrument ins : supported) {
-                // ↓↓ Дополнительно проверяем, что каждый инструмент соответствует декларируемому в обработчике классу
-                if (!h.instrumentClass().isInstance(ins)) {
-                    throw new IllegalStateException(
-                            "Instrument '" + ins.instrumentCode() +
-                                    "' must match '" + h.instrumentClass().getSimpleName()
-                                    + "' for handler '" + h.handlerCode() + "'"
-                    );
-                }
-                // ↓↓ Собираем карту "инструмент → обработчик"
-                var prev = map.putIfAbsent(ins, h);
-                if (prev != null) {
-                    // Запрещаем связывать один и тот же инструмент с разными обработчиками
-                    throw new IllegalStateException("Instrument '" + ins.instrumentCode() +
+            types.add(h.instrumentType()); // один тип на обработчик
+            for (String code : h.supportedInstrumentCodes()) {
+                // Коды в обработчике уже нормализованы, но повторно нормализуем для надёжности
+                var upper = code.toUpperCase(java.util.Locale.ROOT);
+                var prev = mapByCode.putIfAbsent(upper, h);
+                if (prev != null && prev != h) {
+                    // Запрещаем связывать один и тот же код с разными обработчиками
+                    throw new IllegalStateException("Instrument code '" + upper +
                             "' is already bound to handler '" + prev.handlerCode() +
                             "' in provider '" + providerCode + "'");
                 }
-                // ↓↓ Собираем карту "код инструмента → обработчик"
-                var codeUpper = ins.instrumentCode().toUpperCase(java.util.Locale.ROOT);
-                var prevByCode = mapByCode.putIfAbsent(codeUpper, h);
-                if (prevByCode != null && prevByCode != h) {
-                    // Запрещаем связывать один и тот же код с разными обработчиками
-                    throw new IllegalStateException("Instrument code '" + codeUpper +
-                            "' is already bound to handler '" + prevByCode.handlerCode() +
-                            "' in provider '" + providerCode + "'");
-                }
+                allCodes.add(upper);
             }
         }
 
-        // 3) Извлекаем набор кодов и типов инструментов из карты
-        var instrumentCodes = new java.util.LinkedHashSet<String>();
-        var instrumentTypes = java.util.EnumSet.noneOf(InstrumentType.class);
-        for (Instrument instrument : map.keySet()) {
-            instrumentCodes.add(instrument.instrumentCode());
-            instrumentTypes.add(instrument.instrumentType());
-        }
-
-        // 4) Фиксируем структуру неизменяемых коллекций
-        this.instrumentMap = java.util.Collections.unmodifiableMap(map);
+        // 3) Фиксируем структуру неизменяемых коллекций
         this.instrumentMapByCode = java.util.Collections.unmodifiableMap(mapByCode);
-        this.instrumentCodes = java.util.Collections.unmodifiableSet(instrumentCodes);
-        this.instrumentTypes = java.util.Collections.unmodifiableSet(instrumentTypes);
+        this.instrumentCodes     = java.util.Collections.unmodifiableSet(allCodes);
+        this.instrumentTypes     = java.util.Collections.unmodifiableSet(types);
 
-        // 5) Извлекаем набор неповторяющихся обработчиков из фиксированной карты
-        var handlersFromMap = new java.util.LinkedHashSet<>(map.values());
-
-        // (!) Мы умышленно сперва "разложили" переданный в конструктор набор обработчиков по инструментам,
-        // создали и зафиксировали карту, а уже затем из зафиксированной карты собрали обратно набор обработчиков.
-        // Это гарантирует безопасную инициализацию: обработчики получают ссылку на провайдера только после того,
-        // как все инварианты проверены и структура реестра окончательно зафиксирована.
-
-        // 6) Перебираем обработчики и прикрепляем их к провайдеру
-        for (var h : handlersFromMap) {
+        // 4) Прикрепляем обработчики к провайдеру
+        var uniqueHandlers = new java.util.LinkedHashSet<>(handlers);
+        for (var h : uniqueHandlers) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
     }
@@ -158,7 +121,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /** Технический код провайдера. */
     @Override
     public String providerCode() {
-        return providerCode;
+        return normProviderCode;
     }
 
     /** Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
@@ -191,23 +154,30 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
+     * Шаблонная реализация котировки: находит обработчик по коду инструмента и делегирует вызов.
      *
-     * @throws NullPointerException     если передан null-инструмент
-     * @throws HandlerNotFoundException если обработчик для инструмента не зарегистрирован
+     * @param instrument инструмент, для которого требуется котировка
+     * @return поток котировок
+     * @throws NullPointerException     если {@code instrument} равен {@code null}
+     * @throws HandlerNotFoundException если обработчик для кода инструмента не зарегистрирован у провайдера
      */
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
+
         var handler = handlerOf(instrument);
         if (handler == null) {
-            throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
+            throw new HandlerNotFoundException(instrument.instrumentCode(), normProviderCode);
         }
         return handler.quote(instrument);
     }
 
     /**
-     * Атомарно применяет новые настройки. Только для наследников, переопределять нельзя.
+     * Атомарно заменяет настройки провайдера.
+     * <p>Метод защищённый и финальный, предназначен для использования наследниками.</p>
+     *
+     * @param newSettings новые настройки
+     * @throws NullPointerException если {@code newSettings} равен {@code null}
      */
     @SuppressWarnings("unused")
     protected final void replaceSettings(ProviderSettings newSettings) {
@@ -215,9 +185,38 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         settingsRef.set(newSettings);
     }
 
-    /** Мост типов для извлечения обработчика под конкретный инструмент. */
+    /**
+     * Возвращает обработчик по коду инструмента (код нормализуется в UPPERCASE) или {@code null},
+     * если код отсутствует/пустой или не зарегистрирован.
+     */
     @SuppressWarnings("unchecked")
     private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
-        return (InstrumentHandler<P, I>) instrumentMap.get(instrument);
+        var raw = instrument.instrumentCode();
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+        InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(codeUpper);
+        return (InstrumentHandler<P, I>) h;
+    }
+
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+    /**
+     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     *
+     * @throws IllegalArgumentException если код провайдера не соответствует формату
+     */
+    private static String normalizeProviderCode(String code) {
+        // Нормализуем код провайдера
+        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        // Разрешены только латинские заглавные, цифры и подчёркивание
+        if (!normalized.chars().allMatch(ch ->
+                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+            throw new IllegalArgumentException(
+                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
+        }
+        return normalized;
     }
 }

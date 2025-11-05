@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Абстрактный каркас для обработчика инструмента.
+ * Абстрактный каркас для интерфейса обработчика инструмента {@link InstrumentHandler}.
  */
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
@@ -189,7 +189,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
      *
-     * @throws IllegalArgumentException если код не соответствует формату
+     * @throws IllegalArgumentException если код обработчика не соответствует формату
      */
     private static String normalizeHandlerCode(String code) {
         // Нормализуем код обработчика
@@ -198,7 +198,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         if (!normalized.chars().allMatch(ch ->
                 (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
             throw new IllegalArgumentException(
-                    "Code must match pattern [A-Z0-9_]+: '" + normalized + "'");
+                    "handlerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
         }
         return normalized;
     }
