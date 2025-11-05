@@ -111,12 +111,13 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
+        // ↓↓ Проверяем, что провайдер прикреплен к данному обработчику
         P currentProvider = provider;
         if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
 
-        // ↓↓ Проверки инструмента и его кода
+        // ↓↓ Проверяем, что класс инструмента соответствует ожиданиям обработчика
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException( // Неверный класс
                     instrument.instrumentCode(),
@@ -125,6 +126,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
                     instrumentClass
             );
         }
+
+        // ↓↓ Проверяем, что тип инструмента соответствует ожиданиям обработчика
         if (instrument.instrumentType() != instrumentType) {
             throw new InstrumentWrongTypeException( // Неверный тип
                     instrument.instrumentCode(),
@@ -133,20 +136,23 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
                     instrumentType
             );
         }
+
+        // Проверяем, что код инструмента поддерживается обработчиком
         var rawCode = instrument.instrumentCode();
         if (rawCode == null || rawCode.isBlank()) {
-            throw new IllegalArgumentException("instrumentCode must not be null or blank"); // null или пустой код
+            throw new IllegalArgumentException("instrumentCode must not be null or blank");
         }
         var normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // Нормализуем код
         if (!normSupportedInstrumentCodes.contains(normCode)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), normHandlerCode); // Не поддерживается
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), normHandlerCode);
         }
         return doQuote(instrument);
     }
 
     /**
-     * Реальная логика получения котировки для конкретного типа инструмента.
-     * Гарантируется, что все инварианты уже проверены.
+     * Чистая логика получения котировки для переданного инструмента.
+     * Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
+     * в котором выполнены все нужные проверки.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
