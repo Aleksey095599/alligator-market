@@ -18,7 +18,7 @@ public final class AuditContextHolder {
     public static final String FALLBACK_ACTOR = "fallback_actor";
 
     /* Фолбэк для via при отсутствующем/пустом контексте. */
-    public static final String FALLBACK_VIA   = "fallback_via";
+    public static final String FALLBACK_VIA = "fallback_via";
 
     /* Предсозданный фолбэк‑контекст (record иммутабелен). */
     private static final AuditContext FALLBACK_CTX =
@@ -27,7 +27,9 @@ public final class AuditContextHolder {
     /* Переменная на поток для хранения текущего {@link AuditContext}. */
     private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
 
-    /** Устанавливает контекст для текущего потока. */
+    /**
+     * Устанавливает контекст для текущего потока.
+     */
     public static void set(@NonNull AuditContext ctx) {
         CTX.set(ctx);
     }
@@ -57,14 +59,26 @@ public final class AuditContextHolder {
         }
     }
 
-    /** Возвращает текущего актора или фолбэк. */
-    public static String actorOrFallback() { return currentOrFallback().actorId(); }
+    /**
+     * Возвращает текущего актора или фолбэк.
+     */
+    public static String actorOrFallback() {
+        return currentOrFallback().actorId();
+    }
 
-    /** Возвращает текущее via или фолбэк. */
-    public static String viaOrFallback() { return currentOrFallback().via(); }
+    /**
+     * Возвращает текущее via или фолбэк.
+     */
+    public static String viaOrFallback() {
+        return currentOrFallback().via();
+    }
 
-    /** Очищает контекст текущего потока. */
-    public static void clear() { CTX.remove(); }
+    /**
+     * Очищает контекст текущего потока.
+     */
+    public static void clear() {
+        CTX.remove();
+    }
 
     /**
      * Выполняет функцию в заданном {@link AuditContext} и возвращает её результат.
@@ -77,8 +91,13 @@ public final class AuditContextHolder {
      */
     public static <T> T runWith(AuditContext ctx, java.util.function.Supplier<T> action) {
         var prev = CTX.get();
-        try { set(ctx); return action.get(); }
-        finally { if (prev != null) CTX.set(prev); else clear(); }
+        try {
+            set(ctx);
+            return action.get();
+        } finally {
+            if (prev != null) CTX.set(prev);
+            else clear();
+        }
     }
 
     /**
@@ -90,7 +109,12 @@ public final class AuditContextHolder {
      */
     public static void runWith(AuditContext ctx, Runnable action) {
         var prev = CTX.get();
-        try { set(ctx); action.run(); }
-        finally { if (prev != null) CTX.set(prev); else clear(); }
+        try {
+            set(ctx);
+            action.run();
+        } finally {
+            if (prev != null) CTX.set(prev);
+            else clear();
+        }
     }
 }
