@@ -16,21 +16,33 @@ import java.util.Set;
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {
 
-    /** Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
+    /**
+     * Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+.
+     */
     String handlerCode();
 
-    /** Декларируем класс поддерживаемых инструментов. */
+    /**
+     * Декларируем класс поддерживаемых инструментов.
+     */
     Class<I> instrumentClass();
 
-    /** Декларируемый тип поддерживаемых инструментов. */
+    /**
+     * Декларируемый тип поддерживаемых инструментов.
+     */
     InstrumentType instrumentType();
 
-    /** Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+. */
+    /**
+     * Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+.
+     */
     Set<String> supportedInstrumentCodes();
 
-    /** Однократное прикрепление обработчика к провайдеру. */
+    /**
+     * Однократное прикрепление обработчика к провайдеру.
+     */
     void attachTo(P provider);
 
-    /** Котировка заданного инструмента. */
+    /**
+     * Котировка заданного инструмента.
+     */
     Publisher<QuoteTick> quote(I instrument);
 }

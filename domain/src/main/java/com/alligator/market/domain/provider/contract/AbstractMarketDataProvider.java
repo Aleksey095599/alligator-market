@@ -35,9 +35,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     private final Set<String> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
 
-    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
-    protected abstract P self();
-
     /**
      * Конструктор с проверками инвариантов.
      *
@@ -56,11 +53,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
-        Objects.requireNonNull(providerCode,"providerCode must not be null");
-        Objects.requireNonNull(descriptor,"descriptor must not be null");
-        Objects.requireNonNull(policy,"policy must not be null");
-        Objects.requireNonNull(settings,"settings must not be null");
-        Objects.requireNonNull(handlers,"handlers must not be null");
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(descriptor, "descriptor must not be null");
+        Objects.requireNonNull(policy, "policy must not be null");
+        Objects.requireNonNull(settings, "settings must not be null");
+        Objects.requireNonNull(handlers, "handlers must not be null");
 
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
@@ -71,9 +68,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // ↓↓ Инициализация базовых атрибутов провайдера
         this.normProviderCode = normalizeProviderCode(providerCode);
-        this.descriptor   = descriptor;
-        this.policy       = policy;
-        this.settingsRef  = new AtomicReference<>(settings);
+        this.descriptor = descriptor;
+        this.policy = policy;
+        this.settingsRef = new AtomicReference<>(settings);
 
         // 1) Проверяем уникальность handlers по коду
         var handlerCodes = new java.util.HashSet<String>();
@@ -87,8 +84,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // 2) Собираем карту "код инструмента → обработчик" и агрегируем наборы кодов/типов
         var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>(); // Карта
-        var allCodes  = new java.util.LinkedHashSet<String>(); // Набор всех кодов инструментов
-        var types     = java.util.EnumSet.noneOf(InstrumentType.class); // Набор всех типов инструментов
+        var allCodes = new java.util.LinkedHashSet<String>(); // Набор всех кодов инструментов
+        var types = java.util.EnumSet.noneOf(InstrumentType.class); // Набор всех типов инструментов
 
         for (var h : handlers) {
             types.add(h.instrumentType()); // один тип на обработчик
@@ -108,8 +105,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // 3) Фиксируем структуру неизменяемых коллекций
         this.instrumentMapByCode = java.util.Collections.unmodifiableMap(mapByCode);
-        this.instrumentCodes     = java.util.Collections.unmodifiableSet(allCodes);
-        this.instrumentTypes     = java.util.Collections.unmodifiableSet(types);
+        this.instrumentCodes = java.util.Collections.unmodifiableSet(allCodes);
+        this.instrumentTypes = java.util.Collections.unmodifiableSet(types);
 
         // 4) Прикрепляем обработчики к провайдеру
         var uniqueHandlers = new java.util.LinkedHashSet<>(handlers);
@@ -118,36 +115,68 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
     }
 
-    /** Технический код провайдера. */
+    /**
+     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     *
+     * @throws IllegalArgumentException если код провайдера не соответствует формату
+     */
+    private static String normalizeProviderCode(String code) {
+        // Нормализуем код провайдера
+        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        // Разрешены только латинские заглавные, цифры и подчёркивание
+        if (!normalized.chars().allMatch(ch ->
+                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+            throw new IllegalArgumentException(
+                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
+        }
+        return normalized;
+    }
+
+    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
+    protected abstract P self();
+
+    /**
+     * Технический код провайдера.
+     */
     @Override
     public String providerCode() {
         return normProviderCode;
     }
 
-    /** Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
+    /**
+     * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
+     */
     @Override
     public ProviderDescriptor descriptor() {
         return descriptor;
     }
 
-    /** "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
+    /**
+     * "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика.
+     */
     public ProviderPolicy policy() {
         return policy;
     }
 
-    /** Настройки провайдера: параметры, которые разрешено менять из frontend. */
+    /**
+     * Настройки провайдера: параметры, которые разрешено менять из frontend.
+     */
     @Override
     public ProviderSettings settings() {
         return settingsRef.get();
     }
 
-    /** Иммутабельный набор кодов поддерживаемых провайдером инструментов. */
+    /**
+     * Иммутабельный набор кодов поддерживаемых провайдером инструментов.
+     */
     @Override
     public Set<String> instrumentsCodes() {
         return instrumentCodes;
     }
 
-    /** Иммутабельный набор типов поддерживаемых провайдером инструментов. */
+    /**
+     * Иммутабельный набор типов поддерживаемых провайдером инструментов.
+     */
     @Override
     public Set<InstrumentType> instrumentsTypes() {
         return instrumentTypes;
@@ -185,6 +214,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         settingsRef.set(newSettings);
     }
 
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
     /**
      * Возвращает обработчик по коду инструмента (код нормализуется в UPPERCASE) или {@code null},
      * если код отсутствует/пустой или не зарегистрирован.
@@ -198,25 +231,5 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
         InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(codeUpper);
         return (InstrumentHandler<P, I>) h;
-    }
-
-    //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-    //=================================================================================================================
-    /**
-     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
-     *
-     * @throws IllegalArgumentException если код провайдера не соответствует формату
-     */
-    private static String normalizeProviderCode(String code) {
-        // Нормализуем код провайдера
-        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
-        // Разрешены только латинские заглавные, цифры и подчёркивание
-        if (!normalized.chars().allMatch(ch ->
-                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-            throw new IllegalArgumentException(
-                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
-        }
-        return normalized;
     }
 }
