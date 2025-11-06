@@ -19,7 +19,8 @@ export class DescriptorListComponent implements OnInit {
     'displayName',
     'deliveryMode',
     'accessMethod',
-    'bulkSubscription'
+    'bulkSubscription',
+    'minUpdateIntervalSeconds'
   ];
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<DescriptorDto>([]);

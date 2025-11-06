@@ -11,4 +11,6 @@ export interface DescriptorDto {
   accessMethod: string;
   /* Признак поддержки массовой подписки. */
   bulkSubscription: boolean;
+  /* Минимальный интервал обновления данных в секундах. */
+  minUpdateIntervalSeconds: number;
 }
