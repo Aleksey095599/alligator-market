@@ -14,12 +14,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Абстрактный каркас для интерфейса обработчика инструмента {@link InstrumentHandler}.
+ * Абстрактный каркас контракта обработчика инструмента {@link InstrumentHandler}.
  */
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* Нормализованный (UPPERCASE) код обработчика, формат [A-Z0-9_]+. */
+    /* Нормализованный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
     private final String normHandlerCode;
 
     /* Декларируемый класс поддерживаемых инструментов. */
@@ -28,12 +28,15 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /* Декларируемый тип поддерживаемых инструментов. */
     private final InstrumentType instrumentType;
 
-    /* Нормализованные (UPPERCASE) и неизменяемые коды поддерживаемых инструментов. */
+    /* Нормализованные и неизменяемые коды поддерживаемых инструментов: UPPERCASE, формат [A-Z0-9_]+. */
     private final Set<String> normSupportedInstrumentCodes;
 
     /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
 
+    //=================================================================================================================
+    // КОНСТРУКТОР
+    //=================================================================================================================
 
     /**
      * Конструктор.
@@ -69,6 +72,10 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         this.instrumentType = instrumentType;
         this.normSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
     }
+
+    //=================================================================================================================
+    // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
+    //=================================================================================================================
 
     /**
      * Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+.
@@ -170,12 +177,27 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         return doQuote(instrument);
     }
 
+    //=================================================================================================================
+    // СПЕЦИАЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
     /**
      * Чистая логика получения котировки для переданного инструмента.
      * Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
      * в котором выполнены все нужные проверки.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
+
+    /**
+     * Полезный геттер для наследников: возвращает прикреплённого провайдера.
+     */
+    protected final P provider() {
+        P current = provider;
+        if (current == null) {
+            throw new IllegalStateException("Provider is not attached");
+        }
+        return current;
+    }
 
     //=================================================================================================================
     // ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ

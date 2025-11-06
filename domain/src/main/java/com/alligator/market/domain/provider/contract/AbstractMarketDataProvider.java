@@ -17,12 +17,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Абстрактный каркас для интерфейса провайдера рыночных данных {@link MarketDataProvider}.
+ * Абстрактный каркас контракта провайдера рыночных данных {@link MarketDataProvider}.
  */
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* Нормализованный (UPPERCASE) технический код провайдера, формат [A-Z0-9_]+. */
+    /* Нормализованный технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
     protected final String normProviderCode;
 
     /* Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
@@ -34,12 +34,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
     private final AtomicReference<ProviderSettings> settingsRef;
 
-    /* Карта "код инструмента (UPPERCASE) → обработчик". После инициализации становится неизменяемой. */
+    /* Карта "код инструмента → обработчик". После инициализации становится неизменяемой. */
     private final Map<String, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
 
     /* ↓↓ Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
     private final Set<String> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
+
+    //=================================================================================================================
+    // КОНСТРУКТОР
+    //=================================================================================================================
 
     /**
      * Конструктор.
@@ -123,8 +127,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
     }
 
-    /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
-    protected abstract P self();
+    //=================================================================================================================
+    // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
+    //=================================================================================================================
 
     /**
      * Технический код провайдера.
@@ -191,6 +196,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
         return handler.quote(instrument);
     }
+
+    //=================================================================================================================
+    // СПЕЦИАЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
+    /**
+     *  F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
+     */
+    protected abstract P self();
 
     /**
      * Атомарно заменяет настройки провайдера.
