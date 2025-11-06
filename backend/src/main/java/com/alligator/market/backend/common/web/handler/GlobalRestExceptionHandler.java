@@ -58,7 +58,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         Throwable cause = ex.getMostSpecificCause();
-        String message = cause.getMessage();
+        String message = cause.getMessage() != null ? cause.getMessage() : ex.getMessage();
         log.warn("HttpMessageNotReadableException: {}", message);
         return ResponseEntityFactory.error(
                 HttpStatus.BAD_REQUEST,
