@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../../../shared/api-response.model';
-import { DescriptorDto } from '../models/descriptor-dto.model';
+import { ProviderDto } from '../models/provider-dto.model';
 
 /* Сервис для чтения дескрипторов провайдеров. */
 @Injectable({
@@ -16,9 +16,9 @@ export class ProviderDescriptorService {
   private readonly baseUrl = '/api/v1/providers';
 
   /* Получить все дескрипторы провайдеров. */
-  list(): Observable<DescriptorDto[]> {
+  list(): Observable<ProviderDto[]> {
     return this.http
-      .get<ApiResponse<DescriptorDto[]>>(this.baseUrl)
+      .get<ApiResponse<ProviderDto[]>>(this.baseUrl)
       .pipe(map(res => res.data));
   }
 }

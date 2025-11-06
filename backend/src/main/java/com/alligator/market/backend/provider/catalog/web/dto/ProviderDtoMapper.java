@@ -22,7 +22,6 @@ public final class ProviderDtoMapper {
         Duration minUpdateInterval = item.minUpdateInterval();
 
         return new ProviderDto(
-                item.providerCode(),
                 descriptor.displayName(),
                 descriptor.deliveryMode().name(),
                 descriptor.accessMethod().name(),
