@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.catalog.web.dto;
 /**
  * DTO дескриптора провайдера для REST-контроллера.
  */
-public record ProviderDescriptorDto(
+public record ProviderDto(
         String providerCode,
         String displayName,
         String deliveryMode,

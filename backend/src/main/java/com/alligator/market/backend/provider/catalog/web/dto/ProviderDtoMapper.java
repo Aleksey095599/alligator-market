@@ -9,19 +9,19 @@ import java.util.Objects;
 /**
  * Маппер доменных моделей каталога провайдеров в DTO.
  */
-public final class ProviderDescriptorDtoMapper {
+public final class ProviderDtoMapper {
 
-    private ProviderDescriptorDtoMapper() {
+    private ProviderDtoMapper() {
     }
 
     /** Преобразовать элемент каталога в DTO. */
-    public static ProviderDescriptorDto toDto(ProviderCatalogItem item) {
+    public static ProviderDto toDto(ProviderCatalogItem item) {
         Objects.requireNonNull(item, "item must not be null");
 
         ProviderDescriptor descriptor = item.descriptor();
         Duration minUpdateInterval = item.minUpdateInterval();
 
-        return new ProviderDescriptorDto(
+        return new ProviderDto(
                 item.providerCode(),
                 descriptor.displayName(),
                 descriptor.deliveryMode().name(),
