@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * Параметры подключения к провайдеру рыночных данных TwelveData (бесплатная подписка).
- * Автоматически считываются из настроек приложения и валидируются на обязательность.
+ * Автоматически считываются из настроек приложения.
  */
 @Validated
 @ConfigurationProperties("provider.connection-config.twelve-free")

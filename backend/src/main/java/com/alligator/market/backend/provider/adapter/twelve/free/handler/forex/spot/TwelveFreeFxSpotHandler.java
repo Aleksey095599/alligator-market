@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
@@ -13,17 +14,20 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
-import static com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotCatalog.SUPPORTED;
+import static com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotCatalog.SUPPORTED_CODES;
 
 /**
  * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
 
-    /* Уникальный код обработчика. */
+    /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
+    /* Вэб-клиент. */
     private final WebClient webClient;
+
+    /* Параметры подключения к провайдеру. */
     private final TwelveFreeConnectionProps props;
 
     /** Конструктор. */
@@ -31,9 +35,14 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
             WebClient webClient,
             TwelveFreeConnectionProps props
     ) {
-        super(HANDLER_CODE, FxSpot.class, SUPPORTED);
-        this.webClient = Objects.requireNonNull(webClient, "webClient must not be null");
-        this.props = Objects.requireNonNull(props, "props must not be null");
+        // Конструктор материнского класса обработчика
+        super(HANDLER_CODE, FxSpot.class, InstrumentType.FX_SPOT, SUPPORTED_CODES);
+
+        Objects.requireNonNull(webClient, "webClient must not be null");
+        Objects.requireNonNull(props, "props must not be null");
+
+        this.webClient = webClient;
+        this.props = props;
     }
 
     /** Реализация получения котировки. */

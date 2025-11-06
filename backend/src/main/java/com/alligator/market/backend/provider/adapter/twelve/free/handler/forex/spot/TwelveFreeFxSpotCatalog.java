@@ -23,6 +23,6 @@ public final class TwelveFreeFxSpotCatalog {
     /* ↓↓ Инструменты. */
     private static final FxSpot EUR_USD = new FxSpot(EUR, USD, FxSpotValueDate.TOM, 4);
 
-    /** Набор поддерживаемых инструментов провайдера. */
-    public static final Set<FxSpot> SUPPORTED = Set.of(EUR_USD);
+    /** Набор поддерживаемых кодов инструментов. */
+    public static final Set<String> SUPPORTED_CODES = Set.of(EUR_USD.instrumentCode());
 }

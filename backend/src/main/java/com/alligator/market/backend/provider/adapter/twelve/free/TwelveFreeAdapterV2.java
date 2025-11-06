@@ -20,7 +20,7 @@ import java.util.Set;
 @Component("TWELVE_FREE")
 public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdapterV2> {
 
-    /* Технический код провайдера. */
+    /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String PROVIDER_CODE = "TWELVE_FREE";
 
     /* Отображаемое имя провайдера. */
@@ -34,22 +34,23 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
             false
     );
 
-    /* Иммутабельные настройки провайдера. */
+    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(60);
 
-    /* Заглушка для настраиваемых параметров провайдера. */
-    private static final ProviderSettings SETTINGS = ProviderSettings.empty();
+    /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
+    private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // Заглушка до востребования
 
     /**
      * Конструктор.
      *
-     * @param props     конфигурационные настройки подключения
+     * @param props     параметры подключения к провайдеру
      * @param webClient веб-клиент
      */
     public TwelveFreeAdapterV2(
             TwelveFreeConnectionProps props,
             @Qualifier("twelveFreeWebClient") WebClient webClient
     ) {
+        // Конструктор материнского класса провайдера
         super(
                 PROVIDER_CODE,
                 DESCRIPTOR,
