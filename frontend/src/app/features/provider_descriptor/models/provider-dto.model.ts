@@ -1,8 +1,7 @@
 /**
- * DTO дескриптора провайдера, соответствующее backend-контракту DescriptorDto.
- * Код провайдера backend может возвращать дополнительно, но на UI он не используется.
+ * DTO провайдера, соответствующее backend-контракту ProviderDto.
  */
-export interface DescriptorDto {
+export interface ProviderDto {
   /* Отображаемое имя провайдера (user friendly). */
   displayName: string;
   /* Режим доставки рыночных данных. */

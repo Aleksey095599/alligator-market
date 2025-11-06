@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { ProviderDescriptorService } from '../../services/provider-descriptor.service';
-import { DescriptorDto } from '../../models/descriptor-dto.model';
+import { ProviderDto } from '../../models/provider-dto.model';
 
 @Component({
   selector: 'app-provider-descriptor-list',
@@ -14,7 +14,7 @@ import { DescriptorDto } from '../../models/descriptor-dto.model';
 })
 export class DescriptorListComponent implements OnInit {
 
-  /* Список колонок таблицы (код провайдера намеренно скрыт — используем только дружелюбное имя). */
+  /* Список колонок таблицы (код провайдера намеренно скрыт на уровне API — используем только дружелюбное имя). */
   displayed: string[] = [
     'displayName',
     'deliveryMode',
@@ -23,7 +23,7 @@ export class DescriptorListComponent implements OnInit {
     'minUpdateIntervalSeconds'
   ];
   /* Источник данных для таблицы. */
-  dataSource = new MatTableDataSource<DescriptorDto>([]);
+  dataSource = new MatTableDataSource<ProviderDto>([]);
 
   constructor(private readonly service: ProviderDescriptorService) {}
 
