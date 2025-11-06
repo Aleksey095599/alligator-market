@@ -22,10 +22,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* ↓↓ Базовые атрибуты провайдера. */
+    /* Нормализованный (UPPERCASE) технический код провайдера, формат [A-Z0-9_]+. */
     protected final String normProviderCode;
+
+    /* Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
     protected final ProviderDescriptor descriptor;
+
+    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
     protected final ProviderPolicy policy;
+
+    /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
     private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "код инструмента (UPPERCASE) → обработчик". После инициализации становится неизменяемой. */
@@ -36,7 +42,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     private final Set<InstrumentType> instrumentTypes;
 
     /**
-     * Конструктор с проверками инвариантов.
+     * Конструктор.
+     * Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента → обработчик",
+     * прикрепляет обработчики к провайдеру.
      *
      * @param providerCode код провайдера (UPPERCASE, формат [A-Z0-9_]+)
      * @param descriptor   дескриптор провайдера
@@ -113,23 +121,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         for (var h : uniqueHandlers) {
             h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
         }
-    }
-
-    /**
-     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
-     *
-     * @throws IllegalArgumentException если код провайдера не соответствует формату
-     */
-    private static String normalizeProviderCode(String code) {
-        // Нормализуем код провайдера
-        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
-        // Разрешены только латинские заглавные, цифры и подчёркивание
-        if (!normalized.chars().allMatch(ch ->
-                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-            throw new IllegalArgumentException(
-                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
-        }
-        return normalized;
     }
 
     /* F-bounded полиморфизм: даём наследникам вернуть "себя" нужного типа. */
@@ -215,8 +206,25 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    // ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ
     //=================================================================================================================
+
+    /**
+     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     *
+     * @throws IllegalArgumentException если код провайдера не соответствует формату
+     */
+    private static String normalizeProviderCode(String code) {
+        // Нормализуем код провайдера
+        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        // Разрешены только латинские заглавные, цифры и подчёркивание
+        if (!normalized.chars().allMatch(ch ->
+                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+            throw new IllegalArgumentException(
+                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
+        }
+        return normalized;
+    }
 
     /**
      * Возвращает обработчик по коду инструмента (код нормализуется в UPPERCASE) или {@code null},

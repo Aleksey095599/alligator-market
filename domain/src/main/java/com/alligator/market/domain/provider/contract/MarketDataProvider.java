@@ -16,7 +16,7 @@ import java.util.Set;
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
     /**
-     * Технический код провайдера.
+     * Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+.
      */
     String providerCode();
 

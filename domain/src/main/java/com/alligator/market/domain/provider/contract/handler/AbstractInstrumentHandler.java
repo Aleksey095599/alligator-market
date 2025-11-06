@@ -36,7 +36,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
 
     /**
-     * Конструктор с проверками инвариантов.
+     * Конструктор.
+     * Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.
      *
      * @param handlerCode              код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
      * @param instrumentClass          класс поддерживаемых инструментов
@@ -67,49 +68,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         this.instrumentClass = instrumentClass;
         this.instrumentType = instrumentType;
         this.normSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
-    }
-
-    /**
-     * Нормализует и валидирует набор кодов инструментов: trim → UPPERCASE → проверка формата [A-Z0-9_]+ → проверка на дубли.
-     *
-     * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
-     */
-    private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
-        var codes = new LinkedHashSet<String>();
-        for (String code : supportedInstrumentCodes) {
-            // ↓↓ Набор не должен содержать null или пустые коды инструментов
-            if (code == null || code.isBlank()) {
-                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
-            }
-            var norm = code.trim().toUpperCase(java.util.Locale.ROOT);
-            // Разрешены только латинские заглавные, цифры и подчёркивание
-            if (!norm.chars().allMatch(ch ->
-                    (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-                throw new IllegalArgumentException("Instrument code must match [A-Z0-9_]+: '" + norm + "'");
-            }
-            if (!codes.add(norm)) {
-                // Набор не должен содержать дублирующиеся коды инструментов
-                throw new IllegalArgumentException("Duplicate instrumentCode '" + norm + "' in supportedInstrumentCodes");
-            }
-        }
-        return java.util.Collections.unmodifiableSet(codes); // Фиксируем неизменяемость
-    }
-
-    /**
-     * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
-     *
-     * @throws IllegalArgumentException если код обработчика не соответствует формату
-     */
-    private static String normalizeHandlerCode(String code) {
-        // Нормализуем код обработчика
-        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
-        // Разрешены только латинские заглавные, цифры и подчёркивание
-        if (!normalized.chars().allMatch(ch ->
-                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-            throw new IllegalArgumentException(
-                    "handlerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
-        }
-        return normalized;
     }
 
     /**
@@ -157,10 +115,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         }
         this.provider = Objects.requireNonNull(provider, "provider must not be null");
     }
-
-    //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-    //=================================================================================================================
 
     /**
      * Котировка заданного инструмента.
@@ -222,4 +176,51 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * в котором выполнены все нужные проверки.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
+
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
+    /**
+     * Нормализует и валидирует набор кодов инструментов: trim → UPPERCASE → проверка формата [A-Z0-9_]+ → проверка на дубли.
+     *
+     * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
+     */
+    private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
+        var codes = new LinkedHashSet<String>();
+        for (String code : supportedInstrumentCodes) {
+            // ↓↓ Набор не должен содержать null или пустые коды инструментов
+            if (code == null || code.isBlank()) {
+                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
+            }
+            var norm = code.trim().toUpperCase(java.util.Locale.ROOT);
+            // Разрешены только латинские заглавные, цифры и подчёркивание
+            if (!norm.chars().allMatch(ch ->
+                    (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+                throw new IllegalArgumentException("Instrument code must match [A-Z0-9_]+: '" + norm + "'");
+            }
+            if (!codes.add(norm)) {
+                // Набор не должен содержать дублирующиеся коды инструментов
+                throw new IllegalArgumentException("Duplicate instrumentCode '" + norm + "' in supportedInstrumentCodes");
+            }
+        }
+        return java.util.Collections.unmodifiableSet(codes); // Фиксируем неизменяемость
+    }
+
+    /**
+     * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     *
+     * @throws IllegalArgumentException если код обработчика не соответствует формату
+     */
+    private static String normalizeHandlerCode(String code) {
+        // Нормализуем код обработчика
+        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        // Разрешены только латинские заглавные, цифры и подчёркивание
+        if (!normalized.chars().allMatch(ch ->
+                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
+            throw new IllegalArgumentException(
+                    "handlerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
+        }
+        return normalized;
+    }
 }
