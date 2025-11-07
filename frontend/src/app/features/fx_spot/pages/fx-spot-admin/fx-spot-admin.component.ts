@@ -112,10 +112,10 @@ export class FxSpotAdminComponent implements OnInit {
     const dto = this.form.getRawValue() as FxSpotCreateDto;
 
     this.service.add(dto).subscribe({
-      next: symbol => {
+      next: code => {
         // Если все ОК
         this.snack.open(
-          `FX Spot '${symbol}' added`, 'OK', { duration: 2500 }
+          `FX Spot '${code}' added`, 'OK', { duration: 2500 }
         );
         this.refresh();
         this.form.reset({
