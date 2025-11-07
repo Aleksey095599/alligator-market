@@ -1,6 +1,7 @@
 package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
+import com.alligator.market.backend.common.web.http.ErrorCode;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyCreateException;
@@ -30,158 +31,111 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Централизованный обработчик доменных исключений, относящихся к бизнес-логике приложения.
+ * Централизованный обработчик доменных исключений приложения.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-    /** Валюта с таким кодом уже существует. */
+    /** Валюта с таким кодом уже существует → 409. */
     @ExceptionHandler(CurrencyAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyAlreadyExists(CurrencyAlreadyExistsException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
+    public ResponseEntity<ApiResponse<Void>> currencyAlreadyExists(CurrencyAlreadyExistsException ex) {
+        log.warn("Currency already exists: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.CURRENCY_ALREADY_EXISTS.name(), ex.getMessage());
     }
 
-    /** Валюта с таким именем уже существует. */
+    /** Валюта с таким именем уже существует → 409. */
     @ExceptionHandler(CurrencyNameDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyNameDuplicate(CurrencyNameDuplicateException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
+    public ResponseEntity<ApiResponse<Void>> currencyNameDuplicate(CurrencyNameDuplicateException ex) {
+        log.warn("Currency name duplicate: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.CURRENCY_NAME_DUPLICATE.name(), ex.getMessage());
     }
 
-    /** Валюта используется в инструментах FX_SPOT. */
+    /** Валюта используется в инструментах FX_SPOT → 409. */
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
+    public ResponseEntity<ApiResponse<Void>> currencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
+        log.warn("Currency used in FX Spot: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.CURRENCY_USED_IN_FX_SPOT.name(), ex.getMessage());
     }
 
-    /** Ошибка создания валюты. */
-    @ExceptionHandler(CurrencyCreateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyCreate(CurrencyCreateException ex) {
-        return error(ex);
-    }
-
-    /** Ошибка обновления валюты. */
-    @ExceptionHandler(CurrencyUpdateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyUpdate(CurrencyUpdateException ex) {
-        return error(ex);
-    }
-
-    /** Ошибка удаления валюты. */
-    @ExceptionHandler(CurrencyDeleteException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyDelete(CurrencyDeleteException ex) {
-        return error(ex);
-    }
-
-    /** Валюта не найдена. */
+    /** Валюта не найдена → 404. */
     @ExceptionHandler(CurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCurrencyNotFound(CurrencyNotFoundException ex) {
-        return notFound(ex);
+    public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
+        log.warn("Currency not found: {}", ex.getMessage());
+        return ResponseEntityFactory.notFound(ErrorCode.CURRENCY_NOT_FOUND.name(), ex.getMessage());
     }
 
-    /** Дублирование кода провайдера. */
-    @ExceptionHandler(ProviderCodeDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleProviderCodeDuplicate(ProviderCodeDuplicateException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
-    }
-
-    /** Дублирование отображаемого имени провайдера. */
-    @ExceptionHandler(ProviderDisplayNameDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleProviderDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
-    }
-
-    /** Инструмент FX_SPOT уже существует. */
+    /** Валюта уже используется при создании FX_SPOT → 409. */
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
-        return warn(HttpStatus.CONFLICT, ex);
+    public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
+        log.warn("FX Spot already exists: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.FX_SPOT_ALREADY_EXISTS.name(), ex.getMessage());
     }
 
-    /** Ошибка создания инструмента FX_SPOT. */
-    @ExceptionHandler(FxSpotCreateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotCreate(FxSpotCreateException ex) {
-        return error(ex);
-    }
-
-    /** Ошибка обновления инструмента FX_SPOT. */
-    @ExceptionHandler(FxSpotUpdateException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotUpdate(FxSpotUpdateException ex) {
-        return error(ex);
-    }
-
-    /** Ошибка удаления инструмента FX_SPOT. */
-    @ExceptionHandler(FxSpotDeleteException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotDelete(FxSpotDeleteException ex) {
-        return error(ex);
-    }
-
-    /** Инструмент FX_SPOT не найден. */
+    /** Инструмент FX_SPOT не найден → 404. */
     @ExceptionHandler(FxSpotNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotNotFound(FxSpotNotFoundException ex) {
-        return notFound(ex);
+    public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
+        log.warn("FX Spot not found: {}", ex.getMessage());
+        return ResponseEntityFactory.notFound(ErrorCode.FX_SPOT_NOT_FOUND.name(), ex.getMessage());
     }
 
-    /** Базовая и котируемая валюты совпадают. */
+    /** Указаны одинаковые валюты для FX_SPOT → 400. */
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> handleFxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
-        return warn(HttpStatus.BAD_REQUEST, ex);
+    public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
+        log.warn("FX Spot same currencies: {}", ex.getMessage());
+        return ResponseEntityFactory.badRequest(ErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
     }
 
-    /** Тип инструмента не поддерживается провайдером. */
+    /** Инструмент не поддерживается провайдером → 400. */
     @ExceptionHandler(InstrumentNotSupportedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInstrumentNotSupported(InstrumentNotSupportedException ex) {
-        return warn(HttpStatus.BAD_REQUEST, ex);
+    public ResponseEntity<ApiResponse<Void>> instrumentNotSupported(InstrumentNotSupportedException ex) {
+        log.warn("Instrument not supported: {}", ex.getMessage());
+        return ResponseEntityFactory.badRequest(ErrorCode.INSTRUMENT_NOT_SUPPORTED.name(), ex.getMessage());
     }
 
-    /** Обработчик для инструмента не найден. */
+    /** Обработчик инструмента не найден → 404. */
     @ExceptionHandler(HandlerNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleHandlerNotFound(HandlerNotFoundException ex) {
-        return warn(HttpStatus.BAD_REQUEST, ex);
+    public ResponseEntity<ApiResponse<Void>> handlerNotFound(HandlerNotFoundException ex) {
+        log.warn("Handler not found: {}", ex.getMessage());
+        return ResponseEntityFactory.notFound(ErrorCode.HANDLER_NOT_FOUND.name(), ex.getMessage());
     }
 
-    /** Класс инструмента не соответствует ожиданиям обработчика. */
-    @ExceptionHandler(InstrumentWrongClassException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongClass(InstrumentWrongClassException ex) {
-        return error(ex);
+    /** Некорректный класс или тип инструмента → 400. */
+    @ExceptionHandler({InstrumentWrongClassException.class, InstrumentWrongTypeException.class})
+    public ResponseEntity<ApiResponse<Void>> instrumentWrong(RuntimeException ex) {
+        log.warn("Instrument mismatch: {}", ex.getMessage());
+        String code = ex instanceof InstrumentWrongClassException
+                ? ErrorCode.INSTRUMENT_WRONG_CLASS.name()
+                : ErrorCode.INSTRUMENT_WRONG_TYPE.name();
+        return ResponseEntityFactory.badRequest(code, ex.getMessage());
     }
 
-    /** Тип инструмента не соответствует ожиданиям обработчика. */
-    @ExceptionHandler(InstrumentWrongTypeException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInstrumentWrongType(InstrumentWrongTypeException ex) {
-        return error(ex);
+    /** Дублирование кода провайдера → 409. */
+    @ExceptionHandler(ProviderCodeDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> providerCodeDuplicate(ProviderCodeDuplicateException ex) {
+        log.warn("Provider code duplicate: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.PROVIDER_CODE_DUPLICATE.name(), ex.getMessage());
     }
 
-    /**
-     * Формирует ответ с уровнем логирования WARN.
-     *
-     * @param status HTTP-статус
-     * @param ex     доменное исключение
-     * @return готовый HTTP-ответ
-     */
-    private ResponseEntity<ApiResponse<Void>> warn(HttpStatus status, RuntimeException ex) {
-        log.warn("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-        return ResponseEntityFactory.error(status, ex.getMessage());
+    /** Дублирование отображаемого имени провайдера → 409. */
+    @ExceptionHandler(ProviderDisplayNameDuplicateException.class)
+    public ResponseEntity<ApiResponse<Void>> providerDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
+        log.warn("Provider display name duplicate: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(ErrorCode.PROVIDER_DISPLAY_NAME_DUPLICATE.name(), ex.getMessage());
     }
 
-    /**
-     * Формирует ответ 404 Not Found с уровнем WARN.
-     *
-     * @param ex доменное исключение
-     * @return готовый HTTP-ответ
-     */
-    private ResponseEntity<ApiResponse<Void>> notFound(RuntimeException ex) {
-        log.warn("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-        return ResponseEntityFactory.notFound(ex.getMessage());
-    }
-
-    /**
-     * Формирует ответ с уровнем логирования ERROR и стеком исключения.
-     *
-     * @param ex доменное исключение
-     * @return готовый HTTP-ответ
-     */
-    private ResponseEntity<ApiResponse<Void>> error(RuntimeException ex) {
-        log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    /** Технические ошибки доменных операций → 500. */
+    @ExceptionHandler({
+            CurrencyCreateException.class,
+            CurrencyUpdateException.class,
+            CurrencyDeleteException.class,
+            FxSpotCreateException.class,
+            FxSpotUpdateException.class,
+            FxSpotDeleteException.class
+    })
+    public ResponseEntity<ApiResponse<Void>> domainTechnicalError(RuntimeException ex) {
+        log.error("Domain operation failed: {}", ex.getMessage(), ex);
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.UNEXPECTED_ERROR.name(), ex.getMessage());
     }
 }
