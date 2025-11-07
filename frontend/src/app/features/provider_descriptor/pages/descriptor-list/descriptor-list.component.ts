@@ -14,8 +14,9 @@ import { ProviderDto } from '../../models/provider-dto.model';
 })
 export class DescriptorListComponent implements OnInit {
 
-  /* Список колонок таблицы (код провайдера намеренно скрыт на уровне API — используем только дружелюбное имя). */
+  /* Список колонок таблицы. */
   displayed: string[] = [
+    'providerCode',
     'displayName',
     'deliveryMode',
     'accessMethod',
