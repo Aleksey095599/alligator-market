@@ -13,24 +13,30 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/* Фильтр для установки контекста аудита на время HTTP-запроса (actor = dev_admin, via = dev_http). */
+/**
+ * Фильтр для установки контекста аудита на время HTTP-запроса.
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE) // Выполнить как можно раньше
 public class DevAuditContextFilter extends OncePerRequestFilter {
 
+    // Временные актор и via для этапа разработки
     private static final String DEV_ACTOR = "dev_admin";
     private static final String DEV_VIA = "dev_http";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            @org.springframework.lang.NonNull HttpServletRequest request,
+            @org.springframework.lang.NonNull HttpServletResponse response,
+            @org.springframework.lang.NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+
         var ctx = new AuditContext(DEV_ACTOR, DEV_VIA);
         try {
             // Устанавливаем контекст на время обработки запроса и гарантированно восстанавливаем его после.
             AuditContextHolder.runWith(ctx, () -> {
                 try {
-                    chain.doFilter(request, response);
+                    filterChain.doFilter(request, response);
                 } catch (IOException | ServletException e) {
                     // Пробрасываем checked-исключения далее по цепочке
                     throw new RuntimeException(e);
