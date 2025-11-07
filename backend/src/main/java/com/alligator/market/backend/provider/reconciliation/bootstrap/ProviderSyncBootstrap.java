@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.bootstrap;
 
-import com.alligator.market.backend.config.audit.AuditContext;
-import com.alligator.market.backend.config.audit.AuditContextHolder;
+import com.alligator.market.backend.config.audit.context.AuditContext;
+import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.backend.provider.reconciliation.service.ProviderSyncService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

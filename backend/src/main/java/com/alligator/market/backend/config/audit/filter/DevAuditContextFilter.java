@@ -1,5 +1,7 @@
-package com.alligator.market.backend.config.audit;
+package com.alligator.market.backend.config.audit.filter;
 
+import com.alligator.market.backend.config.audit.context.AuditContext;
+import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

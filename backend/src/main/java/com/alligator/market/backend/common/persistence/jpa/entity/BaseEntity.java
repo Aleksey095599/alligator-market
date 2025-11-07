@@ -1,6 +1,6 @@
 package com.alligator.market.backend.common.persistence.jpa.entity;
 
-import com.alligator.market.backend.config.audit.AuditContextHolder;
+import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
-import com.alligator.market.backend.config.audit.AuditContextHolder;
+import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
