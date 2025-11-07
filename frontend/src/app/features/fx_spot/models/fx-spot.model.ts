@@ -14,6 +14,8 @@ export interface FxSpotDto {
 
 /** DTO строки списка с символом инструмента. */
 export interface FxSpotListItemDto {
+  /* Уникальный код инструмента (например, FX_SPOT_EURUSD_TOD) */
+  instrumentCode: string;
   /* Символ инструмента (например, EURUSD_TOD) */
   symbol: string;
   /* Код базовой валюты */
