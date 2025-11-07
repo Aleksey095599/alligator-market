@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
  * DTO для передачи списка инструментов FX_SPOT.
  */
 public record FxSpotListItemDto(
-
+        String instrumentCode,
         String symbol,
         String baseCurrency,
         String quoteCurrency,

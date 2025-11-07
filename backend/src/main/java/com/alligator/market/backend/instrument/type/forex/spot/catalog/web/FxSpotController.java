@@ -39,7 +39,7 @@ public class FxSpotController {
                 .path("/{instrumentCode}")
                 .buildAndExpand(created.instrumentCode())
                 .toUri();
-        return ResponseEntityFactory.created(location, created.instrumentSymbol()); // Умышленно символ, а не код
+        return ResponseEntityFactory.created(location, created.instrumentCode());
     }
 
     /** Обновить инструмент. */
