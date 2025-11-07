@@ -42,7 +42,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'defaultQuoteFractionDigits', 'actions'];
+  displayed: string[] = ['instrumentCode', 'symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'defaultQuoteFractionDigits', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================
@@ -52,7 +52,7 @@ export class FxSpotAdminComponent implements OnInit {
 
   locked = false; // флаг блокировки кнопки Add
   editing = false; // режим редактирования
-  editCode: string | null = null; // внутренний код инструмента для редактирования (собирается на UI)
+  editCode: string | null = null; // внутренний код инструмента для редактирования (получаем с backend)
   editSymbol: string | null = null; // символ инструмента для уведомления
   currencies: CurrencyDto[] = [];
   valueDates = Object.values(FxSpotValueDate);
@@ -138,7 +138,7 @@ export class FxSpotAdminComponent implements OnInit {
   /* клик по иконке Edit */
   onEdit(spot: FxSpotListItemDto): void {
     this.editing = true;
-    this.editCode = this.composeCode(spot);
+    this.editCode = spot.instrumentCode;
     this.editSymbol = spot.symbol;
     this.form.setValue({
       baseCurrency: spot.baseCurrency,
@@ -196,8 +196,7 @@ export class FxSpotAdminComponent implements OnInit {
 
   /* клик по иконке Delete */
   onDelete(spot: FxSpotListItemDto): void {
-    const code = this.composeCode(spot);
-    this.service.delete(code).subscribe({
+    this.service.delete(spot.instrumentCode).subscribe({
       next: () => {
         this.snack.open(`FX Spot '${spot.symbol}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
@@ -216,11 +215,6 @@ export class FxSpotAdminComponent implements OnInit {
       next: list => this.dataSource.data = list,
       error: err => this.snack.open(err.message ?? 'Load failed', 'Close')
     });
-  }
-
-  /** Собираем внутренний код инструмента для запросов к backend. */
-  private composeCode(spot: Pick<FxSpotListItemDto, 'baseCurrency' | 'quoteCurrency' | 'valueDate'>): string {
-    return `FX_SPOT_${spot.baseCurrency}${spot.quoteCurrency}_${spot.valueDate}`;
   }
 
 }
