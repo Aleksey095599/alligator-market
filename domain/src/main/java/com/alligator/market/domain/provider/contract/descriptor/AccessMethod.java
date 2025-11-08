@@ -9,21 +9,18 @@ import java.util.Objects;
  * Коды поддерживаемых методов доступа провайдеров к рыночным данным.
  */
 public enum AccessMethod {
-    /* ↓↓ Константы: коды методов доступа (далее — коды). */
-    API_POLL,     // Метод периодического опроса API провайдера для получения рыночных данных
-    WEBSOCKET,    // Метод получения данных через WebSocket соединение в режиме реального времени
-    FIX_PROTOCOL; // Метод доступа через FIX протокол для высокочастотной торговли
+    /* Константы: коды методов доступа (далее — коды). */
+    API_POLL,     // <-- Метод периодического опроса API провайдера для получения рыночных данных
+    WEBSOCKET,    // <-- Метод получения данных через WebSocket соединение в режиме реального времени
+    FIX_PROTOCOL; // <-- Метод доступа через FIX протокол для высокочастотной торговли
 
-    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
-    /** Возвращает строковый код (= имя константы). */
-    public String code() {
-        return name();
-    }
-
-    /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    /**
+     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     */
     @SuppressWarnings("unused")
     public static AccessMethod fromCode(String code) {
         Objects.requireNonNull(code, "AccessMethod code must not be null");
@@ -46,9 +43,18 @@ public enum AccessMethod {
         }
     }
 
-    /** Возвращает список поддерживаемых кодов (для валидации/документации). */
+    /**
+     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
         return SUPPORTED_CODES;
+    }
+
+    /**
+     * Возвращает строковый код (= имя константы).
+     */
+    public String code() {
+        return name();
     }
 }
