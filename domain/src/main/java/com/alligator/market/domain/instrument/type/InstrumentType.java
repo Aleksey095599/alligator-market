@@ -17,13 +17,6 @@ public enum InstrumentType {
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
     /**
-     * Возвращает строковый код (= имя константы).
-     */
-    public String code() {
-        return name();
-    }
-
-    /**
      * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
      */
     @SuppressWarnings("unused")
@@ -54,5 +47,12 @@ public enum InstrumentType {
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
         return SUPPORTED_CODES;
+    }
+
+    /**
+     * Возвращает строковый код (= имя константы).
+     */
+    public String code() {
+        return name();
     }
 }
