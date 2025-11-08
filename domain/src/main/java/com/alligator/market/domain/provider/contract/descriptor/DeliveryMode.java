@@ -9,20 +9,17 @@ import java.util.Objects;
  * Коды возможных режимов доставки данных провайдерами рыночных данных.
  */
 public enum DeliveryMode {
-    /* ↓↓ Константы: коды режимов доставки (далее — коды). */
-    PUSH, // Провайдер активно отправляет данные при их появлении
-    PULL; // Клиент периодически запрашивает актуальные данные
+    /* Константы: коды режимов доставки (далее — коды). */
+    PUSH, // <-- Провайдер активно отправляет данные при их появлении
+    PULL; // <-- Клиент периодически запрашивает актуальные данные
 
-    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
-    /** Возвращает строковый код (= имя константы). */
-    public String code() {
-        return name();
-    }
-
-    /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
+    /**
+     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     */
     @SuppressWarnings("unused")
     public static DeliveryMode fromCode(String code) {
         Objects.requireNonNull(code, "DeliveryMode code must not be null");
@@ -45,9 +42,18 @@ public enum DeliveryMode {
         }
     }
 
-    /** Возвращает список поддерживаемых кодов (для валидации/документации). */
+    /**
+     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
         return SUPPORTED_CODES;
+    }
+
+    /**
+     * Возвращает строковый код (= имя константы).
+     */
+    public String code() {
+        return name();
     }
 }
