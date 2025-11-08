@@ -11,7 +11,7 @@ import { ProviderDto } from '../models/provider-dto.model';
 })
 export class ProviderDescriptorService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /* Базовый URL (через proxy уйдёт на Spring). */
   private readonly baseUrl = '/api/v1/providers';

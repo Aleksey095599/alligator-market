@@ -9,8 +9,7 @@ describe('CurrencyAdminComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CurrencyAdminComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CurrencyAdminComponent);
     component = fixture.componentInstance;

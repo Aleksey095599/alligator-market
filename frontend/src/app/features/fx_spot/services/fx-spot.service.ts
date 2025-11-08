@@ -13,7 +13,7 @@ import { FxSpotUpdateDto } from '../models/fx-spot-update.model';
 })
 export class FxSpotService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /* Базовый URL (через proxy уйдёт на Spring). */
   private readonly baseUrl = '/api/v1/fx-spot';

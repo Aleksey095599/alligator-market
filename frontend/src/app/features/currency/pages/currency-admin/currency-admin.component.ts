@@ -1,17 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {CurrencyDto} from '../../models/currency.model';
-import {CurrencyService} from '../../services/currency.service';
-import {MatCardModule} from "@angular/material/card";
-import {UpdateCurrencyDto} from "../../models/currency-update.model";
-import {RouterLink} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+
+import { CurrencyDto } from '../../models/currency.model';
+import { UpdateCurrencyDto } from '../../models/currency-update.model';
+import { CurrencyService } from '../../services/currency.service';
 
 @Component({
   selector: 'app-currency-admin',
@@ -25,8 +30,7 @@ import {RouterLink} from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule,
-    RouterLink
+    MatCardModule
   ],
   templateUrl: './currency-admin.component.html',
   styleUrl: './currency-admin.component.scss'
@@ -37,7 +41,7 @@ export class CurrencyAdminComponent implements OnInit {
   // Табличные данные
   //=================
   displayed: string[] = ['code', 'name', 'country', 'fractionDigits', 'actions'];
-  dataSource  = new MatTableDataSource<CurrencyDto>([]);
+  dataSource = new MatTableDataSource<CurrencyDto>([]);
 
   //========================
   // Форма добавления валюты
@@ -100,7 +104,9 @@ export class CurrencyAdminComponent implements OnInit {
 
   /* нажата кнопка Add */
   onAdd(): void {
-    if (this.form.invalid || this.locked) { return; }
+    if (this.form.invalid || this.locked) {
+      return;
+    }
 
     this.locked = true; // блокируем кнопку
 
@@ -109,19 +115,23 @@ export class CurrencyAdminComponent implements OnInit {
     this.service.add(dto).subscribe({
       next: code => {
         // Если все ОК
-        this.snack.open(                   // уведомление
-          `Currency '${code}' added`, 'OK', { duration: 2500 }
+        // уведомление
+        this.snack.open(
+          `Currency '${code}' added`,
+          'OK',
+          { duration: 2500 }
         );
-        this.refresh();                    // обновляем таблицу
-        this.form.reset({ fractionDigits: 2 });   // оставляем количество знаков по-умолчанию
-        this.locked = false;               // разблокируем кнопку
+        this.refresh(); // обновляем таблицу
+        this.form.reset({ fractionDigits: 2 }); // оставляем количество знаков по-умолчанию
+        this.locked = false; // разблокируем кнопку
       },
       error: err => {
         // Если ошибка
-        const msg = err.error?.message ?? err.message ?? 'Add failed';   // ловим сообщение ошибки сервера
-        const ref =
-          this.snack.open(msg, 'Close', { duration: 0 });               // уведомление с ошибкой
-        ref.afterDismissed().subscribe(() => this.locked = false);    // Close для разблокировки Add
+        const msg = err.error?.message ?? err.message ?? 'Add failed'; // ловим сообщение ошибки сервера
+        const ref = this.snack.open(msg, 'Close', { duration: 0 }); // уведомление с ошибкой
+        ref.afterDismissed().subscribe(() => {
+          this.locked = false;
+        }); // Close для разблокировки Add
       }
     });
   }
@@ -141,7 +151,9 @@ export class CurrencyAdminComponent implements OnInit {
 
   /* нажата кнопка Save */
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editCode) { return; }
+    if (this.form.invalid || this.locked || !this.editCode) {
+      return;
+    }
 
     this.locked = true;
 
@@ -161,7 +173,9 @@ export class CurrencyAdminComponent implements OnInit {
       error: err => {
         const msg = err.error?.message ?? err.message ?? 'Update failed';
         const ref = this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => this.locked = false);
+        ref.afterDismissed().subscribe(() => {
+          this.locked = false;
+        });
       }
     });
   }
@@ -182,8 +196,9 @@ export class CurrencyAdminComponent implements OnInit {
         this.snack.open(`Currency '${code}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
-      error: err =>
-        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close')
+      error: err => {
+        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close');
+      }
     });
   }
 
@@ -193,8 +208,12 @@ export class CurrencyAdminComponent implements OnInit {
   /* утилита: перезагрузить список */
   private refresh(): void {
     this.service.list().subscribe({
-      next: list => this.dataSource.data = list,
-      error: err => this.snack.open(err.message ?? 'Load failed', 'Close')
+      next: list => {
+        this.dataSource.data = list;
+      },
+      error: err => {
+        this.snack.open(err.message ?? 'Load failed', 'Close');
+      }
     });
   }
 

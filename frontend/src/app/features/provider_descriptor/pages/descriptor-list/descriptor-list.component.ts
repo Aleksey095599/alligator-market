@@ -10,7 +10,7 @@ import { ProviderDto } from '../../models/provider-dto.model';
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule],
   templateUrl: './descriptor-list.component.html',
-  styleUrls: ['./descriptor-list.component.scss']
+  styleUrl: './descriptor-list.component.scss'
 })
 export class DescriptorListComponent implements OnInit {
 
@@ -36,8 +36,12 @@ export class DescriptorListComponent implements OnInit {
   /* Получить список дескрипторов и обновить таблицу. */
   private refresh(): void {
     this.service.list().subscribe({
-      next: list => this.dataSource.data = list,
-      error: err => console.error(err)
+      next: list => {
+        this.dataSource.data = list;
+      },
+      error: err => {
+        console.error(err);
+      }
     });
   }
 }

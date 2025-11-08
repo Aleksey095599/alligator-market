@@ -15,7 +15,6 @@ import { FxSpotService } from '../../services/fx-spot.service';
 import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
 import { CurrencyService } from '../../../currency/services/currency.service';
 import { CurrencyDto } from '../../../currency/models/currency.model';
-import { RouterLink } from '@angular/router';
 import { FxSpotValueDate } from '../../models/fx-spot-value-date.model';
 
 @Component({
@@ -31,8 +30,7 @@ import { FxSpotValueDate } from '../../models/fx-spot-value-date.model';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule,
-    RouterLink
+    MatCardModule
   ],
   templateUrl: './fx-spot-admin.component.html',
   styleUrl: './fx-spot-admin.component.scss'
@@ -98,14 +96,20 @@ export class FxSpotAdminComponent implements OnInit {
   ngOnInit(): void {
     this.refresh();
     this.currencyService.list().subscribe({
-      next: c => this.currencies = c,
-      error: err => this.snack.open(err.message ?? 'Load currencies failed', 'Close')
+      next: c => {
+        this.currencies = c;
+      },
+      error: err => {
+        this.snack.open(err.message ?? 'Load currencies failed', 'Close');
+      }
     });
   }
 
   /* нажата кнопка Add */
   onAdd(): void {
-    if (this.form.invalid || this.locked) { return; }
+    if (this.form.invalid || this.locked) {
+      return;
+    }
 
     this.locked = true; // блокируем кнопку
 
@@ -115,7 +119,9 @@ export class FxSpotAdminComponent implements OnInit {
       next: code => {
         // Если все ОК
         this.snack.open(
-          `FX Spot '${code}' added`, 'OK', { duration: 2500 }
+          `FX Spot '${code}' added`,
+          'OK',
+          { duration: 2500 }
         );
         this.refresh();
         this.form.reset({
@@ -128,9 +134,10 @@ export class FxSpotAdminComponent implements OnInit {
       },
       error: err => {
         const msg = err.error?.message ?? err.message ?? 'Add failed';
-        const ref =
-          this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => this.locked = false);
+        const ref = this.snack.open(msg, 'Close', { duration: 0 });
+        ref.afterDismissed().subscribe(() => {
+          this.locked = false;
+        });
       }
     });
   }
@@ -153,7 +160,9 @@ export class FxSpotAdminComponent implements OnInit {
 
   /* нажата кнопка Save */
   onSave(): void {
-    if (this.form.invalid || this.locked || !this.editCode) { return; }
+    if (this.form.invalid || this.locked || !this.editCode) {
+      return;
+    }
 
     this.locked = true;
 
@@ -172,7 +181,9 @@ export class FxSpotAdminComponent implements OnInit {
       error: err => {
         const msg = err.error?.message ?? err.message ?? 'Update failed';
         const ref = this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => this.locked = false);
+        ref.afterDismissed().subscribe(() => {
+          this.locked = false;
+        });
       }
     });
   }
@@ -201,8 +212,9 @@ export class FxSpotAdminComponent implements OnInit {
         this.snack.open(`FX Spot '${spot.symbol}' deleted`, 'OK', { duration: 2500 });
         this.refresh();
       },
-      error: err =>
-        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close')
+      error: err => {
+        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close');
+      }
     });
   }
 
@@ -212,8 +224,12 @@ export class FxSpotAdminComponent implements OnInit {
   /* утилита: перезагрузить список */
   private refresh(): void {
     this.service.list().subscribe({
-      next: list => this.dataSource.data = list,
-      error: err => this.snack.open(err.message ?? 'Load failed', 'Close')
+      next: list => {
+        this.dataSource.data = list;
+      },
+      error: err => {
+        this.snack.open(err.message ?? 'Load failed', 'Close');
+      }
     });
   }
 
