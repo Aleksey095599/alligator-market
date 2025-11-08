@@ -9,8 +9,7 @@ describe('FxSpotAdminComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FxSpotAdminComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FxSpotAdminComponent);
     component = fixture.componentInstance;

@@ -5,9 +5,6 @@ import { CurrencyRoutingModule } from './currency-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    CurrencyRoutingModule,
-  ]
+  imports: [CommonModule, CurrencyRoutingModule]
 })
-export class CurrencyModule { }
+export class CurrencyModule {}

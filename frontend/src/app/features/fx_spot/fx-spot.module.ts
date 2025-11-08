@@ -5,9 +5,6 @@ import { FxSpotRoutingModule } from './fx-spot-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    FxSpotRoutingModule,
-  ]
+  imports: [CommonModule, FxSpotRoutingModule]
 })
-export class FxSpotModule { }
+export class FxSpotModule {}
