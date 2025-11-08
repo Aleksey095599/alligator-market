@@ -16,7 +16,9 @@ public class ProviderSyncService {
     /* Доменная логика синхронизации. */
     private final ProviderSynchronizer descriptorSynchronizer;
 
-    /** Запустить процесс синхронизации. */
+    /**
+     * Запустить процесс синхронизации.
+     */
     @Transactional
     public void runSync() {
         descriptorSynchronizer.synchronize();

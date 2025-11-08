@@ -18,19 +18,20 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProviderSyncBootstrap implements ApplicationRunner {
 
-    /* Backend реализация сервиса синхронизации. */
+    /* Backend реализация доменного сервиса синхронизации. */
     private final ProviderSyncService syncService;
 
-    /* Флаг: запускать ли синхронизацию при старте приложения (по умолчанию сохраняем текущее поведение). */
+    /* Флаг: запускать ли синхронизацию при старте приложения (по умолчанию включено). */
     @Value("${provider.sync.on-startup:true}")
     private boolean runOnStartup;
 
-    /* Флаг: падать ли приложению при ошибке синхронизации (по умолчанию выключено). */
+    /* Флаг: "падать" ли приложению при ошибке синхронизации (по умолчанию выключено). */
     @Value("${provider.sync.fail-fast:false}")
     private boolean failFast;
 
     @Override
     public void run(ApplicationArguments args) {
+        // Если синхронизация при запуске отключена, выводим сообщение в логи
         if (!runOnStartup) {
             log.info("Provider sync on startup is disabled (property 'provider.sync.on-startup=false')");
             return;
@@ -42,19 +43,26 @@ public class ProviderSyncBootstrap implements ApplicationRunner {
         AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-sync");
 
         try {
-            AuditContextHolder.runWith(ctx, () -> {
-                // Запускаем процедуру синхронизации
-                syncService.runSync();
-            });
-
+            // Запускаем процедуру синхронизации с контекстом для аудита
+            AuditContextHolder.runWith(ctx, syncService::runSync);
             log.info("Provider synchronization completed successfully");
         } catch (Exception ex) {
+            // Если возникает ошибка:
+            // 1) Фиксируем в логе факт ошибки синхронизации
             log.error("Provider synchronization failed on startup", ex);
+
             if (failFast) {
-                if (ex instanceof RuntimeException runtimeException) {
-                    throw runtimeException;
+                // 2а) Если строгий режим (fail-fast:true) — прерываем запуск
+                log.error("Application startup aborted (property 'provider.sync.fail-fast=true')");
+                if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
                 }
-                throw new IllegalStateException("Provider sync failed", ex);
+                throw new IllegalStateException("Provider synchronization failed on startup (fail-fast)", ex);
+            } else {
+                // 2b) мягкий режим (fail-fast:false) — продолжаем запуск без синхронизации
+                log.warn("Continuing application startup without provider synchronization" +
+                        " (property 'provider.sync.fail-fast=false')");
+
             }
         }
     }
