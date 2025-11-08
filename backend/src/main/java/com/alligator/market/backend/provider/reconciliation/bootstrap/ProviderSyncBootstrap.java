@@ -48,15 +48,12 @@ public class ProviderSyncBootstrap implements ApplicationRunner {
             log.info("Provider synchronization completed successfully");
         } catch (Exception ex) {
             // Если возникает ошибка:
-            // 1) Фиксируем в логе факт ошибки синхронизации
+            // 1) фиксируем сам факт ошибки со стеком
             log.error("Provider synchronization failed on startup", ex);
 
             if (failFast) {
                 // 2а) Если строгий режим (fail-fast:true) — прерываем запуск
                 log.error("Application startup aborted (property 'provider.sync.fail-fast=true')");
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                }
                 throw new IllegalStateException("Provider synchronization failed on startup (fail-fast)", ex);
             } else {
                 // 2b) мягкий режим (fail-fast:false) — продолжаем запуск без синхронизации
