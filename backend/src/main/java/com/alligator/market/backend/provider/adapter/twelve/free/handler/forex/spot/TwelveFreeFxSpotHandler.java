@@ -20,6 +20,7 @@ import static com.alligator.market.backend.provider.adapter.twelve.free.handler.
  * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
+
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 

@@ -16,6 +16,7 @@ import reactor.netty.http.client.HttpClient;
  */
 @Configuration
 public class TwelveFreeWebConfig {
+
     /* Базовые атрибуты конфигурации. */
     private final TwelveFreeConnectionProps props;
     private final HttpClient httpClient;
