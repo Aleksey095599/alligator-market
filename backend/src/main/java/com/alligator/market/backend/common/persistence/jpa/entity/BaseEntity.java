@@ -21,7 +21,7 @@ import java.time.Instant;
 @EntityListeners({AuditingEntityListener.class})
 @Getter
 @NoArgsConstructor
-@Access(AccessType.FIELD) // ← Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
+@Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public abstract class BaseEntity {
 
     @Version
@@ -36,7 +36,7 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdBy;
 
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, только callback
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, только callback
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
@@ -48,7 +48,7 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private String updatedBy;
 
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, только callback
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, только callback
     @Column(nullable = false)
     private String updatedVia;
 
@@ -70,5 +70,6 @@ public abstract class BaseEntity {
 
     /* Хуки для наследников. */
     protected void onPrePersist() { /* no-op */ }
-    protected void onPreUpdate()  { /* no-op */ }
+
+    protected void onPreUpdate() { /* no-op */ }
 }

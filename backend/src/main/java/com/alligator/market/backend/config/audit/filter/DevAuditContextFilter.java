@@ -17,7 +17,7 @@ import java.io.IOException;
  * Фильтр для установки контекста аудита на время HTTP-запроса.
  */
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE) // Выполнить как можно раньше
+@Order(Ordered.HIGHEST_PRECEDENCE) // <-- Выполнить как можно раньше
 public class DevAuditContextFilter extends OncePerRequestFilter {
 
     // Временные актор и via для этапа разработки

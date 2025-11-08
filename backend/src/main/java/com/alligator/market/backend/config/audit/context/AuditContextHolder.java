@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
  * ThreadLocal-холдер контекста аудита (актор + источник/канал via).
  * <p>Хранит значение per-thread и предоставляет фолбэки.</p>
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE) // ← Конструктор только внутри самого класса
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // <-- Конструктор только внутри самого класса
 public final class AuditContextHolder {
 
     /* Зарезервированный системный актор для внутренних процессов. */
@@ -88,6 +88,7 @@ public final class AuditContextHolder {
      * @param <T>    тип результата
      * @return результат, возвращённый {@code action}
      */
+    @SuppressWarnings("unused")
     public static <T> T runWith(AuditContext ctx, java.util.function.Supplier<T> action) {
         var prev = CTX.get();
         try {

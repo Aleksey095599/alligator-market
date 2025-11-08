@@ -30,49 +30,59 @@ import java.util.Objects;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← скрываем JPA-конструктор
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- скрываем JPA-конструктор
 public abstract class InstrumentBaseEntity extends BaseEntity {
 
-    /** Суррогатный PK. */
+    /**
+     * Суррогатный PK.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /** Внутренний код инструмента (уникален в контексте приложения). */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся через метод инициализации
+    /**
+     * Внутренний код инструмента (уникален в контексте приложения).
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotBlank
-    @NaturalId() // ← Помечаем поле как натуральный ключ
+    @NaturalId() // <-- Помечаем поле как натуральный ключ
     @Column(name = "code", length = 32, nullable = false, updatable = false)
     private String code;
 
-    /** Символ инструмента для отображения в UI. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся через метод инициализации
+    /**
+     * Символ инструмента для отображения в UI.
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotBlank
     @Column(name = "symbol", length = 32, nullable = false, updatable = false)
     private String symbol;
 
-    /** Тип финансового инструмента. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся через метод инициализации
+    /**
+     * Тип финансового инструмента.
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 32, nullable = false, updatable = false)
     private InstrumentType type;
 
-    /** Однократная инициализация идентичности сущности. */
-    @SuppressWarnings("SameParameterValue") // Сейчас метод вызывается только инструмента FX_SPOT (других еще нет)
+    /**
+     * Однократная инициализация идентичности сущности.
+     */
+    @SuppressWarnings("SameParameterValue") // <-- Сейчас метод вызывается только инструмента FX_SPOT (других еще нет)
     protected final void initIdentity(String code, String symbol, InstrumentType type) {
         // Защита от повторной инициализации
         if (this.code != null || this.symbol != null || this.type != null) {
             throw new IllegalStateException("Instrument identity already initialized");
         }
 
-        // ↓↓ Базовые проверки аргументов
+        // Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(symbol, "symbol must not be null");
         Objects.requireNonNull(type, "type must not be null");
 
-        // ↓↓ Нормализуем и проверяем строковые переменные
+        // Нормализуем и проверяем строковые переменные
         final String nCode = code.strip();
         final String nSymbol = symbol.strip();
         if (nCode.isEmpty()) throw new IllegalArgumentException("code must not be blank");

@@ -11,4 +11,5 @@ package com.alligator.market.backend.config.audit.context;
 public record AuditContext(
         String actorId,
         String via
-) {}
+) {
+}

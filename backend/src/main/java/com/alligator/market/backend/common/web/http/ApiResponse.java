@@ -17,12 +17,16 @@ public record ApiResponse<T>(
         Instant timestamp
 ) {
 
-    /** Фабрика успешного ответа. */
+    /**
+     * Фабрика успешного ответа.
+     */
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(data, true, null, "success", Instant.now());
     }
 
-    /** Фабрика ошибочного ответа. */
+    /**
+     * Фабрика ошибочного ответа.
+     */
     public static ApiResponse<Void> error(String code, String message) {
         return new ApiResponse<>(null, false, code, message, Instant.now());
     }

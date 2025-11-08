@@ -42,7 +42,9 @@ import java.util.Objects;
  */
 public final class DbErrors {
 
-    /** Утилитарный класс — инстанцирование запрещено. */
+    /**
+     * Утилитарный класс — инстанцирование запрещено.
+     */
     private DbErrors() {
         throw new UnsupportedOperationException("Utility class");
     }
@@ -95,7 +97,9 @@ public final class DbErrors {
         return false;
     }
 
-    /** Проверка "строка содержит подстроку" без учёта регистра; безопасна к {@code null}. */
+    /**
+     * Проверка "строка содержит подстроку" без учёта регистра; безопасна к {@code null}.
+     */
     private static boolean containsIgnoreCase(String haystack, String needleLower) {
         return haystack != null && haystack.toLowerCase(Locale.ROOT).contains(needleLower);
         // Примечание: Locale.ROOT гарантирует детерминированное сравнение для латинских имён констрейнтов.

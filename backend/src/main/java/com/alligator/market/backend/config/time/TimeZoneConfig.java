@@ -24,20 +24,26 @@ public class TimeZoneConfig {
 
     private static final ZoneId UTC = ZoneOffset.UTC;
 
-    /** Устанавливает дефолтную временную зону. */
+    /**
+     * Устанавливает дефолтную временную зону.
+     */
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone(UTC));
         log.info("Default time zone set to UTC");
     }
 
-    /** Настраивает временную зону для сериализации JSON. */
+    /**
+     * Настраивает временную зону для сериализации JSON.
+     */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonTimeZoneCustomizer() {
         return builder -> builder.timeZone(TimeZone.getTimeZone(UTC));
     }
 
-    /** Настраивает временную зону для Hibernate. */
+    /**
+     * Настраивает временную зону для Hibernate.
+     */
     @Bean
     public HibernatePropertiesCustomizer hibernateTimeZoneCustomizer() {
         return properties -> properties.put(AvailableSettings.JDBC_TIME_ZONE, UTC);

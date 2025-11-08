@@ -12,7 +12,7 @@ import java.util.Optional;
  * Конфигурация JPA Auditing.
  */
 @Configuration
-@EnableJpaAuditing // ← Включаем инфраструктуру JPA-аудита
+@EnableJpaAuditing // <-- Включаем инфраструктуру JPA-аудита
 public class AuditConfig {
 
     /**
