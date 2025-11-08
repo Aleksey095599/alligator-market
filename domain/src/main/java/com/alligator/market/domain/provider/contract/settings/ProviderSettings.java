@@ -18,6 +18,8 @@ public interface ProviderSettings {
     final class EmptyProviderSettings implements ProviderSettings {
 
         private static final EmptyProviderSettings INSTANCE = new EmptyProviderSettings();
-        private EmptyProviderSettings() {}
+
+        private EmptyProviderSettings() {
+        }
     }
 }

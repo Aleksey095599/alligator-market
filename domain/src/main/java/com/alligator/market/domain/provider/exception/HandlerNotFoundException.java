@@ -14,7 +14,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      * Формирует сообщение об ошибке.
      *
      * @param instrumentCode код инструмента
-     * @param providerCode код провайдера
+     * @param providerCode   код провайдера
      * @return текст сообщения
      */
     private static String msg(String instrumentCode, String providerCode) {
@@ -27,9 +27,8 @@ public final class HandlerNotFoundException extends RuntimeException {
      * Создает исключение.
      *
      * @param instrumentCode код инструмента
-     * @param providerCode код провайдера
+     * @param providerCode   код провайдера
      */
-    @SuppressWarnings("unused")
     public HandlerNotFoundException(String instrumentCode, String providerCode) {
         super(msg(instrumentCode, providerCode));
         this.instrumentCode = instrumentCode;
@@ -40,8 +39,8 @@ public final class HandlerNotFoundException extends RuntimeException {
      * Создает исключение с причиной.
      *
      * @param instrumentCode код инструмента
-     * @param providerCode код провайдера
-     * @param cause причина ошибки
+     * @param providerCode   код провайдера
+     * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
     public HandlerNotFoundException(String instrumentCode, String providerCode, Throwable cause) {
@@ -55,14 +54,16 @@ public final class HandlerNotFoundException extends RuntimeException {
      *
      * @return код инструмента
      */
-    @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 
     /**
      * Возвращает код провайдера.
      *
      * @return код провайдера
      */
-    @SuppressWarnings("unused")
-    public String getProviderCode() { return providerCode; }
+    public String getProviderCode() {
+        return providerCode;
+    }
 }

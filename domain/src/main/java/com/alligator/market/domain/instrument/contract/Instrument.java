@@ -7,12 +7,18 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
  */
 public interface Instrument {
 
-    /** Внутренний код инструмента (уникален в контексте приложения). */
+    /**
+     * Внутренний код инструмента (уникален в контексте приложения).
+     */
     String instrumentCode();
 
-    /** Символ инструмента для отображения в UI. */
+    /**
+     * Символ инструмента для отображения в UI.
+     */
     String instrumentSymbol();
 
-    /** Тип финансового инструмента. */
+    /**
+     * Тип финансового инструмента.
+     */
     InstrumentType instrumentType();
 }

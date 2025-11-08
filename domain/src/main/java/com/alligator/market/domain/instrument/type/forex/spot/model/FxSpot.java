@@ -11,15 +11,14 @@ import java.util.Objects;
 /**
  * Модель финансового инструмента FX_SPOT.
  *
- * @param base                         Базовая валюта
- * @param quote                        Котируемая валюта
- * @param valueDate                    Дата валютирования
- * @param defaultQuoteFractionDigits   Количество знаков после запятой в котировке по умолчанию
+ * @param base                       Базовая валюта
+ * @param quote                      Котируемая валюта
+ * @param valueDate                  Дата валютирования
+ * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
  *
- * @see Instrument                     Часть параметров переопределены из базового контракта
+ * @see Instrument Часть параметров переопределены из базового контракта
  */
 public record FxSpot(
-
         Currency base,
         Currency quote,
         FxSpotValueDate valueDate,
@@ -27,9 +26,11 @@ public record FxSpot(
 
 ) implements Instrument {
 
-    /** Конструктор с проверками. */
+    /**
+     * Конструктор с проверками.
+     */
     public FxSpot {
-        // ↓↓ Базовые проверки аргументов
+        // Базовые проверки аргументов
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
@@ -45,19 +46,25 @@ public record FxSpot(
         }
     }
 
-    /** Внутренний код инструмента (уникален в контексте приложения). */
+    /**
+     * Внутренний код инструмента (уникален в контексте приложения).
+     */
     @Override
     public String instrumentCode() {
         return FxSpotCodec.fxSpotCode(base, quote, valueDate);
     }
 
-    /** Символ инструмента для отображения в UI. */
+    /**
+     * Символ инструмента для отображения в UI.
+     */
     @Override
     public String instrumentSymbol() {
         return FxSpotCodec.fxSpotSymbol(base, quote, valueDate);
     }
 
-    /** Тип инструмента. */
+    /**
+     * Тип инструмента.
+     */
     @Override
     public InstrumentType instrumentType() {
         return InstrumentType.FX_SPOT;

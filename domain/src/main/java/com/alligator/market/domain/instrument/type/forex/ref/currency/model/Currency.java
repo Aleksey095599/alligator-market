@@ -6,27 +6,27 @@ import java.util.Objects;
  * Базовая модель валюты.
  * Используется для создания валютных пар.
  *
- * @param code             Уникальный код валюты
- * @param name             Наименование валюты
- * @param country          Страна или регион обращения
- * @param fractionDigits   Количество знаков после запятой для денежных сумм
+ * @param code           Уникальный код валюты
+ * @param name           Наименование валюты
+ * @param country        Страна или регион обращения
+ * @param fractionDigits Количество знаков после запятой для денежных сумм
  */
 public record Currency(
-
         CurrencyCode code,
         String name,
         String country,
         int fractionDigits
-
 ) {
-    /** Конструктор с проверками. */
-    public Currency (CurrencyCode code, String name, String country, int fractionDigits) {
-        // ↓↓ Базовые проверки аргументов
+    /**
+     * Конструктор с проверками.
+     */
+    public Currency(CurrencyCode code, String name, String country, int fractionDigits) {
+        // Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(country, "country must not be null");
 
-        // ↓↓ Нормализуем и проверяем строковые переменные
+        // Нормализуем и проверяем строковые переменные
         final String nName = name.strip();
         final String nCountry = country.strip();
         if (nName.isEmpty()) throw new IllegalArgumentException("name must not be blank");

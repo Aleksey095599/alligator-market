@@ -13,7 +13,6 @@ import java.time.Instant;
  * @param providerCode   соответствует {@link MarketDataProvider#providerCode()}
  */
 public record QuoteTick(
-
         String instrumentCode,
         BigDecimal bid,
         BigDecimal ask,

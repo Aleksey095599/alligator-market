@@ -12,17 +12,20 @@ public enum FxSpotValueDate {
     /* Константы: коды дат валютирования для инструмента FX_SPOT (далее — коды). */
     TOD, TOM, SPOT;
 
-    /* ↓↓ Коды в виде списка и единой строки (для сообщений об ошибках). */
-    private static final List<String> SUPPORTED_CODES =  Arrays.stream(values()).map(Enum::name).toList();
+    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
+    private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
-    /** Возвращает строковый код (= имя константы). */
+    /**
+     * Возвращает строковый код (= имя константы).
+     */
     public String code() {
         return name();
     }
 
-    /** Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения. */
-    @SuppressWarnings("unused")
+    /**
+     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     */
     public static FxSpotValueDate fromCode(String code) {
         Objects.requireNonNull(code, "FxSpotValueDate code must not be null");
 
@@ -44,7 +47,9 @@ public enum FxSpotValueDate {
         }
     }
 
-    /** Возвращает список поддерживаемых кодов (для валидации/документации). */
+    /**
+     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
         return SUPPORTED_CODES;

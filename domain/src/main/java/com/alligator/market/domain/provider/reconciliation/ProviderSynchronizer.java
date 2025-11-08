@@ -4,17 +4,21 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Доменный сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
  */
+
+@SuppressWarnings("ClassCanBeRecord")
 public class ProviderSynchronizer {
 
-    /* Сканер контекста → возвращает снимки. */
+    /* Сканер контекста --> возвращает снимки. */
     private final ProviderContextScanner contextScanner;
 
-    /* Репозиторий → извлекает коды провайдеров. */
+    /* Репозиторий --> извлекает коды провайдеров. */
     private final ProviderRepository repository;
 
     /* Контракт синхронизации провайдеров в БД. */
@@ -29,9 +33,10 @@ public class ProviderSynchronizer {
         this.syncDao = syncDao;
     }
 
-    /** Выполнить синхронизацию (одна атомарная транзакция). */
+    /**
+     * Выполнить синхронизацию (одна атомарная транзакция).
+     */
     public void synchronize() {
-
         // 1) Читаем снимки из контекста и коды из БД
         Map<String, ProviderSnapshot> ctx = contextScanner.providerSnapshots();
         Set<String> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
@@ -48,11 +53,11 @@ public class ProviderSynchronizer {
         Set<String> obsolete = new LinkedHashSet<>(repoCodes);
         obsolete.removeAll(ctx.keySet());
         if (!obsolete.isEmpty()) {
-            syncDao.deleteByCodes(obsolete); // batch DELETE
+            syncDao.deleteByCodes(obsolete); // <-- batch DELETE
         }
 
         // 3) UPSERT всех из контекста (новые + изменившиеся обновятся, одинаковые пройдут без модификации)
-        syncDao.upsertAll(ctx.values()); // batch UPSERT
+        syncDao.upsertAll(ctx.values()); // <-- batch UPSERT
         // Готово
     }
 }

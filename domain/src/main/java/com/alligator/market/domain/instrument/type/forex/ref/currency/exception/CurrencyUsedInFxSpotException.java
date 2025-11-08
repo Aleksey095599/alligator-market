@@ -12,6 +12,28 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
     private final CurrencyCode code;
 
     /**
+     * Создает исключение.
+     *
+     * @param code код валюты
+     */
+    public CurrencyUsedInFxSpotException(CurrencyCode code) {
+        super(msg(code));
+        this.code = code;
+    }
+
+    /**
+     * Создает исключение с причиной.
+     *
+     * @param code  код валюты
+     * @param cause причина ошибки
+     */
+    @SuppressWarnings("unused")
+    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
+        super(msg(code), cause);
+        this.code = code;
+    }
+
+    /**
      * Формирует сообщение об ошибке.
      *
      * @param code код валюты
@@ -23,33 +45,11 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
     }
 
     /**
-     * Создает исключение.
-     *
-     * @param code код валюты
-     */
-    @SuppressWarnings("unused")
-    public CurrencyUsedInFxSpotException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
-    }
-
-    /**
-     * Создает исключение с причиной.
-     *
-     * @param code код валюты
-     * @param cause причина ошибки
-     */
-    @SuppressWarnings("unused")
-    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
-    }
-
-    /**
      * Возвращает код валюты.
      *
      * @return код валюты
      */
-    @SuppressWarnings("unused")
-    public CurrencyCode getCode() { return code; }
+    public CurrencyCode getCode() {
+        return code;
+    }
 }

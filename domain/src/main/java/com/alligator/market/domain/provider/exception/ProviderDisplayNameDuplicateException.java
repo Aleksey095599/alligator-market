@@ -10,6 +10,28 @@ public final class ProviderDisplayNameDuplicateException extends RuntimeExceptio
     private final String displayName;
 
     /**
+     * Создает исключение.
+     *
+     * @param displayName отображаемое имя провайдера
+     */
+    public ProviderDisplayNameDuplicateException(String displayName) {
+        super(msg(displayName));
+        this.displayName = displayName;
+    }
+
+    /**
+     * Создает исключение с причиной.
+     *
+     * @param displayName отображаемое имя провайдера
+     * @param cause       причина ошибки
+     */
+    @SuppressWarnings("unused")
+    public ProviderDisplayNameDuplicateException(String displayName, Throwable cause) {
+        super(msg(displayName), cause);
+        this.displayName = displayName;
+    }
+
+    /**
      * Формирует сообщение об ошибке.
      *
      * @param displayName отображаемое имя провайдера
@@ -21,33 +43,12 @@ public final class ProviderDisplayNameDuplicateException extends RuntimeExceptio
     }
 
     /**
-     * Создает исключение.
-     *
-     * @param displayName отображаемое имя провайдера
-     */
-    @SuppressWarnings("unused")
-    public ProviderDisplayNameDuplicateException(String displayName) {
-        super(msg(displayName));
-        this.displayName = displayName;
-    }
-
-    /**
-     * Создает исключение с причиной.
-     *
-     * @param displayName отображаемое имя провайдера
-     * @param cause причина ошибки
-     */
-    @SuppressWarnings("unused")
-    public ProviderDisplayNameDuplicateException(String displayName, Throwable cause) {
-        super(msg(displayName), cause);
-        this.displayName = displayName;
-    }
-
-    /**
      * Возвращает отображаемое имя провайдера.
      *
      * @return отображаемое имя провайдера
      */
     @SuppressWarnings("unused")
-    public String getDisplayName() { return displayName; }
+    public String getDisplayName() {
+        return displayName;
+    }
 }

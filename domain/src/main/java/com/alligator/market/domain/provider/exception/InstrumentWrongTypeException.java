@@ -15,37 +15,13 @@ public final class InstrumentWrongTypeException extends RuntimeException {
     private final InstrumentType expectedType;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента
-     * @param instrumentType фактический тип инструмента
-     * @param handlerCode код обработчика
-     * @param expectedType ожидаемый тип инструмента
-     * @return текст сообщения
-     */
-    private static String msg(
-            String instrumentCode,
-            InstrumentType instrumentType,
-            String handlerCode,
-            InstrumentType expectedType
-    ) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        InstrumentType actual = Objects.requireNonNull(instrumentType, "instrumentType must not be null");
-        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        InstrumentType expected = Objects.requireNonNull(expectedType, "expectedType must not be null");
-        return "Instrument type mismatch (instrumentCode=" + ic + ", actualType=" + actual.name()
-                + ", handlerCode=" + hc + ", expectedType=" + expected.name() + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param instrumentCode код инструмента
      * @param instrumentType фактический тип инструмента
-     * @param handlerCode код обработчика
-     * @param expectedType ожидаемый тип инструмента
+     * @param handlerCode    код обработчика
+     * @param expectedType   ожидаемый тип инструмента
      */
-    @SuppressWarnings("unused")
     public InstrumentWrongTypeException(
             String instrumentCode,
             InstrumentType instrumentType,
@@ -64,9 +40,9 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      *
      * @param instrumentCode код инструмента
      * @param instrumentType фактический тип инструмента
-     * @param handlerCode код обработчика
-     * @param expectedType ожидаемый тип инструмента
-     * @param cause причина ошибки
+     * @param handlerCode    код обработчика
+     * @param expectedType   ожидаемый тип инструмента
+     * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
     public InstrumentWrongTypeException(
@@ -84,12 +60,36 @@ public final class InstrumentWrongTypeException extends RuntimeException {
     }
 
     /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента
+     * @param instrumentType фактический тип инструмента
+     * @param handlerCode    код обработчика
+     * @param expectedType   ожидаемый тип инструмента
+     * @return текст сообщения
+     */
+    private static String msg(
+            String instrumentCode,
+            InstrumentType instrumentType,
+            String handlerCode,
+            InstrumentType expectedType
+    ) {
+        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        InstrumentType actual = Objects.requireNonNull(instrumentType, "instrumentType must not be null");
+        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        InstrumentType expected = Objects.requireNonNull(expectedType, "expectedType must not be null");
+        return "Instrument type mismatch (instrumentCode=" + ic + ", actualType=" + actual.name()
+                + ", handlerCode=" + hc + ", expectedType=" + expected.name() + ")";
+    }
+
+    /**
      * Возвращает код инструмента.
      *
      * @return код инструмента
      */
-    @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 
     /**
      * Возвращает фактический тип инструмента.
@@ -97,7 +97,9 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @return фактический тип инструмента
      */
     @SuppressWarnings("unused")
-    public InstrumentType getInstrumentType() { return instrumentType; }
+    public InstrumentType getInstrumentType() {
+        return instrumentType;
+    }
 
     /**
      * Возвращает код обработчика.
@@ -105,7 +107,9 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @return код обработчика
      */
     @SuppressWarnings("unused")
-    public String getHandlerCode() { return handlerCode; }
+    public String getHandlerCode() {
+        return handlerCode;
+    }
 
     /**
      * Возвращает ожидаемый тип инструмента.
@@ -113,5 +117,7 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @return ожидаемый тип инструмента
      */
     @SuppressWarnings("unused")
-    public InstrumentType getExpectedType() { return expectedType; }
+    public InstrumentType getExpectedType() {
+        return expectedType;
+    }
 }

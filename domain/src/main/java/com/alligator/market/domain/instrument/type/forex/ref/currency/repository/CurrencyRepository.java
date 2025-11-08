@@ -11,24 +11,28 @@ import java.util.Optional;
  */
 public interface CurrencyRepository {
 
-    /** Создать новую валюту. */
+    /**
+     * Создать новую валюту.
+     */
     Currency create(Currency currency);
 
-    /** Обновить существующую валюту. */
+    /**
+     * Обновить существующую валюту.
+     */
     Currency update(Currency currency);
 
-    /** Удалить валюту по коду. */
+    /**
+     * Удалить валюту по коду.
+     */
     void deleteByCode(CurrencyCode code);
 
-    /** Найти валюту по коду. */
+    /**
+     * Найти валюту по коду.
+     */
     Optional<Currency> findByCode(CurrencyCode code);
 
-    /** Проверить наличие валюты по коду. */
-    boolean existsByCode(CurrencyCode code);
-
-    /** Проверить наличие валюты по имени. */
-    boolean existsByName(String name);
-
-    /** Вернуть все валюты. */
+    /**
+     * Вернуть все валюты.
+     */
     List<Currency> findAll();
 }

@@ -25,7 +25,6 @@ public final class FxSpotNotFoundException extends RuntimeException {
      *
      * @param instrumentCode код инструмента
      */
-    @SuppressWarnings("unused")
     public FxSpotNotFoundException(String instrumentCode) {
         super(msg(instrumentCode));
         this.instrumentCode = instrumentCode;
@@ -35,7 +34,7 @@ public final class FxSpotNotFoundException extends RuntimeException {
      * Создает исключение с причиной.
      *
      * @param instrumentCode код инструмента
-     * @param cause причина ошибки
+     * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
     public FxSpotNotFoundException(String instrumentCode, Throwable cause) {
@@ -48,6 +47,7 @@ public final class FxSpotNotFoundException extends RuntimeException {
      *
      * @return код инструмента
      */
-    @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 }

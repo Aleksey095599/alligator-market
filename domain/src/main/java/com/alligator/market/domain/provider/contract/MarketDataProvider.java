@@ -34,17 +34,19 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
      * Настройки провайдера: параметры, которые разрешено менять из frontend.
      */
     @SuppressWarnings("unused")
-    ProviderSettings settings(); // Точка роста, без реализации (заглушка)
+    ProviderSettings settings(); // <-- Точка роста, без реализации (заглушка)
 
     /**
      * Иммутабельный набор кодов поддерживаемых инструментов.
      */
-    Set<String> instrumentsCodes();
+    @SuppressWarnings("unused")
+    Set<String> instrumentsCodes(); // <-- TODO: нужен ли?
 
     /**
      * Иммутабельный набор типов поддерживаемых инструментов.
      */
-    Set<InstrumentType> instrumentsTypes();
+    @SuppressWarnings("unused")
+    Set<InstrumentType> instrumentsTypes(); // <-- TODO: нужен ли?
 
     /**
      * Унифицированная операция получения котировок для любого поддерживаемого инструмента.

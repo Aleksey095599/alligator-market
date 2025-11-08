@@ -12,17 +12,6 @@ public final class CurrencyCreateException extends RuntimeException {
     private final CurrencyCode code;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param code код валюты
-     * @return текст сообщения
-     */
-    private static String msg(CurrencyCode code) {
-        CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Failed to create Currency (code=" + c.value() + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param code код валюты
@@ -36,13 +25,23 @@ public final class CurrencyCreateException extends RuntimeException {
     /**
      * Создает исключение с причиной.
      *
-     * @param code код валюты
+     * @param code  код валюты
      * @param cause причина ошибки
      */
-    @SuppressWarnings("unused")
     public CurrencyCreateException(CurrencyCode code, Throwable cause) {
         super(msg(code), cause);
         this.code = code;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param code код валюты
+     * @return текст сообщения
+     */
+    private static String msg(CurrencyCode code) {
+        CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
+        return "Failed to create Currency (code=" + c.value() + ")";
     }
 
     /**
@@ -50,6 +49,7 @@ public final class CurrencyCreateException extends RuntimeException {
      *
      * @return код валюты
      */
-    @SuppressWarnings("unused")
-    public CurrencyCode getCode() { return code; }
+    public CurrencyCode getCode() {
+        return code;
+    }
 }

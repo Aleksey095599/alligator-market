@@ -23,12 +23,16 @@ public final class FxSpotCodec {
     private static final int CURRENCY_CODE_LENGTH = 3;
     private static final int CURRENCY_PAIR_LENGTH = 2 * CURRENCY_CODE_LENGTH;
 
-    /** Приватный конструктор. */
+    /**
+     * Приватный конструктор.
+     */
     private FxSpotCodec() {
         throw new UnsupportedOperationException("Utility class"); // Запрещаем создание экземпляров
     }
 
-    /** Формирует символ инструмента из доменных моделей кодов валют и даты валютирования. */
+    /**
+     * Формирует символ инструмента из доменных моделей кодов валют и даты валютирования.
+     */
     public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
@@ -36,7 +40,9 @@ public final class FxSpotCodec {
         return baseCode.value() + quoteCode.value() + SEP + valueDate.code();
     }
 
-    /* ↪ Перегрузка для случая доменных моделей валют. */
+    /**
+     * Перегрузка: Формирует символ инструмента из доменных моделей валют и даты валютирования.
+     */
     public static String fxSpotSymbol(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
@@ -44,13 +50,17 @@ public final class FxSpotCodec {
         return fxSpotSymbol(baseCurrency.code(), quoteCurrency.code(), valueDate);
     }
 
-    /** Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования. */
+    /**
+     * Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования.
+     */
     public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
         // Добавляем префикс к символу
         return TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate);
     }
 
-    /* ↪ Перегрузка для случая доменных моделей валют. */
+    /**
+     * Перегрузка: Формирует внутренний код инструмента из доменных моделей валют и даты валютирования.
+     */
     public static String fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
@@ -81,7 +91,7 @@ public final class FxSpotCodec {
         }
 
         // Разделение валютной пары на валюты
-        final String baseRaw  = pair.substring(0, CURRENCY_CODE_LENGTH);
+        final String baseRaw = pair.substring(0, CURRENCY_CODE_LENGTH);
         final String quoteRaw = pair.substring(CURRENCY_CODE_LENGTH);
 
         final String valueDateRaw = instrumentCode.substring(sep + 1);
@@ -90,7 +100,7 @@ public final class FxSpotCodec {
         }
 
         // Валидация кодов валют
-        final CurrencyCode baseCode  = CurrencyCode.of(baseRaw);
+        final CurrencyCode baseCode = CurrencyCode.of(baseRaw);
         final CurrencyCode quoteCode = CurrencyCode.of(quoteRaw);
 
         // Валидация даты валютирования
@@ -99,6 +109,9 @@ public final class FxSpotCodec {
         return new FxSpotCodeParts(baseCode, quoteCode, valueDate);
     }
 
-    /** Модель разложения кода инструмента на валюты и дату валютирования. */
-    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) { }
+    /**
+     * Модель разложения кода инструмента на валюты и дату валютирования.
+     */
+    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+    }
 }

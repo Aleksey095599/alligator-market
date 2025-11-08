@@ -13,37 +13,13 @@ public final class InstrumentWrongClassException extends RuntimeException {
     private final Class<?> expectedClass;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента
-     * @param instrumentClass фактический класс инструмента
-     * @param handlerCode код обработчика
-     * @param expectedClass ожидаемый класс инструмента
-     * @return текст сообщения
-     */
-    private static String msg(
-            String instrumentCode,
-            Class<?> instrumentClass,
-            String handlerCode,
-            Class<?> expectedClass
-    ) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        Class<?> actual = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
-        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        Class<?> expected = Objects.requireNonNull(expectedClass, "expectedClass must not be null");
-        return "Instrument class mismatch (instrumentCode=" + ic + ", actualClass=" + actual.getName()
-                + ", handlerCode=" + hc + ", expectedClass=" + expected.getName() + ")";
-    }
-
-    /**
      * Создает исключение.
      *
-     * @param instrumentCode код инструмента
+     * @param instrumentCode  код инструмента
      * @param instrumentClass фактический класс инструмента
-     * @param handlerCode код обработчика
-     * @param expectedClass ожидаемый класс инструмента
+     * @param handlerCode     код обработчика
+     * @param expectedClass   ожидаемый класс инструмента
      */
-    @SuppressWarnings("unused")
     public InstrumentWrongClassException(
             String instrumentCode,
             Class<?> instrumentClass,
@@ -60,11 +36,11 @@ public final class InstrumentWrongClassException extends RuntimeException {
     /**
      * Создает исключение с причиной.
      *
-     * @param instrumentCode код инструмента
+     * @param instrumentCode  код инструмента
      * @param instrumentClass фактический класс инструмента
-     * @param handlerCode код обработчика
-     * @param expectedClass ожидаемый класс инструмента
-     * @param cause причина ошибки
+     * @param handlerCode     код обработчика
+     * @param expectedClass   ожидаемый класс инструмента
+     * @param cause           причина ошибки
      */
     @SuppressWarnings("unused")
     public InstrumentWrongClassException(
@@ -82,12 +58,36 @@ public final class InstrumentWrongClassException extends RuntimeException {
     }
 
     /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode  код инструмента
+     * @param instrumentClass фактический класс инструмента
+     * @param handlerCode     код обработчика
+     * @param expectedClass   ожидаемый класс инструмента
+     * @return текст сообщения
+     */
+    private static String msg(
+            String instrumentCode,
+            Class<?> instrumentClass,
+            String handlerCode,
+            Class<?> expectedClass
+    ) {
+        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        Class<?> actual = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
+        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        Class<?> expected = Objects.requireNonNull(expectedClass, "expectedClass must not be null");
+        return "Instrument class mismatch (instrumentCode=" + ic + ", actualClass=" + actual.getName()
+                + ", handlerCode=" + hc + ", expectedClass=" + expected.getName() + ")";
+    }
+
+    /**
      * Возвращает код инструмента.
      *
      * @return код инструмента
      */
-    @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 
     /**
      * Возвращает фактический класс инструмента.
@@ -95,7 +95,9 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @return фактический класс инструмента
      */
     @SuppressWarnings("unused")
-    public Class<?> getInstrumentClass() { return instrumentClass; }
+    public Class<?> getInstrumentClass() {
+        return instrumentClass;
+    }
 
     /**
      * Возвращает код обработчика.
@@ -103,7 +105,9 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @return код обработчика
      */
     @SuppressWarnings("unused")
-    public String getHandlerCode() { return handlerCode; }
+    public String getHandlerCode() {
+        return handlerCode;
+    }
 
     /**
      * Возвращает ожидаемый класс инструмента.
@@ -111,5 +115,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @return ожидаемый класс инструмента
      */
     @SuppressWarnings("unused")
-    public Class<?> getExpectedClass() { return expectedClass; }
+    public Class<?> getExpectedClass() {
+        return expectedClass;
+    }
 }

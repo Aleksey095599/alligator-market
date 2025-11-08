@@ -5,10 +5,10 @@ import java.util.Objects;
 /**
  * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
  *
- * @param displayName        Отображаемое имя провайдера (user friendly)
- * @param deliveryMode       Режим доставки рыночных данных: PULL или PUSH {@link DeliveryMode}
- * @param accessMethod       Метод доступа к рыночным данным {@link AccessMethod}
- * @param bulkSubscription   Поддержка массовой подписки одним запросом
+ * @param displayName      Отображаемое имя провайдера (user friendly)
+ * @param deliveryMode     Режим доставки рыночных данных: PULL или PUSH {@link DeliveryMode}
+ * @param accessMethod     Метод доступа к рыночным данным {@link AccessMethod}
+ * @param bulkSubscription Поддержка массовой подписки одним запросом
  */
 public record ProviderDescriptor(
         String displayName,
@@ -17,7 +17,7 @@ public record ProviderDescriptor(
         boolean bulkSubscription
 ) {
     public ProviderDescriptor {
-        // ↓↓ Базовая валидация аргументов
+        // Базовая валидация аргументов
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");

@@ -5,18 +5,16 @@ import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateExcep
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Абстрактный сканер контекста приложения.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
-    /** Вернуть последовательность провайдеров для построения карты дескрипторов. */
+    /**
+     * Вернуть последовательность провайдеров для построения карты дескрипторов.
+     */
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**

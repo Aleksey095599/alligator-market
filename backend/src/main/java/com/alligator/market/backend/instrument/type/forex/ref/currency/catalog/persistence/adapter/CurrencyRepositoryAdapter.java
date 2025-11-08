@@ -120,20 +120,6 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
     }
 
     @Override
-    public boolean existsByCode(CurrencyCode code) {
-        Objects.requireNonNull(code, "code must not be null");
-
-        return jpaRepository.existsByCode(code);
-    }
-
-    @Override
-    public boolean existsByName(String name) {
-        Objects.requireNonNull(name, "name must not be null");
-
-        return jpaRepository.existsByName(name);
-    }
-
-    @Override
     public List<Currency> findAll() {
 
         return jpaRepository.findAll(Sort.by("code"))

@@ -11,7 +11,6 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
  * @param priority   приоритет провайдера 1 (наивысший), 2, 3...
  */
 public record InstrumentFeed(
-
         Instrument instrument,
         MarketDataProvider provider,
         int priority

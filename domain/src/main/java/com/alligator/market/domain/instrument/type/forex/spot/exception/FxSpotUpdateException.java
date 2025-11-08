@@ -35,9 +35,8 @@ public final class FxSpotUpdateException extends RuntimeException {
      * Создает исключение с причиной.
      *
      * @param instrumentCode код инструмента
-     * @param cause причина ошибки
+     * @param cause          причина ошибки
      */
-    @SuppressWarnings("unused")
     public FxSpotUpdateException(String instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
@@ -48,6 +47,7 @@ public final class FxSpotUpdateException extends RuntimeException {
      *
      * @return код инструмента
      */
-    @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 }

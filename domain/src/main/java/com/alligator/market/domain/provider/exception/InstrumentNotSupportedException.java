@@ -41,7 +41,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      *
      * @param instrumentCode код инструмента, который не поддерживается
      * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
-     * @param cause причина ошибки
+     * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
     public InstrumentNotSupportedException(String instrumentCode, String handlerCode, Throwable cause) {
@@ -56,7 +56,9 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() { return instrumentCode; }
+    public String getInstrumentCode() {
+        return instrumentCode;
+    }
 
     /**
      * Возвращает код обработчика.
@@ -64,5 +66,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @return код обработчика
      */
     @SuppressWarnings("unused")
-    public String getHandlerCode() { return handlerCode; }
+    public String getHandlerCode() {
+        return handlerCode;
+    }
 }

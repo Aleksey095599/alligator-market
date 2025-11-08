@@ -139,15 +139,15 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // ↓↓ Проверяем, что провайдер прикреплен к данному обработчику
+        // Проверяем, что провайдер прикреплен к данному обработчику
         P currentProvider = provider;
         if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
 
-        // ↓↓ Проверяем, что класс инструмента соответствует ожиданиям обработчика
+        // Проверяем, что класс инструмента соответствует ожиданиям обработчика
         if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException( // Неверный класс
+            throw new InstrumentWrongClassException( // <-- Неверный класс
                     instrument.instrumentCode(),
                     instrument.getClass(),
                     normHandlerCode,
@@ -155,9 +155,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             );
         }
 
-        // ↓↓ Проверяем, что тип инструмента соответствует ожиданиям обработчика
+        // Проверяем, что тип инструмента соответствует ожиданиям обработчика
         if (instrument.instrumentType() != instrumentType) {
-            throw new InstrumentWrongTypeException( // Неверный тип
+            throw new InstrumentWrongTypeException( // <-- Неверный тип
                     instrument.instrumentCode(),
                     instrument.instrumentType(),
                     normHandlerCode,
@@ -170,9 +170,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         if (rawCode == null || rawCode.isBlank()) {
             throw new IllegalArgumentException("instrumentCode must not be null or blank");
         }
-        var normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // Нормализуем код
+        var normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // <-- Нормализуем код
         if (!normSupportedInstrumentCodes.contains(normCode)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), normHandlerCode);
+            throw new InstrumentNotSupportedException( // <-- Не поддерживается
+                    instrument.instrumentCode(),
+                    normHandlerCode);
         }
         return doQuote(instrument);
     }
@@ -204,14 +206,14 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     /**
-     * Нормализует и валидирует набор кодов инструментов: trim → UPPERCASE → проверка формата [A-Z0-9_]+ → проверка на дубли.
+     * Нормализует и валидирует набор кодов инструментов: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+ --> проверка на дубли.
      *
      * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
      */
     private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
         var codes = new LinkedHashSet<String>();
         for (String code : supportedInstrumentCodes) {
-            // ↓↓ Набор не должен содержать null или пустые коды инструментов
+            // Набор не должен содержать null или пустые коды инструментов
             if (code == null || code.isBlank()) {
                 throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
             }
@@ -230,7 +232,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     }
 
     /**
-     * Нормализует и валидирует код обработчика: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     * Нормализует и валидирует код обработчика: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+.
      *
      * @throws IllegalArgumentException если код обработчика не соответствует формату
      */

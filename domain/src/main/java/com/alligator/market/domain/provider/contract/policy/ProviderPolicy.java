@@ -15,7 +15,7 @@ public record ProviderPolicy(
     private static final Duration MIN_ALLOWED = Duration.ofSeconds(1);
 
     public ProviderPolicy {
-        // ↓↓ Базовая валидация аргументов
+        // Базовая валидация аргументов
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
         if (minUpdateInterval.compareTo(MIN_ALLOWED) < 0) {
             throw new IllegalArgumentException("minUpdateInterval must be >= PT1S");

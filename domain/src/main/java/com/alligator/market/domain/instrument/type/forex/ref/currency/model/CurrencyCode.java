@@ -6,13 +6,15 @@ import java.util.Objects;
  * Модель уникального кода валюты.
  * Причина создания модели - необходимость соблюдения единого формата кода валюты в разных слоях проекта.
  *
- * @param value   Строковое значение кода валюты
+ * @param value Строковое значение кода валюты
  */
 public record CurrencyCode(
         String value
 ) {
 
-    /** Конструктор с проверками. */
+    /**
+     * Конструктор с проверками.
+     */
     public CurrencyCode {
         Objects.requireNonNull(value, "Currency code must not be null");
         // Соответствие стандартам ISO-4217
@@ -21,10 +23,16 @@ public record CurrencyCode(
         }
     }
 
-    /** Фабрика для создания модели из строкового кода. */
-    public static CurrencyCode of(String code) { return new CurrencyCode(code); }
+    /**
+     * Фабрика для создания модели из строкового кода.
+     */
+    public static CurrencyCode of(String code) {
+        return new CurrencyCode(code);
+    }
 
-    /* Локальная проверка: три заглавные латинские буквы. */
+    /**
+     * Локальная проверка: три заглавные латинские буквы.
+     */
     private static boolean isIso4217(String s) {
         return s.length() == 3
                 && s.charAt(0) >= 'A' && s.charAt(0) <= 'Z'

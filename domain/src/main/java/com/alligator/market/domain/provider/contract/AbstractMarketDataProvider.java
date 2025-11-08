@@ -34,10 +34,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
     private final AtomicReference<ProviderSettings> settingsRef;
 
-    /* Карта "код инструмента → обработчик". После инициализации становится неизменяемой. */
+    /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
     private final Map<String, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
 
-    /* ↓↓ Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
+    /* Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
     private final Set<String> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
 
@@ -47,7 +47,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /**
      * Конструктор.
-     * Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента → обработчик",
+     * Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента --> обработчик",
      * прикрепляет обработчики к провайдеру.
      *
      * @param providerCode код провайдера (UPPERCASE, формат [A-Z0-9_]+)
@@ -78,7 +78,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // ↓↓ Инициализация базовых атрибутов провайдера
+        // Инициализация базовых атрибутов провайдера
         this.normProviderCode = normalizeProviderCode(providerCode);
         this.descriptor = descriptor;
         this.policy = policy;
@@ -94,13 +94,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             }
         }
 
-        // 2) Собираем карту "код инструмента → обработчик" и агрегируем наборы кодов/типов
-        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>(); // Карта
-        var allCodes = new java.util.LinkedHashSet<String>(); // Набор всех кодов инструментов
-        var types = java.util.EnumSet.noneOf(InstrumentType.class); // Набор всех типов инструментов
+        // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
+        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>(); // <-- Карта
+        var allCodes = new java.util.LinkedHashSet<String>(); // <-- Набор всех кодов инструментов
+        var types = java.util.EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
 
         for (var h : handlers) {
-            types.add(h.instrumentType()); // один тип на обработчик
+            types.add(h.instrumentType()); // <-- Один тип на обработчик
             for (String code : h.supportedInstrumentCodes()) {
                 // Коды в обработчике уже нормализованы, но повторно нормализуем для надёжности
                 var upper = code.toUpperCase(java.util.Locale.ROOT);
@@ -123,7 +123,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         // 4) Прикрепляем обработчики к провайдеру
         var uniqueHandlers = new java.util.LinkedHashSet<>(handlers);
         for (var h : uniqueHandlers) {
-            h.attachTo(self()); // ← attachTo должен только сохранить ссылку и ничего не вызывать
+            h.attachTo(self()); // <-- attachTo должен только сохранить ссылку и ничего не вызывать
         }
     }
 
@@ -202,7 +202,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     *  F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
+     * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
      */
     protected abstract P self();
 
@@ -224,7 +224,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Нормализует и валидирует код провайдера: trim → UPPERCASE → проверка формата [A-Z0-9_]+.
+     * Нормализует и валидирует код провайдера: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+.
      *
      * @throws IllegalArgumentException если код провайдера не соответствует формату
      */
