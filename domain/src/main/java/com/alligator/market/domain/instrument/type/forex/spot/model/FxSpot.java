@@ -15,7 +15,6 @@ import java.util.Objects;
  * @param quote                      Котируемая валюта
  * @param valueDate                  Дата валютирования
  * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
- *
  * @see Instrument Часть параметров переопределены из базового контракта
  */
 public record FxSpot(
