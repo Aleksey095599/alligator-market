@@ -11,7 +11,7 @@ import java.util.List;
  * Адаптер, реализующий доменный порт репозитория провайдеров через Spring Data JPA.
  */
 @Repository
-@Transactional(readOnly = true) // ← Все операции только на чтение
+@Transactional(readOnly = true) // <-- Все операции только на чтение
 public class ProviderRepositoryJpaAdapter implements ProviderRepository {
 
     /* JPA-репозиторий. */
@@ -22,9 +22,11 @@ public class ProviderRepositoryJpaAdapter implements ProviderRepository {
         this.jpa = jpa;
     }
 
-    /** Найти все коды провайдеров (натуральные ключи). */
+    /**
+     * Найти все коды провайдеров (натуральные ключи).
+     */
     @Override
     public List<String> findAllCodes() {
-        return jpa.findAllCodes(); // ← Читаем дешёвую проекцию, без загрузки сущностей
+        return jpa.findAllCodes(); // <-- Читаем дешёвую проекцию, без загрузки сущностей
     }
 }

@@ -20,7 +20,6 @@ import static com.alligator.market.backend.provider.adapter.twelve.free.handler.
  * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
  */
 public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFreeAdapterV2, FxSpot> {
-
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
@@ -30,7 +29,9 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     /* Параметры подключения к провайдеру. */
     private final TwelveFreeConnectionProps props;
 
-    /** Конструктор. */
+    /**
+     * Конструктор.
+     */
     public TwelveFreeFxSpotHandler(
             WebClient webClient,
             TwelveFreeConnectionProps props
@@ -45,7 +46,9 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
         this.props = props;
     }
 
-    /** Реализация получения котировки. */
+    /**
+     * Реализация получения котировки.
+     */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
         // Провайдер ожидает формат символа инструмента: BASE/QUOTE
@@ -62,7 +65,9 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
                 .flux();
     }
 
-    /** Преобразование JSON ответа провайдера в доменную модель котировки. */
+    /**
+     * Преобразование JSON ответа провайдера в доменную модель котировки.
+     */
     private QuoteTick responseJsonToQuoteTick(JsonNode json, String instrumentCode) {
         JsonNode priceNode = json.get("price");
         if (priceNode == null) {

@@ -17,6 +17,7 @@ public record ProviderCatalogItem(
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(descriptor, "descriptor must not be null");
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
+
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }

@@ -6,13 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.time.DurationMin;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.time.DurationMin;
 
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * Embeddable JPA-сущность для параметров "политики провайдера".
@@ -23,22 +22,12 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProviderPolicyEmbeddable {
 
-    /** Минимальный интервал обновления котировок (независимо от режима доставки) {@link ProviderPolicy#minUpdateInterval()}. */
+    /**
+     * Минимальный интервал обновления котировок (независимо от режима доставки) {@link ProviderPolicy#minUpdateInterval()}.
+     */
     @NotNull
     @DurationMin(seconds = 1)
     @Convert(converter = DurationToSecondsConverter.class)
     @Column(name = "min_update_interval_seconds", nullable = false, updatable = false)
     private Duration minUpdateInterval;
-
-    /** Конструктор. */
-    ProviderPolicyEmbeddable(Duration minUpdateInterval) {
-        this.minUpdateInterval = Objects.requireNonNull(minUpdateInterval,
-                "minUpdateInterval must not be null");
-    }
-
-    /** Фабрика создания иммутабельного embeddable из доменной модели. */
-    public static ProviderPolicyEmbeddable from(ProviderPolicy policy) {
-        Objects.requireNonNull(policy, "policy must not be null");
-        return new ProviderPolicyEmbeddable(policy.minUpdateInterval());
-    }
 }

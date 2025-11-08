@@ -25,12 +25,12 @@ import java.util.Objects;
  * <p>
  * 1) По бизнес логике таблица статическая и служит только для вывода информации о провайдерах во frontend.
  * 2) Все поля данной JPA-сущности и встроенных JPA-сущностей не обновляемые: логика синхронизации с контекстом
- *    приложения использует стратегию DELETE → INSERT {@link ProviderSynchronizer}.
+ * приложения использует стратегию DELETE --> INSERT {@link ProviderSynchronizer}.
  * 3) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы, чтобы обеспечить fail-fast проверку
- *    инвариантов (non-null, not blank, допустимые диапазоны) и формирование полностью инициализированного,
- *    иммутабельного состояния без сеттеров.
+ * инвариантов (non-null, not blank, допустимые диапазоны) и формирование полностью инициализированного,
+ * иммутабельного состояния без сеттеров.
  * 4) Данная JPA-сущность и встроенные JPA-сущности содержат фабрики, чтобы упростить и стандартизировать создание
- *    из доменных моделей, инкапсулировать маппинг и повторно использовать валидацию.
+ * из доменных моделей, инкапсулировать маппинг и повторно использовать валидацию.
  */
 @Entity
 @Table(
@@ -49,56 +49,63 @@ import java.util.Objects;
                 "AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
-@Access(AccessType.FIELD) // ← Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
-@Immutable // ← Делает сущность read-only для ORM: Hibernate не генерирует UPDATE; изменения игнорируются на flush
-@Cacheable // ← Подключаем 2-й уровень кэша (если включен в конфигурации)
-@org.hibernate.annotations.Cache( // ← Стратегия 2L-кэша: только чтение; отдельный регион
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
+@Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
+@Immutable // <-- Делает сущность read-only для ORM: Hibernate не генерирует UPDATE; изменения игнорируются на flush
+@Cacheable // <-- Подключаем 2-й уровень кэша (если включен в конфигурации)
+@org.hibernate.annotations.Cache( // <-- Стратегия 2L-кэша: только чтение; отдельный регион
         usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY,
         region = "provider"
 )
-@NaturalIdCache // ← Кеширование обращений по натуральному ключу (provider_code)
+@NaturalIdCache // <-- Кеширование обращений по натуральному ключу (provider_code)
 public class ProviderEntity extends BaseEntity {
 
-    /** Суррогатный PK. */
+    /**
+     * Суррогатный PK.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /** Технический код провайдера {@link MarketDataProvider#providerCode()}. */
+    /**
+     * Технический код провайдера {@link MarketDataProvider#providerCode()}.
+     */
     @NotBlank
     @Size(max = 50)
-    @Pattern(regexp = "^[A-Z0-9_.-]+$") // ← Ранняя валидация до БД (только буквы A - Z, цифры и знаки "_ . -")
-    @NaturalId() // ← Помечаем поле как натуральный ключ
+    @Pattern(regexp = "^[A-Z0-9_.-]+$") // <-- Ранняя валидация до БД (только буквы A - Z, цифры и знаки "_ . -")
+    @NaturalId() // <-- Помечаем поле как натуральный ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
 
-    /** Иммутабельный дескриптор. */
+    /**
+     * Иммутабельный дескриптор.
+     */
     @Embedded
     @NotNull
-    @Valid // ← Каскадная валидация вложенного embeddable
+    @Valid // <-- Каскадная валидация вложенного embeddable
     private ProviderDescriptorEmbeddable descriptor;
 
-    /** Иммутабельный набор параметров "политики провайдера". */
+    /**
+     * Иммутабельный набор параметров "политики провайдера".
+     */
     @Embedded
     @NotNull
-    @Valid // ← Каскадная валидация вложенного embeddable
+    @Valid // <-- Каскадная валидация вложенного embeddable
     private ProviderPolicyEmbeddable policy;
 
     /**
      * Специальный конструктор — единственный безопасный способ создать сущность.
      *
-     * @param providerCode   Технический код провайдера
-     * @param descriptor     Иммутабельный дескриптор
-     * @param policy         Иммутабельный набор параметров "политики провайдера"
+     * @param providerCode Технический код провайдера
+     * @param descriptor   Иммутабельный дескриптор
+     * @param policy       Иммутабельный набор параметров "политики провайдера"
      */
     ProviderEntity(
             String providerCode,
             ProviderDescriptorEmbeddable descriptor,
             ProviderPolicyEmbeddable policy
     ) {
-        // ↓↓ Базовая валидация аргументов
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(descriptor, "descriptor must not be null");
         Objects.requireNonNull(policy, "policy must not be null");
@@ -111,7 +118,10 @@ public class ProviderEntity extends BaseEntity {
         this.policy = policy;
     }
 
-    /** Фабрика для создания иммутабельной сущности провайдера. */
+    /**
+     * Фабрика для создания иммутабельной сущности провайдера.
+     */
+    @SuppressWarnings("unused")
     public static ProviderEntity of(
             String providerCode,
             ProviderDescriptorEmbeddable descriptor,

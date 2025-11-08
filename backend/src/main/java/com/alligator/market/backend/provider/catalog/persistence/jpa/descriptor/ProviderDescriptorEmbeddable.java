@@ -14,8 +14,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 /**
  * Embeddable JPA-сущность дескриптора.
  * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
@@ -25,52 +23,33 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProviderDescriptorEmbeddable {
 
-    /** Отображаемое имя провайдера (user friendly) {@link ProviderDescriptor#displayName()}. */
+    /**
+     * Отображаемое имя провайдера (user friendly) {@link ProviderDescriptor#displayName()}.
+     */
     @NotBlank
     @Size(max = 50)
     @Column(name = "display_name", length = 50, nullable = false, updatable = false)
     private String displayName;
 
-    /** Режим доставки рыночных данных: PULL или PUSH {@link ProviderDescriptor#deliveryMode()}. */
+    /**
+     * Режим доставки рыночных данных: PULL или PUSH {@link ProviderDescriptor#deliveryMode()}.
+     */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_mode", length = 10, nullable = false, updatable = false)
     private DeliveryMode deliveryMode;
 
-    /** Метод доступа к рыночным данным {@link ProviderDescriptor#accessMethod()}. */
+    /**
+     * Метод доступа к рыночным данным {@link ProviderDescriptor#accessMethod()}.
+     */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "access_method", length = 20, nullable = false, updatable = false)
     private AccessMethod accessMethod;
 
-    /** Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}. */
+    /**
+     * Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}.
+     */
     @Column(name = "bulk_subscription", nullable = false, updatable = false)
     private boolean bulkSubscription;
-
-    /** Конструктор. */
-    ProviderDescriptorEmbeddable(
-            String displayName,
-            DeliveryMode deliveryMode,
-            AccessMethod accessMethod,
-            boolean bulkSubscription
-    ) {
-        this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
-        if (this.displayName.isBlank()) {
-            throw new IllegalArgumentException("displayName must not be blank");
-        }
-        this.deliveryMode = Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
-        this.accessMethod = Objects.requireNonNull(accessMethod, "accessMethod must not be null");
-        this.bulkSubscription = bulkSubscription;
-    }
-
-    /** Фабрика создания иммутабельного embeddable из доменного дескриптора. */
-    public static ProviderDescriptorEmbeddable from(ProviderDescriptor descriptor) {
-        Objects.requireNonNull(descriptor, "descriptor must not be null");
-        return new ProviderDescriptorEmbeddable(
-                descriptor.displayName(),
-                descriptor.deliveryMode(),
-                descriptor.accessMethod(),
-                descriptor.bulkSubscription()
-        );
-    }
 }

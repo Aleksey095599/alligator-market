@@ -1,20 +1,27 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.mapper;
 
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in.UpdateCurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.common.CurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in.UpdateCurrencyDto;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+
 import java.util.Objects;
 
 /**
- * Маппер: модель валюты ⇄ DTO.
+ * Маппер: модель валюты <--> DTO.
  */
 public final class CurrencyDtoMapper {
 
-    /** Приватный конструктор (запрещает создание экземпляров). */
-    private CurrencyDtoMapper() { throw new UnsupportedOperationException("Utility class"); }
+    /**
+     * Приватный конструктор (запрещает создание экземпляров).
+     */
+    private CurrencyDtoMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
-    /** Преобразует основной DTO в доменную модель. */
+    /**
+     * Преобразует основной DTO в доменную модель.
+     */
     public static Currency toDomain(CurrencyDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
@@ -26,7 +33,9 @@ public final class CurrencyDtoMapper {
         );
     }
 
-    /** Преобразует DTO обновления и код в доменную модель. */
+    /**
+     * Преобразует DTO обновления и код в доменную модель.
+     */
     public static Currency toDomain(String code, UpdateCurrencyDto dto) {
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
@@ -39,7 +48,9 @@ public final class CurrencyDtoMapper {
         );
     }
 
-    /** Преобразует доменную модель в основной DTO. */
+    /**
+     * Преобразует доменную модель в основной DTO.
+     */
     public static CurrencyDto toDto(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 

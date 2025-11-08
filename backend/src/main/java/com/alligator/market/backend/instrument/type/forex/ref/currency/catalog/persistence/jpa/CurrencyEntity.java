@@ -36,34 +36,44 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
 public class CurrencyEntity extends BaseEntity {
 
-    /** Суррогатный PK. */
+    /**
+     * Суррогатный PK.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /** Уникальный код валюты. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    /**
+     * Уникальный код валюты.
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
-    @NaturalId() // ← Помечаем поле как натуральный ключ
+    @NaturalId() // <-- Помечаем поле как натуральный ключ
     @Column(name = "code", length = 3, nullable = false, updatable = false)
     private CurrencyCode code;
 
-    /** Наименование валюты. */
+    /**
+     * Наименование валюты.
+     */
     @NotBlank
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    /** Страна или регион обращения. */
+    /**
+     * Страна или регион обращения.
+     */
     @NotBlank
     @Column(name = "country", length = 100, nullable = false)
     private String country;
 
-    /** Количество знаков после запятой для денежных сумм. */
+    /**
+     * Количество знаков после запятой для денежных сумм.
+     */
     @NotNull
     @Min(0)
     @Max(10)
@@ -73,7 +83,7 @@ public class CurrencyEntity extends BaseEntity {
     /**
      * Специальный конструктор — единственный безопасный способ создать сущность.
      *
-     * @param code   Код валюты (натуральный ключ)
+     * @param code Код валюты (натуральный ключ)
      */
     public CurrencyEntity(CurrencyCode code) {
         this.code = Objects.requireNonNull(code, "code must not be null");

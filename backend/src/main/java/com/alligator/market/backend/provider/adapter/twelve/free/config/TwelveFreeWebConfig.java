@@ -16,15 +16,16 @@ import reactor.netty.http.client.HttpClient;
  */
 @Configuration
 public class TwelveFreeWebConfig {
-
-    /* ↓↓ Базовые атрибуты конфигурации. */
+    /* Базовые атрибуты конфигурации. */
     private final TwelveFreeConnectionProps props;
     private final HttpClient httpClient;
 
-    /** Конструктор. */
+    /**
+     * Конструктор.
+     */
     public TwelveFreeWebConfig(
             TwelveFreeConnectionProps props,
-            @Qualifier("providerHttpClient") HttpClient httpClient // инжекция bean общего http-клиента провайдеров
+            @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция bean общего http-клиента провайдеров
     ) {
         this.props = props;
         this.httpClient = httpClient;

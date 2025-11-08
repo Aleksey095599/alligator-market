@@ -1,8 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
@@ -11,12 +10,8 @@ import java.util.Optional;
  */
 public interface CurrencyJpaRepository extends JpaRepository<CurrencyEntity, Long> {
 
-    /** Найти JPA-сущность валюты по коду. */
+    /**
+     * Найти JPA-сущность валюты по коду.
+     */
     Optional<CurrencyEntity> findByCode(CurrencyCode code);
-
-    /** Проверить наличие записи валюты по коду. */
-    boolean existsByCode(CurrencyCode code);
-
-    /** Проверить наличие записи валюты по имени. */
-    boolean existsByName(String name);
 }

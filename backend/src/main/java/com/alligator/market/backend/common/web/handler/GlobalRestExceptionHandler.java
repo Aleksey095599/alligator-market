@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class GlobalRestExceptionHandler {
 
     /**
-     * Ошибки валидации тела запроса (@Valid) → 422.
+     * Ошибки валидации тела запроса (@Valid) --> 422.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
@@ -37,7 +37,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Ошибки валидации параметров (@Validated) → 400.
+     * Ошибки валидации параметров (@Validated) --> 400.
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleConstraintViolation(ConstraintViolationException ex) {
@@ -50,7 +50,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Тело запроса не удалось распарсить → 400.
+     * Тело запроса не удалось распарсить --> 400.
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
@@ -59,7 +59,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Нарушение целостности данных → 409.
+     * Нарушение целостности данных --> 409.
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
@@ -68,7 +68,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Некорректно переданные аргументы → 400.
+     * Некорректно переданные аргументы --> 400.
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
@@ -77,7 +77,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Неподдерживаемые операции → 500.
+     * Неподдерживаемые операции --> 500.
      */
     @ExceptionHandler({IllegalStateException.class, UnsupportedOperationException.class})
     public ResponseEntity<ApiResponse<Void>> handleIllegalState(RuntimeException ex) {
@@ -86,7 +86,7 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
-     * Непредвиденные ошибки → 500.
+     * Непредвиденные ошибки --> 500.
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {

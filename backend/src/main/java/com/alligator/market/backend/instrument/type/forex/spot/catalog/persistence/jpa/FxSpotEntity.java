@@ -26,14 +26,14 @@ import java.util.Objects;
         // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
         // при отключённой — служит «живой спецификацией» для миграций.
         constraints = "(base_currency <> quote_currency) " +
-        "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
-        "AND (value_date IN ('TOD','TOM','SPOT'))"
+                "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
+                "AND (value_date IN ('TOD','TOM','SPOT'))"
 )
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
-        @UniqueConstraint(name = "uq_fx_spot_pair_value_date",
-                columnNames = {"base_currency", "quote_currency", "value_date"})
+                @UniqueConstraint(name = "uq_fx_spot_pair_value_date",
+                        columnNames = {"base_currency", "quote_currency", "value_date"})
         },
         indexes = {
                 @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
@@ -43,44 +43,53 @@ import java.util.Objects;
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ← JPA-конструктор только для ORM в этом пакете и у наследников
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
 public class FxSpotEntity extends InstrumentBaseEntity {
 
-    /** Уникальный код базовой валюты (FK на "code" в таблице "currency"). */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    /**
+     * Уникальный код базовой валюты (FK на "code" в таблице "currency").
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_spot_base"), updatable = false, nullable = false)
     private CurrencyEntity baseCurrency;
 
-    /** Уникальный код котируемой валюты (FK на "code" в таблице "currency"). */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    /**
+     * Уникальный код котируемой валюты (FK на "code" в таблице "currency").
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quote_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_spot_quote"), updatable = false, nullable = false)
     private CurrencyEntity quoteCurrency;
 
-    /** Код даты расчетов. */
-    @Setter(AccessLevel.NONE) // ← Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    /**
+     * Код даты расчетов.
+     */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date", length = 4, updatable = false, nullable = false)
     private FxSpotValueDate valueDate;
 
-    /** Количество знаков после запятой для курса. */
+    /**
+     * Количество знаков после запятой для курса.
+     */
     @NotNull
     @Min(0)
     @Max(10)
     @Column(name = "quote_fraction_digits", nullable = false)
     private Integer defaultQuoteFractionDigits;
 
-    /** Специальный конструктор — единственный безопасный способ создать сущность. */
+    /**
+     * Специальный конструктор — единственный безопасный способ создать сущность.
+     */
     public FxSpotEntity(CurrencyEntity baseCurrency,
                         CurrencyEntity quoteCurrency,
                         FxSpotValueDate valueDate) {
-        // ↓↓ Базовые проверки
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
@@ -94,7 +103,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         this.quoteCurrency = quoteCurrency;
         this.valueDate = valueDate;
 
-        // ↓↓ Создаем код и символ инструмента
+        // Создаем код и символ инструмента
         final String code = FxSpotCodec.fxSpotCode(
                 this.baseCurrency.getCode(),
                 this.quoteCurrency.getCode(),

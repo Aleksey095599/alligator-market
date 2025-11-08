@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.twelve.free;
 
-import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
+import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -38,7 +38,7 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(60);
 
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
-    private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // Заглушка до востребования
+    private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- Заглушка до востребования
 
     /**
      * Конструктор.

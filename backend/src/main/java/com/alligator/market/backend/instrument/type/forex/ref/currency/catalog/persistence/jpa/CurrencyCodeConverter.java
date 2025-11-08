@@ -10,13 +10,17 @@ import jakarta.persistence.Converter;
 @Converter(autoApply = true)
 public class CurrencyCodeConverter implements AttributeConverter<CurrencyCode, String> {
 
-    /** Преобразует доменную модель в значение для БД. */
+    /**
+     * Преобразует доменную модель в значение для БД.
+     */
     @Override
     public String convertToDatabaseColumn(CurrencyCode attribute) {
         return attribute != null ? attribute.value() : null;
     }
 
-    /** Преобразует значение из БД в доменную модель. */
+    /**
+     * Преобразует значение из БД в доменную модель.
+     */
     @Override
     public CurrencyCode convertToEntityAttribute(String dbData) {
         return dbData != null ? CurrencyCode.of(dbData) : null;

@@ -21,7 +21,6 @@ public record Currency(
      * Конструктор с проверками.
      */
     public Currency(CurrencyCode code, String name, String country, int fractionDigits) {
-        // Базовые проверки аргументов
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(country, "country must not be null");

@@ -23,7 +23,9 @@ public class ProviderController {
 
     private final ProviderCatalogUseCase service;
 
-    /** Вернуть все дескрипторы провайдеров. */
+    /**
+     * Вернуть все дескрипторы провайдеров.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderDto>>> getAll() {
         List<ProviderDto> list = service.findAll().stream()

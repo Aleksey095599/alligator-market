@@ -3,19 +3,25 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+
 import java.util.Objects;
 
 /**
- * Маппер: JPA-сущность ⇄ доменная модель.
+ * Маппер: JPA-сущность <--> доменная модель.
  */
 public class FxSpotEntityMapper {
 
-    /** Приватный конструктор (запрещает создание экземпляров). */
-    private FxSpotEntityMapper() { throw new UnsupportedOperationException("Utility class"); }
+    /**
+     * Приватный конструктор (запрещает создание экземпляров).
+     */
+    private FxSpotEntityMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
-    /** Создать новую JPA-сущность из доменной модели. */
+    /**
+     * Создать новую JPA-сущность из доменной модели.
+     */
     public static FxSpotEntity newEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
-        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(model, "FxSpot model must not be null");
         Objects.requireNonNull(baseEntity, "entity of base currency must not be null");
         Objects.requireNonNull(quoteEntity, "entity of quote currency must not be null");
@@ -27,15 +33,17 @@ public class FxSpotEntityMapper {
                 model.valueDate()
         );
 
-        apply(model, entity); // ← Заполняем изменяемые поля из переданной модели
+        apply(model, entity); // <-- Заполняем изменяемые поля из переданной модели
         return entity;
     }
 
-    /** JPA-сущность ⇒ доменная модель. */
+    /**
+     * JPA-сущность --> доменная модель.
+     */
     public static FxSpot toDomain(FxSpotEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
-        // defaultQuoteFractionDigits задана как Integer в JPA-сущности и как int в модели ⇒ нужна null проверка
+        // defaultQuoteFractionDigits задана как Integer в JPA-сущности и как int в модели --> нужна null проверка
         int digits = Objects.requireNonNull(e.getDefaultQuoteFractionDigits(),
                 "defaultQuoteFractionDigits must not be null");
 
@@ -48,9 +56,10 @@ public class FxSpotEntityMapper {
         );
     }
 
-    /** Копирует в JPA-сущность изменяемые поля из доменной модели. */
+    /**
+     * Копирует в JPA-сущность изменяемые поля из доменной модели.
+     */
     public static void apply(FxSpot m, FxSpotEntity e) {
-        // ↓↓ Базовые проверки аргументов
         Objects.requireNonNull(m, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
 
@@ -60,8 +69,7 @@ public class FxSpotEntityMapper {
                     m.instrumentCode());
         }
 
-        // ↓↓ Копируем в JPA-сущность поля из доменной модели
-        // Коды базовой и котируемой валют, а также дата валютирования неизменяемые поля (updatable = false)
+        // Копируем в изменяемые поля JPA-сущности поля из доменной модели
         e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
 }

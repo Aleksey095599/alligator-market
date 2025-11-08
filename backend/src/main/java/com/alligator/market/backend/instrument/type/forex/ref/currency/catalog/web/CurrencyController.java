@@ -2,11 +2,11 @@ package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
+import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service.CurrencyUseCase;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in.UpdateCurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.service.CurrencyUseCase;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -30,7 +30,9 @@ public class CurrencyController {
 
     private final CurrencyUseCase service;
 
-    /** Создать валюту. */
+    /**
+     * Создать валюту.
+     */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
@@ -43,7 +45,9 @@ public class CurrencyController {
         return ResponseEntityFactory.created(location, created.code().value());
     }
 
-    /** Обновить валюту. */
+    /**
+     * Обновить валюту.
+     */
     @PutMapping("/{code}")
     public ResponseEntity<Void> update(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
@@ -53,7 +57,9 @@ public class CurrencyController {
         return ResponseEntityFactory.noContent();
     }
 
-    /** Удалить валюту. */
+    /**
+     * Удалить валюту.
+     */
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
@@ -62,7 +68,9 @@ public class CurrencyController {
         return ResponseEntityFactory.noContent();
     }
 
-    /** Вернуть все валюты. */
+    /**
+     * Вернуть все валюты.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 

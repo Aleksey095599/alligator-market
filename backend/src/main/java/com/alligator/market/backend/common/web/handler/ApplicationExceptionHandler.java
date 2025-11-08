@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApplicationExceptionHandler {
 
     /**
-     * Валюта с таким кодом уже существует → 409.
+     * Валюта с таким кодом уже существует --> 409.
      */
     @ExceptionHandler(CurrencyAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> currencyAlreadyExists(CurrencyAlreadyExistsException ex) {
@@ -32,7 +32,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Валюта с таким именем уже существует → 409.
+     * Валюта с таким именем уже существует --> 409.
      */
     @ExceptionHandler(CurrencyNameDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> currencyNameDuplicate(CurrencyNameDuplicateException ex) {
@@ -41,7 +41,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Валюта используется в инструментах FX_SPOT → 409.
+     * Валюта используется в инструментах FX_SPOT --> 409.
      */
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
     public ResponseEntity<ApiResponse<Void>> currencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
@@ -50,7 +50,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Валюта не найдена → 404.
+     * Валюта не найдена --> 404.
      */
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
@@ -59,7 +59,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Валюта уже используется при создании FX_SPOT → 409.
+     * Валюта уже используется при создании FX_SPOT --> 409.
      */
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
@@ -68,7 +68,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Инструмент FX_SPOT не найден → 404.
+     * Инструмент FX_SPOT не найден --> 404.
      */
     @ExceptionHandler(FxSpotNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
@@ -77,7 +77,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Указаны одинаковые валюты для FX_SPOT → 400.
+     * Указаны одинаковые валюты для FX_SPOT --> 400.
      */
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
@@ -86,7 +86,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Инструмент не поддерживается провайдером → 400.
+     * Инструмент не поддерживается провайдером --> 400.
      */
     @ExceptionHandler(InstrumentNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> instrumentNotSupported(InstrumentNotSupportedException ex) {
@@ -95,7 +95,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Обработчик инструмента не найден → 404.
+     * Обработчик инструмента не найден --> 404.
      */
     @ExceptionHandler(HandlerNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handlerNotFound(HandlerNotFoundException ex) {
@@ -104,7 +104,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Некорректный класс или тип инструмента → 400.
+     * Некорректный класс или тип инструмента --> 400.
      */
     @ExceptionHandler({InstrumentWrongClassException.class, InstrumentWrongTypeException.class})
     public ResponseEntity<ApiResponse<Void>> instrumentWrong(RuntimeException ex) {
@@ -116,7 +116,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Дублирование кода провайдера → 409.
+     * Дублирование кода провайдера --> 409.
      */
     @ExceptionHandler(ProviderCodeDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> providerCodeDuplicate(ProviderCodeDuplicateException ex) {
@@ -125,7 +125,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Дублирование отображаемого имени провайдера → 409.
+     * Дублирование отображаемого имени провайдера --> 409.
      */
     @ExceptionHandler(ProviderDisplayNameDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> providerDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
@@ -134,7 +134,7 @@ public class ApplicationExceptionHandler {
     }
 
     /**
-     * Технические ошибки доменных операций → 500.
+     * Технические ошибки доменных операций --> 500.
      */
     @ExceptionHandler({
             CurrencyCreateException.class,

@@ -30,7 +30,6 @@ public record FxSpot(
      * Конструктор с проверками.
      */
     public FxSpot {
-        // Базовые проверки аргументов
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");

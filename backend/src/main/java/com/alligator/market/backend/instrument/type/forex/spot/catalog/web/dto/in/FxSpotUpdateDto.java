@@ -12,5 +12,6 @@ public record FxSpotUpdateDto(
         @NotNull
         @Min(0) @Max(10)
         Integer defaultQuoteFractionDigits
-) {}
+) {
+}
 

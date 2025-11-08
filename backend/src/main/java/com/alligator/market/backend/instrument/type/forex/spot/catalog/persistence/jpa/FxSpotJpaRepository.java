@@ -10,12 +10,13 @@ import java.util.Optional;
  */
 public interface FxSpotJpaRepository extends JpaRepository<FxSpotEntity, Long> {
 
-    /** Найти сущность инструмента по коду. */
+    /**
+     * Найти сущность инструмента по коду.
+     */
     Optional<FxSpotEntity> findByCode(String instrumentCode);
 
-    /** Проверить существование инструмента по его коду. */
-    boolean existsByCode(String instrumentCode);
-
-    /** Проверить, используется ли заданная валюта хотя бы в одном инструменте. */
+    /**
+     * Проверить, используется ли заданная валюта хотя бы в одном инструменте.
+     */
     boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(CurrencyCode baseCurrency, CurrencyCode quoteCurrency);
 }

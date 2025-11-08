@@ -6,8 +6,8 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,9 @@ public class FxSpotAssembler {
 
     private final CurrencyRepository currencyRepository;
 
-    /** Основной DTO ⇒ доменная модель. */
+    /**
+     * Основной DTO --> доменная модель.
+     */
     public FxSpot toDomain(FxSpotDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
@@ -34,7 +36,9 @@ public class FxSpotAssembler {
         return new FxSpot(base, quote, dto.valueDate(), dto.defaultQuoteFractionDigits());
     }
 
-    /** Код инструмента + DTO обновления ⇒ доменная модель. */
+    /**
+     * Код инструмента + DTO обновления --> доменная модель.
+     */
     public FxSpot toDomainByCode(String instrumentCode, FxSpotUpdateDto dto) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(dto, "dto must not be null");

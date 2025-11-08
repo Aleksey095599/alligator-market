@@ -7,6 +7,8 @@ import java.util.List;
  */
 public interface ProviderCatalogUseCase {
 
-    /** Вернуть все провайдеры с дескрипторами и параметрами. */
+    /**
+     * Вернуть все провайдеры с дескрипторами и параметрами.
+     */
     List<ProviderCatalogItem> findAll();
 }

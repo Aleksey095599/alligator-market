@@ -12,7 +12,9 @@ import java.util.List;
  */
 public interface ProviderJpaRepository extends JpaRepository<ProviderEntity, Long> {
 
-    /** Найти все коды провайдеров (натуральные ключи). */
+    /**
+     * Найти все коды провайдеров (натуральные ключи).
+     */
     @Query("select p.providerCode from ProviderEntity p")
     @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"))
     List<String> findAllCodes();

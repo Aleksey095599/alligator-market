@@ -45,15 +45,15 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
             CurrencyEntity saved = jpaRepository.saveAndFlush(entity);
             return CurrencyEntityMapper.toDomain(saved);
         } catch (DataIntegrityViolationException ex) {
-            // Нарушение натурального ключа (code) → AlreadyExists
+            // Нарушение натурального ключа (code) --> AlreadyExists
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_CODE)) {
                 throw new CurrencyAlreadyExistsException(c.code());
             }
-            // Нарушение уникальности имени → NameDuplicate
+            // Нарушение уникальности имени --> NameDuplicate
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(c.name());
             }
-            // Иные ошибки целостности → техническая ошибка создания
+            // Иные ошибки целостности --> техническая ошибка создания
             throw new CurrencyCreateException(c.code(), ex);
         } catch (ConstraintViolationException ex) {
             // Bean Validation (аннотации на entity)
@@ -84,7 +84,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(c.name());
             }
-            // Иные ошибки целостности → техническая ошибка обновления
+            // Иные ошибки целостности --> техническая ошибка обновления
             throw new CurrencyUpdateException(c.code(), ex);
         } catch (ConstraintViolationException ex) {
             // Bean Validation (аннотации на entity)

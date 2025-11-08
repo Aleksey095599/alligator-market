@@ -13,4 +13,5 @@ import org.springframework.validation.annotation.Validated;
 public record TwelveFreeConnectionProps(
         @NotBlank String baseUrl,
         @NotBlank String apiKey
-) {}
+) {
+}

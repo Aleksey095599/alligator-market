@@ -14,7 +14,9 @@ public final class ProviderDtoMapper {
     private ProviderDtoMapper() {
     }
 
-    /** Преобразовать элемент каталога в DTO. */
+    /**
+     * Преобразовать элемент каталога в DTO.
+     */
     public static ProviderDto toDto(ProviderCatalogItem item) {
         Objects.requireNonNull(item, "item must not be null");
 

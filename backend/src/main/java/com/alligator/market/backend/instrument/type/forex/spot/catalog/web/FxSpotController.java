@@ -29,7 +29,9 @@ public class FxSpotController {
     private final FxSpotUseCase service;
     private final FxSpotAssembler assembler;
 
-    /** Создать инструмент. */
+    /**
+     * Создать инструмент.
+     */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
 
@@ -42,7 +44,9 @@ public class FxSpotController {
         return ResponseEntityFactory.created(location, created.instrumentCode());
     }
 
-    /** Обновить инструмент. */
+    /**
+     * Обновить инструмент.
+     */
     @PatchMapping("/{instrumentCode}")
     public ResponseEntity<Void> update(@PathVariable String instrumentCode,
                                        @RequestBody @Valid FxSpotUpdateDto dto) {
@@ -51,7 +55,9 @@ public class FxSpotController {
         return ResponseEntityFactory.noContent();
     }
 
-    /** Удалить инструмент. */
+    /**
+     * Удалить инструмент.
+     */
     @DeleteMapping("/{instrumentCode}")
     public ResponseEntity<Void> delete(@PathVariable String instrumentCode) {
 
@@ -59,7 +65,9 @@ public class FxSpotController {
         return ResponseEntityFactory.noContent();
     }
 
-    /** Вернуть все инструменты. */
+    /**
+     * Вернуть все инструменты.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<FxSpotListItemDto>>> getAll() {
 

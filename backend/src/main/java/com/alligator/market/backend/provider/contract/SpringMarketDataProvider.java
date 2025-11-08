@@ -24,7 +24,9 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     /* Имя бина, которое назначил Spring. */
     private String beanName;
 
-    /** Конструктор. */
+    /**
+     * Конструктор.
+     */
     protected SpringMarketDataProvider(
             String providerCode,
             ProviderDescriptor descriptor,

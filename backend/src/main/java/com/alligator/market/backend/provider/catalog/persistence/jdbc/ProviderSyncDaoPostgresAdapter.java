@@ -55,11 +55,11 @@ import java.util.Objects;
 @Repository
 public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
-    // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException → DataAccessException.
-    private final JdbcTemplate jdbc;
-
     // Конвертер Duration ↔ seconds
     private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
+
+    // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException --> DataAccessException.
+    private final JdbcTemplate jdbc;
 
     /* Конструктор. */
     public ProviderSyncDaoPostgresAdapter(JdbcTemplate jdbc) {
@@ -86,10 +86,15 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
+            @Override
+            public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
                 ps.setString(1, arr[i]);
             }
-            @Override public int getBatchSize() { return arr.length; }
+
+            @Override
+            public int getBatchSize() {
+                return arr.length;
+            }
         });
     }
 
@@ -106,48 +111,53 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
         if (snapshots == null || snapshots.isEmpty()) return;
 
-        // ↓↓ Берём аудит-атрибуты из контекст-холдера
+        // Берём аудит-атрибуты из контекст-холдера
         final String actor = AuditContextHolder.actorOrFallback();
-        final String via   = AuditContextHolder.viaOrFallback();
+        final String via = AuditContextHolder.viaOrFallback();
 
         // SQL-команда
         final String sql = """
-            INSERT INTO market_data_provider(
-              provider_code,
-              display_name,
-              delivery_mode,
-              access_method,
-              bulk_subscription,
-              min_update_interval_seconds,
-              version,
-              created_timestamp,
-              created_by,
-              created_via,
-              updated_timestamp,
-              updated_by,
-              updated_via
-            ) VALUES (?, ?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
-            ON CONFLICT (provider_code) DO UPDATE SET
-              display_name = EXCLUDED.display_name,
-              delivery_mode = EXCLUDED.delivery_mode,
-              access_method = EXCLUDED.access_method,
-              bulk_subscription = EXCLUDED.bulk_subscription,
-              min_update_interval_seconds = EXCLUDED.min_update_interval_seconds,
-              version = market_data_provider.version + 1,
-              updated_timestamp = CURRENT_TIMESTAMP,
-              updated_by = EXCLUDED.updated_by,
-              updated_via = EXCLUDED.updated_via
-            """;
+                INSERT INTO market_data_provider(
+                  provider_code,
+                  display_name,
+                  delivery_mode,
+                  access_method,
+                  bulk_subscription,
+                  min_update_interval_seconds,
+                  version,
+                  created_timestamp,
+                  created_by,
+                  created_via,
+                  updated_timestamp,
+                  updated_by,
+                  updated_via
+                ) VALUES (?, ?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
+                ON CONFLICT (provider_code) DO UPDATE SET
+                  display_name = EXCLUDED.display_name,
+                  delivery_mode = EXCLUDED.delivery_mode,
+                  access_method = EXCLUDED.access_method,
+                  bulk_subscription = EXCLUDED.bulk_subscription,
+                  min_update_interval_seconds = EXCLUDED.min_update_interval_seconds,
+                  version = market_data_provider.version + 1,
+                  updated_timestamp = CURRENT_TIMESTAMP,
+                  updated_by = EXCLUDED.updated_by,
+                  updated_via = EXCLUDED.updated_via
+                """;
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         var arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
 
         // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
+            @Override
+            public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
                 bindUpsert(ps, arr[i], actor, via);
             }
-            @Override public int getBatchSize() { return arr.length; }
+
+            @Override
+            public int getBatchSize() {
+                return arr.length;
+            }
         });
     }
 
@@ -158,27 +168,27 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         Objects.requireNonNull(s, "snapshot must not be null");
         Objects.requireNonNull(actor, "actor must not be null");
         Objects.requireNonNull(via, "via must not be null");
-        // Иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
+        // Примечание: иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
 
         // 1) provider_code (натуральный ключ)
         ps.setString(1, s.code());
 
         // 2) descriptor.*
         var d = s.descriptor();
-        ps.setString(2, d.displayName());         // display_name
-        ps.setString(3, d.deliveryMode().name()); // delivery_mode (EnumType.STRING)
-        ps.setString(4, d.accessMethod().name()); // access_method (EnumType.STRING)
-        ps.setBoolean(5, d.bulkSubscription());   // bulk_subscription
+        ps.setString(2, d.displayName());         // <-- display_name
+        ps.setString(3, d.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
+        ps.setString(4, d.accessMethod().name()); // <-- access_method (EnumType.STRING)
+        ps.setBoolean(5, d.bulkSubscription());   // <-- bulk_subscription
 
-        // 3) policy.*  (Duration → seconds через общий конвертер)
+        // 3) policy.*  (Duration --> seconds через общий конвертер)
         var p = s.policy();
         Long seconds = DUR2SEC.convertToDatabaseColumn(p.minUpdateInterval());
-        ps.setLong(6, seconds);                   // min_update_interval_seconds
+        ps.setLong(6, seconds);                   // <-- min_update_interval_seconds
 
         // 4) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.
-        ps.setString(7, actor);                   // created_by
-        ps.setString(8, via);                     // created_via
-        ps.setString(9, actor);                   // updated_by
-        ps.setString(10, via);                    // updated_via
+        ps.setString(7, actor);                   // <-- created_by
+        ps.setString(8, via);                     // <-- created_via
+        ps.setString(9, actor);                   // <-- updated_by
+        ps.setString(10, via);                    // <-- updated_via
     }
 }
