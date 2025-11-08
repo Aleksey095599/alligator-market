@@ -10,7 +10,6 @@ import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 import java.util.Set;
@@ -37,7 +36,7 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     }
 
     @Override
-    public void setBeanName(@NonNull @NotBlank String name) {
+    public void setBeanName(@org.springframework.lang.NonNull @NotBlank String name) {
         // Сохраняем имя бина до хука afterPropertiesSet
         final var validatedBeanName = Objects.requireNonNull(name, "beanName must not be null");
 

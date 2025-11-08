@@ -7,7 +7,6 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -87,7 +86,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override public void setValues(@NonNull PreparedStatement ps, int i) throws SQLException {
+            @Override public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
                 ps.setString(1, arr[i]);
             }
             @Override public int getBatchSize() { return arr.length; }
@@ -145,7 +144,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
         // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override public void setValues(@NonNull PreparedStatement ps, int i) throws SQLException {
+            @Override public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
                 bindUpsert(ps, arr[i], actor, via);
             }
             @Override public int getBatchSize() { return arr.length; }

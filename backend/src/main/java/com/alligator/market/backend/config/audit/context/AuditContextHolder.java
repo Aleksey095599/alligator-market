@@ -2,7 +2,6 @@ package com.alligator.market.backend.config.audit.context;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * ThreadLocal-холдер контекста аудита (актор + источник/канал via).
@@ -30,7 +29,7 @@ public final class AuditContextHolder {
     /**
      * Устанавливает контекст для текущего потока.
      */
-    public static void set(@NonNull AuditContext ctx) {
+    public static void set(@lombok.NonNull AuditContext ctx) {
         CTX.set(ctx);
     }
 
