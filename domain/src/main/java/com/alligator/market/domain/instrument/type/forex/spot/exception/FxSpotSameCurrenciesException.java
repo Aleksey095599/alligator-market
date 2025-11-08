@@ -13,19 +13,6 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
     private final CurrencyCode quote;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param base  код базовой валюты
-     * @param quote код котируемой валюты
-     * @return текст сообщения
-     */
-    private static String msg(CurrencyCode base, CurrencyCode quote) {
-        CurrencyCode b = Objects.requireNonNull(base, "base must not be null");
-        CurrencyCode q = Objects.requireNonNull(quote, "quote must not be null");
-        return "Base and quote currencies must be different (base=" + b.value() + ", quote=" + q.value() + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param base  код базовой валюты
@@ -49,6 +36,19 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
         super(msg(base, quote), cause);
         this.base = base;
         this.quote = quote;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param base  код базовой валюты
+     * @param quote код котируемой валюты
+     * @return текст сообщения
+     */
+    private static String msg(CurrencyCode base, CurrencyCode quote) {
+        CurrencyCode b = Objects.requireNonNull(base, "base must not be null");
+        CurrencyCode q = Objects.requireNonNull(quote, "quote must not be null");
+        return "Base and quote currencies must be different (base=" + b.value() + ", quote=" + q.value() + ")";
     }
 
     /**

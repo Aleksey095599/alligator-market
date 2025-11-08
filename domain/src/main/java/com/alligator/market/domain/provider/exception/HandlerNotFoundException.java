@@ -11,19 +11,6 @@ public final class HandlerNotFoundException extends RuntimeException {
     private final String providerCode;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента
-     * @param providerCode   код провайдера
-     * @return текст сообщения
-     */
-    private static String msg(String instrumentCode, String providerCode) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        String pc = Objects.requireNonNull(providerCode, "providerCode must not be null");
-        return "Handler not found (instrumentCode=" + ic + ", providerCode=" + pc + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param instrumentCode код инструмента
@@ -47,6 +34,19 @@ public final class HandlerNotFoundException extends RuntimeException {
         super(msg(instrumentCode, providerCode), cause);
         this.instrumentCode = instrumentCode;
         this.providerCode = providerCode;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента
+     * @param providerCode   код провайдера
+     * @return текст сообщения
+     */
+    private static String msg(String instrumentCode, String providerCode) {
+        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        String pc = Objects.requireNonNull(providerCode, "providerCode must not be null");
+        return "Handler not found (instrumentCode=" + ic + ", providerCode=" + pc + ")";
     }
 
     /**

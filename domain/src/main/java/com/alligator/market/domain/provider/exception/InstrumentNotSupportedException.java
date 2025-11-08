@@ -11,19 +11,6 @@ public final class InstrumentNotSupportedException extends RuntimeException {
     private final String handlerCode;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента, который не поддерживается
-     * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
-     * @return текст сообщения
-     */
-    private static String msg(String instrumentCode, String handlerCode) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        return "Instrument not supported (instrumentCode=" + ic + ", handlerCode=" + hc + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param instrumentCode код инструмента, который не поддерживается
@@ -48,6 +35,19 @@ public final class InstrumentNotSupportedException extends RuntimeException {
         super(msg(instrumentCode, handlerCode), cause);
         this.instrumentCode = instrumentCode;
         this.handlerCode = handlerCode;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента, который не поддерживается
+     * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
+     * @return текст сообщения
+     */
+    private static String msg(String instrumentCode, String handlerCode) {
+        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        return "Instrument not supported (instrumentCode=" + ic + ", handlerCode=" + hc + ")";
     }
 
     /**

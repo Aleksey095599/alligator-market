@@ -10,17 +10,6 @@ public final class FxSpotUpdateException extends RuntimeException {
     private final String instrumentCode;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента
-     * @return текст сообщения
-     */
-    private static String msg(String instrumentCode) {
-        String code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "Failed to update FX_SPOT instrument (code=" + code + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param instrumentCode код инструмента
@@ -40,6 +29,17 @@ public final class FxSpotUpdateException extends RuntimeException {
     public FxSpotUpdateException(String instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента
+     * @return текст сообщения
+     */
+    private static String msg(String instrumentCode) {
+        String code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return "Failed to update FX_SPOT instrument (code=" + code + ")";
     }
 
     /**

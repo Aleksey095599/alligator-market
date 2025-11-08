@@ -10,17 +10,6 @@ public final class FxSpotNotFoundException extends RuntimeException {
     private final String instrumentCode;
 
     /**
-     * Формирует сообщение об ошибке.
-     *
-     * @param instrumentCode код инструмента
-     * @return текст сообщения
-     */
-    private static String msg(String instrumentCode) {
-        String c = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "FX_SPOT instrument not found (code=" + c + ")";
-    }
-
-    /**
      * Создает исключение.
      *
      * @param instrumentCode код инструмента
@@ -40,6 +29,17 @@ public final class FxSpotNotFoundException extends RuntimeException {
     public FxSpotNotFoundException(String instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
+    }
+
+    /**
+     * Формирует сообщение об ошибке.
+     *
+     * @param instrumentCode код инструмента
+     * @return текст сообщения
+     */
+    private static String msg(String instrumentCode) {
+        String c = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return "FX_SPOT instrument not found (code=" + c + ")";
     }
 
     /**
