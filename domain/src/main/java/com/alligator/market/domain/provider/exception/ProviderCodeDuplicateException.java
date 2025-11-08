@@ -47,6 +47,7 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      *
      * @return код провайдера
      */
+    @SuppressWarnings("unused")
     public String getProviderCode() {
         return providerCode;
     }

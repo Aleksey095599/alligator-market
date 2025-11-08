@@ -47,6 +47,7 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      *
      * @return имя валюты
      */
+    @SuppressWarnings("unused")
     public String getName() {
         return name;
     }

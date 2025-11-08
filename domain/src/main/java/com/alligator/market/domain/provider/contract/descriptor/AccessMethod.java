@@ -54,6 +54,7 @@ public enum AccessMethod {
     /**
      * Возвращает строковый код (= имя константы).
      */
+    @SuppressWarnings("unused")
     public String code() {
         return name();
     }

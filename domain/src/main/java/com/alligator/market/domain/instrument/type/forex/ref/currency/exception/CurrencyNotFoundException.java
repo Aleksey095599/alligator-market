@@ -49,6 +49,7 @@ public final class CurrencyNotFoundException extends RuntimeException {
      *
      * @return код валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCode getCode() {
         return code;
     }

@@ -49,6 +49,7 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      *
      * @return код валюты
      */
+    @SuppressWarnings("unused")
     public CurrencyCode getCode() {
         return code;
     }

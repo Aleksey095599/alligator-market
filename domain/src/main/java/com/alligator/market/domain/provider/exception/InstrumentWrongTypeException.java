@@ -87,6 +87,7 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      *
      * @return код инструмента
      */
+    @SuppressWarnings("unused")
     public String getInstrumentCode() {
         return instrumentCode;
     }

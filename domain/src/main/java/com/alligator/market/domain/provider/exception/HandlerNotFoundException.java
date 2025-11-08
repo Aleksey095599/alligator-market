@@ -54,6 +54,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      *
      * @return код инструмента
      */
+    @SuppressWarnings("unused")
     public String getInstrumentCode() {
         return instrumentCode;
     }
@@ -63,6 +64,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      *
      * @return код провайдера
      */
+    @SuppressWarnings("unused")
     public String getProviderCode() {
         return providerCode;
     }
