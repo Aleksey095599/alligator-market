@@ -14,12 +14,12 @@
     <name>Alligator Market Backend</name>
     <description>Spring Boot backend for Alligator Market</description>
     <properties>
-        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
+        <commons-compress.version>1.26.2</commons-compress.version>
         <flyway.version>11.8.2</flyway.version>
         <jsoup.version>1.21.2</jsoup.version>
         <kafka-avro-serializer.version>7.6.0</kafka-avro-serializer.version>
+        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
         <mockwebserver.version>5.1.0</mockwebserver.version>
-        <commons-compress.version>1.26.2</commons-compress.version>
     </properties>
     <dependencies>
         <!-- Библиотека доменных моделей -->
@@ -28,25 +28,41 @@
             <artifactId>market-domain</artifactId>
             <version>${market-domain.version}</version>
         </dependency>
-        <!-- Валидация входящих данных -->
+        <!-- HTTP мок-сервер для тестов -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>${mockwebserver.version}</version>
+            <scope>test</scope>
         </dependency>
-        <!-- REST-контроллеры на Spring MVC -->
+        <!-- Avro-сериализация сообщений Kafka -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${kafka-avro-serializer.version}</version>
         </dependency>
-        <!-- JPA и работа с БД -->
+        <!-- Тестирование реактивного кода -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
         </dependency>
-        <!-- Spring Security Core для работы с контекстом безопасности -->
+        <!-- Ядро миграций Flyway -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <!-- Поддержка PostgreSQL в Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+        <!-- HTML-парсер jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
         <!-- JDBC драйвер PostgreSQL -->
         <dependency>
@@ -65,16 +81,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- Ядро миграций Flyway -->
+        <!-- JPA и работа с БД -->
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!-- Поддержка PostgreSQL в Flyway -->
+        <!-- Набор тестовых утилит Spring Boot -->
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Валидация входящих данных -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- REST-контроллеры на Spring MVC -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- Реактивные HTTP-клиенты WebFlux -->
         <dependency>
@@ -86,42 +112,16 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
-        <!-- Avro-сериализация сообщений Kafka -->
+        <!-- Spring Security Core для работы с контекстом безопасности -->
         <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-avro-serializer</artifactId>
-            <version>${kafka-avro-serializer.version}</version>
-        </dependency>
-        <!-- Набор тестовых утилит Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
         </dependency>
         <!-- Тесты для Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <!-- Тестирование реактивного кода -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- HTTP мок-сервер для тестов -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>mockwebserver</artifactId>
-            <version>${mockwebserver.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- HTML-парсер jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 
@@ -145,6 +145,18 @@
 
     <build>
         <plugins>
+            <!-- Миграции базы данных -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <user>postgres</user>
+                    <password>1234</password>
+                    <schemas>main</schemas>
+                </configuration>
+            </plugin>
             <!-- Настройки компилятора и Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -178,18 +190,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- Миграции базы данных -->
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway.version}</version>
-                <configuration>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                    <user>postgres</user>
-                    <password>1234</password>
-                    <schemas>main</schemas>
-                </configuration>
             </plugin>
         </plugins>
     </build>
