@@ -10,15 +10,16 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * Общая для всех провайдеров рыночных данных конфигурация
- * низкоуровневого сетевого слоя: HTTP-клиент и пул TCP-соединений.
+ * Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных:
+ * HTTP-клиент и пул TCP-соединений.
  */
 @Configuration
 public class ProviderHttpConfigGlobal {
 
     /**
      * Общий для всех провайдеров HTTP-клиент, поверх которого могут быть реализованы более высокоуровневые
-     * сетевые абстракции, в частности, web-клиент. Использует общий для всех провайдеров пул TCP-соединений.
+     * сетевые абстракции (в частности, web-клиент).
+     * <p>Использует общий для всех провайдеров пул TCP-соединений.
      */
     @Bean("providerHttpClient")
     public HttpClient providerHttpClient(@Qualifier("providerConnectionPool") ConnectionProvider cp) {

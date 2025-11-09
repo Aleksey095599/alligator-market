@@ -13,8 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
-
-import static com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotCatalog.SUPPORTED_CODES;
+import java.util.Set;
 
 /**
  * Обработчик инструментов FX_SPOT для провайдера TwelveData (free).
@@ -24,7 +23,10 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
-    /* Вэб-клиент. */
+    /* Поддерживаемые коды инструментов FX_SPOT. */
+    private static final Set<String> SUPPORTED_CODES = TwelveFreeFxSpotCatalog.SUPPORTED_CODES;
+
+    /* Web-клиент. */
     private final WebClient webClient;
 
     /* Параметры подключения к провайдеру. */
