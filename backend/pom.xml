@@ -14,9 +14,9 @@
     <name>Alligator Market Backend</name>
     <description>Spring Boot backend for Alligator Market</description>
     <properties>
+        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
         <flyway.version>11.8.2</flyway.version>
         <jsoup.version>1.21.2</jsoup.version>
-        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
         <kafka-avro-serializer.version>7.6.0</kafka-avro-serializer.version>
         <mockwebserver.version>5.1.0</mockwebserver.version>
         <commons-compress.version>1.26.2</commons-compress.version>
