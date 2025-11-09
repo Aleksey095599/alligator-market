@@ -16,13 +16,17 @@
     <properties>
         <flyway.version>11.8.2</flyway.version>
         <jsoup.version>1.21.2</jsoup.version>
+        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
+        <kafka-avro-serializer.version>7.6.0</kafka-avro-serializer.version>
+        <mockwebserver.version>5.1.0</mockwebserver.version>
+        <commons-compress.version>1.26.2</commons-compress.version>
     </properties>
     <dependencies>
         <!-- Библиотека доменных моделей -->
         <dependency>
             <groupId>com.alligator</groupId>
             <artifactId>market-domain</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${market-domain.version}</version>
         </dependency>
         <!-- Валидация входящих данных -->
         <dependency>
@@ -86,7 +90,7 @@
         <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
-            <version>7.6.0</version>
+            <version>${kafka-avro-serializer.version}</version>
         </dependency>
         <!-- Набор тестовых утилит Spring Boot -->
         <dependency>
@@ -110,7 +114,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>5.1.0</version>
+            <version>${mockwebserver.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- HTML parser -->
@@ -127,7 +131,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
-                <version>1.26.2</version>
+                <version>${commons-compress.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
