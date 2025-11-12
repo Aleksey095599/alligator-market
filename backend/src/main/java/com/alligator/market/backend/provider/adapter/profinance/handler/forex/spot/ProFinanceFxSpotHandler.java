@@ -63,17 +63,38 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     //=================================================================================================================
 
     /**
-     * Реализация получения котировки.
+     * Возвращает реактивный поток котировок для указанного FX-спот инструмента,
+     * формируемый периодическим опросом источника.
+     *
+     * <p><b>Поведение:</b></p>
+     * <ul>
+     *   <li>Первая попытка выполняется сразу, далее — каждые
+     *       {@code provider().policy().minUpdateInterval()} (см. {@link reactor.core.publisher.Flux#interval}).</li>
+     *   <li>Используется стратегия backpressure {@code onBackpressureLatest()} —
+     *       если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются,
+     *       обрабатывается только самый свежий.</li>
+     *   <li>Сетевые/парсинг-ошибки не завершают поток: тик пропускается
+     *       ({@code Mono.empty()}) и расписание сохраняется.</li>
+     *   <li>Каждый тик инициирует один HTTP-запрос в {@code fetchOnce(instrument)} и маппится в {@link QuoteTick}.</li>
+     * </ul>
+     *
+     * <p><b>Примечание:</b> при необходимости полностью исключить параллельные запросы
+     * используйте ограничение конкурентности {@code flatMap(..., 1)}.</p>
+     *
+     * @param instrument FX_SPOT инструмент
+     * @return поток {@link QuoteTick} с указанным интервалом; устойчив к временным ошибкам источника
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
+        // Извлекаем ограничение провайдера на минимальный интервал между запросами котировки
         Duration period = provider().policy().minUpdateInterval();
 
-        return Flux.interval(Duration.ZERO, period)
-                .onBackpressureLatest()
+        return Flux
+                .interval(Duration.ZERO, period) // Интервал для запросов [0, period]
+                .onBackpressureLatest() // Если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются
                 .flatMap(t -> fetchOnce(instrument)
-                        // При ошибке парсинга/сети пропускаем тик, ждём следующий интервал
                         .onErrorResume(ex -> {
+                            // При ошибке парсинга/сети пропускаем тик, ждём следующий интервал
                             log.warn("ProFinance fetch failed: {}", ex.getMessage());
                             return Mono.empty();
                         }))
@@ -88,9 +109,9 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
      * Разовая загрузка HTML страницы валют и маппинг в QuoteTick.
      */
     private Mono<QuoteTick> fetchOnce(FxSpot instrument) {
-        // baseUrl задан в WebClient, используем относительный путь
+
         return webClient.get()
-                .uri("/quotes/currency/")
+                .uri("/quotes/currency/")// Используем относительный путь (baseUrl задан в application.properties)
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(html -> parseHtmlToQuote(html, instrument));
