@@ -198,8 +198,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         );
     }
 
-    /* Утилита: нормализует текст ячейки и парсит BigDecimal; при неудаче возвращает null. */
-    private static final java.util.regex.Pattern NON_NUM = java.util.regex.Pattern.compile("[^\\d.,\\- ]");
+    /* Предкомпилированный паттерн: удаляем всё, кроме цифр, запятой, точки, минуса и пробела. */
+    private static final Pattern NON_NUMERIC = Pattern.compile("[^\\d.,\\- ]");
 
     /**
      * Нормализуем число из ячейки.
@@ -209,14 +209,14 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
 
         // "Очищаем" строку:
         String s = raw
-                // 1) Заменяем NBSP и узкие пробелы
+                // 1) Заменяем NBSP и узкие пробелы на обычный
                 .replace('\u00A0',' ')
                 .replace('\u202F',' ')
                 .replace('\u2009',' ')
-                // 2) Убираем чужие символы
-                .replaceAll(NON_NUM.pattern(), "")
+                // 2) Используем предкомпилированный паттерн
+                .replaceAll(NON_NUMERIC.pattern(), "")
                 .replace(" ", "")
-                // 3) Нормализуем локаль
+                // 3) Заменяем запятую на точку
                 .replace(',', '.');
 
         // Оставляем только последнюю точку как десятичный разделитель (остальные — тысячные)
