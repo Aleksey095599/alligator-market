@@ -106,7 +106,16 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     //=================================================================================================================
 
     /**
-     * Разовая загрузка HTML страницы валют и маппинг в QuoteTick.
+     * Выполняет один HTTP-запрос к странице валют и преобразует HTML в {@link QuoteTick}.
+     *
+     * <p>Делает GET на относительный путь {@code /quotes/currency/} (baseUrl задан в WebClient),
+     * получает HTML как {@code String} и маппит его через {@link #parseHtmlToQuote(String, FxSpot)}.</p>
+     *
+     * <p>Ошибки сети/парсинга не обрабатываются здесь и пробрасываются вверх
+     * (деградация выполняется в вызывающем коде).</p>
+     *
+     * @param instrument FX-SPOT инструмент
+     * @return {@code Mono} c единичным {@link QuoteTick}
      */
     private Mono<QuoteTick> fetchOnce(FxSpot instrument) {
 
@@ -198,12 +207,16 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private static BigDecimal toDecimal(String raw) {
         if (raw == null) return null;
 
-        // NBSP и узкие пробелы --> обычные; сносим чужие символы; нормализуем локаль
-        String s = raw.replace('\u00A0',' ')
+        // "Очищаем" строку:
+        String s = raw
+                // 1) Заменяем NBSP и узкие пробелы
+                .replace('\u00A0',' ')
                 .replace('\u202F',' ')
                 .replace('\u2009',' ')
+                // 2) Убираем чужие символы
                 .replaceAll(NON_NUM.pattern(), "")
                 .replace(" ", "")
+                // 3) Нормализуем локаль
                 .replace(',', '.');
 
         // Оставляем только последнюю точку как десятичный разделитель (остальные — тысячные)
