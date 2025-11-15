@@ -106,10 +106,11 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     //=================================================================================================================
 
     /**
-     * Выполняет один HTTP-запрос к странице валют и преобразует HTML в {@link QuoteTick}.
+     * Выполняет один HTTP-запрос к странице валют и преобразует HTML в модель котировки {@link QuoteTick}.
      *
      * <p>Делает GET на относительный путь {@code /quotes/currency/} (baseUrl задан в WebClient),
-     * получает HTML как {@code String} и маппит его через {@link #parseHtmlToQuote(String, FxSpot)}.</p>
+     * получает HTML как {@code String} и далее применяет метод {@link #parseHtmlToQuote(String, FxSpot)} для поиска
+     * нужного числового значения котировки и преобразования его в модель котировки.</p>
      *
      * <p>Ошибки сети/парсинга не обрабатываются здесь и пробрасываются вверх
      * (деградация выполняется в вызывающем коде).</p>
@@ -120,7 +121,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private Mono<QuoteTick> fetchOnce(FxSpot instrument) {
 
         return webClient.get()
-                .uri("/quotes/currency/")// Используем относительный путь (baseUrl задан в application.properties)
+                .uri("/quotes/currency/") // Используем относительный путь (baseUrl задан в WebClient)
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(html -> parseHtmlToQuote(html, instrument));
@@ -132,16 +133,25 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private QuoteTick parseHtmlToQuote(String html, FxSpot instrument) {
         Document doc = Jsoup.parse(html);
 
+        // Формируем символ инструмента, характерный для сайта провайдера
         String symbol = instrument.base().code() + "/" + instrument.quote().code(); // --> Например, "EUR/USD"
+
+        /* Формируем regex (регулярное выражение) для точного совпадения текста ячейки с символом инструмента:
+           ^/$ — якори начала/конца строки; \s* — допускаем пробелы по краям;
+           Pattern.quote(symbol) — экранируем символ, чтобы сравнивать его как литерал. */
         String symbolRegex = "^\\s*" + Pattern.quote(symbol) + "\\s*$";
 
-        // Ищем <tr>, у которого есть <td> строго "EUR/USD"
+        /* Ищем на всей странице во всех таблицах <tr> (table row), у которого есть <td> (table data) совпадающий
+           с symbolRegex (берем первый же, который встретится). Если не нашли, выбрасываем исключение.
+         */
         Element row = doc.selectFirst("tr:has(td:matches(" + symbolRegex + "))");
         if (row == null) {
-            throw new IllegalStateException("EUR/USD row not found in currency table");
+            throw new IllegalStateException(
+                    String.format("No table row (<tr>) with a cell (<td>) equal to '%s' found on the page", symbol)
+            );
         }
 
-        // Пытаемся найти индексы колонок по заголовкам (если они есть)
+        // Пытаемся найти индексы колонок, в которых будут содержаться значения цен bid и ask
         int bidIdx = -1, askIdx = -1, lastIdx = -1;
         Element table = row.closest("table");
         if (table != null) {
@@ -198,7 +208,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         );
     }
 
-    /* Предкомпилированный паттерн: удаляем всё, кроме цифр, запятой, точки, минуса и пробела. */
+    /* Пред-компилированный паттерн: удаляем всё, кроме цифр, запятой, точки, минуса и пробела. */
     private static final Pattern NON_NUMERIC = Pattern.compile("[^\\d.,\\- ]");
 
     /**
@@ -210,10 +220,10 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         // "Очищаем" строку:
         String s = raw
                 // 1) Заменяем NBSP и узкие пробелы на обычный
-                .replace('\u00A0',' ')
-                .replace('\u202F',' ')
-                .replace('\u2009',' ')
-                // 2) Используем предкомпилированный паттерн
+                .replace('\u00A0', ' ')
+                .replace('\u202F', ' ')
+                .replace('\u2009', ' ')
+                // 2) Используем пред-компилированный паттерн
                 .replaceAll(NON_NUMERIC.pattern(), "")
                 .replace(" ", "")
                 // 3) Заменяем запятую на точку
