@@ -9,6 +9,7 @@ import com.alligator.market.domain.quote.QuoteTick;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,27 +134,47 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private QuoteTick parseHtmlToQuote(String html, FxSpot instrument) {
         Document doc = Jsoup.parse(html);
 
-        // Формируем символ инструмента, характерный для сайта провайдера
-        String symbol = instrument.base().code() + "/" + instrument.quote().code(); // --> Например, "EUR/USD"
+        // 1) Формируем символ инструмента, характерный для страницы провайдера
+        String symbol = instrument.base().code() + "/" + instrument.quote().code(); // <-- Пример: "EUR/USD"
 
-        /* Формируем regex (регулярное выражение) для точного совпадения текста ячейки с символом инструмента:
-           ^/$ — якори начала/конца строки; \s* — допускаем пробелы по краям;
-           Pattern.quote(symbol) — экранируем символ, чтобы сравнивать его как литерал. */
+        /* 2) Формируем регулярное выражение (regex) для поиска ячеек (в таблицах на странице провайдера),
+              текст внутри которых совпадает с символом инструмента:
+              --> ^/$ — якори начала/конца строки;
+              --> \s* — допускаем пробелы по краям;
+              --> Pattern.quote(symbol) — экранируем символ, чтобы сравнивать его как литерал. */
         String symbolRegex = "^\\s*" + Pattern.quote(symbol) + "\\s*$";
 
-        /* Ищем на всей странице во всех таблицах <tr> (table row), у которого есть <td> (table data) совпадающий
-           с symbolRegex (берем первый же, который встретится). Если не нашли, выбрасываем исключение.
-         */
-        Element row = doc.selectFirst("tr:has(td:matches(" + symbolRegex + "))");
-        if (row == null) {
-            throw new IllegalStateException(
-                    String.format("No table row (<tr>) with a cell (<td>) equal to '%s' found on the page", symbol)
-            );
+        // 3.1) Используя symbolRegex, ищем ячейки <td> (в таблицах на странице провайдера), содержащие символ инструмента
+        Elements cells = doc.select("td:matches(" + symbolRegex + ")");
+        if (cells.isEmpty()) {
+            throw new IllegalStateException(String.format(
+                    "No <td> equal to '%s' found on the page", symbol)); // TODO: дополнить комментарий что возможно данный инструмент не представлен на странице провайдера
+        }
+        if (cells.size() > 1) {
+            throw new IllegalStateException(String.format(
+                    "Ambiguous match: %d <td> with '%s' found on the page", cells.size(), symbol)); // TODO: дополнить что наличие двух ячеек для одного и того же инструмента делает данные ненадежными
+        }
+        // 3.2) Фиксируем найденную ячейку с символом инструмента, строку данной ячейки и саму таблицу
+        Element nameCell = cells.first(); // <-- пункт 3) гарантирует что nameCell != null // TODO: переименовать nameCell в symbolCell
+        Element row = nameCell != null ? nameCell.closest("tr") : null;
+        Element table = row != null ? row.closest("table") : null;
+        if (row == null || table == null) {
+            throw new IllegalStateException("Broken DOM structure near symbol cell"); // TODO: добавить в комментарий конкретный символ инструмента
         }
 
-        // Пытаемся найти индексы колонок, в которых будут содержаться значения цен bid и ask
+        // 4) Проверяем, что структура таблицы, в которой мы нашли нужную ячейку, соответствует ожиданиям (для надежности данных)
+        int colIdx = row.select("td").indexOf(nameCell); // <-- индекс ячейки в строке
+        Element header = table.selectFirst("thead tr:has(th), tr:has(th)");
+        if (header == null) {
+            throw new IllegalStateException("Table header (<th>) not found"); // TODO: для ясности дополнить комментарий что заголовок над символом инструмента не найден, что делает данные ненадежными
+        }
+
+
+
+
+
+        // 4) Пытаемся найти индексы колонок, в которых должны содержаться котировки bid/ask
         int bidIdx = -1, askIdx = -1, lastIdx = -1;
-        Element table = row.closest("table");
         if (table != null) {
             Element header = table.selectFirst("tr:has(th)");
             if (header != null) {
@@ -176,17 +197,17 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         BigDecimal bid;
         BigDecimal ask;
 
-        // 1) Если распознали Bid/Ask по заголовкам — берём их
+        // Если распознали Bid/Ask по заголовкам — берём их
         if (bidIdx >= 0 && askIdx >= 0 && bidIdx < tds.size() && askIdx < tds.size()) {
             bid = toDecimal(tds.get(bidIdx).text());
             ask = toDecimal(tds.get(askIdx).text());
         }
-        // 2) Иначе пытаемся по дефолтной схеме (0=Type, 1=Bid, 2=Ask)
+        // Иначе пытаемся по дефолтной схеме (0=Type, 1=Bid, 2=Ask)
         else if (tds.size() >= 3) {
             bid = toDecimal(tds.get(1).text());
             ask = toDecimal(tds.get(2).text());
         }
-        // 3) Fallback: только Last — берём как mid и дублируем в bid/ask
+        // Fallback: только Last — берём как mid и дублируем в bid/ask
         else if (lastIdx >= 0 && lastIdx < tds.size()) {
             BigDecimal last = toDecimal(tds.get(lastIdx).text());
             bid = last;
