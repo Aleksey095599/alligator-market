@@ -5,6 +5,7 @@ import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanc
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,6 +26,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/**
+ * Обработчик инструментов FX_SPOT для провайдера рыночных данных ProFinance (парсинг с сайта).
+ */
 public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanceAdapter, FxSpot> {
 
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
@@ -69,21 +73,21 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
      *
      * <p><b>Поведение:</b></p>
      * <ul>
-     *   <li>Первая попытка выполняется сразу, далее — каждые
-     *       {@code provider().policy().minUpdateInterval()} (см. {@link reactor.core.publisher.Flux#interval}).</li>
+     *   <li>Поток котировок реализуется путем периодических выполнений метода {@code fetchOnce(instrument)},
+     *       который представляет собой один HTTP-запрос к странице провайдера.</li>
+     *   <li>Первая попытка выполняется сразу, далее — через каждые {@link ProviderPolicy#minUpdateInterval()}.</li>
      *   <li>Используется стратегия backpressure {@code onBackpressureLatest()} —
      *       если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются,
      *       обрабатывается только самый свежий.</li>
-     *   <li>Сетевые/парсинг-ошибки не завершают поток: тик пропускается
+     *   <li>Сетевые/парсинг-ошибки не завершают поток — тик пропускается
      *       ({@code Mono.empty()}) и расписание сохраняется.</li>
-     *   <li>Каждый тик инициирует один HTTP-запрос в {@code fetchOnce(instrument)} и маппится в {@link QuoteTick}.</li>
      * </ul>
      *
      * <p><b>Примечание:</b> при необходимости полностью исключить параллельные запросы
      * используйте ограничение конкурентности {@code flatMap(..., 1)}.</p>
      *
      * @param instrument FX_SPOT инструмент
-     * @return поток {@link QuoteTick} с указанным интервалом; устойчив к временным ошибкам источника
+     * @return поток {@link QuoteTick} с заданным интервалом; устойчив к временным ошибкам источника
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
@@ -91,8 +95,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         Duration period = provider().policy().minUpdateInterval();
 
         return Flux
-                .interval(Duration.ZERO, period) // Интервал для запросов [0, period]
-                .onBackpressureLatest() // Если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются
+                .interval(Duration.ZERO, period) // <-- Интервал для запросов [0, period]
+                .onBackpressureLatest() // <-- Если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются
                 .flatMap(t -> fetchOnce(instrument)
                         .onErrorResume(ex -> {
                             // При ошибке парсинга/сети пропускаем тик, ждём следующий интервал
@@ -107,7 +111,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     //=================================================================================================================
 
     /**
-     * Выполняет один HTTP-запрос к странице валют и преобразует HTML в модель котировки {@link QuoteTick}.
+     * Выполняет один HTTP-запрос к странице провайдера и преобразует HTML в модель котировки {@link QuoteTick}.
      *
      * <p>Делает GET на относительный путь {@code /quotes/currency/} (baseUrl задан в WebClient),
      * получает HTML как {@code String} и далее применяет метод {@link #parseHtmlToQuote(String, FxSpot)} для поиска
@@ -148,78 +152,54 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         Elements cells = doc.select("td:matches(" + symbolRegex + ")");
         if (cells.isEmpty()) {
             throw new IllegalStateException(String.format(
-                    "No <td> equal to '%s' found on the page", symbol)); // TODO: дополнить комментарий что возможно данный инструмент не представлен на странице провайдера
+                    "No <td> equal to instrument symbol '%s' found on the page", symbol));
         }
         if (cells.size() > 1) {
             throw new IllegalStateException(String.format(
-                    "Ambiguous match: %d <td> with '%s' found on the page", cells.size(), symbol)); // TODO: дополнить что наличие двух ячеек для одного и того же инструмента делает данные ненадежными
+                    "Ambiguous match: %d <td> with instrument symbol '%s' found on the page", cells.size(), symbol));
         }
         // 3.2) Фиксируем найденную ячейку с символом инструмента, строку данной ячейки и саму таблицу
-        Element nameCell = cells.first(); // <-- пункт 3) гарантирует что nameCell != null // TODO: переименовать nameCell в symbolCell
-        Element row = nameCell != null ? nameCell.closest("tr") : null;
+        Element symbolCell = cells.first(); // <-- пункт 3) гарантирует что symbolCell != null
+        Element row = symbolCell != null ? symbolCell.closest("tr") : null;
         Element table = row != null ? row.closest("table") : null;
         if (row == null || table == null) {
-            throw new IllegalStateException("Broken DOM structure near symbol cell"); // TODO: добавить в комментарий конкретный символ инструмента
+            throw new IllegalStateException(String.format(
+                    "Wrong table structure: Broken DOM structure near <td> with instrument symbol '%s'", symbol));
         }
 
-        // 4) Проверяем, что структура таблицы, в которой мы нашли нужную ячейку, соответствует ожиданиям (для надежности данных)
-        int colIdx = row.select("td").indexOf(nameCell); // <-- индекс ячейки в строке
+        /* 4) Проверяем структуру таблицы:
+              --> наличие колонок с заголовками "Name", "Bid", "Ask";
+              --> ячейка с символом инструмента должна находиться в колонке "Name". */
         Element header = table.selectFirst("thead tr:has(th), tr:has(th)");
         if (header == null) {
-            throw new IllegalStateException("Table header (<th>) not found"); // TODO: для ясности дополнить комментарий что заголовок над символом инструмента не найден, что делает данные ненадежными
+            throw new IllegalStateException("Table header (<th>) not found");
+        }
+        Elements ths = header.select("th"); // <-- Содержит набор заголовков
+        int nameIdx = -1, bidIdx = -1, askIdx = -1; // <-- Начальные значения для индексов
+        for (int i = 0; i < ths.size(); i++) {
+            // Перебираем заголовки из набора и ищем нужные совпадения
+            String h = ths.get(i).text().trim().toLowerCase(Locale.ROOT);
+            if (h.equals("name")) nameIdx = i;
+            if (h.equals("bid")) bidIdx  = i;
+            if (h.equals("ask")) askIdx  = i;
+        }
+        // Проверка наличия всех трех колонок
+        if (nameIdx < 0 || bidIdx < 0 || askIdx < 0) {
+            throw new IllegalStateException("Wrong table structure: required columns [Name, Bid, Ask] not found");
+        }
+        // Индекс найденной ячейки с символом инструмента должен совпадать с индексом колонки "Name"
+        Elements tds = row.select("td");
+        int cellIdx = tds.indexOf(symbolCell);
+        if (cellIdx != nameIdx) {
+            throw new IllegalStateException("<td> with instrument symbol is not in the 'Name' column");
         }
 
-
-
-
-
-        // 4) Пытаемся найти индексы колонок, в которых должны содержаться котировки bid/ask
-        int bidIdx = -1, askIdx = -1, lastIdx = -1;
-        if (table != null) {
-            Element header = table.selectFirst("tr:has(th)");
-            if (header != null) {
-                int i = 0;
-                for (Element th : header.select("th")) {
-                    String h = th.text().trim().toLowerCase(Locale.ROOT);
-                    if (h.contains("bid") || h.contains("покуп")) bidIdx = i;
-                    if (h.contains("ask") || h.contains("прод")) askIdx = i;
-                    if (h.contains("last") || h.contains("посл") || h.contains("цена")) lastIdx = i;
-                    i++;
-                }
-            }
+        // 5) Извлекаем значения котировок bid/ask
+        BigDecimal bid = toDecimal(tds.get(bidIdx).text());
+        BigDecimal ask = toDecimal(tds.get(askIdx).text());
+        if (bid == null || ask == null) {
+            throw new IllegalStateException("Invalid number format in Bid/Ask cells");
         }
-
-        var tds = row.select("td");
-        if (tds.isEmpty()) {
-            throw new IllegalStateException("Unexpected table row format: no <td> cells");
-        }
-
-        BigDecimal bid;
-        BigDecimal ask;
-
-        // Если распознали Bid/Ask по заголовкам — берём их
-        if (bidIdx >= 0 && askIdx >= 0 && bidIdx < tds.size() && askIdx < tds.size()) {
-            bid = toDecimal(tds.get(bidIdx).text());
-            ask = toDecimal(tds.get(askIdx).text());
-        }
-        // Иначе пытаемся по дефолтной схеме (0=Type, 1=Bid, 2=Ask)
-        else if (tds.size() >= 3) {
-            bid = toDecimal(tds.get(1).text());
-            ask = toDecimal(tds.get(2).text());
-        }
-        // Fallback: только Last — берём как mid и дублируем в bid/ask
-        else if (lastIdx >= 0 && lastIdx < tds.size()) {
-            BigDecimal last = toDecimal(tds.get(lastIdx).text());
-            bid = last;
-            ask = last;
-        } else if (tds.size() >= 2) { // иногда бывает Type+Last
-            BigDecimal last = toDecimal(tds.get(1).text());
-            bid = last;
-            ask = last;
-        } else {
-            throw new IllegalStateException("Unable to detect Bid/Ask/Last columns");
-        }
-
         return new QuoteTick(
                 instrument.instrumentCode(),
                 bid,
@@ -238,7 +218,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private static BigDecimal toDecimal(String raw) {
         if (raw == null) return null;
 
-        // "Очищаем" строку:
+        // 1) "Очищаем" строку:
         String s = raw
                 // 1) Заменяем NBSP и узкие пробелы на обычный
                 .replace('\u00A0', ' ')
@@ -250,16 +230,16 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
                 // 3) Заменяем запятую на точку
                 .replace(',', '.');
 
-        // Оставляем только последнюю точку как десятичный разделитель (остальные — тысячные)
+        // 2) Оставляем только последнюю точку как десятичный разделитель (остальные — тысячные) // TODO усилить проверку - нет точек (целое число) или только одна точка
         int dot = s.lastIndexOf('.');
         if (dot > 0) s = s.substring(0, dot).replace(".", "") + s.substring(dot);
 
-        // Проверка на пустоту или прочерк
+        // 3) Проверка на пустоту или прочерк
         if (s.isEmpty() || s.equals("-")) return null;
 
         try {
             return new BigDecimal(s);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) { // TODO добавить выбрасывание ошибки
             return null;
         }
     }
