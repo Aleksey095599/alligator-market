@@ -81,7 +81,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
      *       обрабатывается только самый свежий.</li>
      *   <li>Сетевые/парсинг-ошибки не завершают поток — тик пропускается ({@code Mono.empty()})
      *       и расписание сохраняется.</li>
-     *   <li>Используется {@code concatMap} для гарантии последовательности обработки запросов.</li>
+     *   <li>Используется {@code switchMap} чтобы "запаздывающий" ответ не попадал в поток.</li>
      * </ul>
      *
      * @param instrument FX_SPOT инструмент
@@ -96,7 +96,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         return Flux
                 .interval(Duration.ZERO, period) // <-- Интервал запросов
                 .onBackpressureLatest() // <-- Если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются
-                .concatMap(t -> fetchOnce(instrument)
+                .switchMap(t -> fetchOnce(instrument)
+                        .timeout(period)
                         .onErrorResume(ex -> {
                             // При ошибке парсинга/сети пропускаем тик, ждём следующий интервал
                             log.warn("ProFinance fetch failed: {}", ex.getMessage());
@@ -211,6 +212,10 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     /* Пред-компилированный паттерн: удаляем всё, кроме цифр, запятой, точки, минуса и пробела. */
     private static final Pattern NON_NUMERIC = Pattern.compile("[^\\d.,\\- ]");
 
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
     /**
      * Нормализуем число из ячейки.
      */
@@ -238,7 +243,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
 
         try {
             return new BigDecimal(s);
-        } catch (NumberFormatException e) { // TODO добавить выбрасывание ошибки
+        } catch (NumberFormatException e) { // TODO добавить выбрасывание ошибки с сообщением
             return null;
         }
     }
