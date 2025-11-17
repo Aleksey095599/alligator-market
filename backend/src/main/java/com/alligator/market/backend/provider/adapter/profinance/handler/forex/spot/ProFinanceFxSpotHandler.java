@@ -94,7 +94,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         Duration period = provider().policy().minUpdateInterval();
 
         return Flux
-                .interval(Duration.ZERO, period) // <-- Интервал запросов
+                .interval(Duration.ZERO, period) // <-- Первый запрос стразу, следующие с интервалом period
                 .onBackpressureLatest() // <-- Если обработка/сеть медленнее интервала, промежуточные «тики» отбрасываются
                 .switchMap(t -> fetchOnce(instrument)
                         .timeout(period)
@@ -107,7 +107,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     }
 
     //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ
+    // СПЕЦИАЛЬНЫЕ МЕТОДЫ
     //=================================================================================================================
 
     /**
