@@ -24,7 +24,6 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Обработчик инструментов FX_SPOT для провайдера рыночных данных ProFinance (парсинг с сайта).
@@ -147,7 +146,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
               --> ^/$ — якори начала/конца строки;
               --> \s* — допускаем пробелы по краям;
               --> Pattern.quote(symbol) — экранируем символ, чтобы сравнивать его как литерал. */
-        String symbolRegex = "^\\s*" + Pattern.quote(symbol) + "\\s*$";
+        String symbolRegex = "^\\s*" + java.util.regex.Pattern.quote(symbol) + "\\s*$";
 
         // 3.1) Используя symbolRegex, ищем ячейки <td> (в таблицах на странице провайдера), содержащие символ инструмента
         Elements cells = doc.select("td:matches(" + symbolRegex + ")");
@@ -198,9 +197,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         // 5) Извлекаем значения котировок bid/ask
         BigDecimal bid = toDecimal(tds.get(bidIdx).text());
         BigDecimal ask = toDecimal(tds.get(askIdx).text());
-        if (bid == null || ask == null) {
-            throw new IllegalStateException("Invalid number format in Bid/Ask cells");
-        }
+
+        // 6) Формируем и возвращаем модель котировки
         return new QuoteTick(
                 instrument.instrumentCode(),
                 bid,
@@ -210,42 +208,60 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         );
     }
 
-    /* Пред-компилированный паттерн: удаляем всё, кроме цифр, запятой, точки, минуса и пробела. */
-    private static final Pattern NON_NUMERIC = Pattern.compile("[^\\d.,\\- ]");
-
     //=================================================================================================================
     // УТИЛИТЫ
     //=================================================================================================================
 
+    /* Пред-компилированный паттерн: разрешены только цифры и опциональная десятичная часть через точку. */
+    private static final java.util.regex.Pattern DECIMAL_DOT_NO_SIGN =
+            java.util.regex.Pattern.compile("\\d+(\\.\\d+)?");
+
     /**
-     * Нормализуем число из ячейки.
+     * Нормализует текст ячейки и парсит BigDecimal по строгим правилам:
+     * - запятая недопустима;
+     * - допускается одна точка (как десятичный разделитель) или ни одной точки (целое число);
+     * - отрицательные значения недопустимы.
      */
     private static BigDecimal toDecimal(String raw) {
-        if (raw == null) return null;
+        if (raw == null) {
+            throw new IllegalArgumentException("Input value for decimal parsing is null");
+        }
 
-        // 1) "Очищаем" строку:
-        String s = raw
-                // 1) Заменяем NBSP и узкие пробелы на обычный
+        // "Очищаем" строку:
+        String normalized  = raw
+                // Заменяем NBSP, узкие и тонкие пробелы на обычные
                 .replace('\u00A0', ' ')
                 .replace('\u202F', ' ')
                 .replace('\u2009', ' ')
-                // 2) Используем пред-компилированный паттерн
-                .replaceAll(NON_NUMERIC.pattern(), "")
-                .replace(" ", "")
-                // 3) Заменяем запятую на точку
-                .replace(',', '.');
+                // Убираем обычные пробелы
+                .replace(" ", "");
 
-        // 2) Оставляем только последнюю точку как десятичный разделитель (остальные — тысячные) // TODO усилить проверку - нет точек (целое число) или только одна точка
-        int dot = s.lastIndexOf('.');
-        if (dot > 0) s = s.substring(0, dot).replace(".", "") + s.substring(dot);
+        // 1) Запятая недопустима
+        if (normalized.indexOf(',') >= 0) {
+            throw new IllegalArgumentException("Decimal comma is not allowed: '" + raw + "' --> '" + normalized + "'");
+        }
 
-        // 3) Проверка на пустоту или прочерк
-        if (s.isEmpty() || s.equals("-")) return null;
+        // 2) Минусы недопустимы (и Unicode minus тоже)
+        if (normalized.indexOf('-') >= 0 || normalized.indexOf('−') >= 0) {
+            throw new IllegalArgumentException("Negative value is not allowed: '" + raw + "' --> '" + normalized + "'");
+        }
 
+        // 3) Не более одной точки
+        int firstDot = normalized.indexOf('.');
+        if (firstDot != -1 && normalized.indexOf('.', firstDot + 1) != -1) {
+            throw new IllegalArgumentException("More than one dot: '" + raw + "' --> '" + normalized + "'");
+        }
+
+        // 4) Финальная валидация формата с помощью паттерна
+        if (!DECIMAL_DOT_NO_SIGN.matcher(normalized).matches()) {
+            throw new IllegalArgumentException("Invalid numeric format: '" + raw + "' --> '" + normalized + "'");
+        }
+
+        // Пробуем преобразовать в число
         try {
-            return new BigDecimal(s);
-        } catch (NumberFormatException e) { // TODO добавить выбрасывание ошибки с сообщением
-            return null;
+            return new BigDecimal(normalized);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Cannot parse BigDecimal: '" + raw + "' --> '" + normalized + "'", e);
         }
     }
 }
