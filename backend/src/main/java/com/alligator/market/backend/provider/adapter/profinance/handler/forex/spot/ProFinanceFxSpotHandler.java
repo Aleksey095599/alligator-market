@@ -180,8 +180,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
             // Перебираем заголовки из набора и ищем нужные совпадения
             String h = ths.get(i).text().trim().toLowerCase(Locale.ROOT);
             if (h.equals("name")) nameIdx = i;
-            if (h.equals("bid")) bidIdx  = i;
-            if (h.equals("ask")) askIdx  = i;
+            if (h.equals("bid")) bidIdx = i;
+            if (h.equals("ask")) askIdx = i;
         }
         // 4.1 Проверка наличия всех трех колонок
         if (nameIdx < 0 || bidIdx < 0 || askIdx < 0) {
@@ -228,7 +228,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         }
 
         // "Очищаем" строку:
-        String normalized  = raw
+        String normalized = raw
                 // Заменяем NBSP, узкие и тонкие пробелы на обычные
                 .replace('\u00A0', ' ')
                 .replace('\u202F', ' ')
