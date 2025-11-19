@@ -216,6 +216,10 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private static final java.util.regex.Pattern DECIMAL_DOT_NO_SIGN =
             java.util.regex.Pattern.compile("\\d+(\\.\\d+)?");
 
+    /* Разные типы минусов, которые встречаются в HTML (ASCII и настоящий Unicode minus). */
+    private static final char ASCII_MINUS = '-';
+    private static final char UNICODE_MINUS = '\u2212';
+
     /**
      * Нормализует текст ячейки и парсит BigDecimal по строгим правилам:
      * - запятая недопустима;
@@ -241,8 +245,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
             throw new IllegalArgumentException("Decimal comma is not allowed: '" + raw + "' --> '" + normalized + "'");
         }
 
-        // 2) Минусы недопустимы (и Unicode minus тоже)
-        if (normalized.indexOf('-') >= 0 || normalized.indexOf('−') >= 0) {
+        // 2) Минусы недопустимы (включая ASCII hyphen-minus и Unicode minus)
+        if (normalized.indexOf(ASCII_MINUS) >= 0 || normalized.indexOf(UNICODE_MINUS) >= 0) {
             throw new IllegalArgumentException("Negative value is not allowed: '" + raw + "' --> '" + normalized + "'");
         }
 
