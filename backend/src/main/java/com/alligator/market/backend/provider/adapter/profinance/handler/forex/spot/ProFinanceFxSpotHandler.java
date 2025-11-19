@@ -231,7 +231,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
             throw new IllegalArgumentException("Input value for decimal parsing is null");
         }
 
-        // "Очищаем" строку:
+        // 1) "Очищаем" строку:
         String normalized = raw
                 // Заменяем NBSP, узкие и тонкие пробелы на обычные
                 .replace('\u00A0', ' ')
@@ -239,24 +239,20 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
                 .replace('\u2009', ' ')
                 // Убираем обычные пробелы
                 .replace(" ", "");
-
-        // 1) Запятая недопустима
+        // 2) Запятая недопустима
         if (normalized.indexOf(',') >= 0) {
             throw new IllegalArgumentException("Decimal comma is not allowed: '" + raw + "' --> '" + normalized + "'");
         }
-
-        // 2) Минусы недопустимы (включая ASCII hyphen-minus и Unicode minus)
+        // 3) Минусы недопустимы (включая ASCII hyphen-minus и Unicode minus)
         if (normalized.indexOf(ASCII_MINUS) >= 0 || normalized.indexOf(UNICODE_MINUS) >= 0) {
             throw new IllegalArgumentException("Negative value is not allowed: '" + raw + "' --> '" + normalized + "'");
         }
-
-        // 3) Не более одной точки
+        // 4) Не более одной точки
         int firstDot = normalized.indexOf('.');
         if (firstDot != -1 && normalized.indexOf('.', firstDot + 1) != -1) {
             throw new IllegalArgumentException("More than one dot: '" + raw + "' --> '" + normalized + "'");
         }
-
-        // 4) Финальная валидация формата с помощью паттерна
+        // 5) Финальная валидация формата с помощью паттерна
         if (!DECIMAL_DOT_NO_SIGN.matcher(normalized).matches()) {
             throw new IllegalArgumentException("Invalid numeric format: '" + raw + "' --> '" + normalized + "'");
         }

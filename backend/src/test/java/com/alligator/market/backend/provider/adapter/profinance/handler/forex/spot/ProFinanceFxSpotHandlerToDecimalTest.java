@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit-тесты для private метода #toDecimal в {@link ProFinanceFxSpotHandler}.
+ * Unit-тесты для метода #toDecimal в {@link ProFinanceFxSpotHandler}.
  */
 class ProFinanceFxSpotHandlerToDecimalTest {
 
