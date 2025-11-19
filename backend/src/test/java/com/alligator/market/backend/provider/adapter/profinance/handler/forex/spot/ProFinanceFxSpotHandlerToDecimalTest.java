@@ -7,15 +7,27 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/* Юнит-тесты для строгого парсера чисел toDecimal(...) в ProFinanceFxSpotHandler. */
+/**
+ * Unit-тесты для приватного метода #toDecimal в {@link ProFinanceFxSpotHandler}.
+ */
 class ProFinanceFxSpotHandlerToDecimalTest {
 
-    /* Вспомогательный метод: вызывает private static toDecimal(String) через reflection. */
+    /**
+     * Вспомогательный метод: вызывает private static toDecimal(String) через reflection.
+     */
     private static BigDecimal invokeToDecimal(String raw) {
         try {
             Method m = ProFinanceFxSpotHandler.class.getDeclaredMethod("toDecimal", String.class);
             m.setAccessible(true);
             return (BigDecimal) m.invoke(null, raw);
+        } catch (java.lang.reflect.InvocationTargetException e) {
+            // Ожидаем, что toDecimal всегда кидает IllegalArgumentException для невалидного входа
+            Throwable cause = e.getCause();
+            if (cause instanceof IllegalArgumentException iae) {
+                throw iae;
+            }
+            // Если вдруг прилетело что-то другое — пусть тест упадёт явно
+            throw new RuntimeException("Unexpected exception type from toDecimal", cause);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Reflection invoke failed", e);
         }
