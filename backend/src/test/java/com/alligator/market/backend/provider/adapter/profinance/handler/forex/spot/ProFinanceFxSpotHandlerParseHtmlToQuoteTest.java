@@ -7,9 +7,6 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
-import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +18,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Юнит‑тесты для parseHtmlToQuote(...) в ProFinanceFxSpotHandler.
@@ -295,25 +292,6 @@ class ProFinanceFxSpotHandlerParseHtmlToQuoteTest {
             throw new RuntimeException("Unexpected checked exception from parseHtmlToQuote", cause);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Reflection invoke failed", e);
-        }
-    }
-
-    /**
-     * Простейший тестовый провайдер (если вместо Mockito захотите использовать явный stub).
-     * Сейчас в тестах не используется, но оставляю как образец.
-     */
-    @SuppressWarnings("unused")
-    private static final class MarketDataProviderStub implements MarketDataProvider {
-        private final String code;
-        MarketDataProviderStub(String code) { this.code = code; }
-        @Override public String providerCode() { return code; }
-        @Override public ProviderDescriptor descriptor() { return null; }
-        @Override public ProviderPolicy policy() { return ProviderPolicy.ofSeconds(5); }
-        @Override public ProviderSettings settings() { return ProviderSettings.empty(); }
-        @Override public Set<String> instrumentsCodes() { return Set.of(); }
-        @Override public Set<InstrumentType> instrumentsTypes() { return Set.of(InstrumentType.FX_SPOT); }
-        @Override public <I extends com.alligator.market.domain.instrument.contract.Instrument> org.reactivestreams.Publisher<QuoteTick> quote(I instrument) {
-            throw new UnsupportedOperationException("Not used in this test");
         }
     }
 }
