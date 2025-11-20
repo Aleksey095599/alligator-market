@@ -133,7 +133,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     }
 
     /**
-     * Парсим HTML: ищем строку EUR/USD, читаем Bid/Ask (или Last как fallback).
+     * Парсим HTML: ищем строку с символом заданного инструмента и читаем значения Bid/Ask.
      */
     private QuoteTick parseHtmlToQuote(String html, FxSpot instrument) {
         Document doc = Jsoup.parse(html);
@@ -141,68 +141,76 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         // 1) Формируем символ инструмента, характерный для страницы провайдера
         String symbol = instrument.base().code() + "/" + instrument.quote().code(); // <-- Пример: "EUR/USD"
 
-        /* 2) Формируем регулярное выражение (regex) для поиска ячеек (в таблицах на странице провайдера),
+        /* 2) Формируем регулярное выражение (regex) для поиска нужной ячейки в таблицах на странице провайдера,
               текст внутри которых совпадает с символом инструмента:
               --> ^/$ — якори начала/конца строки;
               --> \s* — допускаем пробелы по краям;
               --> Pattern.quote(symbol) — экранируем символ, чтобы сравнивать его как литерал. */
         String symbolRegex = "^\\s*" + java.util.regex.Pattern.quote(symbol) + "\\s*$";
 
-        // 3.1) Используя symbolRegex, ищем ячейки <td> (в таблицах на странице провайдера), содержащие символ инструмента
-        Elements cells = doc.select("td:matches(" + symbolRegex + ")");
-        if (cells.isEmpty()) {
+        // 3.1) Ищем в таблицах на странице провайдера ячейки, содержащие символ инструмента (матч по symbolRegex)
+        Elements tds = doc.select("td:matches(" + symbolRegex + ")");
+        if (tds.isEmpty()) {
             throw new IllegalStateException(String.format(
+                    // TODO: данная ошибка может трактоваться как неподдерживаемый инструмент, возможно стоит заменить на специальную доменную ошибку (подумать как сделать корректно)
                     "No <td> equal to instrument symbol '%s' found on the page", symbol));
         }
-        if (cells.size() > 1) {
+        if (tds.size() > 1) {
             throw new IllegalStateException(String.format(
-                    "Ambiguous match: %d <td> with instrument symbol '%s' found on the page", cells.size(), symbol));
+                    "Ambiguous match: %d <td> with instrument symbol '%s' found on the page " +
+                            "(expected only one)", tds.size(), symbol));
         }
-        // 3.2) Фиксируем найденную ячейку с символом инструмента, строку данной ячейки и саму таблицу
-        Element symbolCell = cells.first(); // <-- пункт 3) гарантирует что symbolCell != null
-        Element row = symbolCell != null ? symbolCell.closest("tr") : null;
-        Element table = row != null ? row.closest("table") : null;
-        if (row == null || table == null) {
+        // 3.2) Фиксируем найденную ячейку, строку ячейки и таблицу, в которой найдена ячейка
+        Element symbolCell = tds.first(); // <-- точно не null, согласно проверкам в 3.1
+        Element symbolRow = symbolCell != null ? symbolCell.closest("tr") : null;
+        Element symbolTable = symbolRow != null ? symbolRow.closest("symbolTable") : null;
+        if (symbolRow == null || symbolTable == null) {
             throw new IllegalStateException(String.format(
-                    "Wrong table structure: Broken DOM structure near <td> with instrument symbol '%s'", symbol));
+                    // Если элементы symbolRow или symbolTable ==null --> некорректная структура вокруг найденной ячейки
+                    "Wrong structure of table with instrument symbol: " +
+                            "Broken DOM structure near <td> with instrument symbol '%s'", symbol));
         }
 
         /* 4) Проверяем структуру таблицы:
-              --> 4.1 наличие колонок с заголовками "Name", "Bid", "Ask";
-              --> 4.2 ячейка с символом инструмента должна находиться в колонке "Name".
-              --> 4.3 строка, в которой содержится ячейка с символом инструментов, TODO */
-        Element header = table.selectFirst("thead tr:has(th), tr:has(th)");
-        if (header == null) {
-            throw new IllegalStateException("Table header (<th>) not found");
+              --> 4.1 наличие заголовков "Name", "Bid" и "Ask" в symbolTable;
+              --> 4.2 symbolCell должна находиться под заголовком "Name";
+              --> 4.3 symbolRow содержит столько же ячеек сколько и строка заголовков. */
+        Element headerRow = symbolTable.selectFirst("thead tr:has(th), tr:has(th)");
+        if (headerRow == null) {
+            throw new IllegalStateException("Row with headers (<th>) not found in the table with " +
+                    "instrument symbol: " + symbol);
         }
-        Elements ths = header.select("th"); // <-- Содержит набор заголовков
-        int nameIdx = -1, bidIdx = -1, askIdx = -1; // <-- Начальные значения для индексов
-        for (int i = 0; i < ths.size(); i++) {
-            // Перебираем заголовки из набора и ищем нужные совпадения
-            String h = ths.get(i).text().trim().toLowerCase(Locale.ROOT);
+        Elements headerCells = headerRow.select("th"); // <-- Набор ячеек headerRow
+        int nameIdx = -1, bidIdx = -1, askIdx = -1; // <-- Начальные значения для индексов искомых ячеек в headerRow
+        for (int i = 0; i < headerCells.size(); i++) {
+            // Перебираем ячейки в headerRow и ищем нужные совпадения ("name", "bid", "ask")
+            String h = headerCells.get(i).text().trim().toLowerCase(Locale.ROOT); // <-- Значение i-ой ячейки в headerRow
             if (h.equals("name")) nameIdx = i;
             if (h.equals("bid")) bidIdx = i;
             if (h.equals("ask")) askIdx = i;
         }
-        // 4.1 Проверка наличия всех трех колонок
+        // 4.1 Проверка наличия всех трех нужных заголовков
         if (nameIdx < 0 || bidIdx < 0 || askIdx < 0) {
-            throw new IllegalStateException("Wrong table structure: required columns [Name, Bid, Ask] not found");
+            throw new IllegalStateException("Wrong structure of table with instrument symbol: " +
+                    "required columns [Name, Bid, Ask] not found");
         }
-        // 4.2 Индекс найденной ячейки с символом инструмента должен совпадать с индексом колонки "Name"
-        Elements tds = row.select("td");
-        int cellIdx = tds.indexOf(symbolCell);
+        // 4.2 Индекс symbolCell должен совпадать с индексом ячейки с заголовком "Name"
+        Elements symbolCells = symbolRow.select("td"); // <-- Набор ячеек в symbolRow
+        int cellIdx = symbolCells.indexOf(symbolCell);
         if (cellIdx != nameIdx) {
             throw new IllegalStateException("<td> with instrument symbol is not in the 'Name' column");
         }
-
-        // 4.3 TODO В строке, в которой найден символ инструмента, должно хватать ячеек для колонок Bid/Ask
-        if (bidIdx >= tds.size() || askIdx >= tds.size()) {
-            throw new IllegalStateException("Wrong table structure: row has fewer <td> than header columns");
+        // 4.3 symbolRow содержит столько же ячеек сколько и headerRow
+        if (symbolCells.size() != headerCells.size()) {
+            throw new IllegalStateException(
+                    "Wrong structure of table with instrument symbol: header has " + headerCells.size()
+                            + " columns but row with instrument symbol has " + symbolCells.size() + " <td>"
+            );
         }
 
         // 5) Извлекаем значения котировок bid/ask
-        BigDecimal bid = toDecimal(tds.get(bidIdx).text());
-        BigDecimal ask = toDecimal(tds.get(askIdx).text());
+        BigDecimal bid = toDecimal(symbolCells.get(bidIdx).text());
+        BigDecimal ask = toDecimal(symbolCells.get(askIdx).text());
 
         // 6) Формируем и возвращаем модель котировки
         return new QuoteTick(
