@@ -163,7 +163,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         // 3.2) Фиксируем найденную ячейку, строку ячейки и таблицу, в которой найдена ячейка
         Element symbolCell = tds.first(); // <-- точно не null, согласно проверкам в 3.1
         Element symbolRow = symbolCell != null ? symbolCell.closest("tr") : null;
-        Element symbolTable = symbolRow != null ? symbolRow.closest("symbolTable") : null;
+        Element symbolTable = symbolRow != null ? symbolRow.closest("table") : null;
         if (symbolRow == null || symbolTable == null) {
             throw new IllegalStateException(String.format(
                     // Если элементы symbolRow или symbolTable ==null --> некорректная структура вокруг найденной ячейки
