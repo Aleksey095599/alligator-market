@@ -139,7 +139,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         Document doc = Jsoup.parse(html);
 
         // 1) Формируем символ инструмента, характерный для страницы провайдера
-        String symbol = instrument.base().code() + "/" + instrument.quote().code(); // <-- Пример: "EUR/USD"
+        String symbol = instrument.base().code().value() + "/" + instrument.quote().code().value(); // <-- Пример: "EUR/USD"
 
         /* 2) Формируем регулярное выражение (regex) для поиска нужной ячейки в таблицах на странице провайдера,
               текст внутри которых совпадает с символом инструмента:
