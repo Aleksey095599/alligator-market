@@ -169,7 +169,8 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
 
         /* 4) Проверяем структуру таблицы:
               --> 4.1 наличие колонок с заголовками "Name", "Bid", "Ask";
-              --> 4.2 ячейка с символом инструмента должна находиться в колонке "Name". */
+              --> 4.2 ячейка с символом инструмента должна находиться в колонке "Name".
+              --> 4.3 строка, в которой содержится ячейка с символом инструментов, TODO */
         Element header = table.selectFirst("thead tr:has(th), tr:has(th)");
         if (header == null) {
             throw new IllegalStateException("Table header (<th>) not found");
@@ -192,6 +193,11 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         int cellIdx = tds.indexOf(symbolCell);
         if (cellIdx != nameIdx) {
             throw new IllegalStateException("<td> with instrument symbol is not in the 'Name' column");
+        }
+
+        // 4.3 TODO В строке, в которой найден символ инструмента, должно хватать ячеек для колонок Bid/Ask
+        if (bidIdx >= tds.size() || askIdx >= tds.size()) {
+            throw new IllegalStateException("Wrong table structure: row has fewer <td> than header columns");
         }
 
         // 5) Извлекаем значения котировок bid/ask
