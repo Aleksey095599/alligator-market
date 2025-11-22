@@ -1,27 +1,23 @@
 package com.alligator.market.backend.provider.adapter.profinance.handler.forex.spot;
 
+import com.alligator.market.backend.provider.adapter.profinance.ProFinanceAdapter;
 import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanceAdapterProps;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.QuoteTick;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Юнит‑тесты для parseHtmlToQuote(...) в ProFinanceFxSpotHandler.
@@ -45,15 +41,18 @@ class ProFinanceFxSpotHandlerParseHtmlToQuoteTest {
         // 2) Создаём экземпляр хендлера
         handler = new ProFinanceFxSpotHandler(webClient, new ProFinanceAdapterProps("https://example.test"));
 
-        // 3) "Прикрепляем" к хендлеру тестовый провайдер через reflection,
-        //    чтобы provider().providerCode() не упал.
-        MarketDataProvider providerStub = mock(MarketDataProvider.class);
-        when(providerStub.providerCode()).thenReturn("PROFINANCE");
-
-        // Достаём приватное поле provider из базового класса AbstractInstrumentHandler
-        Field providerField = AbstractInstrumentHandler.class.getDeclaredField("provider");
-        providerField.setAccessible(true);
-        providerField.set(handler, providerStub);
+        /*
+         * 3) Прикрепляем к хендлеру реальный провайдер ProFinanceAdapter.
+         *    Mockito не умеет мокать sealed-интерфейс MarketDataProvider в текущей конфигурации
+         *    (mockito-inline даёт ошибку Unsupported settings with this type ...), поэтому
+         *    используем настоящий адаптер с тестовыми параметрами и прикрепляем его к хендлеру
+         *    штатным методом attachTo().
+         */
+        ProFinanceAdapter provider = new ProFinanceAdapter(
+                new ProFinanceAdapterProps("https://example.test"),
+                webClient
+        );
+        handler.attachTo(provider);
 
         // 4) Готовим реальный FxSpot для EUR/USD
         Currency eur = new Currency(CurrencyCode.of("EUR"), "Euro", "European Union", 2);
