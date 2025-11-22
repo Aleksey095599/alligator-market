@@ -126,7 +126,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private Mono<QuoteTick> fetchOnce(FxSpot instrument) {
 
         return webClient.get()
-                .uri("/quotes/currency/") // Используем относительный путь (baseUrl задан в WebClient)
+                .uri("/quotes/") // Используем относительный путь (baseUrl задан в WebClient)
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(html -> parseHtmlToQuote(html, instrument));
@@ -136,6 +136,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
      * Парсим HTML: ищем строку с символом заданного инструмента и читаем значения Bid/Ask.
      */
     private QuoteTick parseHtmlToQuote(String html, FxSpot instrument) {
+        // Разбираем HTML-строку в DOM-модель Jsoup, чтобы далее искать элементы таблиц/ячеек
         Document doc = Jsoup.parse(html);
 
         // 1) Формируем символ инструмента, характерный для страницы провайдера
