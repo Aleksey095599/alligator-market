@@ -38,7 +38,7 @@ class ProFinanceLiveQuoteIntegrationTest {
         // 2) Запрашиваем поток котировок у провайдера
         Flux<QuoteTick> flux = Flux.from(proFinanceAdapter.quote(eurUsd));
 
-        // 3) Берём только первую котировку и ждём её с разумным таймаутом
+        // 3) Берём только первую котировку и ждём её с разумным тайм-аутом
         QuoteTick tick = flux
                 .next()                          // первый элемент из потока
                 .block(Duration.ofSeconds(10));  // ждём не дольше 10 секунд
