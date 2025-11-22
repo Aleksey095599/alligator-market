@@ -32,7 +32,7 @@ class ProFinanceFxSpotHandlerParseHtmlToQuoteTest {
     private FxSpot eurUsd;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         // 1) Создаём простой WebClient с фейковым baseUrl (в этих тестах он не используется).
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://example.test")
@@ -42,14 +42,14 @@ class ProFinanceFxSpotHandlerParseHtmlToQuoteTest {
         handler = new ProFinanceFxSpotHandler(webClient, new ProFinanceAdapterProps("https://example.test"));
 
         /*
-         * 3) Прикрепляем к хендлеру реальный провайдер ProFinanceAdapter.
+         * 3) Создаём реальный ProFinanceAdapter и "подвешиваем" его к хендлеру.
          *    Mockito не умеет мокать sealed-интерфейс MarketDataProvider в текущей конфигурации
          *    (mockito-inline даёт ошибку Unsupported settings with this type ...), поэтому
          *    используем настоящий адаптер с тестовыми параметрами и прикрепляем его к хендлеру
          *    штатным методом attachTo().
          */
         ProFinanceAdapter provider = new ProFinanceAdapter(
-                new ProFinanceAdapterProps("https://example.test"),
+                new ProFinanceAdapterProps("https://example.test"), // <-- Тестовый props с фейковым baseUrl
                 webClient
         );
         handler.attachTo(provider);

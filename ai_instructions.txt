@@ -35,9 +35,25 @@
 * Вносите правки на холсте только по моей просьбе и только в указанных местах;
 
 6. --- Commit generation ---
-Формат Conventional Commits: <type>(<scope>): <subject>;
-Subject ≤ 50 символов, английский, imperative, без точки;
-Body (опц.) — wrap 72 c, объясняет почему, а не как;
-Footer (опц.) — BREAKING CHANGE: или ссылки на issues.
-
-Примеры: fix(auth): handle expired JWT tokens, feat(order): add discount code support, docs(readme): update local setup instructions.
+Первая строка (summary)
+Формат: <type>(<scope>): <subject>
+type: feat, fix, docs, refactor, test, chore, build, ci, perf, revert
+scope: краткий модуль/часть системы (auth, order, ui и т.п.)
+subject: ≤ 50 символов, английский, imperative (add, fix, update, remove), без точки в конце.
+Тело (body, опционально)
+Пишется после пустой строки.
+Строки ~до 72 символов.
+Кратко объясни зачем/почему изменения, а не подробности реализации.
+Футер (footer, опционально)
+Для ломающих изменений:
+BREAKING CHANGE: <краткое описание последствий и что нужно сделать>
+Для задач/issue:
+Closes #123, Fixes #456, Related to #789.
+Общие требования
+Основание — фактический diff, не выдумывай изменения.
+Не добавляй лишний текст, комментарии или форматирование вокруг коммита.
+Избегай расплывчатых subject вроде update code; используй конкретные глаголы.
+Примеры:
+fix(auth): handle expired JWT tokens
+feat(order): add discount code support
+docs(readme): update local setup instructions
