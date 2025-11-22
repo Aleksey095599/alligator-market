@@ -212,6 +212,18 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         BigDecimal bid = toDecimal(symbolCells.get(bidIdx).text());
         BigDecimal ask = toDecimal(symbolCells.get(askIdx).text());
 
+        // Семантическая проверка значений bid/ask
+        if (bid.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalStateException("Bid must be > 0 for instrument '" + symbol + "'");
+        }
+        if (ask.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalStateException("Ask must be > 0 for instrument '" + symbol + "'");
+        }
+        if (ask.compareTo(bid) <= 0) {
+            throw new IllegalStateException("Ask must be greater than Bid for instrument '" + symbol +
+                    "': bid=" + bid + ", ask=" + ask);
+        }
+
         // 6) Формируем и возвращаем модель котировки
         return new QuoteTick(
                 instrument.instrumentCode(),
