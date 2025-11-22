@@ -19,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Интеграционный тест запрашивает живую котировку EUR/USD у провайдера ProFinance.
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
-        properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")
+@SpringBootTest
 class ProFinanceLiveQuoteIntegrationTest {
 
     /* Реальный адаптер провайдера, собираемый Spring. */
