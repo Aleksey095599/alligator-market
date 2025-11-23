@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties("provider.connection-config.profinance")
 public record ProFinanceAdapterProps(
-        @NotBlank String baseUrl
+        @NotBlank
+        String baseUrl
 ) {
 }

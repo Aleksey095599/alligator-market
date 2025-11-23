@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.adapter.profinance.config;
+package com.alligator.market.backend.provider.adapter.moex.iss.config;
 
 import com.alligator.market.backend.provider.config.http.ProviderHttpConfigGlobal;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,15 +9,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Конфигурационный класс создает WebClient для адаптера провайдера рыночных данных ProFinance (парсинг с сайта).
+ * Конфигурационный класс создает WebClient для адаптера провайдера рыночных данных MOEX ISS.
  * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal}
- * и настройки подключения для данного провайдера {@link ProFinanceAdapterProps}.
+ * и настройки подключения для данного провайдера {@link MoexIssAdapterProps}.
  */
 @Configuration
-public class ProFinanceWebConfig {
+public class MoexIssWebConfig {
 
     /* Параметры подключения к провайдеру. */
-    private final ProFinanceAdapterProps props;
+    private final MoexIssAdapterProps props;
 
     /* Общий HTTP-клиент провайдеров. */
     private final HttpClient httpClient;
@@ -25,8 +25,8 @@ public class ProFinanceWebConfig {
     /**
      * Конструктор.
      */
-    public ProFinanceWebConfig(
-            ProFinanceAdapterProps props,
+    public MoexIssWebConfig(
+            MoexIssAdapterProps props,
             @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция единого HTTP-клиента для провайдеров
 
     ) {
@@ -34,11 +34,12 @@ public class ProFinanceWebConfig {
         this.props = props;
     }
 
+
     /**
      * Бин web-клиента провайдера.
      */
-    @Bean("proFinanceWebClient")
-    public WebClient proFinanceWebClient(WebClient.Builder builder) {
+    @Bean("moexIssWebClient")
+    public WebClient moexIssWebClient(WebClient.Builder builder) {
         return builder
                 .baseUrl(props.baseUrl())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
