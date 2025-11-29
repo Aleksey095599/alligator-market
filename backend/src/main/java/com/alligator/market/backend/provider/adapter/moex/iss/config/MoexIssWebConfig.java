@@ -9,25 +9,28 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Конфигурационный класс создает WebClient для адаптера провайдера рыночных данных MOEX ISS.
- * Использует общий для всех провайдеров HTTP-клиент {@link ProviderHttpConfigGlobal}
- * и настройки подключения для данного провайдера {@link MoexIssAdapterProps}.
+ * <b>Конфигурация web-клиента провайдера рыночных данных MOEX ISS.</b>
+ *
+ * <p>Использует единый для всех провайдеров HTTP-клиент из {@link ProviderHttpConfigGlobal}
+ * и параметры подключения из {@link MoexIssAdapterProps}.</p>
  */
 @Configuration
 public class MoexIssWebConfig {
 
-    /* Параметры подключения к провайдеру. */
+    /* Параметры подключения к провайдеру MOEX ISS. */
     private final MoexIssAdapterProps props;
 
-    /* Общий HTTP-клиент провайдеров. */
+    /* Единый HTTP-клиент провайдеров. */
     private final HttpClient httpClient;
 
     /**
-     * Конструктор.
+     * <b>Конструктор конфигурации web-клиента MOEX ISS.</b>
+     *
+     * <p>Инжектирует параметры подключения и единый HTTP-клиент провайдеров.</p>
      */
     public MoexIssWebConfig(
-            MoexIssAdapterProps props,
-            @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция единого HTTP-клиента для провайдеров
+            MoexIssAdapterProps props, // <-- инжекция бина с параметрами подключения
+            @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция единого бина HTTP-клиента для провайдеров
 
     ) {
         this.httpClient = httpClient;
@@ -36,7 +39,9 @@ public class MoexIssWebConfig {
 
 
     /**
-     * Бин web-клиента провайдера.
+     * <b>Web-клиент провайдера рыночных данных MOEX ISS.</b>
+     *
+     * <p>Создаётся как Spring-бин на базе общего HTTP-клиента и параметров подключения провайдера.</p>
      */
     @Bean("moexIssWebClient")
     public WebClient moexIssWebClient(WebClient.Builder builder) {
