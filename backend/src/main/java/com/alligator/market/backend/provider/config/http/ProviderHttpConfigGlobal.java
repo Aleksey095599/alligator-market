@@ -10,29 +10,19 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных:
- * HTTP-клиент и пул TCP-соединений.
+ * <b>Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных.</b>
+ *
+ * <p>В данном конфигурационном классе задается Spring-бин пула TCP-соединений, затем поверх него выстраивается
+ * Spring-бин HTTP-клиента.</p>
+ * <p>Созданный HTTP-клиент является единым для всех провайдеров.</p>
  */
 @Configuration
 public class ProviderHttpConfigGlobal {
 
     /**
-     * Общий для всех провайдеров HTTP-клиент, поверх которого могут быть реализованы более высокоуровневые
-     * сетевые абстракции (в частности, web-клиент).
-     * <p>Использует общий для всех провайдеров пул TCP-соединений.
-     */
-    @Bean("providerHttpClient")
-    public HttpClient providerHttpClient(@Qualifier("providerConnectionPool") ConnectionProvider cp) {
-
-        return HttpClient.create(cp)
-                // Лимит времени установления TCP-соединения (handshake)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
-                // Лимит времени ожидания первого байта ответа после отправки HTTP-запроса
-                .responseTimeout(Duration.ofSeconds(6));
-    }
-
-    /**
-     * Общий для всех провайдеров пул TCP-соединений, поверх которого реализован HTTP-клиент.
+     * <b>Единый пул TCP-соединений, используемый всеми провайдерами рыночных данных.</b>
+     *
+     * <p>Поверх данного пула TCP-соединений будет реализован единый HTTP-клиент.</p>
      */
     @Bean("providerConnectionPool")
     public ConnectionProvider providerConnectionPool() {
@@ -47,5 +37,21 @@ public class ProviderHttpConfigGlobal {
                 // Лимит времени простоя TCP-соединения (без активности), далее канал закрывается
                 .maxIdleTime(Duration.ofSeconds(30))
                 .build();
+    }
+
+    /**
+     * <b>Единый низкоуровневый HTTP-клиент для всех провайдеров рыночных данных.</b>
+     *
+     * <p>Поверх данного HTTP-клиента могут быть реализованы более высокоуровневые сетевые абстракции (в частности, web-клиент).</p>
+     * <p>Данный HTTP-клиент использует единый для всех провайдеров пул TCP-соединений.</p>
+     */
+    @Bean("providerHttpClient")
+    public HttpClient providerHttpClient(@Qualifier("providerConnectionPool") ConnectionProvider cp) {
+
+        return HttpClient.create(cp)
+                // Лимит времени установления TCP-соединения (handshake)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
+                // Лимит времени ожидания первого байта ответа после отправки HTTP-запроса
+                .responseTimeout(Duration.ofSeconds(6));
     }
 }
