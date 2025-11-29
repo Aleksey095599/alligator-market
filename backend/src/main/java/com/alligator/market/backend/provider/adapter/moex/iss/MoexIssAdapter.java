@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
+import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -13,10 +14,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Set;
 
 /**
- * Адаптер для провайдера рыночных данных MOEX ISS.
+ * <b>Адаптер провайдера рыночных данных MOEX ISS.</b>
+ *
+ * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику",
+ * настройки и обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
-public class MoexIssAdapter {
+public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
 
     /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
     private static final String PROVIDER_CODE = "MOEX_ISS";
@@ -29,7 +33,7 @@ public class MoexIssAdapter {
             DISPLAY_NAME,
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
-            false // <-- bulk-подписка не нужна
+            false // <-- bulk-подписка не используется
     );
 
     /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
@@ -39,13 +43,15 @@ public class MoexIssAdapter {
     private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- заглушка до востребования
 
     /**
-     * Конструктор.
+     * <b>Конструктор адаптера MOEX ISS.</b>
+     *
+     * <p>Инжектирует параметры подключения и web-клиент провайдера и передаёт их в базовый класс адаптера.</p>
      */
     public MoexIssAdapter(
             MoexIssAdapterProps props,
             @Qualifier("moexIssWebClient") WebClient webClient
     ) {
-        // Конструктор материнского класса провайдера
+        // Инициализируем базовый класс адаптера провайдера
         super(
                 PROVIDER_CODE,
                 DESCRIPTOR,
