@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
 import java.util.Set;
 
 /**
- * Каталог поддерживаемых инструментов FX_SPOT провайдера MOEX ISS.
+ * <b>Каталог инструментов FX_SPOT, который поддерживает провайдер MOEX ISS.</b>
  */
 public class MoexIssFxSpotCatalog {
 
@@ -22,13 +22,11 @@ public class MoexIssFxSpotCatalog {
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotValueDate.TOM, 4);
 
     /**
-     * Набор поддерживаемых кодов инструментов.
+     * Набор кодов поддерживаемых инструментов.
      */
     public static final Set<String> SUPPORTED_CODES = Set.of(USD_RUB.instrumentCode(), CNY_RUB.instrumentCode());
 
-    /**
-     * Скрываем конструктор.
-     */
+    /* Скрываем конструктор. */
     private MoexIssFxSpotCatalog() {
     }
 }
