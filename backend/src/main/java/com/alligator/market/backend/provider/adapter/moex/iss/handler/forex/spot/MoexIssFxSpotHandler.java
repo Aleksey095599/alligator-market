@@ -37,8 +37,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
 
     /**
      * <b>Конструктор обработчика инструментов FX_SPOT для провайдера MOEX ISS.</b>
-     *
-     *
      */
     public MoexIssFxSpotHandler(
             MoexIssAdapterProps props,
@@ -60,14 +58,20 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     /**
      * <b>Чистая логика получения котировки FX_SPOT с MOEX ISS.</b>
      * <p>На первом шаге:</p>
-     *  - делаем HTTP-запрос к ISS по secid инструмента;
-     *  - логируем сырой JSON-ответ;
-     *  - возвращаем пустой Publisher (QuoteTick будет реализован на следующем шаге).
+     * <ul>
+     *   <li>Получаем SECID MOEX ISS по доменному коду инструмента;</li>
+     *   <li>Делаем HTTP-запрос к ISS по этому SECID;</li>
+     *   <li>Логируем сырой JSON-ответ;</li>
+     *   <li>Возвращаем пустой Publisher (QuoteTick будет реализован на следующем шаге).</li>
+     * </ul>
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
-        // Код инструмента (MOEX ISS ожидает формат аналогичный формату доменной модели FxSpot)
-        String secid = instrument.instrumentCode();
+        // Доменный код инструмента уже проверен абстрактным обработчиком
+        String domainCode = instrument.instrumentCode();
+
+        // Конвертируем доменный код в SECID MOEX ISS
+        String secid = MoexIssFxSpotInstruments.moexSecidOf(domainCode);
 
         return webClient
                 .get()
@@ -79,11 +83,13 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                         .build(secid)
                 )
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(String.class) // Пока берём сырой JSON как строку
                 .doOnSubscribe(sub -> log.debug(
-                        "Requesting FX_SPOT quote from MOEX ISS: secid={}", secid))
+                        "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
+                        domainCode, secid))
                 .doOnNext(body -> log.trace(
-                        "Raw MOEX ISS response for {}: {}", secid, body))
+                        "Raw MOEX ISS response for instrumentCode={}, secid={}: {}",
+                        domainCode, secid, body))
                 // Пока не мапим JSON в QuoteTick: вернём пустой Publisher
                 .flatMap(body -> reactor.core.publisher.Mono.<QuoteTick>empty());
     }
