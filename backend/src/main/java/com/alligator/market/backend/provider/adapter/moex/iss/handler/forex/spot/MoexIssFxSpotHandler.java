@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.instruments.DomainCodesCatalog;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
@@ -24,7 +23,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     private static final String HANDLER_CODE = "MOEX_ISS_FX_SPOT_HANDLER";
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
-    private static final Set<String> SUPPORTED_CODES = DomainCodesCatalog.SUPPORTED_CODES;
+    private static final Set<String> SUPPORTED_CODES = MoexIssFxSpotInstruments.SUPPORTED_DOMAIN_CODES;
 
     /* Web-клиент. */
     private final WebClient webClient;

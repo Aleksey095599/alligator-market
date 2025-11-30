@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
+import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
@@ -57,7 +58,7 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
                 DESCRIPTOR,
                 POLICY,
                 SETTINGS,
-                Set.of(new MoexIssFxSpotHandler(webClient, props))
+                Set.of(new MoexIssFxSpotHandler(props, webClient))
         );
     }
 
