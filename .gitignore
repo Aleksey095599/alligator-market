@@ -32,6 +32,9 @@ frontend/coverage/
 *.iml
 /.vscode/
 frontend/.vscode/
+# --- Исключение для словаря проекта ---
+!.idea/dictionaries/
+!.idea/dictionaries/project.xml
 
 # === Файлы окружения ===
 /.env*
