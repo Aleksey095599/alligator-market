@@ -87,9 +87,18 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode, secid))
-                .doOnNext(body -> log.trace(
-                        "Raw MOEX ISS response for instrumentCode={}, secid={}: {}",
-                        domainCode, secid, body))
+                .doOnNext(body -> {
+                    // ВРЕМЕННАЯ отладка в консоль
+                    System.out.println("=== MOEX ISS RAW RESPONSE ===");
+                    System.out.println("instrumentCode = " + domainCode + ", secid = " + secid);
+                    System.out.println(body);
+                    System.out.println("=== END OF RESPONSE ===");
+
+                    log.trace(
+                            "Raw MOEX ISS response for instrumentCode={}, secid={}: {}",
+                            domainCode, secid, body
+                    );
+                })
                 // Пока не мапим JSON в QuoteTick: вернём пустой Publisher
                 .flatMap(body -> reactor.core.publisher.Mono.<QuoteTick>empty());
     }
