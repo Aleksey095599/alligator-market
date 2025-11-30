@@ -2,6 +2,11 @@
   <dictionary name="project">
     <words>
       <w>moex</w>
+      <w>secid</w>
+      <w>иммутабельные</w>
+      <w>инкапсулирует</w>
+      <w>логируем</w>
+      <w>мапим</w>
     </words>
   </dictionary>
 </component>

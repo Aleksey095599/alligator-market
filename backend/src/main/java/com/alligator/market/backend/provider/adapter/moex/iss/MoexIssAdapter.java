@@ -17,8 +17,8 @@ import java.util.Set;
 /**
  * <b>Адаптер провайдера рыночных данных MOEX ISS.</b>
  *
- * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику",
- * настройки и обработчики провайдера.</p>
+ * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику", настройки и
+ * обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
