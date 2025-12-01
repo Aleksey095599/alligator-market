@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.reactivestreams.Publisher;
 import org.springframework.web.reactive.function.client.WebClient;
