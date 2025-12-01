@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.contract.handler;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.Set;

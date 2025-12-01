@@ -8,7 +8,7 @@ import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.Map;
