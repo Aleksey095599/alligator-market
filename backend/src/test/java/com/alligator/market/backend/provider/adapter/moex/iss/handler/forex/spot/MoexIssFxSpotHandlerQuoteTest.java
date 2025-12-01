@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
