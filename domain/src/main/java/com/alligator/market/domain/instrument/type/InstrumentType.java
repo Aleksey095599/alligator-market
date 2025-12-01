@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Коды типов финансовых инструментов.
+ * <b>Коды типов финансовых инструментов.</b>
  */
 public enum InstrumentType {
     /* Константы: коды типов инструментов (далее — коды). */
@@ -42,7 +42,7 @@ public enum InstrumentType {
     }
 
     /**
-     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     * <b>Возвращает список поддерживаемых кодов (для валидации/документации).</b>
      */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
@@ -50,7 +50,7 @@ public enum InstrumentType {
     }
 
     /**
-     * Возвращает строковый код (= имя константы).
+     * <b>Возвращает строковый код (= имя константы).</b>
      */
     public String code() {
         return name();
