@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdap
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/engines/currency/markets/selt/securities/{secid}.json")
+                        .path("/engines/currency/markets/selt/boards/CETS/securities/{secid}.json")
                         .queryParam("iss.meta", "off")
                         .queryParam("iss.only", "marketdata")
                         .queryParam("marketdata.columns", "LAST,UPDATETIME")

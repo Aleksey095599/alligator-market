@@ -79,8 +79,10 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
         BigDecimal price = new BigDecimal(priceNode.asText());
         return new QuoteTick(
                 instrumentCode,
+                null,
                 price,
                 price,
+                Instant.now(),
                 Instant.now(),
                 provider().providerCode()
         );

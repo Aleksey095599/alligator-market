@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.quote.QuoteTick;
+import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -228,8 +228,10 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         // 6) Формируем и возвращаем модель котировки
         return new QuoteTick(
                 instrument.instrumentCode(),
+                null,
                 bid,
                 ask,
+                Instant.now(),
                 Instant.now(),
                 provider().providerCode()
         );
