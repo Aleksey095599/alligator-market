@@ -130,7 +130,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      */
     private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
         /*
-         * Пример ожидаемого ответа от MOEX ISS (упрощённо):
+         * Ожидаемый JSON-ответ (упрощённо):
          *
          * {
          *   "marketdata": {
@@ -141,11 +141,11 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
          *   }
          * }
          *
-         * Терминология:
-         * "marketdata" <-- объект, представляющий таблицу с данными;
-         * "columns"    <-- массив имён колонок и их порядка;
-         * "data"       <-- массив строк таблицы;
-         * ["2025-03-01 19:00:03", 10.95] <-- одна строка таблицы (массив с ячейками).
+         * Где:
+         * - "marketdata" — объект-таблица с данными;
+         * - "columns"    — массив имён колонок (порядок важен);
+         * - "data"       — массив строк таблицы;
+         * - ["2025-03-01 19:00:03", 10.95] — одна строка: [SYSTIME, LAST].
          */
 
         // 1) Достаём объект "marketdata" и проверяем, что он существует и является объектом
