@@ -15,6 +15,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +38,12 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
 
     /* Для логирования. */
     private static final Logger log = LoggerFactory.getLogger(MoexIssFxSpotHandler.class);
+
+    /* Формат даты/времени поля SYSTIME в ответе MOEX ISS. */
+    private static final DateTimeFormatter MOEX_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    /* Временная зона MOEX (используется для конвертации SYSTIME в Instant). */
+    private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
     //=================================================================================================================
     // КОНСТРУКТОР
@@ -193,6 +203,14 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         }
 
         // 7) Парсим SYSTIME (строка "yyyy-MM-dd HH:mm:ss") в Instant с учётом таймзоны MOEX
+        String systimeStr = systimeNode.asText();
+        Instant exchangeTs;
+        try {
+            LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME);
+            exchangeTs = ldt.atZone(MOEX_ZONE).toInstant();
+        } catch (DateTimeParseException ex) {
+            throw new IllegalStateException("Failed to parse MOEX SYSTIME: '" + systimeStr + "'", ex);
+        }
 
         // 8) Парсим LAST в BigDecimal
         BigDecimal last = lastNode.decimalValue();
