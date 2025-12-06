@@ -228,7 +228,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
                 throw new IllegalArgumentException("Duplicate instrumentCode '" + norm + "' in supportedInstrumentCodes");
             }
         }
-        return java.util.Collections.unmodifiableSet(codes); // Фиксируем неизменяемость
+        return java.util.Collections.unmodifiableSet(codes); // <-- Фиксируем неизменяемость
     }
 
     /**
