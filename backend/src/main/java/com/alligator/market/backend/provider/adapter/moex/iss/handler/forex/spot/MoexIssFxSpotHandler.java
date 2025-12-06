@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
+import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
@@ -52,8 +53,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     /**
      * Конструктор обработчика.
      *
-     * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
-     * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
+     * @param props     параметры подключения к провайдеру {@link MoexIssAdapterProps}
+     * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssWebConfig}
      */
     public MoexIssFxSpotHandler(
             MoexIssAdapterProps props,
@@ -87,8 +88,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
-        // Примечание: проверка инструмента здесь не требуется, так как она в полном объеме выполняется в классе
-        // AbstractInstrumentHandler, расширением которого является данный обработчик.
+        // Примечание: проверка инструмента здесь не требуется, она выполняется в AbstractInstrumentHandler.
 
         // Доменный код инструмента
         String domainCode = instrument.instrumentCode();
@@ -116,10 +116,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                     System.out.println("instrumentCode = " + domainCode + ", secid = " + secid);
                     System.out.println(body);
                     System.out.println("=== END OF RESPONSE ===");
-
-                    // JsonNode дерево --> доменная модель QuoteTick
-                    return mapMarketdataToQuoteTick(domainCode, body);
-                });
+                })
+                // Преобразуем JsonNode --> QuoteTick
+                .map(body -> mapMarketdataToQuoteTick(domainCode, body));
     }
 
     //=================================================================================================================
@@ -127,7 +126,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     //=================================================================================================================
 
     /*
-     * Строгий маппер ответа провайдера в формате дерева JsonNode в доменную модель QuoteTick.
+     * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
      */
     private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
         /*
@@ -172,7 +171,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("Array 'columns' must contain values 'SYSTIME' and 'LAST'");
         }
 
-        // 4) Проверяем, что в массиве "data" ровно одна строка, соответсвующая одной цене
+        // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка marketdata для этого инструмента)
         if (data.size() != 1) {
             throw new IllegalStateException(
                     "Array 'data' must contain exactly one row for instrument " + instrumentCode +
@@ -202,7 +201,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("MOEX ISS LAST must be non-null number");
         }
 
-        // 7) Парсим SYSTIME (строка "yyyy-MM-dd HH:mm:ss") в Instant с учётом таймзоны MOEX
+        // 7) Парсим SYSTIME (строка "yyyy-MM-dd HH:mm:ss") в Instant с учётом временной зоны MOEX
         String systimeStr = systimeNode.asText();
         Instant exchangeTs;
         try {
