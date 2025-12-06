@@ -8,9 +8,9 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
 import java.util.*;
 
 /**
- * <b>Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.</b>
+ * Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
  *
- * <p>Содержит доменные инструменты и соответствие "доменный код <--> SECID MOEX ISS".</p>
+ * <p>Содержит доменные инструменты и соответствие "доменный код <--> SECID MOEX ISS".
  */
 public class MoexIssFxSpotInstruments {
 
@@ -27,7 +27,7 @@ public class MoexIssFxSpotInstruments {
     private static final Map<String, String> DOMAIN_CODE_TO_SECID;
 
     /**
-     * <b>Набор кодов поддерживаемых доменных инструментов.</b>
+     * Набор кодов поддерживаемых доменных инструментов.
      */
     public static final Set<String> SUPPORTED_DOMAIN_CODES;
 
@@ -45,9 +45,9 @@ public class MoexIssFxSpotInstruments {
     }
 
     /**
-     * <b>Конвертер доменного кода инструмента в SECID MOEX ISS.</b>
+     * Конвертер доменного кода инструмента в SECID MOEX ISS.
      *
-     * <p>Конвертер максимально прост и опирается на следующие инварианты:</p>
+     * <p>Конвертер максимально прост и опирается на следующие инварианты:
      * <ul>
      *   <li>Карта соответствий строится на основе надёжных доменных моделей;</li>
      *   <li>Обработчик {@link MoexIssFxSpotHandler} перед вызовом конвертера гарантирует,

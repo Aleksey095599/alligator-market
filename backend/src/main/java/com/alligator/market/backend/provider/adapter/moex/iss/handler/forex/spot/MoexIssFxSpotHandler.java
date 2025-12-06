@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * <b>Обработчик инструментов FX_SPOT для провайдера MOEX ISS.</b>
+ * Обработчик инструментов FX_SPOT для провайдера MOEX ISS.
  */
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {
 
@@ -36,7 +36,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     //=================================================================================================================
 
     /**
-     * <b>Конструктор обработчика инструментов FX_SPOT для провайдера MOEX ISS.</b>
+     * Конструктор обработчика.
+     *
+     * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
+     * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
      */
     public MoexIssFxSpotHandler(
             MoexIssAdapterProps props,
@@ -56,8 +59,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     //=================================================================================================================
 
     /**
-     * <b>Чистая логика получения котировки FX_SPOT с MOEX ISS.</b>
-     * <p>На первом шаге:</p>
+     * Чистая логика получения котировки FX_SPOT с MOEX ISS.
+     *
+     * <p>На первом шаге:
      * <ul>
      *   <li>Получаем SECID MOEX ISS по доменному коду инструмента;</li>
      *   <li>Делаем HTTP-запрос к ISS по этому SECID;</li>

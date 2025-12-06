@@ -15,10 +15,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Set;
 
 /**
- * <b>Адаптер провайдера рыночных данных MOEX ISS.</b>
+ * Адаптер провайдера рыночных данных MOEX ISS.
  *
- * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику", настройки и
- * обработчики провайдера.</p>
+ * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику провайдера", настройки и
+ * обработчики провайдера.
  */
 @Component("MOEX_ISS")
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
@@ -44,9 +44,12 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
     private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- заглушка до востребования
 
     /**
-     * <b>Конструктор адаптера MOEX ISS.</b>
+     * Конструктор адаптера MOEX ISS.
      *
-     * <p>Инжектирует параметры подключения и web-клиент провайдера и передаёт их в базовый класс адаптера.</p>
+     * <p>Адаптеру передаются параметры {@code props} и {@code webClient}, необходимые для сборки обработчика {@link MoexIssFxSpotHandler}.
+     *
+     * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
+     * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
      */
     public MoexIssAdapter(
             MoexIssAdapterProps props,
