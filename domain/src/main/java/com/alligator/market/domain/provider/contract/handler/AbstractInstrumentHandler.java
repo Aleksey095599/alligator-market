@@ -39,8 +39,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     /**
-     * Конструктор.
-     * Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.
+     * Конструктор с проверками.
+     *
+     * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.
      *
      * @param handlerCode              код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
      * @param instrumentClass          класс поддерживаемых инструментов
@@ -126,6 +127,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Котировка заданного инструмента.
      *
+     * <p>Содержит ряд базовых проверок инструмента и факт прикрепления обработчика к провайдеру. Далее вызывается
+     * чистая логика получения котировки от провайдера {@link #doQuote(Instrument)}.
+     *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок
      * @throws NullPointerException            если instrument == null
@@ -139,13 +143,13 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // Проверяем, что провайдер прикреплен к данному обработчику
+        // 1) Проверяем, что провайдер прикреплен к данному обработчику
         P currentProvider = provider;
         if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
 
-        // Проверяем, что класс инструмента соответствует ожиданиям обработчика
+        // 2) Проверяем, что класс инструмента соответствует ожиданиям обработчика
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException( // <-- Неверный класс
                     instrument.instrumentCode(),
@@ -155,7 +159,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             );
         }
 
-        // Проверяем, что тип инструмента соответствует ожиданиям обработчика
+        // 3) Проверяем, что тип инструмента соответствует ожиданиям обработчика
         if (instrument.instrumentType() != instrumentType) {
             throw new InstrumentWrongTypeException( // <-- Неверный тип
                     instrument.instrumentCode(),
@@ -165,7 +169,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             );
         }
 
-        // Проверяем, что код инструмента поддерживается обработчиком
+        // 4) Проверяем, что код инструмента поддерживается обработчиком
         var rawCode = instrument.instrumentCode();
         if (rawCode == null || rawCode.isBlank()) {
             throw new IllegalArgumentException("instrumentCode must not be null or blank");
@@ -185,7 +189,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     /**
      * Чистая логика получения котировки для переданного инструмента.
-     * Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
+     *
+     * <p>Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
      * в котором выполнены все нужные проверки.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);

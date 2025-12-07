@@ -125,7 +125,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
     //=================================================================================================================
 
-    /*
+    /**
      * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
      */
     private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
@@ -234,7 +234,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     // УТИЛИТЫ
     //=================================================================================================================
 
-    /*
+    /**
      * Поиск индекса колонки по имени в массиве "columns".
      */
     private static int indexOfColumn(ArrayNode columns, String name) {
