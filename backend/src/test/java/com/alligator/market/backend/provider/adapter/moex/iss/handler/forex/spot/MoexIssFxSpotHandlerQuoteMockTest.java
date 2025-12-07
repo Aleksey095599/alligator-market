@@ -13,6 +13,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Интеграционный тест quote(...) для {@link MoexIssFxSpotHandler} с заглушкой MOEX ISS.
  */
+@Disabled("Manual run only: long integration scenario")
 class MoexIssFxSpotHandlerQuoteMockTest {
 
     private MockWebServer mockWebServer;

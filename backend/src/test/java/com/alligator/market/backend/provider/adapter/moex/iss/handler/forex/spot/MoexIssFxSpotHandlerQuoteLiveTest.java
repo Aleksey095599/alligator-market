@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Curr
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
  */
+@Disabled("Manual run only: long integration scenario")
 class MoexIssFxSpotHandlerQuoteLiveTest {
 
     @Test
@@ -50,6 +52,11 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         // Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
         StepVerifier.create(result)
                 .assertNext(tick -> {
+                    // ВРЕМЕННЫЙ вывод для наглядности
+                    System.out.println("=== LIVE QUOTETICK FROM MOEX ISS ===");
+                    System.out.println(tick); // для record будет нормальный toString()
+                    System.out.println("====================================");
+
                     assertNotNull(tick, "QuoteTick must not be null");
                     assertEquals(cnyRubTom.instrumentCode(), tick.instrumentCode(), "Instrument code must match");
                     assertEquals("MOEX_ISS", tick.providerCode(), "Provider code must be MOEX_ISS");

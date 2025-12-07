@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
+import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
@@ -106,19 +108,22 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                         .build(secid)
                 )
                 .retrieve()
+                .onStatus(HttpStatusCode::isError, response ->
+                        response.bodyToMono(String.class).map(body ->
+                                new IllegalStateException("MOEX ISS HTTP error " + response.statusCode()
+                                        + " for secid=" + secid + ", body=" + body)
+                        )
+                )
                 .bodyToMono(JsonNode.class) // <-- Парсим JSON в дерево JsonNode
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode, secid))
-                .doOnNext(body -> {
-                    // ВРЕМЕННАЯ отладка в консоль (TODO: после отладки убрать)
-                    System.out.println("=== MOEX ISS RAW RESPONSE ===");
-                    System.out.println("instrumentCode = " + domainCode + ", secid = " + secid);
-                    System.out.println(body);
-                    System.out.println("=== END OF RESPONSE ===");
-                })
-                // Преобразуем JsonNode --> QuoteTick
-                .map(body -> mapMarketdataToQuoteTick(domainCode, body));
+                // Преобразуем JsonNode --> QuoteTick и логируем результат
+                .map(body -> {
+                    QuoteTick tick = mapMarketdataToQuoteTick(domainCode, body);
+                    log.debug("Received FX_SPOT QuoteTick from MOEX ISS: {}", tick);
+                    return tick;
+                });
     }
 
     //=================================================================================================================
@@ -127,6 +132,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
 
     /**
      * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
+     *
+     * <p>Примечание: в итоговом {@link QuoteTick} конвертируем временную зону для поля {@link QuoteTick#exchangeTimestamp()}
+     * в UTC, согласно конфигурации времени в приложении {@link TimeZoneConfig}.
      */
     private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
         /*
@@ -201,12 +209,12 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("MOEX ISS LAST must be non-null number");
         }
 
-        // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss") в Instant с учётом временной зоны MOEX <-- TODO: разобраться со временем
+        // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss")
         String systimeStr = systimeNode.asText();
         Instant exchangeTs;
         try {
-            LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME);
-            exchangeTs = ldt.atZone(MOEX_ZONE).toInstant();
+            LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME); // <-- Парсим во временную зону MOEX
+            exchangeTs = ldt.atZone(MOEX_ZONE).toInstant(); // <-- Конвертируем в Instant (UTC)
         } catch (DateTimeParseException ex) {
             throw new IllegalStateException("Failed to parse MOEX SYSTIME: '" + systimeStr + "'", ex);
         }
