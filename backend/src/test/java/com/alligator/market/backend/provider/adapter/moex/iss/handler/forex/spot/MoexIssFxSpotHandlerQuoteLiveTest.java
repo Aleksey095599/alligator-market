@@ -13,8 +13,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * <b>Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.</b>
+ * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
  */
 class MoexIssFxSpotHandlerQuoteLiveTest {
 
@@ -25,6 +30,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         // 1) Собираем WebClient с реальным baseUrl и задаем настройки подключения
         String baseUrl = "https://iss.moex.com/iss";
         MoexIssAdapterProps props = new MoexIssAdapterProps(baseUrl);
+
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader("User-Agent", "Alligator Market TEST")
@@ -42,10 +48,21 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         // 4) Запускаем запрос к реальному MOEX ISS
         Mono<QuoteTick> result = Mono.from(handler.quote(cnyRubTom));
 
-        // Сейчас doQuote возвращает пустой Mono, так что мы просто проверяем успешное завершение,
-        // а сырой JSON смотрим в system.out/логах.
-        StepVerifier
-                .create(result)
+        // Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
+        StepVerifier.create(result)
+                .assertNext(tick -> {
+                    assertNotNull(tick, "QuoteTick must not be null");
+                    assertEquals(cnyRubTom.instrumentCode(), tick.instrumentCode(), "Instrument code must match");
+                    assertEquals("MOEX_ISS", tick.providerCode(), "Provider code must be MOEX_ISS");
+
+                    assertNotNull(tick.last(), "LAST price must not be null");
+                    assertTrue(tick.last().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");
+
+                    assertNotNull(tick.exchangeTimestamp(), "Exchange timestamp must not be null");
+                    assertNotNull(tick.receivedTimestamp(), "Received timestamp must not be null");
+                    assertFalse(tick.receivedTimestamp().isBefore(tick.exchangeTimestamp()),
+                            "receivedTimestamp must not be before exchangeTimestamp");
+                })
                 .verifyComplete();
     }
 }
