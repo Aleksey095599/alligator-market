@@ -148,7 +148,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
 
         StepVerifier.create(result)
                 .expectErrorSatisfies(ex -> {
-                    assertTrue(ex instanceof IllegalStateException);
+                    assertInstanceOf(IllegalStateException.class, ex);
                     assertTrue(ex.getMessage().contains("has no 'marketdata' object"));
                 })
                 .verify();
