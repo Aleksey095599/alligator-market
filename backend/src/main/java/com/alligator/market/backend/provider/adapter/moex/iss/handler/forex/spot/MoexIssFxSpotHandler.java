@@ -171,7 +171,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("Array 'columns' must contain values 'SYSTIME' and 'LAST'");
         }
 
-        // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка marketdata для этого инструмента)
+        // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка в "marketdata" для этого инструмента)
         if (data.size() != 1) {
             throw new IllegalStateException(
                     "Array 'data' must contain exactly one row for instrument " + instrumentCode +
@@ -179,7 +179,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             );
         }
 
-        // 5) Достаём строку и проверяем, что это массив нужной длины
+        // 5) Извлекаем строку и проверяем, что это массив нужной длины
         JsonNode row = data.get(0);
         if (!row.isArray()) {
             throw new IllegalStateException("Element 0 of 'data' must be an array (marketdata row)");
@@ -190,7 +190,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             );
         }
 
-        // 6) Достаём из строки значения соответствующие колонкам SYSTIME и LAST и проверяем их типы
+        // 6) Извлекаем из строки значения, соответствующие колонкам "SYSTIME" и "LAST", проверяем их типы
         JsonNode systimeNode = row.get(systimeIdx);
         JsonNode lastNode = row.get(lastIdx);
 
@@ -201,7 +201,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("MOEX ISS LAST must be non-null number");
         }
 
-        // 7) Парсим SYSTIME (строка "yyyy-MM-dd HH:mm:ss") в Instant с учётом временной зоны MOEX
+        // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss") в Instant с учётом временной зоны MOEX <-- TODO: разобраться со временем
         String systimeStr = systimeNode.asText();
         Instant exchangeTs;
         try {
@@ -211,7 +211,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             throw new IllegalStateException("Failed to parse MOEX SYSTIME: '" + systimeStr + "'", ex);
         }
 
-        // 8) Парсим LAST в BigDecimal
+        // 8) Парсим "LAST" в BigDecimal
         BigDecimal last = lastNode.decimalValue();
 
         // 9) Фиксируем время получения тика в нашей системе
@@ -235,7 +235,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     //=================================================================================================================
 
     /*
-     * Поиск индекса колонки по имени в массиве columns.
+     * Поиск индекса колонки по имени в массиве "columns".
      */
     private static int indexOfColumn(ArrayNode columns, String name) {
         for (int i = 0; i < columns.size(); i++) {
