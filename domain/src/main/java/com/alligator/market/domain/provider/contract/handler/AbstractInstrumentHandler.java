@@ -125,18 +125,26 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     }
 
     /**
-     * Котировка заданного инструмента.
+     * Возвращает реактивный поток котировок для указанного инструмента.
      *
-     * <p>Содержит ряд базовых проверок инструмента и факт прикрепления обработчика к провайдеру. Далее вызывается
-     * чистая логика получения котировки от провайдера {@link #doQuote(Instrument)}.
+     * <p>Выполняет базовые проверки инструмента и факта прикрепления обработчика к провайдеру,
+     * после чего делегирует выполнение в чистую логику получения потока котировок методом {@link #doQuote doQuote()}.
+     *
+     * <p>Поток:
+     * <ul>
+     *     <li>Может быть бесконечным;</li>
+     *     <li>Может быть реализован как опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
+     *     <li>Может быть реализован как push‑подписка (websocket, streaming API и т.п.).</li>
+     * </ul>
+     * <p>Примечание: возврат Mono<QuoteTick> допустим как частный случай, когда нужна единичная котировка.
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок
-     * @throws NullPointerException            если instrument == null
+     * @throws NullPointerException            если {@code instrument == null}
      * @throws IllegalStateException           если провайдер не прикреплён
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
      * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws IllegalArgumentException        если instrumentCode null или пустой
+     * @throws IllegalArgumentException        если код инструмента {@code null} или пустой
      * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
@@ -188,7 +196,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     /**
-     * Чистая логика получения котировки для переданного инструмента.
+     * Чистая логика получения потока котировок для переданного инструмента.
      *
      * <p>Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
      * в котором выполнены все нужные проверки.

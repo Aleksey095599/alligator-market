@@ -10,8 +10,9 @@ import java.util.Set;
 
 /**
  * Контракт обработчика финансового инструмента.
- * Жёстко привязан к провайдеру и конкретному классу инструмента.
- * Реализация разрешена только через {@link AbstractInstrumentHandler}.
+ *
+ * <p>Жёстко привязан к провайдеру и конкретному классу инструмента. Реализация разрешена только
+ * через {@link AbstractInstrumentHandler}.
  */
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {
@@ -42,7 +43,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     void attachTo(P provider);
 
     /**
-     * Котировка заданного инструмента.
+     * Поток котировок для заданного инструмента (возможен Mono как частный случай).
      */
     Publisher<QuoteTick> quote(I instrument);
 }
