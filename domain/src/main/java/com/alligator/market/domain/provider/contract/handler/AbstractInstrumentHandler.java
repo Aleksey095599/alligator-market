@@ -132,7 +132,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      *
      * <p>Поток:
      * <ul>
-     *     <li>Может быть бесконечным;</li>
      *     <li>Может быть реализован как опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
      *     <li>Может быть реализован как push‑подписка (websocket, streaming API и т.п.).</li>
      * </ul>
