@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика.
  *
- * @param minUpdateInterval Минимальный интервал обновления котировок (для API_POLL режима --> интервал запросов)
+ * @param minUpdateInterval Минимальный интервал обновления котировок (для API_POLL режима --> минимальный интервал запросов)
  */
 public record ProviderPolicy(
         Duration minUpdateInterval
