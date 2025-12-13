@@ -24,7 +24,7 @@ import java.util.Set;
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
 
     /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
-    private static final String PROVIDER_CODE = "MOEX_ISS";
+    public static final String PROVIDER_CODE = "MOEX_ISS";
 
     /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";
