@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 /**
- * Реализация резолвера провайдера для инструментов.
- * <p>
- * Пока что: для всех FX_SPOT возвращает MOEX ISS.
- * Точка роста: заменить логику на чтение из БД.
+ * Реализация доменного контракта {@link InstrumentProviderResolver}.
+ *
+ * <p>Временная реализация: для любых FX_SPOT инструментов --> провайдер MOEX ISS.
+ * TODO: реализовать чтение правил соответствия финансовый инструмент --> провайдер из БД.
  */
 @Service
 public class DefaultInstrumentProviderResolver implements InstrumentProviderResolver {
