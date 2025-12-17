@@ -4,7 +4,8 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 
 /**
- * Контракт сервиса, который определяет соответствие финансовый инструмент --> провайдер.
+ * Контракт сервиса, который задает способ выбора конкретного провайдера рыночных данных, который нужно использолвать
+ * для получения потока котировок для заданного инструмента.
  */
 public interface InstrumentProviderResolver {
 
