@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 /**
- * Реализация доменного контракта {@link InstrumentProviderResolver}.
+ * Реализация доменного контракта {@link InstrumentProviderResolver}, который разрешает соответствие
+ * «финансовый инструмент → провайдер рыночных данных».
  *
  * <p>Временная реализация: для любых FX_SPOT инструментов --> провайдер MOEX ISS.
  * TODO: реализовать чтение правил соответствия финансовый инструмент --> провайдер из БД.
