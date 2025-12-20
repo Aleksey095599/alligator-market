@@ -6,6 +6,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdap
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -78,10 +80,29 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
 
     /**
      * Чистая логика получения потока котировок для переданного инструмента FX_SPOT.
+     *
+     * <p>Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
+     * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
-        return fetchQuoteOnce(instrument);
+        // 1) Получаем минимальный интервал обновления из "политики" провайдера
+        Duration pollInterval = provider().policy().minUpdateInterval();
+
+        // 2) Запрашиваем котировку (один раз)
+        // 3) Ошибки не “убивают” поток: логируем и пропускаем тик
+        // 4) Повторяем с задержкой согласно "политике" провайдера
+        return fetchQuoteOnce(instrument)
+                .onErrorResume(ex -> {
+                    log.warn(
+                            "Failed to fetch FX_SPOT quote from MOEX ISS: instrumentCode={}, reason={}",
+                            instrument.instrumentCode(),
+                            ex.getMessage(),
+                            ex
+                    );
+                    return Mono.empty();
+                })
+                .repeatWhen(completed -> completed.delayElements(pollInterval));
     }
 
     //=================================================================================================================
