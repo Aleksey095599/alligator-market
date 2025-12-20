@@ -7,7 +7,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Снимок провайдера для процесса синхронизации.
+ * Снимок провайдера.
+ *
+ * <p>Содержит базовую информацию о провайдере рыночных данных: код провайдера, дескриптор {@link ProviderDescriptor},
+ * "политика" провайдера {@link ProviderPolicy}. Применяется для извлечения данных о провайдере из контекста
+ * приложения.
  */
 public record ProviderSnapshot(
         String code,
