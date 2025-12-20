@@ -17,7 +17,8 @@ import java.util.Set;
 /**
  * Spring-адаптер для каркаса провайдера рыночных данных {@link AbstractMarketDataProvider}.
  *
- * <p>Содержит проверку, что имя бина совпадает с кодом провайдера.
+ * <p>Гарантирует соглашение: имя Spring-бина должно совпадать с кодом провайдера ({@code providerCode}).
+ * Несоответствие приводит к ошибке инициализации контекста.
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>
@@ -39,6 +40,13 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         super(providerCode, descriptor, policy, settings, handlers);
     }
 
+    /**
+     * Получает имя бина, назначенное Spring, и сохраняет его для последующей проверки.
+     *
+     * @param name имя бина, назначенное Spring контейнером
+     * @throws NullPointerException если {@code name == null}
+     * @throws IllegalArgumentException если {@code name} пустое или состоит только из пробелов
+     */
     @Override
     public void setBeanName(@org.springframework.lang.NonNull @NotBlank String name) {
         // Сохраняем имя бина до хука afterPropertiesSet
@@ -51,6 +59,11 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         this.beanName = validatedBeanName;
     }
 
+    /**
+     * Проверяет соглашение: {@code beanName == providerCode()}.
+     *
+     * @throws IllegalStateException если имя бина не совпадает с кодом провайдера
+     */
     @Override
     public void afterPropertiesSet() {
         if (!beanName.equals(providerCode())) {
