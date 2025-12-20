@@ -20,7 +20,8 @@ public class QuoteStreamingOrchestrator {
     private final InstrumentProviderResolver instrumentProviderResolver;
 
     /* Реестр провайдеров рыночных данных. */
-    private final Map<String, MarketDataProvider> providersByCode; // <-- Spring по умолчанию назначит имя бина в качестве индекса
+    private final Map<String, MarketDataProvider> providersByCode; // <-- Spring по умолчанию назначит имя бина
+                                                                   //     MarketDataProvider в качестве индекса
 
     /**
      * Конструктор.

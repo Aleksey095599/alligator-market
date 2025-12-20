@@ -10,7 +10,9 @@ import java.util.Map;
 public sealed interface ProviderContextScanner permits AbstractProviderContextScanner {
 
     /**
-     * Вернуть карту снимков провайдеров {@link ProviderSnapshot}, индексированную по коду провайдера.
+     * Вернуть карту снимков провайдеров, индексированную по коду провайдера.
+     *
+     * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, дескриптор, "политику".
      */
     Map<String, ProviderSnapshot> providerSnapshots();
 }
