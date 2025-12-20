@@ -8,7 +8,7 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import java.util.*;
 
 /**
- * Абстрактный сканер контекста приложения.
+ * Абстрактный каркас сканера контекста приложения.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
@@ -18,8 +18,8 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Вернуть карту снимков провайдеров (descriptor + policy), индексированную по коду.
-     * Содержит проверки на дублирование по коду и отображаемому имени.
+     * Вернуть карту снимков провайдеров {@link ProviderSnapshot}, индексированную по коду.
+     * Содержит проверки на дублирование по коду провайдера и отображаемому имени.
      */
     @Override
     public final Map<String, ProviderSnapshot> providerSnapshots() {
