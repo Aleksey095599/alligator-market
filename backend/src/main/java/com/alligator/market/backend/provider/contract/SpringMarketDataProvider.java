@@ -15,7 +15,9 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Spring-адаптер каркаса провайдера с проверкой уникальности имени бина, равной коду провайдера.
+ * Spring-адаптер для каркаса провайдера рыночных данных {@link AbstractMarketDataProvider}.
+ *
+ * <p>Содержит проверку, что имя бина совпадает с кодом провайдера.
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>
@@ -51,11 +53,10 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
 
     @Override
     public void afterPropertiesSet() {
-        // Правило уникальности: имя бина должно совпадать с providerCode
         if (!beanName.equals(providerCode())) {
             throw new IllegalStateException(
-                    "Bean name must equal providerCode (name='" + beanName
-                            + "', providerCode='" + providerCode() + "')"
+                    "Bean name must equal providerCode (name='" + beanName + "', providerCode='" +
+                            providerCode() + "')"
             );
         }
     }
