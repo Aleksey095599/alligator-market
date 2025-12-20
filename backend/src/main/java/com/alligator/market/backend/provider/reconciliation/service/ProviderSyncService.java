@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProviderSyncService {
 
-    /* Доменная логика синхронизации. */
-    private final ProviderSynchronizer descriptorSynchronizer;
+    /* Доменная логика синхронизации провайдеров. */
+    private final ProviderSynchronizer synchronizer;
 
     /**
      * Запустить процесс синхронизации.
      */
     @Transactional
     public void runSync() {
-        descriptorSynchronizer.synchronize();
+        synchronizer.synchronize();
     }
 }
