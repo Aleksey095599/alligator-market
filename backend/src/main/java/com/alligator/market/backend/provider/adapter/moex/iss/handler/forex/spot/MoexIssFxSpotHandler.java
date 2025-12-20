@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Обработчик инструментов FX_SPOT для провайдера MOEX ISS.
+ * Обработчик инструментов FX_SPOT для провайдера MOEX ISS {@link MoexIssAdapter}.
  */
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {
 
