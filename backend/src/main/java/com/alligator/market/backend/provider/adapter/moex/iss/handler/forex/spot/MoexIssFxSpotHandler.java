@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -76,32 +77,42 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     //=================================================================================================================
 
     /**
-     * Чистая логика получения котировки FX_SPOT с MOEX ISS.
+     * Чистая логика получения потока котировок для переданного инструмента FX_SPOT.
+     */
+    @Override
+    protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
+        return fetchQuoteOnce(instrument);
+    }
+
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
+    /**
+     * Один запрос к MOEX ISS --> одна котировка инструмента FX_SPOT.
      *
      * <p>Алгоритм:
      * <ul>
      *   <li>1) Доменный код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
-     *   <li>2) Запрашиваем у MOEX ISS таблицу {@code marketdata} для board CETS и нужного SECID;</li>
+     *   <li>2) Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
      *   <li>3) Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
      *   <li>4) Строим доменную модель {@link QuoteTick}.</li>
      * </ul>
      *
      * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(String, JsonNode)}.
      */
-    @Override
-    protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
-        // Примечание: проверка инструмента здесь не требуется, она выполняется в AbstractInstrumentHandler.
+    private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
+        // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
-        // Доменный код инструмента
+        // 1) Доменный код инструмента --> SECID MOEX ISS
         String domainCode = instrument.instrumentCode();
-
-        // Конвертируем доменный код в SECID MOEX ISS
         String secid = MoexIssFxSpotInstruments.moexSecidOf(domainCode);
 
+        // 2) Запрос к MOEX ISS для получения таблицы marketdata для полученного secid
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/engines/currency/markets/selt/boards/CETS/securities/{secid}.json")
+                        .path("/engines/currency/markets/selt/boards/CETS/securities/{secid}.json") // <-- запрос на board CETS
                         .queryParam("iss.meta", "off")
                         .queryParam("iss.only", "marketdata")
                         .queryParam("marketdata.columns", "SYSTIME,LAST")
@@ -118,17 +129,14 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode, secid))
-                // Преобразуем JsonNode --> QuoteTick и логируем результат
+                // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
+                // 4) Построение доменной модели QuoteTick
                 .map(body -> {
-                    QuoteTick tick = mapMarketdataToQuoteTick(domainCode, body);
+                    QuoteTick tick = mapMarketdataToQuoteTick(domainCode, body); // <-- Реализация 3) и 4) внутри mapMarketdataToQuoteTick
                     log.debug("Received FX_SPOT QuoteTick from MOEX ISS: {}", tick);
                     return tick;
                 });
     }
-
-    //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-    //=================================================================================================================
 
     /**
      * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
