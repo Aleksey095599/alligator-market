@@ -11,11 +11,10 @@ import java.util.Set;
 /**
  * Доменный сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
  */
-
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderSynchronizer {
 
-    /* Сканер контекста --> возвращает снимки. */
+    /* Сканер контекста --> возвращает снимки провайдеров (ProviderSnapshot) из контекста приложения. */
     private final ProviderContextScanner contextScanner;
 
     /* Репозиторий --> извлекает коды провайдеров. */
