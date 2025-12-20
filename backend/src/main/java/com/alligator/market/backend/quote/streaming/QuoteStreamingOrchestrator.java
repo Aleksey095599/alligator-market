@@ -22,6 +22,12 @@ public class QuoteStreamingOrchestrator {
     /* Реестр провайдеров рыночных данных: beanName == providerCode. */
     private final Map<String, MarketDataProvider> providersByCode;
 
+    /**
+     * Конструктор.
+     *
+     * @param instrumentProviderResolver контракт сервиса, который разрешает соответствие «финансовый инструмент → провайдер рыночных данных».
+     * @param providersByCode
+     */
     public QuoteStreamingOrchestrator(InstrumentProviderResolver instrumentProviderResolver,
                                       Map<String, MarketDataProvider> providersByCode) {
         this.instrumentProviderResolver = instrumentProviderResolver;
@@ -33,8 +39,8 @@ public class QuoteStreamingOrchestrator {
      *
      * <p>Алгоритм:
      * <ol>
-     *     <li>1) Определяем код провайдера через {@link InstrumentProviderResolver}.</li>
-     *     <li>2) Находим бин провайдера по этому коду.</li>
+     *     <li>1) Определяем код провайдера через {@link InstrumentProviderResolver};</li>
+     *     <li>2) Находим бин провайдера по этому коду;</li>
      *     <li>3) Делегируем построение потока самому провайдеру.</li>
      * </ol>
      *
