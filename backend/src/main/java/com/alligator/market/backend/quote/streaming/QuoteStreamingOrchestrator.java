@@ -11,22 +11,19 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Сервис-оркестратор, который по инструменту строит поток котировок.
+ * Сервис-оркестратор: строит поток котировок для финансового инструмента.
  */
 @Service
 public class QuoteStreamingOrchestrator {
 
-    /* Резолвер соответствия инструмент → код провайдера. */
+    /* Сервис, который разрешает соответствие «финансовый инструмент → провайдер рыночных данных». */
     private final InstrumentProviderResolver instrumentProviderResolver;
 
-    /* Реестр провайдеров рыночных данных: beanName == providerCode. */
-    private final Map<String, MarketDataProvider> providersByCode;
+    /* Реестр провайдеров рыночных данных. */
+    private final Map<String, MarketDataProvider> providersByCode; // <-- Spring по умолчанию назначит имя бина в качестве индекса
 
     /**
      * Конструктор.
-     *
-     * @param instrumentProviderResolver контракт сервиса, который разрешает соответствие «финансовый инструмент → провайдер рыночных данных».
-     * @param providersByCode
      */
     public QuoteStreamingOrchestrator(InstrumentProviderResolver instrumentProviderResolver,
                                       Map<String, MarketDataProvider> providersByCode) {
