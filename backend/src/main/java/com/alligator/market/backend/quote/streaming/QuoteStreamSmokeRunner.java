@@ -7,16 +7,18 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+
 /* Временный smoke-тест: подписка на поток котировок для одного инструмента. */
 @Component
-@Profile({"local", "dev"})
+@ConditionalOnProperty(name = "quotes.smoke.enabled", havingValue = "true")
 public class QuoteStreamSmokeRunner {
 
     private static final Logger log = LoggerFactory.getLogger(QuoteStreamSmokeRunner.class);
@@ -39,7 +41,9 @@ public class QuoteStreamSmokeRunner {
         FxSpot instrument = new FxSpot(cny, rub, FxSpotValueDate.TOM, 4);
 
         subscription = Flux.from(orchestrator.buildQuoteStream(instrument))
-        // Показываем интервалы между тиками (полезно для проверки "1 сек" + время запроса).
+                // Безопасность: если долго нет ни одного тика, завершаем (иначе runner может висеть бесконечно).
+                .timeout(Duration.ofSeconds(30))
+                // Показываем интервалы между тиками (полезно для проверки "1 сек" + время запроса).
                 .elapsed()
                 .take(5)
                 .doOnNext(t -> log.info("Tick received after {} ms: {}", t.getT1(), t.getT2()))

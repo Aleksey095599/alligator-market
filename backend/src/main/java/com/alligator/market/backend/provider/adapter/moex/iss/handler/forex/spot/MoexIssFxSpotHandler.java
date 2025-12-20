@@ -89,6 +89,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         // 1) Получаем минимальный интервал обновления из "политики" провайдера
         Duration pollInterval = provider().policy().minUpdateInterval();
 
+        // Далее в виде цепочки:
         // 2) Запрашиваем котировку (один раз)
         // 3) Ошибки не “убивают” поток: логируем и пропускаем тик
         // 4) Повторяем с задержкой согласно "политике" провайдера
@@ -150,9 +151,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode, secid))
-                // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
-                // 4) Построение доменной модели QuoteTick
                 .map(body -> {
+                    // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
+                    // 4) Построение доменной модели QuoteTick
                     QuoteTick tick = mapMarketdataToQuoteTick(domainCode, body); // <-- Реализация 3) и 4) внутри mapMarketdataToQuoteTick
                     log.debug("Received FX_SPOT QuoteTick from MOEX ISS: {}", tick);
                     return tick;
