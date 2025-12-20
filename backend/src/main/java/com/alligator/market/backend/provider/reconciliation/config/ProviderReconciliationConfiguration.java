@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 public class ProviderReconciliationConfiguration {
 
     /**
-     * Бин доменного сервиса синхронизации дескрипторов провайдеров в контексте и репозитории.
+     * Бин доменного сервиса синхронизации провайдеров рыночных данных в контексте приложения и репозитории.
      */
     @Bean
-    public ProviderSynchronizer providerDescriptorSynchronizer(
+    public ProviderSynchronizer providerSynchronizer(
             ProviderContextScanner scanner,
             ProviderRepository repository,
             ProviderSyncDao syncDao
