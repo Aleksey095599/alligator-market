@@ -1,0 +1,57 @@
+package com.alligator.market.backend.quote.streaming;
+
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+
+/* Временный smoke-тест: подписка на поток котировок для одного инструмента. */
+@Component
+@Profile({"local", "dev"})
+public class QuoteStreamSmokeRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(QuoteStreamSmokeRunner.class);
+
+    /* Оркестратор построения потока котировок. */
+    private final QuoteStreamingOrchestrator orchestrator;
+
+    /* Храним подписку, чтобы корректно остановить при выключении приложения. */
+    private Disposable subscription;
+
+    public QuoteStreamSmokeRunner(QuoteStreamingOrchestrator orchestrator) {
+        this.orchestrator = orchestrator;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void run() {
+        // Строим доменную модель инструмента, поддерживаемого MOEX ISS.
+        Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
+        Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
+        FxSpot instrument = new FxSpot(cny, rub, FxSpotValueDate.TOM, 4);
+
+        subscription = Flux.from(orchestrator.buildQuoteStream(instrument))
+        // Показываем интервалы между тиками (полезно для проверки "1 сек" + время запроса).
+                .elapsed()
+                .take(5)
+                .doOnNext(t -> log.info("Tick received after {} ms: {}", t.getT1(), t.getT2()))
+                .doOnComplete(() -> log.info("Quote stream smoke test completed"))
+                .doOnError(ex -> log.error("Quote stream smoke test failed", ex))
+                .subscribe();
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+    }
+}
