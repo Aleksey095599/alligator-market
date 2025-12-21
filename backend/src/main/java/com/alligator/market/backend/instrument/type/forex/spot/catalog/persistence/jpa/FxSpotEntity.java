@@ -94,6 +94,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
 
+
         // Валюты не должны совпадать
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
             throw new IllegalArgumentException("base and quote currencies must be different");

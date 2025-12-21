@@ -16,7 +16,9 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 
-/* Временный smoke-тест: подписка на поток котировок для одного инструмента. */
+/**
+ * Временный smoke-тест: подписка на поток котировок для одного инструмента и получение пяти котировок.
+ */
 @Component
 @ConditionalOnProperty(name = "quotes.smoke.enabled", havingValue = "true")
 public class QuoteStreamSmokeRunner {
