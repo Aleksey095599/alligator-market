@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.contract.settings;
 
 /**
- * Настройки провайдера: параметры, которые разрешено менять из frontend.
+ * Настройки провайдера: параметры, используемые бизнес логикой, которые разрешено менять пользователям приложения.
  */
 public interface ProviderSettings {
 
