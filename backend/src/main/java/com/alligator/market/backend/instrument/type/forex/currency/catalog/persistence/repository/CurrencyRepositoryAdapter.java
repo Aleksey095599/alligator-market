@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.repository;
 
-import com.alligator.market.backend.common.persistence.jpa.util.DbErrors;
+import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
