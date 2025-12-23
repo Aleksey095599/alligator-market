@@ -1,7 +1,7 @@
-package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.mapper;
+package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper;
 
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.common.CurrencyDto;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.in.UpdateCurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.UpdateCurrencyDto;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
 

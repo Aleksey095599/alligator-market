@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.web.dto.common;
+package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common;
 
 import jakarta.validation.constraints.*;
 

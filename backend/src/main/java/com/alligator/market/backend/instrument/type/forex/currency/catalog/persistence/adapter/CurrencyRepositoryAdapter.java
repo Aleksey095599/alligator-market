@@ -1,9 +1,9 @@
-package com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.adapter;
+package com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.adapter;
 
 import com.alligator.market.backend.common.persistence.jpa.error.DbErrors;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyEntityMapper;
-import com.alligator.market.backend.instrument.type.forex.ref.currency.catalog.persistence.jpa.CurrencyJpaRepository;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
