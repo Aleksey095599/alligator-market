@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.ref.currency.model;
+package com.alligator.market.domain.instrument.type.forex.currency.model;
 
 import java.util.Objects;
 

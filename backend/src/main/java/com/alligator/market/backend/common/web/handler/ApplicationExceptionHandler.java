@@ -3,7 +3,7 @@ package com.alligator.market.backend.common.web.handler;
 import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ErrorCode;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.*;
+import com.alligator.market.domain.instrument.type.forex.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.provider.exception.*;
 import lombok.extern.slf4j.Slf4j;

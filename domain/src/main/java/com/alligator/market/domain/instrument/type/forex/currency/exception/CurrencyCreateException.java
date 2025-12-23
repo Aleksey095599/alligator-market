@@ -1,13 +1,13 @@
-package com.alligator.market.domain.instrument.type.forex.ref.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка удаления валюты.
+ * Ошибка создания валюты.
  */
-public final class CurrencyDeleteException extends RuntimeException {
+public final class CurrencyCreateException extends RuntimeException {
 
     private final CurrencyCode code;
 
@@ -17,7 +17,7 @@ public final class CurrencyDeleteException extends RuntimeException {
      * @param code код валюты
      */
     @SuppressWarnings("unused")
-    public CurrencyDeleteException(CurrencyCode code) {
+    public CurrencyCreateException(CurrencyCode code) {
         super(msg(code));
         this.code = code;
     }
@@ -28,7 +28,7 @@ public final class CurrencyDeleteException extends RuntimeException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    public CurrencyDeleteException(CurrencyCode code, Throwable cause) {
+    public CurrencyCreateException(CurrencyCode code, Throwable cause) {
         super(msg(code), cause);
         this.code = code;
     }
@@ -41,7 +41,7 @@ public final class CurrencyDeleteException extends RuntimeException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Failed to delete Currency (code=" + c.value() + ")";
+        return "Failed to create Currency (code=" + c.value() + ")";
     }
 
     /**

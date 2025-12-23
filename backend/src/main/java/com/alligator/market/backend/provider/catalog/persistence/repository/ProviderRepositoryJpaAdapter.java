@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.persistence.adapter;
+package com.alligator.market.backend.provider.catalog.persistence.repository;
 
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
 import com.alligator.market.domain.provider.repository.ProviderRepository;

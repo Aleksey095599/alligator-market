@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 
 /**
- * Родительская сущность, содержащая поля аудита и версии.
+ * Родительская JPA-сущность, содержащая поля аудита и версии.
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})

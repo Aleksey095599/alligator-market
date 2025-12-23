@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.persistence.jpa.error;
+package com.alligator.market.backend.common.persistence.jpa.util;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.NestedExceptionUtils;

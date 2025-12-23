@@ -1,6 +1,6 @@
-package com.alligator.market.domain.instrument.type.forex.ref.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
 

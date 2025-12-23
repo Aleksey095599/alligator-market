@@ -2,10 +2,10 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;

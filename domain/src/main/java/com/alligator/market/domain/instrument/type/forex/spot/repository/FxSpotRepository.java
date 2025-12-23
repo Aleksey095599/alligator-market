@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.repository;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
 import java.util.List;

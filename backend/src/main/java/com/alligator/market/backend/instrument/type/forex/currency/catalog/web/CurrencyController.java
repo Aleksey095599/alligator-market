@@ -6,8 +6,8 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.servi
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.UpdateCurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;

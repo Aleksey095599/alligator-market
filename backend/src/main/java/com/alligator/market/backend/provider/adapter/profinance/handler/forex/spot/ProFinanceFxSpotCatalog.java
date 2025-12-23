@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.profinance.handler.forex.spot;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 

@@ -1,13 +1,13 @@
-package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.adapter;
+package com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.repository;
 
-import com.alligator.market.backend.common.persistence.jpa.error.DbErrors;
+import com.alligator.market.backend.common.persistence.jpa.util.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;

@@ -1,13 +1,13 @@
-package com.alligator.market.domain.instrument.type.forex.ref.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
-import com.alligator.market.domain.instrument.type.forex.ref.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка: валюта используется в FX_SPOT инструменте.
+ * Ошибка: валюта уже существует.
  */
-public final class CurrencyUsedInFxSpotException extends RuntimeException {
+public final class CurrencyAlreadyExistsException extends RuntimeException {
 
     private final CurrencyCode code;
 
@@ -16,7 +16,7 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      *
      * @param code код валюты
      */
-    public CurrencyUsedInFxSpotException(CurrencyCode code) {
+    public CurrencyAlreadyExistsException(CurrencyCode code) {
         super(msg(code));
         this.code = code;
     }
@@ -28,7 +28,7 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      * @param cause причина ошибки
      */
     @SuppressWarnings("unused")
-    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
+    public CurrencyAlreadyExistsException(CurrencyCode code, Throwable cause) {
         super(msg(code), cause);
         this.code = code;
     }
@@ -41,7 +41,7 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency used in FX_SPOT instrument (code=" + c.value() + ")";
+        return "Currency already exists (code=" + c.value() + ")";
     }
 
     /**

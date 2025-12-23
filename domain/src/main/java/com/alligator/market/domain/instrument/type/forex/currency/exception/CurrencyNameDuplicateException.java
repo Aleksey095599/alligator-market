@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.ref.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
 import java.util.Objects;
 
