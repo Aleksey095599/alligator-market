@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * <b>Глобальная модель тика котировки для валютной пары.</b>
+ * Глобальная модель тика котировки для валютной пары.
  *
  * <p>Используется как унифицированное представление любых рыночных тиков:
  * по последней сделке (LAST) и по котировке bid/ask.</p>
@@ -31,9 +31,7 @@ public record QuoteTick(
         String providerCode
 ) {
     /**
-     * <b>Фабрика для тика по последней сделке (LAST).</b>
-     *
-     * <p>Поля bid/ask остаются пустые ({@code null}).</p>
+     * Фабрика тика по последней сделке (LAST): Поля "bid"/"ask" {@code null}.
      */
     public static QuoteTick lastTrade(
             String instrumentCode,
@@ -60,11 +58,9 @@ public record QuoteTick(
     }
 
     /**
-     * <b>Фабрика для тика для котировки bid/ask.</b>
-     *
-     * <p><p>Поле last остаётся пустым ({@code null}).</p>
+     * Фабрика тика для котировки "bid"/"ask": поле "last" {@code null}.</p>
      */
-    public static QuoteTick level1Quote(
+    public static QuoteTick bidAsk(
             String instrumentCode,
             BigDecimal bid,
             BigDecimal ask,
