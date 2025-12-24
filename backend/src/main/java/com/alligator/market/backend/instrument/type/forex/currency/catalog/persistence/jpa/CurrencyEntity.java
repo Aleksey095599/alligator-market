@@ -85,7 +85,10 @@ public class CurrencyEntity extends BaseEntity {
      *
      * @param code Код валюты (натуральный ключ)
      */
-    public CurrencyEntity(CurrencyCode code) {
-        this.code = Objects.requireNonNull(code, "code must not be null");
+    public CurrencyEntity(
+            CurrencyCode code
+    ) {
+        Objects.requireNonNull(code, "code must not be null");
+        this.code = code;
     }
 }

@@ -72,7 +72,11 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
      * Метод однократной инициализация идентичности сущности.
      */
     @SuppressWarnings("SameParameterValue") // <-- Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
-    protected final void initIdentity(String code, String symbol, InstrumentType type) {
+    protected final void initIdentity(
+            String code,
+            String symbol,
+            InstrumentType type
+    ) {
         // Защита от повторной инициализации
         if (this.code != null || this.symbol != null || this.type != null) {
             throw new IllegalStateException("Instrument identity already initialized");

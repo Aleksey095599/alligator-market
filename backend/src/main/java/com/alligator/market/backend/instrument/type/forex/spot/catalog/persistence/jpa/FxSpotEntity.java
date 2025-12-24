@@ -87,13 +87,14 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Специальный конструктор — единственный безопасный способ создать сущность.
      */
-    public FxSpotEntity(CurrencyEntity baseCurrency,
-                        CurrencyEntity quoteCurrency,
-                        FxSpotValueDate valueDate) {
+    public FxSpotEntity(
+            CurrencyEntity baseCurrency,
+            CurrencyEntity quoteCurrency,
+            FxSpotValueDate valueDate
+    ) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
-
 
         // Валюты не должны совпадать
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
