@@ -1,107 +1,123 @@
 package com.alligator.market.backend.common.persistence.jpa.constraint;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.core.NestedExceptionUtils;
 
-import java.util.Locale;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * Утилита для распознавания нарушений конкретных ограничений БД по имени ограничения.
+ * Утилита для распознавания нарушения конкретного ограничения БД по имени этого ограничения.
  *
- * <p><b>Назначение:</b></p>
- * <p>Определить, что брошенное исключение обусловлено нарушением
- * <i>конкретного</i> ограничения (например, уникального ключа с именем {@code uq_instrument_code}),
- * чтобы корректно транслировать инфраструктурную ошибку БД в доменную (например, {@code AlreadyExists}).</p>
+ * <p><b>Пример:</b> Предположим, что в БД есть таблица, в которой задано ограничение (UNIQUE) на уникальность
+ * значений в одной из колонок. В данном приложении, согласно лучшим практикам, каждому ограничению назначается
+ * уникальное имя. Поэтому в нашем примере ограничению будет задано уникальное имя, например, "uq_some_column".
+ * Если при операции сохранения записи в таблицу было выброшено исключение, мы можем с помощью данной утилиты
+ * просканировать cause-цепочку данного исключения с целью найти в ней "uq_some_column". Если имя "uq_some_column"
+ * найдено в cause-цепочке исключения, с высокой долей вероятности исключение вызвано нарушением именно этого
+ * ограничения.</p>
  *
- * <p><b>Алгоритм распознавания:</b></p>
- * <ol>
- *   <li>Проходит по всей cause-цепочке исключения и ищет {@link ConstraintViolationException} (Hibernate).
- *       Если найдено и {@link ConstraintViolationException#getConstraintName()} возвращает имя ограничения,
- *       сравнивает его с ожидаемым без учёта регистра — это самый надёжный признак.</li>
- *   <li>Если имя не доступно или тип причины иной — используется фолбэк:
- *       анализируются сообщения причин (начиная с наиболее специфичной — {@link NestedExceptionUtils#getMostSpecificCause(Throwable)}),
- *       выполняется поиск вхождения имени ограничения без учёта регистра. Это покрывает диалекты/драйверы,
- *       которые включают имя ограничения в текст ошибки (Oracle, MySQL и др.).</li>
- * </ol>
+ * <p><b>Преимущества подхода:</b> Коды ошибок и SQLState зависят от конкретной СУБД, а имя ограничения уникально
+ * и стабильно.</p>
  *
- * <p><b>Преимущества подхода:</b></p>
- * <p>Коды ошибок и SQLState зависят от СУБД, а имя ограничения
- * стабильно и контролируется вами. Рекомендуется явно задавать имена ограничений в DDL/аннотациях.</p>
+ * <p><b>Потокобезопасность:</b> Класс stateless, методы не имеют побочных эффектов и потокобезопасны.</p>
  *
- * <p><b>Потокобезопасность:</b></p>
- * <p>Класс stateless, методы не имеют побочных эффектов и потокобезопасны.</p>
- *
- * <p><b>Ограничения:</b></p>
- * <p>Метод опирается на наличие осмысленного имени ограничения. Если драйвер/диалект
- * не передаёт имя и оно не фигурирует в сообщении исключения, метод вернёт {@code false};
- * такой случай следует трактовать как техническую ошибку сохранения.</p>
- *
- * @see ConstraintViolationException
- * @see NestedExceptionUtils
+ * <p><b>Ограничения:</b> Метод опирается на наличие осмысленно заданного уникального имени ограничения.</p>
  */
 public final class DbErrors {
 
-    /**
-     * Утилитарный класс — инстанцирование запрещено.
-     */
+    /* Конструктор: утилитарный класс — инстанцирование запрещено. */
     private DbErrors() {
         throw new UnsupportedOperationException("Utility class");
     }
 
     /**
-     * Возвращает {@code true}, если {@code ex} с высокой вероятностью вызван нарушением
-     * ограничения с именем {@code constraintName}.
+     * Возвращает {@code true}, если в cause-цепочке {@code ex} обнаружено имя ограничения {@code constraintName}.
      *
-     * <p><b>Порядок распознавания:</b></p>
+     * <p><b>Алгоритм поиска:</b></p>
      * <ol>
-     *   <li>(1) поиск {@link ConstraintViolationException} в cause-цепочке и сравнение имени ограничения;</li>
-     *   <li>(2) фолбэк — поиск имени ограничения (без учёта регистра) в сообщениях причин, начиная с root cause.</li>
+     *   <li>1) Нормализует {@code constraintName} (обрезает пробелы) и проверяет, что оно не пустое.</li>
+     *   <li>2) Обходит cause-цепочку исключения.</li>
+     *   <li>3) На каждом шаге пытается распознать нарушение ограничения:
+     *     <ol type="a">
+     *       <li>3.1) Идеальный вариант: если встречается {@link ConstraintViolationException}, сравнивает
+     *           {@link ConstraintViolationException#getConstraintName()} с {@code constraintName} (без учёта регистра);
+     *           при совпадении сразу возвращает {@code true}.</li>
+     *       <li>3.2) Фолбэк: ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()} и запоминает факт
+     *           совпадения, продолжая обход цепочки.</li>
+     *     </ol>
+     *   </li>
+     *   <li>4) Если идеальный вариант не сработал, возвращает результат фолбэка.</li>
      * </ol>
      *
-     * @param ex             исключение, возникшее при операции с БД (например, при {@code saveAndFlush})
-     * @param constraintName точное имя ограничения в БД (например, {@code uq_instrument_code})
-     * @return {@code true}, если распознано нарушение данного ограничения; иначе {@code false}
+     * @param ex             исключение, возникшее при операции с БД
+     * @param constraintName имя ограничения в БД
+     * @return {@code true}, если имя ограничения обнаружено; иначе {@code false}
      * @throws NullPointerException     если {@code ex} или {@code constraintName} равны {@code null}
-     * @throws IllegalArgumentException если {@code constraintName} пустая строка
+     * @throws IllegalArgumentException если {@code constraintName} пустая строка или состоит только из пробелов
      */
     public static boolean isViolationOf(Throwable ex, String constraintName) {
         Objects.requireNonNull(ex, "ex must not be null");
         Objects.requireNonNull(constraintName, "constraintName must not be null");
 
+        // 1) Нормализуем {@code constraintName} (обрезаем пробелы) и проверяем, что оно не пустое.
         final String needle = constraintName.trim();
         if (needle.isEmpty()) {
             throw new IllegalArgumentException("constraintName must not be blank");
         }
-        final String needleLower = needle.toLowerCase(Locale.ROOT);
 
-        // 1) Поиск Hibernate-исключения с явным именем ограничение в цепочке причин
-        for (Throwable t = ex; t != null; t = t.getCause()) {
+        // Флаг реализации случая "Б)" в коде ниже
+        boolean matchedByMessage = false;
+
+        // Защита от потенциально циклической cause-цепочки (маловероятно, но на крайний случай)
+        final Set<Throwable> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+
+        // 2) Обходим cause-цепочку исключения
+        for (Throwable t = ex; t != null && visited.add(t); t = t.getCause()) {
+            // 3) На каждом шаге пытаемся распознать нарушение ограничения:
+
+            // 3.1) "Идеальный" вариант – Hibernate смог поймать и обернуть исключение в ConstraintViolationException =>
+            //      Перебираем узлы исключения, ищем ConstraintViolationException, извлекаем имя ConstraintViolationException
+            //      и сравниваем его с needle.
             if (t instanceof ConstraintViolationException cve) {
                 final String name = cve.getConstraintName();
-                if (name != null && name.equalsIgnoreCase(needle)) {
-                    return true; // <-- Самый надёжный признак: имя констрейнта от Hibernate
+                if (name != null && name.trim().equalsIgnoreCase(needle)) {
+                    return true;
+                    // Сразу же выходим, так как это "идеальный" вариант
                 }
             }
-        }
 
-        // 2) Фолбэк: поиск упоминания имени ограничения в текстах сообщений причин (root-first)
-        for (Throwable t = NestedExceptionUtils.getMostSpecificCause(ex); t != null; t = t.getCause()) {
-            final String msg = t.getMessage();
-            if (containsIgnoreCase(msg, needleLower)) {
-                return true;
+            // 3.2) Фолбэк – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения в getConstraintName(),
+            //    но включают его в текст сообщения => Ищем имя ограничения в сообщениях причин
+            if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
+                matchedByMessage = true;
+                // Не выходим, даём шанс найти "идеальный" вариант глубже по цепочке
             }
         }
-
-        // 3) Не удалось однозначно распознать нарушение указанного ограничения
-        return false;
+        // 4) Если идеальный вариант не сработал, возвращаем результат фолбэка
+        return matchedByMessage;
     }
 
     /**
-     * Проверка "строка содержит подстроку" без учёта регистра; безопасна к {@code null}.
+     * Проверяет, содержит ли строка {@code haystack} подстроку {@code needle} без учёта регистра.
+     *
+     * <p>Безопасен к {@code null}: если любой входящий аргумент равен {@code null}, возвращает {@code false}.</p>
      */
-    private static boolean containsIgnoreCase(String haystack, String needleLower) {
-        return haystack != null && haystack.toLowerCase(Locale.ROOT).contains(needleLower);
-        // Примечание: Locale.ROOT гарантирует детерминированное сравнение для латинских имён констрейнтов.
+    private static boolean containsIgnoreCase(String haystack, String needle) {
+        if (haystack == null || needle == null) {
+            return false;
+        }
+        final int hLen = haystack.length();
+        final int nLen = needle.length();
+        if (nLen == 0 || nLen > hLen) {
+            return false;
+        }
+        for (int i = 0; i <= hLen - nLen; i++) {
+            if (haystack.regionMatches(true, i, needle, 0, nLen)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
