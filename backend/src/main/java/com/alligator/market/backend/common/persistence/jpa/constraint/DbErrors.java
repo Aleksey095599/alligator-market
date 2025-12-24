@@ -38,17 +38,14 @@ public final class DbErrors {
      * <p><b>Алгоритм поиска:</b></p>
      * <ol>
      *   <li>1) Нормализует {@code constraintName} (обрезает пробелы) и проверяет, что оно не пустое.</li>
-     *   <li>2) Обходит cause-цепочку исключения.</li>
-     *   <li>3) На каждом шаге пытается распознать нарушение ограничения:
-     *     <ol type="a">
-     *       <li>3.1) Идеальный вариант: если встречается {@link ConstraintViolationException}, сравнивает
-     *           {@link ConstraintViolationException#getConstraintName()} с {@code constraintName} (без учёта регистра);
-     *           при совпадении сразу возвращает {@code true}.</li>
-     *       <li>3.2) Фолбэк: ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()} и запоминает факт
-     *           совпадения, продолжая обход цепочки.</li>
-     *     </ol>
-     *   </li>
-     *   <li>4) Если идеальный вариант не сработал, возвращает результат фолбэка.</li>
+     *   <li>2) Обходит cause-цепочку исключения (с защитой от циклов).</li>
+     *   <li>3) Для каждого элемента цепочки:
+     *       <br/>3.1) “идеальный” вариант: если доступно имя ограничения через
+     *       {@link ConstraintViolationException#getConstraintName()}, сравнивает его с {@code constraintName}
+     *       без учёта регистра и при совпадении сразу возвращает {@code true};
+     *       <br/>3.2) фолбэк: ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()},
+     *       запоминает совпадение и продолжает обход цепочки.</li>
+     *   <li>4) Если “идеальный” вариант не сработал, возвращает результат фолбэка.</li>
      * </ol>
      *
      * @param ex             исключение, возникшее при операции с БД
@@ -61,13 +58,13 @@ public final class DbErrors {
         Objects.requireNonNull(ex, "ex must not be null");
         Objects.requireNonNull(constraintName, "constraintName must not be null");
 
-        // 1) Нормализуем {@code constraintName} (обрезаем пробелы) и проверяем, что оно не пустое.
+        // 1) Нормализуем {@code constraintName} и проверяем, что оно не пустое.
         final String needle = constraintName.trim();
         if (needle.isEmpty()) {
             throw new IllegalArgumentException("constraintName must not be blank");
         }
 
-        // Флаг реализации случая "Б)" в коде ниже
+        // Флаг совпадения по сообщениям (фолбэк)
         boolean matchedByMessage = false;
 
         // Защита от потенциально циклической cause-цепочки (маловероятно, но на крайний случай)
