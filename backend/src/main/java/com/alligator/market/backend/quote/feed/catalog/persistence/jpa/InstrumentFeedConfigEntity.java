@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
@@ -17,27 +18,35 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * JPA-сущность конфигурации источников рыночных данных для финансового инструмента.
+ * JPA-сущность конфигурации источников котировок (feed) для финансового инструмента.
+ *
+ * <p>Основная задача таблицы {@code instrument_feed_config} – задать соответствие: финансовый инструмент <--> провайдер рыночных данных.</p>
  */
 @Entity
 @Table(
         name = "instrument_feed_config",
         uniqueConstraints = {
-                // Не может быть для одного инструмента источников с одинаковой ролью
-                @UniqueConstraint(name = "uq_instrument_feed_role", columnNames = {"instrument_id", "feed_role"}),
-                // Не может быть для одного инструмента источников с одинаковым кодом провайдера
-                @UniqueConstraint(name = "uq_instrument_provider_code", columnNames = {"instrument_id", "provider_code"})
+                // Не может быть для одного инструмента несколько источников с одинаковой ролью
+                @UniqueConstraint(name = "uq_ifc_instrument_feed_role", columnNames = {"instrument_id", "feed_role"}),
+                // Не может быть для одного инструмента несколько источников с одинаковым кодом провайдера
+                @UniqueConstraint(name = "uq_ifc_instrument_provider_code", columnNames = {"instrument_id", "provider_code"})
         },
         indexes = {
-                // TODO
+                // Ускоряет массовый отбор включённых записей при старте/перезапуске потоков:
+                @Index(name = "idx_ifc_enabled", columnList = "enabled")
         }
 )
 @Check(
-        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
-        // при отключённой — служит «живой спецификацией» для миграций.
-        // TODO
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
+        constraints =
+                "provider_code = upper(provider_code) " +
+                        "AND provider_code ~ '^[A-Z0-9_.-]+$' " +
+                        "AND feed_role IN ('PRIMARY','SECONDARY')"
 )
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+// <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /**
@@ -54,22 +63,28 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "instrument_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_instrument"), updatable = false, nullable = false)
+    @JoinColumn(
+            name = "instrument_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_ifc_instrument"),
+            nullable = false, updatable = false)
     private InstrumentBaseEntity instrument;
 
     /**
      * Технический код провайдера (источника рыночных данных).
+     *
+     * <p>Soft reference: без FK на market_data_provider, БД не гарантирует что такой провайдер существует.
      */
     @NotBlank
     @Size(max = 50)
-    @Pattern(regexp = "^[A-Z0-9_.-]+$") // <-- Ранняя валидация до БД (только буквы A - Z, цифры и знаки "_ . -")
-    @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
+    @Pattern(regexp = "^[A-Z0-9_.-]+$")
+    @Column(name = "provider_code", length = 50, nullable = false)
     private String providerCode;
 
     /**
      * Роль источника котировок (feed) для финансового инструмента.
      */
+    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "feed_role", length = 16, nullable = false, updatable = false)
@@ -80,7 +95,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      */
     @NotNull
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    private boolean enabled;
 
     /**
      * Специальный конструктор — единственный безопасный способ создать сущность.
@@ -89,19 +104,11 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
             InstrumentBaseEntity instrument,
             String providerCode,
             InstrumentFeedRole feedRole,
-            Boolean enabled
+            boolean enabled
     ) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
-        Objects.requireNonNull(feedRole, "feedRole must not be null");
-        Objects.requireNonNull(enabled, "enabled must not be null");
-        if (providerCode.isBlank()) {
-            throw new IllegalArgumentException("providerCode must not be blank");
-        }
-
-        this.instrument = instrument;
-        this.providerCode = providerCode;
-        this.feedRole = feedRole;
+        this.instrument = Objects.requireNonNull(instrument, "instrument must not be null");
+        this.feedRole = Objects.requireNonNull(feedRole, "feedRole must not be null");
+        this.providerCode = normalizeProviderCode(providerCode);
         this.enabled = enabled;
     }
 
@@ -120,17 +127,24 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     }
 
     /**
-     * Нормализует код провайдера.
+     * Нормализует и валидирует код провайдера.
      */
     private static String normalizeProviderCode(String providerCode) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
 
-        String nCode = providerCode.strip();
-        if (nCode.isEmpty()) {
+        String n = providerCode.strip(); // <-- обрезаем пробелы
+        if (n.isEmpty()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
 
         // Нормализуем в UPPERCASE
-        return nCode.toUpperCase(Locale.ROOT);
+        n = n.toUpperCase(Locale.ROOT);
+
+        // Fail-fast проверка формата (дублирует @Pattern/@Check, но даёт раннюю ошибку).
+        if (!n.matches("^[A-Z0-9_.-]+$")) {
+            throw new IllegalArgumentException("providerCode has invalid format: " + n);
+        }
+
+        return n;
     }
 }

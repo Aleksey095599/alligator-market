@@ -31,7 +31,7 @@ import java.util.Objects;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- скрываем JPA-конструктор
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /**

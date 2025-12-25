@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
@@ -39,9 +40,8 @@ import java.util.Objects;
                 @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code")
         }
 )
-@org.hibernate.annotations.Check(
-        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
-        // при отключённой — служит «живой спецификацией» для миграций.
+@Check(
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
         constraints = "min_update_interval_seconds >= 1 " +
                 "AND provider_code = upper(provider_code) " +
                 "AND provider_code ~ '^[A-Z0-9_.-]+$' " +
@@ -49,7 +49,7 @@ import java.util.Objects;
                 "AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 @Immutable // <-- Делает сущность read-only для ORM: Hibernate не генерирует UPDATE; изменения игнорируются на flush
 @Cacheable // <-- Подключаем 2-й уровень кэша (если включен в конфигурации)
@@ -73,7 +73,7 @@ public class ProviderEntity extends BaseEntity {
      */
     @NotBlank
     @Size(max = 50)
-    @Pattern(regexp = "^[A-Z0-9_.-]+$") // <-- Ранняя валидация до БД (только буквы A - Z, цифры и знаки "_ . -")
+    @Pattern(regexp = "^[A-Z0-9_.-]+$")
     @NaturalId() // <-- Помечаем поле как натуральный ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;

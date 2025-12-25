@@ -23,8 +23,7 @@ import java.util.Objects;
  */
 @Entity
 @Check(
-        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
-        // при отключённой — служит «живой спецификацией» для миграций.
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
         constraints = "fraction_digits BETWEEN 0 AND 10"
 )
 @Table(
@@ -36,7 +35,7 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 public class CurrencyEntity extends BaseEntity {
 
     /**
