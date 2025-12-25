@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import java.util.Objects;
 
 /**
- * Маппер: модель <--> DTO.
+ * Маппер: модель ↔ DTO.
  */
 public class FxSpotDtoMapper {
 

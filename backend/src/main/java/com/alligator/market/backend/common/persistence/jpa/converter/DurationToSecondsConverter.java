@@ -6,7 +6,7 @@ import jakarta.persistence.Converter;
 import java.time.Duration;
 
 /**
- * JPA-конвертер {@link Duration} <--> {@link Long} (число секунд) для хранения в БД.
+ * JPA-конвертер {@link Duration} ↔ {@link Long} (число секунд) для хранения в БД.
  *
  * <p><b>Семантика преобразования</b>
  * <ul>

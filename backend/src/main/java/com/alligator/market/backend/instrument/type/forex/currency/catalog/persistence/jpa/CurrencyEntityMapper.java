@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import java.util.Objects;
 
 /**
- * Маппер: JPA-сущность <--> доменная модель.
+ * Маппер: JPA-сущность ↔ доменная модель.
  */
 public final class CurrencyEntityMapper {
 

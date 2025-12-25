@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * JPA-сущность конфигурации источников котировок (feed) для финансового инструмента.
  *
- * <p>Основная задача таблицы {@code instrument_feed_config} – задать соответствие: финансовый инструмент <--> провайдер рыночных данных.</p>
+ * <p>Основная задача таблицы {@code instrument_feed_config} – задать соответствие: финансовый инструмент ↔ провайдер рыночных данных.</p>
  */
 @Entity
 @Table(
@@ -93,7 +93,6 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     /**
      * Признак: запускать поток котировок или нет.
      */
-    @NotNull
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 

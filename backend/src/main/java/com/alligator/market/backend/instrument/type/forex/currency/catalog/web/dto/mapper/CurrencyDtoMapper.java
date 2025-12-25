@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import java.util.Objects;
 
 /**
- * Маппер: модель валюты <--> DTO.
+ * Маппер: модель валюты ↔ DTO.
  */
 public final class CurrencyDtoMapper {
 
