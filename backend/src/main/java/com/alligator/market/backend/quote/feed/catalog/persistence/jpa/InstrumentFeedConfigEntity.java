@@ -40,7 +40,7 @@ import java.util.Objects;
         // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
         constraints =
                 "provider_code = upper(provider_code) " +
-                        "AND provider_code ~ '^[A-Z0-9_.-]+$' " +
+                        "AND provider_code ~ '" + PROVIDER_CODE_PATTERN + "' " +
                         "AND feed_role IN ('PRIMARY','SECONDARY')"
 )
 @Getter
@@ -48,6 +48,9 @@ import java.util.Objects;
 // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public class InstrumentFeedConfigEntity extends BaseEntity {
+
+    /* Шаблон кода провайдера: только A-Z, 0-9 и символы _ . - */
+    private static final String PROVIDER_CODE_PATTERN = "^[A-Z0-9_.-]+$";
 
     /**
      * Суррогатный PK.
@@ -77,7 +80,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      */
     @NotBlank
     @Size(max = 50)
-    @Pattern(regexp = "^[A-Z0-9_.-]+$")
+    @Pattern(regexp = PROVIDER_CODE_PATTERN)
     @Column(name = "provider_code", length = 50, nullable = false)
     private String providerCode;
 
@@ -140,7 +143,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
         n = n.toUpperCase(Locale.ROOT);
 
         // Fail-fast проверка формата (дублирует @Pattern/@Check, но даёт раннюю ошибку).
-        if (!n.matches("^[A-Z0-9_.-]+$")) {
+        if (!n.matches(PROVIDER_CODE_PATTERN)) {
             throw new IllegalArgumentException("providerCode has invalid format: " + n);
         }
 
