@@ -2,7 +2,6 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -23,8 +23,19 @@ import java.util.Objects;
 @Table(
         name = "instrument_feed_config",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_instrument_feed_config_instrument_code", columnNames = {"instrument_code", "feed_role"})
+                // Не может быть для одного инструмента источников с одинаковой ролью
+                @UniqueConstraint(name = "uq_instrument_feed_role", columnNames = {"instrument_id", "feed_role"}),
+                // Не может быть для одного инструмента источников с одинаковым кодом провайдера
+                @UniqueConstraint(name = "uq_instrument_provider_code", columnNames = {"instrument_id", "provider_code"})
+        },
+        indexes = {
+                // TODO
         }
+)
+@Check(
+        // Ограничение CHECK (DDL): при включённой генерации схемы Hibernate создаст его;
+        // при отключённой — служит «живой спецификацией» для миграций.
+        // TODO
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- JPA-конструктор только для ORM в этом пакете и у наследников
 public class InstrumentFeedConfigEntity extends BaseEntity {
@@ -114,12 +125,12 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     private static String normalizeProviderCode(String providerCode) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
 
-        String n = providerCode.strip();
-        if (n.isEmpty()) {
+        String nCode = providerCode.strip();
+        if (nCode.isEmpty()) {
             throw new IllegalArgumentException("providerCode must not be blank");
         }
 
         // Нормализуем в UPPERCASE
-        return n.toUpperCase(Locale.ROOT);
+        return nCode.toUpperCase(Locale.ROOT);
     }
 }
