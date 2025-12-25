@@ -40,7 +40,7 @@ import java.util.Objects;
         // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
         constraints =
                 "provider_code = upper(provider_code) " +
-                        "AND provider_code ~ '" + PROVIDER_CODE_PATTERN + "' " +
+                        "AND provider_code ~ '" + InstrumentFeedConfigEntity.PROVIDER_CODE_PATTERN + "' " +
                         "AND feed_role IN ('PRIMARY','SECONDARY')"
 )
 @Getter
@@ -49,8 +49,8 @@ import java.util.Objects;
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public class InstrumentFeedConfigEntity extends BaseEntity {
 
-    /* Шаблон кода провайдера: только A-Z, 0-9 и символы _ . - */
-    private static final String PROVIDER_CODE_PATTERN = "^[A-Z0-9_.-]+$";
+    /* Шаблон кода провайдера: только A-Z, 0-9 и символы "_.-". */
+    static final String PROVIDER_CODE_PATTERN = "^[A-Z0-9_.-]+$";
 
     /**
      * Суррогатный PK.
@@ -124,7 +124,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     /**
      * Включает/выключает поток котировок.
      */
-    public void setEnabled(boolean enabled) {
+    public void updateEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
