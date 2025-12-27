@@ -6,7 +6,9 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Иммутабельная модель каталога провайдера для backend-слоя приложения.
+ * Иммутабельная модель элемента каталога провайдера рыночных данных.
+ *
+ * <p>Применяется только в backend-слое приложения.</p>
  */
 public record ProviderCatalogItem(
         String providerCode,

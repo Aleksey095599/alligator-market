@@ -1,29 +1,32 @@
-package com.alligator.market.backend.provider.catalog.web.dto;
+package com.alligator.market.backend.provider.catalog.web.dto.mapper;
 
 import com.alligator.market.backend.provider.catalog.service.ProviderCatalogItem;
+import com.alligator.market.backend.provider.catalog.web.dto.out.ProviderResponseDto;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 
 import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Маппер доменных моделей каталога провайдеров в DTO.
+ * Маппер DTO для провайдера рыночных данных.
  */
 public final class ProviderDtoMapper {
 
-    private ProviderDtoMapper() {
-    }
+    /**
+     * Приватный конструктор (запрещает создание экземпляров).
+     */
+    private ProviderDtoMapper() { throw new UnsupportedOperationException("Utility class"); }
 
     /**
-     * Преобразовать элемент каталога в DTO.
+     * Преобразовать модель элемента каталога {@link ProviderCatalogItem} в DTO ответа {@link ProviderResponseDto}.
      */
-    public static ProviderDto toDto(ProviderCatalogItem item) {
+    public static ProviderResponseDto toDto(ProviderCatalogItem item) {
         Objects.requireNonNull(item, "item must not be null");
 
         ProviderDescriptor descriptor = item.descriptor();
         Duration minUpdateInterval = item.minUpdateInterval();
 
-        return new ProviderDto(
+        return new ProviderResponseDto(
                 item.providerCode(),
                 descriptor.displayName(),
                 descriptor.deliveryMode().name(),

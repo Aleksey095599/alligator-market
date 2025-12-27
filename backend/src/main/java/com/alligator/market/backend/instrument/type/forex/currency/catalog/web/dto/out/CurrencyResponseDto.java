@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.d
 import lombok.NoArgsConstructor;
 
 /**
- * DTO ответа по валюте (out).
+ * DTO ответа для валют (out).
  */
 @NoArgsConstructor
 public class CurrencyResponseDto extends CurrencyDto {

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * DTO обновления инструмента FX_SPOT.
+ * DTO обновления инструмента FX_SPOT (in).
  */
 public record FxSpotUpdateDto(
 

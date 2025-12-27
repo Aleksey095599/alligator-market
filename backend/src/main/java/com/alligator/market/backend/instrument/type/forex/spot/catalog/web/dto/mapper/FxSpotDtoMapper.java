@@ -1,12 +1,12 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.mapper;
 
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotListItemDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
 import java.util.Objects;
 
 /**
- * Маппер: модель ↔ DTO.
+ * Маппер DTO для инструмента FX_SPOT.
  */
 public class FxSpotDtoMapper {
 
@@ -18,12 +18,12 @@ public class FxSpotDtoMapper {
     }
 
     /**
-     * Преобразует доменную модель в DTO для списка.
+     * Преобразует доменную модель {@link FxSpot} в DTO ответа {@link FxSpotResponseDto}.
      */
-    public static FxSpotListItemDto toListItemDto(FxSpot fxSpot) {
+    public static FxSpotResponseDto toFxSpotResponseDto(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        return new FxSpotListItemDto(
+        return new FxSpotResponseDto(
                 fxSpot.instrumentCode(),
                 fxSpot.instrumentSymbol(),
                 fxSpot.base().code().value(),

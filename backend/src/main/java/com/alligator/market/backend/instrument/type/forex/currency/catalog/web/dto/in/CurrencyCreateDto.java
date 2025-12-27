@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
  * DTO создания валюты (in).
  */
 @NoArgsConstructor
-public class CreateCurrencyDto extends CurrencyDto {
+public class CurrencyCreateDto extends CurrencyDto {
 
-    public CreateCurrencyDto(
+    public CurrencyCreateDto(
             String code,
             String name,
             String country,

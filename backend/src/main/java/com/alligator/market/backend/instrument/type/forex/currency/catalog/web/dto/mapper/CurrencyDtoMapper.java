@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper;
 
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.UpdateCurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.out.CurrencyResponseDto;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
@@ -9,7 +9,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import java.util.Objects;
 
 /**
- * Маппер: модель валюты ↔ DTO.
+ * Маппер DTO для валюты.
  */
 public final class CurrencyDtoMapper {
 
@@ -21,7 +21,7 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует основной DTO в доменную модель.
+     * Преобразует общий DTO {@link CurrencyDto} в доменную модель {@link Currency}.
      */
     public static Currency toDomain(CurrencyDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
@@ -35,9 +35,9 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует DTO обновления и код в доменную модель.
+     * Преобразует код и DTO обновления {@link CurrencyUpdateDto} в доменную модель {@link Currency}.
      */
-    public static Currency toDomain(String code, UpdateCurrencyDto dto) {
+    public static Currency toDomain(String code, CurrencyUpdateDto dto) {
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
 
@@ -50,7 +50,7 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует доменную модель в DTO ответа.
+     * Преобразует доменную модель {@link Currency} в DTO ответа {@link CurrencyResponseDto}.
      */
     public static CurrencyResponseDto toResponseDto(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");

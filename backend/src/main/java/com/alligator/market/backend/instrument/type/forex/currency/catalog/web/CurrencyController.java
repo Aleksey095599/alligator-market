@@ -3,8 +3,8 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web;
 import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.service.CurrencyUseCase;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CreateCurrencyDto;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.UpdateCurrencyDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyCreateDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.out.CurrencyResponseDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
@@ -35,7 +35,7 @@ public class CurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CreateCurrencyDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyCreateDto dto) {
 
         Currency created = service.create(CurrencyDtoMapper.toDomain(dto));
         URI location = ServletUriComponentsBuilder
@@ -52,7 +52,7 @@ public class CurrencyController {
     @PutMapping("/{code}")
     public ResponseEntity<Void> update(
             @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
-            @RequestBody @Valid UpdateCurrencyDto dto) {
+            @RequestBody @Valid CurrencyUpdateDto dto) {
 
         service.update(CurrencyDtoMapper.toDomain(code, dto));
         return ResponseEntityFactory.noContent();

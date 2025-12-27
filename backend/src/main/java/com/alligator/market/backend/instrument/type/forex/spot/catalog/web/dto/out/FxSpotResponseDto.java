@@ -3,9 +3,9 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
 
 /**
- * DTO передачи списка инструментов FX_SPOT.
+ * DTO ответа для инструментов FX_SPOT (out).
  */
-public record FxSpotListItemDto(
+public record FxSpotResponseDto(
         String instrumentCode,
         String symbol,
         String baseCurrency,

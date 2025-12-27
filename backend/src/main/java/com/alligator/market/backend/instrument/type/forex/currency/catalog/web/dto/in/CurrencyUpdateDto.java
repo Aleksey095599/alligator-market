@@ -3,9 +3,9 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.
 import jakarta.validation.constraints.*;
 
 /**
- * DTO обновления.
+ * DTO обновления валюты (in).
  */
-public record UpdateCurrencyDto(
+public record CurrencyUpdateDto(
 
         @NotBlank
         @Size(max = 50)
