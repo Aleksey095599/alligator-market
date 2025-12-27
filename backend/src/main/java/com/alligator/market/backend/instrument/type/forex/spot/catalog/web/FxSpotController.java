@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.mapper.FxSpotDtoMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotListItemDto;
@@ -33,7 +33,7 @@ public class FxSpotController {
      * Создать инструмент.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotCreateDto dto) {
 
         FxSpot created = service.create(assembler.toDomain(dto));
         URI location = ServletUriComponentsBuilder

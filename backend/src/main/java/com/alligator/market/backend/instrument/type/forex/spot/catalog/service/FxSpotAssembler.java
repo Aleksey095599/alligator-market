@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotDto;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
@@ -25,7 +25,7 @@ public class FxSpotAssembler {
     /**
      * Основной DTO --> доменная модель.
      */
-    public FxSpot toDomain(FxSpotDto dto) {
+    public FxSpot toDomain(FxSpotCreateDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
         Currency base = currencyRepository.findByCode(CurrencyCode.of(dto.baseCurrency()))

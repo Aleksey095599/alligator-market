@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.
 import jakarta.validation.constraints.*;
 
 /**
- * Основной DTO валюты.
+ * Универсальный DTO валюты – используется для создания валюты и получения списка валют.
  */
 public record CurrencyDto(
 

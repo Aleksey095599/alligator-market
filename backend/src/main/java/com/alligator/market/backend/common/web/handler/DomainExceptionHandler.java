@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-public class ApplicationExceptionHandler {
+public class DomainExceptionHandler {
 
     /**
      * Валюта с таким кодом уже существует --> 409.
