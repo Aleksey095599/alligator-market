@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 
-import { CurrencyDto } from '../../models/currency.model';
+import { CreateCurrencyDto, CurrencyResponseDto } from '../../models/currency.model';
 import { UpdateCurrencyDto } from '../../models/currency-update.model';
 import { CurrencyService } from '../../services/currency.service';
 
@@ -41,7 +41,7 @@ export class CurrencyAdminComponent implements OnInit {
   // Табличные данные
   //=================
   displayed: string[] = ['code', 'name', 'country', 'fractionDigits', 'actions'];
-  dataSource = new MatTableDataSource<CurrencyDto>([]);
+  dataSource = new MatTableDataSource<CurrencyResponseDto>([]);
 
   //========================
   // Форма добавления валюты
@@ -110,7 +110,7 @@ export class CurrencyAdminComponent implements OnInit {
 
     this.locked = true; // блокируем кнопку
 
-    const dto: CurrencyDto = this.form.value;
+    const dto: CreateCurrencyDto = this.form.value;
 
     this.service.add(dto).subscribe({
       next: code => {
@@ -137,7 +137,7 @@ export class CurrencyAdminComponent implements OnInit {
   }
 
   /* клик по иконке Edit */
-  onEdit(c: CurrencyDto): void {
+  onEdit(c: CurrencyResponseDto): void {
     this.editing = true;
     this.editCode = c.code;
     this.form.setValue({
