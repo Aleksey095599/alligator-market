@@ -2,6 +2,7 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -62,6 +63,10 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /**
      * Инструмент, для которого задаётся источник котировок.
+     *
+     * <p>Задается как внешний ключ на таблицу инструментов; нельзя обновлять – задается один раз при создании записи;
+     * frontend должен предлагать список инструментов из таблицы инструментов {@link InstrumentBaseEntity} при попытке
+     * заполнения формы для передачи данных в backend.</p>
      */
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
@@ -76,7 +81,9 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     /**
      * Технический код провайдера (источника рыночных данных).
      *
-     * <p>Soft reference: без FK на market_data_provider, БД не гарантирует что такой провайдер существует.
+     * <p>Soft reference – без FK на market_data_provider (БД не гарантирует существование провайдера); можно обновлять;
+     * frontend должен предлагать список кодов провайдеров из таблицы провайдеров {@link ProviderEntity} при попытке
+     * заполнения формы для передачи данных в backend.</p>
      */
     @NotBlank
     @Size(max = 50)
@@ -86,6 +93,9 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /**
      * Роль источника котировок (feed) для финансового инструмента.
+     *
+     * <p>Нельзя менять – задается один раз при создании записи для большей строгости и чтобы избежать излишние
+     * усложнения поведения при обновлении записи.</p>
      */
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
@@ -95,6 +105,8 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /**
      * Признак: запускать поток котировок или нет.
+     *
+     * <p>Изменения вступят в силу после перезапуска потока котировок или после перезапуска всего приложения.</p>
      */
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
