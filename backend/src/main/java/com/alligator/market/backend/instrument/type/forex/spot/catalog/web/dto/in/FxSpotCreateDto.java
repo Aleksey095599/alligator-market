@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueD
 import jakarta.validation.constraints.*;
 
 /**
- * DTO для создания инструмента FX_SPOT.
+ * DTO создания инструмента FX_SPOT.
  */
 public record FxSpotCreateDto(
 
