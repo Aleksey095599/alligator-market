@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.catalog.service;
 
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -13,12 +13,12 @@ import java.util.Objects;
 public record ProviderCatalogItem(
         String providerCode,
         ProviderDescriptor descriptor,
-        Duration minUpdateInterval
+        ProviderPolicy policy
 ) {
     public ProviderCatalogItem {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(descriptor, "descriptor must not be null");
-        Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
+        Objects.requireNonNull(policy, "policy must not be null");
 
         if (providerCode.isBlank()) {
             throw new IllegalArgumentException("providerCode must not be blank");

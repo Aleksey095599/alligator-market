@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.catalog.service;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +47,12 @@ public class ProviderCatalogService implements ProviderCatalogUseCase {
                 policyEmbeddable.getMinUpdateInterval(),
                 "minUpdateInterval must not be null"
         );
+        var policy = new ProviderPolicy(minUpdateInterval);
 
         return new ProviderCatalogItem(
                 entity.getProviderCode(),
                 descriptor,
-                minUpdateInterval
+                policy
         );
     }
 }
