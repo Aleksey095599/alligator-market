@@ -14,7 +14,7 @@ import { FxSpotCreateDto } from '../../models/fx-spot-create.model';
 import { FxSpotService } from '../../services/fx-spot.service';
 import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
 import { CurrencyService } from '../../../currency/services/currency.service';
-import { CurrencyDto } from '../../../currency/models/currency.model';
+import { CurrencyResponseDto } from '../../../currency/models/currency.model';
 import { FxSpotValueDate } from '../../models/fx-spot-value-date.model';
 
 @Component({
@@ -52,7 +52,7 @@ export class FxSpotAdminComponent implements OnInit {
   editing = false; // режим редактирования
   editCode: string | null = null; // внутренний код инструмента для редактирования (получаем с backend)
   editSymbol: string | null = null; // символ инструмента для уведомления
-  currencies: CurrencyDto[] = [];
+  currencies: CurrencyResponseDto[] = [];
   valueDates = Object.values(FxSpotValueDate);
 
   constructor(

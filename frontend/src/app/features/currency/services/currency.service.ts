@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
-import { CurrencyDto } from '../models/currency.model';
+import { CreateCurrencyDto, CurrencyResponseDto } from '../models/currency.model';
 import { ApiResponse } from '../../../shared/api/api-response.model';
 import { UpdateCurrencyDto } from '../models/currency-update.model';
 
@@ -18,14 +18,14 @@ export class CurrencyService {
   private readonly baseUrl = '/api/v1/currencies';
 
   /* Получить список всех валют. */
-  list(): Observable<CurrencyDto[]> {
+  list(): Observable<CurrencyResponseDto[]> {
     return this.http
-      .get<ApiResponse<CurrencyDto[]>>(this.baseUrl)
+      .get<ApiResponse<CurrencyResponseDto[]>>(this.baseUrl)
       .pipe(map(res => res.data ?? []));
   }
 
   /* Добавить валюту, backend вернёт её код. */
-  add(dto: CurrencyDto): Observable<string> {
+  add(dto: CreateCurrencyDto): Observable<string> {
     return this.http
       .post<ApiResponse<string>>(this.baseUrl, dto)
       .pipe(map(res => res.data ?? ''));
