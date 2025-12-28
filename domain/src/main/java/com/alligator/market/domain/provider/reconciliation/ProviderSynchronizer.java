@@ -4,6 +4,8 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
+
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -37,8 +39,8 @@ public class ProviderSynchronizer {
      */
     public void synchronize() {
         // 1) Читаем снимки из контекста и коды из БД
-        Map<String, ProviderSnapshot> ctx = contextScanner.providerSnapshots();
-        Set<String> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
+        Map<ProviderCode, ProviderSnapshot> ctx = contextScanner.providerSnapshots();
+        Set<ProviderCode> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
 
         // Если в контексте пусто — чистим таблицу и выходим
         if (ctx.isEmpty()) {
@@ -49,7 +51,7 @@ public class ProviderSynchronizer {
         }
 
         // 2) Вычисляем устаревшие коды (есть в БД, нет в контексте) и удаляем их
-        Set<String> obsolete = new LinkedHashSet<>(repoCodes);
+        Set<ProviderCode> obsolete = new LinkedHashSet<>(repoCodes);
         obsolete.removeAll(ctx.keySet());
         if (!obsolete.isEmpty()) {
             syncDao.deleteByCodes(obsolete); // <-- batch DELETE

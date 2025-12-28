@@ -1,6 +1,7 @@
 package com.alligator.market.domain.quote.tick.model;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 
 import java.math.BigDecimal;
@@ -28,7 +29,7 @@ public record QuoteTick(
         BigDecimal ask,
         Instant exchangeTimestamp,
         Instant receivedTimestamp,
-        String providerCode
+        ProviderCode providerCode
 ) {
     /**
      * Фабрика тика по последней сделке (LAST): Поля "bid"/"ask" {@code null}.
@@ -38,7 +39,7 @@ public record QuoteTick(
             BigDecimal last,
             Instant exchangeTimestamp,
             Instant receivedTimestamp,
-            String providerCode
+            ProviderCode providerCode
     ) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(last, "last must not be null");
@@ -66,7 +67,7 @@ public record QuoteTick(
             BigDecimal ask,
             Instant exchangeTimestamp,
             Instant receivedTimestamp,
-            String providerCode
+            ProviderCode providerCode
     ) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(bid, "bid must not be null");

@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
 import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdapterV2> {
 
     /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
-    private static final String PROVIDER_CODE = "TWELVE_FREE";
+    private static final ProviderCode PROVIDER_CODE = ProviderCode.of("TWELVE_FREE");
 
     /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "TwelveData Free Plan";

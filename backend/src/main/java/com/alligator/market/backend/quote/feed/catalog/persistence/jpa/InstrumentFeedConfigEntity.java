@@ -3,6 +3,7 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -51,7 +51,7 @@ import java.util.Objects;
 public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /* Шаблон кода провайдера: только A-Z, 0-9 и символы "_.-". */
-    static final String PROVIDER_CODE_PATTERN = "^[A-Z0-9_.-]+$";
+    static final String PROVIDER_CODE_PATTERN = ProviderCode.PATTERN;
 
     /**
      * Суррогатный PK.
@@ -122,7 +122,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     ) {
         this.instrument = Objects.requireNonNull(instrument, "instrument must not be null");
         this.feedRole = Objects.requireNonNull(feedRole, "feedRole must not be null");
-        this.providerCode = normalizeProviderCode(providerCode);
+        this.providerCode = ProviderCode.of(providerCode).value();
         this.enabled = enabled;
     }
 
@@ -130,7 +130,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      * Меняет код провайдера.
      */
     public void updateProviderCode(String providerCode) {
-        this.providerCode = normalizeProviderCode(providerCode);
+        this.providerCode = ProviderCode.of(providerCode).value();
     }
 
     /**
@@ -140,25 +140,4 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
         this.enabled = enabled;
     }
 
-    /**
-     * Нормализует и валидирует код провайдера.
-     */
-    private static String normalizeProviderCode(String providerCode) {
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
-
-        String n = providerCode.strip(); // <-- обрезаем пробелы
-        if (n.isEmpty()) {
-            throw new IllegalArgumentException("providerCode must not be blank");
-        }
-
-        // Нормализуем в UPPERCASE
-        n = n.toUpperCase(Locale.ROOT);
-
-        // Fail-fast проверка формата (дублирует @Pattern/@Check, но даёт раннюю ошибку).
-        if (!n.matches(PROVIDER_CODE_PATTERN)) {
-            throw new IllegalArgumentException("providerCode has invalid format: " + n);
-        }
-
-        return n;
-    }
 }

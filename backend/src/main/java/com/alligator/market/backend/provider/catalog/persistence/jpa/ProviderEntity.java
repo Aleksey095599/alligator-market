@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.catalog.persistence.jpa;
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
@@ -44,7 +45,7 @@ import java.util.Objects;
         // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
         constraints = "min_update_interval_seconds >= 1 " +
                 "AND provider_code = upper(provider_code) " +
-                "AND provider_code ~ '^[A-Z0-9_.-]+$' " +
+                "AND provider_code ~ '" + ProviderCode.PATTERN + "' " +
                 "AND delivery_mode IN ('PULL', 'PUSH') " +
                 "AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')"
 )
@@ -73,7 +74,7 @@ public class ProviderEntity extends BaseEntity {
      */
     @NotBlank
     @Size(max = 50)
-    @Pattern(regexp = "^[A-Z0-9_.-]+$")
+    @Pattern(regexp = ProviderCode.PATTERN)
     @NaturalId() // <-- Помечаем поле как натуральный ключ
     @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
     private String providerCode;
@@ -102,18 +103,15 @@ public class ProviderEntity extends BaseEntity {
      * @param policy       Иммутабельный набор параметров "политики провайдера"
      */
     ProviderEntity(
-            String providerCode,
+            ProviderCode providerCode,
             ProviderDescriptorEmbeddable descriptor,
             ProviderPolicyEmbeddable policy
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(descriptor, "descriptor must not be null");
         Objects.requireNonNull(policy, "policy must not be null");
-        if (providerCode.isBlank()) {
-            throw new IllegalArgumentException("providerCode must not be blank");
-        }
 
-        this.providerCode = providerCode;
+        this.providerCode = providerCode.value();
         this.descriptor = descriptor;
         this.policy = policy;
     }
@@ -123,7 +121,7 @@ public class ProviderEntity extends BaseEntity {
      */
     @SuppressWarnings("unused")
     public static ProviderEntity of(
-            String providerCode,
+            ProviderCode providerCode,
             ProviderDescriptorEmbeddable descriptor,
             ProviderPolicyEmbeddable policy
     ) {

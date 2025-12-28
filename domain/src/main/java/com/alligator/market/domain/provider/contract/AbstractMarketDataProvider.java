@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
@@ -22,8 +23,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* Нормализованный технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
-    protected final String normProviderCode;
+    /* Технический код провайдера. */
+    protected final ProviderCode providerCode;
 
     /* Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
     protected final ProviderDescriptor descriptor;
@@ -51,7 +52,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * <p>Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента --> обработчик",
      * прикрепляет обработчики к провайдеру.
      *
-     * @param providerCode код провайдера (UPPERCASE, формат [A-Z0-9_]+)
+     * @param providerCode код провайдера
      * @param descriptor   дескриптор провайдера
      * @param policy       политика провайдера
      * @param settings     настройки провайдера
@@ -60,7 +61,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * @throws IllegalStateException    если обнаружены дубликаты обработчиков по коду или пересечения кодов инструментов
      */
     protected AbstractMarketDataProvider(
-            String providerCode,
+            ProviderCode providerCode,
             ProviderDescriptor descriptor,
             ProviderPolicy policy,
             ProviderSettings settings,
@@ -72,15 +73,12 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         Objects.requireNonNull(settings, "settings must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
-        if (providerCode.isBlank()) {
-            throw new IllegalArgumentException("providerCode must not be blank");
-        }
         if (handlers.isEmpty()) {
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
         // Инициализация базовых атрибутов провайдера
-        this.normProviderCode = normalizeProviderCode(providerCode);
+        this.providerCode = providerCode;
         this.descriptor = descriptor;
         this.policy = policy;
         this.settingsRef = new AtomicReference<>(settings);
@@ -90,7 +88,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         for (var h : handlers) {
             var code = h.handlerCode();
             if (!handlerCodes.add(code)) {
-                throw new IllegalStateException("Provider '" + providerCode +
+                throw new IllegalStateException("Provider '" + providerCode.value() +
                         "' contains multiple handlers with the same code '" + code + "'");
             }
         }
@@ -110,7 +108,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                     // Запрещаем связывать один и тот же код с разными обработчиками
                     throw new IllegalStateException("Instrument code '" + upper +
                             "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + providerCode + "'");
+                            "' in provider '" + providerCode.value() + "'");
                 }
                 allCodes.add(upper);
             }
@@ -136,8 +134,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * Технический код провайдера.
      */
     @Override
-    public String providerCode() {
-        return normProviderCode;
+    public ProviderCode providerCode() {
+        return providerCode;
     }
 
     /**
@@ -193,7 +191,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         var handler = handlerOf(instrument);
         if (handler == null) {
-            throw new HandlerNotFoundException(instrument.instrumentCode(), normProviderCode);
+            throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
         }
         return handler.quote(instrument);
     }
@@ -218,27 +216,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     protected final void replaceSettings(ProviderSettings newSettings) {
         Objects.requireNonNull(newSettings, "newSettings must not be null");
         settingsRef.set(newSettings);
-    }
-
-    //=================================================================================================================
-    // УТИЛИТЫ
-    //=================================================================================================================
-
-    /**
-     * Нормализует и валидирует код провайдера: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+.
-     *
-     * @throws IllegalArgumentException если код провайдера не соответствует формату
-     */
-    private static String normalizeProviderCode(String code) {
-        // Нормализуем код провайдера
-        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
-        // Разрешены только латинские заглавные, цифры и подчёркивание
-        if (!normalized.chars().allMatch(ch ->
-                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-            throw new IllegalArgumentException(
-                    "providerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
-        }
-        return normalized;
     }
 
     /**

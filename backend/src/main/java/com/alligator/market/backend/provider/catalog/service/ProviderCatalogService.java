@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.catalog.service;
 
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class ProviderCatalogService implements ProviderCatalogUseCase {
         var policy = new ProviderPolicy(minUpdateInterval);
 
         return new ProviderCatalogItem(
-                entity.getProviderCode(),
+                ProviderCode.of(entity.getProviderCode()),
                 descriptor,
                 policy
         );

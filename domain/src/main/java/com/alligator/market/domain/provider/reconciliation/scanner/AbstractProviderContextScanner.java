@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation.scanner;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
@@ -22,12 +23,12 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
      * Содержит проверки на дублирование по коду провайдера и отображаемому имени.
      */
     @Override
-    public final Map<String, ProviderSnapshot> providerSnapshots() {
-        Map<String, ProviderSnapshot> snapshots = new LinkedHashMap<>();
+    public final Map<ProviderCode, ProviderSnapshot> providerSnapshots() {
+        Map<ProviderCode, ProviderSnapshot> snapshots = new LinkedHashMap<>();
         Set<String> displayNamesLower = new HashSet<>();
 
         for (MarketDataProvider provider : providers()) {
-            String code = provider.providerCode();
+            ProviderCode code = provider.providerCode();
             var descriptor = provider.descriptor();
             var policy = provider.policy();
 

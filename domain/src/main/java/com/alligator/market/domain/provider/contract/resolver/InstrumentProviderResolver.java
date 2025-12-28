@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.contract.resolver;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.provider.code.ProviderCode;
 
 /**
  * Контракт сервиса, который разрешает соответствие «финансовый инструмент → провайдер рыночных данных».
@@ -16,5 +17,5 @@ public interface InstrumentProviderResolver {
      * провайдера и обработчика. Цель данного метода – вернуть код провайдера, который был назначен администраторами
      * или пользователями приложения для получения потока котировок для заданного инструмента.
      */
-    String resolveProvider(Instrument instrument);
+    ProviderCode resolveProvider(Instrument instrument);
 }

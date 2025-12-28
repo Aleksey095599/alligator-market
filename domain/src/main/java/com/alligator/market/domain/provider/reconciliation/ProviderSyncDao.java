@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
 import java.util.Collection;
@@ -12,7 +13,7 @@ public interface ProviderSyncDao {
     /**
      * Удалить записи провайдеров по набору технических кодов.
      */
-    void deleteByCodes(Collection<String> codes);
+    void deleteByCodes(Collection<ProviderCode> codes);
 
     /**
      * Выполнить пакетный UPSERT снимков провайдеров.

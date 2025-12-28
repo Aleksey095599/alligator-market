@@ -59,7 +59,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
 
                     assertNotNull(tick, "QuoteTick must not be null");
                     assertEquals(cnyRubTom.instrumentCode(), tick.instrumentCode(), "Instrument code must match");
-                    assertEquals("MOEX_ISS", tick.providerCode(), "Provider code must be MOEX_ISS");
+                    assertEquals("MOEX_ISS", tick.providerCode().value(), "Provider code must be MOEX_ISS");
 
                     assertNotNull(tick.last(), "LAST price must not be null");
                     assertTrue(tick.last().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");

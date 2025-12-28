@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.repository;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
+
 import java.util.List;
 
 /**
@@ -10,5 +12,5 @@ public interface ProviderRepository {
     /**
      * Найти все коды провайдеров (натуральные ключи).
      */
-    List<String> findAllCodes();
+    List<ProviderCode> findAllCodes();
 }

@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -24,7 +25,7 @@ import java.util.Set;
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
 
     /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
-    public static final String PROVIDER_CODE = "MOEX_ISS";
+    public static final ProviderCode PROVIDER_CODE = ProviderCode.of("MOEX_ISS");
 
     /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";

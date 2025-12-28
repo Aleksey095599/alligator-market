@@ -1,6 +1,7 @@
 package com.alligator.market.backend.quote.streaming;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.resolver.InstrumentProviderResolver;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -49,13 +50,13 @@ public class QuoteStreamingOrchestrator {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // 1. Определяем, какой провайдер назначен для инструмента.
-        String providerCode = instrumentProviderResolver.resolveProvider(instrument);
+        ProviderCode providerCode = instrumentProviderResolver.resolveProvider(instrument);
 
         // 2. Находим бин провайдера по его коду.
-        MarketDataProvider provider = providersByCode.get(providerCode);
+        MarketDataProvider provider = providersByCode.get(providerCode.value());
         if (provider == null) {
             throw new IllegalStateException(
-                    "No MarketDataProvider bean found for code: " + providerCode
+                    "No MarketDataProvider bean found for code: " + providerCode.value()
             );
         }
 

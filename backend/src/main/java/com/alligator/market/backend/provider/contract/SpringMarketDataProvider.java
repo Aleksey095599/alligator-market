@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -31,7 +32,7 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
      * Конструктор.
      */
     protected SpringMarketDataProvider(
-            String providerCode,
+            ProviderCode providerCode,
             ProviderDescriptor descriptor,
             ProviderPolicy policy,
             ProviderSettings settings,
@@ -66,10 +67,10 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
      */
     @Override
     public void afterPropertiesSet() {
-        if (!beanName.equals(providerCode())) {
+        if (!beanName.equals(providerCode().value())) {
             throw new IllegalStateException(
                     "Bean name must equal providerCode (name='" + beanName + "', providerCode='" +
-                            providerCode() + "')"
+                            providerCode().value() + "')"
             );
         }
     }

@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.adapter.profinance;
 import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanceAdapterProps;
 import com.alligator.market.backend.provider.adapter.profinance.handler.forex.spot.ProFinanceFxSpotHandler;
 import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class ProFinanceAdapter extends SpringMarketDataProvider<ProFinanceAdapter> {
 
     /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
-    private static final String PROVIDER_CODE = "PROFINANCE";
+    private static final ProviderCode PROVIDER_CODE = ProviderCode.of("PROFINANCE");
 
     /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "ProFinance HTML parse";
