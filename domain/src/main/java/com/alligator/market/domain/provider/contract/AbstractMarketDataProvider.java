@@ -12,9 +12,7 @@ import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -77,14 +75,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             throw new IllegalArgumentException("handlers must not be empty");
         }
 
-        // Инициализация базовых атрибутов провайдера
         this.providerCode = providerCode;
         this.descriptor = descriptor;
         this.policy = policy;
         this.settingsRef = new AtomicReference<>(settings);
 
         // 1) Проверяем уникальность handlers по коду
-        java.util.Set<String> handlerCodes = new java.util.HashSet<>();
+        Set<String> handlerCodes = new HashSet<>();
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             String code = h.handlerCode();
             if (!handlerCodes.add(code)) {
@@ -94,16 +91,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
-        java.util.Map<String, InstrumentHandler<P, ? extends Instrument>> mapByCode =
-                new java.util.LinkedHashMap<>(); // <-- Карта
-        java.util.Set<String> allCodes = new java.util.LinkedHashSet<>(); // <-- Набор всех кодов инструментов
-        java.util.Set<InstrumentType> types = java.util.EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
-
+        Map<String, InstrumentHandler<P, ? extends Instrument>> mapByCode =
+                new LinkedHashMap<>(); // <-- Карта
+        Set<String> allCodes = new LinkedHashSet<>(); // <-- Набор всех кодов инструментов
+        Set<InstrumentType> types = EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             types.add(h.instrumentType()); // <-- Один тип на обработчик
             for (String code : h.supportedInstrumentCodes()) {
                 // Коды в обработчике уже нормализованы, но повторно нормализуем для надёжности
-                String upper = code.toUpperCase(java.util.Locale.ROOT);
+                String upper = code.toUpperCase(Locale.ROOT);
                 InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(upper, h);
                 if (prev != null && prev != h) {
                     // Запрещаем связывать один и тот же код с разными обработчиками
@@ -116,13 +112,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         // 3) Фиксируем структуру неизменяемых коллекций
-        this.instrumentMapByCode = java.util.Collections.unmodifiableMap(mapByCode);
-        this.instrumentCodes = java.util.Collections.unmodifiableSet(allCodes);
-        this.instrumentTypes = java.util.Collections.unmodifiableSet(types);
+        this.instrumentMapByCode = Collections.unmodifiableMap(mapByCode);
+        this.instrumentCodes = Collections.unmodifiableSet(allCodes);
+        this.instrumentTypes = Collections.unmodifiableSet(types);
 
         // 4) Прикрепляем обработчики к провайдеру
-        java.util.Set<AbstractInstrumentHandler<P, ? extends Instrument>> uniqueHandlers =
-                new java.util.LinkedHashSet<>(handlers);
+        Set<AbstractInstrumentHandler<P, ? extends Instrument>> uniqueHandlers =
+                new LinkedHashSet<>(handlers);
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : uniqueHandlers) {
             h.attachTo(self()); // <-- attachTo должен только сохранить ссылку и ничего не вызывать
         }
@@ -190,7 +186,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
-
         InstrumentHandler<P, I> handler = handlerOf(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
@@ -230,7 +225,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         if (raw == null || raw.isBlank()) {
             return null;
         }
-        String codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+        String codeUpper = instrument.instrumentCode().toUpperCase(Locale.ROOT);
         InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(codeUpper);
         return (InstrumentHandler<P, I>) h;
     }
