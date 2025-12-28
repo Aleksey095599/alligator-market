@@ -11,19 +11,18 @@ import java.util.Objects;
 /**
  * Модель финансового инструмента FX_SPOT.
  *
+ * <p>Реализует базовый контракт финансового инструмента {@link Instrument}.</p>
+ *
  * @param base                       Базовая валюта
  * @param quote                      Котируемая валюта
  * @param valueDate                  Дата валютирования
  * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
- * @see Instrument Часть параметров переопределены из базового контракта
  */
 public record FxSpot(
         Currency base,
         Currency quote,
         FxSpotValueDate valueDate,
-        int defaultQuoteFractionDigits
-
-) implements Instrument {
+        int defaultQuoteFractionDigits ) implements Instrument {
 
     /**
      * Конструктор с проверками.
