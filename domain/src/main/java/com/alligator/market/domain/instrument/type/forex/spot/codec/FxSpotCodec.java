@@ -53,8 +53,16 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Разбирает объект-значение кода инструмента {@link InstrumentCode} на
-     * составные компоненты {@link FxSpotCodeParts}.
+     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotTenor>} на составные компоненты.
+     */
+    public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
+
+        return parseFxSpotCode(InstrumentCode.of(instrumentCode));
+    }
+
+    /**
+     * Разбирает объект-значение кода инструмента на составные компоненты {@see FxSpotCodeParts}.
      */
     public static FxSpotCodeParts parseFxSpotCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -94,15 +102,6 @@ public final class FxSpotCodec {
         final FxSpotTenor tenor = FxSpotTenor.fromValue(tenorRaw);
 
         return new FxSpotCodeParts(baseCode, quoteCode, tenor);
-    }
-
-    /**
-     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotTenor>} на составные компоненты.
-     */
-    public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
-        Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
-
-        return parseFxSpotCode(InstrumentCode.of(instrumentCode));
     }
 
     /**
