@@ -93,24 +93,21 @@ public class FxSpotEntity extends InstrumentBaseEntity {
             CurrencyEntity quoteCurrency,
             FxSpotTenor tenor
     ) {
-        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
-        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
-        Objects.requireNonNull(tenor, "tenor must not be null");
+        this.baseCurrency = Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
+        this.quoteCurrency = Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
+        this.tenor = Objects.requireNonNull(tenor, "tenor must not be null");
 
-        // Валюты не должны совпадать
-        if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
+        final CurrencyCode baseCode = baseCurrency.getCode();
+        final CurrencyCode quoteCode = quoteCurrency.getCode();
+
+        if (baseCode.equals(quoteCode)) {
             throw new IllegalArgumentException("base and quote currencies must be different");
         }
 
-        this.baseCurrency = baseCurrency;
-        this.quoteCurrency = quoteCurrency;
-        this.tenor = tenor;
+        final String symbol = FxSpotCodec.fxSpotSymbol(baseCode, quoteCode, tenor);
+        final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
 
-        // Создаем код и символ инструмента
-        final InstrumentCode code = FxSpotCodec.fxSpotCode(this.baseCurrency.getCode(), this.quoteCurrency.getCode(), this.tenor);
-        final String symbol = FxSpotCodec.fxSpotSymbol(this.baseCurrency.getCode(), this.quoteCurrency.getCode(), this.tenor);
-
-        // Однократно инициализируем идентичность сущности базового класса
-        initIdentity(code, symbol, InstrumentType.FX_SPOT);
+        // Инициализируем идентичность инструмента
+        initIdentity(code.value(), symbol, InstrumentType.FX_SPOT);
     }
 }
