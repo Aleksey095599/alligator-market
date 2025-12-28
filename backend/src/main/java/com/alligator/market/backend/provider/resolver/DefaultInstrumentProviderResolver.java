@@ -3,6 +3,7 @@ package com.alligator.market.backend.provider.resolver;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.resolver.InstrumentProviderResolver;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,10 @@ import java.util.Objects;
 public class DefaultInstrumentProviderResolver implements InstrumentProviderResolver {
 
     /* Код провайдера MOEX ISS. */
-    private static final String MOEX_ISS_PROVIDER_CODE = MoexIssAdapter.PROVIDER_CODE;
+    private static final ProviderCode MOEX_ISS_PROVIDER_CODE = MoexIssAdapter.PROVIDER_CODE;
 
     @Override
-    public String resolveProvider(Instrument instrument) {
+    public ProviderCode resolveProvider(Instrument instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // Пока что вся FX_SPOT-линейка обслуживается только MOEX ISS.

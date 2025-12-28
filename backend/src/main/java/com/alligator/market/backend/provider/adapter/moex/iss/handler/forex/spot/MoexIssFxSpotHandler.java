@@ -256,7 +256,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         Instant receivedTs = Instant.now();
 
         // 10) Берём код провайдера из прикреплённого адаптера
-        String providerCode = provider().providerCode();
+        var providerCode = provider().providerCode();
 
         // 11) Собираем итоговый QuoteTick
         return QuoteTick.lastTrade(

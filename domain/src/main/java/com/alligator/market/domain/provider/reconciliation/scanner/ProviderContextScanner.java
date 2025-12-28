@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.reconciliation.scanner;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
 import java.util.Map;
@@ -14,5 +15,5 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
      *
      * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, дескриптор, "политику".
      */
-    Map<String, ProviderSnapshot> providerSnapshots();
+    Map<ProviderCode, ProviderSnapshot> providerSnapshots();
 }

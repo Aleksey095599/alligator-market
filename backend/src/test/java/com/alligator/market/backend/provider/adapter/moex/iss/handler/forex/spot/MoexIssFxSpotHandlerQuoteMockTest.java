@@ -100,7 +100,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
                 .assertNext(tick -> {
                     assertNotNull(tick, "QuoteTick must not be null");
                     assertEquals(cnyRubTom.instrumentCode(), tick.instrumentCode());
-                    assertEquals("MOEX_ISS", tick.providerCode());
+                    assertEquals("MOEX_ISS", tick.providerCode().value());
 
                     assertEquals(new BigDecimal("10.95"), tick.last());
                     assertNull(tick.bid());

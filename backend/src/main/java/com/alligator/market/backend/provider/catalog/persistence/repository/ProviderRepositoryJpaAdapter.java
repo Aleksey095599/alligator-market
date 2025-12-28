@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.catalog.persistence.repository;
 
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,9 @@ public class ProviderRepositoryJpaAdapter implements ProviderRepository {
      * Найти все коды провайдеров (натуральные ключи).
      */
     @Override
-    public List<String> findAllCodes() {
-        return jpa.findAllCodes(); // <-- Читаем дешёвую проекцию, без загрузки сущностей
+    public List<ProviderCode> findAllCodes() {
+        return jpa.findAllCodes().stream()
+                .map(ProviderCode::of)
+                .toList(); // <-- Читаем дешёвую проекцию, без загрузки сущностей
     }
 }

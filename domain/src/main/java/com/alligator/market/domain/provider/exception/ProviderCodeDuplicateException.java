@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
+
 import java.util.Objects;
 
 /**
@@ -7,14 +9,14 @@ import java.util.Objects;
  */
 public final class ProviderCodeDuplicateException extends RuntimeException {
 
-    private final String providerCode;
+    private final ProviderCode providerCode;
 
     /**
      * Создает исключение.
      *
      * @param providerCode код провайдера
      */
-    public ProviderCodeDuplicateException(String providerCode) {
+    public ProviderCodeDuplicateException(ProviderCode providerCode) {
         super(msg(providerCode));
         this.providerCode = providerCode;
     }
@@ -26,7 +28,7 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      * @param cause        причина ошибки
      */
     @SuppressWarnings("unused")
-    public ProviderCodeDuplicateException(String providerCode, Throwable cause) {
+    public ProviderCodeDuplicateException(ProviderCode providerCode, Throwable cause) {
         super(msg(providerCode), cause);
         this.providerCode = providerCode;
     }
@@ -37,9 +39,9 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      * @param providerCode код провайдера
      * @return текст сообщения
      */
-    private static String msg(String providerCode) {
-        String pc = Objects.requireNonNull(providerCode, "providerCode must not be null");
-        return "Duplicate provider code detected (code=" + pc + ")";
+    private static String msg(ProviderCode providerCode) {
+        ProviderCode pc = Objects.requireNonNull(providerCode, "providerCode must not be null");
+        return "Duplicate provider code detected (code=" + pc.value() + ")";
     }
 
     /**
@@ -48,7 +50,7 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      * @return код провайдера
      */
     @SuppressWarnings("unused")
-    public String getProviderCode() {
+    public ProviderCode getProviderCode() {
         return providerCode;
     }
 }

@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
@@ -16,9 +17,9 @@ import java.util.Set;
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
     /**
-     * Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+.
+     * Технический код провайдера.
      */
-    String providerCode();
+    ProviderCode providerCode();
 
     /**
      * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).

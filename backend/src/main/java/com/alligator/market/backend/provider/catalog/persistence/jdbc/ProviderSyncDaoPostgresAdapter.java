@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
@@ -74,7 +75,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
      * @throws DataAccessException если БД вернула ошибку
      */
     @Override
-    public void deleteByCodes(Collection<String> codes) {
+    public void deleteByCodes(Collection<ProviderCode> codes) {
         if (codes == null || codes.isEmpty()) return;
 
         // SQL-команда
@@ -82,7 +83,10 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
-        var arr = codes.stream().filter(Objects::nonNull).toArray(String[]::new);
+        var arr = codes.stream()
+                .filter(Objects::nonNull)
+                .map(ProviderCode::value)
+                .toArray(String[]::new);
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -171,7 +175,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         // Примечание: иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
 
         // 1) provider_code (натуральный ключ)
-        ps.setString(1, s.code());
+        ps.setString(1, s.code().value());
 
         // 2) descriptor.*
         var d = s.descriptor();
