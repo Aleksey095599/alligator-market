@@ -32,7 +32,8 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Формирует символ инструмента из {@link CurrencyCode} и кода даты валютирования {@link FxSpotValueDate}.
+     * Формирует символ инструмента из кодов двух валют {@link CurrencyCode} и
+     * кода даты валютирования {@link FxSpotValueDate}.
      *
      * <p>Пример: код базовой валюты "EUR", код котируемой валюты "USD",
      * код даты валютирования завтра "TOM" => получаем символ инструмента "EURUSD_TOM"</p>
@@ -43,20 +44,6 @@ public final class FxSpotCodec {
         Objects.requireNonNull(valueDate, "valueDate must not be null");
 
         return baseCode.value() + quoteCode.value() + SEP + valueDate.code();
-    }
-
-    /**
-     * Простая перегрузка:
-     * формирует символ инструмента из {@link Currency} и кода даты валютирования {@link FxSpotValueDate}.
-     *
-     * <p>Пример: аналогично основному методу, только коды валют извлекаем из моделей валют.</p>
-     */
-    public static String fxSpotSymbol(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
-        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
-        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
-
-        return fxSpotSymbol(baseCurrency.code(), quoteCurrency.code(), valueDate);
     }
 
     /**
