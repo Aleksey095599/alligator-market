@@ -18,7 +18,10 @@ public record ProviderCode(
     /* Шаблон допустимых символов для кода провайдера. */
     public static final String PATTERN = "^[A-Z0-9_.-]+$";
 
+    /* Максимальная длина кода провайдера. */
     private static final int MAX_LENGTH = 50;
+
+    /* Шаблон для валидации кода провайдера. */
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
     /**

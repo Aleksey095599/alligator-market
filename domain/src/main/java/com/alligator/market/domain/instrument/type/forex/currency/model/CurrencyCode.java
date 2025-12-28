@@ -18,7 +18,10 @@ public record CurrencyCode(
     /* Шаблон допустимых символов для кода валюты. */
     public static final String PATTERN = "^[A-Z]{3}$";
 
+    /* Длина кода валюты. */
     private static final int CODE_LENGTH = 3;
+
+    /* Шаблон для валидации кода валюты. */
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
     /**
