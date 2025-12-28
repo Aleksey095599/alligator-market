@@ -2,7 +2,9 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
@@ -105,16 +107,8 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         this.tenor = tenor;
 
         // Создаем код и символ инструмента
-        final String code = FxSpotCodec.fxSpotCode(
-                this.baseCurrency.getCode(),
-                this.quoteCurrency.getCode(),
-                this.tenor
-        );
-        final String symbol = FxSpotCodec.fxSpotSymbol(
-                this.baseCurrency.getCode(),
-                this.quoteCurrency.getCode(),
-                this.tenor
-        );
+        final InstrumentCode code = FxSpotCodec.fxSpotCode(this.baseCurrency.getCode(), this.quoteCurrency.getCode(), this.tenor);
+        final String symbol = FxSpotCodec.fxSpotSymbol(this.baseCurrency.getCode(), this.quoteCurrency.getCode(), this.tenor);
 
         // Однократно инициализируем идентичность сущности базового класса
         initIdentity(code, symbol, InstrumentType.FX_SPOT);
