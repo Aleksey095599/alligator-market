@@ -3,10 +3,11 @@ package com.alligator.market.domain.instrument.type.forex.currency.model;
 import java.util.Objects;
 
 /**
- * Модель уникального кода валюты.
- * Причина создания модели - необходимость соблюдения единого формата кода валюты в разных слоях проекта.
+ * Объект-значение уникального кода валюты.
  *
- * @param value Строковое значение кода валюты
+ * <p>Причина создания – необходимость соблюдения единого формата кода валюты в рамках проекта.</p>
+ *
+ * @param value строковое значение кода валюты
  */
 public record CurrencyCode(
         String value
@@ -24,14 +25,14 @@ public record CurrencyCode(
     }
 
     /**
-     * Фабрика для создания модели из строкового кода.
+     * Фабрика для создания объекта из строкового кода.
      */
     public static CurrencyCode of(String code) {
         return new CurrencyCode(code);
     }
 
     /**
-     * Локальная проверка: три заглавные латинские буквы.
+     * Локальная проверка: три заглавные латинские буквы (согласно стандарту ISO-4217).
      */
     private static boolean isIso4217(String s) {
         return s.length() == 3

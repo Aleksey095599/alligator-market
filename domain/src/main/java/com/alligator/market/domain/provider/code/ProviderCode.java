@@ -4,8 +4,16 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-/* Объект-значение для технического кода провайдера. */
-public record ProviderCode(String value) {
+/**
+ * Объект-значение уникального технического кода провайдера рыночных данных.
+ *
+ * <p>Причина создания – необходимость соблюдения единого формата кода провайдера в рамках проекта.</p>
+ *
+ * @param value строковое значение кода провайдера
+ */
+public record ProviderCode(
+        String value
+) {
 
     /* Шаблон допустимых символов для кода провайдера. */
     public static final String PATTERN = "^[A-Z0-9_.-]+$";
@@ -13,10 +21,16 @@ public record ProviderCode(String value) {
     private static final int MAX_LENGTH = 50;
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
+    /**
+     * Конструктор.
+     */
     public ProviderCode {
         value = normalize(value);
     }
 
+    /**
+     * Фабрика для создания объекта из строкового кода.
+     */
     public static ProviderCode of(String raw) {
         return new ProviderCode(raw);
     }
@@ -26,6 +40,12 @@ public record ProviderCode(String value) {
         return value;
     }
 
+    /**
+     * Метод проверки и нормализации входящего значения кода провайдера.
+     *
+     * @param raw исходное строковое значение кода провайдера
+     * @return нормализованное значение кода провайдера
+     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "providerCode must not be null");
 
