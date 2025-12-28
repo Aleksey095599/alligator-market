@@ -9,12 +9,12 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 public interface Instrument {
 
     /**
-     * Внутренний код инструмента (уникален в контексте приложения).
+     * Внутренний код инструмента: уникален в контексте приложения.
      */
     InstrumentCode instrumentCode();
 
     /**
-     * Символ инструмента для отображения в UI (более дружелюбный чем код инструмента).
+     * Символ инструмента: для отображения в UI (более дружелюбен чем код инструмента).
      */
     String instrumentSymbol();
 
