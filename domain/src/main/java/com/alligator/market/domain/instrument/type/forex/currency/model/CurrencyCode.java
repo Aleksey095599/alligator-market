@@ -1,6 +1,8 @@
 package com.alligator.market.domain.instrument.type.forex.currency.model;
 
+import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Объект-значение уникального кода валюты.
@@ -13,31 +15,52 @@ public record CurrencyCode(
         String value
 ) {
 
+    /* Шаблон допустимых символов для кода валюты. */
+    public static final String PATTERN = "^[A-Z]{3}$";
+
+    private static final int CODE_LENGTH = 3;
+    private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
+
     /**
-     * Конструктор с проверками.
+     * Конструктор.
      */
     public CurrencyCode {
-        Objects.requireNonNull(value, "Currency code must not be null");
-        // Соответствие стандартам ISO-4217
-        if (!isIso4217(value)) {
-            throw new IllegalArgumentException("Currency code must match [A-Z]{3}");
-        }
+        value = normalize(value);
     }
 
     /**
      * Фабрика для создания объекта из строкового кода.
      */
-    public static CurrencyCode of(String code) {
-        return new CurrencyCode(code);
+    public static CurrencyCode of(String raw) {
+        return new CurrencyCode(raw);
     }
 
     /**
-     * Локальная проверка: три заглавные латинские буквы (согласно стандарту ISO-4217).
+     * Метод проверки и нормализации входящего значения кода валюты.
+     *
+     * @param raw исходное строковое значение кода валюты
+     * @return нормализованное значение кода валюты
      */
-    private static boolean isIso4217(String s) {
-        return s.length() == 3
-                && s.charAt(0) >= 'A' && s.charAt(0) <= 'Z'
-                && s.charAt(1) >= 'A' && s.charAt(1) <= 'Z'
-                && s.charAt(2) >= 'A' && s.charAt(2) <= 'Z';
+    private static String normalize(String raw) {
+        Objects.requireNonNull(raw, "currencyCode must not be null");
+
+        String normalized = raw.strip();
+        if (normalized.isEmpty()) {
+            throw new IllegalArgumentException("currencyCode must not be blank");
+        }
+
+        normalized = normalized.toUpperCase(Locale.ROOT);
+
+        if (normalized.length() != CODE_LENGTH) {
+            throw new IllegalArgumentException("currencyCode length must be " + CODE_LENGTH);
+        }
+
+        if (!VALIDATION_PATTERN.matcher(normalized).matches()) {
+            throw new IllegalArgumentException(
+                    "currencyCode must match pattern [A-Z]{3}: '" + normalized + "'"
+            );
+        }
+
+        return normalized;
     }
 }
