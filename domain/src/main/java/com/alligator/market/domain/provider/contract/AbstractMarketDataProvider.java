@@ -84,9 +84,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.settingsRef = new AtomicReference<>(settings);
 
         // 1) Проверяем уникальность handlers по коду
-        var handlerCodes = new java.util.HashSet<String>();
-        for (var h : handlers) {
-            var code = h.handlerCode();
+        java.util.Set<String> handlerCodes = new java.util.HashSet<>();
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+            String code = h.handlerCode();
             if (!handlerCodes.add(code)) {
                 throw new IllegalStateException("Provider '" + providerCode.value() +
                         "' contains multiple handlers with the same code '" + code + "'");
@@ -94,16 +94,17 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
-        var mapByCode = new java.util.LinkedHashMap<String, InstrumentHandler<P, ? extends Instrument>>(); // <-- Карта
-        var allCodes = new java.util.LinkedHashSet<String>(); // <-- Набор всех кодов инструментов
-        var types = java.util.EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
+        java.util.Map<String, InstrumentHandler<P, ? extends Instrument>> mapByCode =
+                new java.util.LinkedHashMap<>(); // <-- Карта
+        java.util.Set<String> allCodes = new java.util.LinkedHashSet<>(); // <-- Набор всех кодов инструментов
+        java.util.Set<InstrumentType> types = java.util.EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
 
-        for (var h : handlers) {
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             types.add(h.instrumentType()); // <-- Один тип на обработчик
             for (String code : h.supportedInstrumentCodes()) {
                 // Коды в обработчике уже нормализованы, но повторно нормализуем для надёжности
-                var upper = code.toUpperCase(java.util.Locale.ROOT);
-                var prev = mapByCode.putIfAbsent(upper, h);
+                String upper = code.toUpperCase(java.util.Locale.ROOT);
+                InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(upper, h);
                 if (prev != null && prev != h) {
                     // Запрещаем связывать один и тот же код с разными обработчиками
                     throw new IllegalStateException("Instrument code '" + upper +
@@ -120,8 +121,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.instrumentTypes = java.util.Collections.unmodifiableSet(types);
 
         // 4) Прикрепляем обработчики к провайдеру
-        var uniqueHandlers = new java.util.LinkedHashSet<>(handlers);
-        for (var h : uniqueHandlers) {
+        java.util.Set<AbstractInstrumentHandler<P, ? extends Instrument>> uniqueHandlers =
+                new java.util.LinkedHashSet<>(handlers);
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : uniqueHandlers) {
             h.attachTo(self()); // <-- attachTo должен только сохранить ссылку и ничего не вызывать
         }
     }
@@ -189,7 +191,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        var handler = handlerOf(instrument);
+        InstrumentHandler<P, I> handler = handlerOf(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
         }
@@ -224,11 +226,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      */
     @SuppressWarnings("unchecked")
     private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
-        var raw = instrument.instrumentCode();
+        String raw = instrument.instrumentCode();
         if (raw == null || raw.isBlank()) {
             return null;
         }
-        var codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
+        String codeUpper = instrument.instrumentCode().toUpperCase(java.util.Locale.ROOT);
         InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(codeUpper);
         return (InstrumentHandler<P, I>) h;
     }
