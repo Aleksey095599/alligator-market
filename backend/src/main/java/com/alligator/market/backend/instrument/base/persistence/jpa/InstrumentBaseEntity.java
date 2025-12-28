@@ -71,7 +71,8 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     /**
      * Метод однократной инициализация идентичности сущности.
      */
-    @SuppressWarnings("SameParameterValue") // <-- Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
+    // Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
+    @SuppressWarnings("SameParameterValue")
     protected final void initIdentity(
             String code,
             String symbol,
