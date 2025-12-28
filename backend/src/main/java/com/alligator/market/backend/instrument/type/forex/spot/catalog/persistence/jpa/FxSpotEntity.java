@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.persi
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -66,13 +66,13 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity quoteCurrency;
 
     /**
-     * Код даты расчетов.
+     * Тенор даты расчетов.
      */
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "value_date", length = 4, updatable = false, nullable = false)
-    private FxSpotValueDate valueDate;
+    private FxSpotTenor tenor;
 
     /**
      * Количество знаков после запятой для курса.
@@ -89,11 +89,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     public FxSpotEntity(
             CurrencyEntity baseCurrency,
             CurrencyEntity quoteCurrency,
-            FxSpotValueDate valueDate
+            FxSpotTenor tenor
     ) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
 
         // Валюты не должны совпадать
         if (baseCurrency.getCode().equals(quoteCurrency.getCode())) {
@@ -102,18 +102,18 @@ public class FxSpotEntity extends InstrumentBaseEntity {
 
         this.baseCurrency = baseCurrency;
         this.quoteCurrency = quoteCurrency;
-        this.valueDate = valueDate;
+        this.tenor = tenor;
 
         // Создаем код и символ инструмента
         final String code = FxSpotCodec.fxSpotCode(
                 this.baseCurrency.getCode(),
                 this.quoteCurrency.getCode(),
-                this.valueDate
+                this.tenor
         );
         final String symbol = FxSpotCodec.fxSpotSymbol(
                 this.baseCurrency.getCode(),
                 this.quoteCurrency.getCode(),
-                this.valueDate
+                this.tenor
         );
 
         // Однократно инициализируем идентичность сущности базового класса

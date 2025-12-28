@@ -16,13 +16,13 @@ import java.util.Objects;
  *
  * @param base                       Базовая валюта
  * @param quote                      Котируемая валюта
- * @param valueDate                  Дата валютирования
+ * @param tenor                      Тенор даты валютирования
  * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
  */
 public record FxSpot(
         Currency base,
         Currency quote,
-        FxSpotValueDate valueDate,
+        FxSpotTenor tenor,
         int defaultQuoteFractionDigits ) implements Instrument {
 
     /**
@@ -31,7 +31,7 @@ public record FxSpot(
     public FxSpot {
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
 
         // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
         if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
@@ -49,7 +49,7 @@ public record FxSpot(
      */
     @Override
     public InstrumentCode instrumentCode() {
-        return FxSpotCodec.fxSpotCode(base, quote, valueDate);
+        return FxSpotCodec.fxSpotCode(base, quote, tenor);
     }
 
     /**
@@ -57,7 +57,7 @@ public record FxSpot(
      */
     @Override
     public String instrumentSymbol() {
-        return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), valueDate);
+        return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), tenor);
     }
 
     /**

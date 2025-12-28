@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public final class FxSpotCodec {
     /* Префикс кода инструмента: отображает тип FX_SPOT. */
     private static final String TYPE_PREFIX = InstrumentType.FX_SPOT.code() + "_";
 
-    /* Разделитель между парой и кодом даты. */
+    /* Разделитель между парой и тенором. */
     private static final char SEP = '_';
 
     /* Длина буквенного кода валюты и валютной пары. */
@@ -33,47 +33,47 @@ public final class FxSpotCodec {
 
     /**
      * Формирует символ инструмента из кодов двух валют {@link CurrencyCode} и
-     * кода даты валютирования {@link FxSpotValueDate}.
+     * тенора даты валютирования {@link FxSpotTenor}.
      *
      * <p>Пример: код базовой валюты "EUR", код котируемой валюты "USD",
-     * код даты валютирования завтра "TOM" => получаем символ инструмента "EURUSD_TOM"</p>
+     * тенор даты валютирования завтра "TOM" => получаем символ инструмента "EURUSD_TOM"</p>
      */
-    public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+    public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return baseCode.value() + quoteCode.value() + SEP + valueDate.code();
+        return baseCode.value() + quoteCode.value() + SEP + tenor.value();
     }
 
     /**
-     * Формирует внутренний код инструмента из {@link CurrencyCode} и кода даты валютирования {@link FxSpotValueDate}.
+     * Формирует внутренний код инструмента из {@link CurrencyCode} и тенора даты валютирования {@link FxSpotTenor}.
      *
      * <p>Добавляем префикс {@code TYPE_PREFIX} к символу инструмента.</p>
      *
      * <p>Пример: код базовой валюты "EUR", код котируемой валюты "USD",
-     * код даты валютирования завтра "TOM" => получаем код инструмента "FX_SPOT_EURUSD_TOM"</p>
+     * тенор даты валютирования завтра "TOM" => получаем код инструмента "FX_SPOT_EURUSD_TOM"</p>
      */
-    public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+    public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate));
+        return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, tenor));
     }
 
     /**
      * Простая перегрузка:
-     * Формирует внутренний код инструмента из {@link Currency} и кода даты валютирования {@link FxSpotValueDate}.
+     * Формирует внутренний код инструмента из {@link Currency} и тенора даты валютирования {@link FxSpotTenor}.
      *
      * <p>Пример: аналогично основному методу, только коды валют извлекаем из моделей валют.</p>
      */
-    public static InstrumentCode fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
+    public static InstrumentCode fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
-        Objects.requireNonNull(valueDate, "valueDate must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return fxSpotCode(baseCurrency.code(), quoteCurrency.code(), valueDate);
+        return fxSpotCode(baseCurrency.code(), quoteCurrency.code(), tenor);
     }
 
     /**
@@ -106,26 +106,26 @@ public final class FxSpotCodec {
         final String baseRaw = pair.substring(0, CURRENCY_CODE_LENGTH);
         final String quoteRaw = pair.substring(CURRENCY_CODE_LENGTH);
 
-        final String valueDateRaw = codeValue.substring(sep + 1);
-        if (valueDateRaw.isEmpty()) {
-            throw new IllegalArgumentException("Value date code must not be empty");
+        final String tenorRaw = codeValue.substring(sep + 1);
+        if (tenorRaw.isEmpty()) {
+            throw new IllegalArgumentException("Tenor must not be empty");
         }
 
         // Валидация кодов валют
         final CurrencyCode baseCode = CurrencyCode.of(baseRaw);
         final CurrencyCode quoteCode = CurrencyCode.of(quoteRaw);
 
-        // Валидация даты валютирования
-        final FxSpotValueDate valueDate = FxSpotValueDate.fromCode(valueDateRaw);
+        // Валидация тенора даты валютирования
+        final FxSpotTenor tenor = FxSpotTenor.fromValue(tenorRaw);
 
-        return new FxSpotCodeParts(baseCode, quoteCode, valueDate);
+        return new FxSpotCodeParts(baseCode, quoteCode, tenor);
     }
 
     /**
-     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotValueDate>} на составные компоненты.
+     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotTenor>} на составные компоненты.
      *
      * <p>Пример: строковый код инструмента "FX_SPOT_EURUSD_TOM" => получаем коды валют "EUR", "USD" и
-     * код даты валютирования "TOM"</p>
+     * тенор даты валютирования "TOM"</p>
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
@@ -134,8 +134,8 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Модель разложения кода инструмента на валюты и дату валютирования.
+     * Модель разложения кода инструмента на валюты и тенор даты валютирования.
      */
-    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
     }
 }

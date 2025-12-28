@@ -1,4 +1,4 @@
-import { FxSpotValueDate } from './fx-spot-value-date.model';
+import { FxSpotTenor } from './fx-spot-tenor.model';
 
 /** Основной DTO инструмента FX_SPOT аналогичный backend. */
 export interface FxSpotDto {
@@ -8,8 +8,8 @@ export interface FxSpotDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   defaultQuoteFractionDigits: number;
-  /* Дата валютирования */
-  valueDate: FxSpotValueDate;
+  /* Тенор даты валютирования */
+  tenor: FxSpotTenor;
 }
 
 /** DTO строки списка с символом инструмента. */
@@ -24,6 +24,6 @@ export interface FxSpotListItemDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   defaultQuoteFractionDigits: number;
-  /* Дата валютирования */
-  valueDate: FxSpotValueDate;
+  /* Тенор даты валютирования */
+  tenor: FxSpotTenor;
 }

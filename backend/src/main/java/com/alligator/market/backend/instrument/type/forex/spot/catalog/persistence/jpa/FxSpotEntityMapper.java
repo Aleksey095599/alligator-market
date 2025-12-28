@@ -30,7 +30,7 @@ public class FxSpotEntityMapper {
         FxSpotEntity entity = new FxSpotEntity(
                 baseEntity,
                 quoteEntity,
-                model.valueDate()
+                model.tenor()
         );
 
         apply(model, entity); // <-- Заполняем изменяемые поля из переданной модели
@@ -51,7 +51,7 @@ public class FxSpotEntityMapper {
         return new FxSpot(
                 CurrencyEntityMapper.toDomain(e.getBaseCurrency()),
                 CurrencyEntityMapper.toDomain(e.getQuoteCurrency()),
-                e.getValueDate(),
+                e.getTenor(),
                 digits
         );
     }
@@ -73,4 +73,3 @@ public class FxSpotEntityMapper {
         e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
 }
-

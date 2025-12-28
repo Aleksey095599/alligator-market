@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 
 import java.util.Set;
 
@@ -17,7 +17,7 @@ public final class TwelveFreeFxSpotCatalog {
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
 
     /* Инструменты. */
-    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, FxSpotValueDate.TOM, 4);
+    private static final FxSpot EUR_USD = new FxSpot(EUR, USD, FxSpotTenor.TOM, 4);
 
     /**
      * Набор поддерживаемых кодов инструментов.

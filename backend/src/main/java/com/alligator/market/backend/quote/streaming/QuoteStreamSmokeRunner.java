@@ -3,7 +3,7 @@ package com.alligator.market.backend.quote.streaming;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class QuoteStreamSmokeRunner {
         // Строим доменную модель инструмента, поддерживаемого MOEX ISS.
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
-        FxSpot instrument = new FxSpot(cny, rub, FxSpotValueDate.TOM, 4);
+        FxSpot instrument = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         subscription = Flux.from(orchestrator.buildQuoteStream(instrument))
                 // Безопасность: если долго нет ни одного тика, завершаем (иначе runner может висеть бесконечно).

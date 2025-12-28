@@ -1,4 +1,4 @@
-import { FxSpotValueDate } from './fx-spot-value-date.model';
+import { FxSpotTenor } from './fx-spot-tenor.model';
 
 /** DTO для создания инструмента FX_SPOT аналогичный backend. */
 export interface FxSpotCreateDto {
@@ -8,6 +8,6 @@ export interface FxSpotCreateDto {
   quoteCurrency: string;
   /* Количество знаков после запятой */
   defaultQuoteFractionDigits: number;
-  /* Дата валютирования */
-  valueDate: FxSpotValueDate;
+  /* Тенор даты валютирования */
+  tenor: FxSpotTenor;
 }

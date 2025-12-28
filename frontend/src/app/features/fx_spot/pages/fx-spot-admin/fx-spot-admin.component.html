@@ -35,13 +35,13 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Value Date</mat-label>
-          <mat-select formControlName="valueDate">
-            <mat-option *ngFor="let date of valueDates" [value]="date">
-              {{ date }}
+          <mat-label>Tenor</mat-label>
+          <mat-select formControlName="tenor">
+            <mat-option *ngFor="let tenor of tenors" [value]="tenor">
+              {{ tenor }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.controls['valueDate'].hasError('required')">
+          <mat-error *ngIf="form.controls['tenor'].hasError('required')">
             Is required
           </mat-error>
         </mat-form-field>
@@ -118,9 +118,9 @@
           <td mat-cell *matCellDef="let spot">{{ spot.quoteCurrency }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="valueDate">
-          <th mat-header-cell *matHeaderCellDef>Value Date</th>
-          <td mat-cell *matCellDef="let spot">{{ spot.valueDate }}</td>
+        <ng-container matColumnDef="tenor">
+          <th mat-header-cell *matHeaderCellDef>Tenor</th>
+          <td mat-cell *matCellDef="let spot">{{ spot.tenor }}</td>
         </ng-container>
 
         <ng-container matColumnDef="defaultQuoteFractionDigits">

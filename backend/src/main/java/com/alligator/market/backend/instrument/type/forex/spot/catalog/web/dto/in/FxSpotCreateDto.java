@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in;
 
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import jakarta.validation.constraints.*;
 
 /**
@@ -17,7 +17,7 @@ public record FxSpotCreateDto(
         String quoteCurrency,
 
         @NotNull
-        FxSpotValueDate valueDate,
+        FxSpotTenor tenor,
 
         @NotNull
         @Min(0) @Max(10)
