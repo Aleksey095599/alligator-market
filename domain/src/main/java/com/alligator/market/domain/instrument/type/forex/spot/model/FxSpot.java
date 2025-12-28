@@ -49,7 +49,7 @@ public record FxSpot(
      */
     @Override
     public InstrumentCode instrumentCode() {
-        return FxSpotCodec.fxSpotCode(base, quote, tenor);
+        return FxSpotCodec.fxSpotCode(base.code(), quote.code(), tenor);
     }
 
     /**

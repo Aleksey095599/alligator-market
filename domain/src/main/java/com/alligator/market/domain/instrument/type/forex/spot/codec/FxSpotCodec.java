@@ -2,7 +2,6 @@ package com.alligator.market.domain.instrument.type.forex.spot.codec;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 
@@ -24,16 +23,15 @@ public final class FxSpotCodec {
     private static final int CURRENCY_CODE_LENGTH = 3;
     private static final int CURRENCY_PAIR_LENGTH = 2 * CURRENCY_CODE_LENGTH;
 
-    /**
-     * Приватный конструктор: запрещаем создание экземпляров.
+    /*
+     * Приватный конструктор: запрещаем создание экземпляров класса-утилиты.
      */
     private FxSpotCodec() {
-        throw new UnsupportedOperationException("Utility class");
+        throw new UnsupportedOperationException("Utility class instantiation is not allowed");
     }
 
     /**
-     * Формирует символ инструмента из кодов двух валют {@link CurrencyCode} и
-     * тенора даты валютирования {@link FxSpotTenor}.
+     * Формирует строковый символ инструмента из кодов валют и тенора даты валютирования.
      */
     public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -44,9 +42,7 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Формирует внутренний код инструмента из {@link CurrencyCode} и тенора даты валютирования {@link FxSpotTenor}.
-     *
-     * <p>Добавляем префикс {@code TYPE_PREFIX} к символу инструмента.</p>
+     * Формирует внутренний код инструмента из кодов валют и тенора даты валютирования.
      */
     public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -54,18 +50,6 @@ public final class FxSpotCodec {
         Objects.requireNonNull(tenor, "tenor must not be null");
 
         return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, tenor));
-    }
-
-    /**
-     * Простая перегрузка:
-     * Формирует внутренний код инструмента из {@link Currency} и тенора даты валютирования {@link FxSpotTenor}.
-     */
-    public static InstrumentCode fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotTenor tenor) {
-        Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
-        Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
-        Objects.requireNonNull(tenor, "tenor must not be null");
-
-        return fxSpotCode(baseCurrency.code(), quoteCurrency.code(), tenor);
     }
 
     /**
