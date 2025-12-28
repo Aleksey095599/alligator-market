@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * <p>Содержит базовую информацию о провайдере рыночных данных: код провайдера, дескриптор {@link ProviderDescriptor},
  * "политика" провайдера {@link ProviderPolicy}. Применяется для извлечения данных о провайдере из контекста
- * приложения.
+ * приложения.</p>
  */
 public record ProviderSnapshot(
         ProviderCode code,

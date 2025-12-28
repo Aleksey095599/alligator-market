@@ -6,6 +6,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdap
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -65,7 +66,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
             MoexIssAdapterProps props,
             WebClient webClient
     ) {
-        // Инициализируем базовый класс обработчика инструмента
+        // Инициализируем базовый класс
         super(HANDLER_CODE, FxSpot.class, InstrumentType.FX_SPOT, SUPPORTED_CODES);
 
         Objects.requireNonNull(props, "props must not be null");
@@ -82,7 +83,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      * Чистая логика получения потока котировок для переданного инструмента FX_SPOT.
      *
      * <p>Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
-     * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.
+     * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
      */
     @Override
     protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
@@ -119,9 +120,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      *   <li>2) Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
      *   <li>3) Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
      *   <li>4) Строим доменную модель {@link QuoteTick}.</li>
-     * </ul>
+     * </ul></p>
      *
-     * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(String, JsonNode)}.
+     * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(String, JsonNode)}.</p>
      */
     private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
@@ -164,7 +165,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
      *
      * <p>Примечание: в итоговом {@link QuoteTick} конвертируем временную зону для поля {@link QuoteTick#exchangeTimestamp()}
-     * в UTC, согласно конфигурации времени в приложении {@link TimeZoneConfig}.
+     * в UTC, согласно конфигурации времени в приложении {@link TimeZoneConfig}.</p>
      */
     private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
         /*
@@ -256,7 +257,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         Instant receivedTs = Instant.now();
 
         // 10) Берём код провайдера из прикреплённого адаптера
-        var providerCode = provider().providerCode();
+        ProviderCode providerCode = provider().providerCode();
 
         // 11) Собираем итоговый QuoteTick
         return QuoteTick.lastTrade(

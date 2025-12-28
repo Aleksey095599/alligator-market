@@ -41,7 +41,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Конструктор с проверками.
      *
-     * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.
+     * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.</p>
      *
      * @param handlerCode              код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
      * @param instrumentClass          класс поддерживаемых инструментов
@@ -128,14 +128,15 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * Возвращает реактивный поток котировок для указанного инструмента.
      *
      * <p>Выполняет базовые проверки инструмента и факта прикрепления обработчика к провайдеру,
-     * после чего делегирует выполнение в чистую логику получения потока котировок методом {@link #doQuote doQuote()}.
+     * после чего делегирует выполнение в чистую логику получения потока котировок методом {@link #doQuote doQuote()}.</p>
      *
      * <p>Поток:
      * <ul>
      *     <li>Может быть реализован как опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
      *     <li>Может быть реализован как push‑подписка (websocket, streaming API и т.п.).</li>
-     * </ul>
-     * <p>Примечание: возврат Mono<QuoteTick> допустим как частный случай, когда нужна единичная котировка.
+     * </ul></p>
+     *
+     * <p>Примечание: возврат Mono<QuoteTick> допустим как частный случай, когда нужна единичная котировка.</p>
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок
@@ -177,11 +178,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         }
 
         // 4) Проверяем, что код инструмента поддерживается обработчиком
-        var rawCode = instrument.instrumentCode();
+        final String rawCode = instrument.instrumentCode();
         if (rawCode == null || rawCode.isBlank()) {
             throw new IllegalArgumentException("instrumentCode must not be null or blank");
         }
-        var normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // <-- Нормализуем код
+        final String normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // <-- Нормализуем код
         if (!normSupportedInstrumentCodes.contains(normCode)) {
             throw new InstrumentNotSupportedException( // <-- Не поддерживается
                     instrument.instrumentCode(),
@@ -198,7 +199,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * Чистая логика получения потока котировок для переданного инструмента.
      *
      * <p>Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
-     * в котором выполнены все нужные проверки.
+     * в котором выполнены все нужные проверки.</p>
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
@@ -218,18 +219,19 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     /**
-     * Нормализует и валидирует набор кодов инструментов: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+ --> проверка на дубли.
+     * Нормализует и валидирует набор кодов инструментов: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+
+     * --> проверка на дубли.
      *
      * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
      */
     private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
-        var codes = new LinkedHashSet<String>();
+        final Set<String> codes = new LinkedHashSet<>();
         for (String code : supportedInstrumentCodes) {
             // Набор не должен содержать null или пустые коды инструментов
             if (code == null || code.isBlank()) {
                 throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
             }
-            var norm = code.trim().toUpperCase(java.util.Locale.ROOT);
+            final String norm = code.trim().toUpperCase(java.util.Locale.ROOT);
             // Разрешены только латинские заглавные, цифры и подчёркивание
             if (!norm.chars().allMatch(ch ->
                     (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
@@ -250,7 +252,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      */
     private static String normalizeHandlerCode(String code) {
         // Нормализуем код обработчика
-        var normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
+        final String normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
         // Разрешены только латинские заглавные, цифры и подчёркивание
         if (!normalized.chars().allMatch(ch ->
                 (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {

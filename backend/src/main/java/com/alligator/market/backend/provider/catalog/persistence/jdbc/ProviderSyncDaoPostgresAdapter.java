@@ -3,6 +3,8 @@ package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import org.springframework.dao.DataAccessException;
@@ -69,6 +71,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
     /**
      * Пакетное удаление провайдеров по набору уникальных технических кодов.
+     *
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
      *
      * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
@@ -83,7 +86,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
-        var arr = codes.stream()
+        String[] arr = codes.stream()
                 .filter(Objects::nonNull)
                 .map(ProviderCode::value)
                 .toArray(String[]::new);
@@ -104,6 +107,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
     /**
      * Пакетный UPSERT всех переданных снимков провайдеров.
+     *
      * <p>Логика {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE SET ...}: если записи с таким
      * {@code provider_code} нет — вставка; если есть — обновление нужных полей из переданного {@code snapshot}.</p>
      * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
@@ -149,7 +153,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
                 """;
 
         // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
-        var arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
+        ProviderSnapshot[] arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
 
         // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -178,14 +182,14 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         ps.setString(1, s.code().value());
 
         // 2) descriptor.*
-        var d = s.descriptor();
+        ProviderDescriptor d = s.descriptor();
         ps.setString(2, d.displayName());         // <-- display_name
         ps.setString(3, d.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
         ps.setString(4, d.accessMethod().name()); // <-- access_method (EnumType.STRING)
         ps.setBoolean(5, d.bulkSubscription());   // <-- bulk_subscription
 
         // 3) policy.*  (Duration --> seconds через общий конвертер)
-        var p = s.policy();
+        ProviderPolicy p = s.policy();
         Long seconds = DUR2SEC.convertToDatabaseColumn(p.minUpdateInterval());
         ps.setLong(6, seconds);                   // <-- min_update_interval_seconds
 

@@ -39,7 +39,7 @@ public final class AuditContextHolder {
      */
     public static AuditContext currentOrFallback() {
         // Извлекаем контекст
-        var ctx = CTX.get();
+        final AuditContext ctx = CTX.get();
 
         // Если контекст null, возвращаем фолбэк контекст
         if (ctx == null) return FALLBACK_CTX;
@@ -90,7 +90,7 @@ public final class AuditContextHolder {
      */
     @SuppressWarnings("unused")
     public static <T> T runWith(AuditContext ctx, java.util.function.Supplier<T> action) {
-        var prev = CTX.get();
+        final AuditContext prev = CTX.get();
         try {
             set(ctx);
             return action.get();
@@ -108,7 +108,7 @@ public final class AuditContextHolder {
      * @param action действие, выполняемое в этом контексте
      */
     public static void runWith(AuditContext ctx, Runnable action) {
-        var prev = CTX.get();
+        final AuditContext prev = CTX.get();
         try {
             set(ctx);
             action.run();

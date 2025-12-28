@@ -19,7 +19,7 @@ import java.util.Set;
  * Spring-адаптер для каркаса провайдера рыночных данных {@link AbstractMarketDataProvider}.
  *
  * <p>Гарантирует соглашение: имя Spring-бина должно совпадать с кодом провайдера ({@code providerCode}).
- * Несоответствие приводит к ошибке инициализации контекста.
+ * Несоответствие приводит к ошибке инициализации контекста.</p>
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>
@@ -51,7 +51,7 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
     @Override
     public void setBeanName(@org.springframework.lang.NonNull @NotBlank String name) {
         // Сохраняем имя бина до хука afterPropertiesSet
-        final var validatedBeanName = Objects.requireNonNull(name, "beanName must not be null");
+        final String validatedBeanName = Objects.requireNonNull(name, "beanName must not be null");
 
         if (validatedBeanName.isBlank()) {
             throw new IllegalArgumentException("Bean name must not be blank");

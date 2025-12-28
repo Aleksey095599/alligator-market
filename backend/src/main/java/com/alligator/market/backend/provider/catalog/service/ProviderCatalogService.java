@@ -2,6 +2,8 @@ package com.alligator.market.backend.provider.catalog.service;
 
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
@@ -32,23 +34,23 @@ public class ProviderCatalogService implements ProviderCatalogUseCase {
     private ProviderCatalogItem toCatalogItem(ProviderEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
 
-        var descriptorEmbeddable = Objects.requireNonNull(
+        ProviderDescriptorEmbeddable descriptorEmbeddable = Objects.requireNonNull(
                 entity.getDescriptor(),
                 "descriptor must not be null"
         );
-        var descriptor = new ProviderDescriptor(
+        ProviderDescriptor descriptor = new ProviderDescriptor(
                 descriptorEmbeddable.getDisplayName(),
                 descriptorEmbeddable.getDeliveryMode(),
                 descriptorEmbeddable.getAccessMethod(),
                 descriptorEmbeddable.isBulkSubscription()
         );
 
-        var policyEmbeddable = Objects.requireNonNull(entity.getPolicy(), "policy must not be null");
-        var minUpdateInterval = Objects.requireNonNull(
+        ProviderPolicyEmbeddable policyEmbeddable = Objects.requireNonNull(entity.getPolicy(), "policy must not be null");
+        java.time.Duration minUpdateInterval = Objects.requireNonNull(
                 policyEmbeddable.getMinUpdateInterval(),
                 "minUpdateInterval must not be null"
         );
-        var policy = new ProviderPolicy(minUpdateInterval);
+        ProviderPolicy policy = new ProviderPolicy(minUpdateInterval);
 
         return new ProviderCatalogItem(
                 ProviderCode.of(entity.getProviderCode()),

@@ -21,7 +21,8 @@ import java.util.Objects;
 /**
  * JPA-сущность конфигурации источников котировок (feed) для финансового инструмента.
  *
- * <p>Основная задача таблицы {@code instrument_feed_config} – задать соответствие: финансовый инструмент ↔ провайдер рыночных данных.</p>
+ * <p>Основная задача таблицы {@code instrument_feed_config} – задать соответствие:
+ * финансовый инструмент ↔ провайдер рыночных данных.</p>
  */
 @Entity
 @Table(
@@ -50,7 +51,7 @@ import java.util.Objects;
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public class InstrumentFeedConfigEntity extends BaseEntity {
 
-    /* Шаблон кода провайдера: только A-Z, 0-9 и символы "_.-". */
+    /* Шаблон кода провайдера. */
     static final String PROVIDER_CODE_PATTERN = ProviderCode.PATTERN;
 
     /**

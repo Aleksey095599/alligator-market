@@ -19,12 +19,12 @@ import java.util.Set;
  * Адаптер провайдера рыночных данных MOEX ISS.
  *
  * <p>Адаптер является Spring-компонентом, который инкапсулирует дескриптор, "политику провайдера", настройки и
- * обработчики провайдера.
+ * обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
 
-    /* Технический код провайдера: UPPERCASE, формат [A-Z0-9_]+. */
+    /* Технический код провайдера. */
     public static final ProviderCode PROVIDER_CODE = ProviderCode.of("MOEX_ISS");
 
     /* Отображаемое имя провайдера. */
@@ -47,7 +47,8 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
     /**
      * Конструктор адаптера MOEX ISS.
      *
-     * <p>Адаптеру передаются параметры {@code props} и {@code webClient}, необходимые для сборки обработчика {@link MoexIssFxSpotHandler}.
+     * <p>Адаптеру передаются параметры {@code props} и {@code webClient},
+     * необходимые для сборки обработчика {@link MoexIssFxSpotHandler}.</p>
      *
      * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
      * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
@@ -56,7 +57,7 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
             MoexIssAdapterProps props,
             @Qualifier("moexIssWebClient") WebClient webClient
     ) {
-        // Инициализируем базовый класс адаптера провайдера
+        // Инициализируем базовый класс
         super(
                 PROVIDER_CODE,
                 DESCRIPTOR,

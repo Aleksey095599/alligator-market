@@ -2,6 +2,8 @@ package com.alligator.market.domain.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
@@ -29,8 +31,8 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
 
         for (MarketDataProvider provider : providers()) {
             ProviderCode code = provider.providerCode();
-            var descriptor = provider.descriptor();
-            var policy = provider.policy();
+            ProviderDescriptor descriptor = provider.descriptor();
+            ProviderPolicy policy = provider.policy();
 
             // Проверка дублей по коду
             ProviderSnapshot prev = snapshots.put(code, new ProviderSnapshot(code, descriptor, policy));

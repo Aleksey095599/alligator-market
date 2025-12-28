@@ -48,7 +48,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * Конструктор.
      *
      * <p>Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента --> обработчик",
-     * прикрепляет обработчики к провайдеру.
+     * прикрепляет обработчики к провайдеру.</p>
      *
      * @param providerCode код провайдера
      * @param descriptor   дескриптор провайдера

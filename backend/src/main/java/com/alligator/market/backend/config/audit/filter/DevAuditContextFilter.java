@@ -31,7 +31,7 @@ public class DevAuditContextFilter extends OncePerRequestFilter {
             @org.springframework.lang.NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        var ctx = new AuditContext(DEV_ACTOR, DEV_VIA);
+        final AuditContext ctx = new AuditContext(DEV_ACTOR, DEV_VIA);
         try {
             // Устанавливаем контекст на время обработки запроса и гарантированно восстанавливаем его после.
             AuditContextHolder.runWith(ctx, () -> {
@@ -44,7 +44,7 @@ public class DevAuditContextFilter extends OncePerRequestFilter {
             });
         } catch (RuntimeException ex) {
             // Восстанавливаем checked-типы, чтобы не менять поведение контейнера
-            var cause = ex.getCause();
+            final Throwable cause = ex.getCause();
             if (cause instanceof IOException io) throw io;
             if (cause instanceof ServletException se) throw se;
             throw ex;

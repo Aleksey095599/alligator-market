@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
  *
- * <p>Содержит доменные инструменты и соответствие "доменный код ↔ SECID MOEX ISS".
+ * <p>Содержит доменные инструменты и соответствие "доменный код ↔ SECID MOEX ISS".</p>
  */
 public class MoexIssFxSpotInstruments {
 

@@ -59,7 +59,7 @@ public record QuoteTick(
     }
 
     /**
-     * Фабрика тика для котировки "bid"/"ask": поле "last" {@code null}.</p>
+     * Фабрика тика для котировки "bid"/"ask": поле "last" {@code null}.
      */
     public static QuoteTick bidAsk(
             String instrumentCode,
