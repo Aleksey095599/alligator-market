@@ -33,7 +33,7 @@ public class FxSpotAssembler {
         Currency quote = currencyRepository.findByCode(CurrencyCode.of(dto.quoteCurrency()))
                 .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(dto.quoteCurrency())));
 
-        return new FxSpot(base, quote, dto.valueDate(), dto.defaultQuoteFractionDigits());
+        return new FxSpot(base, quote, dto.tenor(), dto.defaultQuoteFractionDigits());
     }
 
     /**
@@ -52,6 +52,6 @@ public class FxSpotAssembler {
                 .orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency quote = currencyRepository.findByCode(quoteCode)
                 .orElseThrow(() -> new CurrencyNotFoundException(quoteCode));
-        return new FxSpot(base, quote, parts.valueDate(), dto.defaultQuoteFractionDigits());
+        return new FxSpot(base, quote, parts.tenor(), dto.defaultQuoteFractionDigits());
     }
 }

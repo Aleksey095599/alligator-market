@@ -15,7 +15,7 @@ import { FxSpotService } from '../../services/fx-spot.service';
 import { FxSpotUpdateDto } from '../../models/fx-spot-update.model';
 import { CurrencyService } from '../../../currency/services/currency.service';
 import { CurrencyResponseDto } from '../../../currency/models/currency.model';
-import { FxSpotValueDate } from '../../models/fx-spot-value-date.model';
+import { FxSpotTenor } from '../../models/fx-spot-tenor.model';
 
 @Component({
   selector: 'app-fx-spot-admin',
@@ -40,7 +40,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['instrumentCode', 'symbol', 'baseCurrency', 'quoteCurrency', 'valueDate', 'defaultQuoteFractionDigits', 'actions'];
+  displayed: string[] = ['instrumentCode', 'symbol', 'baseCurrency', 'quoteCurrency', 'tenor', 'defaultQuoteFractionDigits', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================
@@ -53,7 +53,7 @@ export class FxSpotAdminComponent implements OnInit {
   editCode: string | null = null; // внутренний код инструмента для редактирования (получаем с backend)
   editSymbol: string | null = null; // символ инструмента для уведомления
   currencies: CurrencyResponseDto[] = [];
-  valueDates = Object.values(FxSpotValueDate);
+  tenors = Object.values(FxSpotTenor);
 
   constructor(
     private readonly service: FxSpotService,
@@ -81,8 +81,8 @@ export class FxSpotAdminComponent implements OnInit {
         ]
       ],
 
-      valueDate: [
-        FxSpotValueDate.TOD,
+      tenor: [
+        FxSpotTenor.TOD,
         [Validators.required]
       ]
     });
@@ -128,7 +128,7 @@ export class FxSpotAdminComponent implements OnInit {
           baseCurrency: '',
           quoteCurrency: '',
           defaultQuoteFractionDigits: 4,
-          valueDate: FxSpotValueDate.TOD
+          tenor: FxSpotTenor.TOD
         });
         this.locked = false;
       },
@@ -151,11 +151,11 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: spot.baseCurrency,
       quoteCurrency: spot.quoteCurrency,
       defaultQuoteFractionDigits: spot.defaultQuoteFractionDigits,
-      valueDate: spot.valueDate
+      tenor: spot.tenor
     });
     this.form.controls['baseCurrency'].disable();
     this.form.controls['quoteCurrency'].disable();
-    this.form.controls['valueDate'].disable();
+    this.form.controls['tenor'].disable();
   }
 
   /* нажата кнопка Save */
@@ -197,11 +197,11 @@ export class FxSpotAdminComponent implements OnInit {
       baseCurrency: '',
       quoteCurrency: '',
       defaultQuoteFractionDigits: 4,
-      valueDate: FxSpotValueDate.TOD
+      tenor: FxSpotTenor.TOD
     });
     this.form.controls['baseCurrency'].enable();
     this.form.controls['quoteCurrency'].enable();
-    this.form.controls['valueDate'].enable();
+    this.form.controls['tenor'].enable();
     this.locked = false;
   }
 

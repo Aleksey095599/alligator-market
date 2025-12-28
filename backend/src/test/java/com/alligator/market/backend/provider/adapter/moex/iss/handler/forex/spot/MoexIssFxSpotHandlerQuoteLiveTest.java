@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdap
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -44,7 +44,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         // 3) Доменный инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
-        FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotValueDate.TOM, 4);
+        FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Запускаем запрос к реальному MOEX ISS
         Mono<QuoteTick> result = Mono.from(handler.quote(cnyRubTom));

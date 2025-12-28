@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdap
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
@@ -65,7 +65,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
         // 5) Готовим доменный инструмент CNYRUB_TOM
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
-        cnyRubTom = new FxSpot(cny, rub, FxSpotValueDate.TOM, 4);
+        cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
     }
 
     @AfterEach

@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 
 import java.util.*;
 
@@ -20,8 +20,8 @@ public class MoexIssFxSpotInstruments {
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
 
     /* Доменные инструменты. */
-    private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotValueDate.TOM, 4);
-    private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotValueDate.TOM, 4);
+    private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
+    private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
     /* Карта соответствий: доменный код ↔ SECID. */
     private static final Map<String, String> DOMAIN_CODE_TO_SECID;

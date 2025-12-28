@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out;
 
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotValueDate;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 
 /**
  * DTO ответа для инструментов FX_SPOT (out).
@@ -11,6 +11,6 @@ public record FxSpotResponseDto(
         String baseCurrency,
         String quoteCurrency,
         Integer defaultQuoteFractionDigits,
-        FxSpotValueDate valueDate
+        FxSpotTenor tenor
 ) {
 }

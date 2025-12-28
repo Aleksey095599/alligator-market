@@ -29,8 +29,7 @@ public class FxSpotDtoMapper {
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),
                 fxSpot.defaultQuoteFractionDigits(),
-                fxSpot.valueDate()
+                fxSpot.tenor()
         );
     }
 }
-
