@@ -18,7 +18,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
         permits AbstractInstrumentHandler {
 
     /**
-     * Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+.
+     * Уникальный код обработчика.
      */
     String handlerCode();
 
@@ -33,7 +33,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     InstrumentType instrumentType();
 
     /**
-     * Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+.
+     * Неизменяемый набор поддерживаемых кодов инструментов.
      */
     Set<String> supportedInstrumentCodes();
 
