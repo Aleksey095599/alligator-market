@@ -34,9 +34,6 @@ public final class FxSpotCodec {
     /**
      * Формирует символ инструмента из кодов двух валют {@link CurrencyCode} и
      * тенора даты валютирования {@link FxSpotTenor}.
-     *
-     * <p>Пример: код базовой валюты "EUR", код котируемой валюты "USD",
-     * тенор даты валютирования завтра "TOM" => получаем символ инструмента "EURUSD_TOM"</p>
      */
     public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -50,9 +47,6 @@ public final class FxSpotCodec {
      * Формирует внутренний код инструмента из {@link CurrencyCode} и тенора даты валютирования {@link FxSpotTenor}.
      *
      * <p>Добавляем префикс {@code TYPE_PREFIX} к символу инструмента.</p>
-     *
-     * <p>Пример: код базовой валюты "EUR", код котируемой валюты "USD",
-     * тенор даты валютирования завтра "TOM" => получаем код инструмента "FX_SPOT_EURUSD_TOM"</p>
      */
     public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -65,8 +59,6 @@ public final class FxSpotCodec {
     /**
      * Простая перегрузка:
      * Формирует внутренний код инструмента из {@link Currency} и тенора даты валютирования {@link FxSpotTenor}.
-     *
-     * <p>Пример: аналогично основному методу, только коды валют извлекаем из моделей валют.</p>
      */
     public static InstrumentCode fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
@@ -77,9 +69,8 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Разбирает объект-значение кода инструмента {@link InstrumentCode} на составные компоненты.
-     *
-     * <p>Пример: </p>
+     * Разбирает объект-значение кода инструмента {@link InstrumentCode} на
+     * составные компоненты {@link FxSpotCodeParts}.
      */
     public static FxSpotCodeParts parseFxSpotCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -123,9 +114,6 @@ public final class FxSpotCodec {
 
     /**
      * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotTenor>} на составные компоненты.
-     *
-     * <p>Пример: строковый код инструмента "FX_SPOT_EURUSD_TOM" => получаем коды валют "EUR", "USD" и
-     * тенор даты валютирования "TOM"</p>
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
@@ -136,6 +124,10 @@ public final class FxSpotCodec {
     /**
      * Модель разложения кода инструмента на валюты и тенор даты валютирования.
      */
-    public record FxSpotCodeParts(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
+    public record FxSpotCodeParts(
+            CurrencyCode baseCode,
+            CurrencyCode quoteCode,
+            FxSpotTenor tenor
+    ) {
     }
 }
