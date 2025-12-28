@@ -53,15 +53,6 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Разбирает строковый код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotTenor>} на составные компоненты.
-     */
-    public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
-        Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
-
-        return parseFxSpotCode(InstrumentCode.of(instrumentCode));
-    }
-
-    /**
      * Разбирает объект-значение кода инструмента на составные компоненты {@see FxSpotCodeParts}.
      */
     public static FxSpotCodeParts parseFxSpotCode(InstrumentCode instrumentCode) {
