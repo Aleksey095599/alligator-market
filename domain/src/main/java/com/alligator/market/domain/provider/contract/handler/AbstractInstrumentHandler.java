@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.contract.handler;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -28,8 +29,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /* Декларируемый тип поддерживаемых инструментов. */
     private final InstrumentType instrumentType;
 
-    /* Нормализованные и неизменяемые коды поддерживаемых инструментов: UPPERCASE, формат [A-Z0-9_]+. */
-    private final Set<String> normSupportedInstrumentCodes;
+    /* Нормализованные и неизменяемые коды поддерживаемых инструментов. */
+    private final Set<InstrumentCode> normSupportedInstrumentCodes;
 
     /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
@@ -46,7 +47,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * @param handlerCode              код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
      * @param instrumentClass          класс поддерживаемых инструментов
      * @param instrumentType           тип поддерживаемых инструментов
-     * @param supportedInstrumentCodes набор кодов инструментов; нормализуются в UPPERCASE; формат [A-Z0-9_]+; без дублей
+     * @param supportedInstrumentCodes набор кодов инструментов; нормализуются через {@link InstrumentCode}; без дублей
      * @throws NullPointerException     если любой параметр равен null
      * @throws IllegalArgumentException если код пустой/с пробелами/не соответствует формату; набор пуст; содержит null/blank/дубликаты
      */
@@ -54,7 +55,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             String handlerCode,
             Class<I> instrumentClass,
             InstrumentType instrumentType,
-            Set<String> supportedInstrumentCodes
+            Set<InstrumentCode> supportedInstrumentCodes
     ) {
         Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
@@ -106,7 +107,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+.
      */
     @Override
-    public final Set<String> supportedInstrumentCodes() {
+    public final Set<InstrumentCode> supportedInstrumentCodes() {
         return normSupportedInstrumentCodes;
     }
 
@@ -144,7 +145,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * @throws IllegalStateException           если провайдер не прикреплён
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
      * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws IllegalArgumentException        если код инструмента {@code null} или пустой
+     * @throws IllegalArgumentException        если код инструмента {@code null}
      * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
@@ -178,12 +179,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         }
 
         // 4) Проверяем, что код инструмента поддерживается обработчиком
-        final String rawCode = instrument.instrumentCode();
-        if (rawCode == null || rawCode.isBlank()) {
-            throw new IllegalArgumentException("instrumentCode must not be null or blank");
+        final InstrumentCode instrumentCode = instrument.instrumentCode();
+        if (instrumentCode == null) {
+            throw new IllegalArgumentException("instrumentCode must not be null");
         }
-        final String normCode = rawCode.trim().toUpperCase(java.util.Locale.ROOT); // <-- Нормализуем код
-        if (!normSupportedInstrumentCodes.contains(normCode)) {
+        if (!normSupportedInstrumentCodes.contains(instrumentCode)) {
             throw new InstrumentNotSupportedException( // <-- Не поддерживается
                     instrument.instrumentCode(),
                     normHandlerCode);
@@ -224,22 +224,17 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      *
      * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
      */
-    private static Set<String> getNormalizedCodes(Set<String> supportedInstrumentCodes) {
-        final Set<String> codes = new LinkedHashSet<>();
-        for (String code : supportedInstrumentCodes) {
-            // Набор не должен содержать null или пустые коды инструментов
-            if (code == null || code.isBlank()) {
-                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null/blank");
+    private static Set<InstrumentCode> getNormalizedCodes(Set<InstrumentCode> supportedInstrumentCodes) {
+        final Set<InstrumentCode> codes = new LinkedHashSet<>();
+        for (InstrumentCode code : supportedInstrumentCodes) {
+            // Набор не должен содержать null коды инструментов
+            if (code == null) {
+                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null");
             }
-            final String norm = code.trim().toUpperCase(java.util.Locale.ROOT);
-            // Разрешены только латинские заглавные, цифры и подчёркивание
-            if (!norm.chars().allMatch(ch ->
-                    (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-                throw new IllegalArgumentException("Instrument code must match [A-Z0-9_]+: '" + norm + "'");
-            }
-            if (!codes.add(norm)) {
+            if (!codes.add(code)) {
                 // Набор не должен содержать дублирующиеся коды инструментов
-                throw new IllegalArgumentException("Duplicate instrumentCode '" + norm + "' in supportedInstrumentCodes");
+                throw new IllegalArgumentException(
+                        "Duplicate instrumentCode '" + code.value() + "' in supportedInstrumentCodes");
             }
         }
         return java.util.Collections.unmodifiableSet(codes); // <-- Фиксируем неизменяемость

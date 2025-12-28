@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
+
 import java.util.Objects;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Objects;
  */
 public final class InstrumentWrongClassException extends RuntimeException {
 
-    private final String instrumentCode;
+    private final InstrumentCode instrumentCode;
     private final Class<?> instrumentClass;
     private final String handlerCode;
     private final Class<?> expectedClass;
@@ -21,7 +23,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @param expectedClass   ожидаемый класс инструмента
      */
     public InstrumentWrongClassException(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             Class<?> instrumentClass,
             String handlerCode,
             Class<?> expectedClass
@@ -44,7 +46,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public InstrumentWrongClassException(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             Class<?> instrumentClass,
             String handlerCode,
             Class<?> expectedClass,
@@ -67,16 +69,16 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @return текст сообщения
      */
     private static String msg(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             Class<?> instrumentClass,
             String handlerCode,
             Class<?> expectedClass
     ) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Class<?> actual = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
         String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         Class<?> expected = Objects.requireNonNull(expectedClass, "expectedClass must not be null");
-        return "Instrument class mismatch (instrumentCode=" + ic + ", actualClass=" + actual.getName()
+        return "Instrument class mismatch (instrumentCode=" + ic.value() + ", actualClass=" + actual.getName()
                 + ", handlerCode=" + hc + ", expectedClass=" + expected.getName() + ")";
     }
 
@@ -86,7 +88,7 @@ public final class InstrumentWrongClassException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() {
+    public InstrumentCode getInstrumentCode() {
         return instrumentCode;
     }
 

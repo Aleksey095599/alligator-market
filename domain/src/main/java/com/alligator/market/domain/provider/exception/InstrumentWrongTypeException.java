@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
  */
 public final class InstrumentWrongTypeException extends RuntimeException {
 
-    private final String instrumentCode;
+    private final InstrumentCode instrumentCode;
     private final InstrumentType instrumentType;
     private final String handlerCode;
     private final InstrumentType expectedType;
@@ -23,7 +24,7 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @param expectedType   ожидаемый тип инструмента
      */
     public InstrumentWrongTypeException(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             InstrumentType instrumentType,
             String handlerCode,
             InstrumentType expectedType
@@ -46,7 +47,7 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public InstrumentWrongTypeException(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             InstrumentType instrumentType,
             String handlerCode,
             InstrumentType expectedType,
@@ -69,16 +70,16 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @return текст сообщения
      */
     private static String msg(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             InstrumentType instrumentType,
             String handlerCode,
             InstrumentType expectedType
     ) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         InstrumentType actual = Objects.requireNonNull(instrumentType, "instrumentType must not be null");
         String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         InstrumentType expected = Objects.requireNonNull(expectedType, "expectedType must not be null");
-        return "Instrument type mismatch (instrumentCode=" + ic + ", actualType=" + actual.name()
+        return "Instrument type mismatch (instrumentCode=" + ic.value() + ", actualType=" + actual.name()
                 + ", handlerCode=" + hc + ", expectedType=" + expected.name() + ")";
     }
 
@@ -88,7 +89,7 @@ public final class InstrumentWrongTypeException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() {
+    public InstrumentCode getInstrumentCode() {
         return instrumentCode;
     }
 

@@ -1,5 +1,6 @@
 package com.alligator.market.domain.quote.tick.model;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -23,7 +24,7 @@ import java.util.Objects;
  * @param providerCode      технический код провайдера, предоставившего котировку (соответствует {@link MarketDataProvider#providerCode()})
  */
 public record QuoteTick(
-        String instrumentCode,
+        InstrumentCode instrumentCode,
         BigDecimal last,
         BigDecimal bid,
         BigDecimal ask,
@@ -32,10 +33,34 @@ public record QuoteTick(
         ProviderCode providerCode
 ) {
     /**
+     * Конструктор для строкового кода инструмента.
+     */
+    @SuppressWarnings("unused")
+    public QuoteTick(
+            String instrumentCode,
+            BigDecimal last,
+            BigDecimal bid,
+            BigDecimal ask,
+            Instant exchangeTimestamp,
+            Instant receivedTimestamp,
+            ProviderCode providerCode
+    ) {
+        this(
+                InstrumentCode.of(instrumentCode),
+                last,
+                bid,
+                ask,
+                exchangeTimestamp,
+                receivedTimestamp,
+                providerCode
+        );
+    }
+
+    /**
      * Фабрика тика по последней сделке (LAST): Поля "bid"/"ask" {@code null}.
      */
     public static QuoteTick lastTrade(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             BigDecimal last,
             Instant exchangeTimestamp,
             Instant receivedTimestamp,
@@ -59,10 +84,29 @@ public record QuoteTick(
     }
 
     /**
+     * Перегрузка фабрики тика по последней сделке (LAST) для строкового кода.
+     */
+    public static QuoteTick lastTrade(
+            String instrumentCode,
+            BigDecimal last,
+            Instant exchangeTimestamp,
+            Instant receivedTimestamp,
+            ProviderCode providerCode
+    ) {
+        return lastTrade(
+                InstrumentCode.of(instrumentCode),
+                last,
+                exchangeTimestamp,
+                receivedTimestamp,
+                providerCode
+        );
+    }
+
+    /**
      * Фабрика тика для котировки "bid"/"ask": поле "last" {@code null}.
      */
     public static QuoteTick bidAsk(
-            String instrumentCode,
+            InstrumentCode instrumentCode,
             BigDecimal bid,
             BigDecimal ask,
             Instant exchangeTimestamp,
@@ -79,6 +123,27 @@ public record QuoteTick(
         return new QuoteTick(
                 instrumentCode,
                 null,
+                bid,
+                ask,
+                exchangeTimestamp,
+                receivedTimestamp,
+                providerCode
+        );
+    }
+
+    /**
+     * Перегрузка фабрики тика для котировки "bid"/"ask" для строкового кода.
+     */
+    public static QuoteTick bidAsk(
+            String instrumentCode,
+            BigDecimal bid,
+            BigDecimal ask,
+            Instant exchangeTimestamp,
+            Instant receivedTimestamp,
+            ProviderCode providerCode
+    ) {
+        return bidAsk(
+                InstrumentCode.of(instrumentCode),
                 bid,
                 ask,
                 exchangeTimestamp,

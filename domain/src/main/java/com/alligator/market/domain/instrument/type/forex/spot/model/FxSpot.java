@@ -1,5 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
@@ -47,7 +48,7 @@ public record FxSpot(
      * Внутренний код инструмента (уникален в контексте приложения).
      */
     @Override
-    public String instrumentCode() {
+    public InstrumentCode instrumentCode() {
         return FxSpotCodec.fxSpotCode(base, quote, valueDate);
     }
 

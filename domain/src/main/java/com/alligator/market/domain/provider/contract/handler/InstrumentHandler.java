@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.contract.handler;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -35,7 +36,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     /**
      * Неизменяемый набор поддерживаемых кодов инструментов.
      */
-    Set<String> supportedInstrumentCodes();
+    Set<InstrumentCode> supportedInstrumentCodes();
 
     /**
      * Однократное прикрепление обработчика к провайдеру.
