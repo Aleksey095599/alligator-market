@@ -57,7 +57,7 @@ public record FxSpot(
      */
     @Override
     public String instrumentSymbol() {
-        return FxSpotCodec.fxSpotSymbol(base, quote, valueDate);
+        return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), valueDate);
     }
 
     /**
