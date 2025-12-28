@@ -14,7 +14,7 @@ public interface Instrument {
     InstrumentCode instrumentCode();
 
     /**
-     * Символ инструмента для отображения в UI.
+     * Символ инструмента для отображения в UI (более дружелюбный чем код инструмента).
      */
     String instrumentSymbol();
 
