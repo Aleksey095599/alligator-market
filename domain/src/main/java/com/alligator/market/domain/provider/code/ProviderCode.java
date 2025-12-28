@@ -35,11 +35,6 @@ public record ProviderCode(
         return new ProviderCode(raw);
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
     /**
      * Метод проверки и нормализации входящего значения кода провайдера.
      *
