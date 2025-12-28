@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.provider.code.ProviderCode;
 
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
  */
 public final class HandlerNotFoundException extends RuntimeException {
 
-    private final String instrumentCode;
+    private final InstrumentCode instrumentCode;
     private final ProviderCode providerCode;
 
     /**
@@ -18,7 +19,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      * @param instrumentCode код инструмента
      * @param providerCode   код провайдера
      */
-    public HandlerNotFoundException(String instrumentCode, ProviderCode providerCode) {
+    public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode) {
         super(msg(instrumentCode, providerCode));
         this.instrumentCode = instrumentCode;
         this.providerCode = providerCode;
@@ -32,7 +33,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
-    public HandlerNotFoundException(String instrumentCode, ProviderCode providerCode, Throwable cause) {
+    public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode, Throwable cause) {
         super(msg(instrumentCode, providerCode), cause);
         this.instrumentCode = instrumentCode;
         this.providerCode = providerCode;
@@ -45,10 +46,10 @@ public final class HandlerNotFoundException extends RuntimeException {
      * @param providerCode   код провайдера
      * @return текст сообщения
      */
-    private static String msg(String instrumentCode, ProviderCode providerCode) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+    private static String msg(InstrumentCode instrumentCode, ProviderCode providerCode) {
+        InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         ProviderCode pc = Objects.requireNonNull(providerCode, "providerCode must not be null");
-        return "Handler not found (instrumentCode=" + ic + ", providerCode=" + pc.value() + ")";
+        return "Handler not found (instrumentCode=" + ic.value() + ", providerCode=" + pc.value() + ")";
     }
 
     /**
@@ -57,7 +58,7 @@ public final class HandlerNotFoundException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() {
+    public InstrumentCode getInstrumentCode() {
         return instrumentCode;
     }
 

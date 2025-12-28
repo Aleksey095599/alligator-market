@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
+
 import java.util.Objects;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Objects;
  */
 public final class InstrumentNotSupportedException extends RuntimeException {
 
-    private final String instrumentCode;
+    private final InstrumentCode instrumentCode;
     private final String handlerCode;
 
     /**
@@ -17,7 +19,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      */
     @SuppressWarnings("unused")
-    public InstrumentNotSupportedException(String instrumentCode, String handlerCode) {
+    public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode) {
         super(msg(instrumentCode, handlerCode));
         this.instrumentCode = instrumentCode;
         this.handlerCode = handlerCode;
@@ -31,7 +33,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
-    public InstrumentNotSupportedException(String instrumentCode, String handlerCode, Throwable cause) {
+    public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode, Throwable cause) {
         super(msg(instrumentCode, handlerCode), cause);
         this.instrumentCode = instrumentCode;
         this.handlerCode = handlerCode;
@@ -44,10 +46,10 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      * @return текст сообщения
      */
-    private static String msg(String instrumentCode, String handlerCode) {
-        String ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+    private static String msg(InstrumentCode instrumentCode, String handlerCode) {
+        InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        return "Instrument not supported (instrumentCode=" + ic + ", handlerCode=" + hc + ")";
+        return "Instrument not supported (instrumentCode=" + ic.value() + ", handlerCode=" + hc + ")";
     }
 
     /**
@@ -56,7 +58,7 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() {
+    public InstrumentCode getInstrumentCode() {
         return instrumentCode;
     }
 

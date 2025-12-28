@@ -1,5 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.spot.codec;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
@@ -53,15 +54,15 @@ public final class FxSpotCodec {
     /**
      * Формирует внутренний код инструмента из доменных моделей кодов валют и даты валютирования.
      */
-    public static String fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
+    public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotValueDate valueDate) {
         // Добавляем префикс к символу
-        return TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate);
+        return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, valueDate));
     }
 
     /**
      * Перегрузка: Формирует внутренний код инструмента из доменных моделей валют и даты валютирования.
      */
-    public static String fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
+    public static InstrumentCode fxSpotCode(Currency baseCurrency, Currency quoteCurrency, FxSpotValueDate valueDate) {
         Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
         Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
         Objects.requireNonNull(valueDate, "valueDate must not be null");
@@ -73,19 +74,28 @@ public final class FxSpotCodec {
      */
     public static FxSpotCodeParts parseFxSpotCode(String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "Instrument code must not be null");
+        return parseFxSpotCode(InstrumentCode.of(instrumentCode));
+    }
 
-        if (!instrumentCode.startsWith(TYPE_PREFIX)) {
+    /**
+     * Разбирает код инструмента формата {@code FX_SPOT_<AAA><BBB>_<FxSpotValueDate>} на составные компоненты.
+     */
+    public static FxSpotCodeParts parseFxSpotCode(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        String codeValue = instrumentCode.value();
+
+        if (!codeValue.startsWith(TYPE_PREFIX)) {
             throw new IllegalArgumentException("Instrument code must start with " + TYPE_PREFIX);
         }
 
         final int start = TYPE_PREFIX.length();
-        final int sep = instrumentCode.indexOf(SEP, start);
+        final int sep = codeValue.indexOf(SEP, start);
         if (sep < 0) {
             throw new IllegalArgumentException("Instrument code must contain separator '_' after prefix "
                     + TYPE_PREFIX);
         }
 
-        final String pair = instrumentCode.substring(start, sep);
+        final String pair = codeValue.substring(start, sep);
         if (pair.length() != CURRENCY_PAIR_LENGTH) {
             throw new IllegalArgumentException("Currency pair must contain " + CURRENCY_PAIR_LENGTH + " characters");
         }
@@ -94,7 +104,7 @@ public final class FxSpotCodec {
         final String baseRaw = pair.substring(0, CURRENCY_CODE_LENGTH);
         final String quoteRaw = pair.substring(CURRENCY_CODE_LENGTH);
 
-        final String valueDateRaw = instrumentCode.substring(sep + 1);
+        final String valueDateRaw = codeValue.substring(sep + 1);
         if (valueDateRaw.isEmpty()) {
             throw new IllegalArgumentException("Value date code must not be empty");
         }

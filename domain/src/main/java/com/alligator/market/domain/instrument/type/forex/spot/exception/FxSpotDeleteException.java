@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.exception;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
+
 import java.util.Objects;
 
 /**
@@ -7,7 +9,18 @@ import java.util.Objects;
  */
 public final class FxSpotDeleteException extends RuntimeException {
 
-    private final String instrumentCode;
+    private final InstrumentCode instrumentCode;
+
+    /**
+     * Создает исключение.
+     *
+     * @param instrumentCode код инструмента
+     */
+    @SuppressWarnings("unused")
+    public FxSpotDeleteException(InstrumentCode instrumentCode) {
+        super(msg(instrumentCode));
+        this.instrumentCode = instrumentCode;
+    }
 
     /**
      * Создает исключение.
@@ -16,7 +29,17 @@ public final class FxSpotDeleteException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public FxSpotDeleteException(String instrumentCode) {
-        super(msg(instrumentCode));
+        this(InstrumentCode.of(instrumentCode));
+    }
+
+    /**
+     * Создает исключение с причиной.
+     *
+     * @param instrumentCode код инструмента
+     * @param cause          причина ошибки
+     */
+    public FxSpotDeleteException(InstrumentCode instrumentCode, Throwable cause) {
+        super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
     }
 
@@ -27,8 +50,7 @@ public final class FxSpotDeleteException extends RuntimeException {
      * @param cause          причина ошибки
      */
     public FxSpotDeleteException(String instrumentCode, Throwable cause) {
-        super(msg(instrumentCode), cause);
-        this.instrumentCode = instrumentCode;
+        this(InstrumentCode.of(instrumentCode), cause);
     }
 
     /**
@@ -37,9 +59,9 @@ public final class FxSpotDeleteException extends RuntimeException {
      * @param instrumentCode код инструмента
      * @return текст сообщения
      */
-    private static String msg(String instrumentCode) {
-        String code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "Failed to delete FX_SPOT instrument (code=" + code + ")";
+    private static String msg(InstrumentCode instrumentCode) {
+        InstrumentCode code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return "Failed to delete FX_SPOT instrument (code=" + code.value() + ")";
     }
 
     /**
@@ -48,7 +70,7 @@ public final class FxSpotDeleteException extends RuntimeException {
      * @return код инструмента
      */
     @SuppressWarnings("unused")
-    public String getInstrumentCode() {
+    public InstrumentCode getInstrumentCode() {
         return instrumentCode;
     }
 }

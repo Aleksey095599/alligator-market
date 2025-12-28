@@ -1,5 +1,6 @@
 package com.alligator.market.domain.provider.contract;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
@@ -34,10 +35,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
-    private final Map<String, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
+    private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
 
     /* Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
-    private final Set<String> instrumentCodes;
+    private final Set<InstrumentCode> instrumentCodes;
     private final Set<InstrumentType> instrumentTypes;
 
     //=================================================================================================================
@@ -91,23 +92,21 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
-        Map<String, InstrumentHandler<P, ? extends Instrument>> mapByCode =
+        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> mapByCode =
                 new LinkedHashMap<>(); // <-- Карта
-        Set<String> allCodes = new LinkedHashSet<>(); // <-- Набор всех кодов инструментов
+        Set<InstrumentCode> allCodes = new LinkedHashSet<>(); // <-- Набор всех кодов инструментов
         Set<InstrumentType> types = EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             types.add(h.instrumentType()); // <-- Один тип на обработчик
-            for (String code : h.supportedInstrumentCodes()) {
-                // Коды в обработчике уже нормализованы, но повторно нормализуем для надёжности
-                String upper = code.toUpperCase(Locale.ROOT);
-                InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(upper, h);
+            for (InstrumentCode code : h.supportedInstrumentCodes()) {
+                InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(code, h);
                 if (prev != null && prev != h) {
                     // Запрещаем связывать один и тот же код с разными обработчиками
-                    throw new IllegalStateException("Instrument code '" + upper +
+                    throw new IllegalStateException("Instrument code '" + code.value() +
                             "' is already bound to handler '" + prev.handlerCode() +
                             "' in provider '" + providerCode.value() + "'");
                 }
-                allCodes.add(upper);
+                allCodes.add(code);
             }
         }
 
@@ -163,7 +162,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * Иммутабельный набор кодов поддерживаемых провайдером инструментов.
      */
     @Override
-    public Set<String> instrumentsCodes() {
+    public Set<InstrumentCode> instrumentsCodes() {
         return instrumentCodes;
     }
 
@@ -221,12 +220,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      */
     @SuppressWarnings("unchecked")
     private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
-        String raw = instrument.instrumentCode();
-        if (raw == null || raw.isBlank()) {
+        InstrumentCode code = instrument.instrumentCode();
+        if (code == null) {
             return null;
         }
-        String codeUpper = instrument.instrumentCode().toUpperCase(Locale.ROOT);
-        InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(codeUpper);
+        InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(code);
         return (InstrumentHandler<P, I>) h;
     }
 }

@@ -1,9 +1,11 @@
 package com.alligator.market.domain.instrument.type.forex.spot.repository;
 
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -27,9 +29,25 @@ public interface FxSpotRepository {
     void deleteByCode(String instrumentCode);
 
     /**
+     * Удалить инструмент по коду.
+     */
+    default void deleteByCode(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        deleteByCode(instrumentCode.value());
+    }
+
+    /**
      * Найти инструмент по коду.
      */
     Optional<FxSpot> findByCode(String instrumentCode);
+
+    /**
+     * Найти инструмент по коду.
+     */
+    default Optional<FxSpot> findByCode(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return findByCode(instrumentCode.value());
+    }
 
     /**
      * Вернуть все инструменты.
