@@ -8,6 +8,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.i
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.mapper.FxSpotDtoMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,9 @@ public class FxSpotController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{instrumentCode}")
-                .buildAndExpand(created.instrumentCode())
+                .buildAndExpand(created.instrumentCode().value())
                 .toUri();
-        return ResponseEntityFactory.created(location, created.instrumentCode());
+        return ResponseEntityFactory.created(location, created.instrumentCode().value());
     }
 
     /**
@@ -51,7 +52,9 @@ public class FxSpotController {
     public ResponseEntity<Void> update(@PathVariable String instrumentCode,
                                        @RequestBody @Valid FxSpotUpdateDto dto) {
 
-        service.update(assembler.toDomainByCode(instrumentCode, dto));
+        // Парсим строковый код инструмента в объект-значение
+        InstrumentCode code = InstrumentCode.of(instrumentCode);
+        service.update(assembler.toDomainByCode(code, dto));
         return ResponseEntityFactory.noContent();
     }
 
@@ -61,7 +64,9 @@ public class FxSpotController {
     @DeleteMapping("/{instrumentCode}")
     public ResponseEntity<Void> delete(@PathVariable String instrumentCode) {
 
-        service.delete(instrumentCode);
+        // Парсим строковый код инструмента в объект-значение
+        InstrumentCode code = InstrumentCode.of(instrumentCode);
+        service.delete(code);
         return ResponseEntityFactory.noContent();
     }
 

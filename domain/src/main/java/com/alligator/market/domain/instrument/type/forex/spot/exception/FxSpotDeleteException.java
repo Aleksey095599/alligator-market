@@ -23,16 +23,6 @@ public final class FxSpotDeleteException extends RuntimeException {
     }
 
     /**
-     * Создает исключение.
-     *
-     * @param instrumentCode код инструмента
-     */
-    @SuppressWarnings("unused")
-    public FxSpotDeleteException(String instrumentCode) {
-        this(InstrumentCode.of(instrumentCode));
-    }
-
-    /**
      * Создает исключение с причиной.
      *
      * @param instrumentCode код инструмента
@@ -41,16 +31,6 @@ public final class FxSpotDeleteException extends RuntimeException {
     public FxSpotDeleteException(InstrumentCode instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
-    }
-
-    /**
-     * Создает исключение с причиной.
-     *
-     * @param instrumentCode код инструмента
-     * @param cause          причина ошибки
-     */
-    public FxSpotDeleteException(String instrumentCode, Throwable cause) {
-        this(InstrumentCode.of(instrumentCode), cause);
     }
 
     /**

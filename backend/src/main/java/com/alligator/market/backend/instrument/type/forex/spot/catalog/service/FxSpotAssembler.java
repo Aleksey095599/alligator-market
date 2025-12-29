@@ -38,17 +38,14 @@ public class FxSpotAssembler {
     }
 
     /**
-     * Доменная модель существующего инструмента FX_SPOT из DTO обновления и строкового кода инструмента.
+     * Доменная модель существующего инструмента FX_SPOT из DTO обновления и кода инструмента.
      */
-    public FxSpot toDomainByCode(String instrumentCode, FxSpotUpdateDto dto) {
+    public FxSpot toDomainByCode(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
 
-        // Парсим строковый код инструмента в объект-значение
-        InstrumentCode code = InstrumentCode.of(instrumentCode);
-
         // Разбираем код инструмента на составные компоненты, необходимые для создания доменной модели
-        FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(code);
+        FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
 
         // Фиксируем коды базовой и котируемой валют
         CurrencyCode baseCode = parts.baseCode();

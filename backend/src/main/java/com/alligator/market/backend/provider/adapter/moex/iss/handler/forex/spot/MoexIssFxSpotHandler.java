@@ -4,6 +4,7 @@ import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.code.ProviderCode;
@@ -38,7 +39,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     private static final String HANDLER_CODE = "MOEX_ISS_FX_SPOT_HANDLER";
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
-    private static final Set<String> SUPPORTED_CODES = MoexIssFxSpotInstruments.SUPPORTED_DOMAIN_CODES;
+    private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotInstruments.SUPPORTED_DOMAIN_CODES;
 
     /* Web-клиент. */
     private final WebClient webClient;
@@ -98,7 +99,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                 .onErrorResume(ex -> {
                     log.warn(
                             "Failed to fetch FX_SPOT quote from MOEX ISS: instrumentCode={}, reason={}",
-                            instrument.instrumentCode(),
+                            instrument.instrumentCode().value(),
                             ex.getMessage(),
                             ex
                     );
@@ -122,13 +123,13 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      *   <li>4) Строим доменную модель {@link QuoteTick}.</li>
      * </ul></p>
      *
-     * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(String, JsonNode)}.</p>
+     * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(InstrumentCode, JsonNode)}.</p>
      */
     private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
         // 1) Доменный код инструмента --> SECID MOEX ISS
-        String domainCode = instrument.instrumentCode();
+        InstrumentCode domainCode = instrument.instrumentCode();
         String secid = MoexIssFxSpotInstruments.moexSecidOf(domainCode);
 
         // 2) Запрос к MOEX ISS для получения таблицы marketdata для полученного secid
@@ -151,7 +152,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
                 .bodyToMono(JsonNode.class) // <-- Парсим JSON в дерево JsonNode
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
-                        domainCode, secid))
+                        domainCode.value(), secid))
                 .map(body -> {
                     // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
                     // 4) Построение доменной модели QuoteTick
@@ -167,7 +168,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      * <p>Примечание: в итоговом {@link QuoteTick} конвертируем временную зону для поля {@link QuoteTick#exchangeTimestamp()}
      * в UTC, согласно конфигурации времени в приложении {@link TimeZoneConfig}.</p>
      */
-    private QuoteTick mapMarketdataToQuoteTick(String instrumentCode, JsonNode root) {
+    private QuoteTick mapMarketdataToQuoteTick(InstrumentCode instrumentCode, JsonNode root) {
         /*
          * Ожидаемый JSON-ответ (упрощённо):
          *
@@ -213,7 +214,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
         // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка в "marketdata" для этого инструмента)
         if (data.size() != 1) {
             throw new IllegalStateException(
-                    "Array 'data' must contain exactly one row for instrument " + instrumentCode +
+                    "Array 'data' must contain exactly one row for instrument " + instrumentCode.value() +
                             ", but was: " + data.size()
             );
         }

@@ -3,6 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
         // Без пред‑проверок на уникальность (устраняем TOCTOU) — уникальные ключи распознаёт адаптер
         FxSpot created = fxSpotRepository.create(fxSpot);
-        log.info("FX_SPOT instrument {} created", created.instrumentCode());
+        log.info("FX_SPOT instrument {} created", created.instrumentCode().value());
         return created;
     }
 
@@ -43,7 +44,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
 
         // Если изменений нет — возвращаем текущее состояние без записи в БД
         if (current.equals(fxSpot)) {
-            log.debug("FX_SPOT instrument {} update skipped: nothing to change", fxSpot.instrumentCode());
+            log.debug("FX_SPOT instrument {} update skipped: nothing to change", fxSpot.instrumentCode().value());
             return;
         }
 
@@ -51,18 +52,18 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
         // Бизнес-идентичность (instrumentCode) при update не меняется,
         // в случае сбоев адаптер бросит FxSpotUpdateException.
         FxSpot updated = fxSpotRepository.update(fxSpot);
-        log.info("FX_SPOT instrument {} updated", updated.instrumentCode());
+        log.info("FX_SPOT instrument {} updated", updated.instrumentCode().value());
     }
 
     @Override
     @Transactional
-    public void delete(String instrumentCode) {
+    public void delete(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Отсутствие инструмента определит адаптер (FxSpotNotFoundException).
         // Прочие БД-сбои — FxSpotDeleteException.
         fxSpotRepository.deleteByCode(instrumentCode);
-        log.info("FX_SPOT instrument {} deleted", instrumentCode);
+        log.info("FX_SPOT instrument {} deleted", instrumentCode.value());
     }
 
     @Override

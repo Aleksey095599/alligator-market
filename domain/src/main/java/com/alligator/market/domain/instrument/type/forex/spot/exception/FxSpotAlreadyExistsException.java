@@ -22,15 +22,6 @@ public final class FxSpotAlreadyExistsException extends RuntimeException {
     }
 
     /**
-     * Создает исключение.
-     *
-     * @param instrumentCode код инструмента
-     */
-    public FxSpotAlreadyExistsException(String instrumentCode) {
-        this(InstrumentCode.of(instrumentCode));
-    }
-
-    /**
      * Создает исключение с причиной.
      *
      * @param instrumentCode код инструмента
@@ -40,16 +31,6 @@ public final class FxSpotAlreadyExistsException extends RuntimeException {
     public FxSpotAlreadyExistsException(InstrumentCode instrumentCode, Throwable cause) {
         super(msg(instrumentCode), cause);
         this.instrumentCode = instrumentCode;
-    }
-
-    /**
-     * Создает исключение с причиной.
-     *
-     * @param instrumentCode код инструмента
-     * @param cause          причина ошибки
-     */
-    public FxSpotAlreadyExistsException(String instrumentCode, Throwable cause) {
-        this(InstrumentCode.of(instrumentCode), cause);
     }
 
     /**
