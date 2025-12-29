@@ -2,7 +2,7 @@
 export interface ApiResponse<T> {
   data: T | null;
   success: boolean;
-  errorCode?: string;
+  errorCode: string | null;
   message: string;
   timestamp: string;
 }
