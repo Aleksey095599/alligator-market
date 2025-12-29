@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.web.handler;
+package com.alligator.market.backend.common.web.http;
 
 /**
  * Перечень стабильных кодов ошибок для фронта.

@@ -1,6 +1,7 @@
 package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
+import com.alligator.market.backend.common.web.http.ErrorCode;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
