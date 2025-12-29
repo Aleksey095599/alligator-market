@@ -5,9 +5,9 @@ import jakarta.persistence.Converter;
 import java.time.Duration;
 
 /**
- * JPA-конвертер {@link java.time.Duration} ↔ {@link Long} (миллисекунды) для хранения в БД.
+ * JPA-конвертер {@link java.time.Duration} ↔ {@link Long} (секунды) для хранения в БД.
  *
- * <p>Точность — до миллисекунды: наносекунды отбрасываются (используется {@link Duration#toMillis()}),
+ * <p>Точность — до секунды: наносекунды отбрасываются (используется {@link Duration#toSeconds()}),
  * {@code null} ↔ {@code null}.</p>
  */
 @Converter
@@ -16,11 +16,11 @@ public class DurationToMillisConverter
 
     @Override
     public Long convertToDatabaseColumn(java.time.Duration attribute) {
-        return attribute == null ? null : attribute.toMillis();
+        return attribute == null ? null : attribute.toSeconds();
     }
 
     @Override
     public java.time.Duration convertToEntityAttribute(Long dbData) {
-        return dbData == null ? null : java.time.Duration.ofMillis(dbData);
+        return dbData == null ? null : java.time.Duration.ofSeconds(dbData);
     }
 }
