@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.persi
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
@@ -72,7 +73,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         Objects.requireNonNull(fxSpot, "fxSpot model must not be null");
 
         // Ищем JPA-сущность инструмента FX_SPOT к обновлению
-        FxSpotEntity e = jpaRepository.findByCode(fxSpot.instrumentCode())
+        FxSpotEntity e = jpaRepository.findByCode(fxSpot.instrumentCode().value())
                 .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 
         // Заполняем изменяемые поля из переданной модели
@@ -96,11 +97,13 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public void deleteByCode(String instrumentCode) {
+    public void deleteByCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        // Строковое значение кода инструмента для запроса в БД
+        String codeValue = instrumentCode.value();
 
         // Ищем JPA-сущность по коду инструмента иначе бросаем ошибку
-        FxSpotEntity e = jpaRepository.findByCode(instrumentCode)
+        FxSpotEntity e = jpaRepository.findByCode(codeValue)
                 .orElseThrow(() -> new FxSpotNotFoundException(instrumentCode));
 
         // Пробуем удалить запись (ловим наиболее вероятные ошибки и пробрасываем их выше)
@@ -113,10 +116,12 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public Optional<FxSpot> findByCode(String instrumentCode) {
+    public Optional<FxSpot> findByCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        // Строковое значение кода инструмента для запроса в БД
+        String codeValue = instrumentCode.value();
 
-        return jpaRepository.findByCode(instrumentCode)
+        return jpaRepository.findByCode(codeValue)
                 .map(FxSpotEntityMapper::toDomain);
     }
 

@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.
 
 import com.alligator.market.backend.provider.adapter.twelve.free.TwelveFreeAdapterV2;
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
@@ -24,7 +25,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     private static final String HANDLER_CODE = "TWELVE_FREE_FX_SPOT_HANDLER";
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
-    private static final Set<String> SUPPORTED_CODES = TwelveFreeFxSpotCatalog.SUPPORTED_CODES;
+    private static final Set<InstrumentCode> SUPPORTED_CODES = TwelveFreeFxSpotCatalog.SUPPORTED_CODES;
 
     /* Web-клиент. */
     private final WebClient webClient;
@@ -71,7 +72,7 @@ public class TwelveFreeFxSpotHandler extends AbstractInstrumentHandler<TwelveFre
     /**
      * Преобразование JSON ответа провайдера в доменную модель котировки.
      */
-    private QuoteTick responseJsonToQuoteTick(JsonNode json, String instrumentCode) {
+    private QuoteTick responseJsonToQuoteTick(JsonNode json, InstrumentCode instrumentCode) {
         JsonNode priceNode = json.get("price");
         if (priceNode == null) {
             throw new IllegalArgumentException("Invalid provider response: " + json);

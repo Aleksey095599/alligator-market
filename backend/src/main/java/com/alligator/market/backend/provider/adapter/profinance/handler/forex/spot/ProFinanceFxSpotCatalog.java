@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class ProFinanceFxSpotCatalog {
     /**
      * Набор поддерживаемых кодов инструментов.
      */
-    public static final Set<String> SUPPORTED_CODES = Set.of(EUR_USD.instrumentCode());
+    public static final Set<InstrumentCode> SUPPORTED_CODES = Set.of(EUR_USD.instrumentCode());
 
     /**
      * Скрываем конструктор.

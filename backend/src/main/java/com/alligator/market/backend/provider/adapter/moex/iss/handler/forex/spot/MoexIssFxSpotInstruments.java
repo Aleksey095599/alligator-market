@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 
 import java.util.*;
 
@@ -24,16 +25,16 @@ public class MoexIssFxSpotInstruments {
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
     /* Карта соответствий: доменный код ↔ SECID. */
-    private static final Map<String, String> DOMAIN_CODE_TO_SECID;
+    private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_SECID;
 
     /**
      * Набор кодов поддерживаемых доменных инструментов.
      */
-    public static final Set<String> SUPPORTED_DOMAIN_CODES;
+    public static final Set<InstrumentCode> SUPPORTED_DOMAIN_CODES;
 
     static {
         // Строим карту соответствий доменных кодов и SECID
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<InstrumentCode, String> map = new LinkedHashMap<>();
 
         map.put(USD_RUB.instrumentCode(), "USD000UTSTOM");
         map.put(CNY_RUB.instrumentCode(), "CNYRUB_TOM");
@@ -54,14 +55,14 @@ public class MoexIssFxSpotInstruments {
      *       что {@code instrumentCode} принадлежит {@link #SUPPORTED_DOMAIN_CODES}.</li>
      * </ul>
      */
-    public static String moexSecidOf(String instrumentCode) {
+    public static String moexSecidOf(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Ищем значение из карты соответствий
         String secid = DOMAIN_CODE_TO_SECID.get(instrumentCode);
         if (secid == null) {
             throw new IllegalStateException(
-                    "Missing MOEX ISS SECID mapping for supported instrumentCode: " + instrumentCode
+                    "Missing MOEX ISS SECID mapping for supported instrumentCode: " + instrumentCode.value()
             );
         }
         return secid;

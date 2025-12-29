@@ -33,30 +33,6 @@ public record QuoteTick(
         ProviderCode providerCode
 ) {
     /**
-     * Конструктор для строкового кода инструмента.
-     */
-    @SuppressWarnings("unused")
-    public QuoteTick(
-            String instrumentCode,
-            BigDecimal last,
-            BigDecimal bid,
-            BigDecimal ask,
-            Instant exchangeTimestamp,
-            Instant receivedTimestamp,
-            ProviderCode providerCode
-    ) {
-        this(
-                InstrumentCode.of(instrumentCode),
-                last,
-                bid,
-                ask,
-                exchangeTimestamp,
-                receivedTimestamp,
-                providerCode
-        );
-    }
-
-    /**
      * Фабрика тика по последней сделке (LAST): Поля "bid"/"ask" {@code null}.
      */
     public static QuoteTick lastTrade(
@@ -77,25 +53,6 @@ public record QuoteTick(
                 last,
                 null,
                 null,
-                exchangeTimestamp,
-                receivedTimestamp,
-                providerCode
-        );
-    }
-
-    /**
-     * Перегрузка фабрики тика по последней сделке (LAST) для строкового кода.
-     */
-    public static QuoteTick lastTrade(
-            String instrumentCode,
-            BigDecimal last,
-            Instant exchangeTimestamp,
-            Instant receivedTimestamp,
-            ProviderCode providerCode
-    ) {
-        return lastTrade(
-                InstrumentCode.of(instrumentCode),
-                last,
                 exchangeTimestamp,
                 receivedTimestamp,
                 providerCode
@@ -131,24 +88,4 @@ public record QuoteTick(
         );
     }
 
-    /**
-     * Перегрузка фабрики тика для котировки "bid"/"ask" для строкового кода.
-     */
-    public static QuoteTick bidAsk(
-            String instrumentCode,
-            BigDecimal bid,
-            BigDecimal ask,
-            Instant exchangeTimestamp,
-            Instant receivedTimestamp,
-            ProviderCode providerCode
-    ) {
-        return bidAsk(
-                InstrumentCode.of(instrumentCode),
-                bid,
-                ask,
-                exchangeTimestamp,
-                receivedTimestamp,
-                providerCode
-        );
-    }
 }

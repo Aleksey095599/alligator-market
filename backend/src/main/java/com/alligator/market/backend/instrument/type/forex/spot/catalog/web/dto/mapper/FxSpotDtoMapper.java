@@ -24,7 +24,7 @@ public class FxSpotDtoMapper {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         return new FxSpotResponseDto(
-                fxSpot.instrumentCode(),
+                fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol(),
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),

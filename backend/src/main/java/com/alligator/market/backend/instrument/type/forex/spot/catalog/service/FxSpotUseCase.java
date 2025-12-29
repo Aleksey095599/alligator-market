@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface FxSpotUseCase {
     /**
      * Удалить инструмент по коду.
      */
-    void delete(String instrumentCode);
+    void delete(InstrumentCode instrumentCode);
 
     /**
      * Вернуть все инструменты.

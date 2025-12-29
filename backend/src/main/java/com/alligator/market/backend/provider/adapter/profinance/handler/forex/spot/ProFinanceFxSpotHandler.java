@@ -4,6 +4,7 @@ import com.alligator.market.backend.provider.adapter.profinance.ProFinanceAdapte
 import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanceAdapterProps;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -34,7 +35,7 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
     private static final String HANDLER_CODE = "PROFINANCE_FX_SPOT_HANDLER";
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
-    private static final Set<String> SUPPORTED_CODES = ProFinanceFxSpotCatalog.SUPPORTED_CODES;
+    private static final Set<InstrumentCode> SUPPORTED_CODES = ProFinanceFxSpotCatalog.SUPPORTED_CODES;
 
     /* Web-клиент. */
     private final WebClient webClient;

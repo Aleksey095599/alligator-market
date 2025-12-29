@@ -64,9 +64,9 @@ public class FxSpotEntityMapper {
         Objects.requireNonNull(e, "entity must not be null");
 
         // Модель и сущность должны соответствовать одному и тому же инструменту
-        if (!e.getCode().equals(m.instrumentCode())) {
+        if (!e.getCode().equals(m.instrumentCode().value())) {
             throw new IllegalStateException("Instrument code mismatch: " + e.getCode() + " vs " +
-                    m.instrumentCode());
+                    m.instrumentCode().value());
         }
 
         // Копируем в изменяемые поля JPA-сущности поля из доменной модели
