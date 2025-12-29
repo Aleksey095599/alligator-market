@@ -35,7 +35,7 @@ public class ProFinanceAdapter extends SpringMarketDataProvider<ProFinanceAdapte
             false // bulk-подписка не нужна
     );
 
-    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(10);
 
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */

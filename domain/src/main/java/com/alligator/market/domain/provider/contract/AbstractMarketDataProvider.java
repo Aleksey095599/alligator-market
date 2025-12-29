@@ -28,7 +28,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
     protected final ProviderDescriptor descriptor;
 
-    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     protected final ProviderPolicy policy;
 
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
@@ -144,7 +144,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика.
+     * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
      */
     public ProviderPolicy policy() {
         return policy;

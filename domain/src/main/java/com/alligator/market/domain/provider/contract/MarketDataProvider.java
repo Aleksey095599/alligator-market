@@ -28,7 +28,7 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     ProviderDescriptor descriptor();
 
     /**
-     * "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика.
+     * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
      */
     ProviderPolicy policy();
 

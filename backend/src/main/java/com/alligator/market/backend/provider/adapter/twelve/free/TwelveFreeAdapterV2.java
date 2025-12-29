@@ -35,7 +35,7 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
             false
     );
 
-    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(60);
 
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */

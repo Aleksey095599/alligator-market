@@ -38,7 +38,7 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
             false // <-- bulk-подписка не используется
     );
 
-    /* "Политика провайдера": иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1); // <-- интервал запросов 1 сек
 
     /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
