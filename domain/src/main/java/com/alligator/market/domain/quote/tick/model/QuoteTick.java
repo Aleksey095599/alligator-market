@@ -60,6 +60,7 @@ public record QuoteTick(
     /**
      * Фабрика тика для котировки "bid"/"ask": поле "last" {@code null}.
      */
+    @SuppressWarnings("unused")
     public static QuoteTick bidAsk(
             InstrumentCode instrumentCode,
             BigDecimal bid,
