@@ -4,8 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * ThreadLocal-холдер контекста аудита (актор + источник/канал via).
- * <p>Хранит значение per-thread и предоставляет фолбэки.</p>
+ * ThreadLocal-холдер контекста аудита.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE) // <-- Конструктор только внутри самого класса
 public final class AuditContextHolder {
@@ -19,7 +18,7 @@ public final class AuditContextHolder {
     /* Фолбэк для via при отсутствующем/пустом контексте. */
     public static final String FALLBACK_VIA = "fallback_via";
 
-    /* Предсозданный фолбэк‑контекст (record иммутабелен). */
+    /* Пред-созданный фолбэк‑контекст (record иммутабелен). */
     private static final AuditContext FALLBACK_CTX =
             new AuditContext(FALLBACK_ACTOR, FALLBACK_VIA);
 
