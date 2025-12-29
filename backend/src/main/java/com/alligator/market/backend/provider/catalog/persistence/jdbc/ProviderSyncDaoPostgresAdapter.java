@@ -19,7 +19,6 @@ import java.util.Objects;
 
 /**
  * DAO (Data Access Object) для пакетного UPSERT/DELETE провайдеров в таблице {@code market_data_provider}.
- * Подходит только для базы данных (далее БД) PostgreSQL.
  *
  * <p>Назначение:</p>
  * <ul>
