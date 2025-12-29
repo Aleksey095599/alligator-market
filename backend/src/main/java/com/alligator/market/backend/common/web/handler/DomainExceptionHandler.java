@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Централизованный обработчик доменных исключений приложения.
+ * Централизованный обработчик исключений, вызванных нарушением доменной логики приложения.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
