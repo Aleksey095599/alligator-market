@@ -2,16 +2,11 @@ package com.alligator.market.backend.common.persistence.jpa.converter;
 
 import jakarta.persistence.Converter;
 
-import java.time.Duration;
-
 /**
  * JPA-конвертер {@link java.time.Duration} ↔ {@link Long} (секунды) для хранения в БД.
- *
- * <p>Точность — до секунды: наносекунды отбрасываются (используется {@link Duration#toSeconds()}),
- * {@code null} ↔ {@code null}.</p>
  */
 @Converter
-public class DurationToMillisConverter
+public class DurationToSecondsConverter
         implements jakarta.persistence.AttributeConverter<java.time.Duration, Long> {
 
     @Override

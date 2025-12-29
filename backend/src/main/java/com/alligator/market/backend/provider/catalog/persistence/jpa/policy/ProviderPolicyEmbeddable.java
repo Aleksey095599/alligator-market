@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
 
-import com.alligator.market.backend.common.persistence.jpa.converter.DurationToMillisConverter;
+import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -14,8 +14,7 @@ import org.hibernate.validator.constraints.time.DurationMin;
 import java.time.Duration;
 
 /**
- * Embeddable JPA-сущность для параметров "политики провайдера".
- * Набор полей аналогичен доменной модели {@link ProviderPolicy}.
+ * Embeddable JPA-сущность для параметров политики провайдера {@link ProviderPolicy}.
  */
 @Embeddable
 @Getter
@@ -23,11 +22,11 @@ import java.time.Duration;
 public class ProviderPolicyEmbeddable {
 
     /**
-     * Минимальный интервал обновления котировок (независимо от режима доставки) {@link ProviderPolicy#minUpdateInterval()}.
+     * Минимальный интервал обновления котировок {@link ProviderPolicy#minUpdateInterval()} для любых режимов доставки.
      */
     @NotNull
     @DurationMin(seconds = 1)
-    @Convert(converter = DurationToMillisConverter.class)
+    @Convert(converter = DurationToSecondsConverter.class)
     @Column(name = "min_update_interval_seconds", nullable = false, updatable = false)
     private Duration minUpdateInterval;
 }

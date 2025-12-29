@@ -70,6 +70,5 @@ public abstract class BaseEntity {
 
     /* Хуки для наследников. */
     protected void onPrePersist() { /* no-op */ }
-
     protected void onPreUpdate() { /* no-op */ }
 }

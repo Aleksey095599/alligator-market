@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 
-import com.alligator.market.backend.common.persistence.jpa.converter.DurationToMillisConverter;
+import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
@@ -52,7 +52,7 @@ import java.util.Objects;
 public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
     // Конвертер Duration ↔ seconds
-    private static final DurationToMillisConverter DUR2SEC = new DurationToMillisConverter();
+    private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
 
     // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException --> DataAccessException.
     private final JdbcTemplate jdbc;
