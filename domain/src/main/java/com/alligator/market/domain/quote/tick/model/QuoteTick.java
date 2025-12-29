@@ -1,9 +1,7 @@
 package com.alligator.market.domain.quote.tick.model;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
-import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -15,13 +13,13 @@ import java.util.Objects;
  * <p>Используется как унифицированное представление любых рыночных тиков:
  * по последней сделке (LAST) и по котировке bid/ask.</p>
  *
- * @param instrumentCode    доменный код инструмента (соответствует {@link Instrument#instrumentCode()})
+ * @param instrumentCode    доменный код инструмента
  * @param last              цена последней сделки (MOEX LAST); может быть {@code null}
  * @param bid               цена лучшей покупки; может быть {@code null}
  * @param ask               цена лучшей продажи; может быть {@code null},
  * @param exchangeTimestamp время события на стороне биржи/провайдера
  * @param receivedTimestamp время, когда тик был получен и зафиксирован в нашей системе
- * @param providerCode      технический код провайдера, предоставившего котировку (соответствует {@link MarketDataProvider#providerCode()})
+ * @param providerCode      технический код провайдера, предоставившего котировку
  */
 public record QuoteTick(
         InstrumentCode instrumentCode,
@@ -87,5 +85,4 @@ public record QuoteTick(
                 providerCode
         );
     }
-
 }

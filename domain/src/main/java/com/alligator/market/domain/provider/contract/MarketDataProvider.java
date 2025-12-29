@@ -42,13 +42,13 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
      * Иммутабельный набор кодов поддерживаемых инструментов.
      */
     @SuppressWarnings("unused")
-    Set<InstrumentCode> instrumentsCodes(); // <-- TODO: нужен ли?
+    Set<InstrumentCode> instrumentsCodes();
 
     /**
      * Иммутабельный набор типов поддерживаемых инструментов.
      */
     @SuppressWarnings("unused")
-    Set<InstrumentType> instrumentsTypes(); // <-- TODO: нужен ли?
+    Set<InstrumentType> instrumentsTypes();
 
     /**
      * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
