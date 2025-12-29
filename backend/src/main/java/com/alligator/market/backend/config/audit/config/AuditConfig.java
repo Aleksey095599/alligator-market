@@ -17,9 +17,10 @@ public class AuditConfig {
 
     /**
      * Поставщик текущего аудитора для Spring Data JPA.
-     * Используется для заполнения полей {@link org.springframework.data.annotation.CreatedBy}
-     * и {@link org.springframework.data.annotation.LastModifiedBy}.
-     * Источник значения — {@link AuditContextHolder#actorOrFallback()} (возвращает фолбэк, если контекст не установлен).
+     *
+     * <p>Используется для заполнения полей {@link org.springframework.data.annotation.CreatedBy}
+     * и {@link org.springframework.data.annotation.LastModifiedBy}. Источник значений для полей —
+     * {@link AuditContextHolder#actorOrFallback()}.</p>
      */
     @Bean
     public AuditorAware<String> auditorAware() {
