@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public final class DbErrors {
 
-    /*
+    /**
      * Приватный конструктор: запрещаем создание экземпляров класса-утилиты.
      */
     private DbErrors() {
@@ -33,20 +33,7 @@ public final class DbErrors {
     }
 
     /**
-     * Возвращает {@code true}, если в cause-цепочке {@code ex} обнаружено имя ограничения {@code constraintName}.
-     *
-     * <p>Алгоритм поиска:</p>
-     * <ol>
-     *   <li>1) Нормализует {@code constraintName} (обрезает пробелы) и проверяет, что оно не пустое.</li>
-     *   <li>2) Обходит cause-цепочку исключения (с защитой от циклов).</li>
-     *   <li>3) Для каждого элемента цепочки:
-     *       <br/>3.1) “идеальный” вариант: если доступно имя ограничения через
-     *       {@link ConstraintViolationException#getConstraintName()}, сравнивает его с {@code constraintName}
-     *       без учёта регистра и при совпадении сразу возвращает {@code true};
-     *       <br/>3.2) "фолбэк": ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()},
-     *       запоминает совпадение и продолжает обход цепочки.</li>
-     *   <li>4) Если “идеальный” вариант не сработал, возвращает результат фолбэка.</li>
-     * </ol>
+     * Ищет в cause-цепочке {@code ex} имя ограничения {@code constraintName}.
      *
      * @param ex             исключение, возникшее при операции с БД
      * @param constraintName имя ограничения в БД
@@ -58,56 +45,65 @@ public final class DbErrors {
         Objects.requireNonNull(ex, "ex must not be null");
         Objects.requireNonNull(constraintName, "constraintName must not be null");
 
-        // 1) Нормализуем {@code constraintName} и проверяем, что оно не пустое.
-        final String needle = constraintName.trim();
+        // 1) Нормализуем constraintName и проверяем, что не пустое
+        final String needle = constraintName.strip();
         if (needle.isEmpty()) {
             throw new IllegalArgumentException("constraintName must not be blank");
         }
 
-        // Флаг совпадения по сообщениям (фолбэк)
+        // Флаг реализации варианта "фолбэк"
         boolean matchedByMessage = false;
 
-        // Защита от потенциально циклической cause-цепочки (маловероятно, но на крайний случай)
+        // Защита от потенциально циклической cause-цепочки (маловероятно, на крайний случай)
         final Set<Throwable> visited = Collections.newSetFromMap(new IdentityHashMap<>());
 
         // 2) Обходим cause-цепочку исключения
         for (Throwable t = ex; t != null && visited.add(t); t = t.getCause()) {
-            // 3) На каждом шаге пытаемся распознать нарушение ограничения:
 
             // 3.1) "Идеальный" вариант – Hibernate смог поймать и обернуть исключение в ConstraintViolationException.
-            //      Тогда перебираем узлы исключения --> ищем ConstraintViolationException -->
-            //      извлекаем имя ConstraintViolationException --> сравниваем с needle.
+            //      Тогда извлекаем имя ConstraintViolationException и сравниваем с needle.
             if (t instanceof ConstraintViolationException cve) {
                 final String name = cve.getConstraintName();
-                if (name != null && name.trim().equalsIgnoreCase(needle)) {
+                if (name != null && name.strip().equalsIgnoreCase(needle)) {
                     return true;
                     // Сразу же выходим, так как это "идеальный" вариант
                 }
             }
 
-            // 3.2) "Фолбэк" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения в getConstraintName(),
-            //    но включают его в текст сообщения => Ищем имя ограничения в сообщениях причин
+            // 3.2) "Фолбэк" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
+            //      в getConstraintName(), но включают его в текст сообщения. Тогда ищем needle в сообщениях причин.
             if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
-                matchedByMessage = true;
-                // Не выходим, даём шанс найти "идеальный" вариант глубже по цепочке
+                matchedByMessage = true; // <-- Фиксируем, что вариант "фолбэк" сработал.
+                // Не выходим, даём шанс сработать "идеальному" варианту глубже по цепочке
             }
         }
         // 4) Если идеальный вариант не сработал, возвращаем результат фолбэка
         return matchedByMessage;
     }
 
+    //=================================================================================================================
+    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    //=================================================================================================================
+
     /**
      * Проверяет, содержит ли строка {@code haystack} подстроку {@code needle} без учёта регистра.
-     *
-     * <p>Безопасен к {@code null}: если любой входящий аргумент равен {@code null}, возвращает {@code false}.</p>
      */
     private static boolean containsIgnoreCase(String haystack, String needle) {
-        if (haystack == null || needle == null) {
+        // needle == null/blank трактуется как ошибка, потому что в контексте основного метода
+        // это равносильно передаче null/blank имени ограничения БД
+        Objects.requireNonNull(needle, "needle must not be null");
+        if (needle.isBlank()) {
+            throw new IllegalArgumentException("needle must not be blank");
+        }
+
+        // haystack может быть null (Throwable#getMessage() нередко возвращает null) --> считаем, что совпадения нет
+        if (haystack == null) {
             return false;
         }
+
         final int hLen = haystack.length();
         final int nLen = needle.length();
-        if (nLen == 0 || nLen > hLen) {
+        if (nLen > hLen) {
             return false;
         }
         for (int i = 0; i <= hLen - nLen; i++) {
