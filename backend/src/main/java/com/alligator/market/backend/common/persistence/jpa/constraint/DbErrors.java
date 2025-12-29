@@ -12,9 +12,9 @@ import java.util.Set;
  *
  * <p>Пример: Предположим, что в БД есть таблица, в которой задано ограничение (UNIQUE) на уникальность
  * значений в одной из колонок. В данном приложении, согласно лучшим практикам, каждому ограничению назначается
- * уникальное имя. Поэтому в нашем примере ограничению будет задано уникальное имя, например, "uq_some_column".
+ * уникальное имя. Поэтому в нашем примере ограничению будет присвоено уникальное имя, например, "uq_some_column".
  * Если при операции сохранения записи в таблицу было выброшено исключение, мы можем с помощью данной утилиты
- * просканировать cause-цепочку данного исключения с целью найти в ней "uq_some_column". Если имя "uq_some_column"
+ * просканировать cause-цепочку исключения с целью найти в ней "uq_some_column". Если имя "uq_some_column"
  * найдено в cause-цепочке исключения, с высокой долей вероятности исключение вызвано нарушением именно этого
  * ограничения.</p>
  *
@@ -25,9 +25,11 @@ import java.util.Set;
  */
 public final class DbErrors {
 
-    /* Конструктор: утилитарный класс — инстанцирование запрещено. */
+    /*
+     * Приватный конструктор: запрещаем создание экземпляров класса-утилиты.
+     */
     private DbErrors() {
-        throw new UnsupportedOperationException("Utility class");
+        throw new UnsupportedOperationException("Utility class instantiation is not allowed");
     }
 
     /**
@@ -41,7 +43,7 @@ public final class DbErrors {
      *       <br/>3.1) “идеальный” вариант: если доступно имя ограничения через
      *       {@link ConstraintViolationException#getConstraintName()}, сравнивает его с {@code constraintName}
      *       без учёта регистра и при совпадении сразу возвращает {@code true};
-     *       <br/>3.2) фолбэк: ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()},
+     *       <br/>3.2) "фолбэк": ищет {@code constraintName} (без учёта регистра) в {@link Throwable#getMessage()},
      *       запоминает совпадение и продолжает обход цепочки.</li>
      *   <li>4) Если “идеальный” вариант не сработал, возвращает результат фолбэка.</li>
      * </ol>
@@ -72,9 +74,9 @@ public final class DbErrors {
         for (Throwable t = ex; t != null && visited.add(t); t = t.getCause()) {
             // 3) На каждом шаге пытаемся распознать нарушение ограничения:
 
-            // 3.1) "Идеальный" вариант – Hibernate смог поймать и обернуть исключение в ConstraintViolationException =>
-            //      Перебираем узлы исключения, ищем ConstraintViolationException, извлекаем имя ConstraintViolationException
-            //      и сравниваем его с needle.
+            // 3.1) "Идеальный" вариант – Hibernate смог поймать и обернуть исключение в ConstraintViolationException.
+            //      Тогда перебираем узлы исключения --> ищем ConstraintViolationException -->
+            //      извлекаем имя ConstraintViolationException --> сравниваем с needle.
             if (t instanceof ConstraintViolationException cve) {
                 final String name = cve.getConstraintName();
                 if (name != null && name.trim().equalsIgnoreCase(needle)) {
@@ -83,7 +85,7 @@ public final class DbErrors {
                 }
             }
 
-            // 3.2) Фолбэк – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения в getConstraintName(),
+            // 3.2) "Фолбэк" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения в getConstraintName(),
             //    но включают его в текст сообщения => Ищем имя ограничения в сообщениях причин
             if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
                 matchedByMessage = true;
