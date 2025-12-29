@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
 
-import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
+import com.alligator.market.backend.common.persistence.jpa.converter.DurationToMillisConverter;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -27,7 +27,7 @@ public class ProviderPolicyEmbeddable {
      */
     @NotNull
     @DurationMin(seconds = 1)
-    @Convert(converter = DurationToSecondsConverter.class)
+    @Convert(converter = DurationToMillisConverter.class)
     @Column(name = "min_update_interval_seconds", nullable = false, updatable = false)
     private Duration minUpdateInterval;
 }
