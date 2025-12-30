@@ -1,7 +1,7 @@
 package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
-import com.alligator.market.backend.common.web.http.ErrorCode;
+import com.alligator.market.backend.common.web.http.GlobalErrorCodes;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class GlobalRestExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         log.warn("Validation failed: {}", message);
-        return ResponseEntityFactory.unprocessableEntity(ErrorCode.VALIDATION_ERROR.name(), message);
+        return ResponseEntityFactory.unprocessableEntity(GlobalErrorCodes.VALIDATION_ERROR.name(), message);
     }
 
     /**
@@ -46,7 +46,7 @@ public class GlobalRestExceptionHandler {
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .collect(Collectors.joining("; "));
         log.warn("Constraint violation: {}", message);
-        return ResponseEntityFactory.badRequest(ErrorCode.BAD_ARGUMENT.name(), message);
+        return ResponseEntityFactory.badRequest(GlobalErrorCodes.BAD_ARGUMENT.name(), message);
     }
 
     /**
@@ -55,7 +55,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         log.warn("Malformed JSON: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(ErrorCode.MALFORMED_JSON.name(), "Malformed JSON");
+        return ResponseEntityFactory.badRequest(GlobalErrorCodes.MALFORMED_JSON.name(), "Malformed JSON");
     }
 
     /**
@@ -64,7 +64,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
-        return ResponseEntityFactory.conflict(ErrorCode.DATA_INTEGRITY_VIOLATION.name(), "Data integrity violation");
+        return ResponseEntityFactory.conflict(GlobalErrorCodes.DATA_INTEGRITY_VIOLATION.name(), "Data integrity violation");
     }
 
     /**
@@ -73,7 +73,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
         log.warn("Illegal argument: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(ErrorCode.BAD_ARGUMENT.name(), ex.getMessage());
+        return ResponseEntityFactory.badRequest(GlobalErrorCodes.BAD_ARGUMENT.name(), ex.getMessage());
     }
 
     /**
@@ -82,7 +82,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler({IllegalStateException.class, UnsupportedOperationException.class})
     public ResponseEntity<ApiResponse<Void>> handleIllegalState(RuntimeException ex) {
         log.error("Illegal state: {}", ex.getMessage(), ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.UNEXPECTED_ERROR.name(), ex.getMessage());
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, GlobalErrorCodes.UNEXPECTED_ERROR.name(), ex.getMessage());
     }
 
     /**
@@ -91,6 +91,6 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
         log.error("Unhandled exception", ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.UNEXPECTED_ERROR.name(), "Unexpected server error");
+        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, GlobalErrorCodes.UNEXPECTED_ERROR.name(), "Unexpected server error");
     }
 }

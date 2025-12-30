@@ -1,9 +1,9 @@
 package com.alligator.market.backend.common.web.http;
 
 /**
- * Перечень стабильных кодов ошибок для фронта.
+ *
  */
-public enum ErrorCode {
+public enum GlobalErrorCodes {
     /* Общие ошибки: */
     UNEXPECTED_ERROR,
     MALFORMED_JSON,
