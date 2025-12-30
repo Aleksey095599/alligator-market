@@ -7,5 +7,5 @@ public enum DomainErrorType {
     BAD_REQUEST,
     NOT_FOUND,
     CONFLICT,
-    INTERNAL
+    TECHNICAL
 }
