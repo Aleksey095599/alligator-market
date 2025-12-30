@@ -1,5 +1,6 @@
 package com.alligator.market.domain.common.exception;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -7,17 +8,20 @@ import java.util.Objects;
  */
 public abstract class BaseDomainException extends RuntimeException {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final DomainErrorCodes errorCode;
     private final DomainErrorType errorType;
 
     /**
      * Создает доменное исключение.
      *
-     * @param errorCode код ошибки
-     * @param errorType тип ошибки
-     * @param message   сообщение
+     * @param errorCode код ошибки из {@link DomainErrorCodes}
+     * @param errorType тип ошибки из {@link DomainErrorType}
+     * @param message   сообщение ошибки
      */
-    protected BaseDomainException(String errorCode, DomainErrorType errorType, String message) {
+    protected BaseDomainException(DomainErrorCodes errorCode, DomainErrorType errorType, String message) {
         super(message);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
         this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
@@ -26,12 +30,12 @@ public abstract class BaseDomainException extends RuntimeException {
     /**
      * Создает доменное исключение с причиной.
      *
-     * @param errorCode код ошибки
-     * @param errorType тип ошибки
-     * @param message   сообщение
+     * @param errorCode код ошибки из {@link DomainErrorCodes}
+     * @param errorType тип ошибки из {@link DomainErrorType}
+     * @param message   сообщение ошибки
      * @param cause     причина
      */
-    protected BaseDomainException(String errorCode, DomainErrorType errorType, String message, Throwable cause) {
+    protected BaseDomainException(DomainErrorCodes errorCode, DomainErrorType errorType, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
         this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
@@ -42,7 +46,7 @@ public abstract class BaseDomainException extends RuntimeException {
      *
      * @return код ошибки
      */
-    public String getErrorCode() {
+    public DomainErrorCodes getErrorCode() {
         return errorCode;
     }
 

@@ -1,7 +1,6 @@
 package com.alligator.market.domain.common.exception;
 
 public enum DomainErrorCodes {
-
     /* Провайдеры: */
     PROVIDER_CODE_DUPLICATE,
     PROVIDER_DISPLAY_NAME_DUPLICATE,
