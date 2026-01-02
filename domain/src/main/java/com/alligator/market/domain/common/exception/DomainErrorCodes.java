@@ -1,28 +1,56 @@
 package com.alligator.market.domain.common.exception;
 
+/**
+ * Коды и типы ошибок доменной логики.
+ */
 public enum DomainErrorCodes {
+
     /* Провайдеры: */
-    PROVIDER_CODE_DUPLICATE,
-    PROVIDER_DISPLAY_NAME_DUPLICATE,
-    HANDLER_NOT_FOUND,
-    INSTRUMENT_NOT_SUPPORTED,
-    INSTRUMENT_WRONG_CLASS,
-    INSTRUMENT_WRONG_TYPE,
+    PROVIDER_CODE_DUPLICATE(DomainErrorType.CONFLICT),
+    PROVIDER_DISPLAY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
+    HANDLER_NOT_FOUND(DomainErrorType.NOT_FOUND),
+    INSTRUMENT_NOT_SUPPORTED(DomainErrorType.BAD_REQUEST),
+    INSTRUMENT_WRONG_CLASS(DomainErrorType.BAD_REQUEST),
+    INSTRUMENT_WRONG_TYPE(DomainErrorType.BAD_REQUEST),
 
     /* Валюты: */
-    CURRENCY_ALREADY_EXISTS,
-    CURRENCY_NAME_DUPLICATE,
-    CURRENCY_NOT_FOUND,
-    CURRENCY_USED_IN_FX_SPOT,
-    CURRENCY_CREATE_FAILED,
-    CURRENCY_UPDATE_FAILED,
-    CURRENCY_DELETE_FAILED,
+    CURRENCY_ALREADY_EXISTS(DomainErrorType.CONFLICT),
+    CURRENCY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
+    CURRENCY_NOT_FOUND(DomainErrorType.NOT_FOUND),
+    CURRENCY_USED_IN_FX_SPOT(DomainErrorType.CONFLICT),
+    CURRENCY_CREATE_FAILED(DomainErrorType.TECHNICAL),
+    CURRENCY_UPDATE_FAILED(DomainErrorType.TECHNICAL),
+    CURRENCY_DELETE_FAILED(DomainErrorType.TECHNICAL),
 
     /* FX_SPOT инструмент: */
-    FX_SPOT_ALREADY_EXISTS,
-    FX_SPOT_NOT_FOUND,
-    FX_SPOT_SAME_CURRENCIES,
-    FX_SPOT_CREATE_FAILED,
-    FX_SPOT_UPDATE_FAILED,
-    FX_SPOT_DELETE_FAILED
+    FX_SPOT_ALREADY_EXISTS(DomainErrorType.CONFLICT),
+    FX_SPOT_NOT_FOUND(DomainErrorType.NOT_FOUND),
+    FX_SPOT_SAME_CURRENCIES(DomainErrorType.BAD_REQUEST),
+    FX_SPOT_CREATE_FAILED(DomainErrorType.TECHNICAL),
+    FX_SPOT_UPDATE_FAILED(DomainErrorType.TECHNICAL),
+    FX_SPOT_DELETE_FAILED(DomainErrorType.TECHNICAL);
+
+    /* Тип ошибки доменной логики. */
+    private final DomainErrorType type;
+
+    /**
+     * Конструктор класса.
+     */
+    DomainErrorCodes(DomainErrorType type) {
+        this.type = type;
+    }
+
+    /**
+     * Возвращает тип ошибки.
+     */
+    public DomainErrorType getType() {
+        return type;
+    }
+
+    /**
+     * Возвращает внешний строковый код ошибки (по умолчанию равен имени enum).
+     */
+    public String getCode() {
+        return name();
+    }
 }
