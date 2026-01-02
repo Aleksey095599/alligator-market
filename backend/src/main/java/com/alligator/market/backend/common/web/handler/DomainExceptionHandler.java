@@ -2,7 +2,7 @@ package com.alligator.market.backend.common.web.handler;
 
 import com.alligator.market.backend.common.web.http.ApiResponse;
 import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
-import com.alligator.market.domain.common.exception.DomainErrorCodes;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.provider.exception.*;
@@ -28,7 +28,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(CurrencyAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> currencyAlreadyExists(CurrencyAlreadyExistsException ex) {
         log.warn("Currency already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.CURRENCY_ALREADY_EXISTS.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_ALREADY_EXISTS.name(), ex.getMessage());
     }
 
     /**
@@ -37,7 +37,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(CurrencyNameDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> currencyNameDuplicate(CurrencyNameDuplicateException ex) {
         log.warn("Currency name duplicate: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.CURRENCY_NAME_DUPLICATE.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_NAME_DUPLICATE.name(), ex.getMessage());
     }
 
     /**
@@ -46,7 +46,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
     public ResponseEntity<ApiResponse<Void>> currencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
         log.warn("Currency used in FX Spot: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.CURRENCY_USED_IN_FX_SPOT.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT.name(), ex.getMessage());
     }
 
     /**
@@ -55,7 +55,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
         log.warn("Currency not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(DomainErrorCodes.CURRENCY_NOT_FOUND.name(), ex.getMessage());
+        return ResponseEntityFactory.notFound(DomainErrorCode.CURRENCY_NOT_FOUND.name(), ex.getMessage());
     }
 
     /**
@@ -64,7 +64,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
         log.warn("FX Spot already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.FX_SPOT_ALREADY_EXISTS.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.FX_SPOT_ALREADY_EXISTS.name(), ex.getMessage());
     }
 
     /**
@@ -73,7 +73,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(FxSpotNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
         log.warn("FX Spot not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(DomainErrorCodes.FX_SPOT_NOT_FOUND.name(), ex.getMessage());
+        return ResponseEntityFactory.notFound(DomainErrorCode.FX_SPOT_NOT_FOUND.name(), ex.getMessage());
     }
 
     /**
@@ -82,7 +82,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
         log.warn("FX Spot same currencies: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(DomainErrorCodes.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
+        return ResponseEntityFactory.badRequest(DomainErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
     }
 
     /**
@@ -91,7 +91,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(InstrumentNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> instrumentNotSupported(InstrumentNotSupportedException ex) {
         log.warn("Instrument not supported: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(DomainErrorCodes.INSTRUMENT_NOT_SUPPORTED.name(), ex.getMessage());
+        return ResponseEntityFactory.badRequest(DomainErrorCode.INSTRUMENT_NOT_SUPPORTED.name(), ex.getMessage());
     }
 
     /**
@@ -100,7 +100,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(HandlerNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handlerNotFound(HandlerNotFoundException ex) {
         log.warn("Handler not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(DomainErrorCodes.HANDLER_NOT_FOUND.name(), ex.getMessage());
+        return ResponseEntityFactory.notFound(DomainErrorCode.HANDLER_NOT_FOUND.name(), ex.getMessage());
     }
 
     /**
@@ -110,8 +110,8 @@ public class DomainExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> instrumentWrong(RuntimeException ex) {
         log.warn("Instrument mismatch: {}", ex.getMessage());
         String code = ex instanceof InstrumentWrongClassException
-                ? DomainErrorCodes.INSTRUMENT_WRONG_CLASS.name()
-                : DomainErrorCodes.INSTRUMENT_WRONG_TYPE.name();
+                ? DomainErrorCode.INSTRUMENT_WRONG_CLASS.name()
+                : DomainErrorCode.INSTRUMENT_WRONG_TYPE.name();
         return ResponseEntityFactory.badRequest(code, ex.getMessage());
     }
 
@@ -121,7 +121,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(ProviderCodeDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> providerCodeDuplicate(ProviderCodeDuplicateException ex) {
         log.warn("Provider code duplicate: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.PROVIDER_CODE_DUPLICATE.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.PROVIDER_CODE_DUPLICATE.name(), ex.getMessage());
     }
 
     /**
@@ -130,7 +130,7 @@ public class DomainExceptionHandler {
     @ExceptionHandler(ProviderDisplayNameDuplicateException.class)
     public ResponseEntity<ApiResponse<Void>> providerDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
         log.warn("Provider display name duplicate: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCodes.PROVIDER_DISPLAY_NAME_DUPLICATE.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.PROVIDER_DISPLAY_NAME_DUPLICATE.name(), ex.getMessage());
     }
 
     /**
@@ -153,20 +153,20 @@ public class DomainExceptionHandler {
     /* Подбираем код ошибки для технических доменных исключений. */
     private String resolveTechnicalErrorCode(RuntimeException ex) {
         if (ex instanceof CurrencyCreateException) {
-            return DomainErrorCodes.CURRENCY_CREATE_FAILED.name();
+            return DomainErrorCode.CURRENCY_CREATE_FAILED.name();
         }
         if (ex instanceof CurrencyUpdateException) {
-            return DomainErrorCodes.CURRENCY_UPDATE_FAILED.name();
+            return DomainErrorCode.CURRENCY_UPDATE_FAILED.name();
         }
         if (ex instanceof CurrencyDeleteException) {
-            return DomainErrorCodes.CURRENCY_DELETE_FAILED.name();
+            return DomainErrorCode.CURRENCY_DELETE_FAILED.name();
         }
         if (ex instanceof FxSpotCreateException) {
-            return DomainErrorCodes.FX_SPOT_CREATE_FAILED.name();
+            return DomainErrorCode.FX_SPOT_CREATE_FAILED.name();
         }
         if (ex instanceof FxSpotUpdateException) {
-            return DomainErrorCodes.FX_SPOT_UPDATE_FAILED.name();
+            return DomainErrorCode.FX_SPOT_UPDATE_FAILED.name();
         }
-        return DomainErrorCodes.FX_SPOT_DELETE_FAILED.name();
+        return DomainErrorCode.FX_SPOT_DELETE_FAILED.name();
     }
 }

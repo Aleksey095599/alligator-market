@@ -1,9 +1,11 @@
 package com.alligator.market.domain.common.exception;
 
+import java.util.Objects;
+
 /**
  * Коды и типы ошибок доменной логики.
  */
-public enum DomainErrorCodes {
+public enum DomainErrorCode {
 
     /* Провайдеры: */
     PROVIDER_CODE_DUPLICATE(DomainErrorType.CONFLICT),
@@ -34,23 +36,23 @@ public enum DomainErrorCodes {
     private final DomainErrorType type;
 
     /**
-     * Конструктор класса.
+     * Конструктор.
      */
-    DomainErrorCodes(DomainErrorType type) {
-        this.type = type;
+    DomainErrorCode(DomainErrorType type) {
+        this.type = Objects.requireNonNull(type, "type must not be null");
     }
 
     /**
      * Возвращает тип ошибки.
      */
-    public DomainErrorType getType() {
+    public DomainErrorType type() {
         return type;
     }
 
     /**
      * Возвращает внешний строковый код ошибки (по умолчанию равен имени enum).
      */
-    public String getCode() {
+    public String code() {
         return name();
     }
 }

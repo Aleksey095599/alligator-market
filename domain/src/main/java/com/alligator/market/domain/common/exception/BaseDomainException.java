@@ -11,17 +11,17 @@ public abstract class BaseDomainException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final DomainErrorCodes errorCode;
+    private final DomainErrorCode errorCode;
     private final DomainErrorType errorType;
 
     /**
      * Создает доменное исключение.
      *
-     * @param errorCode код ошибки из {@link DomainErrorCodes}
+     * @param errorCode код ошибки из {@link DomainErrorCode}
      * @param errorType тип ошибки из {@link DomainErrorType}
      * @param message   сообщение ошибки
      */
-    protected BaseDomainException(DomainErrorCodes errorCode, DomainErrorType errorType, String message) {
+    protected BaseDomainException(DomainErrorCode errorCode, DomainErrorType errorType, String message) {
         super(message);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
         this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
@@ -30,12 +30,12 @@ public abstract class BaseDomainException extends RuntimeException {
     /**
      * Создает доменное исключение с причиной.
      *
-     * @param errorCode код ошибки из {@link DomainErrorCodes}
+     * @param errorCode код ошибки из {@link DomainErrorCode}
      * @param errorType тип ошибки из {@link DomainErrorType}
      * @param message   сообщение ошибки
      * @param cause     причина
      */
-    protected BaseDomainException(DomainErrorCodes errorCode, DomainErrorType errorType, String message, Throwable cause) {
+    protected BaseDomainException(DomainErrorCode errorCode, DomainErrorType errorType, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
         this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
@@ -46,7 +46,7 @@ public abstract class BaseDomainException extends RuntimeException {
      *
      * @return код ошибки
      */
-    public DomainErrorCodes getErrorCode() {
+    public DomainErrorCode getErrorCode() {
         return errorCode;
     }
 
