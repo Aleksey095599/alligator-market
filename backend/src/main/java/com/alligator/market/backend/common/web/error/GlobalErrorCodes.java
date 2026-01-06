@@ -1,7 +1,7 @@
 package com.alligator.market.backend.common.web.error;
 
 /**
- * Глобальные коды и типы ошибок.
+ * Глобальные коды ошибок.
  */
 public enum GlobalErrorCodes {
     UNEXPECTED_ERROR,

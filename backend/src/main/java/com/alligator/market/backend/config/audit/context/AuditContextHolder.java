@@ -19,8 +19,7 @@ public final class AuditContextHolder {
     public static final String FALLBACK_VIA = "fallback_via";
 
     /* Пред-созданный фолбэк‑контекст (record иммутабелен). */
-    private static final AuditContext FALLBACK_CTX =
-            new AuditContext(FALLBACK_ACTOR, FALLBACK_VIA);
+    private static final AuditContext FALLBACK_CTX = new AuditContext(FALLBACK_ACTOR, FALLBACK_VIA);
 
     /* Переменная на поток для хранения текущего {@link AuditContext}. */
     private static final ThreadLocal<AuditContext> CTX = new ThreadLocal<>();
@@ -80,8 +79,9 @@ public final class AuditContextHolder {
     }
 
     /**
-     * Выполняет функцию в заданном {@link AuditContext} и возвращает её результат.
-     * Гарантированно восстанавливает прежний контекст (или очищает, если его не было).
+     * Выполняет функцию с заданным {@link AuditContext} и возвращает её результат.
+     *
+     * <p>Гарантированно восстанавливает прежний контекст (или очищает, если его не было).</p>
      *
      * @param ctx    временный контекст для текущего потока
      * @param action функция, выполняемая в этом контексте
@@ -101,8 +101,9 @@ public final class AuditContextHolder {
     }
 
     /**
-     * Выполняет действие в заданном {@link AuditContext} без результата.
-     * Гарантированно восстанавливает прежний контекст (или очищает, если его не было).
+     * Выполняет действие с заданным {@link AuditContext} без результата.
+     *
+     * <p>Гарантированно восстанавливает прежний контекст (или очищает, если его не было).</p>
      *
      * @param ctx    временный контекст для текущего потока
      * @param action действие, выполняемое в этом контексте

@@ -15,7 +15,8 @@ import java.util.TimeZone;
 
 /**
  * Конфигурация времени в приложении.
- * Настраивает временную зону для системы, Jackson и Hibernate.
+ *
+ * <p>Настраивает временную зону для системы, Jackson и Hibernate.</p>
  */
 @Configuration
 public class TimeZoneConfig {

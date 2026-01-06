@@ -3,12 +3,10 @@ package com.alligator.market.backend.config.audit.context;
 /**
  * Контекст аудита приложения.
  *
- * <p>Содержит два компонента:
- * {@code actorId} – кто выполняет действие, {@code via} – посредством чего (канал/источник).</p>
+ * <p>Используется в threadLocal-холдере контекста аудита {@link AuditContextHolder}.</p>
  *
  * @param actorId идентификатор актора, инициировавшего действие
- * @param via     источник/канал
- * @see AuditContextHolder
+ * @param via     источник/канал (посредством чего выполнено действие)
  */
 public record AuditContext(
         String actorId,
