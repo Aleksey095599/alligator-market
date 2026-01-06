@@ -4,41 +4,37 @@ import java.io.Serial;
 import java.util.Objects;
 
 /**
- * Базовое доменное исключение с кодом ошибки и типом.
+ * Базовое доменное исключение.
  */
 public abstract class BaseDomainException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /* Код доменной ошибки. */
     private final DomainErrorCode errorCode;
-    private final DomainErrorType errorType;
 
     /**
-     * Создает доменное исключение.
+     * Конструктор: создает доменное исключение без причины.
      *
      * @param errorCode код ошибки из {@link DomainErrorCode}
-     * @param errorType тип ошибки из {@link DomainErrorType}
      * @param message   сообщение ошибки
      */
-    protected BaseDomainException(DomainErrorCode errorCode, DomainErrorType errorType, String message) {
+    protected BaseDomainException(DomainErrorCode errorCode, String message) {
         super(message);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
-        this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
     }
 
     /**
-     * Создает доменное исключение с причиной.
+     * Конструктор: создает доменное исключение с причиной.
      *
      * @param errorCode код ошибки из {@link DomainErrorCode}
-     * @param errorType тип ошибки из {@link DomainErrorType}
      * @param message   сообщение ошибки
      * @param cause     причина
      */
-    protected BaseDomainException(DomainErrorCode errorCode, DomainErrorType errorType, String message, Throwable cause) {
+    protected BaseDomainException(DomainErrorCode errorCode, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = Objects.requireNonNull(errorCode, "errorCode must not be null");
-        this.errorType = Objects.requireNonNull(errorType, "errorType must not be null");
     }
 
     /**
@@ -51,11 +47,11 @@ public abstract class BaseDomainException extends RuntimeException {
     }
 
     /**
-     * Возвращает тип ошибки.
+     * Возвращает тип ошибки (извлекается из кода ошибки {@link DomainErrorCode#type()}).
      *
      * @return тип ошибки
      */
     public DomainErrorType getErrorType() {
-        return errorType;
+        return errorCode.type();
     }
 }
