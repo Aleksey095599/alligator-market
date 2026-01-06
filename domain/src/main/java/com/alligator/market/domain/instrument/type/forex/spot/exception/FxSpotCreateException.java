@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка создания инструмента FX_SPOT.
  */
-public final class FxSpotCreateException extends RuntimeException {
+public final class FxSpotCreateException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
 
@@ -18,8 +20,8 @@ public final class FxSpotCreateException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public FxSpotCreateException(InstrumentCode instrumentCode) {
-        super(msg(instrumentCode));
-        this.instrumentCode = instrumentCode;
+        super(DomainErrorCode.FX_SPOT_CREATE_FAILED, msg(instrumentCode));
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class FxSpotCreateException extends RuntimeException {
      * @param cause          причина ошибки
      */
     public FxSpotCreateException(InstrumentCode instrumentCode, Throwable cause) {
-        super(msg(instrumentCode), cause);
-        this.instrumentCode = instrumentCode;
+        super(DomainErrorCode.FX_SPOT_CREATE_FAILED, msg(instrumentCode), cause);
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
     /**

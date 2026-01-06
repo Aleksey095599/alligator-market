@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка создания валюты.
  */
-public final class CurrencyCreateException extends RuntimeException {
+public final class CurrencyCreateException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +20,8 @@ public final class CurrencyCreateException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyCreateException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code));
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class CurrencyCreateException extends RuntimeException {
      * @param cause причина ошибки
      */
     public CurrencyCreateException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code), cause);
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**

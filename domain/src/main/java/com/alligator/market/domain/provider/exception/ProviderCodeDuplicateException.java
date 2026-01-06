@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.provider.code.ProviderCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Дублирование кодов провайдеров.
  */
-public final class ProviderCodeDuplicateException extends RuntimeException {
+public final class ProviderCodeDuplicateException extends BaseDomainException {
 
     private final ProviderCode providerCode;
 
@@ -17,8 +19,8 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      * @param providerCode код провайдера
      */
     public ProviderCodeDuplicateException(ProviderCode providerCode) {
-        super(msg(providerCode));
-        this.providerCode = providerCode;
+        super(DomainErrorCode.PROVIDER_CODE_DUPLICATE, msg(providerCode));
+        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class ProviderCodeDuplicateException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public ProviderCodeDuplicateException(ProviderCode providerCode, Throwable cause) {
-        super(msg(providerCode), cause);
-        this.providerCode = providerCode;
+        super(DomainErrorCode.PROVIDER_CODE_DUPLICATE, msg(providerCode), cause);
+        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
 
     /**

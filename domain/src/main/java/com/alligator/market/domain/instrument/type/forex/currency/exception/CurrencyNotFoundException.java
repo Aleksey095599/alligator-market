@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка поиска валюты.
  */
-public final class CurrencyNotFoundException extends RuntimeException {
+public final class CurrencyNotFoundException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -17,8 +19,8 @@ public final class CurrencyNotFoundException extends RuntimeException {
      * @param code код валюты
      */
     public CurrencyNotFoundException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_NOT_FOUND, msg(code));
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class CurrencyNotFoundException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyNotFoundException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_NOT_FOUND, msg(code), cause);
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
