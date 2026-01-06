@@ -42,7 +42,7 @@ public class ProviderSynchronizer {
         Map<ProviderCode, ProviderSnapshot> ctx = contextScanner.providerSnapshots();
         Set<ProviderCode> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
 
-        // Если в контексте пусто — чистим таблицу и выходим
+        // Если в контексте пусто – чистим таблицу и выходим
         if (ctx.isEmpty()) {
             if (!repoCodes.isEmpty()) {
                 syncDao.deleteByCodes(repoCodes);

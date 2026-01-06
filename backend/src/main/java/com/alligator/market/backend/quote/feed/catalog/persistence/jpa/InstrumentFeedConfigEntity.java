@@ -39,7 +39,7 @@ import java.util.Objects;
         }
 )
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints =
                 "provider_code = upper(provider_code) " +
                         "AND provider_code ~ '" + InstrumentFeedConfigEntity.PROVIDER_CODE_PATTERN + "' " +
@@ -114,7 +114,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     private boolean enabled;
 
     /**
-     * Специальный конструктор — единственный безопасный способ создать сущность.
+     * Специальный конструктор – единственный безопасный способ создать сущность.
      */
     public InstrumentFeedConfigEntity(
             InstrumentBaseEntity instrument,

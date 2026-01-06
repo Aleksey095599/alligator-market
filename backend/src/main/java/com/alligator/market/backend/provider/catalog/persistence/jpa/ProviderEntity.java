@@ -42,7 +42,7 @@ import java.util.Objects;
         }
 )
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints = "min_update_interval_seconds >= 1 " +
                 "AND provider_code = upper(provider_code) " +
                 "AND provider_code ~ '" + ProviderCode.PATTERN + "' " +
@@ -96,7 +96,7 @@ public class ProviderEntity extends BaseEntity {
     private ProviderPolicyEmbeddable policy;
 
     /**
-     * Специальный конструктор — единственный безопасный способ создать сущность.
+     * Специальный конструктор – единственный безопасный способ создать сущность.
      *
      * @param providerCode Технический код провайдера
      * @param descriptor   Иммутабельный дескриптор

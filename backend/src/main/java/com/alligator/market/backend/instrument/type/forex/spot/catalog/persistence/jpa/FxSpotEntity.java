@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @Entity
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints = "(base_currency <> quote_currency) " +
                 "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
                 "AND (value_date IN ('TOD','TOM','SPOT'))"
@@ -86,7 +86,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private Integer defaultQuoteFractionDigits;
 
     /**
-     * Специальный конструктор — единственный безопасный способ создать сущность.
+     * Специальный конструктор – единственный безопасный способ создать сущность.
      */
     public FxSpotEntity(
             CurrencyEntity baseCurrency,

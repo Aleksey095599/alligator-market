@@ -30,7 +30,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public Currency create(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        // Без пред‑проверок на уникальность (устраняем TOCTOU) — уникальные ключи распознаёт адаптер
+        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальные ключи распознаёт адаптер
         Currency created = currencyRepository.create(currency);
         log.info("Currency {} created", created.code().value());
         return created;
@@ -45,7 +45,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
         Currency current = currencyRepository.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
-        // Если изменений нет — возвращаем текущее состояние без записи в БД
+        // Если изменений нет – возвращаем текущее состояние без записи в БД
         if (current.equals(currency)) {
             log.debug("Currency {} update skipped: nothing to change", currency.code().value());
             return;

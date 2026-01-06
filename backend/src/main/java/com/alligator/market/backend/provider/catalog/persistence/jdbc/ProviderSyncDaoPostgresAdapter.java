@@ -30,19 +30,19 @@ import java.util.Objects;
  *
  * <p>Преимущества подхода:</p>
  * <ul>
- *   <li>1) Разовая операция на старте: инициализация каталога при запуске — не нужен «долгоживущий» сервис,
+ *   <li>1) Разовая операция на старте: инициализация каталога при запуске – не нужен «долгоживущий» сервис,
  *       достаточно один раз выполнить продуманный SQL-команду;</li>
  *   <li>2) Всё прозрачно: SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями;</li>
  *   <li>3) Полный контроль записи: пишем напрямую в БД (UPSERT/DELETE), JPA остаётся read‑only (@Immutable);</li>
  *   <li>4) Быстро и предсказуемо: batch + ON CONFLICT работают без накладных расходов ORM;</li>
- *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK — внешние ключи не страдают;</li>
+ *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK – внешние ключи не страдают;</li>
  *   <li>6) Просто тестировать.</b> DAO легко проверить изолированно (например, через Testcontainers).</li>
  * </ul>
  *
  * <p><b>Ограничения:</b></p>
  * <ul>
- *   <li>1) БД — PostgreSQL;</li>
- *   <li>2) {@code provider_code} — уникальное ограничение в таблице {@code market_data_provider};</li>
+ *   <li>1) БД – PostgreSQL;</li>
+ *   <li>2) {@code provider_code} – уникальное ограничение в таблице {@code market_data_provider};</li>
  *   <li>3) Колонки в SQL-команде соответствуют реальной схеме {@code market_data_provider}. </li>
  * </ul>
  *
@@ -65,7 +65,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
     /**
      * Пакетное удаление провайдеров по набору уникальных технических кодов.
      *
-     * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
+     * <p>Безопасно вызывать с пустой коллекцией – операция будет пропущена.</p>
      *
      * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
      * @throws DataAccessException если БД вернула ошибку
@@ -77,7 +77,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         // SQL-команда
         final String sql = "DELETE FROM market_data_provider WHERE provider_code = ?";
 
-        // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
+        // Преобразуем коллекцию в массив – нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
         String[] arr = codes.stream()
                 .filter(Objects::nonNull)
@@ -102,8 +102,8 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
      * Пакетный UPSERT всех переданных снимков провайдеров.
      *
      * <p>Логика {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE SET ...}: если записи с таким
-     * {@code provider_code} нет — вставка; если есть — обновление нужных полей из переданного {@code snapshot}.</p>
-     * <p>Безопасно вызывать с пустой коллекцией — операция будет пропущена.</p>
+     * {@code provider_code} нет – вставка; если есть – обновление нужных полей из переданного {@code snapshot}.</p>
+     * <p>Безопасно вызывать с пустой коллекцией – операция будет пропущена.</p>
      *
      * @param snapshots коллекция снимков ({@link ProviderSnapshot}) для вставки/обновления
      * @throws DataAccessException если БД вернула ошибку
@@ -145,7 +145,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
                   updated_via = EXCLUDED.updated_via
                 """;
 
-        // Преобразуем коллекцию в массив — нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
+        // Преобразуем коллекцию в массив – нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
         ProviderSnapshot[] arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
 
         // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
@@ -169,7 +169,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         Objects.requireNonNull(s, "snapshot must not be null");
         Objects.requireNonNull(actor, "actor must not be null");
         Objects.requireNonNull(via, "via must not be null");
-        // Примечание: иные проверки не обязательны — корректность данных гарантируется моделью ProviderSnapshot
+        // Примечание: иные проверки не обязательны – корректность данных гарантируется моделью ProviderSnapshot
 
         // 1) provider_code (натуральный ключ)
         ps.setString(1, s.code().value());

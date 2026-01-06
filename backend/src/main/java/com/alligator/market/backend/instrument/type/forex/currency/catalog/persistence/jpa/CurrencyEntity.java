@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 @Entity
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе — «живая» спецификация для миграций.
+        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints = "fraction_digits BETWEEN 0 AND 10"
 )
 @Table(
@@ -80,7 +80,7 @@ public class CurrencyEntity extends BaseEntity {
     private Integer fractionDigits;
 
     /**
-     * Специальный конструктор — единственный безопасный способ создать сущность.
+     * Специальный конструктор – единственный безопасный способ создать сущность.
      *
      * @param code Код валюты (натуральный ключ)
      */
