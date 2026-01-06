@@ -42,6 +42,7 @@ public abstract class BaseDomainException extends RuntimeException {
      *
      * @return код ошибки
      */
+    @SuppressWarnings("unused")
     public DomainErrorCode getErrorCode() {
         return errorCode;
     }
@@ -51,6 +52,7 @@ public abstract class BaseDomainException extends RuntimeException {
      *
      * @return тип ошибки
      */
+    @SuppressWarnings("unused")
     public DomainErrorType getErrorType() {
         return errorCode.type();
     }
