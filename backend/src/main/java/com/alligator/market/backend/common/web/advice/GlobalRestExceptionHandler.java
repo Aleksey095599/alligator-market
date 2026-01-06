@@ -1,8 +1,8 @@
-package com.alligator.market.backend.common.web.handler;
+package com.alligator.market.backend.common.web.advice;
 
-import com.alligator.market.backend.common.web.http.ApiResponse;
-import com.alligator.market.backend.common.web.http.GlobalErrorCodes;
-import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.response.ApiResponse;
+import com.alligator.market.backend.common.web.error.GlobalErrorCodes;
+import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;

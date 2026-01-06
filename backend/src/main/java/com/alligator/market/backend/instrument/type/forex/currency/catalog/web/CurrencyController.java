@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.currency.catalog.web;
 
-import com.alligator.market.backend.common.web.http.ApiResponse;
-import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.response.ApiResponse;
+import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.service.CurrencyUseCase;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyCreateDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;

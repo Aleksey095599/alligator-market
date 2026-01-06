@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.web;
 
-import com.alligator.market.backend.common.web.http.ApiResponse;
-import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.response.ApiResponse;
+import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.provider.catalog.service.ProviderCatalogUseCase;
 import com.alligator.market.backend.provider.catalog.web.dto.out.ProviderResponseDto;
 import com.alligator.market.backend.provider.catalog.web.dto.mapper.ProviderDtoMapper;

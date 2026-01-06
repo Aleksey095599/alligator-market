@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.type.forex.spot.catalog.web;
 
-import com.alligator.market.backend.common.web.http.ApiResponse;
-import com.alligator.market.backend.common.web.http.ResponseEntityFactory;
+import com.alligator.market.backend.common.web.response.ApiResponse;
+import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
