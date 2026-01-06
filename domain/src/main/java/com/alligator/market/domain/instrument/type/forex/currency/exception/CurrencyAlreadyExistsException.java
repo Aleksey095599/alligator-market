@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка: валюта уже существует.
  */
-public final class CurrencyAlreadyExistsException extends RuntimeException {
+public final class CurrencyAlreadyExistsException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -17,8 +19,8 @@ public final class CurrencyAlreadyExistsException extends RuntimeException {
      * @param code код валюты
      */
     public CurrencyAlreadyExistsException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code));
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class CurrencyAlreadyExistsException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyAlreadyExistsException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code), cause);
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**

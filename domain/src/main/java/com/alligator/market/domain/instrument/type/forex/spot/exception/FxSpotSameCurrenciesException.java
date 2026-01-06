@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка: базовая и котируемая валюты совпадают.
  */
-public final class FxSpotSameCurrenciesException extends RuntimeException {
+public final class FxSpotSameCurrenciesException extends BaseDomainException {
 
     private final CurrencyCode base;
     private final CurrencyCode quote;
@@ -19,9 +21,9 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
      * @param quote код котируемой валюты
      */
     public FxSpotSameCurrenciesException(CurrencyCode base, CurrencyCode quote) {
-        super(msg(base, quote));
-        this.base = base;
-        this.quote = quote;
+        super(DomainErrorCode.FX_SPOT_SAME_CURRENCIES, msg(base, quote));
+        this.base = Objects.requireNonNull(base, "base must not be null");
+        this.quote = Objects.requireNonNull(quote, "quote must not be null");
     }
 
     /**
@@ -33,9 +35,9 @@ public final class FxSpotSameCurrenciesException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public FxSpotSameCurrenciesException(CurrencyCode base, CurrencyCode quote, Throwable cause) {
-        super(msg(base, quote), cause);
-        this.base = base;
-        this.quote = quote;
+        super(DomainErrorCode.FX_SPOT_SAME_CURRENCIES, msg(base, quote), cause);
+        this.base = Objects.requireNonNull(base, "base must not be null");
+        this.quote = Objects.requireNonNull(quote, "quote must not be null");
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка: валюта используется в FX_SPOT инструменте.
  */
-public final class CurrencyUsedInFxSpotException extends RuntimeException {
+public final class CurrencyUsedInFxSpotException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -17,8 +19,8 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      * @param code код валюты
      */
     public CurrencyUsedInFxSpotException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code));
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class CurrencyUsedInFxSpotException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code), cause);
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Ошибка удаления валюты.
  */
-public final class CurrencyDeleteException extends RuntimeException {
+public final class CurrencyDeleteException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +20,8 @@ public final class CurrencyDeleteException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyDeleteException(CurrencyCode code) {
-        super(msg(code));
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_DELETE_FAILED, msg(code));
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**
@@ -29,8 +31,8 @@ public final class CurrencyDeleteException extends RuntimeException {
      * @param cause причина ошибки
      */
     public CurrencyDeleteException(CurrencyCode code, Throwable cause) {
-        super(msg(code), cause);
-        this.code = code;
+        super(DomainErrorCode.CURRENCY_DELETE_FAILED, msg(code), cause);
+        this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
     /**

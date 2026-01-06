@@ -1,11 +1,14 @@
 package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
+
 import java.util.Objects;
 
 /**
  * Ошибка: дубликат валюты по имени.
  */
-public final class CurrencyNameDuplicateException extends RuntimeException {
+public final class CurrencyNameDuplicateException extends BaseDomainException {
 
     private final String name;
 
@@ -15,8 +18,8 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      * @param name имя валюты
      */
     public CurrencyNameDuplicateException(String name) {
-        super(msg(name));
-        this.name = name;
+        super(DomainErrorCode.CURRENCY_NAME_DUPLICATE, msg(name));
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     /**
@@ -27,8 +30,8 @@ public final class CurrencyNameDuplicateException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public CurrencyNameDuplicateException(String name, Throwable cause) {
-        super(msg(name), cause);
-        this.name = name;
+        super(DomainErrorCode.CURRENCY_NAME_DUPLICATE, msg(name), cause);
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     /**

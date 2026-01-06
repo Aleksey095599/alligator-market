@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.provider.code.ProviderCode;
 
@@ -8,7 +10,7 @@ import java.util.Objects;
 /**
  * Обработчик для инструмента не найден.
  */
-public final class HandlerNotFoundException extends RuntimeException {
+public final class HandlerNotFoundException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
     private final ProviderCode providerCode;
@@ -20,9 +22,9 @@ public final class HandlerNotFoundException extends RuntimeException {
      * @param providerCode   код провайдера
      */
     public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode) {
-        super(msg(instrumentCode, providerCode));
-        this.instrumentCode = instrumentCode;
-        this.providerCode = providerCode;
+        super(DomainErrorCode.HANDLER_NOT_FOUND, msg(instrumentCode, providerCode));
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
 
     /**
@@ -34,9 +36,9 @@ public final class HandlerNotFoundException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode, Throwable cause) {
-        super(msg(instrumentCode, providerCode), cause);
-        this.instrumentCode = instrumentCode;
-        this.providerCode = providerCode;
+        super(DomainErrorCode.HANDLER_NOT_FOUND, msg(instrumentCode, providerCode), cause);
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
 
     /**

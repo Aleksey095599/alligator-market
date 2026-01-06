@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 
 import java.util.Objects;
@@ -7,7 +9,7 @@ import java.util.Objects;
 /**
  * Инструмент не поддерживается обработчиком.
  */
-public final class InstrumentNotSupportedException extends RuntimeException {
+public final class InstrumentNotSupportedException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
     private final String handlerCode;
@@ -20,9 +22,9 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode) {
-        super(msg(instrumentCode, handlerCode));
-        this.instrumentCode = instrumentCode;
-        this.handlerCode = handlerCode;
+        super(DomainErrorCode.INSTRUMENT_NOT_SUPPORTED, msg(instrumentCode, handlerCode));
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
     /**
@@ -34,9 +36,9 @@ public final class InstrumentNotSupportedException extends RuntimeException {
      */
     @SuppressWarnings("unused")
     public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode, Throwable cause) {
-        super(msg(instrumentCode, handlerCode), cause);
-        this.instrumentCode = instrumentCode;
-        this.handlerCode = handlerCode;
+        super(DomainErrorCode.INSTRUMENT_NOT_SUPPORTED, msg(instrumentCode, handlerCode), cause);
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
     /**

@@ -1,11 +1,14 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
+
 import java.util.Objects;
 
 /**
  * Дублирование отображаемых имен провайдеров.
  */
-public final class ProviderDisplayNameDuplicateException extends RuntimeException {
+public final class ProviderDisplayNameDuplicateException extends BaseDomainException {
 
     private final String displayName;
 
@@ -15,8 +18,8 @@ public final class ProviderDisplayNameDuplicateException extends RuntimeExceptio
      * @param displayName отображаемое имя провайдера
      */
     public ProviderDisplayNameDuplicateException(String displayName) {
-        super(msg(displayName));
-        this.displayName = displayName;
+        super(DomainErrorCode.PROVIDER_DISPLAY_NAME_DUPLICATE, msg(displayName));
+        this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
     }
 
     /**
@@ -27,8 +30,8 @@ public final class ProviderDisplayNameDuplicateException extends RuntimeExceptio
      */
     @SuppressWarnings("unused")
     public ProviderDisplayNameDuplicateException(String displayName, Throwable cause) {
-        super(msg(displayName), cause);
-        this.displayName = displayName;
+        super(DomainErrorCode.PROVIDER_DISPLAY_NAME_DUPLICATE, msg(displayName), cause);
+        this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
     }
 
     /**

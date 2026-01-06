@@ -1,5 +1,7 @@
 package com.alligator.market.domain.provider.exception;
 
+import com.alligator.market.domain.common.exception.BaseDomainException;
+import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 
@@ -8,7 +10,7 @@ import java.util.Objects;
 /**
  * Тип инструмента не соответствует обработчику.
  */
-public final class InstrumentWrongTypeException extends RuntimeException {
+public final class InstrumentWrongTypeException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
     private final InstrumentType instrumentType;
@@ -29,11 +31,14 @@ public final class InstrumentWrongTypeException extends RuntimeException {
             String handlerCode,
             InstrumentType expectedType
     ) {
-        super(msg(instrumentCode, instrumentType, handlerCode, expectedType));
-        this.instrumentCode = instrumentCode;
-        this.instrumentType = instrumentType;
-        this.handlerCode = handlerCode;
-        this.expectedType = expectedType;
+        super(
+                DomainErrorCode.INSTRUMENT_WRONG_TYPE,
+                msg(instrumentCode, instrumentType, handlerCode, expectedType)
+        );
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.instrumentType = Objects.requireNonNull(instrumentType, "instrumentType must not be null");
+        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        this.expectedType = Objects.requireNonNull(expectedType, "expectedType must not be null");
     }
 
     /**
@@ -53,11 +58,15 @@ public final class InstrumentWrongTypeException extends RuntimeException {
             InstrumentType expectedType,
             Throwable cause
     ) {
-        super(msg(instrumentCode, instrumentType, handlerCode, expectedType), cause);
-        this.instrumentCode = instrumentCode;
-        this.instrumentType = instrumentType;
-        this.handlerCode = handlerCode;
-        this.expectedType = expectedType;
+        super(
+                DomainErrorCode.INSTRUMENT_WRONG_TYPE,
+                msg(instrumentCode, instrumentType, handlerCode, expectedType),
+                cause
+        );
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.instrumentType = Objects.requireNonNull(instrumentType, "instrumentType must not be null");
+        this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        this.expectedType = Objects.requireNonNull(expectedType, "expectedType must not be null");
     }
 
     /**
