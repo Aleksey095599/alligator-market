@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.web;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotDomainAssembler;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotDomainFactory;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.service.FxSpotUseCase;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
@@ -28,7 +28,7 @@ import java.util.List;
 public class FxSpotController {
 
     private final FxSpotUseCase service;
-    private final FxSpotDomainAssembler assembler;
+    private final FxSpotDomainFactory assembler;
 
     /**
      * Создать инструмент.
@@ -36,7 +36,7 @@ public class FxSpotController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotCreateDto dto) {
 
-        FxSpot created = service.create(assembler.toDomain(dto));
+        FxSpot created = service.create(assembler.fromCreateDto(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{instrumentCode}")
@@ -54,7 +54,7 @@ public class FxSpotController {
 
         // Парсим строковый код инструмента в объект-значение
         InstrumentCode code = InstrumentCode.of(instrumentCode);
-        service.update(assembler.toDomainByCode(code, dto));
+        service.update(assembler.fromUpdateDto(code, dto));
         return ResponseEntityFactory.noContent();
     }
 

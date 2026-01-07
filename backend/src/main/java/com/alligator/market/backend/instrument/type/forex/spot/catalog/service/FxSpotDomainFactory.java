@@ -15,43 +15,51 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Сборщик доменной модели инструмента FX_SPOT из DTO.
+ * Фабрика доменной модели FX_SPOT из входных DTO.
+ *
+ * <p>Не является "чистым преобразованием типов": методы обращаются к репозиторию с валютами {@link CurrencyRepository}
+ * и используют доменную утилиту {@link FxSpotCodec}.</p>
  */
 @Component
 @RequiredArgsConstructor
-public class FxSpotDomainAssembler {
+public class FxSpotDomainFactory {
 
     private final CurrencyRepository currencyRepository;
 
     /**
-     * DTO создания --> инструмент FX_SPOT.
+     * DTO создания -> доменная модель инструмента FX_SPOT.
+     *
+     * <p>Загружает валюты из репозитория и возвращает полностью собранную доменную модель.</p>
      */
-    public FxSpot toDomain(FxSpotCreateDto dto) {
+    public FxSpot fromCreateDto(FxSpotCreateDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
+        // Обращаемся к репозиторию для получения валют
         Currency base = currencyRepository.findByCode(CurrencyCode.of(dto.baseCurrency()))
                 .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(dto.baseCurrency())));
         Currency quote = currencyRepository.findByCode(CurrencyCode.of(dto.quoteCurrency()))
                 .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(dto.quoteCurrency())));
 
+        // Собираем и возвращаем доменную модель
         return new FxSpot(base, quote, dto.tenor(), dto.defaultQuoteFractionDigits());
     }
 
     /**
-     * DTO обновления + код инструмента --> инструмент FX_SPOT.
+     * DTO обновления + код инструмента -> доменная модель инструмента FX_SPOT.
+     *
+     * <p>Парсит код инструмента с помощью {@link FxSpotCodec} для получения кодов валют,
+     * загружает валюты из репозитория {@link CurrencyRepository} и собирает доменную модель.</p>
      */
-    public FxSpot toDomainByCode(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
+    public FxSpot fromUpdateDto(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
 
-        // Разбираем код инструмента на составные компоненты, необходимые для создания доменной модели
+        // Разбираем код инструмента на составные компоненты, чтобы получить коды валют
         FxSpotCodec.FxSpotCodeParts parts = FxSpotCodec.parseFxSpotCode(instrumentCode);
-
-        // Фиксируем коды базовой и котируемой валют
         CurrencyCode baseCode = parts.baseCode();
         CurrencyCode quoteCode = parts.quoteCode();
 
-        // Проверяем наличие валют в репозитории
+        // Обращаемся к репозиторию для получения валют
         Currency base = currencyRepository.findByCode(baseCode)
                 .orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency quote = currencyRepository.findByCode(quoteCode)
