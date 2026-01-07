@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Сборщик модели инструмента FX_SPOT.
+ * Сборщик доменной модели инструмента FX_SPOT из DTO разных типов.
  */
 @Component
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class FxSpotAssembler {
     private final CurrencyRepository currencyRepository;
 
     /**
-     * Доменная модель существующего инструмента FX_SPOT из DTO создания.
+     * DTO создания --> инструмент FX_SPOT.
      */
     public FxSpot toDomain(FxSpotCreateDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
@@ -38,7 +38,7 @@ public class FxSpotAssembler {
     }
 
     /**
-     * Доменная модель существующего инструмента FX_SPOT из DTO обновления и кода инструмента.
+     * DTO обновления + код инструмента --> инструмент FX_SPOT.
      */
     public FxSpot toDomainByCode(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");

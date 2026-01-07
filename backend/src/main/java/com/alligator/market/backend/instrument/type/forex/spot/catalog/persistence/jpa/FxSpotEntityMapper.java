@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import java.util.Objects;
 
 /**
- * Маппер: JPA-сущность ↔ доменная модель.
+ *
  */
 public class FxSpotEntityMapper {
 
@@ -19,7 +19,7 @@ public class FxSpotEntityMapper {
     }
 
     /**
-     * Создать новую JPA-сущность из доменной модели.
+     *
      */
     public static FxSpotEntity newEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
         Objects.requireNonNull(model, "FxSpot model must not be null");
@@ -38,7 +38,24 @@ public class FxSpotEntityMapper {
     }
 
     /**
-     * JPA-сущность --> доменная модель.
+     * Обновляет JPA-сущность изменяемыми полями из доменной модели.
+     */
+    public static void apply(FxSpot m, FxSpotEntity e) {
+        Objects.requireNonNull(m, "model must not be null");
+        Objects.requireNonNull(e, "entity must not be null");
+
+        // Модель и сущность должны соответствовать одному и тому же инструменту
+        if (!e.getCode().equals(m.instrumentCode().value())) {
+            throw new IllegalStateException("Instrument code mismatch: " + e.getCode() + " vs " +
+                    m.instrumentCode().value());
+        }
+
+        // Копируем в изменяемые поля JPA-сущности поля из доменной модели
+        e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
+    }
+
+    /**
+     * Преобразует JPA-сущность в доменную модель.
      */
     public static FxSpot toDomain(FxSpotEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
@@ -54,22 +71,5 @@ public class FxSpotEntityMapper {
                 e.getTenor(),
                 digits
         );
-    }
-
-    /**
-     * Копирует в JPA-сущность изменяемые поля из доменной модели.
-     */
-    public static void apply(FxSpot m, FxSpotEntity e) {
-        Objects.requireNonNull(m, "model must not be null");
-        Objects.requireNonNull(e, "entity must not be null");
-
-        // Модель и сущность должны соответствовать одному и тому же инструменту
-        if (!e.getCode().equals(m.instrumentCode().value())) {
-            throw new IllegalStateException("Instrument code mismatch: " + e.getCode() + " vs " +
-                    m.instrumentCode().value());
-        }
-
-        // Копируем в изменяемые поля JPA-сущности поля из доменной модели
-        e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
 }

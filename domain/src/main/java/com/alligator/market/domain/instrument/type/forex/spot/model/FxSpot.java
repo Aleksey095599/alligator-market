@@ -23,7 +23,7 @@ public record FxSpot(
         Currency base,
         Currency quote,
         FxSpotTenor tenor,
-        int defaultQuoteFractionDigits ) implements Instrument {
+        int defaultQuoteFractionDigits) implements Instrument {
 
     /**
      * Конструктор с проверками.
