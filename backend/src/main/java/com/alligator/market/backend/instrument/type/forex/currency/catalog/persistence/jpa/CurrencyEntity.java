@@ -35,7 +35,8 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+// <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 public class CurrencyEntity extends BaseEntity {
 
     /**
@@ -53,21 +54,30 @@ public class CurrencyEntity extends BaseEntity {
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
     @NaturalId() // <-- Помечаем поле как натуральный ключ
-    @Column(name = "code", length = 3, nullable = false, updatable = false)
+    @Column(
+            name = "code", length = 3,
+            nullable = false,
+            updatable = false // <-- Идентичность сущности
+    )
     private CurrencyCode code;
 
     /**
      * Наименование валюты.
      */
     @NotBlank
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(
+            name = "name", length = 50,
+            nullable = false)
     private String name;
 
     /**
      * Страна или регион обращения.
      */
     @NotBlank
-    @Column(name = "country", length = 100, nullable = false)
+    @Column(
+            name = "country", length = 100,
+            nullable = false
+    )
     private String country;
 
     /**
@@ -76,13 +86,16 @@ public class CurrencyEntity extends BaseEntity {
     @NotNull
     @Min(0)
     @Max(10)
-    @Column(name = "fraction_digits", nullable = false)
+    @Column(
+            name = "fraction_digits",
+            nullable = false
+    )
     private Integer fractionDigits;
 
     /**
      * Специальный конструктор – единственный безопасный способ создать сущность.
      *
-     * @param code Код валюты (натуральный ключ)
+     * <p>Проверяет корректность входных данных и инициализирует поля идентичности сущности.</p>
      */
     public CurrencyEntity(
             CurrencyCode code

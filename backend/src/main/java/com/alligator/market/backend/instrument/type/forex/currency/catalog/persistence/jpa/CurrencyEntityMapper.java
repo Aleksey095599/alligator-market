@@ -6,6 +6,8 @@ import java.util.Objects;
 
 /**
  * Маппер: JPA-сущность ↔ доменная модель.
+ *
+ * <p>Является "чистым преобразованием типов".</p>
  */
 public final class CurrencyEntityMapper {
 
