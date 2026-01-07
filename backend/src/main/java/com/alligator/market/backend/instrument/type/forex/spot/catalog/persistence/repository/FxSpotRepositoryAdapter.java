@@ -4,7 +4,6 @@ import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
@@ -49,7 +48,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.quote().code()));
 
         // Создаем JPA-сущность, используя специальный метод
-        FxSpotEntity entity = FxSpotEntityAssembler.newEntity(fxSpot, baseEntity, quoteEntity);
+        FxSpotEntity entity = FxSpotEntityMapper.toNewEntity(fxSpot, baseEntity, quoteEntity);
 
         // Пробуем сохранить созданную сущность и маппим наиболее вероятные ошибки
         try {
@@ -78,7 +77,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 
         // Заполняем изменяемые поля из переданной модели
-        FxSpotEntityAssembler.apply(fxSpot, e);
+        FxSpotEntityMapper.applyToEntity(fxSpot, e);
 
         // Пробуем сохранить обновленную сущность и маппим наиболее вероятные ошибки
         try {
