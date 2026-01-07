@@ -76,7 +76,9 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
             name = "instrument_id",
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_ifc_instrument"),
-            nullable = false, updatable = false)
+            nullable = false,
+            updatable = false // <-- Идентичность сущности
+    )
     private InstrumentBaseEntity instrument;
 
     /**
@@ -89,7 +91,10 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     @NotBlank
     @Size(max = 50)
     @Pattern(regexp = PROVIDER_CODE_PATTERN)
-    @Column(name = "provider_code", length = 50, nullable = false)
+    @Column(
+            name = "provider_code", length = 50,
+            nullable = false
+    )
     private String providerCode;
 
     /**
@@ -101,7 +106,11 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "feed_role", length = 16, nullable = false, updatable = false)
+    @Column(
+            name = "feed_role", length = 16,
+            nullable = false,
+            updatable = false // <-- Идентичность сущности
+    )
     private InstrumentFeedRole feedRole;
 
     /**
@@ -109,7 +118,10 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      *
      * <p>Можно обновлять.</p>
      */
-    @Column(name = "enabled", nullable = false)
+    @Column(
+            name = "enabled",
+            nullable = false
+    )
     private boolean enabled;
 
     /**
