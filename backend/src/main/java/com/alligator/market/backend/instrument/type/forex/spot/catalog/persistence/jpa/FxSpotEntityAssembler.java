@@ -18,7 +18,7 @@ public final class FxSpotEntityAssembler {
     }
 
     /**
-     * Создает новую JPA-сущность на основе доменной модели и сущностей валют.
+     * Доменная модель + JPA-сущности валют --> JPA-сущность инструмента FX_SPOT.
      */
     public static FxSpotEntity newEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
         Objects.requireNonNull(model, "FxSpot model must not be null");
@@ -54,5 +54,4 @@ public final class FxSpotEntityAssembler {
         // Копируем изменяемые поля
         e.setDefaultQuoteFractionDigits(m.defaultQuoteFractionDigits());
     }
-
 }
