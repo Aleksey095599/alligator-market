@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntity;
-import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
+import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotEntityAssembler;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
@@ -48,12 +48,12 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.quote().code()));
 
         // Создаем JPA-сущность, используя специальный метод
-        FxSpotEntity entity = FxSpotEntityMapper.newEntity(fxSpot, baseEntity, quoteEntity);
+        FxSpotEntity entity = FxSpotEntityAssembler.newEntity(fxSpot, baseEntity, quoteEntity);
 
         // Пробуем сохранить созданную сущность и маппим наиболее вероятные ошибки
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(entity);
-            return FxSpotEntityMapper.toDomain(saved); // Успех
+            return FxSpotEntityAssembler.toDomain(saved); // Успех
         } catch (DataIntegrityViolationException ex) {
             if (DbErrors.isViolationOf(ex, UQ_INSTRUMENT_CODE)) {
                 throw new FxSpotAlreadyExistsException(fxSpot.instrumentCode()); // <-- Бизнес‑ошибка: дубликат
@@ -77,12 +77,12 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
                 .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 
         // Заполняем изменяемые поля из переданной модели
-        FxSpotEntityMapper.apply(fxSpot, e);
+        FxSpotEntityAssembler.apply(fxSpot, e);
 
         // Пробуем сохранить обновленную сущность и маппим наиболее вероятные ошибки
         try {
             FxSpotEntity saved = jpaRepository.saveAndFlush(e);
-            return FxSpotEntityMapper.toDomain(saved); // <-- Успех
+            return FxSpotEntityAssembler.toDomain(saved); // <-- Успех
         } catch (DataIntegrityViolationException ex) {
             // Любые ошибки целостности данных (уникальности/ограничения на уровне БД)
             // Для update бизнес-уникальность не меняется, поэтому маппим в техническую ошибку обновления
@@ -122,7 +122,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
         String codeValue = instrumentCode.value();
 
         return jpaRepository.findByCode(codeValue)
-                .map(FxSpotEntityMapper::toDomain);
+                .map(FxSpotEntityAssembler::toDomain);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code")))
                 .stream()
-                .map(FxSpotEntityMapper::toDomain)
+                .map(FxSpotEntityAssembler::toDomain)
                 .toList();
     }
 

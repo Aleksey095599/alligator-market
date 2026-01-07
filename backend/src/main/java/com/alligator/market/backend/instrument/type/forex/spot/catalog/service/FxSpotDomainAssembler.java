@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Сборщик доменной модели инструмента FX_SPOT из DTO разных типов.
+ * Сборщик доменной модели инструмента FX_SPOT из DTO.
  */
 @Component
 @RequiredArgsConstructor
-public class FxSpotAssembler {
+public class FxSpotDomainAssembler {
 
     private final CurrencyRepository currencyRepository;
 

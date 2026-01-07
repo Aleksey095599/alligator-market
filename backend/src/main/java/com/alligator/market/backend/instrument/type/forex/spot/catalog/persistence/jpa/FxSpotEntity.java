@@ -53,8 +53,12 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "base_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_base"), updatable = false, nullable = false)
+    @JoinColumn(
+            name = "base_currency", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_fx_spot_base"),
+            nullable = false,
+            updatable = false // <-- Идентичность инструмента
+    )
     private CurrencyEntity baseCurrency;
 
     /**
@@ -63,8 +67,12 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "quote_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_quote"), updatable = false, nullable = false)
+    @JoinColumn(
+            name = "quote_currency", referencedColumnName = "code",
+            foreignKey = @ForeignKey(name = "fk_fx_spot_quote"),
+            nullable = false,
+            updatable = false // <-- Идентичность инструмента
+    )
     private CurrencyEntity quoteCurrency;
 
     /**
@@ -73,7 +81,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "value_date", length = 4, updatable = false, nullable = false)
+    @Column(
+            name = "value_date", length = 4,
+            nullable = false,
+            updatable = false // <-- Идентичность инструмента
+    )
     private FxSpotTenor tenor;
 
     /**
@@ -82,11 +94,16 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @NotNull
     @Min(0)
     @Max(10)
-    @Column(name = "quote_fraction_digits", nullable = false)
+    @Column(
+            name = "quote_fraction_digits",
+            nullable = false
+    )
     private Integer defaultQuoteFractionDigits;
 
     /**
      * Специальный конструктор – единственный безопасный способ создать сущность.
+     *
+     * <p>Проверяет корректность входных данных и инициализирует поля идентичности сущности.</p>
      */
     public FxSpotEntity(
             CurrencyEntity baseCurrency,
