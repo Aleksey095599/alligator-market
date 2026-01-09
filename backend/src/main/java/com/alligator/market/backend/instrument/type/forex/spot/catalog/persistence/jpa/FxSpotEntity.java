@@ -28,13 +28,13 @@ import java.util.Objects;
         // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints = "(base_currency <> quote_currency) " +
                 "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
-                "AND (value_date IN ('TOD','TOM','SPOT'))"
+                "AND (tenor IN ('TOD','TOM','SPOT'))"
 )
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_fx_spot_pair_value_date",
-                        columnNames = {"base_currency", "quote_currency", "value_date"})
+                @UniqueConstraint(name = "uq_fx_spot_pair_tenor",
+                        columnNames = {"base_currency", "quote_currency", "tenor"})
         },
         indexes = {
                 @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
@@ -82,7 +82,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(
-            name = "value_date", length = 4,
+            name = "tenor", length = 4,
             nullable = false,
             updatable = false
     )
