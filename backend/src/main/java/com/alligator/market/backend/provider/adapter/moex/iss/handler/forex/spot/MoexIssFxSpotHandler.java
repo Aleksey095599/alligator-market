@@ -13,9 +13,8 @@ import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentH
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -33,6 +32,7 @@ import java.util.Set;
 /**
  * Обработчик инструментов FX_SPOT для провайдера MOEX ISS {@link MoexIssAdapter}.
  */
+@Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {
 
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
@@ -43,9 +43,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
 
     /* Web-клиент. */
     private final WebClient webClient;
-
-    /* Для логирования. */
-    private static final Logger log = LoggerFactory.getLogger(MoexIssFxSpotHandler.class);
 
     /* Формат даты/времени поля SYSTIME в ответе MOEX ISS. */
     private static final DateTimeFormatter MOEX_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
