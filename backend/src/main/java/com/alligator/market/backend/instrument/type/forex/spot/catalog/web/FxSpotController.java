@@ -28,7 +28,7 @@ import java.util.List;
 public class FxSpotController {
 
     private final FxSpotUseCase service;
-    private final FxSpotDomainFactory assembler;
+    private final FxSpotDomainFactory factory;
 
     /**
      * Создать инструмент.
@@ -36,7 +36,7 @@ public class FxSpotController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotCreateDto dto) {
 
-        FxSpot created = service.create(assembler.fromCreateDto(dto));
+        FxSpot created = service.create(factory.fromCreateDto(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{instrumentCode}")
@@ -54,7 +54,7 @@ public class FxSpotController {
 
         // Парсим строковый код инструмента в объект-значение
         InstrumentCode code = InstrumentCode.of(instrumentCode);
-        service.update(assembler.fromUpdateDto(code, dto));
+        service.update(factory.fromUpdateDto(code, dto));
         return ResponseEntityFactory.noContent();
     }
 
