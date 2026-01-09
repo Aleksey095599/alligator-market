@@ -5,8 +5,7 @@ import com.alligator.market.domain.instrument.type.forex.currency.model.Currency
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import jakarta.annotation.PreDestroy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -21,9 +20,8 @@ import java.time.Duration;
  */
 @Component
 @ConditionalOnProperty(name = "quotes.smoke.enabled", havingValue = "true")
+@Slf4j
 public class QuoteStreamSmokeRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(QuoteStreamSmokeRunner.class);
 
     /* Оркестратор построения потока котировок. */
     private final QuoteStreamingOrchestrator orchestrator;

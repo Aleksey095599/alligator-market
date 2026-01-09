@@ -1,9 +1,8 @@
 package com.alligator.market.backend.config.time;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.cfg.AvailableSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +18,8 @@ import java.util.TimeZone;
  * <p>Настраивает временную зону для системы, Jackson и Hibernate.</p>
  */
 @Configuration
+@Slf4j
 public class TimeZoneConfig {
-
-    private static final Logger log = LoggerFactory.getLogger(TimeZoneConfig.class);
 
     private static final ZoneId UTC = ZoneOffset.UTC;
 
