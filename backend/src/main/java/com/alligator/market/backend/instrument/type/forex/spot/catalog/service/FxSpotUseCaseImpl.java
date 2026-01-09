@@ -27,7 +27,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальные ключи распознаёт адаптер
+        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальность проверяет адаптер репозитория
         FxSpot created = fxSpotRepository.create(fxSpot);
         log.info("FX_SPOT instrument {} created", created.instrumentCode().value());
         return created;
@@ -48,9 +48,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
             return;
         }
 
-        // Проверки целостности (валидация JPA/ограничения БД) и маппинг ошибок выполнит адаптер.
-        // Бизнес-идентичность (instrumentCode) при update не меняется,
-        // в случае сбоев адаптер бросит FxSpotUpdateException.
+        // Проверки целостности (валидация JPA/ограничения БД) и маппинг ошибок выполнит адаптер репозитория
         FxSpot updated = fxSpotRepository.update(fxSpot);
         log.info("FX_SPOT instrument {} updated", updated.instrumentCode().value());
     }
@@ -60,8 +58,7 @@ public class FxSpotUseCaseImpl implements FxSpotUseCase {
     public void delete(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Отсутствие инструмента определит адаптер (FxSpotNotFoundException).
-        // Прочие БД-сбои – FxSpotDeleteException.
+        // Случай отсутствия инструмента и прочие сбои БД определит адаптер репозитория
         fxSpotRepository.deleteByCode(instrumentCode);
         log.info("FX_SPOT instrument {} deleted", instrumentCode.value());
     }

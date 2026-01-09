@@ -30,21 +30,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
-    /* Натуральный ключ инструмента (совпадает с бизнес‑идентичностью). */
+    /* Имя UQ ограничения (должно совпадать с фактическим именем в DDL/схеме). */
     private static final String UQ_INSTRUMENT_CODE = "uq_instrument_code";
 
     /* JPA-репозитории для инструментов FX_SPOT и валют. */
     private final FxSpotJpaRepository jpaRepository;
-    private final CurrencyJpaRepository currencyRepository;
+    private final CurrencyJpaRepository currencyJpaRepository;
 
     @Override
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Ищем JPA-сущности составных валют (бизнес‑ошибки при отсутствии)
-        CurrencyEntity baseEntity = currencyRepository.findByCode(fxSpot.base().code())
+        CurrencyEntity baseEntity = currencyJpaRepository.findByCode(fxSpot.base().code())
                 .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.base().code()));
-        CurrencyEntity quoteEntity = currencyRepository.findByCode(fxSpot.quote().code())
+        CurrencyEntity quoteEntity = currencyJpaRepository.findByCode(fxSpot.quote().code())
                 .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.quote().code()));
 
         // Создаем JPA-сущность, используя специальный метод

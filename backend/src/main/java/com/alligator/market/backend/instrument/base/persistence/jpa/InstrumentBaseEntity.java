@@ -48,7 +48,11 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotBlank
     @NaturalId() // <-- Помечаем поле как натуральный ключ
-    @Column(name = "code", length = 32, nullable = false, updatable = false)
+    @Column(
+            name = "code", length = 32,
+            nullable = false,
+            updatable = false
+    )
     private String code;
 
     /**
@@ -56,7 +60,11 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
      */
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotBlank
-    @Column(name = "symbol", length = 32, nullable = false, updatable = false)
+    @Column(
+            name = "symbol", length = 32,
+            nullable = false,
+            updatable = false
+    )
     private String symbol;
 
     /**
@@ -65,7 +73,11 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся через метод инициализации
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 32, nullable = false, updatable = false)
+    @Column(
+            name = "type", length = 32,
+            nullable = false,
+            updatable = false
+    )
     private InstrumentType type;
 
     /**

@@ -30,7 +30,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
     public Currency create(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальные ключи распознаёт адаптер
+        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальность проверяет адаптер репозитория
         Currency created = currencyRepository.create(currency);
         log.info("Currency {} created", created.code().value());
         return created;
@@ -51,7 +51,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
             return;
         }
 
-        // Уникальность имени проверит БД, адаптер распознает и замаппит в доменную ошибку
+        // Проверки целостности (валидация JPA/ограничения БД) и маппинг ошибок выполнит адаптер репозитория.
         Currency updated = currencyRepository.update(currency);
         log.info("Currency {} updated", updated.code().value());
     }
@@ -66,7 +66,7 @@ public class CurrencyUseCaseImpl implements CurrencyUseCase {
             throw new CurrencyUsedInFxSpotException(code);
         }
 
-        // Отсутствие валюты определит адаптер (CurrencyNotFoundException)
+        // Случай отсутствия инструмента и прочие сбои БД определит адаптер репозитория
         currencyRepository.deleteByCode(code);
         log.info("Currency {} deleted", code.value());
     }

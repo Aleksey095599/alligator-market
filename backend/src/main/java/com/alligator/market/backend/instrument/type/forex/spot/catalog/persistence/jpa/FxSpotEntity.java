@@ -57,7 +57,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
             name = "base_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_spot_base"),
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private CurrencyEntity baseCurrency;
 
@@ -71,7 +71,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
             name = "quote_currency", referencedColumnName = "code",
             foreignKey = @ForeignKey(name = "fk_fx_spot_quote"),
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private CurrencyEntity quoteCurrency;
 
@@ -84,7 +84,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     @Column(
             name = "value_date", length = 4,
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private FxSpotTenor tenor;
 

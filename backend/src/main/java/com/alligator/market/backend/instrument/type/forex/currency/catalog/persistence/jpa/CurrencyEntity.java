@@ -57,7 +57,7 @@ public class CurrencyEntity extends BaseEntity {
     @Column(
             name = "code", length = 3,
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private CurrencyCode code;
 

@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
-    /* Имена UQ ограничений (проверьте, что совпадают с фактическими именами в DDL/схеме). */
+    /* Имена UQ ограничений (должны совпадать с фактическими именами в DDL/схеме). */
     private static final String UQ_CURRENCY_CODE = "uq_currency_code";
     private static final String UQ_CURRENCY_NAME = "uq_currency_name";
 

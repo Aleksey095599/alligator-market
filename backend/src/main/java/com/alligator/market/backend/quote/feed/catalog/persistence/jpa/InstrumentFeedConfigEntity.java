@@ -77,7 +77,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_ifc_instrument"),
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private InstrumentBaseEntity instrument;
 
@@ -109,7 +109,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     @Column(
             name = "feed_role", length = 16,
             nullable = false,
-            updatable = false // <-- Идентичность сущности
+            updatable = false
     )
     private InstrumentFeedRole feedRole;
 
