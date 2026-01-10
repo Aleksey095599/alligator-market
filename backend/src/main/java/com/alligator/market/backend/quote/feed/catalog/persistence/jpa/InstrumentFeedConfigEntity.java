@@ -46,8 +46,7 @@ import java.util.Objects;
                         "AND feed_role IN ('PRIMARY','SECONDARY')"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-// <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 public class InstrumentFeedConfigEntity extends BaseEntity {
 

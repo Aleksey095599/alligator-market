@@ -21,11 +21,14 @@ import org.hibernate.annotations.Check;
 import java.util.Objects;
 
 /**
- * JPA-сущность финансового инструмента FX_SPOT {@link FxSpot} с проверками целостности данных валютной пары.
+ * JPA-сущность финансового инструмента FX_SPOT.
+ *
+ * <p>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</p>
  */
 @Entity
 @Check(
         // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
+        name = "chk_fx_spot_integrity",
         constraints = "(base_currency <> quote_currency) " +
                 "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
                 "AND (tenor IN ('TOD','TOM','SPOT'))"

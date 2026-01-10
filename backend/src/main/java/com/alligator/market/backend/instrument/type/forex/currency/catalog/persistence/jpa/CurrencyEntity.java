@@ -19,7 +19,8 @@ import java.util.Objects;
 
 /**
  * JPA-сущность валюты.
- * Соответствует доменной модели {@link Currency}.
+ *
+ * <p>Поля сущности соответствуют доменной модели валюты {@link Currency}.</p>
  */
 @Entity
 @Check(
