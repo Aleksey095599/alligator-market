@@ -28,8 +28,8 @@ import java.util.Objects;
  * <ul>
  *     <li>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</li>
  *     <li>{@link PrimaryKeyJoinColumn}: PK таблицы {@code fx_spot} является одновременно FK на PK таблицы
- *     {@code instrument_base}.</li>
- *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     {@code instrument}.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную сущность создается через специализированный конструктор.</li>
  *     <li>Остальные аннотации очевидны.</li>
  * </ul>
@@ -72,7 +72,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Уникальный код базовой валюты (FK на "code" в таблице "currency").
      *
-     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -89,7 +89,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Уникальный код котируемой валюты (FK на "code" в таблице "currency").
      *
-     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -106,7 +106,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Тенор даты расчетов.
      *
-     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)

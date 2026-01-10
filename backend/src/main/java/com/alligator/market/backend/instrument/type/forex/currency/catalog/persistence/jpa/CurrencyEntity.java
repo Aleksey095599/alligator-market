@@ -23,7 +23,7 @@ import java.util.Objects;
  * <p>Ключевые особенности:</p>
  * <ul>
  *     <li>Поля сущности соответствуют доменной модели валюты {@link Currency}.</li>
- *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную создаем сущность через специализированный конструктор.</li>
  *     <li>Остальные аннотации очевидны.</li>
  * </ul>
@@ -44,7 +44,7 @@ import java.util.Objects;
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Конструктор без аргументов доступен только для ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CurrencyEntity extends BaseEntity {
 
     /**

@@ -22,7 +22,7 @@ import java.util.Objects;
  *     <li>Поля сущности соответствуют доменному контракту {@link Instrument}.</li>
  *     <li>{@link Inheritance}: используется стратегия {@code JOINED}, при которой общие поля хранятся в базовой
  *     таблице, а специфичные — в таблицах наследников.</li>
- *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную сущность создается через метод однократной инициализации.</li>
  *     <li>Остальные аннотации очевидны.</li>
  * </ul>
@@ -71,7 +71,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     /**
      * Символ инструмента для отображения в UI.
      *
-     * <p>Поле задает бизнес-уникльность инструмента, поэтому {@code updatable=false} и
+     * <p>Поле задает бизнес-уникальность инструмента, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -86,7 +86,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     /**
      * Тип финансового инструмента.
      *
-     * <p>Поле задает бизнес-уникльность инструмента, поэтому {@code updatable=false} и
+     * <p>Поле задает бизнес-уникальность инструмента, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -100,7 +100,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     private InstrumentType type;
 
     /**
-     * Метод однократной инициализация сущности.
+     * Метод однократной инициализации сущности.
      */
     // Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
     @SuppressWarnings("SameParameterValue")
