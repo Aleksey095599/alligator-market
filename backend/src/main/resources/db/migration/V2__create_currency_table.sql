@@ -3,7 +3,7 @@ CREATE TABLE currency (
     code VARCHAR(3) NOT NULL,
     name VARCHAR(50) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    fraction_digits INTEGER NOT NULL,
+    fraction_digits INTEGER NOT NULL DEFAULT 2,
     version BIGINT NOT NULL,
     created_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
     created_by VARCHAR(255) NOT NULL,
@@ -13,5 +13,5 @@ CREATE TABLE currency (
     updated_via VARCHAR(255) NOT NULL,
     CONSTRAINT uq_currency_code UNIQUE (code),
     CONSTRAINT uq_currency_name UNIQUE (name),
-    CONSTRAINT chk_currency_fraction_digits CHECK (fraction_digits BETWEEN 0 AND 10)
+    CONSTRAINT ck_currency_fraction_digits CHECK (fraction_digits BETWEEN 0 AND 10)
 );
