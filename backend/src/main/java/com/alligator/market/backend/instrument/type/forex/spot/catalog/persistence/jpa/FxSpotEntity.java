@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.Checks;
 
 import java.util.Objects;
 
@@ -26,13 +27,21 @@ import java.util.Objects;
  * <p>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</p>
  */
 @Entity
-@Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
-        name = "chk_fx_spot_integrity",
-        constraints = "(base_currency <> quote_currency) " +
-                "AND (quote_fraction_digits BETWEEN 0 AND 10) " +
-                "AND (tenor IN ('TOD','TOM','SPOT'))"
-)
+@Checks({
+        // @Checks: при активной DDL-генерации Hibernate создаст ограничения; иначе – «живая» спецификация для миграций.
+        @Check(
+                name = "chk_fx_spot_base_quote_diff",
+                constraints = "base_currency <> quote_currency"
+        ),
+        @Check(
+                name = "chk_fx_spot_digits_range",
+                constraints = "quote_fraction_digits BETWEEN 0 AND 10"
+        ),
+        @Check(
+                name = "chk_fx_spot_tenor_allowed",
+                constraints = "tenor IN ('TOD','TOM','SPOT')"
+        )
+})
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
