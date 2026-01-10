@@ -28,7 +28,8 @@ import java.util.Objects;
  */
 @Entity
 @Checks({
-        // @Checks: при активной DDL-генерации Hibernate создаст ограничения; иначе – «живая» спецификация для миграций.
+        // @Checks: Здесь задаются важные ограничения для бизнес-логики.
+        // При активной DDL-генерации Hibernate сам создаст ограничения; иначе – «живая» спецификация для миграций.
         @Check(
                 name = "chk_fx_spot_base_quote_diff",
                 constraints = "base_currency <> quote_currency"
