@@ -24,12 +24,18 @@ import java.util.Objects;
 /**
  * JPA-сущность финансового инструмента FX_SPOT.
  *
- * <p>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</p>
+ * <p>Ключевые особенности:</p>
+ * <ul>
+ *     <li>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</li>
+ *     <li>{@link PrimaryKeyJoinColumn}: PK таблицы {@code fx_spot} является одновременно FK на PK таблицы
+ *     {@code instrument_base}.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     вручную сущность создается через специализированный конструктор.</li>
+ *     <li>Остальные аннотации очевидны.</li>
+ * </ul>
  */
 @Entity
 @Checks({
-        // @Checks: Здесь задаются важные ограничения для бизнес-логики.
-        // При активной DDL-генерации Hibernate сам создаст ограничения; иначе – «живая» спецификация для миграций.
         @Check(
                 name = "chk_fx_spot_base_quote_diff",
                 constraints = "base_currency <> quote_currency"
@@ -46,24 +52,30 @@ import java.util.Objects;
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
+                // Поля, задающие бизнес-уникальность инструмента FX_SPOT
                 @UniqueConstraint(name = "uq_fx_spot_pair_tenor",
                         columnNames = {"base_currency", "quote_currency", "tenor"})
         },
         indexes = {
+                // Индекс на FK-колонке ускоряет операции
                 @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
+                // Индекс на FK-колонке ускоряет операции
                 @Index(name = "idx_fx_spot_quote", columnList = "quote_currency")
         }
 )
 @PrimaryKeyJoinColumn(name = "id")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FxSpotEntity extends InstrumentBaseEntity {
 
     /**
      * Уникальный код базовой валюты (FK на "code" в таблице "currency").
+     *
+     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    @Setter(AccessLevel.NONE)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -76,8 +88,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
 
     /**
      * Уникальный код котируемой валюты (FK на "code" в таблице "currency").
+     *
+     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    @Setter(AccessLevel.NONE)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -90,8 +105,11 @@ public class FxSpotEntity extends InstrumentBaseEntity {
 
     /**
      * Тенор даты расчетов.
+     *
+     * <p>Поле задает бизнес-уникльность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    @Setter(AccessLevel.NONE)
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(
@@ -102,7 +120,10 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private FxSpotTenor tenor;
 
     /**
-     * Количество знаков после запятой для курса.
+     * Количество знаков после запятой в котировке инструмента FX_SPOT (по-умолчанию).
+     *
+     * <p>На уровне кода задан дефолт {@code 4} – наиболее распространенное значение на практике.
+     * Рекомендуется закрепить {@code DEFAULT 4} в БД миграцией.</p>
      */
     @NotNull
     @Min(0)
@@ -111,12 +132,13 @@ public class FxSpotEntity extends InstrumentBaseEntity {
             name = "quote_fraction_digits",
             nullable = false
     )
-    private Integer defaultQuoteFractionDigits;
+    private Integer defaultQuoteFractionDigits = 4;
 
     /**
-     * Специальный конструктор – единственный безопасный способ создать сущность.
+     * Специальный конструктор — единственный безопасный способ создать сущность.
      *
-     * <p>Проверяет корректность входных данных и инициализирует поля идентичности сущности.</p>
+     * <p>Проверяет входные данные, фиксирует неизменяемые параметры сущности инструмента FX_SPOT и инициализирует
+     * базовую сущность финансового инструмента.</p>
      */
     public FxSpotEntity(
             CurrencyEntity baseCurrency,
@@ -137,7 +159,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         final String symbol = FxSpotCodec.fxSpotSymbol(baseCode, quoteCode, tenor);
         final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
 
-        // Инициализируем идентичность инструмента
+        // Инициализируем родительскую сущность
         initIdentity(code.value(), symbol, InstrumentType.FX_SPOT);
     }
 }

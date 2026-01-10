@@ -3,6 +3,7 @@ package com.alligator.market.backend.instrument.base.persistence.jpa;
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,15 @@ import java.util.Objects;
 /**
  * Абстрактная родительская JPA-сущность финансового инструмента.
  *
- * <p>Поля сущности соответствуют доменному контракту {@link Instrument}.</p>
+ * <p>Ключевые особенности:</p>
+ * <ul>
+ *     <li>Поля сущности соответствуют доменному контракту {@link Instrument}.</li>
+ *     <li>{@link Inheritance}: используется стратегия {@code JOINED}, при которой общие поля хранятся в базовой таблице,
+ *     а специфичные — в таблицах наследников.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     вручную сущность создается через специализированный конструктор.</li>
+ *     <li>Остальные аннотации очевидны.</li>
+ * </ul>
  */
 @Entity
 @Table(
@@ -31,7 +40,7 @@ import java.util.Objects;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class InstrumentBaseEntity extends BaseEntity {
 
     /**

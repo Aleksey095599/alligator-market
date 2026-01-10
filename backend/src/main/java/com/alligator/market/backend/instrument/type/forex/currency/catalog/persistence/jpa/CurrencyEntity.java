@@ -20,24 +20,31 @@ import java.util.Objects;
 /**
  * JPA-сущность валюты.
  *
- * <p>Поля сущности соответствуют доменной модели валюты {@link Currency}.</p>
+ * <p>Ключевые особенности:</p>
+ * <ul>
+ *     <li>Поля сущности соответствуют доменной модели валюты {@link Currency}.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужент только для ORM;
+ *     вручную создаем сущность через специализированный конструктор.</li>
+ *     <li>Остальные аннотации очевидны.</li>
+ * </ul>
  */
 @Entity
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
+        name = "ck_currency_fraction_digits",
         constraints = "fraction_digits BETWEEN 0 AND 10"
 )
 @Table(
         name = "currency",
         uniqueConstraints = {
+                // Поле задает бизнес-уникальность валюты и является натуральным ключом
                 @UniqueConstraint(name = "uq_currency_code", columnNames = "code"),
+                // Не может быть одинаковых наименований валют
                 @UniqueConstraint(name = "uq_currency_name", columnNames = "name")
         }
 )
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-// <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Конструктор без аргументов доступен только для ORM
 public class CurrencyEntity extends BaseEntity {
 
     /**
@@ -50,11 +57,14 @@ public class CurrencyEntity extends BaseEntity {
 
     /**
      * Уникальный код валюты.
+     *
+     * <p>Поле задает бизнес-уникальность валюты и является натуральным ключом, поэтому {@code updatable=false} и
+     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    @Setter(AccessLevel.NONE)
     @NotNull
     @Convert(converter = CurrencyCodeConverter.class)
-    @NaturalId() // <-- Помечаем поле как натуральный ключ
+    @NaturalId()
     @Column(
             name = "code", length = 3,
             nullable = false,
@@ -68,7 +78,8 @@ public class CurrencyEntity extends BaseEntity {
     @NotBlank
     @Column(
             name = "name", length = 50,
-            nullable = false)
+            nullable = false
+    )
     private String name;
 
     /**
@@ -82,7 +93,10 @@ public class CurrencyEntity extends BaseEntity {
     private String country;
 
     /**
-     * Количество знаков после запятой для денежных сумм.
+     * Количество знаков после запятой для денежных сумм в данной валюте.
+     *
+     * <p>На уровне кода задан дефолт {@code 2} – наиболее распространенное значение на практике.
+     * Рекомендуется закрепить {@code DEFAULT 2} в БД миграцией.</p>
      */
     @NotNull
     @Min(0)
@@ -91,12 +105,12 @@ public class CurrencyEntity extends BaseEntity {
             name = "fraction_digits",
             nullable = false
     )
-    private Integer fractionDigits;
+    private Integer fractionDigits = 2;
 
     /**
      * Специальный конструктор – единственный безопасный способ создать сущность.
      *
-     * <p>Проверяет корректность входных данных и инициализирует поля идентичности сущности.</p>
+     * <p>Проверяет входные данные и фиксирует неизменяемые параметры валюты.</p>
      */
     public CurrencyEntity(
             CurrencyCode code
