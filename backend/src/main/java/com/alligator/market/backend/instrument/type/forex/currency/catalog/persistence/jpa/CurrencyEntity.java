@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 @Entity
 @Check(
-        name = "ck_currency_fraction_digits",
+        name = "chk_currency_fraction_digits",
         constraints = "fraction_digits BETWEEN 0 AND 10"
 )
 @Table(
