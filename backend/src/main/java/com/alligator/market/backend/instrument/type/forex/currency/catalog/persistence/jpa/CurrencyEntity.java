@@ -36,7 +36,7 @@ import java.util.Objects;
 @Table(
         name = "currency",
         uniqueConstraints = {
-                // Поле задает бизнес-уникальность валюты и является натуральным ключом
+                // Поле задает натуральный ключ
                 @UniqueConstraint(name = "uq_currency_code", columnNames = "code"),
                 // Не может быть одинаковых наименований валют
                 @UniqueConstraint(name = "uq_currency_name", columnNames = "name")
@@ -58,7 +58,7 @@ public class CurrencyEntity extends BaseEntity {
     /**
      * Уникальный код валюты.
      *
-     * <p>Поле задает бизнес-уникальность валюты и является натуральным ключом, поэтому {@code updatable=false} и
+     * <p>Поле является натуральным ключом, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
