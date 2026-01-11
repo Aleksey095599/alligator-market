@@ -18,7 +18,6 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.Checks;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
 
 /**
  * JPA-сущность провайдера рыночных данных.
@@ -62,12 +61,6 @@ import org.hibernate.annotations.NaturalIdCache;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD)
 @Immutable
-@Cacheable // <-- Подключаем 2-й уровень кэша (если включен в конфигурации)
-@org.hibernate.annotations.Cache( // <-- Стратегия 2L-кэша: только чтение; отдельный регион
-        usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY,
-        region = "provider"
-)
-@NaturalIdCache // <-- Кеширование обращений по натуральному ключу (provider_code)
 public class ProviderEntity extends BaseEntity {
 
     /**
