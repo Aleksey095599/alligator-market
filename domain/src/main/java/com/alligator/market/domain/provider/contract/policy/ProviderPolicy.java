@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
  *
- * @param minUpdateInterval Минимальный интервал обновления котировок (для API_POLL режима --> минимальный интервал запросов)
+ * @param minUpdateInterval Минимальный интервал обновления/запроса котировок
  */
 public record ProviderPolicy(
         Duration minUpdateInterval
@@ -15,8 +15,9 @@ public record ProviderPolicy(
     private static final Duration MIN_ALLOWED = Duration.ofSeconds(1);
 
     public ProviderPolicy {
-        // Базовая валидация аргументов
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
+
+        // Минимальный интервал обновления/запроса котировок не может быть меньше MIN_ALLOWED
         if (minUpdateInterval.compareTo(MIN_ALLOWED) < 0) {
             throw new IllegalArgumentException("minUpdateInterval must be >= PT1S");
         }

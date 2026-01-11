@@ -51,7 +51,7 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     Set<InstrumentType> instrumentsTypes();
 
     /**
-     * Унифицированная операция получения котировок для любого поддерживаемого инструмента.
+     * Унифицированная операция получения котировок для финансового инструмента.
      */
     <I extends Instrument> Publisher<QuoteTick> quote(I instrument);
 }
