@@ -1,8 +1,10 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
+import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
+import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
@@ -24,15 +26,15 @@ import java.util.Objects;
 
 /**
  * JPA-сущность провайдера рыночных данных.
- * <p>
- * 1) По бизнес логике таблица статическая и служит только для вывода информации о провайдерах во frontend.
- * 2) Все поля данной JPA-сущности и встроенных JPA-сущностей не обновляемые: логика синхронизации с контекстом
- * приложения использует стратегию DELETE --> INSERT {@link ProviderSynchronizer}.
- * 3) Данная JPA-сущность и встроенные JPA-сущности содержат конструкторы, чтобы обеспечить fail-fast проверку
- * инвариантов (non-null, not blank, допустимые диапазоны) и формирование полностью инициализированного,
- * иммутабельного состояния без сеттеров.
- * 4) Данная JPA-сущность и встроенные JPA-сущности содержат фабрики, чтобы упростить и стандартизировать создание
- * из доменных моделей, инкапсулировать маппинг и повторно использовать валидацию.</p>
+ *
+ * <p>Ключевые моменты:</p>
+ * <ul>
+ *     <li>По бизнес логике таблица статическая и служит только для вывода информации о провайдерах во frontend.</li>
+ *     <li>Все поля данной JPA-сущности и встроенных JPA-сущностей неизменяемы: не заданы сеттеры; логика
+ *     синхронизации с контекстом приложения использует стратегию DELETE -> INSERT {@link ProviderSynchronizer}.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
+ *     для создания сущности используется специальная фабрика.</li>
+ * </ul>
  */
 @Entity
 @Table(
@@ -42,7 +44,6 @@ import java.util.Objects;
         }
 )
 @Check(
-        // CHECK: при DDL-генерации создаётся Hibernate; иначе – «живая» спецификация для миграций.
         constraints = "min_update_interval_seconds >= 1 " +
                 "AND provider_code = upper(provider_code) " +
                 "AND provider_code ~ '" + ProviderCode.PATTERN + "' " +
@@ -50,7 +51,7 @@ import java.util.Objects;
                 "AND access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
 @Immutable // <-- Делает сущность read-only для ORM: Hibernate не генерирует UPDATE; изменения игнорируются на flush
 @Cacheable // <-- Подключаем 2-й уровень кэша (если включен в конфигурации)
@@ -119,7 +120,6 @@ public class ProviderEntity extends BaseEntity {
     /**
      * Фабрика для создания иммутабельной сущности провайдера.
      */
-    @SuppressWarnings("unused")
     public static ProviderEntity of(
             ProviderCode providerCode,
             ProviderDescriptorEmbeddable descriptor,
