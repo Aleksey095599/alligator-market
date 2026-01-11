@@ -7,7 +7,7 @@ import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import java.util.Objects;
 
 /**
- * Снимок провайдера.
+ * Снимок провайдера: содержит информацию о провайдере рыночных данных.
  *
  * <p>Применяется для извлечения данных о провайдере из контекста приложения.</p>
  *
