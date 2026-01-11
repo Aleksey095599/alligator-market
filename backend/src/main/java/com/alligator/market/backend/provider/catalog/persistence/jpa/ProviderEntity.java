@@ -87,7 +87,11 @@ public class ProviderEntity extends BaseEntity {
     @Size(max = 50)
     @Pattern(regexp = ProviderCode.PATTERN)
     @NaturalId()
-    @Column(name = "provider_code", length = 50, nullable = false, updatable = false)
+    @Column(
+            name = "provider_code", length = 50,
+            nullable = false,
+            updatable = false
+    )
     private String providerCode;
 
     /**
@@ -103,7 +107,7 @@ public class ProviderEntity extends BaseEntity {
     private ProviderDescriptorEmbeddable descriptor;
 
     /**
-     * Иммутабельный набор параметров "политики провайдера".
+     * Иммутабельный набор параметров политики провайдера.
      *
      * <p>{@link Embedded}: указывает, что поле является встраиваемым компонентом, чьи поля маппируются в ту же таблицу,
      * что и основная сущность; {@link Valid}: активирует каскадную валидацию ограничений встраиваемого объекта при
