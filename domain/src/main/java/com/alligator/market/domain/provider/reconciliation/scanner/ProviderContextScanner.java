@@ -15,5 +15,7 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
      *
      * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, паспорт, "политику".
      */
-    Map<ProviderCode, ProviderSnapshot> providerSnapshots();
+    Map<ProviderCode, ProviderSnapshot> providerSnapshots(); // <-- TODO: убрать после реализации паспорта провайдера
+
+
 }
