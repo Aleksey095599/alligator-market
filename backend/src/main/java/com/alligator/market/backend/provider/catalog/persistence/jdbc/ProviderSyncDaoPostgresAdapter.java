@@ -51,10 +51,10 @@ import java.util.Objects;
 @Repository
 public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
 
-    // Конвертер Duration ↔ seconds
+    /* Конвертер Duration ↔ seconds */
     private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
 
-    // Spring JdbcTemplate: SQL/батчи через DataSource, управление ресурсами и перевод SQLException --> DataAccessException.
+    /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
@@ -67,7 +67,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
      *
      * <p>Безопасно вызывать с пустой коллекцией – операция будет пропущена.</p>
      *
-     * @param codes набор кодов провайдеров ({@code provider_code}) для удаления
+     * @param codes набор кодов провайдеров для удаления
      * @throws DataAccessException если БД вернула ошибку
      */
     @Override
@@ -175,11 +175,11 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         ps.setString(1, s.code().value());
 
         // 2) passport.*
-        ProviderPassport p = s.passport();
-        ps.setString(2, p.displayName());         // <-- display_name
-        ps.setString(3, p.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
-        ps.setString(4, p.accessMethod().name()); // <-- access_method (EnumType.STRING)
-        ps.setBoolean(5, p.bulkSubscription());   // <-- bulk_subscription
+        ProviderPassport passport = s.passport();
+        ps.setString(2, passport.displayName());         // <-- display_name
+        ps.setString(3, passport.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
+        ps.setString(4, passport.accessMethod().name()); // <-- access_method (EnumType.STRING)
+        ps.setBoolean(5, passport.bulkSubscription());   // <-- bulk_subscription
 
         // 3) policy.*  (Duration --> seconds через общий конвертер)
         ProviderPolicy policy = s.policy();
