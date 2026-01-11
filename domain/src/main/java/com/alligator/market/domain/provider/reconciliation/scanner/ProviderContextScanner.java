@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 
 import java.util.Map;
@@ -17,5 +18,8 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
      */
     Map<ProviderCode, ProviderSnapshot> providerSnapshots(); // <-- TODO: убрать после реализации паспорта провайдера
 
-
+    /**
+     * Вернуть карту паспортов провайдеров, индексированную по коду провайдера.
+     */
+    Map<ProviderCode, ProviderPassport> providerPassports();
 }

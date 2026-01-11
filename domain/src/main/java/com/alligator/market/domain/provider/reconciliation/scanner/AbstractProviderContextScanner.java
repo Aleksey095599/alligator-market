@@ -11,7 +11,7 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import java.util.*;
 
 /**
- * Абстрактный каркас для контракта сканера контекста приложения {@link ProviderContextScanner}.
+ * Абстрактный каркас для сканера контекста приложения.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
