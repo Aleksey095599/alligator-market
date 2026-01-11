@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.web.dto.mapper;
 
 import com.alligator.market.backend.provider.catalog.service.ProviderCatalogItem;
 import com.alligator.market.backend.provider.catalog.web.dto.out.ProviderResponseDto;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 
 import java.time.Duration;
@@ -24,16 +24,16 @@ public final class ProviderDtoMapper {
     public static ProviderResponseDto toDto(ProviderCatalogItem item) {
         Objects.requireNonNull(item, "item must not be null");
 
-        ProviderDescriptor descriptor = item.descriptor();
+        ProviderPassport passport = item.passport();
         ProviderPolicy policy = item.policy();
         Duration minUpdateInterval = policy.minUpdateInterval();
 
         return new ProviderResponseDto(
                 item.providerCode().value(),
-                descriptor.displayName(),
-                descriptor.deliveryMode().name(),
-                descriptor.accessMethod().name(),
-                descriptor.bulkSubscription(),
+                passport.displayName(),
+                passport.deliveryMode().name(),
+                passport.accessMethod().name(),
+                passport.bulkSubscription(),
                 minUpdateInterval.getSeconds()
         );
     }

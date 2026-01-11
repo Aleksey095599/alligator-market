@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.catalog.persistence.jdbc;
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
 import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
@@ -174,16 +174,16 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
         // 1) provider_code (натуральный ключ)
         ps.setString(1, s.code().value());
 
-        // 2) descriptor.*
-        ProviderDescriptor d = s.descriptor();
-        ps.setString(2, d.displayName());         // <-- display_name
-        ps.setString(3, d.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
-        ps.setString(4, d.accessMethod().name()); // <-- access_method (EnumType.STRING)
-        ps.setBoolean(5, d.bulkSubscription());   // <-- bulk_subscription
+        // 2) passport.*
+        ProviderPassport p = s.passport();
+        ps.setString(2, p.displayName());         // <-- display_name
+        ps.setString(3, p.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
+        ps.setString(4, p.accessMethod().name()); // <-- access_method (EnumType.STRING)
+        ps.setBoolean(5, p.bulkSubscription());   // <-- bulk_subscription
 
         // 3) policy.*  (Duration --> seconds через общий конвертер)
-        ProviderPolicy p = s.policy();
-        Long seconds = DUR2SEC.convertToDatabaseColumn(p.minUpdateInterval());
+        ProviderPolicy policy = s.policy();
+        Long seconds = DUR2SEC.convertToDatabaseColumn(policy.minUpdateInterval());
         ps.setLong(6, seconds);                   // <-- min_update_interval_seconds
 
         // 4) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.

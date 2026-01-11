@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor.ProviderDescriptorEmbeddable;
+import com.alligator.market.backend.provider.catalog.persistence.jpa.passport.ProviderPassportEmbeddable;
 import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
@@ -95,7 +95,7 @@ public class ProviderEntity extends BaseEntity {
     private String providerCode;
 
     /**
-     * Иммутабельный дескриптор.
+     * Иммутабельный паспорт.
      *
      * <p>{@link Embedded}: указывает, что поле является встраиваемым компонентом, чьи поля маппируются в ту же таблицу,
      * что и основная сущность; {@link Valid}: активирует каскадную валидацию ограничений встраиваемого объекта при
@@ -104,7 +104,7 @@ public class ProviderEntity extends BaseEntity {
     @Embedded
     @NotNull
     @Valid
-    private ProviderDescriptorEmbeddable descriptor;
+    private ProviderPassportEmbeddable passport;
 
     /**
      * Иммутабельный набор параметров политики провайдера.

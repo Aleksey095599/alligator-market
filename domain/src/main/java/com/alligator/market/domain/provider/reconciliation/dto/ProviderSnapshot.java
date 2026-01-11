@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation.dto;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 
 import java.util.Objects;
@@ -11,13 +11,13 @@ import java.util.Objects;
  *
  * <p>Применяется для извлечения данных о провайдере из контекста приложения.</p>
  *
- * @param code       Код провайдера
- * @param descriptor Дескриптор провайдера
- * @param policy     Политика провайдера
+ * @param code     Код провайдера
+ * @param passport Паспорт провайдера
+ * @param policy   Политика провайдера
  */
 public record ProviderSnapshot(
         ProviderCode code,
-        ProviderDescriptor descriptor,
+        ProviderPassport passport,
         ProviderPolicy policy
 ) {
     /**
@@ -25,7 +25,7 @@ public record ProviderSnapshot(
      */
     public ProviderSnapshot {
         Objects.requireNonNull(code, "Provider code must not be null");
-        Objects.requireNonNull(descriptor, "Provider descriptor must not be null");
+        Objects.requireNonNull(passport, "Provider passport must not be null");
         Objects.requireNonNull(policy, "Provider policy must not be null");
     }
 }

@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.contract.descriptor;
+package com.alligator.market.domain.provider.contract.passport;
 
 import java.util.Objects;
 
 /**
- * Дескриптор провайдера: иммутабельный набор статических атрибутов провайдера, носят исключительно информационный
+ * Паспорт провайдера: иммутабельный набор статических атрибутов провайдера, носят исключительно информационный
  * характер и не используются бизнес логикой.
  *
  * @param displayName      Отображаемое имя провайдера (user friendly)
@@ -11,13 +11,13 @@ import java.util.Objects;
  * @param accessMethod     Метод доступа к рыночным данным {@link AccessMethod}
  * @param bulkSubscription Поддержка массовой подписки одним запросом
  */
-public record ProviderDescriptor(
+public record ProviderPassport(
         String displayName,
         DeliveryMode deliveryMode,
         AccessMethod accessMethod,
         boolean bulkSubscription
 ) {
-    public ProviderDescriptor {
+    public ProviderPassport {
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");

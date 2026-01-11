@@ -24,7 +24,7 @@ public class ProviderController {
     private final ProviderCatalogUseCase service;
 
     /**
-     * Вернуть все дескрипторы провайдеров.
+     * Вернуть все паспорта провайдеров.
      */
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderResponseDto>>> getAll() {

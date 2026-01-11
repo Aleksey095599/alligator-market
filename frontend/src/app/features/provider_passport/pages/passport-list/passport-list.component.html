@@ -1,5 +1,5 @@
 <div class="center-box">
-  <!-- карточка со списком дескрипторов провайдеров -->
+  <!-- карточка со списком паспортов провайдеров -->
   <mat-card>
     <mat-card-header>
       <mat-card-title>Providers</mat-card-title>
@@ -9,35 +9,35 @@
 
         <ng-container matColumnDef="providerCode">
           <th mat-header-cell *matHeaderCellDef>Code</th>
-          <td mat-cell *matCellDef="let descriptor">{{ descriptor.providerCode }}</td>
+          <td mat-cell *matCellDef="let passport">{{ passport.providerCode }}</td>
         </ng-container>
 
         <ng-container matColumnDef="displayName">
           <th mat-header-cell *matHeaderCellDef>Provider</th>
-          <td mat-cell *matCellDef="let descriptor">{{ descriptor.displayName }}</td>
+          <td mat-cell *matCellDef="let passport">{{ passport.displayName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="deliveryMode">
           <th mat-header-cell *matHeaderCellDef>Delivery Mode</th>
-          <td mat-cell *matCellDef="let descriptor">{{ descriptor.deliveryMode }}</td>
+          <td mat-cell *matCellDef="let passport">{{ passport.deliveryMode }}</td>
         </ng-container>
 
         <ng-container matColumnDef="accessMethod">
           <th mat-header-cell *matHeaderCellDef>Access Method</th>
-          <td mat-cell *matCellDef="let descriptor">{{ descriptor.accessMethod }}</td>
+          <td mat-cell *matCellDef="let passport">{{ passport.accessMethod }}</td>
         </ng-container>
 
         <ng-container matColumnDef="bulkSubscription">
           <th mat-header-cell *matHeaderCellDef>Bulk Subscription</th>
-          <td mat-cell *matCellDef="let descriptor">
-            {{ descriptor.bulkSubscription ? 'Yes' : 'No' }}
+          <td mat-cell *matCellDef="let passport">
+            {{ passport.bulkSubscription ? 'Yes' : 'No' }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="minUpdateIntervalSeconds">
           <th mat-header-cell *matHeaderCellDef>Min Update Interval (s)</th>
-          <td mat-cell *matCellDef="let descriptor">
-            {{ descriptor.minUpdateIntervalSeconds }}
+          <td mat-cell *matCellDef="let passport">
+            {{ passport.minUpdateIntervalSeconds }}
           </td>
         </ng-container>
 
