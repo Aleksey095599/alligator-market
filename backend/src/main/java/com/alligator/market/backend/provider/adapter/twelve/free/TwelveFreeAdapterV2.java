@@ -4,9 +4,9 @@ import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFr
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
 import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
-import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.AccessMethod;
+import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,8 +27,8 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
     /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "TwelveData Free Plan";
 
-    /* Статический дескриптор провайдера. */
-    private static final ProviderDescriptor DESCRIPTOR = new ProviderDescriptor(
+    /* Статический паспорт провайдера. */
+    private static final ProviderPassport PASSPORT = new ProviderPassport(
             DISPLAY_NAME,
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
@@ -54,7 +54,7 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
         // Конструктор материнского класса провайдера
         super(
                 PROVIDER_CODE,
-                DESCRIPTOR,
+                PASSPORT,
                 POLICY,
                 SETTINGS,
                 Set.of(new TwelveFreeFxSpotHandler(webClient, props))

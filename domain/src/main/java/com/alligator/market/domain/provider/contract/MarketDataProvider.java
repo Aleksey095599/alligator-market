@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -23,9 +23,9 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     ProviderCode providerCode();
 
     /**
-     * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
+     * Паспорт провайдера: иммутабельный набор статических атрибутов (только отображение).
      */
-    ProviderDescriptor descriptor();
+    ProviderPassport passport();
 
     /**
      * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.

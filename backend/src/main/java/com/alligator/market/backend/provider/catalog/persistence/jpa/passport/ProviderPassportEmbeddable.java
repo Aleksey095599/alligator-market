@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor;
+package com.alligator.market.backend.provider.catalog.persistence.jpa.passport;
 
-import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
-import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
+import com.alligator.market.domain.provider.contract.passport.AccessMethod;
+import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -14,12 +14,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Embeddable JPA-сущность дескриптора провайдера.
+ * Embeddable JPA-сущность паспорта провайдера.
  */
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProviderDescriptorEmbeddable {
+public class ProviderPassportEmbeddable {
 
     /**
      * Отображаемое имя провайдера (user friendly).

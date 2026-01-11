@@ -13,7 +13,7 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
     /**
      * Вернуть карту снимков провайдеров, индексированную по коду провайдера.
      *
-     * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, дескриптор, "политику".
+     * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, паспорт, "политику".
      */
     Map<ProviderCode, ProviderSnapshot> providerSnapshots();
 }

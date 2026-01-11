@@ -12,10 +12,10 @@ export const routes: Routes = [
       import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
   },
   {
-    path: 'provider-descriptors',
+    path: 'provider-passports',
     loadChildren: () =>
-      import('./features/provider_descriptor/provider-descriptor.module')
-        .then(m => m.ProviderDescriptorModule)
+      import('./features/provider_passport/provider-passport.module')
+        .then(m => m.ProviderPassportModule)
   },
   {
     path: '',

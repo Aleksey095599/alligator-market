@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { ProviderDescriptorService } from '../../services/provider-descriptor.service';
+import { ProviderPassportService } from '../../services/provider-passport.service';
 import { ProviderDto } from '../../models/provider-dto.model';
 
 @Component({
-  selector: 'app-provider-descriptor-list',
+  selector: 'app-provider-passport-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule],
-  templateUrl: './descriptor-list.component.html',
-  styleUrl: './descriptor-list.component.scss'
+  templateUrl: './passport-list.component.html',
+  styleUrl: './passport-list.component.scss'
 })
-export class DescriptorListComponent implements OnInit {
+export class PassportListComponent implements OnInit {
 
   /* Список колонок таблицы. */
   displayed: string[] = [
@@ -26,14 +26,14 @@ export class DescriptorListComponent implements OnInit {
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<ProviderDto>([]);
 
-  constructor(private readonly service: ProviderDescriptorService) {}
+  constructor(private readonly service: ProviderPassportService) {}
 
   /* Загрузка списка при открытии страницы. */
   ngOnInit(): void {
     this.refresh();
   }
 
-  /* Получить список дескрипторов и обновить таблицу. */
+  /* Получить список паспортов и обновить таблицу. */
   private refresh(): void {
     this.service.list().subscribe({
       next: list => {

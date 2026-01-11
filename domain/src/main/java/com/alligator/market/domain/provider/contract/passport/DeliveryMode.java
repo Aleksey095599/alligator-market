@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.contract.descriptor;
+package com.alligator.market.domain.provider.contract.passport;
 
 import java.util.Arrays;
 import java.util.List;

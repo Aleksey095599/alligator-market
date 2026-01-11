@@ -5,18 +5,18 @@ import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../../../shared/api/api-response.model';
 import { ProviderDto } from '../models/provider-dto.model';
 
-/* Сервис для чтения дескрипторов провайдеров. */
+/* Сервис для чтения паспортов провайдеров. */
 @Injectable({
   providedIn: 'root'
 })
-export class ProviderDescriptorService {
+export class ProviderPassportService {
 
   constructor(private http: HttpClient) {}
 
   /* Базовый URL (через proxy уйдёт на Spring). */
   private readonly baseUrl = '/api/v1/providers';
 
-  /* Получить все дескрипторы провайдеров. */
+  /* Получить все паспорта провайдеров. */
   list(): Observable<ProviderDto[]> {
     return this.http
       .get<ApiResponse<ProviderDto[]>>(this.baseUrl)

@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
@@ -25,8 +25,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Технический код провайдера. */
     protected final ProviderCode providerCode;
 
-    /* Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение). */
-    protected final ProviderDescriptor descriptor;
+    /* Паспорт провайдера: иммутабельный набор статических атрибутов (только отображение). */
+    protected final ProviderPassport passport;
 
     /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     protected final ProviderPolicy policy;
@@ -52,7 +52,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * прикрепляет обработчики к провайдеру.</p>
      *
      * @param providerCode код провайдера
-     * @param descriptor   дескриптор провайдера
+     * @param passport     паспорт провайдера
      * @param policy       политика провайдера
      * @param settings     настройки провайдера
      * @throws NullPointerException     если переданы null-аргументы
@@ -61,13 +61,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      */
     protected AbstractMarketDataProvider(
             ProviderCode providerCode,
-            ProviderDescriptor descriptor,
+            ProviderPassport passport,
             ProviderPolicy policy,
             ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
-        Objects.requireNonNull(descriptor, "descriptor must not be null");
+        Objects.requireNonNull(passport, "passport must not be null");
         Objects.requireNonNull(policy, "policy must not be null");
         Objects.requireNonNull(settings, "settings must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
@@ -77,7 +77,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         }
 
         this.providerCode = providerCode;
-        this.descriptor = descriptor;
+        this.passport = passport;
         this.policy = policy;
         this.settingsRef = new AtomicReference<>(settings);
 
@@ -136,11 +136,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Дескриптор провайдера: иммутабельный набор статических атрибутов (только отображение).
+     * Паспорт провайдера: иммутабельный набор статических атрибутов (только отображение).
      */
     @Override
-    public ProviderDescriptor descriptor() {
-        return descriptor;
+    public ProviderPassport passport() {
+        return passport;
     }
 
     /**

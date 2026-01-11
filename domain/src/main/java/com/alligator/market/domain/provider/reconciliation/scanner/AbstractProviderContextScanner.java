@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.reconciliation.scanner;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
@@ -16,7 +16,7 @@ import java.util.*;
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
     /**
-     * Вернуть последовательность провайдеров для построения карты дескрипторов.
+     * Вернуть последовательность провайдеров для построения карты паспортов.
      */
     protected abstract Iterable<MarketDataProvider> providers();
 
@@ -31,19 +31,19 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
 
         for (MarketDataProvider provider : providers()) {
             ProviderCode code = provider.providerCode();
-            ProviderDescriptor descriptor = provider.descriptor();
+            ProviderPassport passport = provider.passport();
             ProviderPolicy policy = provider.policy();
 
             // Проверка дублей по коду
-            ProviderSnapshot prev = snapshots.put(code, new ProviderSnapshot(code, descriptor, policy));
+            ProviderSnapshot prev = snapshots.put(code, new ProviderSnapshot(code, passport, policy));
             if (prev != null) {
                 throw new ProviderCodeDuplicateException(code);
             }
 
             // Проверка дублей по отображаемому имени (без учёта регистра)
-            String nameLower = descriptor.displayName().toLowerCase(Locale.ROOT);
+            String nameLower = passport.displayName().toLowerCase(Locale.ROOT);
             if (!displayNamesLower.add(nameLower)) {
-                throw new ProviderDisplayNameDuplicateException(descriptor.displayName());
+                throw new ProviderDisplayNameDuplicateException(passport.displayName());
             }
         }
         return snapshots;

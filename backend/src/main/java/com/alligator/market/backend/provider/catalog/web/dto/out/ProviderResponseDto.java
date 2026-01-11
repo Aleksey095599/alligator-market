@@ -6,7 +6,7 @@ package com.alligator.market.backend.provider.catalog.web.dto.out;
 public record ProviderResponseDto(
         String providerCode,
 
-        // Поля дескриптора провайдера
+        // Поля паспорта провайдера
         String displayName,
         String deliveryMode,
         String accessMethod,
