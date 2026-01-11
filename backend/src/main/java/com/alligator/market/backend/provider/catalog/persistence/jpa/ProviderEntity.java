@@ -24,12 +24,12 @@ import org.hibernate.annotations.NaturalId;
  *
  * <p>Ключевые моменты:</p>
  * <ul>
- *     <li>1) По бизнес логике таблица {@code provider} является статичной и служит только для вывода информации
- *     о провайдерах во frontend.</li>
- *     <li>2) Изменения в таблицу {@code provider} вносит специальный доменный процесс {@link ProviderSynchronizer},
- *     использующий DAO адаптер со стратегией DELETE -> INSERT.</li>
- *     <li>3) {@link NoArgsConstructor} с {@code PROTECTED}, {@link Immutable}, {@link Access} с {@code FIELD},
- *     отсутствие сеттеров – следствие логики пунктов 1) и 2).</li>
+ *     <li>По бизнес логике таблица {@code market_data_provider} является статичной и служит только для вывода
+ *     информации о провайдерах во frontend.</li>
+ *     <li>Изменения в таблицу вносит специальный доменный процесс {@link ProviderSynchronizer},
+ *     использующий DAO адаптер со стратегией {@code DELETE -> INSERT}.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}, {@link Immutable}, {@link Access} с {@code FIELD}
+ *     и отсутствие сеттеров — следствие иммутабельности данных и специфики их синхронизации.</li>
  * </ul>
  */
 @Entity
