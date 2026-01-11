@@ -19,7 +19,7 @@ import java.util.Objects;
  * @param ask               цена лучшей продажи; может быть {@code null},
  * @param exchangeTimestamp время события на стороне биржи/провайдера
  * @param receivedTimestamp время, когда тик был получен и зафиксирован в нашей системе
- * @param providerCode      технический код провайдера, предоставившего котировку
+ * @param providerCode      код провайдера, предоставившего котировку
  */
 public record QuoteTick(
         InstrumentCode instrumentCode,

@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface ProviderSyncDao {
 
     /**
-     * Удалить записи провайдеров по набору технических кодов.
+     * Удалить записи провайдеров по набору кодов провайдеров.
      */
     void deleteByCodes(Collection<ProviderCode> codes);
 
