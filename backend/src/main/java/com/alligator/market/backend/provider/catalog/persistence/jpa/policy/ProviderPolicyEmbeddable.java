@@ -1,7 +1,6 @@
 package com.alligator.market.backend.provider.catalog.persistence.jpa.policy;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
-import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
@@ -14,7 +13,7 @@ import org.hibernate.validator.constraints.time.DurationMin;
 import java.time.Duration;
 
 /**
- * Embeddable JPA-сущность для параметров политики провайдера {@link ProviderPolicy}.
+ * Embeddable JPA-сущность политики провайдера.
  */
 @Embeddable
 @Getter
@@ -22,7 +21,7 @@ import java.time.Duration;
 public class ProviderPolicyEmbeddable {
 
     /**
-     * Минимальный интервал обновления котировок {@link ProviderPolicy#minUpdateInterval()} для любых режимов доставки.
+     * Минимальный интервал обновления котировок для любых режимов доставки.
      */
     @NotNull
     @DurationMin(seconds = 1)

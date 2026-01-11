@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.catalog.persistence.jpa.descriptor
 
 import com.alligator.market.domain.provider.contract.descriptor.AccessMethod;
 import com.alligator.market.domain.provider.contract.descriptor.DeliveryMode;
-import com.alligator.market.domain.provider.contract.descriptor.ProviderDescriptor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -15,8 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Embeddable JPA-сущность дескриптора.
- * Набор полей аналогичен доменной модели {@link ProviderDescriptor}.
+ * Embeddable JPA-сущность дескриптора провайдера.
  */
 @Embeddable
 @Getter
@@ -24,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class ProviderDescriptorEmbeddable {
 
     /**
-     * Отображаемое имя провайдера (user friendly) {@link ProviderDescriptor#displayName()}.
+     * Отображаемое имя провайдера (user friendly).
      */
     @NotBlank
     @Size(max = 50)
@@ -32,7 +30,7 @@ public class ProviderDescriptorEmbeddable {
     private String displayName;
 
     /**
-     * Режим доставки рыночных данных: PULL или PUSH {@link ProviderDescriptor#deliveryMode()}.
+     * Режим доставки рыночных данных: PULL или PUSH.
      */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -40,7 +38,7 @@ public class ProviderDescriptorEmbeddable {
     private DeliveryMode deliveryMode;
 
     /**
-     * Метод доступа к рыночным данным {@link ProviderDescriptor#accessMethod()}.
+     * Метод доступа к рыночным данным.
      */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,7 +46,7 @@ public class ProviderDescriptorEmbeddable {
     private AccessMethod accessMethod;
 
     /**
-     * Поддержка массовой подписки одним запросом {@link ProviderDescriptor#bulkSubscription()}.
+     * Поддержка массовой подписки одним запросом.
      */
     @Column(name = "bulk_subscription", nullable = false, updatable = false)
     private boolean bulkSubscription;
