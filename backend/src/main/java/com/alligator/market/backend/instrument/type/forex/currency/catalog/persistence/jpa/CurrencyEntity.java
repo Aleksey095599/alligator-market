@@ -20,12 +20,11 @@ import java.util.Objects;
 /**
  * JPA-сущность валюты.
  *
- * <p>Ключевые особенности:</p>
+ * <p>Ключевые моменты:</p>
  * <ul>
  *     <li>Поля сущности соответствуют доменной модели валюты {@link Currency}.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную создаем сущность через специализированный конструктор.</li>
- *     <li>Остальные аннотации очевидны.</li>
  * </ul>
  */
 @Entity
@@ -36,9 +35,9 @@ import java.util.Objects;
 @Table(
         name = "currency",
         uniqueConstraints = {
-                // Поле задает натуральный ключ
+                // Уникальность кода валюты
                 @UniqueConstraint(name = "uq_currency_code", columnNames = "code"),
-                // Не может быть одинаковых наименований валют
+                // Уникальность наименования валюты
                 @UniqueConstraint(name = "uq_currency_name", columnNames = "name")
         }
 )
@@ -56,7 +55,7 @@ public class CurrencyEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Уникальный код валюты.
+     * Код валюты.
      *
      * <p>Поле является натуральным ключом, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
@@ -110,7 +109,7 @@ public class CurrencyEntity extends BaseEntity {
     /**
      * Специальный конструктор – единственный безопасный способ создать сущность.
      *
-     * <p>Проверяет входные данные и фиксирует неизменяемые параметры валюты.</p>
+     * <p>Проверяет входные данные и фиксирует неизменяемые поля сущности.</p>
      */
     public CurrencyEntity(
             CurrencyCode code

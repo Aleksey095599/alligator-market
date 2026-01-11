@@ -15,26 +15,26 @@ import org.hibernate.annotations.NaturalId;
 import java.util.Objects;
 
 /**
- * Абстрактная родительская JPA-сущность финансового инструмента.
+ * Абстрактная родительская (базовая) JPA-сущность финансового инструмента.
  *
- * <p>Ключевые особенности:</p>
+ * <p>Ключевые моменты:</p>
  * <ul>
  *     <li>Поля сущности соответствуют доменному контракту {@link Instrument}.</li>
- *     <li>{@link Inheritance}: используется стратегия {@code JOINED}, при которой общие поля хранятся в базовой
- *     таблице, а специфичные — в таблицах наследников.</li>
+ *     <li>{@link Inheritance}: используется стратегия {@code JOINED}, при которой общие для всех финансовых
+ *     инструментов поля хранятся в родительской (базовой) таблице, а специфичные – в таблицах наследников.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
- *     вручную сущность создается через метод однократной инициализации.</li>
- *     <li>Остальные аннотации очевидны.</li>
+ *     вручную создаются только сущности-наследники, которые вызывают метод однократной инициализации
+ *     полей родительской сущности {@link InstrumentBaseEntity#initIdentity(String, String, InstrumentType)}.</li>
  * </ul>
  */
 @Entity
 @Table(
         name = "instrument",
-        // Поле задает натуральный ключ
+        // Уникальность натурального ключа:
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
         },
-        // Индекс по типу инструмента полезен для быстрого поиска
+        // Индекс по типу инструмента полезен для быстрого поиска:
         indexes = {
                 @Index(name = "idx_instrument_type", columnList = "type")
         }
@@ -71,7 +71,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     /**
      * Символ инструмента для отображения в UI.
      *
-     * <p>Поле задает бизнес-уникальность инструмента, поэтому {@code updatable=false} и
+     * <p>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -86,7 +86,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     /**
      * Тип финансового инструмента.
      *
-     * <p>Поле задает бизнес-уникальность инструмента, поэтому {@code updatable=false} и
+     * <p>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -100,7 +100,10 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     private InstrumentType type;
 
     /**
-     * Метод однократной инициализации сущности.
+     * Метод однократной инициализации полей родительской сущности.
+     *
+     * <p>Вызывается из конструктора сущности-наследника и заполняет поля
+     * {@code code}, {@code symbol}, {@code type}.</p>
      */
     // Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
     @SuppressWarnings("SameParameterValue")

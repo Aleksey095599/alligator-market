@@ -24,14 +24,14 @@ import java.util.Objects;
 /**
  * JPA-сущность финансового инструмента FX_SPOT.
  *
- * <p>Ключевые особенности:</p>
+ * <p>Ключевые моменты:</p>
  * <ul>
  *     <li>Поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</li>
  *     <li>{@link PrimaryKeyJoinColumn}: PK таблицы {@code fx_spot} является одновременно FK на PK таблицы
- *     {@code instrument}.</li>
+ *     {@code instrument}; таблица {@code fx_spot} является наследницей таблицы {@code instrument}, которая содержит
+ *     общие поля для всех финансовых инструментов.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную сущность создается через специализированный конструктор.</li>
- *     <li>Остальные аннотации очевидны.</li>
  * </ul>
  */
 @Entity
@@ -70,10 +70,17 @@ import java.util.Objects;
 public class FxSpotEntity extends InstrumentBaseEntity {
 
     /**
-     * Уникальный код базовой валюты (FK на "code" в таблице "currency").
+     * Базовая валюта инструмента (FK на {@code currency.code}).
      *
-     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
-     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
+     * <p>Ключевые моменты:</p>
+     * <ul>
+     *   <li>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и запрет
+     *   на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</li>
+     *   <li>{@link ManyToOne}: связь по внешнему ключу (многие FX_SPOT могут ссылаться на одну валюту).</li>
+     *   <li>{@link JoinColumn}: FK-колонка {@code base_currency} ссылается на {@code currency.code}.</li>
+     *   <li>{@code fetch = LAZY}: валюту загружаем только при обращении к полю.</li>
+     *   <li>{@code optional = false}: ссылка обязательна.</li>
+     * </ul>
      */
     @Setter(AccessLevel.NONE)
     @NotNull
@@ -87,10 +94,9 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private CurrencyEntity baseCurrency;
 
     /**
-     * Уникальный код котируемой валюты (FK на "code" в таблице "currency").
+     * Котируемая валюта инструмента (FK на {@code currency.code}).
      *
-     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
-     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
+     * <p>Ключевые моменты аналогичны {@link #baseCurrency}.</p>
      */
     @Setter(AccessLevel.NONE)
     @NotNull
@@ -106,7 +112,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Тенор даты расчетов.
      *
-     * <p>Поле задает бизнес-уникальность инструмента FX_SPOT, поэтому {@code updatable=false} и
+     * <p>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -120,7 +126,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private FxSpotTenor tenor;
 
     /**
-     * Количество знаков после запятой в котировке инструмента FX_SPOT (по-умолчанию).
+     * Количество знаков после запятой в котировке инструмента FX_SPOT (по умолчанию).
      *
      * <p>На уровне кода задан дефолт {@code 4} – наиболее распространенное значение на практике.
      * Рекомендуется закрепить {@code DEFAULT 4} в БД миграцией.</p>
@@ -137,8 +143,8 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     /**
      * Специальный конструктор — единственный безопасный способ создать сущность.
      *
-     * <p>Проверяет входные данные, фиксирует неизменяемые параметры сущности инструмента FX_SPOT и инициализирует
-     * базовую сущность финансового инструмента.</p>
+     * <p>Проверяет входные данные, фиксирует неизменяемые поля сущности и инициализирует
+     * родительскую сущность финансового инструмента.</p>
      */
     public FxSpotEntity(
             CurrencyEntity baseCurrency,

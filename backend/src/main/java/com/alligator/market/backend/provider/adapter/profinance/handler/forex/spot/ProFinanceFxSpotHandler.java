@@ -171,9 +171,11 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         }
 
         /* 4) Проверяем структуру таблицы:
-              --> 4.1 наличие заголовков "Name", "Bid" и "Ask" в symbolTable;
-              --> 4.2 symbolCell должна находиться под заголовком "Name";
-              --> 4.3 symbolRow содержит столько же ячеек сколько и строка заголовков. */
+              <ul>
+                <li>4.1 наличие заголовков "Name", "Bid" и "Ask" в symbolTable;</li>
+                <li>4.2 symbolCell должна находиться под заголовком "Name";</li>
+                <li>4.3 symbolRow содержит столько же ячеек сколько и строка заголовков.</li>
+              </ul> */
         Element headerRow = symbolTable.selectFirst("thead tr:has(th), tr:has(th)");
         if (headerRow == null) {
             throw new IllegalStateException("Row with headers (<th>) not found in the table with " +

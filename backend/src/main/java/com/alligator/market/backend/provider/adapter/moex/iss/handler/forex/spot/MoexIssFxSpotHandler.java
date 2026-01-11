@@ -114,10 +114,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      *
      * <p>Алгоритм:
      * <ul>
-     *   <li>1) Доменный код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
-     *   <li>2) Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
-     *   <li>3) Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
-     *   <li>4) Строим доменную модель {@link QuoteTick}.</li>
+     *   <li>Доменный код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
+     *   <li>Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
+     *   <li>Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
+     *   <li>Строим доменную модель {@link QuoteTick}.</li>
      * </ul></p>
      *
      * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(InstrumentCode, JsonNode)}.</p>
