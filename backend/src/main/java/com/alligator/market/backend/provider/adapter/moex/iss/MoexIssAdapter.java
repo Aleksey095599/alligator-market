@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Адаптер провайдера рыночных данных MOEX ISS.
  *
- * <p>Адаптер является Spring-компонентом, который инкапсулирует паспорт, "политику провайдера", настройки и
+ * <p>Адаптер является Spring-компонентом {@link Component}, который инкапсулирует паспорт, политику, настройки и
  * обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
@@ -35,7 +35,7 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
             DISPLAY_NAME,
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
-            false // <-- bulk-подписка не используется
+            false
     );
 
     /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
