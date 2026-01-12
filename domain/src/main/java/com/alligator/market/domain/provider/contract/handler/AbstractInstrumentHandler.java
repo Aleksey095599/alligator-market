@@ -79,33 +79,21 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
     //=================================================================================================================
 
-    /**
-     * Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+.
-     */
     @Override
     public final String handlerCode() {
         return normHandlerCode;
     }
 
-    /**
-     * Декларируем класс поддерживаемых инструментов.
-     */
     @Override
     public Class<I> instrumentClass() {
         return instrumentClass;
     }
 
-    /**
-     * Декларируемый тип поддерживаемых инструментов.
-     */
     @Override
     public final InstrumentType instrumentType() {
         return instrumentType;
     }
 
-    /**
-     * Неизменяемый набор поддерживаемых кодов инструментов: UPPERCASE, формат [A-Z0-9_]+.
-     */
     @Override
     public final Set<InstrumentCode> supportedInstrumentCodes() {
         return normSupportedInstrumentCodes;

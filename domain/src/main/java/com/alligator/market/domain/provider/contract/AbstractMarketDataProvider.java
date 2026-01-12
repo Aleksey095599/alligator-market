@@ -22,16 +22,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* Технический код провайдера. */
+    /* Код провайдера. */
     protected final ProviderCode providerCode;
 
-    /* Паспорт провайдера: иммутабельный набор статических атрибутов (только отображение). */
+    /* Паспорт провайдера. */
     protected final ProviderPassport passport;
 
-    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
-    /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
+    /* Настройки провайдера. */
     private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
@@ -127,48 +127,30 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
     //=================================================================================================================
 
-    /**
-     * Технический код провайдера.
-     */
     @Override
     public ProviderCode providerCode() {
         return providerCode;
     }
 
-    /**
-     * Паспорт провайдера: иммутабельный набор статических атрибутов (только отображение).
-     */
     @Override
     public ProviderPassport passport() {
         return passport;
     }
 
-    /**
-     * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
-     */
     public ProviderPolicy policy() {
         return policy;
     }
 
-    /**
-     * Настройки провайдера: параметры, которые разрешено менять из frontend.
-     */
     @Override
     public ProviderSettings settings() {
         return settingsRef.get();
     }
 
-    /**
-     * Иммутабельный набор кодов поддерживаемых провайдером инструментов.
-     */
     @Override
     public Set<InstrumentCode> instrumentsCodes() {
         return instrumentCodes;
     }
 
-    /**
-     * Иммутабельный набор типов поддерживаемых провайдером инструментов.
-     */
     @Override
     public Set<InstrumentType> instrumentsTypes() {
         return instrumentTypes;
@@ -185,6 +167,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
+
         InstrumentHandler<P, I> handler = handlerOf(instrument);
         if (handler == null) {
             throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
@@ -203,6 +186,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /**
      * Атомарно заменяет настройки провайдера.
+     *
      * <p>Метод защищённый и финальный, предназначен для использования наследниками.</p>
      *
      * @param newSettings новые настройки
@@ -215,8 +199,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Возвращает обработчик по коду инструмента (код нормализуется в UPPERCASE) или {@code null},
-     * если код отсутствует/пустой или не зарегистрирован.
+     * Возвращает обработчик по коду инструмента.
      */
     @SuppressWarnings("unchecked")
     private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
