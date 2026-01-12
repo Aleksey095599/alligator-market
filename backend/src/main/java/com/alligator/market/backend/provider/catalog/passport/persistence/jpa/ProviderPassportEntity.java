@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,26 +20,26 @@ import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.NaturalId;
 
 /**
- * JPA-сущность провайдера рыночных данных.
+ * JPA-сущность паспорта провайдера рыночных данных.
  *
- * <p>Ключевые моменты:</p>
- * <ol>
- *     <li>1) Таблица {@code market_data_provider} является статичным справочником, предназначенным
- *     исключительно для отображения информации о провайдерах.</li>
- *     <li>2) Процесс обновления данных выполняется доменным процессом {@link ProviderSynchronizer}
- *     напрямую в БД через SQL (стратегия {@code DELETE -> INSERT}). Это выносит управление жизненным циклом записей
- *     за пределы механизмов JPA (Hibernate не отслеживает состояния сущностей при обновлении, не требуются
- *     специальные конструкторы или сеттеры для синхронизации).</li>
- *     <li>3) Аннотации и инкапсуляция:
- *         <ul>
- *             <li>3.1) {@link Immutable} и отсутствие сеттеров отражают read-only статус сущности для Hibernate.</li>
- *             <li>3.2) {@link NoArgsConstructor} с {@code PROTECTED} и отсутствие публичных конструкторов исключают
- *             случайное создание или изменение сущности в обход процесса синхронизации.</li>
- *             <li>3.3) {@link Access} с {@code FIELD} обеспечивает прямой доступ Hibernate к полям, сохраняя
- *             строгую инкапсуляцию класса.</li>
- *         </ul>
- *     </li>
- * </ol>
+ * <p>Ключевые особенности:</p>
+ * <ul>
+ *     <li>1) Поля сущности соответсвюут доменной модели {@link ProviderPassport}; дополнительно добавлен
+ *     код провадера как натуральный ключ.</li>
+ *     <li>2) Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
+ *     и не изменяются через JPA.</li>
+ *     <li>3) Процесс обновления данных выполняется доменным процессом {@link ProviderSynchronizer} напрямую в БД
+ *     через SQL по стратегии {@code DELETE -> INSERT}; жизненный цикл записей управляется вне Hibernate.</li>
+ * </ul>
+ *
+ * <p>Пояснение некоторых аннотаций:</p>
+ * <ul>
+ *     <li>{@link Immutable} и отсутствие сеттеров отражают read-only статус сущности.</li>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED} и отсутствие публичных конструкторов исключают
+ *     случайное создание или изменение сущности в обход процесса синхронизации.</li>
+ *     <li>{@link Access} с {@code FIELD} обеспечивает прямой доступ Hibernate к полям, сохраняя
+ *     строгую инкапсуляцию класса и исключая необходимость публичного API для маппинга.</li>
+ * </ul>
  */
 @Entity
 @Table(
@@ -78,8 +79,6 @@ public class ProviderPassportEntity extends BaseEntity {
 
     /**
      * Технический код провайдера (натуральный ключ).
-     *
-     * <p>Задан паттерн кода – рекомендуется закрепить проверку в БД миграцией.</p>
      */
     @NotBlank
     @Size(max = 50)
@@ -105,7 +104,7 @@ public class ProviderPassportEntity extends BaseEntity {
     private String displayName;
 
     /**
-     * Режим доставки рыночных данных: PULL или PUSH.
+     * Режим доставки рыночных данных.
      */
     @NotNull
     @Enumerated(EnumType.STRING)
