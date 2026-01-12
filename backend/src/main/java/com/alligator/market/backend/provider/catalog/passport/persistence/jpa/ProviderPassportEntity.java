@@ -118,12 +118,20 @@ public class ProviderPassportEntity extends BaseEntity {
      */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "access_method", length = 20, nullable = false, updatable = false)
+    @Column(
+            name = "access_method", length = 20,
+            nullable = false,
+            updatable = false
+    )
     private AccessMethod accessMethod;
 
     /**
      * Поддержка массовой подписки одним запросом.
      */
-    @Column(name = "bulk_subscription", nullable = false, updatable = false)
+    @Column(
+            name = "bulk_subscription",
+            nullable = false,
+            updatable = false
+    )
     private boolean bulkSubscription;
 }
