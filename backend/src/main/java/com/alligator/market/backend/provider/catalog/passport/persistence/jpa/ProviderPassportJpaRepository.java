@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.QueryHints;
 import java.util.List;
 
 /**
- * Spring Data JPA-репозиторий для работы с провайдерами рыночных данных.
+ * Spring Data JPA-репозиторий для паспортов провайдеров рыночных данных.
  */
-public interface ProviderJpaRepository extends JpaRepository<ProviderPassportEntity, Long> {
+public interface ProviderPassportJpaRepository extends JpaRepository<ProviderPassportEntity, Long> {
 
     /**
      * Найти все коды провайдеров (натуральные ключи).

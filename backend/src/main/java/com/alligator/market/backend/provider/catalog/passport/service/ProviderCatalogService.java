@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.passport.service;
 
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportEntity;
-import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
@@ -20,7 +20,7 @@ import java.util.Objects;
 @Transactional(readOnly = true)
 public class ProviderCatalogService implements ProviderCatalogUseCase {
 
-    private final ProviderJpaRepository repository;
+    private final ProviderPassportJpaRepository repository;
 
     @Override
     public List<ProviderCatalogItem> findAll() {

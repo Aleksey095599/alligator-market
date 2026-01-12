@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.repository;
 
-import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 import org.springframework.stereotype.Repository;
@@ -16,10 +16,10 @@ import java.util.List;
 public class ProviderRepositoryJpaAdapter implements ProviderRepository {
 
     /* JPA-репозиторий. */
-    private final ProviderJpaRepository jpa;
+    private final ProviderPassportJpaRepository jpa;
 
     /* Конструктор. */
-    public ProviderRepositoryJpaAdapter(ProviderJpaRepository jpa) {
+    public ProviderRepositoryJpaAdapter(ProviderPassportJpaRepository jpa) {
         this.jpa = jpa;
     }
 
