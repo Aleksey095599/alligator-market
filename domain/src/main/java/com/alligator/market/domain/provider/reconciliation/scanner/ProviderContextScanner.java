@@ -7,7 +7,10 @@ import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
 import java.util.Map;
 
 /**
- * Сканер контекста приложения для получения данных о провайдерах рыночных данных.
+ * Сканер контекста приложения.
+ *
+ * <p>Назначение: извлекать из контекста приложения данные о провайдерах рыночных данных, в частности, – паспорта
+ * провайдеров {@link ProviderPassport}.</p>
  */
 public sealed interface ProviderContextScanner permits AbstractProviderContextScanner {
 
@@ -16,7 +19,8 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
      *
      * <p>Снимок провайдера {@link ProviderSnapshot} содержит данные о провайдере: код провайдера, паспорт, "политику".
      */
-    Map<ProviderCode, ProviderSnapshot> providerSnapshots(); // <-- TODO: убрать после реализации паспорта провайдера
+    @Deprecated(forRemoval = true)
+    Map<ProviderCode, ProviderSnapshot> providerSnapshots();
 
     /**
      * Вернуть карту паспортов провайдеров, индексированную по коду провайдера.
