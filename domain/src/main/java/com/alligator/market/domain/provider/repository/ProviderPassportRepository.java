@@ -5,12 +5,12 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import java.util.List;
 
 /**
- * Порт репозитория провайдеров.
+ * Порт репозитория паспортов провайдеров.
  */
-public interface ProviderRepository {
+public interface ProviderPassportRepository {
 
     /**
-     * Найти все коды провайдеров (натуральные ключи).
+     * Найти все коды провайдеров.
      */
     List<ProviderCode> findAllCodes();
 }

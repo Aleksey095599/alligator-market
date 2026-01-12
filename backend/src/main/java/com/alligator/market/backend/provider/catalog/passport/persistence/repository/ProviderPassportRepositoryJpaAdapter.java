@@ -2,30 +2,30 @@ package com.alligator.market.backend.provider.catalog.passport.persistence.repos
 
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.repository.ProviderRepository;
+import com.alligator.market.domain.provider.repository.ProviderPassportRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * Адаптер, реализующий доменный порт репозитория провайдеров через Spring Data JPA.
+ * Адаптер, реализующий доменный порт репозитория {@link ProviderPassportRepository} через Spring Data JPA.
+ *
+ * <p>{@link Transactional} в режиме только чтение, так как таблица {@code provider_passport} — статичный справочник
+ * метаданных провайдеров.</p>
  */
 @Repository
-@Transactional(readOnly = true) // <-- Все операции только на чтение
-public class ProviderRepositoryJpaAdapter implements ProviderRepository {
+@Transactional(readOnly = true)
+public class ProviderPassportRepositoryJpaAdapter implements ProviderPassportRepository {
 
     /* JPA-репозиторий. */
     private final ProviderPassportJpaRepository jpa;
 
     /* Конструктор. */
-    public ProviderRepositoryJpaAdapter(ProviderPassportJpaRepository jpa) {
+    public ProviderPassportRepositoryJpaAdapter(ProviderPassportJpaRepository jpa) {
         this.jpa = jpa;
     }
 
-    /**
-     * Найти все коды провайдеров (натуральные ключи).
-     */
     @Override
     public List<ProviderCode> findAllCodes() {
         return jpa.findAllCodes().stream()

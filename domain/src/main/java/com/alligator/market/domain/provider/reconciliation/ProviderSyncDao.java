@@ -1,22 +1,22 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 
 import java.util.Collection;
 
 /**
- * Контракт DAO синхронизации провайдеров в базе данных.
+ * Контракт DAO синхронизации паспортов провайдеров в базе данных.
  */
 public interface ProviderSyncDao {
 
     /**
-     * Удалить записи провайдеров по набору кодов провайдеров.
+     * Удалить записи паспортов по набору кодов провайдеров.
      */
     void deleteByCodes(Collection<ProviderCode> codes);
 
     /**
-     * Выполнить пакетный UPSERT снимков провайдеров.
+     * Выполнить пакетный UPSERT паспортов.
      */
-    void upsertAll(Collection<ProviderSnapshot> snapshots);
+    void upsertAll(Collection<ProviderPassport> passports);
 }

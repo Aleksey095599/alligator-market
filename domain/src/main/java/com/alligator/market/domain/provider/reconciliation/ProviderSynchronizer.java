@@ -1,8 +1,8 @@
 package com.alligator.market.domain.provider.reconciliation;
 
-import com.alligator.market.domain.provider.reconciliation.dto.ProviderSnapshot;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
-import com.alligator.market.domain.provider.repository.ProviderRepository;
+import com.alligator.market.domain.provider.repository.ProviderPassportRepository;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 
@@ -16,18 +16,18 @@ import java.util.Set;
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderSynchronizer {
 
-    /* Сканер контекста --> возвращает снимки провайдеров (ProviderSnapshot) из контекста приложения. */
+    /* Сканер контекста --> возвращает паспорта провайдеров из контекста приложения. */
     private final ProviderContextScanner contextScanner;
 
-    /* Репозиторий --> извлекает коды провайдеров. */
-    private final ProviderRepository repository;
+    /* Репозиторий паспортов провайдеров --> возвращает коды провайдеров из БД. */
+    private final ProviderPassportRepository repository;
 
-    /* Контракт синхронизации провайдеров в БД. */
+    /* Контракт синхронизации паспортов провайдеров в БД. */
     private final ProviderSyncDao syncDao;
 
     /* Конструктор. */
     public ProviderSynchronizer(ProviderContextScanner contextScanner,
-                                ProviderRepository repository,
+                                ProviderPassportRepository repository,
                                 ProviderSyncDao syncDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
@@ -38,8 +38,8 @@ public class ProviderSynchronizer {
      * Выполнить синхронизацию (одна атомарная транзакция).
      */
     public void synchronize() {
-        // 1) Читаем снимки из контекста и коды из БД
-        Map<ProviderCode, ProviderSnapshot> ctx = contextScanner.providerSnapshots();
+        // 1) Читаем паспорта провайдеров контекста и коды провайдеров из БД
+        Map<ProviderCode, ProviderPassport> ctx = contextScanner.providerPassports();
         Set<ProviderCode> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
 
         // Если в контексте пусто – чистим таблицу и выходим
