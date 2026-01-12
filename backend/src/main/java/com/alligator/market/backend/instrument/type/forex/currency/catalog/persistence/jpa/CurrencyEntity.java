@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.Checks;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.Objects;
@@ -28,10 +29,16 @@ import java.util.Objects;
  * </ul>
  */
 @Entity
-@Check(
-        name = "chk_currency_fraction_digits",
-        constraints = "fraction_digits BETWEEN 0 AND 10"
-)
+@Checks({
+        @Check(
+                name = "chk_currency_code_pattern",
+                constraints = "code ~ '^[A-Z]{3}$'"
+        ),
+        @Check(
+                name = "chk_currency_fraction_digits",
+                constraints = "fraction_digits BETWEEN 0 AND 10"
+        )
+})
 @Table(
         name = "currency",
         uniqueConstraints = {
