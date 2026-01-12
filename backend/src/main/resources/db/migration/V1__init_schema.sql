@@ -30,6 +30,7 @@ CREATE TABLE currency (
     updated_via VARCHAR(255) NOT NULL,
     CONSTRAINT uq_currency_code UNIQUE (code),
     CONSTRAINT uq_currency_name UNIQUE (name),
+    CONSTRAINT chk_currency_code_pattern CHECK (code ~ '^[A-Z]{3}$'),
     CONSTRAINT chk_currency_fraction_digits CHECK (fraction_digits BETWEEN 0 AND 10)
 );
 
