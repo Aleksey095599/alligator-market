@@ -28,8 +28,6 @@ public class ProviderPassportRepositoryJpaAdapter implements ProviderPassportRep
 
     @Override
     public List<ProviderCode> findAllCodes() {
-        return jpa.findAllCodes().stream()
-                .map(ProviderCode::of)
-                .toList(); // <-- Читаем дешёвую проекцию, без загрузки сущностей
+        return jpa.findAllCodes(); // <-- Читаем дешёвую проекцию, без загрузки сущностей
     }
 }

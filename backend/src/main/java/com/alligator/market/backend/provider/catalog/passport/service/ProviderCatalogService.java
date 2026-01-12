@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.catalog.passport.service;
 
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportEntity;
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
-import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +50,7 @@ public class ProviderCatalogService implements ProviderCatalogUseCase {
         ProviderPolicy policy = new ProviderPolicy(minUpdateInterval);
 
         return new ProviderCatalogItem(
-                ProviderCode.of(entity.getProviderCode()),
+                entity.getProviderCode(),
                 passport,
                 policy
         );

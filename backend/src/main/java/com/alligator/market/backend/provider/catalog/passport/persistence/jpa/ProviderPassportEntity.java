@@ -7,10 +7,7 @@ import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -80,16 +77,15 @@ public class ProviderPassportEntity extends BaseEntity {
     /**
      * Технический код провайдера (натуральный ключ).
      */
-    @NotBlank
-    @Size(max = 50)
-    @Pattern(regexp = ProviderCode.PATTERN)
+    @NotNull
+    @Convert(converter = ProviderCodeConverter.class)
     @NaturalId()
     @Column(
             name = "provider_code", length = 50,
             nullable = false,
             updatable = false
     )
-    private String providerCode;
+    private ProviderCode providerCode;
 
     /**
      * Имя провайдера (user friendly).
