@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.catalog.persistence.repository;
+package com.alligator.market.backend.provider.catalog.passport.persistence.repository;
 
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.repository.ProviderRepository;
 import org.springframework.stereotype.Repository;

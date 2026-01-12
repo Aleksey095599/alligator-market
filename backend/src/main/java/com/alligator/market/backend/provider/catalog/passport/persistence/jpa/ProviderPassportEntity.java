@@ -1,12 +1,11 @@
-package com.alligator.market.backend.provider.catalog.persistence.jpa;
+package com.alligator.market.backend.provider.catalog.passport.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.passport.ProviderPassportEmbeddable;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
 import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.contract.passport.AccessMethod;
+import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -43,16 +42,13 @@ import org.hibernate.annotations.NaturalId;
  */
 @Entity
 @Table(
-        name = "market_data_provider",
+        name = "provider_passport",
+        // Уникальность кода провайдера (натуральный ключ)
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_provider_code", columnNames = "provider_code")
         }
 )
 @Checks({
-        @Check(
-                name = "chk_provider_min_update_interval",
-                constraints = "min_update_interval_seconds >= 1"
-        ),
         @Check(
                 name = "chk_provider_code_pattern",
                 constraints = "provider_code ~ '" + ProviderCode.PATTERN + "'"
@@ -70,7 +66,7 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD)
 @Immutable
-public class ProviderEntity extends BaseEntity {
+public class ProviderPassportEntity extends BaseEntity {
 
     /**
      * Суррогатный PK.
@@ -81,7 +77,9 @@ public class ProviderEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Технический код провайдера ({@link NaturalId} – натуральный ключ).
+     * Технический код провайдера (натуральный ключ).
+     *
+     * <p>Задан паттерн кода – рекомендуется закрепить проверку в БД миграцией.</p>
      */
     @NotBlank
     @Size(max = 50)
@@ -95,26 +93,40 @@ public class ProviderEntity extends BaseEntity {
     private String providerCode;
 
     /**
-     * Иммутабельный паспорт.
-     *
-     * <p>{@link Embedded}: указывает, что поле является встраиваемым компонентом, чьи поля маппируются в ту же таблицу,
-     * что и основная сущность; {@link Valid}: активирует каскадную валидацию ограничений встраиваемого объекта при
-     * валидации родительской сущности.</p>
+     * Имя провайдера (user friendly).
      */
-    @Embedded
-    @NotNull
-    @Valid
-    private ProviderPassportEmbeddable passport;
+    @NotBlank
+    @Size(max = 50)
+    @Column(
+            name = "display_name", length = 50,
+            nullable = false,
+            updatable = false
+    )
+    private String displayName;
 
     /**
-     * Иммутабельный набор параметров политики провайдера.
-     *
-     * <p>{@link Embedded}: указывает, что поле является встраиваемым компонентом, чьи поля маппируются в ту же таблицу,
-     * что и основная сущность; {@link Valid}: активирует каскадную валидацию ограничений встраиваемого объекта при
-     * валидации родительской сущности.</p>
+     * Режим доставки рыночных данных: PULL или PUSH.
      */
-    @Embedded
     @NotNull
-    @Valid
-    private ProviderPolicyEmbeddable policy;
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "delivery_mode", length = 10,
+            nullable = false,
+            updatable = false
+    )
+    private DeliveryMode deliveryMode;
+
+    /**
+     * Метод доступа к рыночным данным.
+     */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_method", length = 20, nullable = false, updatable = false)
+    private AccessMethod accessMethod;
+
+    /**
+     * Поддержка массовой подписки одним запросом.
+     */
+    @Column(name = "bulk_subscription", nullable = false, updatable = false)
+    private boolean bulkSubscription;
 }

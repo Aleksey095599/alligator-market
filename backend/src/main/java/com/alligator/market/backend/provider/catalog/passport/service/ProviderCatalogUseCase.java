@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.service;
+package com.alligator.market.backend.provider.catalog.passport.service;
 
 import java.util.List;
 

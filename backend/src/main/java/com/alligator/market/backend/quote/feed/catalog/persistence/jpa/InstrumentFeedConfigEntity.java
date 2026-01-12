@@ -2,7 +2,7 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportEntity;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
@@ -84,7 +84,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      *
      * <p>Soft reference – без внешнего ключа на market_data_provider (БД не гарантирует существование провайдера);
      * можно обновлять; frontend должен предлагать текущий доступный список кодов провайдеров из таблицы провайдеров
-     * {@link ProviderEntity} при попытке заполнения формы для данного поля.</p>
+     * {@link ProviderPassportEntity} при попытке заполнения формы для данного поля.</p>
      */
     @NotBlank
     @Size(max = 50)

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.web.dto.out;
+package com.alligator.market.backend.provider.catalog.passport.web.dto.out;
 
 /**
  * DTO ответа для провайдеров (out).

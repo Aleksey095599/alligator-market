@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.catalog.web.dto.mapper;
+package com.alligator.market.backend.provider.catalog.passport.web.dto.mapper;
 
-import com.alligator.market.backend.provider.catalog.service.ProviderCatalogItem;
-import com.alligator.market.backend.provider.catalog.web.dto.out.ProviderResponseDto;
+import com.alligator.market.backend.provider.catalog.passport.service.ProviderCatalogItem;
+import com.alligator.market.backend.provider.catalog.passport.web.dto.out.ProviderResponseDto;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 

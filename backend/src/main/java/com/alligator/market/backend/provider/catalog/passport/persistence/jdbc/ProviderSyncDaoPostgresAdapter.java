@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.persistence.jdbc;
+package com.alligator.market.backend.provider.catalog.passport.persistence.jdbc;
 
 import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;

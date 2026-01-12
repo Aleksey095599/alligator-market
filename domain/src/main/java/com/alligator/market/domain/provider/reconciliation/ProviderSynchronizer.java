@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Доменный сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
+ * Сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
  */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderSynchronizer {

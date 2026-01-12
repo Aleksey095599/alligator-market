@@ -24,25 +24,27 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
      */
     @Override
     public final Map<ProviderCode, ProviderPassport> providerPassports() {
-        Map<ProviderCode, ProviderPassport> passports = new LinkedHashMap<>();
-        Set<String> displayNamesLower = new HashSet<>();
+        // Создаем пустую карту и сет для проверки дублей по имени провайдера
+        Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
+        Set<String> displayNames = new HashSet<>();
 
         for (MarketDataProvider provider : providers()) {
+            // Извлекаем текущий код и паспорт провайдера
             ProviderCode code = provider.providerCode();
             ProviderPassport passport = provider.passport();
 
-            // Проверка дублей по коду
-            ProviderPassport prev = passports.put(code, passport);
+            // Добавляем текущий код и паспорт провайдера в карту, исключая дублирование по коду
+            ProviderPassport prev = map.put(code, passport);
             if (prev != null) {
                 throw new ProviderCodeDuplicateException(code);
             }
 
-            // Проверка дублей по отображаемому имени (без учёта регистра)
+            // Проверка дублирования по имени провайдера (без учёта регистра)
             String nameLower = passport.displayName().toLowerCase(Locale.ROOT);
-            if (!displayNamesLower.add(nameLower)) {
+            if (!displayNames.add(nameLower)) {
                 throw new ProviderDisplayNameDuplicateException(passport.displayName());
             }
         }
-        return passports;
+        return map;
     }
 }

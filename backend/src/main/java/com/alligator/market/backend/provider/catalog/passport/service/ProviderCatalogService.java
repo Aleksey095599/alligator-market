@@ -1,9 +1,7 @@
-package com.alligator.market.backend.provider.catalog.service;
+package com.alligator.market.backend.provider.catalog.passport.service;
 
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderEntity;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.ProviderJpaRepository;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.passport.ProviderPassportEmbeddable;
-import com.alligator.market.backend.provider.catalog.persistence.jpa.policy.ProviderPolicyEmbeddable;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportEntity;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
@@ -31,7 +29,7 @@ public class ProviderCatalogService implements ProviderCatalogUseCase {
                 .toList();
     }
 
-    private ProviderCatalogItem toCatalogItem(ProviderEntity entity) {
+    private ProviderCatalogItem toCatalogItem(ProviderPassportEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
 
         ProviderPassportEmbeddable passportEmbeddable = Objects.requireNonNull(
