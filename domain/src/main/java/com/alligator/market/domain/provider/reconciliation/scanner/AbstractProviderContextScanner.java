@@ -16,12 +16,12 @@ import java.util.*;
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
     /**
-     * Вернуть последовательность провайдеров для построения карты паспортов.
+     * Возвращает последовательность провайдеров для построения карты паспортов.
      */
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Вернуть карту снимков провайдеров {@link ProviderSnapshot}, индексированную по коду.
+     * Возвращает карту снимков провайдеров {@link ProviderSnapshot}, индексированную по коду.
      * Содержит проверки на дублирование по коду провайдера и отображаемому имени.
      */
     @Override
