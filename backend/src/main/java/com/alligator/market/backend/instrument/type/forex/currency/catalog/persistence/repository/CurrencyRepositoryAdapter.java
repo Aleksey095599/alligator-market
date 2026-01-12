@@ -6,7 +6,7 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.persi
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.currency.repository.CurrencyRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;

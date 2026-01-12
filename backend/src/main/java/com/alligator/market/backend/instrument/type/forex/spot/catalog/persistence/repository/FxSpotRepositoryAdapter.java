@@ -8,7 +8,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.persisten
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.repository.FxSpotRepository;

@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
-import com.alligator.market.domain.instrument.type.forex.currency.model.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
