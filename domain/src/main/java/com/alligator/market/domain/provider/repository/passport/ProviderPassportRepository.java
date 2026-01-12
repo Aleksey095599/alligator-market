@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.repository;
+package com.alligator.market.domain.provider.repository.passport;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 

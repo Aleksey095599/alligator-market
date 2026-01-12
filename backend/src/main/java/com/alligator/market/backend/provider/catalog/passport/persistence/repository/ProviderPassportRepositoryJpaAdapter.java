@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.passport.persistence.repos
 
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.repository.ProviderPassportRepository;
+import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

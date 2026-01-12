@@ -1,14 +1,16 @@
 package com.alligator.market.backend.provider.catalog.passport.service;
 
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+
 import java.util.List;
 
 /**
- * Application-сервис (use case) для чтения каталога провайдеров рыночных данных.
+ * Application-сервис (use case) для операций с паспортами провайдеров рыночных данных.
  */
 public interface ProviderCatalogUseCase {
 
     /**
-     * Вернуть все провайдеры с паспортами и параметрами.
+     * Вернуть все паспорта.
      */
-    List<ProviderCatalogItem> findAll();
+    List<ProviderPassport> findAll();
 }
