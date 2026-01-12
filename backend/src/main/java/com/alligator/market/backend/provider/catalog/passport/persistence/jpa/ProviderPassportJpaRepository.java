@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 
+import com.alligator.market.domain.provider.code.ProviderCode;
+
 import java.util.List;
 
 /**
@@ -17,5 +19,5 @@ public interface ProviderPassportJpaRepository extends JpaRepository<ProviderPas
      */
     @Query("select p.providerCode from ProviderPassportEntity p")
     @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"))
-    List<String> findAllCodes();
+    List<ProviderCode> findAllCodes();
 }
