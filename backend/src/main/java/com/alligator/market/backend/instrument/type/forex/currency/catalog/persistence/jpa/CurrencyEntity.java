@@ -32,7 +32,7 @@ import java.util.Objects;
 @Checks({
         @Check(
                 name = "chk_currency_code_pattern",
-                constraints = "code ~ '^[A-Z]{3}$'"
+                constraints = "code ~ '" + CurrencyCode.PATTERN + "'"
         ),
         @Check(
                 name = "chk_currency_fraction_digits",
