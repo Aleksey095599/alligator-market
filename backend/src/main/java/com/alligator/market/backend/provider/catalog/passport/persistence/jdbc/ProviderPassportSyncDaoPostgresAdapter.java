@@ -5,7 +5,7 @@ import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.reconciliation.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;

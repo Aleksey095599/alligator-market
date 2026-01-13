@@ -14,6 +14,8 @@ import java.util.Set;
 
 /**
  * Провайдер рыночных данных.
+ *
+ * <p>Реализация разрешена только через {@link AbstractMarketDataProvider}.</p>
  */
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.scanner.context;
+package com.alligator.market.domain.provider.reconciliation.context.scanner;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
@@ -9,17 +9,17 @@ import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplica
 import java.util.*;
 
 /**
- * Абстрактный каркас, реализующий интерфейс сканера контекста приложения {@link ProviderContextScanner}.
+ * Абстрактная реализация сканера контекста приложения.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
     /**
-     * Возвращает последовательность провайдеров для построения карты паспортов.
+     * Возвращает последовательность провайдеров из контекста приложения.
      */
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Возвращает карту паспортов провайдеров {@link ProviderPassport}, индексированную по коду.
+     * Возвращает карту паспортов провайдеров, индексированную по коду.
      */
     @Override
     public final Map<ProviderCode, ProviderPassport> providerPassports() {

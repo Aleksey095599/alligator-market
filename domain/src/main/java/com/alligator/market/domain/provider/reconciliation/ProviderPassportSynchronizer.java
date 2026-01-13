@@ -1,7 +1,8 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.scanner.context.ProviderContextScanner;
+import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
