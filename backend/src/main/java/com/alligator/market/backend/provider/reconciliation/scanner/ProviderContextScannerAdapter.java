@@ -8,18 +8,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Адаптер доменного сканера контекста приложения для получения данных о провайдерах рыночных данных.
+ * Адаптер доменного сканера контекста приложения в среде Spring.
  */
 @Component
 @RequiredArgsConstructor
 public class ProviderContextScannerAdapter extends AbstractProviderContextScanner {
 
+    /* Список провайдеров. */
     private final List<MarketDataProvider> providers;
 
-    /**
-     * Переназначаем метод {@link AbstractProviderContextScanner#providers()} из абстрактного доменного сканера.
-     * Остальные методы заданы в абстрактном доменном сканере.
-     */
     @Override
     protected Iterable<MarketDataProvider> providers() {
         return providers;

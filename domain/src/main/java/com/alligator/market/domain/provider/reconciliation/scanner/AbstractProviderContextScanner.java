@@ -9,7 +9,7 @@ import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplica
 import java.util.*;
 
 /**
- * Абстрактный каркас сканера контекста приложения {@link ProviderContextScanner}.
+ * Абстрактный каркас, реализующий интерфейс сканера контекста приложения {@link ProviderContextScanner}.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
@@ -20,20 +20,21 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
 
     /**
      * Возвращает карту паспортов провайдеров {@link ProviderPassport}, индексированную по коду.
-     * Содержит проверки на дублирование по коду провайдера и отображаемому имени.
      */
     @Override
     public final Map<ProviderCode, ProviderPassport> providerPassports() {
-        // Создаем пустую карту и сет для проверки дублей по имени провайдера
+        // Создаем пустую карту
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
+        // Создаем пустой сет для проверки дублей по имени провайдера
         Set<String> displayNames = new HashSet<>();
 
+        // Перебираем последовательность провайдеров
         for (MarketDataProvider provider : providers()) {
-            // Извлекаем текущий код и паспорт провайдера
+            // Извлекаем текущий код и паспорт
             ProviderCode code = provider.providerCode();
             ProviderPassport passport = provider.passport();
 
-            // Добавляем текущий код и паспорт провайдера в карту, исключая дублирование по коду
+            // Добавляем текущий код и паспорт в карту, проверяя дублирование по коду
             ProviderPassport prev = map.put(code, passport);
             if (prev != null) {
                 throw new ProviderCodeDuplicateException(code);

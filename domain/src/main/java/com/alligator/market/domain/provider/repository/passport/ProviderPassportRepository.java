@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import java.util.List;
 
 /**
- * Порт репозитория паспортов провайдеров.
+ * Порт репозитория, где хранятся паспорта провайдеров.
  */
 public interface ProviderPassportRepository {
 
