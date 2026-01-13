@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProviderPassportRepository {
 
     /**
-     * Найти все коды провайдеров.
+     * Извлечь коды провайдеров.
      */
     List<ProviderCode> findAllCodes();
 }
