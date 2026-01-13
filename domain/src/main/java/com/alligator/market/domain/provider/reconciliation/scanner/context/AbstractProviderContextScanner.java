@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.context.scanner;
+package com.alligator.market.domain.provider.reconciliation.scanner.context;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.MarketDataProvider;
