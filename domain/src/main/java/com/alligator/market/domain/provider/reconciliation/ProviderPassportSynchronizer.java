@@ -12,24 +12,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Сервис синхронизации паспортов провайдеров между контекстом приложения и хранилищем.
+ * Сервис синхронизации паспортов провайдеров между контекстом приложения и БД.
  *
- * <p>Источник истины — контекст приложения: набор паспортов извлекается из контекста приложения
- * с помощью {@link ProviderContextScanner}, после чего состояние хранилища приводится к этому набору.</p>
+ * <p>Источник истины — контекст приложения: актуальные паспорта извлекается из контекста приложения, после чего БД
+ * приводится в соответствие с помощью DAO для прямых пакетных операций.</p>
  *
- * <p>Примечание: доменный репозиторий используется только для чтения кодов из хранилища; запись выполняется через
- * {@code syncDao} пакетными {@code DELETE}/{@code UPSERT} напрямую в БД (в обход JPA).</p>
- */
+ * <p><b>Примечание:</b></p>
+ * <p>Доменный репозиторий {@link ProviderPassportRepository} используется для получения набора кодов провайдеров,
+ * которые являются натуральными ключами для паспортов в БД. Пакетные операции в БД с целью синхронизации
+ * выполняет DAO {@link ProviderPassportSyncDao}.</p>
+  */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderPassportSynchronizer {
 
-    /* Сканер контекста --> возвращает паспорта провайдеров из контекста приложения. */
+    /* Сканер контекста. */
     private final ProviderContextScanner contextScanner;
 
-    /* Репозиторий паспортов провайдеров --> возвращает коды провайдеров из БД. */
+    /* Репозиторий паспортов. */
     private final ProviderPassportRepository repository;
 
-    /* Контракт синхронизации паспортов провайдеров в БД. */
+    /* DAO для прямых пакетных операций с паспортами. */
     private final ProviderPassportSyncDao syncDao;
 
     /* Конструктор. */
@@ -45,27 +47,28 @@ public class ProviderPassportSynchronizer {
      * Выполнить синхронизацию (одна атомарная транзакция).
      */
     public void synchronize() {
-        // 1) Читаем паспорта провайдеров контекста и коды провайдеров из БД
-        Map<ProviderCode, ProviderPassport> ctx = contextScanner.providerPassports();
-        Set<ProviderCode> repoCodes = new LinkedHashSet<>(repository.findAllCodes());
+        // 1) Извлекаем актуальные паспорта из контекста (индексация по кодам провайдеров)
+        Map<ProviderCode, ProviderPassport> ctxPassports = contextScanner.providerPassports();
+        // 2) Извлекаем из БД коды провайдеров — натуральные ключи для паспортов
+        Set<ProviderCode> dbProviderCodes = new LinkedHashSet<>(repository.findAllCodes());
 
-        // Если в контексте пусто – чистим таблицу и выходим
-        if (ctx.isEmpty()) {
-            if (!repoCodes.isEmpty()) {
-                syncDao.deleteByCodes(repoCodes);
+        // Если в контексте пусто — чистим таблицу и выходим
+        if (ctxPassports.isEmpty()) {
+            if (!dbProviderCodes.isEmpty()) {
+                syncDao.deleteByCodes(dbProviderCodes);
             }
             return;
         }
 
-        // 2) Вычисляем устаревшие коды (есть в БД, нет в контексте) и удаляем их
-        Set<ProviderCode> obsolete = new LinkedHashSet<>(repoCodes);
-        obsolete.removeAll(ctx.keySet());
+        // 3) Вычисляем устаревшие коды (есть в БД, нет в контексте) и удаляем связанные паспорта
+        Set<ProviderCode> obsolete = new LinkedHashSet<>(dbProviderCodes);
+        obsolete.removeAll(ctxPassports.keySet());
         if (!obsolete.isEmpty()) {
-            syncDao.deleteByCodes(obsolete); // <-- batch DELETE
+            syncDao.deleteByCodes(obsolete);
         }
 
-        // 3) UPSERT всех из контекста (новые + изменившиеся обновятся, одинаковые пройдут без модификации)
-        syncDao.upsertAll(ctx.values()); // <-- batch UPSERT
+        // 4) UPSERT всех паспортов из контекста (новые/изменившиеся обновятся, актуальные — без изменений)
+        syncDao.upsertAll(ctxPassports.values());
         // Готово
     }
 }
