@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation;
 
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.scanner.ProviderContextScanner;
+import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
 import com.alligator.market.domain.provider.code.ProviderCode;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Сервис синхронизации данных провайдеров в контексте приложения и в базе данных.
+ * Сервис синхронизации данных провайдеров рыночных данных в контексте приложения и в базе данных.
  */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderSynchronizer {
