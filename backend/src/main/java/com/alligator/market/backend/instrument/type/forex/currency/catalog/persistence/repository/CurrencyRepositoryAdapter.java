@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный порт репозитория валют через Spring Data JPA.
+ * Адаптер доменного репозитория валют (в контексте Spring Data JPA).
  */
 @Repository
 @RequiredArgsConstructor

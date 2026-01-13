@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Адаптер, реализующий доменный порт репозитория {@link ProviderPassportRepository} через Spring Data JPA.
+ * Адаптер доменного репозитория паспортов провайдеров (в контексте Spring Data JPA).
  *
  * <p>{@link Transactional} в режиме только чтение, так как таблица {@code provider_passport} — статичный справочник
  * метаданных провайдеров.</p>

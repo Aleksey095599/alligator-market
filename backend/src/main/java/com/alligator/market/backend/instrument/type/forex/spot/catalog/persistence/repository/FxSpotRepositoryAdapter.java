@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Адаптер, реализующий доменный порт репозитория инструментов типа FX_SPOT через Spring Data JPA.
+ * Адаптер доменного репозитория инструментов FX_SPOT (в контексте Spring Data JPA).
  */
 @Repository
 @RequiredArgsConstructor
