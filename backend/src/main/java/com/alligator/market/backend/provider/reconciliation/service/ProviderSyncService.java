@@ -1,19 +1,19 @@
 package com.alligator.market.backend.provider.reconciliation.service;
 
-import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Сервис запускает доменную логику синхронизации данных провайдеров {@link ProviderSynchronizer}.
+ * Сервис запускает доменную логику синхронизации данных провайдеров {@link ProviderPassportSynchronizer}.
  */
 @Service
 @RequiredArgsConstructor
 public class ProviderSyncService {
 
     /* Доменная логика синхронизации провайдеров. */
-    private final ProviderSynchronizer synchronizer;
+    private final ProviderPassportSynchronizer synchronizer;
 
     /**
      * Запустить процесс синхронизации.

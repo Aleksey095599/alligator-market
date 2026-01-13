@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.config;
 
-import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
-import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
 import com.alligator.market.domain.provider.reconciliation.scanner.context.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +17,11 @@ public class ProviderReconciliationConfiguration {
      * Бин доменного сервиса синхронизации провайдеров рыночных данных в контексте приложения и репозитории.
      */
     @Bean
-    public ProviderSynchronizer providerSynchronizer(
+    public ProviderPassportSynchronizer providerSynchronizer(
             ProviderContextScanner scanner,
             ProviderPassportRepository repository,
-            ProviderSyncDao syncDao
+            ProviderPassportSyncDao syncDao
     ) {
-        return new ProviderSynchronizer(scanner, repository, syncDao);
+        return new ProviderPassportSynchronizer(scanner, repository, syncDao);
     }
 }

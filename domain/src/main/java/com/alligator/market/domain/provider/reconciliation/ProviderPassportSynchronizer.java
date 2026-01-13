@@ -11,14 +11,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Сервис синхронизации данных провайдеров рыночных данных в контексте приложения и хранилище паспортов провайдеров.
+ * Сервис синхронизации паспортов провайдеров между контекстом приложения и хранилищем.
  *
- * <p>Примечание: {@code repository} – это доменный репозиторий, который в данном сервисе исползьуется только для
- * чтения кодов провайдеров из хранилища; {@code syncDao} – выполняет операции с хранилищем для целей синхронизации,
- * используя стратегию batch UPSERT/DELETE.</p>
+ * <p>Источник истины — контекст приложения: набор паспортов извлекается из контекста приложения
+ * с помощью {@link ProviderContextScanner}, после чего состояние хранилища приводится к этому набору.</p>
+ *
+ * <p>Примечание: доменный репозиторий используется только для чтения кодов из хранилища; запись выполняется через
+ * {@code syncDao} пакетными {@code DELETE}/{@code UPSERT} напрямую в БД (в обход JPA).</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public class ProviderSynchronizer {
+public class ProviderPassportSynchronizer {
 
     /* Сканер контекста --> возвращает паспорта провайдеров из контекста приложения. */
     private final ProviderContextScanner contextScanner;
@@ -27,12 +29,12 @@ public class ProviderSynchronizer {
     private final ProviderPassportRepository repository;
 
     /* Контракт синхронизации паспортов провайдеров в БД. */
-    private final ProviderSyncDao syncDao;
+    private final ProviderPassportSyncDao syncDao;
 
     /* Конструктор. */
-    public ProviderSynchronizer(ProviderContextScanner contextScanner,
-                                ProviderPassportRepository repository,
-                                ProviderSyncDao syncDao) {
+    public ProviderPassportSynchronizer(ProviderContextScanner contextScanner,
+                                        ProviderPassportRepository repository,
+                                        ProviderPassportSyncDao syncDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
         this.syncDao = syncDao;

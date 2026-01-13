@@ -7,12 +7,12 @@ import com.alligator.market.domain.provider.repository.passport.ProviderPassport
 import java.util.Collection;
 
 /**
- * Контракт DAO синхронизации паспортов провайдеров в БД.
+ * DAO для синхронизации паспортов провайдеров в хранилище.
  *
- * <p>Используется для пакетных операций UPSERT/DELETE напрямую в хранилище,
- * в обход доменного репозитория {@link ProviderPassportRepository}.</p>
+ * <p>Предназначен для пакетных операций {@code UPSERT}/{@code DELETE} напрямую в хранилище
+ * (в обход доменного репозитория {@link ProviderPassportRepository}).</p>
  */
-public interface ProviderSyncDao {
+public interface ProviderPassportSyncDao {
 
     /**
      * Пакетное удаление паспортов по их кодам.

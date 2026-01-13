@@ -5,7 +5,7 @@ import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.reconciliation.ProviderSyncDao;
+import com.alligator.market.domain.provider.reconciliation.ProviderPassportSyncDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,7 +48,7 @@ import java.util.Objects;
  * @see ProviderSnapshot
  */
 @Repository
-public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
+public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportSyncDao {
 
     /* Конвертер Duration ↔ seconds */
     private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
@@ -57,7 +57,7 @@ public class ProviderSyncDaoPostgresAdapter implements ProviderSyncDao {
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public ProviderSyncDaoPostgresAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportSyncDaoPostgresAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

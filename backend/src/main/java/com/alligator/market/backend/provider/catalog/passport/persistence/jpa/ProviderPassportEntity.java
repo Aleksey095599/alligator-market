@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.ProviderSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +27,7 @@ import org.hibernate.annotations.NaturalId;
  *     код провадера как натуральный ключ.</li>
  *     <li>2) Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
  *     и не изменяются через JPA.</li>
- *     <li>3) Процесс обновления данных выполняется доменным процессом {@link ProviderSynchronizer} напрямую в БД
+ *     <li>3) Процесс обновления данных выполняется доменным процессом {@link ProviderPassportSynchronizer} напрямую в БД
  *     через SQL по стратегии {@code DELETE -> INSERT}; жизненный цикл записей управляется вне Hibernate.</li>
  * </ul>
  *
