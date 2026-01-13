@@ -13,7 +13,7 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Контракт провайдера рыночных данных.
+ * Провайдер рыночных данных.
  */
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
