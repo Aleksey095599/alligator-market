@@ -45,12 +45,7 @@ public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportS
     }
 
     /**
-     * Пакетное удаление провайдеров по набору уникальных кодов провайдеров.
-     *
-     * <p>Безопасно вызывать с пустой коллекцией – операция будет пропущена.</p>
-     *
-     * @param codes набор кодов провайдеров для удаления
-     * @throws DataAccessException если БД вернула ошибку
+     * Пакетное удаление (DELETE) паспортов по их кодам.
      */
     @Override
     public void deleteByCodes(Collection<ProviderCode> codes) {
@@ -81,14 +76,7 @@ public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportS
     }
 
     /**
-     * Пакетный UPSERT всех переданных снимков провайдеров.
-     *
-     * <p>Логика {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE SET ...}: если записи с таким
-     * {@code provider_code} нет – вставка; если есть – обновление нужных полей из переданного {@code snapshot}.</p>
-     * <p>Безопасно вызывать с пустой коллекцией – операция будет пропущена.</p>
-     *
-     * @param snapshots коллекция снимков ({@link ProviderSnapshot}) для вставки/обновления
-     * @throws DataAccessException если БД вернула ошибку
+     * Пакетная вставка или обновление (UPSERT) паспортов.
      */
     @Override
     public void upsertAll(Collection<ProviderSnapshot> snapshots) {
