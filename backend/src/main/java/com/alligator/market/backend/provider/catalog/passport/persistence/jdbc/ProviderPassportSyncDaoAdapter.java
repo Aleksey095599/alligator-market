@@ -6,7 +6,6 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,28 +18,25 @@ import java.util.Objects;
 /**
  * Адаптер доменного DAO {@link ProviderPassportSyncDao} в контексте БД PostgreSQL.
  *
- * <p>Преимущества подхода:</p>
+ * <p><b>Преимущества подхода</b></p>
  * <ul>
  *   <li>1) Разовая операция на старте: инициализация каталога при запуске – не нужен «долгоживущий» сервис,
- *       достаточно один раз выполнить SQL-команду;</li>
- *   <li>2) Всё прозрачно: SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями;</li>
- *   <li>3) Полный контроль записи: пишем напрямую в БД (UPSERT/DELETE) без участия механизмов JPA;</li>
- *   <li>4) Быстро и предсказуемо: batch + ON CONFLICT работают без накладных расходов ORM;</li>
- *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK – внешние ключи не страдают;</li>
+ *       достаточно один раз выполнить SQL-команду.</li>
+ *   <li>2) Всё прозрачно: SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями.</li>
+ *   <li>3) Полный контроль записи: пишем напрямую в БД с помощью SQL-команды без участия механизмов JPA.</li>
+ *   <li>4) Быстро и предсказуемо: batch + ON CONFLICT работают без накладных расходов ORM.</li>
+ *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK – внешние ключи не страдают.</li>
  *   <li>6) Просто тестировать: DAO легко проверить изолированно (например, через Testcontainers).</li>
  * </ul>
  */
 @Repository
-public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportSyncDao {
-
-    /* Конвертер Duration ↔ seconds */
-    private static final DurationToSecondsConverter DUR2SEC = new DurationToSecondsConverter();
+public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
 
     /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public ProviderPassportSyncDaoPostgresAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportSyncDaoAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -52,10 +48,9 @@ public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportS
         if (codes == null || codes.isEmpty()) return;
 
         // SQL-команда
-        final String sql = "DELETE FROM market_data_provider WHERE provider_code = ?";
+        final String sql = "DELETE FROM provider_passport WHERE provider_code = ?";
 
-        // Преобразуем коллекцию в массив – нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
-        // Предполагаем, что коды пришли из БД (или модели ProviderSnapshot) и уже нормализованы.
+        // Преобразуем коллекцию в массив (предполагаем, что коды уже нормализованы)
         String[] arr = codes.stream()
                 .filter(Objects::nonNull)
                 .map(ProviderCode::value)
@@ -79,8 +74,8 @@ public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportS
      * Пакетная вставка или обновление (UPSERT) паспортов.
      */
     @Override
-    public void upsertAll(Collection<ProviderSnapshot> snapshots) {
-        if (snapshots == null || snapshots.isEmpty()) return;
+    public void upsertAll(Collection<ProviderPassport> providerPassports) {
+        if (providerPassports == null || providerPassports.isEmpty()) return;
 
         // Берём аудит-атрибуты из контекст-холдера
         final String actor = AuditContextHolder.actorOrFallback();
@@ -88,7 +83,7 @@ public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportS
 
         // SQL-команда
         final String sql = """
-                INSERT INTO market_data_provider(
+                INSERT INTO provider_passport(
                   provider_code,
                   display_name,
                   delivery_mode,

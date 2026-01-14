@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Сервис синхронизации паспортов провайдеров между контекстом приложения и БД.
  *
- * <p>Логика сервиса.</p>
+ * <p><b>Логика сервиса</b></p>
  * <ul>
  *     <li>Источник истины — контекст приложения.</li>
  *     <li>Сканер контекста {@link ProviderContextScanner} извлекает из контекста приложения паспорта провайдеров,
@@ -26,7 +26,7 @@ import java.util.Set;
  *     <li>DAO {@link ProviderPassportSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
- * <p>Преимущества применения DAO:</p>
+ * <p><b>Преимущества применения DAO:</b></p>
  */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderPassportSynchronizer {
