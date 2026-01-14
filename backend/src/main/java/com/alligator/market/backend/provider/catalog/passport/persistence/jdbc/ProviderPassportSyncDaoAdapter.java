@@ -141,7 +141,7 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
 
         // 2) passport.*
         ProviderPassport passport = s.passport();
-        ps.setString(2, passport.displayName());         // <-- display_name
+        ps.setString(2, passport.displayName());         // <-- display_nam
         ps.setString(3, passport.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
         ps.setString(4, passport.accessMethod().name()); // <-- access_method (EnumType.STRING)
         ps.setBoolean(5, passport.bulkSubscription());   // <-- bulk_subscription
