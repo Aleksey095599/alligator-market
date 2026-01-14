@@ -4,6 +4,7 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * DAO для прямых пакетных операций с паспортами провайдеров в БД с целью выполнения процесса синхронизации.
@@ -18,5 +19,5 @@ public interface ProviderPassportSyncDao {
     /**
      * Пакетная вставка или обновление (UPSERT) паспортов.
      */
-    void upsertAll(Collection<ProviderPassport> passports);
+    void upsertAll(Map<ProviderCode, ProviderPassport> passports);
 }

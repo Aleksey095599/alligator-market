@@ -74,7 +74,7 @@ public class ProviderPassportSynchronizer {
         }
 
         // 4) UPSERT всех паспортов из контекста (новые/изменившиеся обновятся, актуальные — без изменений)
-        syncDao.upsertAll(ctxPassports.values());
+        syncDao.upsertAll(ctxPassports);
         // Готово
     }
 }

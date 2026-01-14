@@ -1,10 +1,8 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.jdbc;
 
-import com.alligator.market.backend.common.persistence.jpa.converter.DurationToSecondsConverter;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -74,7 +74,7 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
      * Пакетная вставка или обновление (UPSERT) паспортов.
      */
     @Override
-    public void upsertAll(Collection<ProviderPassport> providerPassports) {
+    public void upsertAll(Map<ProviderCode, ProviderPassport> providerPassports) {
         if (providerPassports == null || providerPassports.isEmpty()) return;
 
         // Берём аудит-атрибуты из контекст-холдера
@@ -89,7 +89,6 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
                   delivery_mode,
                   access_method,
                   bulk_subscription,
-                  min_update_interval_seconds,
                   version,
                   created_timestamp,
                   created_by,
@@ -97,32 +96,34 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
                   updated_timestamp,
                   updated_by,
                   updated_via
-                ) VALUES (?, ?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
                 ON CONFLICT (provider_code) DO UPDATE SET
                   display_name = EXCLUDED.display_name,
                   delivery_mode = EXCLUDED.delivery_mode,
                   access_method = EXCLUDED.access_method,
                   bulk_subscription = EXCLUDED.bulk_subscription,
-                  min_update_interval_seconds = EXCLUDED.min_update_interval_seconds,
-                  version = market_data_provider.version + 1,
+                  version = provider_passport.version + 1,
                   updated_timestamp = CURRENT_TIMESTAMP,
                   updated_by = EXCLUDED.updated_by,
                   updated_via = EXCLUDED.updated_via
                 """;
 
-        // Преобразуем коллекцию в массив – нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
-        ProviderSnapshot[] arr = snapshots.stream().filter(Objects::nonNull).toArray(ProviderSnapshot[]::new);
+        // Преобразуем набор в список – нужен индекс для BatchPreparedStatementSetter и фиксированный размер батча.
+        List<Map.Entry<ProviderCode, ProviderPassport>> entries = providerPassports.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey() != null && entry.getValue() != null)
+                .toList();
 
-        // Пакетный UPSERT: берём снимок arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
+        // Пакетный UPSERT: берём запись arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
-                bindUpsert(ps, arr[i], actor, via);
+                bindUpsert(ps, entries.get(i), actor, via);
             }
 
             @Override
             public int getBatchSize() {
-                return arr.length;
+                return entries.size();
             }
         });
     }
@@ -130,31 +131,30 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
     /**
      * Привязка параметров для одной строки UPSERT (заполнение параметров "?" в SQL-команде конкретными значениями).
      */
-    private void bindUpsert(PreparedStatement ps, ProviderSnapshot s, String actor, String via) throws SQLException {
-        Objects.requireNonNull(s, "snapshot must not be null");
+    private void bindUpsert(PreparedStatement ps,
+                            Map.Entry<ProviderCode, ProviderPassport> entry,
+                            String actor,
+                            String via) throws SQLException {
+        Objects.requireNonNull(entry, "entry must not be null");
         Objects.requireNonNull(actor, "actor must not be null");
         Objects.requireNonNull(via, "via must not be null");
-        // Примечание: иные проверки не обязательны – корректность данных гарантируется моделью ProviderSnapshot
+        // Примечание: иные проверки не обязательны – корректность данных гарантируется моделью ProviderPassport
 
         // 1) provider_code (натуральный ключ)
-        ps.setString(1, s.code().value());
+        ProviderCode code = entry.getKey();
+        ProviderPassport passport = entry.getValue();
+        ps.setString(1, code.value());
 
         // 2) passport.*
-        ProviderPassport passport = s.passport();
-        ps.setString(2, passport.displayName());         // <-- display_nam
+        ps.setString(2, passport.displayName());         // <-- display_name
         ps.setString(3, passport.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
         ps.setString(4, passport.accessMethod().name()); // <-- access_method (EnumType.STRING)
         ps.setBoolean(5, passport.bulkSubscription());   // <-- bulk_subscription
 
-        // 3) policy.*  (Duration --> seconds через общий конвертер)
-        ProviderPolicy policy = s.policy();
-        Long seconds = DUR2SEC.convertToDatabaseColumn(policy.minUpdateInterval());
-        ps.setLong(6, seconds);                   // <-- min_update_interval_seconds
-
-        // 4) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.
-        ps.setString(7, actor);                   // <-- created_by
-        ps.setString(8, via);                     // <-- created_via
-        ps.setString(9, actor);                   // <-- updated_by
-        ps.setString(10, via);                    // <-- updated_via
+        // 3) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.
+        ps.setString(6, actor);                   // <-- created_by
+        ps.setString(7, via);                     // <-- created_via
+        ps.setString(8, actor);                   // <-- updated_by
+        ps.setString(9, via);                     // <-- updated_via
     }
 }
