@@ -5,6 +5,7 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
 import com.alligator.market.domain.provider.reconciliation.sync.service.ProviderPassportSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -21,17 +22,17 @@ import org.hibernate.annotations.NaturalId;
 /**
  * JPA-сущность паспорта провайдера рыночных данных.
  *
- * <p>Ключевые особенности:</p>
+ * <p><b>Ключевые особенности</b></p>
  * <ul>
- *     <li>1) Поля сущности соответсвюут доменной модели {@link ProviderPassport}; дополнительно добавлен
+ *     <li>Поля сущности соответсвюут доменной модели {@link ProviderPassport}; дополнительно добавлен
  *     код провадера как натуральный ключ.</li>
- *     <li>2) Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
+ *     <li>Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
  *     и не изменяются через JPA.</li>
- *     <li>3) Процесс обновления данных выполняется доменным процессом {@link ProviderPassportSynchronizer} напрямую в БД
- *     через SQL по стратегии {@code DELETE -> INSERT}; жизненный цикл записей управляется вне Hibernate.</li>
+ *     <li>Процесс обновления данных выполняется доменным процессом {@link ProviderPassportSynchronizer} напрямую в БД
+ *     через DAO {@link ProviderPassportSyncDao}.</li>
  * </ul>
  *
- * <p>Пояснение некоторых аннотаций:</p>
+ * <p><b>Пояснение некоторых аннотаций</b></p>
  * <ul>
  *     <li>{@link Immutable} и отсутствие сеттеров отражают read-only статус сущности.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED} и отсутствие публичных конструкторов исключают
