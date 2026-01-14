@@ -146,15 +146,15 @@ public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
         ps.setString(1, code.value());
 
         // 2) passport.*
-        ps.setString(2, passport.displayName());         // <-- display_name
-        ps.setString(3, passport.deliveryMode().name()); // <-- delivery_mode (EnumType.STRING)
-        ps.setString(4, passport.accessMethod().name()); // <-- access_method (EnumType.STRING)
-        ps.setBoolean(5, passport.bulkSubscription());   // <-- bulk_subscription
+        ps.setString(2, passport.displayName());
+        ps.setString(3, passport.deliveryMode().name());
+        ps.setString(4, passport.accessMethod().name());
+        ps.setBoolean(5, passport.bulkSubscription());
 
         // 3) audit-атрибуты (actor/via). Используем одинаковые значения для created_* и updated_*.
-        ps.setString(6, actor);                   // <-- created_by
-        ps.setString(7, via);                     // <-- created_via
-        ps.setString(8, actor);                   // <-- updated_by
-        ps.setString(9, via);                     // <-- updated_via
+        ps.setString(6, actor);
+        ps.setString(7, via);
+        ps.setString(8, actor);
+        ps.setString(9, via);
     }
 }
