@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation;
+package com.alligator.market.domain.provider.reconciliation.sync.service;
 
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
@@ -20,7 +20,7 @@ import java.util.Set;
  * <p><b>Примечание:</b></p>
  * <p>Доменный репозиторий {@link ProviderPassportRepository} используется для получения набора кодов провайдеров,
  * которые являются натуральными ключами для паспортов в БД. Пакетные операции в БД с целью синхронизации
- * выполняет DAO {@link ProviderPassportSyncDao}.</p>
+ * выполняет DAO {@link ProviderPassportSyncDao}, без участия механизмов JPA.</p>
   */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderPassportSynchronizer {

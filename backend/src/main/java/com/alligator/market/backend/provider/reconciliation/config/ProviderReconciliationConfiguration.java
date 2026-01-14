@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.reconciliation.config;
 
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
-import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.sync.service.ProviderPassportSynchronizer;
 import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 import org.springframework.context.annotation.Bean;

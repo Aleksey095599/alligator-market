@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.sync.service.ProviderPassportSynchronizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

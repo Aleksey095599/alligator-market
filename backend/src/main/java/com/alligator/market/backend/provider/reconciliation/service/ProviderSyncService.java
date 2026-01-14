@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.reconciliation.service;
 
-import com.alligator.market.domain.provider.reconciliation.ProviderPassportSynchronizer;
+import com.alligator.market.domain.provider.reconciliation.sync.service.ProviderPassportSynchronizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

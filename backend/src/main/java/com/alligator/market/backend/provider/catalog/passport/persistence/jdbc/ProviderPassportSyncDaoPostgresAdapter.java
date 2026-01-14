@@ -17,35 +17,18 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * DAO (Data Access Object) для пакетного UPSERT/DELETE провайдеров в таблице {@code market_data_provider}.
- *
- * <p>Назначение:</p>
- * <ul>
- *   <li>1) Пакетная загрузка "снимков провайдеров" {@link ProviderSnapshot} в базу данных;</li>
- *   <li>2) Атомарная операция «вставить или обновить» по натуральному ключу {@code provider_code} с помощью
- *       PostgreSQL-конструкции {@code INSERT ... ON CONFLICT (provider_code) DO UPDATE ...};</li>
- *   <li>3) Удаление устаревших записей по набору кодов.</li>
- * </ul>
+ * Адаптер доменного DAO {@link ProviderPassportSyncDao} в контексте БД PostgreSQL.
  *
  * <p>Преимущества подхода:</p>
  * <ul>
  *   <li>1) Разовая операция на старте: инициализация каталога при запуске – не нужен «долгоживущий» сервис,
- *       достаточно один раз выполнить продуманный SQL-команду;</li>
+ *       достаточно один раз выполнить SQL-команду;</li>
  *   <li>2) Всё прозрачно: SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями;</li>
- *   <li>3) Полный контроль записи: пишем напрямую в БД (UPSERT/DELETE), JPA остаётся read‑only (@Immutable);</li>
+ *   <li>3) Полный контроль записи: пишем напрямую в БД (UPSERT/DELETE) без участия механизмов JPA;</li>
  *   <li>4) Быстро и предсказуемо: batch + ON CONFLICT работают без накладных расходов ORM;</li>
  *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK – внешние ключи не страдают;</li>
- *   <li>6) Просто тестировать.</b> DAO легко проверить изолированно (например, через Testcontainers).</li>
+ *   <li>6) Просто тестировать: DAO легко проверить изолированно (например, через Testcontainers).</li>
  * </ul>
- *
- * <p><b>Ограничения:</b></p>
- * <ul>
- *   <li>1) БД – PostgreSQL;</li>
- *   <li>2) {@code provider_code} – уникальное ограничение в таблице {@code market_data_provider};</li>
- *   <li>3) Колонки в SQL-команде соответствуют реальной схеме {@code market_data_provider}. </li>
- * </ul>
- *
- * @see ProviderSnapshot
  */
 @Repository
 public class ProviderPassportSyncDaoPostgresAdapter implements ProviderPassportSyncDao {
