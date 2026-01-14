@@ -6,7 +6,8 @@ import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import java.util.Map;
 
 /**
- * Сканер контекста приложения для извлечения данных о провайдерах рыночных данных.
+ * Сканер контекста приложения для извлечения данных о провайдерах рыночных данных,
+ * в частности, паспортов провайдеров.
  */
 public sealed interface ProviderContextScanner permits AbstractProviderContextScanner {
 
