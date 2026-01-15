@@ -24,7 +24,7 @@ import java.util.Set;
 @Component("MOEX_ISS")
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
 
-    /* Технический код провайдера. */
+    /* Код провайдера. */
     public static final ProviderCode PROVIDER_CODE = ProviderCode.of("MOEX_ISS");
 
     /* Отображаемое имя провайдера. */
@@ -38,17 +38,17 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
             false
     );
 
-    /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
+    /* Политика провайдера. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1); // <-- интервал запросов 1 сек
 
-    /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
+    /* Настройки провайдера. */
     private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- заглушка до востребования
 
     /**
      * Конструктор адаптера MOEX ISS.
      *
-     * <p>Адаптеру передаются параметры {@code props} и {@code webClient},
-     * необходимые для сборки обработчика {@link MoexIssFxSpotHandler}.</p>
+     * <p>Входные параметры {@code props} и {@code webClient} передаются конструктору
+     * для сборки обработчика {@link MoexIssFxSpotHandler}.</p>
      *
      * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
      * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
