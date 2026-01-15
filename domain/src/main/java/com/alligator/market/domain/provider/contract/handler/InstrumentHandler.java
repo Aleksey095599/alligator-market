@@ -10,7 +10,7 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Обработчик финансового инструмента.
+ * Обработчик (handler) финансового инструмента.
  *
  * <p>Жёстко привязан к провайдеру и конкретному классу инструмента. Реализация разрешена только
  * через {@link AbstractInstrumentHandler}.</p>
@@ -19,7 +19,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
         permits AbstractInstrumentHandler {
 
     /**
-     * Уникальный код обработчика.
+     * Код обработчика.
      */
     String handlerCode();
 

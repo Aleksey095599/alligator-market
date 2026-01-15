@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.profinance;
 
 import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanceAdapterProps;
 import com.alligator.market.backend.provider.adapter.profinance.handler.forex.spot.ProFinanceFxSpotHandler;
-import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
+import com.alligator.market.backend.provider.adapter.common.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;

@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Абстрактный каркас контракта обработчика инструмента {@link InstrumentHandler}.
+ * Абстрактная реализация обработчика инструмента {@link InstrumentHandler}.
  */
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {

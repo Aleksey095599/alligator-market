@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.twelve.free;
 
 import com.alligator.market.backend.provider.adapter.twelve.free.config.TwelveFreeConnectionProps;
 import com.alligator.market.backend.provider.adapter.twelve.free.handler.forex.spot.TwelveFreeFxSpotHandler;
-import com.alligator.market.backend.provider.contract.SpringMarketDataProvider;
+import com.alligator.market.backend.provider.adapter.common.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;

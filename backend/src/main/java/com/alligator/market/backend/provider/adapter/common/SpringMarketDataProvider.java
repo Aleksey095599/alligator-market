@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.contract;
+package com.alligator.market.backend.provider.adapter.common;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
@@ -16,10 +16,9 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Spring-адаптер для каркаса провайдера рыночных данных {@link AbstractMarketDataProvider}.
+ * Spring-адаптер абстрактной реализации провайдера рыночных данных {@link AbstractMarketDataProvider}.
  *
- * <p>Гарантирует соглашение: имя Spring-бина должно совпадать с кодом провайдера ({@code providerCode}).
- * Несоответствие приводит к ошибке инициализации контекста.</p>
+ * <p>Гарантирует соглашение: имя Spring-бина должно совпадать с кодом провайдера.</p>
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>

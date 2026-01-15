@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Абстрактный каркас контракта провайдера рыночных данных {@link MarketDataProvider}.
+ * Абстрактная реализация провайдера рыночных данных {@link MarketDataProvider}.
  */
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
