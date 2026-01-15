@@ -8,11 +8,8 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.d
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,7 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
-@Validated
 public class CurrencyController {
 
     private final CurrencyUseCase service;
@@ -34,9 +30,9 @@ public class CurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody CurrencyDto dto) {
 
-        Currency created = service.create(CurrencyDtoMapper.toDomainCreate(dto));
+        Currency created = service.create(CurrencyDtoMapper.toDomain(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
@@ -49,9 +45,7 @@ public class CurrencyController {
      * Обновить валюту.
      */
     @PutMapping("/{code}")
-    public ResponseEntity<Void> update(
-            @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code,
-            @RequestBody @Valid CurrencyUpdateDto dto) {
+    public ResponseEntity<Void> update(@PathVariable String code, @RequestBody CurrencyUpdateDto dto) {
 
         service.update(CurrencyDtoMapper.toDomainUpdate(code, dto));
         return ResponseEntityFactory.noContent();
@@ -61,8 +55,7 @@ public class CurrencyController {
      * Удалить валюту.
      */
     @DeleteMapping("/{code}")
-    public ResponseEntity<Void> delete(
-            @PathVariable @Pattern(regexp = "^[A-Z]{3}$") String code) {
+    public ResponseEntity<Void> delete(@PathVariable String code) {
 
         service.delete(CurrencyCode.of(code));
         return ResponseEntityFactory.noContent();
@@ -76,7 +69,7 @@ public class CurrencyController {
 
         List<CurrencyDto> currencyDtoList = service.findAll()
                 .stream()
-                .map(CurrencyDtoMapper::toResponseDto)
+                .map(CurrencyDtoMapper::toCurrencyDto)
                 .toList();
         return ResponseEntityFactory.ok(currencyDtoList);
     }

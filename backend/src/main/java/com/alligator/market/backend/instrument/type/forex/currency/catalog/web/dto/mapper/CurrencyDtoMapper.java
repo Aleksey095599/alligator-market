@@ -22,7 +22,7 @@ public final class CurrencyDtoMapper {
     /**
      * Общий DTO --> модель.
      */
-    public static Currency toDomainCreate(CurrencyDto dto) {
+    public static Currency toDomain(CurrencyDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
         return new Currency(
@@ -30,20 +30,6 @@ public final class CurrencyDtoMapper {
                 dto.name(),
                 dto.country(),
                 dto.fractionDigits()
-        );
-    }
-
-    /**
-     * Модель --> общий DTO.
-     */
-    public static CurrencyDto toResponseDto(Currency currency) {
-        Objects.requireNonNull(currency, "currency must not be null");
-
-        return new CurrencyDto(
-                currency.code().value(),
-                currency.name(),
-                currency.country(),
-                currency.fractionDigits()
         );
     }
 
@@ -59,6 +45,20 @@ public final class CurrencyDtoMapper {
                 dto.name(),
                 dto.country(),
                 dto.fractionDigits()
+        );
+    }
+
+    /**
+     * Модель --> общий DTO.
+     */
+    public static CurrencyDto toCurrencyDto(Currency currency) {
+        Objects.requireNonNull(currency, "currency must not be null");
+
+        return new CurrencyDto(
+                currency.code().value(),
+                currency.name(),
+                currency.country(),
+                currency.fractionDigits()
         );
     }
 }
