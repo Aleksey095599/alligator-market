@@ -9,19 +9,19 @@ import java.util.Objects;
  *
  * <p>Только чтение, так как таблица provider_passport является статичным справочником.</p>
  */
-public final class ProviderPassportEntityMapper {
+public final class PassportEntityMapper {
 
     /**
      * Приватный конструктор (запрещает создание экземпляров).
      */
-    private ProviderPassportEntityMapper() {
+    private PassportEntityMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
     /**
      * JPA-сущность --> доменная модель.
      */
-    public static ProviderPassport toDomain(ProviderPassportEntity e) {
+    public static ProviderPassport toDomain(PassportEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
         // Собираем и возвращаем доменную модель паспорта провайдера

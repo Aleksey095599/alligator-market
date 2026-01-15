@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Реализация сервиса {@link CurrencyUseCase}.
+ * Реализация сервиса {@link CurrencyCatalogService}.
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CurrencyUseCaseImpl implements CurrencyUseCase {
+public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
 
     private final CurrencyRepository currencyRepository;
     private final FxSpotRepository fxSpotRepository;

@@ -67,7 +67,7 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Access(AccessType.FIELD)
 @Immutable
-public class ProviderPassportEntity extends BaseEntity {
+public class PassportEntity extends BaseEntity {
 
     /**
      * Суррогатный PK.

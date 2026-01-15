@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.repository;
 
-import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.ProviderPassportJpaRepository;
+import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.PassportJpaRepository;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 import org.springframework.stereotype.Repository;
@@ -16,13 +16,13 @@ import java.util.List;
  */
 @Repository
 @Transactional(readOnly = true)
-public class ProviderPassportRepositoryJpaAdapter implements ProviderPassportRepository {
+public class PassportRepositoryJpaAdapter implements ProviderPassportRepository {
 
     /* JPA-репозиторий. */
-    private final ProviderPassportJpaRepository jpa;
+    private final PassportJpaRepository jpa;
 
     /* Конструктор. */
-    public ProviderPassportRepositoryJpaAdapter(ProviderPassportJpaRepository jpa) {
+    public PassportRepositoryJpaAdapter(PassportJpaRepository jpa) {
         this.jpa = jpa;
     }
 

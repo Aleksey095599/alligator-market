@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Application-сервис (use case) для операций с паспортами провайдеров рыночных данных.
  */
-public interface ProviderPassportUseCase {
+public interface PassportCatalogService {
 
     /**
      * Вернуть все паспорта.

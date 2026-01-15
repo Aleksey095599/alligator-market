@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Application-сервис (use case) для операций с инструментами FX_SPOT.
  */
-public interface FxSpotUseCase {
+public interface FxSpotCatalogService {
 
     /**
      * Создать новый инструмент.

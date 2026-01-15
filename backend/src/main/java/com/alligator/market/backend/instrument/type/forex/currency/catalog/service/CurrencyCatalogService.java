@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Application-сервис (use case) для операций с валютами.
  */
-public interface CurrencyUseCase {
+public interface CurrencyCatalogService {
 
     /**
      * Создать новую валюту.

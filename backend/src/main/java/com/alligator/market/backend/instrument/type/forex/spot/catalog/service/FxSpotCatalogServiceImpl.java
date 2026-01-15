@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Реализация сервиса {@link FxSpotUseCase}.
+ * Реализация сервиса {@link FxSpotCatalogService}.
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FxSpotUseCaseImpl implements FxSpotUseCase {
+public class FxSpotCatalogServiceImpl implements FxSpotCatalogService {
 
     private final FxSpotRepository fxSpotRepository;
 

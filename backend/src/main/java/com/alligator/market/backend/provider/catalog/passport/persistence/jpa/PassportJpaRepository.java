@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Spring Data JPA-репозиторий для паспортов провайдеров рыночных данных.
  */
-public interface ProviderPassportJpaRepository extends JpaRepository<ProviderPassportEntity, Long> {
+public interface PassportJpaRepository extends JpaRepository<PassportEntity, Long> {
 
     /**
      * Возвращает список всех кодов провайдеров.
      *
      * <p>Запрос оптимизирован через проекцию и режим read-only для снижения нагрузки на память и CPU.</p>
      */
-    @Query("select p.providerCode from ProviderPassportEntity p")
+    @Query("select p.providerCode from PassportEntity p")
     @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"))
     List<ProviderCode> findAllCodes();
 }

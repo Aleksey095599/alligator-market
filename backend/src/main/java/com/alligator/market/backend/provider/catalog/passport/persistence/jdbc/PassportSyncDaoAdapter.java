@@ -21,13 +21,13 @@ import java.util.Objects;
  * Использует PostgreSQL Native UPSERT (ON CONFLICT) для обеспечения производительности.
  */
 @Repository
-public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
+public class PassportSyncDaoAdapter implements ProviderPassportSyncDao {
 
     /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public ProviderPassportSyncDaoAdapter(JdbcTemplate jdbc) {
+    public PassportSyncDaoAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

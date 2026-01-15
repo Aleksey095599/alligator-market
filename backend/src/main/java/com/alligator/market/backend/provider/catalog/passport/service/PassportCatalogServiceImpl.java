@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * Реализация сервиса {@link ProviderPassportUseCase}.
+ * Реализация сервиса {@link PassportCatalogService}.
  */
 @Service
 @RequiredArgsConstructor
-public class ProviderPassportUseCaseImpl implements ProviderPassportUseCase {
+public class PassportCatalogServiceImpl implements PassportCatalogService {
 
 
 }
