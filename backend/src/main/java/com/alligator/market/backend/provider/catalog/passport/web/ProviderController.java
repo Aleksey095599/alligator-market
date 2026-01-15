@@ -3,8 +3,8 @@ package com.alligator.market.backend.provider.catalog.passport.web;
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.provider.catalog.passport.service.ProviderCatalogUseCase;
-import com.alligator.market.backend.provider.catalog.passport.web.dto.out.ProviderResponseDto;
-import com.alligator.market.backend.provider.catalog.passport.web.dto.mapper.ProviderDtoMapper;
+import com.alligator.market.backend.provider.catalog.passport.web.dto.out.ProviderPassportResponseDto;
+import com.alligator.market.backend.provider.catalog.passport.web.dto.mapper.ProviderPassportDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +27,9 @@ public class ProviderController {
      * Вернуть все паспорта провайдеров.
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProviderResponseDto>>> getAll() {
-        List<ProviderResponseDto> list = service.findAll().stream()
-                .map(ProviderDtoMapper::toDto)
+    public ResponseEntity<ApiResponse<List<ProviderPassportResponseDto>>> getAll() {
+        List<ProviderPassportResponseDto> list = service.findAll().stream()
+                .map(ProviderPassportDtoMapper::toDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }
