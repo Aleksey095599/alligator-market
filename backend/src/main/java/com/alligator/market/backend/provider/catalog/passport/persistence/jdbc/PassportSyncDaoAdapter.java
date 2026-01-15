@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-// TODO: доработать, есть ошибки в логике
 /**
  * JDBC-адаптер для пакетной синхронизации паспортов провайдеров.
  * Использует PostgreSQL Native UPSERT (ON CONFLICT) для обеспечения производительности.
@@ -41,22 +40,23 @@ public class PassportSyncDaoAdapter implements ProviderPassportSyncDao {
         // SQL-команда
         final String sql = "DELETE FROM provider_passport WHERE provider_code = ?";
 
-        // Преобразуем коллекцию в массив (предполагаем, что коды уже нормализованы)
-        String[] arr = codes.stream()
+        // Преобразуем коллекцию в список (предполагаем, что коды уже нормализованы)
+        List<String> normalizedCodes = codes.stream()
                 .filter(Objects::nonNull)
                 .map(ProviderCode::value)
-                .toArray(String[]::new);
+                .toList();
+        if (normalizedCodes.isEmpty()) return;
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, arr[i]);
+                ps.setString(1, normalizedCodes.get(i));
             }
 
             @Override
             public int getBatchSize() {
-                return arr.length;
+                return normalizedCodes.size();
             }
         });
     }
@@ -104,6 +104,10 @@ public class PassportSyncDaoAdapter implements ProviderPassportSyncDao {
                 .stream()
                 .filter(entry -> entry.getKey() != null && entry.getValue() != null)
                 .toList();
+        if (entries.isEmpty()) return;
+        if (entries.size() != providerPassports.size()) {
+            throw new IllegalArgumentException("providerPassports must not contain null keys or values");
+        }
 
         // Пакетный UPSERT: берём запись arr[i], привязываем параметры через bindUpsert(...), задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {

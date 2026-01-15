@@ -21,13 +21,24 @@ public record ProviderPassport(
         AccessMethod accessMethod,
         boolean bulkSubscription
 ) {
+    /* Максимальная длина отображаемого имени провайдера. */
+    private static final int MAX_DISPLAY_NAME_LENGTH = 50;
+
     public ProviderPassport {
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
 
-        if (displayName.isBlank()) {
+        String normalizedDisplayName = displayName.strip();
+        if (normalizedDisplayName.isEmpty()) {
             throw new IllegalArgumentException("displayName must not be blank");
         }
+        if (normalizedDisplayName.length() > MAX_DISPLAY_NAME_LENGTH) {
+            throw new IllegalArgumentException(
+                    "displayName length must be <= " + MAX_DISPLAY_NAME_LENGTH + ": " + normalizedDisplayName.length()
+            );
+        }
+
+        displayName = normalizedDisplayName;
     }
 }
