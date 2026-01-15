@@ -15,6 +15,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Set;
 
+/* TODO: есть такая проблема с обработчиками, нужно разобраться:
+Меня немного смущает что переданные в конструктор
+        MoexIssAdapterProps props,
+        @Qualifier("moexIssWebClient") WebClient webClient
+        как бы насквозь переходят а обработчик: Set.of(new MoexIssFxSpotHandler(props, webClient))
+        А что если у меня будет несколько обработчиков для которых нужны разные props и webClient. Конечно же, можно на входе конструктора передать несколько вариантов props и webClient, но мне не кажется это хорошим решением.
+*/
 /**
  * Адаптер провайдера рыночных данных MOEX ISS.
  *

@@ -26,7 +26,8 @@ import java.util.Set;
  *     <li>DAO {@link ProviderPassportSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
- * <p><b>Преимущества применения DAO:</b></p>
+ * <p><b>Преимущества применения DAO для пакетной синхронизации паспортов провайдеров:</b></p>
+ * TODO: дописать
  */
 @SuppressWarnings("ClassCanBeRecord")
 public class ProviderPassportSynchronizer {

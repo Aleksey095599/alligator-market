@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Set;
-
+// TODO: заменить на заглушку с паспортом
 /**
  * Адаптер для провайдера рыночных данных ProFinance (парсинг с сайта).
  */

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
+// TODO: доработать, есть ошибки в логике
 /**
  * JDBC-адаптер для пакетной синхронизации паспортов провайдеров.
  * Использует PostgreSQL Native UPSERT (ON CONFLICT) для обеспечения производительности.

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.contract.resolver;
+package com.alligator.market.domain.quote.feed;
 
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
