@@ -22,7 +22,7 @@ public final class CurrencyDtoMapper {
     /**
      * Общий DTO --> модель.
      */
-    public static Currency toDomainFromUpdateDto(CurrencyDto dto) {
+    public static Currency toDomain(CurrencyDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
         return new Currency(
@@ -50,7 +50,7 @@ public final class CurrencyDtoMapper {
     /**
      * Код валюты + DTO обновления --> модель.
      */
-    public static Currency toDomainFromUpdateDto(String code, CurrencyUpdateDto dto) {
+    public static Currency toDomain(String code, CurrencyUpdateDto dto) {
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
 
