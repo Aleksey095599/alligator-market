@@ -29,7 +29,7 @@ public class ProviderController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProviderPassportResponseDto>>> getAll() {
         List<ProviderPassportResponseDto> list = service.findAll().stream()
-                .map(ProviderPassportDtoMapper::toDto)
+                .map(ProviderPassportDtoMapper::toProviderPassportResponseDto)
                 .toList();
         return ResponseEntityFactory.ok(list);
     }

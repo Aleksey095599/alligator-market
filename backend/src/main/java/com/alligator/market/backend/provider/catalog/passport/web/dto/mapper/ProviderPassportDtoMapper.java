@@ -25,9 +25,9 @@ public final class ProviderPassportDtoMapper {
 
         return new ProviderPassportResponseDto(
                 providerPassport.displayName(),
-                providerPassport.deliveryMode(),
-                providerPassport.accessMethod(),
+                providerPassport.deliveryMode().name(),
+                providerPassport.accessMethod().name(),
                 providerPassport.bulkSubscription()
-        )
+        );
     }
 }
