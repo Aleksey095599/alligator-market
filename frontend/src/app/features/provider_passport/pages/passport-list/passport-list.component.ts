@@ -19,8 +19,7 @@ export class PassportListComponent implements OnInit {
     'displayName',
     'deliveryMode',
     'accessMethod',
-    'bulkSubscription',
-    'minUpdateIntervalSeconds'
+    'bulkSubscription'
   ];
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<ProviderDto>([]);
