@@ -16,6 +16,10 @@ public interface ProviderPassportJpaRepository extends JpaRepository<ProviderPas
 
     /**
      * Найти все коды провайдеров (натуральные ключи).
+     *
+     * <p>Смысл аннотаций {@link Query} и {@link QueryHint}:</p>
+     * <p>Просто быстро достань мне список кодов из базы данных в режиме "только чтение", не трать ресурсы на создание
+     * тяжелых объектов и не следи за их изменениями.</p>
      */
     @Query("select p.providerCode from ProviderPassportEntity p")
     @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"))
