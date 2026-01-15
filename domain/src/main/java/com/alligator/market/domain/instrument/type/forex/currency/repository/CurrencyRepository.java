@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Доменный репозиторий валют.
+ * Репозиторий валют.
  */
 public interface CurrencyRepository {
 

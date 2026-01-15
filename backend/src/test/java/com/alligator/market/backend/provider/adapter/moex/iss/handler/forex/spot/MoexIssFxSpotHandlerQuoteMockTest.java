@@ -62,7 +62,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
         handler = new MoexIssFxSpotHandler(props, webClient);
         handler.attachTo(new MoexIssAdapter(props, webClient));
 
-        // 5) Готовим доменный инструмент CNYRUB_TOM
+        // 5) Готовим инструмент CNYRUB_TOM
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
         cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);

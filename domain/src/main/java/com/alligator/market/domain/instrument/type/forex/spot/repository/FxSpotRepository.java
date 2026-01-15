@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Доменный репозиторий инструментов FX_SPOT.
+ * Репозиторий инструментов FX_SPOT.
  */
 public interface FxSpotRepository {
 

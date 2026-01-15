@@ -13,7 +13,7 @@ import java.util.Objects;
  * <p>Используется как унифицированное представление любых рыночных тиков:
  * по последней сделке (LAST) и по котировке bid/ask.</p>
  *
- * @param instrumentCode    доменный код инструмента
+ * @param instrumentCode    Код инструмента
  * @param last              цена последней сделки (MOEX LAST); может быть {@code null}
  * @param bid               цена лучшей покупки; может быть {@code null}
  * @param ask               цена лучшей продажи; может быть {@code null},

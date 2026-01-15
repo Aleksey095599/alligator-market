@@ -114,7 +114,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
      *
      * <p>Алгоритм:
      * <ul>
-     *   <li>Доменный код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
+     *   <li>Код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
      *   <li>Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
      *   <li>Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
      *   <li>Строим доменную модель {@link QuoteTick}.</li>
@@ -125,7 +125,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
-        // 1) Доменный код инструмента --> SECID MOEX ISS
+        // 1) Код инструмента --> SECID MOEX ISS
         InstrumentCode domainCode = instrument.instrumentCode();
         String secid = MoexIssFxSpotInstruments.moexSecidOf(domainCode);
 

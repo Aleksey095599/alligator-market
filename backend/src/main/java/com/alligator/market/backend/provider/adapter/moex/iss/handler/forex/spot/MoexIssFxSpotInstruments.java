@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
  *
- * <p>Содержит доменные инструменты и соответствие "доменный код ↔ SECID MOEX ISS".</p>
+ * <p>Содержит инструменты и соответствия "код инструмента ↔ SECID MOEX ISS".</p>
  */
 public class MoexIssFxSpotInstruments {
 
@@ -24,7 +24,7 @@ public class MoexIssFxSpotInstruments {
     private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
-    /* Карта соответствий: доменный код ↔ SECID. */
+    /* Карта соответствий: код инструмента ↔ SECID. */
     private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_SECID;
 
     /**

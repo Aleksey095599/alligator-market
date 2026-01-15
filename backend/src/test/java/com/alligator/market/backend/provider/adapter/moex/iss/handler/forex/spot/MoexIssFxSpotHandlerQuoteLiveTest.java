@@ -41,7 +41,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(props, webClient);
         handler.attachTo(new MoexIssAdapter(props, webClient));
 
-        // 3) Доменный инструмент для теста
+        // 3) Инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
