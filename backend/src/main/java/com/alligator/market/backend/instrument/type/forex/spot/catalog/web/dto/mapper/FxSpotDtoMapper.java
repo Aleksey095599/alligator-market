@@ -18,7 +18,7 @@ public class FxSpotDtoMapper {
     }
 
     /**
-     * Преобразует доменную модель {@link FxSpot} в DTO ответа {@link FxSpotResponseDto}.
+     * Модель --> DTO ответа.
      */
     public static FxSpotResponseDto toFxSpotResponseDto(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");

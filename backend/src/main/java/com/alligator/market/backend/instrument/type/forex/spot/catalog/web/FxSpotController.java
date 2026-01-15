@@ -10,7 +10,6 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.m
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class FxSpotController {
      * Создать инструмент.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid FxSpotCreateDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody FxSpotCreateDto dto) {
 
         FxSpot created = service.create(factory.fromCreateDto(dto));
         URI location = ServletUriComponentsBuilder
@@ -50,7 +49,7 @@ public class FxSpotController {
      */
     @PatchMapping("/{instrumentCode}")
     public ResponseEntity<Void> update(@PathVariable String instrumentCode,
-                                       @RequestBody @Valid FxSpotUpdateDto dto) {
+                                       @RequestBody FxSpotUpdateDto dto) {
 
         // Парсим строковый код инструмента в объект-значение
         InstrumentCode code = InstrumentCode.of(instrumentCode);
