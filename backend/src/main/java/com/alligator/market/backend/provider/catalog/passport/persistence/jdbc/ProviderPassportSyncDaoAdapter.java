@@ -15,19 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+
 /**
- * Адаптер доменного DAO {@link ProviderPassportSyncDao} в контексте БД PostgreSQL.
- *
- * <p><b>Преимущества подхода</b></p>
- * <ul>
- *   <li>1) Разовая операция на старте: инициализация каталога при запуске – не нужен «долгоживущий» сервис,
- *       достаточно один раз выполнить SQL-команду.</li>
- *   <li>2) Всё прозрачно: SQL-команда собрана в одном месте, легко сверяется со схемой/миграциями.</li>
- *   <li>3) Полный контроль записи: пишем напрямую в БД с помощью SQL-команды без участия механизмов JPA.</li>
- *   <li>4) Быстро и предсказуемо: batch + ON CONFLICT работают без накладных расходов ORM.</li>
- *   <li>5) Безопасно для связей: UPSERT по provider_code не меняет PK – внешние ключи не страдают.</li>
- *   <li>6) Просто тестировать: DAO легко проверить изолированно (например, через Testcontainers).</li>
- * </ul>
+ * JDBC-адаптер для пакетной синхронизации паспортов провайдеров.
+ * Использует PostgreSQL Native UPSERT (ON CONFLICT) для обеспечения производительности.
  */
 @Repository
 public class ProviderPassportSyncDaoAdapter implements ProviderPassportSyncDao {
