@@ -3,9 +3,8 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web;
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.service.CurrencyUseCase;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyCreateDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.out.CurrencyResponseDto;
+import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
@@ -35,7 +34,7 @@ public class CurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyCreateDto dto) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid CurrencyDto dto) {
 
         Currency created = service.create(CurrencyDtoMapper.toDomain(dto));
         URI location = ServletUriComponentsBuilder
@@ -73,9 +72,9 @@ public class CurrencyController {
      * Вернуть все валюты.
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CurrencyResponseDto>>> getAll() {
+    public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
 
-        List<CurrencyResponseDto> currencyDtoList = service.findAll()
+        List<CurrencyDto> currencyDtoList = service.findAll()
                 .stream()
                 .map(CurrencyDtoMapper::toResponseDto)
                 .toList();

@@ -2,7 +2,6 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.
 
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;
-import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.out.CurrencyResponseDto;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 
@@ -50,12 +49,12 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует доменную модель {@link Currency} в DTO ответа {@link CurrencyResponseDto}.
+     * Преобразует доменную модель {@link Currency} в DTO ответа {@link CurrencyDto}.
      */
-    public static CurrencyResponseDto toResponseDto(Currency currency) {
+    public static CurrencyDto toResponseDto(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        return new CurrencyResponseDto(
+        return new CurrencyDto(
                 currency.code().value(),
                 currency.name(),
                 currency.country(),
