@@ -151,7 +151,6 @@ public class ProFinanceFxSpotHandler extends AbstractInstrumentHandler<ProFinanc
         Elements tds = doc.select("td:matches(" + symbolRegex + ")");
         if (tds.isEmpty()) {
             throw new IllegalStateException(String.format(
-                    // TODO: данная ошибка может трактоваться как неподдерживаемый инструмент, возможно стоит заменить на специальную доменную ошибку (подумать как сделать корректно)
                     "No <td> equal to instrument symbol '%s' found on the page", symbol));
         }
         if (tds.size() > 1) {
