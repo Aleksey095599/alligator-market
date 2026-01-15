@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.type.forex.currency.catalog.web.
 
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.web.dto.in.CurrencyUpdateDto;
-import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 
 import java.util.Objects;
 
@@ -20,28 +20,13 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует общий DTO {@link CurrencyDto} в доменную модель {@link Currency}.
+     * Общий DTO --> модель.
      */
-    public static Currency toDomain(CurrencyDto dto) {
+    public static Currency toDomainFromUpdateDto(CurrencyDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
         return new Currency(
-                CurrencyCode.of(dto.getCode()),
-                dto.getName(),
-                dto.getCountry(),
-                dto.getFractionDigits()
-        );
-    }
-
-    /**
-     * Преобразует код и DTO обновления {@link CurrencyUpdateDto} в доменную модель {@link Currency}.
-     */
-    public static Currency toDomain(String code, CurrencyUpdateDto dto) {
-        Objects.requireNonNull(code, "code must not be null");
-        Objects.requireNonNull(dto, "dto must not be null");
-
-        return new Currency(
-                CurrencyCode.of(code),
+                CurrencyCode.of(dto.code()),
                 dto.name(),
                 dto.country(),
                 dto.fractionDigits()
@@ -49,7 +34,7 @@ public final class CurrencyDtoMapper {
     }
 
     /**
-     * Преобразует доменную модель {@link Currency} в DTO ответа {@link CurrencyDto}.
+     * Модель --> общий DTO.
      */
     public static CurrencyDto toResponseDto(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
@@ -59,6 +44,21 @@ public final class CurrencyDtoMapper {
                 currency.name(),
                 currency.country(),
                 currency.fractionDigits()
+        );
+    }
+
+    /**
+     * Код валюты + DTO обновления --> модель.
+     */
+    public static Currency toDomainFromUpdateDto(String code, CurrencyUpdateDto dto) {
+        Objects.requireNonNull(code, "code must not be null");
+        Objects.requireNonNull(dto, "dto must not be null");
+
+        return new Currency(
+                CurrencyCode.of(code),
+                dto.name(),
+                dto.country(),
+                dto.fractionDigits()
         );
     }
 }
