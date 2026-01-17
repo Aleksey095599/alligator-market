@@ -12,8 +12,8 @@ import java.util.Set;
 /**
  * Обработчик (handler) финансового инструмента.
  *
- * <p>Жёстко привязан к провайдеру и конкретному классу инструмента. Реализация разрешена только
- * через {@link AbstractInstrumentHandler}.</p>
+ * <p>Жёстко привязан к провайдеру и конкретному классу инструмента.
+ * Реализация разрешена только через {@link AbstractInstrumentHandler}.</p>
  */
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {

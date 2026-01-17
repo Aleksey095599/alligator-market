@@ -6,20 +6,20 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Коды поддерживаемых методов доступа провайдеров к рыночным данным.
+ * Методы доступа провайдеров к рыночным данным.
  */
 public enum AccessMethod {
-    /* Константы: коды методов доступа (далее – коды). */
+    /* Методы доступа. */
     API_POLL,     // <-- Метод периодического опроса API провайдера для получения рыночных данных
     WEBSOCKET,    // <-- Метод получения данных через WebSocket соединение в режиме реального времени
     FIX_PROTOCOL; // <-- Метод доступа через FIX протокол для высокочастотной торговли
 
-    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
-    private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
-    private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
+    /* Список всех методов и представление этого списка в виде единой строки (иногда полезно). */
+    private static final List<String> ACCESS_METHODS = Arrays.stream(values()).map(Enum::name).toList();
+    private static final String ACCESS_METHODS_JOINED = String.join(", ", ACCESS_METHODS);
 
     /**
-     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     * Парсит метод (trim + upper-case). В ошибке подсказывает допустимые значения.
      */
     @SuppressWarnings("unused")
     public static AccessMethod fromCode(String code) {
@@ -39,20 +39,20 @@ public enum AccessMethod {
             return AccessMethod.valueOf(normalized);
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(
-                    "Unsupported AccessMethod code: '" + code + "'. Supported: " + SUPPORTED_CODES_JOINED, ex);
+                    "Unsupported AccessMethod code: '" + code + "'. Supported: " + ACCESS_METHODS_JOINED, ex);
         }
     }
 
     /**
-     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     * Возвращает список заданных в приложении методов (для валидации/документации).
      */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
-        return SUPPORTED_CODES;
+        return ACCESS_METHODS;
     }
 
     /**
-     * Возвращает строковый код (= имя константы).
+     * Возвращает метод как строковое значение.
      */
     @SuppressWarnings("unused")
     public String code() {

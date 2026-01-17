@@ -13,8 +13,8 @@ public enum InstrumentType {
     FX_SPOT, FX_SWAP;
 
     /* Список всех типов и представление этого списка в виде единой строки (иногда полезно). */
-    private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
-    private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
+    private static final List<String> SUPPORTED_TYPES = Arrays.stream(values()).map(Enum::name).toList();
+    private static final String SUPPORTED_TYPES_JOINED = String.join(", ", SUPPORTED_TYPES);
 
     /**
      * Парсит тип из строкового значения (trim + upper-case).
@@ -37,7 +37,7 @@ public enum InstrumentType {
             return InstrumentType.valueOf(normalized);
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(
-                    "Unsupported InstrumentType code: '" + code + "'. Supported: " + SUPPORTED_CODES_JOINED, ex);
+                    "Unsupported InstrumentType code: '" + code + "'. Supported: " + SUPPORTED_TYPES_JOINED, ex);
         }
     }
 
@@ -46,11 +46,11 @@ public enum InstrumentType {
      */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
-        return SUPPORTED_CODES;
+        return SUPPORTED_TYPES;
     }
 
     /**
-     * Возвращает тип как строковое значение (по умолчанию равен имени enum).
+     * Возвращает тип как строковое значение.
      */
     public String code() {
         return name();

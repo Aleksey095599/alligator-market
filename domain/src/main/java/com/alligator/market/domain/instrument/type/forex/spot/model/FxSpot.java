@@ -23,7 +23,9 @@ public record FxSpot(
         Currency base,
         Currency quote,
         FxSpotTenor tenor,
-        int defaultQuoteFractionDigits) implements Instrument {
+        int defaultQuoteFractionDigits
+
+) implements Instrument {
 
     /**
      * Конструктор с проверками.
@@ -44,25 +46,16 @@ public record FxSpot(
         }
     }
 
-    /**
-     * Внутренний код инструмента (уникален в контексте приложения).
-     */
     @Override
     public InstrumentCode instrumentCode() {
         return FxSpotCodec.fxSpotCode(base.code(), quote.code(), tenor);
     }
 
-    /**
-     * Символ инструмента для отображения в UI.
-     */
     @Override
     public String instrumentSymbol() {
         return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), tenor);
     }
 
-    /**
-     * Тип инструмента.
-     */
     @Override
     public InstrumentType instrumentType() {
         return InstrumentType.FX_SPOT;

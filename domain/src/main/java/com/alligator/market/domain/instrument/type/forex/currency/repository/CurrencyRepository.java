@@ -17,7 +17,7 @@ public interface CurrencyRepository {
     Currency create(Currency currency);
 
     /**
-     * Обновить существующую валюту.
+     * Обновить валюту.
      */
     Currency update(Currency currency);
 

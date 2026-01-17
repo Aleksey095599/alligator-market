@@ -18,7 +18,7 @@ public interface FxSpotRepository {
     FxSpot create(FxSpot fxSpot);
 
     /**
-     * Обновить существующий инструмент.
+     * Обновить инструмент.
      */
     FxSpot update(FxSpot fxSpot);
 
