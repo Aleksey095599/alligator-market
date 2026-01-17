@@ -12,7 +12,7 @@ import com.alligator.market.domain.instrument.type.InstrumentType;
 public interface Instrument {
 
     /**
-     * Внутренний код инструмента: уникален в контексте приложения.
+     * Код инструмента.
      */
     InstrumentCode instrumentCode();
 

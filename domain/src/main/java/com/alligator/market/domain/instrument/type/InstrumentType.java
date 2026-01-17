@@ -6,18 +6,18 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * <b>Коды типов финансовых инструментов.</b>
+ * Типы финансовых инструментов.
  */
 public enum InstrumentType {
-    /* Константы: коды типов инструментов (далее – коды). */
+    /* Константы типов. */
     FX_SPOT, FX_SWAP;
 
-    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* Список всех типов и представление этого списка в виде единой строки (иногда полезно). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
     /**
-     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     * Парсит тип из строкового значения (trim + upper-case).
      */
     @SuppressWarnings("unused")
     public static InstrumentType fromCode(String code) {
@@ -42,7 +42,7 @@ public enum InstrumentType {
     }
 
     /**
-     * <b>Возвращает список поддерживаемых кодов (для валидации/документации).</b>
+     * Возвращает список поддерживаемых типов (для валидации/документации).
      */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
@@ -50,7 +50,7 @@ public enum InstrumentType {
     }
 
     /**
-     * <b>Возвращает строковый код (= имя константы).</b>
+     * Возвращает тип как строковое значение (по умолчанию равен имени enum).
      */
     public String code() {
         return name();
