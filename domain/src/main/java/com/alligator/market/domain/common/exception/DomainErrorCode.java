@@ -50,7 +50,7 @@ public enum DomainErrorCode {
     }
 
     /**
-     * Возвращает внешний строковый код ошибки (по умолчанию равен имени enum).
+     * Возвращает строковый код ошибки.
      */
     public String code() {
         return name();
