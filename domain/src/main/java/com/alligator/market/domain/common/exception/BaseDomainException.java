@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.util.Objects;
 
 /**
- * Базовое доменное исключение.
+ * Базовое исключение для ошибок доменной логики.
  */
 public abstract class BaseDomainException extends RuntimeException {
 
@@ -15,7 +15,7 @@ public abstract class BaseDomainException extends RuntimeException {
     private final DomainErrorCode errorCode;
 
     /**
-     * Конструктор: создает доменное исключение без причины.
+     * Конструктор: создает исключение без причины.
      *
      * @param errorCode код ошибки из {@link DomainErrorCode}
      * @param message   сообщение ошибки
@@ -26,7 +26,7 @@ public abstract class BaseDomainException extends RuntimeException {
     }
 
     /**
-     * Конструктор: создает доменное исключение с причиной.
+     * Конструктор: создает исключение с причиной.
      *
      * @param errorCode код ошибки из {@link DomainErrorCode}
      * @param message   сообщение ошибки

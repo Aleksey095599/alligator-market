@@ -1,7 +1,7 @@
 package com.alligator.market.domain.common.exception;
 
 /**
- * Тип доменной ошибки для выбора HTTP-статуса.
+ * Тип ошибки доменной логики для выбора HTTP-статуса.
  */
 public enum DomainErrorType {
     BAD_REQUEST,
