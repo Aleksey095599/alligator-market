@@ -6,19 +6,19 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Коды возможных режимов доставки данных провайдерами рыночных данных.
+ * Режимы доставки данных провайдерами рыночных данных.
  */
 public enum DeliveryMode {
-    /* Константы: коды режимов доставки (далее – коды). */
+    /* Поддерживаемые режимы доставки (константы). */
     PUSH, // <-- Провайдер активно отправляет данные при их появлении
     PULL; // <-- Клиент периодически запрашивает актуальные данные
 
-    /* Коды в виде списка и единой строки (для сообщений об ошибках). */
+    /* Список всех режимов доставки и представление этого списка в виде единой строки (иногда полезно). */
     private static final List<String> SUPPORTED_CODES = Arrays.stream(values()).map(Enum::name).toList();
     private static final String SUPPORTED_CODES_JOINED = String.join(", ", SUPPORTED_CODES);
 
     /**
-     * Парсит код (trim + upper-case). В ошибке подсказывает допустимые значения.
+     * Парсит режим доставки (trim + upper-case). В ошибке подсказывает допустимые значения.
      */
     @SuppressWarnings("unused")
     public static DeliveryMode fromCode(String code) {
@@ -43,7 +43,7 @@ public enum DeliveryMode {
     }
 
     /**
-     * Возвращает список поддерживаемых кодов (для валидации/документации).
+     * Возвращает список поддерживаемых режимов доставки (для валидации/документации).
      */
     @SuppressWarnings("unused")
     public static List<String> supportedCodes() {
@@ -51,7 +51,7 @@ public enum DeliveryMode {
     }
 
     /**
-     * Возвращает строковый код (= имя константы).
+     * Возвращает режим доставки как строковое значение.
      */
     @SuppressWarnings("unused")
     public String code() {
