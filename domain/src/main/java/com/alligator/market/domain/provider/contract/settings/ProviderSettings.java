@@ -13,7 +13,7 @@ public interface ProviderSettings {
     }
 
     /**
-     * Заглушка.
+     * Временный класс заглушка (TODO: реализовать).
      */
     final class EmptyProviderSettings implements ProviderSettings {
 
