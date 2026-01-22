@@ -19,7 +19,7 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Возвращает карту паспортов провайдеров, индексированную по коду.
+     * Реализация метода контракта {@link ProviderContextScanner#providerPassports()}.
      */
     @Override
     public final Map<ProviderCode, ProviderPassport> providerPassports() {
