@@ -75,7 +75,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
      * <p>Ключевые моменты:</p>
      * <ul>
      *   <li>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и запрет
-     *   на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</li>
+     *   на переназначение через сеттер {@link Setter}.</li>
      *   <li>{@link ManyToOne}: связь по внешнему ключу (многие FX_SPOT могут ссылаться на одну валюту).</li>
      *   <li>{@link JoinColumn}: FK-колонка {@code base_currency} ссылается на {@code currency.code}.</li>
      *   <li>{@code fetch = LAZY}: валюту загружаем только при обращении к полю.</li>

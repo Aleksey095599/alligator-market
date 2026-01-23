@@ -19,10 +19,20 @@ import org.hibernate.annotations.Check;
 import java.util.Objects;
 
 /**
- * JPA-сущность конфигурации источников котировок (feed) для финансового инструмента.
+ * JPA-сущность конфигурации источников котировок для финансового инструмента.
  *
- * <p>Основная задача таблицы {@code instrument_feed_config} задать соответствие:
- * финансовый инструмент ↔ провайдер рыночных данных.</p>
+ * <p><b>Ключевые особенности</b></p>
+ * <ul>
+ *     <li>Таблица данной сущности задает соответствие "финансовый инструмент → провайдер рыночных данных".</li>
+ * </ul>
+ *
+ * <p><b>Пояснение некоторых аннотаций</b></p>
+ * <ul>
+ *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
+ *     вручную сущность создается через специализированный конструктор.</li>
+ *     <li>Поля {@link InstrumentFeedConfigEntity#instrument} и {@link InstrumentFeedConfigEntity#feedRole}
+ *     задают неизменяемые атрибуты, поэтому к ним отключен доступ через сеттер {@link Setter}.</li>
+ * </ul>
  */
 @Entity
 @Table(
@@ -45,8 +55,7 @@ import java.util.Objects;
                         "AND feed_role IN ('PRIMARY','SECONDARY')"
 )
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // <-- Нельзя создавать вручную через new Entity(): конструктор без аргументов нужен только ORM
-@Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InstrumentFeedConfigEntity extends BaseEntity {
 
     /* Шаблон кода провайдера. */
@@ -67,7 +76,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      * frontend должен предлагать список инструментов из таблицы инструментов {@link InstrumentBaseEntity} при попытке
      * заполнения формы для передачи данных в backend.</p>
      */
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, задаётся один раз через конструктор
+    @Setter(AccessLevel.NONE)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -80,9 +89,12 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     private InstrumentBaseEntity instrument;
 
     /**
-     * Технический код провайдера (источника рыночных данных).
+     * Код провайдера.
      *
-     * <p>Soft reference – без внешнего ключа на market_data_provider (БД не гарантирует существование провайдера);
+     * TODO: Подумать нельзя ли задать как обычную ссылку (жесткую), но допускающую null. Например, если будет удален
+     * пасспрот провайдера, то в таблице значения где ссылались на него заменяться на null.
+     *
+     * <p>Soft reference – без внешнего ключа таблицу {@link PassportEntity} (БД не гарантирует существование провайдера);
      * можно обновлять; frontend должен предлагать текущий доступный список кодов провайдеров из таблицы провайдеров
      * {@link PassportEntity} при попытке заполнения формы для данного поля.</p>
      */
