@@ -2,7 +2,6 @@ package com.alligator.market.domain.provider.contract;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
@@ -36,9 +35,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
-
-    /* Коллекция для типов инструментов. После инициализации становится неизменяемой. */
-    private final Set<InstrumentType> instrumentTypes;
 
     //=================================================================================================================
     // КОНСТРУКТОР
@@ -90,12 +86,10 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             }
         }
 
-        // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
+        // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов
         Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> mapByCode =
                 new LinkedHashMap<>(); // <-- Карта
-        Set<InstrumentType> types = EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            types.add(h.instrumentType()); // <-- Один тип на обработчик
             for (InstrumentCode code : h.supportedInstrumentCodes()) {
                 InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(code, h);
                 if (prev != null && prev != h) {
@@ -109,7 +103,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
         // 3) Фиксируем структуру неизменяемых коллекций
         this.instrumentMapByCode = Collections.unmodifiableMap(mapByCode);
-        this.instrumentTypes = Collections.unmodifiableSet(types);
 
         // 4) Прикрепляем обработчики к провайдеру
         Set<AbstractInstrumentHandler<P, ? extends Instrument>> uniqueHandlers =
@@ -140,11 +133,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public ProviderSettings settings() {
         return settingsRef.get();
-    }
-
-    @Override
-    public Set<InstrumentType> instrumentsTypes() {
-        return instrumentTypes;
     }
 
     /**
