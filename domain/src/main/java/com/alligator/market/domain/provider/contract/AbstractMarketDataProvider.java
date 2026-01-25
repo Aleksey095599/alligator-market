@@ -37,8 +37,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
 
-    /* Коллекции для кодов и типов инструментов. После инициализации становятся неизменяемыми. */
-    private final Set<InstrumentCode> instrumentCodes;
+    /* Коллекция для типов инструментов. После инициализации становится неизменяемой. */
     private final Set<InstrumentType> instrumentTypes;
 
     //=================================================================================================================
@@ -94,7 +93,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов/типов
         Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> mapByCode =
                 new LinkedHashMap<>(); // <-- Карта
-        Set<InstrumentCode> allCodes = new LinkedHashSet<>(); // <-- Набор всех кодов инструментов
         Set<InstrumentType> types = EnumSet.noneOf(InstrumentType.class); // <-- Набор всех типов инструментов
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             types.add(h.instrumentType()); // <-- Один тип на обработчик
@@ -106,13 +104,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                             "' is already bound to handler '" + prev.handlerCode() +
                             "' in provider '" + providerCode.value() + "'");
                 }
-                allCodes.add(code);
             }
         }
 
         // 3) Фиксируем структуру неизменяемых коллекций
         this.instrumentMapByCode = Collections.unmodifiableMap(mapByCode);
-        this.instrumentCodes = Collections.unmodifiableSet(allCodes);
         this.instrumentTypes = Collections.unmodifiableSet(types);
 
         // 4) Прикрепляем обработчики к провайдеру
@@ -144,11 +140,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     @Override
     public ProviderSettings settings() {
         return settingsRef.get();
-    }
-
-    @Override
-    public Set<InstrumentCode> instrumentsCodes() {
-        return instrumentCodes;
     }
 
     @Override
