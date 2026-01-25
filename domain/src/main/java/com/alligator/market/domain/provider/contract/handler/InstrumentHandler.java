@@ -19,7 +19,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
         permits AbstractInstrumentHandler {
 
     /**
-     * Код обработчика.
+     * Код обработчика – уникальный идентификатор обработчика.
      */
     String handlerCode();
 

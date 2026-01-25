@@ -28,8 +28,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
-    /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
-    private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
+    /* Карта "код инструмента --> обработчик инструмента". */
+    private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     //=================================================================================================================
     // КОНСТРУКТОР
@@ -38,21 +38,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /**
      * Конструктор.
      *
-     * <p>Проверяет инварианты, нормализует код провайдера, собирает карту "код инструмента --> обработчик",
-     * прикрепляет обработчики к провайдеру.</p>
-     *
-     * @param providerCode код провайдера
-     * @param passport     паспорт провайдера
-     * @param policy       политика провайдера
-     * @throws NullPointerException     если переданы null-аргументы
-     * @throws IllegalArgumentException если передан blank код провайдера или пустой набор обработчиков
-     * @throws IllegalStateException    если обнаружены дубликаты обработчиков по коду или пересечения кодов инструментов
+     * <p>Проверяет инварианты, собирает карту "код инструмента --> обработчик", прикрепляет обработчики к провайдеру.</p>
      */
     protected AbstractMarketDataProvider(
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
-            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
+            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
@@ -67,39 +59,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.passport = passport;
         this.policy = policy;
 
-        // 1) Проверяем уникальность handlers по коду
-        Set<String> handlerCodes = new HashSet<>();
+        // 1) Проверяем, что по ошибке не переданы дубликаты обработчиков.
+        //    Критерий проверки - уникальность кода обработчика.
+        validateUniqueHandlerCodes(providerCode, handlers);
+
+        // 2) Собираем карту "код инструмента --> обработчик"
+        this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
+
+        // 3) Прикрепляем обработчики к провайдеру
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            String code = h.handlerCode();
-            if (!handlerCodes.add(code)) {
-                throw new IllegalStateException("Provider '" + providerCode.value() +
-                        "' contains multiple handlers with the same code '" + code + "'");
-            }
-        }
-
-        // 2) Собираем карту "код инструмента --> обработчик" и агрегируем наборы кодов
-        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> mapByCode =
-                new LinkedHashMap<>(); // <-- Карта
-        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            for (InstrumentCode code : h.supportedInstrumentCodes()) {
-                InstrumentHandler<P, ? extends Instrument> prev = mapByCode.putIfAbsent(code, h);
-                if (prev != null && prev != h) {
-                    // Запрещаем связывать один и тот же код с разными обработчиками
-                    throw new IllegalStateException("Instrument code '" + code.value() +
-                            "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + providerCode.value() + "'");
-                }
-            }
-        }
-
-        // 3) Фиксируем структуру неизменяемых коллекций
-        this.instrumentMapByCode = Collections.unmodifiableMap(mapByCode);
-
-        // 4) Прикрепляем обработчики к провайдеру
-        Set<AbstractInstrumentHandler<P, ? extends Instrument>> uniqueHandlers =
-                new LinkedHashSet<>(handlers);
-        for (AbstractInstrumentHandler<P, ? extends Instrument> h : uniqueHandlers) {
-            h.attachTo(self()); // <-- attachTo должен только сохранить ссылку и ничего не вызывать
+            h.attachTo(self());
         }
     }
 
@@ -117,6 +86,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return passport;
     }
 
+    @Override
     public ProviderPolicy policy() {
         return policy;
     }
@@ -126,8 +96,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок (возможен Mono как частный случай)
-     * @throws NullPointerException     если {@code instrument} равен {@code null}
-     * @throws HandlerNotFoundException если обработчик для кода инструмента не зарегистрирован у провайдера
      */
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
@@ -145,6 +113,48 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
+     * Проверяет уникальность обработчиков по коду {@link InstrumentHandler#handlerCode()}.
+     */
+    private static <P extends MarketDataProvider> void validateUniqueHandlerCodes(
+            ProviderCode providerCode,
+            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
+    ) {
+        Set<String> handlerCodes = new HashSet<>();
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+            String code = h.handlerCode();
+            if (!handlerCodes.add(code)) {
+                throw new IllegalStateException("Provider '" + providerCode.value() +
+                        "' contains multiple handlers with the same code '" + code + "'");
+            }
+        }
+    }
+
+    /**
+     * Собирает неизменяемую однозначную карту "код инструмента --> обработчик".
+     */
+    private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
+    buildInstrumentHandlerMap(
+            ProviderCode providerCode,
+            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
+    ) {
+        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
+        // Перебираем обработчики
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+            // Для каждого обработчика перебираем коды инструментов, которые он поддерживает
+            for (InstrumentCode code : h.supportedInstrumentCodes()) {
+                InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(code, h);
+                if (prev != null && prev != h) {
+                    throw new IllegalStateException("Instrument code '" + code.value() +
+                            "' is already bound to handler '" + prev.handlerCode() +
+                            "' in provider '" + providerCode.value() + "'");
+                }
+            }
+        }
+        // Фиксируем неизменяемость и возвращаем карту
+        return Collections.unmodifiableMap(map);
+    }
+
+    /**
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
      */
     protected abstract P self();
@@ -158,7 +168,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         if (code == null) {
             return null;
         }
-        InstrumentHandler<P, ? extends Instrument> h = instrumentMapByCode.get(code);
+        InstrumentHandler<P, ? extends Instrument> h = instrumentHandlerMap.get(code);
         return (InstrumentHandler<P, I>) h;
     }
 }
