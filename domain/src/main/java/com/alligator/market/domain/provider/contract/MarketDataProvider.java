@@ -4,7 +4,6 @@ import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -29,12 +28,6 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
      * Политика провайдера.
      */
     ProviderPolicy policy();
-
-    /**
-     * Настройки провайдера.
-     */
-    @SuppressWarnings("unused")
-    ProviderSettings settings(); // <-- Точка роста, без реализации (заглушка)
 
     /**
      * Унифицированная операция получения котировок для финансового инструмента.

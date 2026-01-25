@@ -7,7 +7,6 @@ import com.alligator.market.domain.provider.contract.MarketDataProvider;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -35,10 +34,9 @@ public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
-            ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
-        super(providerCode, passport, policy, settings, handlers);
+        super(providerCode, passport, policy, handlers);
     }
 
     /**
