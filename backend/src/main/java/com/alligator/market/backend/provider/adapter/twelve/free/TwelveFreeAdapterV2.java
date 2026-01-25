@@ -8,7 +8,6 @@ import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -39,9 +38,6 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
     /* Политика провайдера: иммутабельные параметры, которые использует бизнес-логика. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(60);
 
-    /* Настройки провайдера: параметры, которые разрешено менять из frontend. */
-    private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- Заглушка до востребования
-
     /**
      * Конструктор.
      *
@@ -57,7 +53,6 @@ public class TwelveFreeAdapterV2 extends SpringMarketDataProvider<TwelveFreeAdap
                 PROVIDER_CODE,
                 PASSPORT,
                 POLICY,
-                SETTINGS,
                 Set.of(new TwelveFreeFxSpotHandler(webClient, props))
         );
     }

@@ -7,13 +7,11 @@ import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Абстрактная реализация провайдера рыночных данных {@link MarketDataProvider}.
@@ -29,9 +27,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /* Политика провайдера. */
     protected final ProviderPolicy policy;
-
-    /* Настройки провайдера. */
-    private final AtomicReference<ProviderSettings> settingsRef;
 
     /* Карта "код инструмента --> обработчик". После инициализации становится неизменяемой. */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentMapByCode;
@@ -49,7 +44,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * @param providerCode код провайдера
      * @param passport     паспорт провайдера
      * @param policy       политика провайдера
-     * @param settings     настройки провайдера
      * @throws NullPointerException     если переданы null-аргументы
      * @throws IllegalArgumentException если передан blank код провайдера или пустой набор обработчиков
      * @throws IllegalStateException    если обнаружены дубликаты обработчиков по коду или пересечения кодов инструментов
@@ -58,13 +52,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
-            ProviderSettings settings,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers // Набор обработчиков
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
         Objects.requireNonNull(policy, "policy must not be null");
-        Objects.requireNonNull(settings, "settings must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
         if (handlers.isEmpty()) {
@@ -74,7 +66,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.providerCode = providerCode;
         this.passport = passport;
         this.policy = policy;
-        this.settingsRef = new AtomicReference<>(settings);
 
         // 1) Проверяем уникальность handlers по коду
         Set<String> handlerCodes = new HashSet<>();
@@ -130,11 +121,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return policy;
     }
 
-    @Override
-    public ProviderSettings settings() {
-        return settingsRef.get();
-    }
-
     /**
      * Шаблонная реализация котировки: находит обработчик по коду инструмента и делегирует ему вызов.
      *
@@ -162,20 +148,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
      */
     protected abstract P self();
-
-    /**
-     * Атомарно заменяет настройки провайдера.
-     *
-     * <p>Метод защищённый и финальный, предназначен для использования наследниками.</p>
-     *
-     * @param newSettings новые настройки
-     * @throws NullPointerException если {@code newSettings} равен {@code null}
-     */
-    @SuppressWarnings("unused")
-    protected final void replaceSettings(ProviderSettings newSettings) {
-        Objects.requireNonNull(newSettings, "newSettings must not be null");
-        settingsRef.set(newSettings);
-    }
 
     /**
      * Возвращает обработчик по коду инструмента.

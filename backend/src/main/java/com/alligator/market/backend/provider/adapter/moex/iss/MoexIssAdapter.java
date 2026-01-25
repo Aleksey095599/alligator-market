@@ -8,7 +8,6 @@ import com.alligator.market.domain.provider.contract.passport.AccessMethod;
 import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
 import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.contract.settings.ProviderSettings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,7 +24,7 @@ import java.util.Set;
 /**
  * Адаптер провайдера рыночных данных MOEX ISS.
  *
- * <p>Адаптер является Spring-компонентом {@link Component}, который инкапсулирует паспорт, политику, настройки и
+ * <p>Адаптер является Spring-компонентом {@link Component}, который инкапсулирует паспорт, политику и
  * обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
@@ -48,9 +47,6 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
     /* Политика провайдера. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1); // <-- интервал запросов 1 сек
 
-    /* Настройки провайдера. */
-    private static final ProviderSettings SETTINGS = ProviderSettings.empty(); // <-- заглушка до востребования
-
     /**
      * Конструктор адаптера MOEX ISS.
      *
@@ -69,7 +65,6 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
                 PROVIDER_CODE,
                 PASSPORT,
                 POLICY,
-                SETTINGS,
                 Set.of(new MoexIssFxSpotHandler(props, webClient))
         );
     }
