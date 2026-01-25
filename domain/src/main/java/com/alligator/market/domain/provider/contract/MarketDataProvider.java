@@ -1,6 +1,5 @@
 package com.alligator.market.domain.provider.contract;
 
-import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.code.ProviderCode;
@@ -39,12 +38,6 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
      */
     @SuppressWarnings("unused")
     ProviderSettings settings(); // <-- Точка роста, без реализации (заглушка)
-
-    /**
-     * Иммутабельный набор кодов поддерживаемых инструментов.
-     */
-    @SuppressWarnings("unused")
-    Set<InstrumentCode> instrumentsCodes();
 
     /**
      * Иммутабельный набор типов поддерживаемых инструментов.
