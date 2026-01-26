@@ -189,7 +189,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
                 String prevOwner = ownerByInstrumentCode.putIfAbsent(instrumentCode, handlerCode);
 
-                if (prevOwner != null && !prevOwner.equals(handlerCode)) {
+                if (prevOwner != null) {
                     throw new IllegalStateException("Provider '" + providerCode.value() +
                             "' contains instrument code '" + instrumentCode.value() +
                             "' that is supported by multiple handlers ('" + prevOwner +
