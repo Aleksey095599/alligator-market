@@ -60,13 +60,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.policy = policy;
 
         // 1) Проверяем, что по ошибке не переданы дубликаты обработчиков.
-        //    Критерий проверки - уникальность кода обработчика.
+        // Критерий проверки - уникальность кода обработчика.
         validateUniqueHandlerCodes(providerCode, handlers);
 
-        // 2) Собираем карту "код инструмента --> обработчик"
+        // 2) Проверяем, что
+
+        // 3) Собираем карту "код инструмента --> обработчик"
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
-        // 3) Прикрепляем обработчики к провайдеру
+        // 4) Прикрепляем обработчики к провайдеру
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             h.attachTo(self());
         }
@@ -113,7 +115,11 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Проверяет уникальность обработчиков по коду {@link InstrumentHandler#handlerCode()}.
+     * Проверяет уникальность обработчиков в переданном наборе.
+     * Критерий уникальности – код обработчика {@link InstrumentHandler#handlerCode()}.
+     *
+     * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
+     * к которому они принадлежат. </p>
      */
     private static <P extends MarketDataProvider> void validateUniqueHandlerCodes(
             ProviderCode providerCode,
