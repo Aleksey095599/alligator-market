@@ -130,7 +130,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Собирает неизменяемую однозначную карту "код инструмента --> обработчик".
+     * Собирает неизменяемую взаимо-однозначную карту "код инструмента --> обработчик".
      */
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
