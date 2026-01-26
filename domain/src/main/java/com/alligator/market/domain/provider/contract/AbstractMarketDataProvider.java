@@ -3,9 +3,9 @@ package com.alligator.market.domain.provider.contract;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
 import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.contract.handler.InstrumentHandler;
+import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
 import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -63,10 +63,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         // Критерий проверки - уникальность кода обработчика.
         validateUniqueHandlerCodes(providerCode, handlers);
 
-        // 2) Проверяем, что
+        // 2) Проверяем, что обработчики не имеют пересечений среди множеств
+        //    поддерживаемых ими кодов финансовых инструментов
+        validateNoOverlappingInstrumentCodes(providerCode, handlers);
 
-        // 3) Собираем карту "код инструмента --> обработчик"
-        this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
+        // 3) Собираем неизменяемую карту "код инструмента --> обработчик".
+        //    Важно: благодаря проверкам 1) и 2) карта будет однозначной: одному коду инструмента – один обработчик.
+        this.instrumentHandlerMap = buildInstrumentHandlerMap(handlers);
 
         // 4) Прикрепляем обработчики к провайдеру
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
@@ -115,11 +118,13 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Проверяет уникальность обработчиков в переданном наборе.
-     * Критерий уникальности – код обработчика {@link InstrumentHandler#handlerCode()}.
+     * Проверяет уникальность обработчиков по их коду {@link InstrumentHandler#handlerCode()}.
      *
      * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
-     * к которому они принадлежат. </p>
+     * к которому они принадлежат для вывода корректного сообщения об ошибке.</p>
+     *
+     * @param providerCode код провайдера, к которому принадлежат обработчики
+     * @param handlers     набор обработчиков для проверки
      */
     private static <P extends MarketDataProvider> void validateUniqueHandlerCodes(
             ProviderCode providerCode,
@@ -136,27 +141,48 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Собирает неизменяемую взаимо-однозначную карту "код инструмента --> обработчик".
+     * Проверяет, что переданные обработчики не имеют пересечений среди множеств поддерживаемых ими кодов
+     * финансовых инструментов {@link InstrumentHandler#supportedInstrumentCodes()}.
+     * Проще говоря, одному коду инструмента – один обработчик.
+     *
+     * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
+     * к которому они принадлежат для вывода корректного сообщения об ошибке.</p>
      */
-    private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
-    buildInstrumentHandlerMap(
+    private static <P extends MarketDataProvider> void validateNoOverlappingInstrumentCodes(
             ProviderCode providerCode,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
-        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
-        // Перебираем обработчики
+        Map<InstrumentCode, String> ownerByInstrumentCode = new HashMap<>();
+
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            // Для каждого обработчика перебираем коды инструментов, которые он поддерживает
-            for (InstrumentCode code : h.supportedInstrumentCodes()) {
-                InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(code, h);
-                if (prev != null && prev != h) {
-                    throw new IllegalStateException("Instrument code '" + code.value() +
-                            "' is already bound to handler '" + prev.handlerCode() +
-                            "' in provider '" + providerCode.value() + "'");
+            String handlerCode = h.handlerCode();
+
+            for (InstrumentCode instrumentCode : h.supportedInstrumentCodes()) {
+                String prevOwner = ownerByInstrumentCode.putIfAbsent(instrumentCode, handlerCode);
+                if (prevOwner != null && !prevOwner.equals(handlerCode)) {
+                    throw new IllegalStateException("Provider '" + providerCode.value() +
+                            "' contains instrument code '" + instrumentCode.value() +
+                            "' that is supported by multiple handlers ('" + prevOwner +
+                            "', '" + handlerCode + "')");
                 }
             }
         }
-        // Фиксируем неизменяемость и возвращаем карту
+    }
+
+    /**
+     * Собирает неизменяемую карту "код инструмента --> обработчик".
+     */
+    private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
+    buildInstrumentHandlerMap(
+            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
+    ) {
+        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
+
+        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+            for (InstrumentCode code : h.supportedInstrumentCodes()) {
+                map.put(code, h);
+            }
+        }
         return Collections.unmodifiableMap(map);
     }
 
