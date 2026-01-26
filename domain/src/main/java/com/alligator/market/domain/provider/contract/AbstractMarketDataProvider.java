@@ -147,6 +147,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
      * к которому они принадлежат для вывода корректного сообщения об ошибке.</p>
+     *
+     * @param providerCode код провайдера, к которому принадлежат обработчики
+     * @param handlers     набор обработчиков для проверки
      */
     private static <P extends MarketDataProvider> void validateNoOverlappingInstrumentCodes(
             ProviderCode providerCode,
@@ -171,6 +174,9 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
 
     /**
      * Собирает неизменяемую карту "код инструмента --> обработчик".
+     *
+     * @param handlers набор обработчиков для сборки карты
+     * @return неизменяемая однозначная карта "код инструмента --> обработчик"
      */
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
