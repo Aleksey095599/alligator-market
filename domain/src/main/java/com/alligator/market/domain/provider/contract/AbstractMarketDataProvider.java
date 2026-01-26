@@ -97,7 +97,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Шаблонная реализация котировки: находит обработчик по коду инструмента и делегирует ему вызов.
+     * Шаблонная реализация котировки: находит обработчик для инструмента и делегирует ему вызов.
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок (возможен Mono как частный случай)
@@ -106,10 +106,19 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        InstrumentHandler<P, I> handler = handlerOf(instrument);
+        InstrumentCode code = Objects.requireNonNull(instrument.instrumentCode(),
+                "instrumentCode must not be null");
+
+        // Используем карту "код инструмента --> обработчик" для поиска обработчика
+        @SuppressWarnings("unchecked")
+        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
+
+        // Если обработчик не найден, значит инструмент не поддерживается провайдером
         if (handler == null) {
-            throw new HandlerNotFoundException(instrument.instrumentCode(), providerCode);
+            throw new HandlerNotFoundException(code, providerCode);
         }
+
+        // Делегируем вызов обработчику
         return handler.quote(instrument);
     }
 
@@ -121,7 +130,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * Проверяет уникальность обработчиков по их коду {@link InstrumentHandler#handlerCode()}.
      *
      * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
-     * к которому они принадлежат для вывода корректного сообщения об ошибке.</p>
+     * к которому они принадлежат (для вывода корректного сообщения об ошибке).</p>
      *
      * @param providerCode код провайдера, к которому принадлежат обработчики
      * @param handlers     набор обработчиков для проверки
@@ -130,9 +139,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderCode providerCode,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(handlers, "handlers must not be null");
+
         Set<String> handlerCodes = new HashSet<>();
+
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            String code = h.handlerCode();
+            Objects.requireNonNull(h, "handler must not be null");
+
+            String code = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
+
             if (!handlerCodes.add(code)) {
                 throw new IllegalStateException("Provider '" + providerCode.value() +
                         "' contains multiple handlers with the same code '" + code + "'");
@@ -146,7 +162,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * Проще говоря, одному коду инструмента – один обработчик.
      *
      * <p>Предполагается что набор обработчиков передается вместе с кодом провайдера {@code providerCode},
-     * к которому они принадлежат для вывода корректного сообщения об ошибке.</p>
+     * к которому они принадлежат (для вывода корректного сообщения об ошибке).</p>
      *
      * @param providerCode код провайдера, к которому принадлежат обработчики
      * @param handlers     набор обработчиков для проверки
@@ -155,13 +171,24 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
             ProviderCode providerCode,
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(handlers, "handlers must not be null");
+
         Map<InstrumentCode, String> ownerByInstrumentCode = new HashMap<>();
 
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
-            String handlerCode = h.handlerCode();
+            Objects.requireNonNull(h, "handler must not be null");
 
-            for (InstrumentCode instrumentCode : h.supportedInstrumentCodes()) {
+            String handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
+
+            Set<InstrumentCode> codes = Objects.requireNonNull(h.supportedInstrumentCodes(),
+                    "supportedInstrumentCodes must not be null");
+
+            for (InstrumentCode instrumentCode : codes) {
+                Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
                 String prevOwner = ownerByInstrumentCode.putIfAbsent(instrumentCode, handlerCode);
+
                 if (prevOwner != null && !prevOwner.equals(handlerCode)) {
                     throw new IllegalStateException("Provider '" + providerCode.value() +
                             "' contains instrument code '" + instrumentCode.value() +
@@ -182,10 +209,16 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     buildInstrumentHandlerMap(
             Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
+        Objects.requireNonNull(handlers, "handlers must not be null");
+
         Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
 
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+            Objects.requireNonNull(h, "handler must not be null");
+
             for (InstrumentCode code : h.supportedInstrumentCodes()) {
+                Objects.requireNonNull(code, "instrumentCode must not be null");
+
                 map.put(code, h);
             }
         }
@@ -196,17 +229,4 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
      */
     protected abstract P self();
-
-    /**
-     * Возвращает обработчик по коду инструмента.
-     */
-    @SuppressWarnings("unchecked")
-    private <I extends Instrument> InstrumentHandler<P, I> handlerOf(I instrument) {
-        InstrumentCode code = instrument.instrumentCode();
-        if (code == null) {
-            return null;
-        }
-        InstrumentHandler<P, ? extends Instrument> h = instrumentHandlerMap.get(code);
-        return (InstrumentHandler<P, I>) h;
-    }
 }
