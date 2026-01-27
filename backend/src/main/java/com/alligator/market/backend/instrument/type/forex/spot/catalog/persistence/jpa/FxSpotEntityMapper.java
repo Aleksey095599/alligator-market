@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntityMapper;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 
 import java.util.Objects;
@@ -49,11 +50,11 @@ public final class FxSpotEntityMapper {
         Objects.requireNonNull(e, "entity must not be null");
 
         // Guard check: предотвращаем "тихое" обновление не той сущности.
-        String entityCode = e.getCode();
-        String modelCode = m.instrumentCode().value();
+        InstrumentCode entityCode = e.getCode();
+        InstrumentCode modelCode = m.instrumentCode();
         if (!Objects.equals(entityCode, modelCode)) {
-            throw new IllegalStateException("Instrument code mismatch: entityCode=" + entityCode
-                    + ", modelCode=" + modelCode);
+            throw new IllegalStateException("Instrument code mismatch: entityCode=" + entityCode.value()
+                    + ", modelCode=" + modelCode.value());
         }
 
         // Копируем изменяемые поля из доменной модели в JPA-сущность

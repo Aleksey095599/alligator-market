@@ -6,7 +6,6 @@ import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,14 +60,15 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
-    @NotBlank
+    @NotNull
     @NaturalId()
+    @Convert(converter = InstrumentCodeConverter.class)
     @Column(
-            name = "code", length = 32,
+            name = "code", length = 50,
             nullable = false,
             updatable = false
     )
-    private String code;
+    private InstrumentCode code;
 
     /**
      * Символ инструмента для отображения в UI.
@@ -77,13 +77,14 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
      * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
-    @NotBlank
+    @NotNull
+    @Convert(converter = InstrumentSymbolConverter.class)
     @Column(
-            name = "symbol", length = 32,
+            name = "symbol", length = 50,
             nullable = false,
             updatable = false
     )
-    private String symbol;
+    private InstrumentSymbol symbol;
 
     /**
      * Тип финансового инструмента.
@@ -124,8 +125,8 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
         Objects.requireNonNull(instrumentSymbol, "instrumentSymbol must not be null");
         Objects.requireNonNull(type, "type must not be null");
 
-        this.code = instrumentCode.value();
-        this.symbol = instrumentSymbol.value();
+        this.code = instrumentCode;
+        this.symbol = instrumentSymbol;
         this.type = type;
     }
 }
