@@ -3,6 +3,7 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.persiste
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
 import com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.code.InstrumentCode;
+import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
@@ -162,10 +163,10 @@ public class FxSpotEntity extends InstrumentBaseEntity {
             throw new IllegalArgumentException("base and quote currencies must be different");
         }
 
-        final String symbol = FxSpotCodec.fxSpotSymbol(baseCode, quoteCode, tenor);
+        final InstrumentSymbol symbol = FxSpotCodec.fxSpotSymbol(baseCode, quoteCode, tenor);
         final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
 
         // Инициализируем родительскую сущность
-        initIdentity(code.value(), symbol, InstrumentType.FX_SPOT);
+        initIdentity(code, symbol, InstrumentType.FX_SPOT);
     }
 }

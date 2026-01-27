@@ -1,6 +1,7 @@
 package com.alligator.market.domain.instrument.type.forex.spot.codec;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
+import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
@@ -33,12 +34,12 @@ public final class FxSpotCodec {
     /**
      * Формирует строковый символ инструмента из кодов валют и тенора даты валютирования.
      */
-    public static String fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
+    public static InstrumentSymbol fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return baseCode.value() + quoteCode.value() + SEP + tenor.value();
+        return InstrumentSymbol.of(baseCode.value() + quoteCode.value() + SEP + tenor.value());
     }
 
     /**
@@ -49,7 +50,7 @@ public final class FxSpotCodec {
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, tenor));
+        return InstrumentCode.of(TYPE_PREFIX + fxSpotSymbol(baseCode, quoteCode, tenor).value());
     }
 
     /**

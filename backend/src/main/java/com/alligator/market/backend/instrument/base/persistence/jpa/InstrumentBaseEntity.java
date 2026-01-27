@@ -2,6 +2,8 @@ package com.alligator.market.backend.instrument.base.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.code.InstrumentCode;
+import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +26,7 @@ import java.util.Objects;
  *     инструментов поля хранятся в родительской (базовой) таблице, а специфичные – в таблицах наследников.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную создаются только сущности-наследники, которые вызывают метод однократной инициализации
- *     полей родительской сущности {@link InstrumentBaseEntity#initIdentity(String, String, InstrumentType)}.</li>
+ *     полей родительской сущности {@link InstrumentBaseEntity#initIdentity(InstrumentCode, InstrumentSymbol, InstrumentType)}.</li>
  * </ul>
  */
 @Entity
@@ -108,8 +110,8 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
     // Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
     @SuppressWarnings("SameParameterValue")
     protected final void initIdentity(
-            String code,
-            String symbol,
+            InstrumentCode instrumentCode,
+            InstrumentSymbol instrumentSymbol,
             InstrumentType type
     ) {
         // Защита от повторной инициализации
@@ -118,18 +120,12 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
         }
 
         // Базовые проверки аргументов
-        Objects.requireNonNull(code, "code must not be null");
-        Objects.requireNonNull(symbol, "symbol must not be null");
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        Objects.requireNonNull(instrumentSymbol, "instrumentSymbol must not be null");
         Objects.requireNonNull(type, "type must not be null");
 
-        // Нормализуем и проверяем строковые переменные
-        final String nCode = code.strip();
-        final String nSymbol = symbol.strip();
-        if (nCode.isEmpty()) throw new IllegalArgumentException("code must not be blank");
-        if (nSymbol.isEmpty()) throw new IllegalArgumentException("symbol must not be blank");
-
-        this.code = nCode;
-        this.symbol = nSymbol;
+        this.code = instrumentCode.value();
+        this.symbol = instrumentSymbol.value();
         this.type = type;
     }
 }
