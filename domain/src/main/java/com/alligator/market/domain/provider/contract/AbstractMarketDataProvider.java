@@ -86,8 +86,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Шаблонная реализация получения котировки: с помощью {@link AbstractMarketDataProvider#instrumentHandlerMap}
-     * находит обработчик для инструмента и делегирует ему вызов.
+     * Шаблонная реализация получения котировки: с помощью карты "код инструмента --> обработчик инструмента"
+     * находит обработчик для заданного инструмента и делегирует ему вызов.
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок (возможен Mono как частный случай)
@@ -118,7 +118,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Собирает неизменяемую карту "код инструмента --> обработчик" и валидирует инварианты:
+     * Собирает неизменяемую однозначную карту "код инструмента --> обработчик" и валидирует инварианты:
      * <ul>
      *     <li>Коды обработчиков {@link InstrumentHandler#handlerCode()} уникальны;</li>
      *     <li>Одному {@link InstrumentCode} соответствует ровно один обработчик.</li>
@@ -126,6 +126,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * @param providerCode код провайдера, к которому прикреплены обработчики
      * @param handlers     набор обработчиков
+     * @return неизменяемую однозначную карту "код инструмента --> обработчик"
      */
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
