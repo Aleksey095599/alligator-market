@@ -28,7 +28,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
-    /* Карта "код инструмента --> обработчик инструмента". */
+    /* Карта "код инструмента → обработчик инструмента" (далее карта). */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     //=================================================================================================================
@@ -57,7 +57,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.passport = passport;
         this.policy = policy;
 
-        // Собираем неизменяемую однозначную карту "код инструмента --> обработчик" и валидируем инварианты
+        // Собираем неизменяемую однозначную карту и валидируем инварианты
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
@@ -86,8 +86,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     }
 
     /**
-     * Шаблонная реализация получения котировки: с помощью карты "код инструмента --> обработчик инструмента"
-     * находит обработчик для заданного инструмента и делегирует ему вызов.
+     * Шаблонная реализация получения котировки:
+     * с помощью карты находит обработчик для заданного инструмента и делегирует ему вызов.
      *
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок (возможен Mono как частный случай)
@@ -100,7 +100,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         InstrumentCode code = Objects.requireNonNull(instrument.instrumentCode(),
                 "instrumentCode must not be null");
 
-        // Используем карту "код инструмента --> обработчик" для поиска обработчика
+        // Используем карту для поиска обработчика
         @SuppressWarnings("unchecked")
         InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
 
@@ -118,7 +118,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Собирает неизменяемую однозначную карту "код инструмента --> обработчик" и валидирует инварианты:
+     * Собирает неизменяемую однозначную карту и валидирует инварианты:
      * <ul>
      *     <li>Коды обработчиков {@link InstrumentHandler#handlerCode()} уникальны;</li>
      *     <li>Одному {@link InstrumentCode} соответствует ровно один обработчик.</li>
@@ -126,7 +126,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * @param providerCode код провайдера, к которому прикреплены обработчики
      * @param handlers     набор обработчиков
-     * @return неизменяемую однозначную карту "код инструмента --> обработчик"
+     * @return неизменяемую однозначную карту
      */
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
