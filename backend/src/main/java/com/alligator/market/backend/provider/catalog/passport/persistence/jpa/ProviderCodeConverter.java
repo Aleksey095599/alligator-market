@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.jpa;
 
-import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

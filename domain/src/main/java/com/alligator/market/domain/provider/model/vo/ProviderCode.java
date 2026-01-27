@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.code;
+package com.alligator.market.domain.provider.model.vo;
 
 import java.util.Locale;
 import java.util.Objects;

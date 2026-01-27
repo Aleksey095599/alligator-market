@@ -1,8 +1,8 @@
 package com.alligator.market.domain.provider.reconciliation.context.scanner;
 
-import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
 

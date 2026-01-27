@@ -2,7 +2,7 @@ package com.alligator.market.domain.instrument.type.forex.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 

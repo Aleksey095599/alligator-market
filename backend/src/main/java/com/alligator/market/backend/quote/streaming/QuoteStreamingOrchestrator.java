@@ -1,8 +1,8 @@
 package com.alligator.market.backend.quote.streaming;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.quote.feed.InstrumentProviderResolver;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;

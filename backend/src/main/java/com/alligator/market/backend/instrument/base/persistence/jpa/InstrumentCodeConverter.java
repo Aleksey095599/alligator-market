@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.base.persistence.jpa;
 
-import com.alligator.market.domain.instrument.code.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

@@ -1,9 +1,9 @@
 package com.alligator.market.backend.instrument.base.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.instrument.code.InstrumentCode;
-import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

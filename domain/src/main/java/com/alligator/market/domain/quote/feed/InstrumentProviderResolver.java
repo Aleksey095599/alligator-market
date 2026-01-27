@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote.feed;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 /**
  * Сервис для решения соответствия: «финансовый инструмент → провайдер рыночных данных».

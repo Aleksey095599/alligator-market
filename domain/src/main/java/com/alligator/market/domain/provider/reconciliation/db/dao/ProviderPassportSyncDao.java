@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.reconciliation.db.dao;
 
-import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 
 import java.util.Collection;
 import java.util.Map;

@@ -1,7 +1,7 @@
-package com.alligator.market.domain.instrument.contract;
+package com.alligator.market.domain.instrument.model;
 
-import com.alligator.market.domain.instrument.code.InstrumentCode;
-import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 
 /**

@@ -1,12 +1,12 @@
 package com.alligator.market.backend.provider.adapter.common;
 
-import com.alligator.market.domain.instrument.contract.Instrument;
-import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.AbstractMarketDataProvider;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
-import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.model.AbstractMarketDataProvider;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.handler.model.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;

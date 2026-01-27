@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.jpa;
 
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 
 import java.util.Objects;
 

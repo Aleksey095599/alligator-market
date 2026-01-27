@@ -1,10 +1,10 @@
 package com.alligator.market.backend.provider.catalog.passport.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.domain.provider.code.ProviderCode;
-import com.alligator.market.domain.provider.contract.passport.AccessMethod;
-import com.alligator.market.domain.provider.contract.passport.DeliveryMode;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.model.passport.AccessMethod;
+import com.alligator.market.domain.provider.model.passport.DeliveryMode;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
 import com.alligator.market.domain.provider.reconciliation.sync.service.ProviderPassportSynchronizer;
 import jakarta.persistence.*;

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 
-import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 import java.util.List;
 

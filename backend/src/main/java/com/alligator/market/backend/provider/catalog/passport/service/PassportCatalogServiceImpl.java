@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.catalog.passport.service;
 
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.PassportEntityMapper;
 import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.PassportJpaRepository;
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.type.forex.currency.model;
 
-import com.alligator.market.domain.instrument.type.forex.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 

@@ -1,11 +1,11 @@
 package com.alligator.market.domain.provider.reconciliation.sync.service;
 
-import com.alligator.market.domain.provider.contract.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
 import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
-import com.alligator.market.domain.provider.code.ProviderCode;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 import java.util.LinkedHashSet;
 import java.util.Map;

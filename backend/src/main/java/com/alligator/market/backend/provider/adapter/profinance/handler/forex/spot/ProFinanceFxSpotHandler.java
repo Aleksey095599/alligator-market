@@ -4,9 +4,9 @@ import com.alligator.market.backend.provider.adapter.profinance.ProFinanceAdapte
 import com.alligator.market.backend.provider.adapter.profinance.config.ProFinanceAdapterProps;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.code.InstrumentCode;
-import com.alligator.market.domain.provider.contract.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.provider.contract.policy.ProviderPolicy;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.model.handler.model.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;

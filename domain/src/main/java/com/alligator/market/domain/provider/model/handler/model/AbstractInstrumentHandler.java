@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.contract.handler;
+package com.alligator.market.domain.provider.model.handler.model;
 
-import com.alligator.market.domain.instrument.code.InstrumentCode;
-import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.contract.MarketDataProvider;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongTypeException;
@@ -101,9 +101,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     /**
      * Однократное прикрепление обработчика к провайдеру.
-     *
-     * @throws IllegalStateException если провайдер уже прикреплён
-     * @throws NullPointerException  если provider == null
      */
     @Override
     public final void attachTo(P provider) {
