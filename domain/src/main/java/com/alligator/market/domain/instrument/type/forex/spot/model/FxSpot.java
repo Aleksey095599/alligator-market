@@ -2,6 +2,7 @@ package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
 import com.alligator.market.domain.instrument.contract.Instrument;
+import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
@@ -52,7 +53,7 @@ public record FxSpot(
     }
 
     @Override
-    public String instrumentSymbol() {
+    public InstrumentSymbol instrumentSymbol() {
         return FxSpotCodec.fxSpotSymbol(base.code(), quote.code(), tenor);
     }
 

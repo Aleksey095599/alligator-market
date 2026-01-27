@@ -1,6 +1,7 @@
 package com.alligator.market.domain.instrument.contract;
 
 import com.alligator.market.domain.instrument.code.InstrumentCode;
+import com.alligator.market.domain.instrument.symbol.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 
 /**
@@ -19,7 +20,7 @@ public interface Instrument {
     /**
      * Символ инструмента: для отображения в UI (более дружелюбен чем код инструмента).
      */
-    String instrumentSymbol();
+    InstrumentSymbol instrumentSymbol();
 
     /**
      * Тип финансового инструмента.

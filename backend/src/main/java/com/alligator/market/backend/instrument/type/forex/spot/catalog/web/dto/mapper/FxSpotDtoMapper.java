@@ -25,7 +25,7 @@ public class FxSpotDtoMapper {
 
         return new FxSpotResponseDto(
                 fxSpot.instrumentCode().value(),
-                fxSpot.instrumentSymbol(),
+                fxSpot.instrumentSymbol().value(),
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),
                 fxSpot.defaultQuoteFractionDigits(),
