@@ -3,6 +3,7 @@ package com.alligator.market.domain.provider.exception;
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 public final class InstrumentNotSupportedException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
-    private final String handlerCode;
+    private final HandlerCode handlerCode;
 
     /**
      * Создает исключение.
@@ -21,7 +22,7 @@ public final class InstrumentNotSupportedException extends BaseDomainException {
      * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      */
     @SuppressWarnings("unused")
-    public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode) {
+    public InstrumentNotSupportedException(InstrumentCode instrumentCode, HandlerCode handlerCode) {
         super(DomainErrorCode.INSTRUMENT_NOT_SUPPORTED, msg(instrumentCode, handlerCode));
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
@@ -35,7 +36,7 @@ public final class InstrumentNotSupportedException extends BaseDomainException {
      * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
-    public InstrumentNotSupportedException(InstrumentCode instrumentCode, String handlerCode, Throwable cause) {
+    public InstrumentNotSupportedException(InstrumentCode instrumentCode, HandlerCode handlerCode, Throwable cause) {
         super(DomainErrorCode.INSTRUMENT_NOT_SUPPORTED, msg(instrumentCode, handlerCode), cause);
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
@@ -48,10 +49,10 @@ public final class InstrumentNotSupportedException extends BaseDomainException {
      * @param handlerCode    код обработчика, который не поддерживает {@code instrumentCode}
      * @return текст сообщения
      */
-    private static String msg(InstrumentCode instrumentCode, String handlerCode) {
+    private static String msg(InstrumentCode instrumentCode, HandlerCode handlerCode) {
         InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        return "Instrument not supported (instrumentCode=" + ic.value() + ", handlerCode=" + hc + ")";
+        HandlerCode hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        return "Instrument not supported (instrumentCode=" + ic.value() + ", handlerCode=" + hc.value() + ")";
     }
 
     /**
@@ -70,7 +71,7 @@ public final class InstrumentNotSupportedException extends BaseDomainException {
      * @return код обработчика
      */
     @SuppressWarnings("unused")
-    public String getHandlerCode() {
+    public HandlerCode getHandlerCode() {
         return handlerCode;
     }
 }

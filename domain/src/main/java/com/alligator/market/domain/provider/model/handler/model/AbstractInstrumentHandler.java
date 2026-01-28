@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongTypeException;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -20,8 +21,8 @@ import java.util.Set;
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* Нормализованный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
-    private final String normHandlerCode;
+    /* Нормализованный код обработчика. */
+    private final HandlerCode handlerCode;
 
     /* Декларируемый класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
@@ -44,7 +45,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      *
      * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.</p>
      *
-     * @param handlerCode              код обработчика; нормализуется в UPPERCASE; формат [A-Z0-9_]+
+     * @param handlerCode              код обработчика; валидируется через {@link HandlerCode}
      * @param instrumentClass          класс поддерживаемых инструментов
      * @param instrumentType           тип поддерживаемых инструментов
      * @param supportedInstrumentCodes набор кодов инструментов; нормализуются через {@link InstrumentCode}; без дублей
@@ -52,7 +53,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * @throws IllegalArgumentException если код пустой/с пробелами/не соответствует формату; набор пуст; содержит null/blank/дубликаты
      */
     protected AbstractInstrumentHandler(
-            String handlerCode,
+            HandlerCode handlerCode,
             Class<I> instrumentClass,
             InstrumentType instrumentType,
             Set<InstrumentCode> supportedInstrumentCodes
@@ -62,14 +63,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         Objects.requireNonNull(instrumentType, "instrumentType must not be null");
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
-        if (handlerCode.isBlank()) {
-            throw new IllegalArgumentException("handlerCode must not be blank");
-        }
         if (supportedInstrumentCodes.isEmpty()) {
             throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
         }
 
-        this.normHandlerCode = normalizeHandlerCode(handlerCode);
+        this.handlerCode = handlerCode;
         this.instrumentClass = instrumentClass;
         this.instrumentType = instrumentType;
         this.normSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
@@ -80,8 +78,8 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     @Override
-    public final String handlerCode() {
-        return normHandlerCode;
+    public final HandlerCode handlerCode() {
+        return handlerCode;
     }
 
     @Override
@@ -148,7 +146,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new InstrumentWrongClassException( // <-- Неверный класс
                     instrument.instrumentCode(),
                     instrument.getClass(),
-                    normHandlerCode,
+                    handlerCode,
                     instrumentClass
             );
         }
@@ -158,7 +156,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new InstrumentWrongTypeException( // <-- Неверный тип
                     instrument.instrumentCode(),
                     instrument.instrumentType(),
-                    normHandlerCode,
+                    handlerCode,
                     instrumentType
             );
         }
@@ -171,7 +169,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         if (!normSupportedInstrumentCodes.contains(instrumentCode)) {
             throw new InstrumentNotSupportedException( // <-- Не поддерживается
                     instrument.instrumentCode(),
-                    normHandlerCode);
+                    handlerCode);
         }
         return doQuote(instrument);
     }
@@ -225,20 +223,4 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         return java.util.Collections.unmodifiableSet(codes); // <-- Фиксируем неизменяемость
     }
 
-    /**
-     * Нормализует и валидирует код обработчика: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+.
-     *
-     * @throws IllegalArgumentException если код обработчика не соответствует формату
-     */
-    private static String normalizeHandlerCode(String code) {
-        // Нормализуем код обработчика
-        final String normalized = code.trim().toUpperCase(java.util.Locale.ROOT);
-        // Разрешены только латинские заглавные, цифры и подчёркивание
-        if (!normalized.chars().allMatch(ch ->
-                (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')) {
-            throw new IllegalArgumentException(
-                    "handlerCode must match pattern [A-Z0-9_]+: '" + normalized + "'");
-        }
-        return normalized;
-    }
 }
