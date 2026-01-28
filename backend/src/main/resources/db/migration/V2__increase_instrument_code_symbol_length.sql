@@ -1,0 +1,5 @@
+ALTER TABLE instrument
+    ALTER COLUMN code TYPE VARCHAR(50);
+
+ALTER TABLE instrument
+    ALTER COLUMN symbol TYPE VARCHAR(50);
