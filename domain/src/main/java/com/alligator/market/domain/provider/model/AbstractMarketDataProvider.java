@@ -8,6 +8,7 @@ import com.alligator.market.domain.provider.model.handler.model.InstrumentHandle
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -137,15 +138,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         Objects.requireNonNull(handlers, "handlers must not be null");
 
         Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
-        Set<String> handlerCodes = new HashSet<>();
+        Set<HandlerCode> handlerCodes = new HashSet<>();
 
         for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
             Objects.requireNonNull(h, "handler must not be null");
 
-            String handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
+            HandlerCode handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
             if (!handlerCodes.add(handlerCode)) {
                 throw new IllegalStateException("Provider '" + providerCode.value() +
-                        "' contains multiple handlers with the same code '" + handlerCode + "'");
+                        "' contains multiple handlers with the same code '" + handlerCode.value() + "'");
             }
 
             Set<InstrumentCode> codes = Objects.requireNonNull(h.supportedInstrumentCodes(),
@@ -158,8 +159,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
                 if (prev != null) {
                     throw new IllegalStateException("Provider '" + providerCode.value() +
                             "' contains instrument code '" + instrumentCode.value() +
-                            "' that is supported by multiple handlers ('" + prev.handlerCode() +
-                            "', '" + handlerCode + "')");
+                            "' that is supported by multiple handlers ('" + prev.handlerCode().value() +
+                            "', '" + handlerCode.value() + "')");
                 }
             }
         }

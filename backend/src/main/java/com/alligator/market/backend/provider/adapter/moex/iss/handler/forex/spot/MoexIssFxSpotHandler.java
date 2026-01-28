@@ -7,6 +7,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebC
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.handler.model.AbstractInstrumentHandler;
@@ -36,7 +37,7 @@ import java.util.Set;
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {
 
     /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
-    private static final String HANDLER_CODE = "MOEX_ISS_FX_SPOT_HANDLER";
+    private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
     private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotInstruments.SUPPORTED_DOMAIN_CODES;

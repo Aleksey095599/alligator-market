@@ -3,6 +3,7 @@ package com.alligator.market.domain.provider.exception;
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public final class InstrumentWrongClassException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
     private final Class<?> instrumentClass;
-    private final String handlerCode;
+    private final HandlerCode handlerCode;
     private final Class<?> expectedClass;
 
     /**
@@ -27,7 +28,7 @@ public final class InstrumentWrongClassException extends BaseDomainException {
     public InstrumentWrongClassException(
             InstrumentCode instrumentCode,
             Class<?> instrumentClass,
-            String handlerCode,
+            HandlerCode handlerCode,
             Class<?> expectedClass
     ) {
         super(
@@ -53,7 +54,7 @@ public final class InstrumentWrongClassException extends BaseDomainException {
     public InstrumentWrongClassException(
             InstrumentCode instrumentCode,
             Class<?> instrumentClass,
-            String handlerCode,
+            HandlerCode handlerCode,
             Class<?> expectedClass,
             Throwable cause
     ) {
@@ -80,15 +81,15 @@ public final class InstrumentWrongClassException extends BaseDomainException {
     private static String msg(
             InstrumentCode instrumentCode,
             Class<?> instrumentClass,
-            String handlerCode,
+            HandlerCode handlerCode,
             Class<?> expectedClass
     ) {
         InstrumentCode ic = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Class<?> actual = Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
-        String hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
+        HandlerCode hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         Class<?> expected = Objects.requireNonNull(expectedClass, "expectedClass must not be null");
         return "Instrument class mismatch (instrumentCode=" + ic.value() + ", actualClass=" + actual.getName()
-                + ", handlerCode=" + hc + ", expectedClass=" + expected.getName() + ")";
+                + ", handlerCode=" + hc.value() + ", expectedClass=" + expected.getName() + ")";
     }
 
     /**
@@ -117,7 +118,7 @@ public final class InstrumentWrongClassException extends BaseDomainException {
      * @return код обработчика
      */
     @SuppressWarnings("unused")
-    public String getHandlerCode() {
+    public HandlerCode getHandlerCode() {
         return handlerCode;
     }
 

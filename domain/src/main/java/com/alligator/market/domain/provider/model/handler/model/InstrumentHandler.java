@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -20,7 +21,7 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     /**
      * Код обработчика – уникальный идентификатор обработчика.
      */
-    String handlerCode();
+    HandlerCode handlerCode();
 
     /**
      * Декларируем класс поддерживаемых инструментов.
