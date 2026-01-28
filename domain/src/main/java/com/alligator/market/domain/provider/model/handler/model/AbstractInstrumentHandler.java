@@ -31,7 +31,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     private final InstrumentType instrumentType;
 
     /* Нормализованные и неизменяемые коды поддерживаемых инструментов. */
-    private final Set<InstrumentCode> normSupportedInstrumentCodes; // TODO: возможно не нужна нормализация, так как коды инструментов это объект-значения
+    private final Set<InstrumentCode> supportedInstrumentCodes;
 
     /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
@@ -41,9 +41,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     //=================================================================================================================
 
     /**
-     * Конструктор с проверками.
-     *
-     * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.</p>
+     * Конструктор с базовыми проверками.
      *
      * @param handlerCode              код обработчика
      * @param instrumentClass          класс поддерживаемых инструментов
@@ -70,7 +68,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         this.handlerCode = handlerCode;
         this.instrumentClass = instrumentClass;
         this.instrumentType = instrumentType;
-        this.normSupportedInstrumentCodes = getNormalizedCodes(supportedInstrumentCodes);
+        this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
     }
 
     //=================================================================================================================
@@ -94,7 +92,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     @Override
     public final Set<InstrumentCode> supportedInstrumentCodes() {
-        return normSupportedInstrumentCodes;
+        return supportedInstrumentCodes;
     }
 
     /**
@@ -166,7 +164,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         if (instrumentCode == null) {
             throw new IllegalArgumentException("instrumentCode must not be null");
         }
-        if (!normSupportedInstrumentCodes.contains(instrumentCode)) {
+        if (!supportedInstrumentCodes.contains(instrumentCode)) {
             throw new InstrumentNotSupportedException( // <-- Не поддерживается
                     instrument.instrumentCode(),
                     handlerCode);
@@ -181,46 +179,28 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Чистая логика получения потока котировок для переданного инструмента.
      *
-     * <p>Вызывается исключительно финальной реализацией {@link #quote(Instrument)} этого класса,
-     * в котором выполнены все нужные проверки.</p>
+     * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все неободимые проверки.</p>
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
-
-    /**
-     * Полезный геттер для наследников: возвращает прикреплённого провайдера.
-     */
-    protected final P provider() {
-        P current = provider;
-        if (current == null) {
-            throw new IllegalStateException("Provider is not attached");
-        }
-        return current;
-    }
 
     //=================================================================================================================
     // УТИЛИТЫ
     //=================================================================================================================
 
     /**
-     * Нормализует и валидирует набор кодов инструментов: trim --> UPPERCASE --> проверка формата [A-Z0-9_]+
-     * --> проверка на дубли.
-     *
-     * @throws IllegalArgumentException если в наборе есть null/blank/неверный формат/дубликаты
+     * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.
      */
-    private static Set<InstrumentCode> getNormalizedCodes(Set<InstrumentCode> supportedInstrumentCodes) {
-        final Set<InstrumentCode> codes = new LinkedHashSet<>();
-        for (InstrumentCode code : supportedInstrumentCodes) {
-            // Набор не должен содержать null коды инструментов
-            if (code == null) {
-                throw new IllegalArgumentException("supportedInstrumentCodes must not contain null");
-            }
-            if (!codes.add(code)) {
-                // Набор не должен содержать дублирующиеся коды инструментов
-                throw new IllegalArgumentException(
-                        "Duplicate instrumentCode '" + code.value() + "' in supportedInstrumentCodes");
-            }
-        }
-        return java.util.Collections.unmodifiableSet(codes); // <-- Фиксируем неизменяемость
-    }
+    private static Set<InstrumentCode> freezeSupportedInstrumentCodes(Set<InstrumentCode> supportedInstrumentCodes) {
+        Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
+        final LinkedHashSet<InstrumentCode> copy = new LinkedHashSet<>(supportedInstrumentCodes.size());
+
+        for (InstrumentCode code : supportedInstrumentCodes) {
+            Objects.requireNonNull(code, "code must not be null");
+
+            copy.add(code);
+        }
+
+        return java.util.Collections.unmodifiableSet(copy);
+    }
 }
