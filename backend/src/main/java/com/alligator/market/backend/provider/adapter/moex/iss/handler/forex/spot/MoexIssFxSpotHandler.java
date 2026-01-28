@@ -36,7 +36,7 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {
 
-    /* Уникальный код обработчика: UPPERCASE, формат [A-Z0-9_]+. */
+    /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
     /* Поддерживаемые коды инструментов FX_SPOT. */

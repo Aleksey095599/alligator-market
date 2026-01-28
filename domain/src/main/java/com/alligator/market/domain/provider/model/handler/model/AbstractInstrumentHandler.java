@@ -1,12 +1,12 @@
 package com.alligator.market.domain.provider.model.handler.model;
 
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.exception.InstrumentWrongTypeException;
+import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
@@ -31,7 +31,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     private final InstrumentType instrumentType;
 
     /* Нормализованные и неизменяемые коды поддерживаемых инструментов. */
-    private final Set<InstrumentCode> normSupportedInstrumentCodes;
+    private final Set<InstrumentCode> normSupportedInstrumentCodes; // TODO: возможно не нужна нормализация, так как коды инструментов это объект-значения
 
     /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
     private volatile P provider;
@@ -45,7 +45,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      *
      * <p>Проверяет инварианты, нормализует код обработчика, нормализует коды в наборе кодов инструментов.</p>
      *
-     * @param handlerCode              код обработчика; валидируется через {@link HandlerCode}
+     * @param handlerCode              код обработчика
      * @param instrumentClass          класс поддерживаемых инструментов
      * @param instrumentType           тип поддерживаемых инструментов
      * @param supportedInstrumentCodes набор кодов инструментов; нормализуются через {@link InstrumentCode}; без дублей
