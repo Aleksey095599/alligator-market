@@ -15,7 +15,7 @@ import org.reactivestreams.Publisher;
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
     /**
-     * Код провайдера.
+     * Код провайдера – уникальный идентификатор.
      */
     ProviderCode providerCode();
 

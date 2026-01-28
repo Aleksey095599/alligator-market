@@ -21,7 +21,7 @@ import java.util.Set;
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* Нормализованный код обработчика. */
+    /* Код обработчика. */
     private final HandlerCode handlerCode;
 
     /* Декларируемый класс поддерживаемых инструментов. */
