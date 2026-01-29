@@ -58,6 +58,8 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.passport = passport;
         this.policy = policy;
 
+        // TODO: реализовать проверку что коды обработчиков различные
+
         // Собираем неизменяемую однозначную карту и валидируем инварианты
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
