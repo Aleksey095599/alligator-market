@@ -24,16 +24,16 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
-    /* Декларируемый класс поддерживаемых инструментов. */
+    /* Класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
 
-    /* Декларируемый тип поддерживаемых инструментов. */
+    /* Тип поддерживаемых инструментов. */
     private final InstrumentType instrumentType;
 
-    /* Нормализованные и неизменяемые коды поддерживаемых инструментов. */
+    /* Коды поддерживаемых инструментов. */
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
-    /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантируется volatile). */
+    /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантирует volatile). */
     private volatile P provider;
 
     //=================================================================================================================
@@ -42,13 +42,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     /**
      * Конструктор с базовыми проверками.
-     *
-     * @param handlerCode              код обработчика
-     * @param instrumentClass          класс поддерживаемых инструментов
-     * @param instrumentType           тип поддерживаемых инструментов
-     * @param supportedInstrumentCodes набор кодов инструментов; нормализуются через {@link InstrumentCode}; без дублей
-     * @throws NullPointerException     если любой параметр равен null
-     * @throws IllegalArgumentException если код пустой/с пробелами/не соответствует формату; набор пуст; содержит null/blank/дубликаты
      */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
@@ -179,7 +172,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /**
      * Чистая логика получения потока котировок для переданного инструмента.
      *
-     * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все неободимые проверки.</p>
+     * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все необходимые проверки.</p>
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 

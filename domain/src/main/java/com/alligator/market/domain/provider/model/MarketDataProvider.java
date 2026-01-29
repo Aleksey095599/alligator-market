@@ -15,7 +15,7 @@ import org.reactivestreams.Publisher;
 public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
 
     /**
-     * Код провайдера – уникальный идентификатор.
+     * Код провайдера.
      */
     ProviderCode providerCode();
 
@@ -27,10 +27,10 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     /**
      * Политика провайдера.
      */
-    ProviderPolicy policy();
+    ProviderPolicy policy(); // TODO: понять почему не используется
 
     /**
-     * Унифицированная операция получения котировок для финансового инструмента.
+     * Поток котировок для заданного инструмента.
      */
     <I extends Instrument> Publisher<QuoteTick> quote(I instrument);
 }
