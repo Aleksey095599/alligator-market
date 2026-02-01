@@ -3,7 +3,6 @@ package com.alligator.market.backend.provider.maintenance.bootstrap;
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.backend.provider.maintenance.ProviderMaintenanceOrchestrator;
-import com.alligator.market.backend.provider.maintenance.sync.passport.service.ProviderPassportDbSyncRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,34 +31,35 @@ public class ProviderMaintenanceBootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        // Если обслуживание при запуске отключено, выводим сообщение в логи
+        // Если обслуживание при запуске отключено, выводим сообщение в логи и выходим
         if (!runOnStartup) {
             log.info("Provider maintenance on startup is disabled (property 'provider.maintenance.on-startup=false')");
             return;
         }
 
+        // Логируем запуск обслуживания провайдеров при старте приложения
         log.info("Starting provider maintenance on application startup");
 
         // Задаем контекст для аудита
-        AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-sync");
+        AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-maintenance");
 
         try {
-            // Запускаем процедуру синхронизации с контекстом для аудита
-            AuditContextHolder.runWith(ctx, syncService::runSync);
-            log.info("Provider synchronization completed successfully");
+            // Запускаем обслуживание провайдеров с контекстом для аудита
+            AuditContextHolder.runWith(ctx, orchestrator::runAll);
+            log.info("Provider maintenance completed successfully");
         } catch (Exception ex) {
             // Если возникает ошибка:
             // 1) фиксируем сам факт ошибки со стеком
-            log.error("Provider synchronization failed on startup", ex);
+            log.error("Provider maintenance failed on startup", ex);
 
             if (failFast) {
                 // 2а) Если строгий режим (fail-fast:true) – прерываем запуск
-                log.error("Application startup aborted (property 'provider.sync.fail-fast=true')");
-                throw new IllegalStateException("Provider synchronization failed on startup (fail-fast)", ex);
+                log.error("Application startup aborted (property 'provider.maintenance.fail-fast=true')");
+                throw new IllegalStateException("Provider maintenance failed on startup (fail-fast)", ex);
             } else {
-                // 2b) мягкий режим (fail-fast:false) – продолжаем запуск без синхронизации
-                log.warn("Continuing application startup without provider synchronization" +
-                        " (property 'provider.sync.fail-fast=false')");
+                // 2b) мягкий режим (fail-fast:false) – продолжаем запуск несмотря на ошибку
+                log.warn("Continuing application startup without provider maintenance " +
+                                "(property 'provider.maintenance.fail-fast=false')");
 
             }
         }
