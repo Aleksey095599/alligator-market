@@ -41,7 +41,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
      *
      * <p>Собирает объект из переданных параметров и выполняет следующие действия:</p>
      * <ul>
-     *     <li>1) Собирает неизменяемую однозначную карту "код инструмента → обработчик инструмента".</li>
+     *     <li>1) Собирает неизменяемую карту "код инструмента → обработчик инструмента".</li>
      *     <li>2) Валидирует инварианты: уникальность кодов обработчиков, один код инструмента → один обработчик.</li>
      *     <li>3) Прикрепляет переданные обработчики к провайдеру.</li>
      * </ul>
@@ -65,7 +65,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.passport = passport;
         this.policy = policy;
 
-        // Собираем неизменяемую однозначную карту и валидируем инварианты
+        // Собираем неизменяемую карту и валидируем инварианты
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
@@ -126,15 +126,15 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Собирает неизменяемую однозначную карту и валидирует инварианты:
+     * Собирает неизменяемую карту и валидирует инварианты:
      * <ul>
-     *     <li>Коды обработчиков {@link InstrumentHandler#handlerCode()} уникальны;</li>
-     *     <li>Одному {@link InstrumentCode} соответствует ровно один обработчик.</li>
+     *     <li>Уникальность кодов обработчиков;</li>
+     *     <li>Один код инструмента → один обработчик.</li>
      * </ul>
      *
      * @param providerCode код провайдера, к которому прикреплены обработчики
      * @param handlers     набор обработчиков
-     * @return неизменяемую однозначную карту
+     * @return неизменяемую карту
      */
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(

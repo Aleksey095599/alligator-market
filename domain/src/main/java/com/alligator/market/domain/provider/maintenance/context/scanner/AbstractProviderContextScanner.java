@@ -19,13 +19,15 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Возвращает из контекста карту паспортов провайдеров, индексированную по коду провайдера.
+     * Возвращает из контекста неизменяемую карту "код провайдера → паспорт провайдера" и валидирует инварианты:
+     * <ul>
+     *     <li>Коды провайдеров уникальны;</li>
+     *     <li>Имена провайдеров уникальны.</li>
+     * </ul>
      */
     @Override
     public final Map<ProviderCode, ProviderPassport> passportsByCode() {
-        // Создаем пустую карту
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
-        // Создаем пустой сет для проверки дублей по имени провайдера
         Set<String> displayNames = new HashSet<>();
 
         // Перебираем последовательность провайдеров
@@ -46,6 +48,7 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
                 throw new ProviderDisplayNameDuplicateException(passport.displayName());
             }
         }
-        return map;
+
+        return java.util.Collections.unmodifiableMap(map);
     }
 }
