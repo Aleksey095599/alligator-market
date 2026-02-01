@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.catalog.passport.persistence.jdbc;
+package com.alligator.market.backend.provider.maintenance.sync.passport.jdbc;
 
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.passport.sync.dao.PassportDbSyncDao;
+import com.alligator.market.domain.provider.maintenance.sync.passport.dao.ProviderPassportDbSyncDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,13 +20,13 @@ import java.util.Objects;
  * с целью выполнения процесса синхронизации (контекст PostgreSQL).
  */
 @Repository
-public class PassportDbSyncDaoAdapter implements PassportDbSyncDao {
+public class ProviderPassportDbSyncDaoAdapter implements ProviderPassportDbSyncDao {
 
     /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public PassportDbSyncDaoAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportDbSyncDaoAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

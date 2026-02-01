@@ -2,7 +2,8 @@ package com.alligator.market.backend.provider.maintenance.bootstrap;
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.maintenance.passport.sync.service.PassportDbSyncRun;
+import com.alligator.market.backend.provider.maintenance.ProviderMaintenanceOrchestrator;
+import com.alligator.market.backend.provider.maintenance.sync.passport.service.ProviderPassportDbSyncRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,33 +12,33 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Bootstrap-компонент: запускает процесс синхронизации провайдеров рыночных данных при старте приложения.
+ * Bootstrap-компонент: запускает процесс обслуживания провайдеров рыночных данных при старте приложения.
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProviderSyncBootstrap implements ApplicationRunner {
+public class ProviderMaintenanceBootstrap implements ApplicationRunner {
 
-    /* Backend реализация доменного сервиса синхронизации. */
-    private final PassportDbSyncRun syncService;
+    /* Оркестратор процессов обслуживания провайдеров. */
+    private final ProviderMaintenanceOrchestrator orchestrator;
 
-    /* Флаг: запускать ли синхронизацию при старте приложения (по умолчанию включено). */
-    @Value("${provider.sync.on-startup:true}")
+    /* Флаг: запускать ли обслуживание провайдеров при старте приложения (по умолчанию включено). */
+    @Value("${provider.maintenance.on-startup:true}")
     private boolean runOnStartup;
 
-    /* Флаг: "падать" ли приложению при ошибке синхронизации (по умолчанию выключено). */
-    @Value("${provider.sync.fail-fast:false}")
+    /* Флаг: "падать" ли приложению при сбое хотя бы одного из процессов обслуживания (по умолчанию выключено). */
+    @Value("${provider.maintenance.fail-fast:false}")
     private boolean failFast;
 
     @Override
     public void run(ApplicationArguments args) {
-        // Если синхронизация при запуске отключена, выводим сообщение в логи
+        // Если обслуживание при запуске отключено, выводим сообщение в логи
         if (!runOnStartup) {
-            log.info("Provider sync on startup is disabled (property 'provider.sync.on-startup=false')");
+            log.info("Provider maintenance on startup is disabled (property 'provider.maintenance.on-startup=false')");
             return;
         }
 
-        log.info("Starting provider synchronization on application startup");
+        log.info("Starting provider maintenance on application startup");
 
         // Задаем контекст для аудита
         AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-sync");

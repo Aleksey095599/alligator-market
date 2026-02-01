@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.maintenance.passport.sync.service;
+package com.alligator.market.domain.provider.maintenance.sync.passport.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.passport.sync.dao.PassportDbSyncDao;
+import com.alligator.market.domain.provider.maintenance.sync.passport.dao.ProviderPassportDbSyncDao;
 import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
@@ -21,9 +21,9 @@ import java.util.Set;
  *         индексированные по коду провайдера.</li>
  *     <li>Репозиторий {@link ProviderPassportRepository} извлекает коды провайдеров,
  *         для которых в БД есть паспорта.</li>
- *     <li>DAO {@link PassportDbSyncDao} пакетно удаляет из БД паспорта,
+ *     <li>DAO {@link ProviderPassportDbSyncDao} пакетно удаляет из БД паспорта,
  *         соответствующие устаревшим кодам провайдеров.</li>
- *     <li>DAO {@link PassportDbSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>DAO {@link ProviderPassportDbSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
  * <p><b>Преимущества применения DAO для пакетной синхронизации паспортов провайдеров:</b></p>
@@ -35,7 +35,7 @@ import java.util.Set;
  * </ul>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public class PassportDbSync {
+public class ProviderPassportDbSync {
 
     /* Сканер контекста. */
     private final ProviderContextScanner contextScanner;
@@ -44,12 +44,12 @@ public class PassportDbSync {
     private final ProviderPassportRepository repository;
 
     /* DAO для прямых пакетных операций с паспортами. */
-    private final PassportDbSyncDao syncDao;
+    private final ProviderPassportDbSyncDao syncDao;
 
     /* Конструктор. */
-    public PassportDbSync(ProviderContextScanner contextScanner,
-                          ProviderPassportRepository repository,
-                          PassportDbSyncDao syncDao) {
+    public ProviderPassportDbSync(ProviderContextScanner contextScanner,
+                                  ProviderPassportRepository repository,
+                                  ProviderPassportDbSyncDao syncDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
         this.syncDao = syncDao;
