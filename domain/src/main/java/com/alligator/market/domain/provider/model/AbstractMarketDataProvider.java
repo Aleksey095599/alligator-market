@@ -1,14 +1,14 @@
 package com.alligator.market.domain.provider.model;
 
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.model.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.handler.model.InstrumentHandler;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
@@ -29,7 +29,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
-    /* Карта "код инструмента → обработчик инструмента" (далее карта). */
+    /* Карта "код инструмента → обработчик инструмента". */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     //=================================================================================================================
@@ -37,7 +37,14 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     //=================================================================================================================
 
     /**
-     * Конструктор: собирает карту, валидирует инварианты, прикрепляет обработчики к провайдеру.</p>
+     * Конструктор.
+     *
+     * <p>Собирает объект из переданных параметров и выполняет следующие действия:</p>
+     * <ul>
+     *     <li>1) Собирает неизменяемую однозначную карту "код инструмента → обработчик инструмента".</li>
+     *     <li>2) Валидирует инварианты: уникальность кодов обработчиков, один код инструмента → один обработчик.</li>
+     *     <li>3) Прикрепляет переданные обработчики к провайдеру.</li>
+     * </ul>
      */
     protected AbstractMarketDataProvider(
             ProviderCode providerCode,
@@ -58,7 +65,7 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         this.passport = passport;
         this.policy = policy;
 
-        // Собираем неизменяемую однозначную карту и валидируем инварианты: уникальность кодов обработчиков
+        // Собираем неизменяемую однозначную карту и валидируем инварианты
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
