@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.catalog.passport.persistence.jdbc;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.reconciliation.passport.db.dao.ProviderPassportSyncDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

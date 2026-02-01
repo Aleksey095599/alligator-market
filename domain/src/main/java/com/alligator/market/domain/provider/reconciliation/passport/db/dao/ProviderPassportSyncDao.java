@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.db.dao;
+package com.alligator.market.domain.provider.reconciliation.passport.db.dao;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;

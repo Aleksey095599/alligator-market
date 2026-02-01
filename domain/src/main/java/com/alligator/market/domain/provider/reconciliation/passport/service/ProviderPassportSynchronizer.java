@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.reconciliation.sync.service;
+package com.alligator.market.domain.provider.reconciliation.passport.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.db.dao.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.reconciliation.passport.db.dao.ProviderPassportSyncDao;
 import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
