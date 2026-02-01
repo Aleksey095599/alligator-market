@@ -33,8 +33,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     /* Коды поддерживаемых инструментов. */
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
-    /* Ссылка на провайдера (присваивается один раз, видимость между потоками гарантирует volatile). */
-    private volatile P provider;
+    /* Ссылка на провайдера (однократная потокобезопасная привязка). */
+    private final java.util.concurrent.atomic.AtomicReference<P> providerRef =
+            new java.util.concurrent.atomic.AtomicReference<>();
 
     //=================================================================================================================
     // КОНСТРУКТОР
@@ -93,10 +94,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      */
     @Override
     public final void attachTo(P provider) {
-        if (this.provider != null) {
+        Objects.requireNonNull(provider, "provider must not be null");
+
+        if (!providerRef.compareAndSet(null, provider)) {
             throw new IllegalStateException("Provider is already attached");
         }
-        this.provider = Objects.requireNonNull(provider, "provider must not be null");
     }
 
     /**
@@ -127,7 +129,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // 1) Проверяем, что провайдер прикреплен к данному обработчику
-        P currentProvider = provider;
+        P currentProvider = providerRef.get();
         if (currentProvider == null) {
             throw new IllegalStateException("Provider is not attached");
         }
@@ -175,6 +177,17 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все необходимые проверки.</p>
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
+
+    /**
+     * Полезный геттер для наследников: возвращает прикреплённого провайдера.
+     */
+    protected final P provider() {
+        P current = providerRef.get();
+        if (current == null) {
+            throw new IllegalStateException("Provider is not attached");
+        }
+        return current;
+    }
 
     //=================================================================================================================
     // УТИЛИТЫ
