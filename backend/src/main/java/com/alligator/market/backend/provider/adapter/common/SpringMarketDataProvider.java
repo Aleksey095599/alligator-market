@@ -17,8 +17,7 @@ import java.util.Set;
 /**
  * Базовый Spring-класс для провайдеров рыночных данных.
  *
- * <p>Обеспечивает интеграцию с жизненным циклом Spring и строгое соответствие
- * имени бина коду провайдера (bean name == provider code).</p>
+ * <p>Обеспечивает интеграцию с жизненным циклом Spring и строгое соответствие: bean name == provider code.</p>
  */
 public abstract class SpringMarketDataProvider<P extends MarketDataProvider>
         extends AbstractMarketDataProvider<P>
