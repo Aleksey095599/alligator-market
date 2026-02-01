@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.reconciliation.bootstrap;
+package com.alligator.market.backend.provider.maintenance.bootstrap;
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.reconciliation.service.ProviderSyncService;
+import com.alligator.market.backend.provider.maintenance.passport.sync.service.PassportDbSyncRun;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class ProviderSyncBootstrap implements ApplicationRunner {
 
     /* Backend реализация доменного сервиса синхронизации. */
-    private final ProviderSyncService syncService;
+    private final PassportDbSyncRun syncService;
 
     /* Флаг: запускать ли синхронизацию при старте приложения (по умолчанию включено). */
     @Value("${provider.sync.on-startup:true}")

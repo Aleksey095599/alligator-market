@@ -1,8 +1,8 @@
-package com.alligator.market.domain.provider.reconciliation.passport.service;
+package com.alligator.market.domain.provider.maintenance.passport.sync.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.passport.db.dao.ProviderPassportSyncDao;
-import com.alligator.market.domain.provider.reconciliation.context.scanner.ProviderContextScanner;
+import com.alligator.market.domain.provider.maintenance.passport.sync.dao.PassportDbSyncDao;
+import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -21,9 +21,9 @@ import java.util.Set;
  *         индексированные по коду провайдера.</li>
  *     <li>Репозиторий {@link ProviderPassportRepository} извлекает коды провайдеров,
  *         для которых в БД есть паспорта.</li>
- *     <li>DAO {@link ProviderPassportSyncDao} пакетно удаляет из БД паспорта,
+ *     <li>DAO {@link PassportDbSyncDao} пакетно удаляет из БД паспорта,
  *         соответствующие устаревшим кодам провайдеров.</li>
- *     <li>DAO {@link ProviderPassportSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>DAO {@link PassportDbSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
  * <p><b>Преимущества применения DAO для пакетной синхронизации паспортов провайдеров:</b></p>
@@ -35,7 +35,7 @@ import java.util.Set;
  * </ul>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public class ProviderPassportSynchronizer {
+public class PassportDbSync {
 
     /* Сканер контекста. */
     private final ProviderContextScanner contextScanner;
@@ -44,12 +44,12 @@ public class ProviderPassportSynchronizer {
     private final ProviderPassportRepository repository;
 
     /* DAO для прямых пакетных операций с паспортами. */
-    private final ProviderPassportSyncDao syncDao;
+    private final PassportDbSyncDao syncDao;
 
     /* Конструктор. */
-    public ProviderPassportSynchronizer(ProviderContextScanner contextScanner,
-                                        ProviderPassportRepository repository,
-                                        ProviderPassportSyncDao syncDao) {
+    public PassportDbSync(ProviderContextScanner contextScanner,
+                          ProviderPassportRepository repository,
+                          PassportDbSyncDao syncDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
         this.syncDao = syncDao;
@@ -60,7 +60,7 @@ public class ProviderPassportSynchronizer {
      */
     public void synchronize() {
         // 1) Извлекаем мапу с паспортами из контекста (индексация по кодам провайдеров)
-        Map<ProviderCode, ProviderPassport> ctxPassports = contextScanner.providerPassports();
+        Map<ProviderCode, ProviderPassport> ctxPassports = contextScanner.passportsByCode();
         // 2) Извлекаем коды провайдеров для хранящихся в БД паспортов
         Set<ProviderCode> dbProviderCodes = new LinkedHashSet<>(repository.findAllCodes());
 

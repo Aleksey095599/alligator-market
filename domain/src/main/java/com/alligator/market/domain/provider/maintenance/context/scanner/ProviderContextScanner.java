@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.context.scanner;
+package com.alligator.market.domain.provider.maintenance.context.scanner;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
@@ -13,5 +13,5 @@ public sealed interface ProviderContextScanner permits AbstractProviderContextSc
     /**
      * Возвращает из контекста карту паспортов провайдеров, индексированную по коду провайдера.
      */
-    Map<ProviderCode, ProviderPassport> providerPassports();
+    Map<ProviderCode, ProviderPassport> passportsByCode();
 }

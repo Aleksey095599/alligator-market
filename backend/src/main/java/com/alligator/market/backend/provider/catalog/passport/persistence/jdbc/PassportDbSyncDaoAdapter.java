@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.catalog.passport.persistence.jdbc;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.reconciliation.passport.db.dao.ProviderPassportSyncDao;
+import com.alligator.market.domain.provider.maintenance.passport.sync.dao.PassportDbSyncDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,17 +16,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JDBC-адаптер для пакетной синхронизации паспортов провайдеров.
- * Использует PostgreSQL Native UPSERT (ON CONFLICT) для обеспечения производительности.
+ * JDBC-адаптер доменного DAO для прямых пакетных операций с паспортами провайдеров в БД
+ * с целью выполнения процесса синхронизации (контекст PostgreSQL).
  */
 @Repository
-public class PassportSyncDaoAdapter implements ProviderPassportSyncDao {
+public class PassportDbSyncDaoAdapter implements PassportDbSyncDao {
 
     /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public PassportSyncDaoAdapter(JdbcTemplate jdbc) {
+    public PassportDbSyncDaoAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

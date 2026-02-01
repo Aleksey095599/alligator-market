@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.reconciliation.context.scanner;
+package com.alligator.market.domain.provider.maintenance.context.scanner;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
@@ -22,7 +22,7 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
      * Возвращает из контекста карту паспортов провайдеров, индексированную по коду провайдера.
      */
     @Override
-    public final Map<ProviderCode, ProviderPassport> providerPassports() {
+    public final Map<ProviderCode, ProviderPassport> passportsByCode() {
         // Создаем пустую карту
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
         // Создаем пустой сет для проверки дублей по имени провайдера

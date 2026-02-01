@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.resolver;
+package com.alligator.market.backend.provider.quote.feed.resolver;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
 import com.alligator.market.domain.instrument.model.Instrument;

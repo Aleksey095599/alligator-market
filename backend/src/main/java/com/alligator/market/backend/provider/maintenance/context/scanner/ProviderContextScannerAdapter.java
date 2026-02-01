@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.reconciliation.scanner;
+package com.alligator.market.backend.provider.maintenance.context.scanner;
 
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.reconciliation.context.scanner.AbstractProviderContextScanner;
+import com.alligator.market.domain.provider.maintenance.context.scanner.AbstractProviderContextScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
