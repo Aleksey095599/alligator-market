@@ -26,8 +26,15 @@ public class ProviderMaintenanceOrchestrator {
      */
     public void runAll() {
         for (ProviderMaintenanceTask task : tasks) {
-            log.info("Running provider maintenance task: {}", task.code());
+            final long startedAt = System.nanoTime();
+            final String code = task.code();
+
+            log.info("Running provider maintenance task: {}", code);
+
             task.run();
+
+            final long tookMs = (System.nanoTime() - startedAt) / 1_000_000;
+            log.info("Provider maintenance task completed: {} ({} ms)", code, tookMs);
         }
     }
 }

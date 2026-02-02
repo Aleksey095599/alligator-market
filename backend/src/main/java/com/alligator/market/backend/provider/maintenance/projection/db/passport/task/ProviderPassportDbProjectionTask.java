@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.maintenance.projection.db.passport
 
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
