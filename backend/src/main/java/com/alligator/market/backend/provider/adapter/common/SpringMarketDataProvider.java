@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.model.handler.model.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.BeanNameAware;

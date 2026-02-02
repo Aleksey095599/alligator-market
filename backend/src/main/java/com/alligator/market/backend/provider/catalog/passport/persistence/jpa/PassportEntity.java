@@ -5,8 +5,8 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.passport.DeliveryMode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.sync.passport.dao.ProviderPassportDbSyncDao;
-import com.alligator.market.domain.provider.maintenance.sync.passport.service.ProviderPassportDbSync;
+import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
+import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,8 +28,8 @@ import org.hibernate.annotations.NaturalId;
  *     код провайдера как натуральный ключ.</li>
  *     <li>Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
  *     и не изменяются через JPA.</li>
- *     <li>Процесс обновления данных выполняется доменным процессом {@link ProviderPassportDbSync} напрямую в БД
- *     через DAO {@link ProviderPassportDbSyncDao}.</li>
+ *     <li>Процесс обновления данных выполняется доменным процессом {@link ProviderPassportDbProjection} напрямую в БД
+ *     через DAO {@link ProviderPassportDbProjectionDao}.</li>
  * </ul>
  *
  * <p><b>Пояснение некоторых аннотаций</b></p>

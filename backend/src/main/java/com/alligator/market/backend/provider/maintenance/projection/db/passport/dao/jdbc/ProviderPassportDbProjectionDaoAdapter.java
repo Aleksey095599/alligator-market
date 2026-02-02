@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.maintenance.sync.passport.jdbc;
+package com.alligator.market.backend.provider.maintenance.projection.db.passport.dao.jdbc;
 
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.sync.passport.dao.ProviderPassportDbSyncDao;
+import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,17 +16,16 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JDBC-адаптер доменного DAO для прямых пакетных операций с паспортами провайдеров в БД
- * с целью выполнения процесса синхронизации (контекст PostgreSQL).
+ * JDBC-адаптер доменного DAO для прямых пакетных операций с паспортами провайдеров в БД (контекст PostgreSQL).
  */
 @Repository
-public class ProviderPassportDbSyncDaoAdapter implements ProviderPassportDbSyncDao {
+public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportDbProjectionDao {
 
     /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
     /* Конструктор. */
-    public ProviderPassportDbSyncDaoAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportDbProjectionDaoAdapter(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 

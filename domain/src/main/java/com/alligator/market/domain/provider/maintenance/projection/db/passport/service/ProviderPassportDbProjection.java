@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.maintenance.sync.passport.service;
+package com.alligator.market.domain.provider.maintenance.projection.db.passport.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.sync.passport.dao.ProviderPassportDbSyncDao;
+import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
@@ -12,30 +12,30 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Сервис синхронизации паспортов провайдеров между контекстом приложения и БД.
+ * Сервис обновления (refresh) проекции паспортов провайдеров в БД по данным из контекста приложения.
  *
- * <p><b>Логика сервиса</b></p>
+ * <p><b>Логика</b></p>
  * <ul>
  *     <li>Источник истины — контекст приложения.</li>
  *     <li>Сканер контекста {@link ProviderContextScanner} извлекает из контекста приложения паспорта провайдеров,
  *         индексированные по коду провайдера.</li>
  *     <li>Репозиторий {@link ProviderPassportRepository} извлекает коды провайдеров,
  *         для которых в БД есть паспорта.</li>
- *     <li>DAO {@link ProviderPassportDbSyncDao} пакетно удаляет из БД паспорта,
+ *     <li>DAO {@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта,
  *         соответствующие устаревшим кодам провайдеров.</li>
- *     <li>DAO {@link ProviderPassportDbSyncDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>DAO {@link ProviderPassportDbProjectionDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
- * <p><b>Преимущества применения DAO для пакетной синхронизации паспортов провайдеров:</b></p>
+ * <p><b>Преимущества применения DAO:</b></p>
  * <ul>
  *     <li>Минимум обращений к БД → меньше сетевых задержек и нагрузка на пул соединений.</li>
  *     <li>Прямой UPSERT/DELETE без ORM-накладных расходов → быстрее и проще предсказать нагрузку.</li>
  *     <li>Стабильная атомарность операции → все изменения выполняются единым набором пакетных команд.</li>
- *     <li>Единый контракт для синхронизации → легче поддерживать и масштабировать процесс.</li>
+ *     <li>Единый контракт DAO → легче поддерживать и масштабировать процесс.</li>
  * </ul>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public class ProviderPassportDbSync {
+public class ProviderPassportDbProjection {
 
     /* Сканер контекста. */
     private final ProviderContextScanner contextScanner;
@@ -44,21 +44,21 @@ public class ProviderPassportDbSync {
     private final ProviderPassportRepository repository;
 
     /* DAO для прямых пакетных операций с паспортами. */
-    private final ProviderPassportDbSyncDao syncDao;
+    private final ProviderPassportDbProjectionDao projectionDao;
 
     /* Конструктор. */
-    public ProviderPassportDbSync(ProviderContextScanner contextScanner,
-                                  ProviderPassportRepository repository,
-                                  ProviderPassportDbSyncDao syncDao) {
+    public ProviderPassportDbProjection(ProviderContextScanner contextScanner,
+                                        ProviderPassportRepository repository,
+                                        ProviderPassportDbProjectionDao projectionDao) {
         this.contextScanner = contextScanner;
         this.repository = repository;
-        this.syncDao = syncDao;
+        this.projectionDao = projectionDao;
     }
 
     /**
-     * Выполнить синхронизацию (одна атомарная транзакция).
+     * Обновить проекцию (одна атомарная транзакция).
      */
-    public void synchronize() {
+    public void refresh() {
         // 1) Извлекаем мапу с паспортами из контекста (индексация по кодам провайдеров)
         Map<ProviderCode, ProviderPassport> ctxPassports = contextScanner.passportsByCode();
         // 2) Извлекаем коды провайдеров для хранящихся в БД паспортов
@@ -67,7 +67,7 @@ public class ProviderPassportDbSync {
         // Если в контексте пусто — чистим таблицу и выходим
         if (ctxPassports.isEmpty()) {
             if (!dbProviderCodes.isEmpty()) {
-                syncDao.deleteByCodes(dbProviderCodes);
+                projectionDao.deleteByCodes(dbProviderCodes);
             }
             return;
         }
@@ -76,11 +76,11 @@ public class ProviderPassportDbSync {
         Set<ProviderCode> obsolete = new LinkedHashSet<>(dbProviderCodes);
         obsolete.removeAll(ctxPassports.keySet());
         if (!obsolete.isEmpty()) {
-            syncDao.deleteByCodes(obsolete);
+            projectionDao.deleteByCodes(obsolete);
         }
 
         // 4) UPSERT всех паспортов из контекста (новые/изменившиеся обновятся, актуальные — без изменений)
-        syncDao.upsertAll(ctxPassports);
+        projectionDao.upsertAll(ctxPassports);
         // Готово
     }
 }

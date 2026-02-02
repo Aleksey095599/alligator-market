@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.maintenance.sync.passport.dao;
+package com.alligator.market.domain.provider.maintenance.projection.db.passport.dao;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
@@ -7,9 +7,11 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * DAO для прямых пакетных операций с паспортами провайдеров в БД с целью выполнения процесса синхронизации.
+ * DAO для прямых пакетных операций с паспортами провайдеров в БД.
+ *
+ * <p>Используется для обновления проекции паспортов провайдеров в БД по данным из контекста приложения.</p>
  */
-public interface ProviderPassportDbSyncDao {
+public interface ProviderPassportDbProjectionDao {
 
     /**
      * Пакетное удаление (DELETE) паспортов по их кодам.
