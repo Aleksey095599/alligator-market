@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.maintenance.bootstrap;
+package com.alligator.market.backend.provider.maintenance.orchestration.bootstrap;
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.maintenance.ProviderMaintenanceOrchestrator;
+import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

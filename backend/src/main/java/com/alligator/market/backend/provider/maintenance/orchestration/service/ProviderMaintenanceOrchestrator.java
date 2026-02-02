@@ -1,5 +1,6 @@
-package com.alligator.market.backend.provider.maintenance;
+package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
+import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
