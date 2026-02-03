@@ -1,5 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
+import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProps;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;
@@ -25,6 +26,9 @@ public class ProviderMaintenanceOrchestrator {
     /* Набор задач обслуживания (порядок задается через @Order на задачах). */
     private final List<ProviderMaintenanceTask> tasks;
 
+    /* Настройки maintenance. */
+    private final ProviderMaintenanceProps props;
+
     /**
      * Запустить все задачи обслуживания и вернуть отчёт.
      *
@@ -39,6 +43,19 @@ public class ProviderMaintenanceOrchestrator {
             final long startedAt = System.nanoTime();
 
             log.info("Running provider maintenance task: {}", code);
+
+            final boolean enabled = props.isTaskEnabled(code, task.enabledByDefault());
+            if (!enabled) {
+                log.info("Provider maintenance task skipped (disabled by config): {}", code);
+
+                results.add(new ProviderMaintenanceTaskResult(
+                        code,
+                        ProviderMaintenanceTaskStatus.SKIPPED,
+                        0,
+                        null
+                ));
+                continue;
+            }
 
             try {
                 task.run();

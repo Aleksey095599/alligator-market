@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Настройки обслуживания провайдеров.
+ * Параметры обслуживания провайдеров.
  *
- * <p>Класс автоматически заполняется (bind) из настроек приложения {@code application.yml}/{@code application.properties}
- * по префиксу {@code provider.maintenance} через механизм Spring Boot {@link ConfigurationProperties}.</p>
+ * <p>Данные параметры автоматически считываются из файла настроек приложения. Spring создаёт бин этого типа,
+ * который можно внедрять в другие компоненты.</p>
  *
  * <p>Пример:</p>
  * <pre>
@@ -30,7 +30,7 @@ import java.util.Objects;
 @Setter
 @Validated
 @ConfigurationProperties(prefix = "provider.maintenance")
-public class ProviderMaintenanceProperties {
+public class ProviderMaintenanceProps {
 
     /* Запускать ли maintenance при старте приложения. */
     private boolean onStartup = true;
