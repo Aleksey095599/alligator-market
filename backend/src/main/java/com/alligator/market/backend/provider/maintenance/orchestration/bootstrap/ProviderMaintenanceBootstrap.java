@@ -2,6 +2,7 @@ package com.alligator.market.backend.provider.maintenance.orchestration.bootstra
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
+import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,37 +32,55 @@ public class ProviderMaintenanceBootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        // Если обслуживание при запуске отключено, выводим сообщение в логи и выходим
         if (!runOnStartup) {
             log.info("Provider maintenance on startup is disabled (property 'provider.maintenance.on-startup=false')");
             return;
         }
 
-        // Логируем запуск обслуживания провайдеров при старте приложения
         log.info("Starting provider maintenance on application startup");
 
-        // Задаем контекст для аудита
         AuditContext ctx = new AuditContext(AuditContextHolder.SYSTEM_ACTOR, "bootstrap:provider-maintenance");
 
+        ProviderMaintenanceReport report;
+
         try {
-            // Запускаем обслуживание провайдеров с контекстом для аудита
-            AuditContextHolder.runWith(ctx, orchestrator::runAll);
-            log.info("Provider maintenance completed successfully");
+            report = AuditContextHolder.runWith(ctx, orchestrator::runAll);
         } catch (Exception ex) {
-            // Если возникает ошибка:
-            // 1) фиксируем сам факт ошибки со стеком
+            // Это инфраструктурная/системная ошибка, не “ошибка задач”
             log.error("Provider maintenance failed on startup", ex);
 
             if (failFast) {
-                // 2а) Если строгий режим (fail-fast:true) – прерываем запуск
                 log.error("Application startup aborted (property 'provider.maintenance.fail-fast=true')");
                 throw new IllegalStateException("Provider maintenance failed on startup (fail-fast)", ex);
-            } else {
-                // 2b) мягкий режим (fail-fast:false) – продолжаем запуск несмотря на ошибку
-                log.warn("Continuing application startup without provider maintenance " +
-                                "(property 'provider.maintenance.fail-fast=false')");
-
             }
+
+            log.warn("Continuing application startup without provider maintenance " +
+                    "(property 'provider.maintenance.fail-fast=false')");
+            return;
         }
+
+        if (report.hasFailures()) {
+            log.error("Provider maintenance completed with failures: success={}, failed={}, skipped={}",
+                    report.successCount(), report.failedCount(), report.skippedCount());
+
+            report.failed().forEach(failed -> {
+                Throwable err = failed.error();
+                String errMsg = (err == null)
+                        ? "<unknown>"
+                        : err.getClass().getSimpleName() + ": " + err.getMessage();
+                log.error("Failed task: {} -> {}", failed.code(), errMsg);
+            });
+
+            if (failFast) {
+                Throwable first = report.failed().get(0).error();
+                throw new IllegalStateException("Provider maintenance completed with failures (fail-fast)", first);
+            }
+
+            log.warn("Continuing application startup despite provider maintenance failures " +
+                    "(property 'provider.maintenance.fail-fast=false')");
+            return;
+        }
+
+        log.info("Provider maintenance completed successfully");
     }
 }

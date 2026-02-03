@@ -17,4 +17,11 @@ public interface ProviderMaintenanceTask {
      * Запуск задачи.
      */
     void run();
+
+    /**
+     * Запускать ли задачу, если нет явной настройки в конфигурации.
+     */
+    default boolean enabledByDefault() {
+        return true;
+    }
 }
