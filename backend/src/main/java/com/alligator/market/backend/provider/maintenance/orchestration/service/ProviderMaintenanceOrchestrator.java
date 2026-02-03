@@ -1,10 +1,14 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
+import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
+import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
+import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,19 +26,45 @@ public class ProviderMaintenanceOrchestrator {
     private final List<ProviderMaintenanceTask> tasks;
 
     /**
-     * Запустить все задачи обслуживания.
+     * Запустить все задачи обслуживания и вернуть отчёт.
+     *
+     * <p>Важно: оркестратор не падает на первой ошибке — выполняет максимум возможного
+     * и возвращает детальный отчёт.</p>
      */
-    public void runAll() {
+    public ProviderMaintenanceReport runAll() {
+        List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasks.size());
+
         for (ProviderMaintenanceTask task : tasks) {
-            final long startedAt = System.nanoTime();
             final String code = task.code();
+            final long startedAt = System.nanoTime();
 
             log.info("Running provider maintenance task: {}", code);
 
-            task.run();
+            try {
+                task.run();
 
-            final long tookMs = (System.nanoTime() - startedAt) / 1_000_000;
-            log.info("Provider maintenance task completed: {} ({} ms)", code, tookMs);
+                long tookMs = (System.nanoTime() - startedAt) / 1_000_000;
+                log.info("Provider maintenance task completed: {} ({} ms)", code, tookMs);
+
+                results.add(new ProviderMaintenanceTaskResult(
+                        code,
+                        ProviderMaintenanceTaskStatus.SUCCESS,
+                        tookMs,
+                        null
+                ));
+            } catch (Exception ex) {
+                long tookMs = (System.nanoTime() - startedAt) / 1_000_000;
+                log.error("Provider maintenance task failed: {} ({} ms)", code, tookMs, ex);
+
+                results.add(new ProviderMaintenanceTaskResult(
+                        code,
+                        ProviderMaintenanceTaskStatus.FAILED,
+                        tookMs,
+                        ex
+                ));
+            }
         }
+
+        return new ProviderMaintenanceReport(List.copyOf(results));
     }
 }
