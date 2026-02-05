@@ -2,11 +2,11 @@ package com.alligator.market.backend.provider.maintenance.orchestration.bootstra
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
+import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProps;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -22,16 +22,14 @@ public class ProviderMaintenanceBootstrap implements ApplicationRunner {
     /* Оркестратор процессов обслуживания провайдеров. */
     private final ProviderMaintenanceOrchestrator orchestrator;
 
-    /* Флаг: запускать ли обслуживание провайдеров при старте приложения (по умолчанию включено). */
-    @Value("${provider.maintenance.on-startup:true}")
-    private boolean runOnStartup;
-
-    /* Флаг: "падать" ли приложению при сбое хотя бы одного из процессов обслуживания (по умолчанию выключено). */
-    @Value("${provider.maintenance.fail-fast:false}")
-    private boolean failFast;
+    /* Единый источник конфигурации для provider maintenance. */
+    private final ProviderMaintenanceProps props;
 
     @Override
     public void run(ApplicationArguments args) {
+        final boolean runOnStartup = props.isOnStartup();
+        final boolean failFast = props.isFailFast();
+
         if (!runOnStartup) {
             log.info("Provider maintenance on startup is disabled (property 'provider.maintenance.on-startup=false')");
             return;
