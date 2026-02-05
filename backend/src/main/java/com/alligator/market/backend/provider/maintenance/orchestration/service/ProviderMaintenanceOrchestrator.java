@@ -10,10 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Оркестратор задач обслуживания провайдеров.
@@ -37,7 +37,7 @@ public class ProviderMaintenanceOrchestrator {
      * <p>Важно: оркестратор не падает при первой ошибке, а пытается выполнить все задачи и вернуть отчёт.</p>
      */
     public ProviderMaintenanceReport runAll() {
-        Set<String> seenCodes = new HashSet<>();
+        Map<String, ProviderMaintenanceTask> tasksByCode = new LinkedHashMap<>();
         for (ProviderMaintenanceTask task : tasks) {
             Objects.requireNonNull(task, "task must not be null");
 
@@ -45,17 +45,20 @@ public class ProviderMaintenanceOrchestrator {
             if (code.isBlank()) {
                 throw new IllegalStateException("Task code must not be blank");
             }
-            if (!seenCodes.add(code)) {
+
+            ProviderMaintenanceTask prev = tasksByCode.putIfAbsent(code, task);
+            if (prev != null) {
                 throw new IllegalStateException("Duplicate provider maintenance task code: '" + code + "'");
             }
         }
 
-        List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasks.size());
+        List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasksByCode.size());
 
-        for (ProviderMaintenanceTask task : tasks) {
-            final String code = Objects.requireNonNull(task.code(), "task code must not be null");
+        for (Map.Entry<String, ProviderMaintenanceTask> entry : tasksByCode.entrySet()) {
+            String code = entry.getKey();
+            ProviderMaintenanceTask task = entry.getValue();
 
-            final boolean enabled = props.isTaskEnabled(code, task.enabledByDefault());
+            boolean enabled = props.isTaskEnabled(code, task.enabledByDefault());
             if (!enabled) {
                 log.info("Provider maintenance task skipped (disabled by config): {}", code);
 
@@ -68,7 +71,7 @@ public class ProviderMaintenanceOrchestrator {
                 continue;
             }
 
-            final long startedAt = System.nanoTime();
+            long startedAt = System.nanoTime();
             log.info("Running provider maintenance task: {}", code);
 
             try {
