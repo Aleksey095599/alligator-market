@@ -32,9 +32,13 @@ public abstract non-sealed class AbstractProviderContextScanner implements Provi
 
         // Перебираем последовательность провайдеров
         for (MarketDataProvider provider : providers()) {
+            Objects.requireNonNull(provider, "provider must not be null");
+
             // Извлекаем текущий код и паспорт
-            ProviderCode code = provider.providerCode();
-            ProviderPassport passport = provider.passport();
+            ProviderCode code = Objects.requireNonNull(provider.providerCode(),
+                    "providerCode must not be null");
+            ProviderPassport passport = Objects.requireNonNull(provider.passport(),
+                    "passport must not be null");
 
             // Добавляем текущий код и паспорт в карту, проверяя дублирование по коду
             ProviderPassport prev = map.put(code, passport);

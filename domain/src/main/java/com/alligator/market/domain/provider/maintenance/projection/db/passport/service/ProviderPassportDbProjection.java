@@ -9,6 +9,7 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -50,6 +51,10 @@ public class ProviderPassportDbProjection {
     public ProviderPassportDbProjection(ProviderContextScanner contextScanner,
                                         ProviderPassportRepository repository,
                                         ProviderPassportDbProjectionDao projectionDao) {
+        Objects.requireNonNull(contextScanner, "contextScanner must not be null");
+        Objects.requireNonNull(repository, "repository must not be null");
+        Objects.requireNonNull(projectionDao, "projectionDao must not be null");
+
         this.contextScanner = contextScanner;
         this.repository = repository;
         this.projectionDao = projectionDao;
