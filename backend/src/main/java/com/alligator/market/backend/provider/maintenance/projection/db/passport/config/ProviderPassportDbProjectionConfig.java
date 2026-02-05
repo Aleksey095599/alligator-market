@@ -8,15 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring для DB-проекции паспортов провайдеров.
+ * Конфигурация wiring для доменного сервиса проекции паспортов провайдеров из контекста приложения в БД.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportDbProjectionConfig {
 
-    // TODO: уточнить зачем этот класс и нельзя ли его иначе назвать чем Config
-
     /**
-     * Доменный use-case: обновление DB-проекции паспортов провайдеров по данным из контекста.
+     * Доменный use-case: обновление проекции паспортов провайдеров в БД по данным из контекста.
      */
     @Bean
     public ProviderPassportDbProjection providerPassportDbProjection(

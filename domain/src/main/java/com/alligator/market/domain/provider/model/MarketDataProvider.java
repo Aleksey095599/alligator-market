@@ -27,7 +27,7 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     /**
      * Политика провайдера.
      */
-    ProviderPolicy policy(); // TODO: понять почему не используется
+    ProviderPolicy policy();
 
     /**
      * Поток котировок для заданного инструмента.
