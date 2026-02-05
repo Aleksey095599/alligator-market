@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Оркестратор задач обслуживания провайдеров.
@@ -37,10 +38,12 @@ public class ProviderMaintenanceOrchestrator {
         List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasks.size());
 
         for (ProviderMaintenanceTask task : tasks) {
-            final String code = task.code();
-            final long startedAt = System.nanoTime();
+            Objects.requireNonNull(task, "task must not be null");
 
-            log.info("Running provider maintenance task: {}", code);
+            final String code = Objects.requireNonNull(task.code(), "task code must not be null");
+            if (code.isBlank()) {
+                throw new IllegalStateException("Task code must not be blank");
+            }
 
             final boolean enabled = props.isTaskEnabled(code, task.enabledByDefault());
             if (!enabled) {
@@ -54,6 +57,9 @@ public class ProviderMaintenanceOrchestrator {
                 ));
                 continue;
             }
+
+            final long startedAt = System.nanoTime();
+            log.info("Running provider maintenance task: {}", code);
 
             try {
                 task.run();
