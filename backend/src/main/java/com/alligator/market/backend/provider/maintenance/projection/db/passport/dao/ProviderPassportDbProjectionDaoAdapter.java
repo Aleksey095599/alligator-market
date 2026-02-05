@@ -26,7 +26,7 @@ public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportD
 
     /* Конструктор. */
     public ProviderPassportDbProjectionDaoAdapter(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
+        this.jdbc = Objects.requireNonNull(jdbc, "jdbc must not be null");
     }
 
     /**
@@ -36,15 +36,20 @@ public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportD
     public void deleteByCodes(Collection<ProviderCode> codes) {
         if (codes == null || codes.isEmpty()) return;
 
+        // Явно запрещаем null-элементы, чтобы не игнорировать ошибочные входные данные.
+        for (ProviderCode code : codes) {
+            if (code == null) {
+                throw new IllegalArgumentException("codes must not contain null");
+            }
+        }
+
         // SQL-команда
         final String sql = "DELETE FROM provider_passport WHERE provider_code = ?";
 
         // Преобразуем коллекцию в список (предполагаем, что коды уже нормализованы)
         List<String> normalizedCodes = codes.stream()
-                .filter(Objects::nonNull)
                 .map(ProviderCode::value)
                 .toList();
-        if (normalizedCodes.isEmpty()) return;
 
         // Пакетно выполняем DELETE: привязываем provider_code по индексу и задаём размер батча.
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
