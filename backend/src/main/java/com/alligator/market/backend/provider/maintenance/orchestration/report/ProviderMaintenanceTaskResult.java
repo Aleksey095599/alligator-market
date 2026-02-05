@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.report;
 
 /**
- * Результат выполнения одной задачи обслуживания.
+ * Результат выполнения конкретной задачи обслуживания провайдеров.
  *
  * @param code   код задачи
  * @param status статус выполнения

@@ -4,9 +4,6 @@ import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.passport.DeliveryMode;
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
-import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,12 +21,11 @@ import org.hibernate.annotations.NaturalId;
  *
  * <p><b>Ключевые особенности</b></p>
  * <ul>
- *     <li>Поля сущности соответствуют доменной модели {@link ProviderPassport}; дополнительно добавлен
- *     код провайдера как натуральный ключ.</li>
+ *     <li>Поля сущности соответствуют доменной модели паспорта провайдера; дополнительно добавлен код провайдера
+ *         как натуральный ключ.</li>
  *     <li>Таблица {@code provider_passport} — статичный справочник метаданных провайдеров; записи не создаются
- *     и не изменяются через JPA.</li>
- *     <li>Процесс обновления данных выполняется доменным процессом {@link ProviderPassportDbProjection} напрямую в БД
- *     через DAO {@link ProviderPassportDbProjectionDao}.</li>
+ *         и не изменяются через JPA.</li>
+ *     <li>Процесс обновления данных выполняется доменным специальным процессом напрямую в БД через DAO.</li>
  * </ul>
  *
  * <p><b>Пояснение некоторых аннотаций</b></p>

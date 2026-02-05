@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportDbProjectionConfig {
 
+    // TODO: уточнить зачем этот класс и нельзя ли его иначе назвать чем Config
+
     /**
      * Доменный use-case: обновление DB-проекции паспортов провайдеров по данным из контекста.
      */
