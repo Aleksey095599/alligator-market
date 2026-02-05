@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Оркестратор задач обслуживания провайдеров.
@@ -35,15 +37,23 @@ public class ProviderMaintenanceOrchestrator {
      * <p>Важно: оркестратор не падает при первой ошибке, а пытается выполнить все задачи и вернуть отчёт.</p>
      */
     public ProviderMaintenanceReport runAll() {
-        List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasks.size());
-
+        Set<String> seenCodes = new HashSet<>();
         for (ProviderMaintenanceTask task : tasks) {
             Objects.requireNonNull(task, "task must not be null");
 
-            final String code = Objects.requireNonNull(task.code(), "task code must not be null");
+            String code = Objects.requireNonNull(task.code(), "task code must not be null");
             if (code.isBlank()) {
                 throw new IllegalStateException("Task code must not be blank");
             }
+            if (!seenCodes.add(code)) {
+                throw new IllegalStateException("Duplicate provider maintenance task code: '" + code + "'");
+            }
+        }
+
+        List<ProviderMaintenanceTaskResult> results = new ArrayList<>(tasks.size());
+
+        for (ProviderMaintenanceTask task : tasks) {
+            final String code = Objects.requireNonNull(task.code(), "task code must not be null");
 
             final boolean enabled = props.isTaskEnabled(code, task.enabledByDefault());
             if (!enabled) {
