@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @ConfigurationProperties("provider.connection-config.moex.iss")
-public record MoexIssAdapterProps(
+public record MoexIssAdapterProperties(
         @NotBlank
         String baseUrl
 ) {
