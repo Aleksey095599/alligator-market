@@ -10,6 +10,7 @@ import java.util.Objects;
  */
 public record ProviderPolicy(
         Duration minUpdateInterval
+        // TODO: добавить еще один параметр и уйти от поведения когда ProviderPolicy подразумевает только minUpdateInterval
 ) {
     /* Минимально допустимый интервал (ограничение). */
     private static final Duration MIN_ALLOWED = Duration.ofSeconds(1);

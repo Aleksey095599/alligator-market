@@ -13,7 +13,8 @@ import java.util.Set;
 /**
  * Обработчик (handler) финансового инструмента.
  *
- * <p>Жёстко привязан к провайдеру и конкретному классу инструмента.</p>
+ * <p>Примечание: бизнес-логика предполагает, что обработчик жёстко привязан к одному конкретному провайдеру и
+ * нацелен на работу с одним конкретным классом финансового инструмента.</p>
  */
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {
@@ -46,5 +47,5 @@ public sealed interface InstrumentHandler<P extends MarketDataProvider, I extend
     /**
      * Поток котировок для заданного инструмента.
      */
-    Publisher<QuoteTick> quote(I instrument); // TODO: почему здесь не <I extends Instrument> как в MarketDataProvider?
+    Publisher<QuoteTick> quote(I instrument);
 }

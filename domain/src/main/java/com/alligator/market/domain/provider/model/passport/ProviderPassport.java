@@ -30,9 +30,11 @@ public record ProviderPassport(
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
 
         String normalizedDisplayName = displayName.strip();
+
         if (normalizedDisplayName.isEmpty()) {
             throw new IllegalArgumentException("displayName must not be blank");
         }
+
         if (normalizedDisplayName.length() > MAX_DISPLAY_NAME_LENGTH) {
             throw new IllegalArgumentException(
                     "displayName length must be <= " + MAX_DISPLAY_NAME_LENGTH + ": " + normalizedDisplayName.length()
