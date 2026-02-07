@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.config.props.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.adapter.common.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -23,9 +23,6 @@ import java.util.Set;
 */
 /**
  * Адаптер провайдера рыночных данных MOEX ISS.
- *
- * <p>Адаптер является Spring-компонентом {@link Component}, который инкапсулирует паспорт, политику и
- * обработчики провайдера.</p>
  */
 @Component("MOEX_ISS")
 public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
