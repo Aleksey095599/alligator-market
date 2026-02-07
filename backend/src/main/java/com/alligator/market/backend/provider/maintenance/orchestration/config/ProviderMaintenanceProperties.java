@@ -29,7 +29,7 @@ import java.util.Objects;
 @Setter
 @Validated
 @ConfigurationProperties(prefix = "provider.maintenance")
-public class ProviderMaintenanceProps {
+public class ProviderMaintenanceProperties {
 
     /* Запускать ли maintenance при старте приложения. */
     private boolean onStartup = true;
