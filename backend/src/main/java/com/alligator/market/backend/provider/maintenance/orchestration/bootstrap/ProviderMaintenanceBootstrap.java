@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.maintenance.orchestration.bootstra
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProps;
+import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ProviderMaintenanceBootstrap implements ApplicationRunner {
     private final ProviderMaintenanceOrchestrator orchestrator;
 
     /* Единый источник конфигурации для provider maintenance. */
-    private final ProviderMaintenanceProps props;
+    private final ProviderMaintenanceProperties props;
 
     @Override
     public void run(ApplicationArguments args) {

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProps;
+import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;
@@ -29,7 +29,7 @@ public class ProviderMaintenanceOrchestrator {
     private final List<ProviderMaintenanceTask> tasks;
 
     /* Настройки maintenance. */
-    private final ProviderMaintenanceProps props;
+    private final ProviderMaintenanceProperties props;
 
     /**
      * Запустить все задачи обслуживания и вернуть отчёт.
