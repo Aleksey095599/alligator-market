@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
+import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.adapter.common.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 /* TODO: есть такая проблема с обработчиками, нужно разобраться:
 Меня немного смущает что переданные в конструктор
-        MoexIssAdapterProps props,
+        MoexIssAdapterProperties props,
         @Qualifier("moexIssWebClient") WebClient webClient
         как бы насквозь переходят а обработчик: Set.of(new MoexIssFxSpotHandler(props, webClient))
         А что если у меня будет несколько обработчиков для которых нужны разные props и webClient. Конечно же, можно на входе конструктора передать несколько вариантов props и webClient, но мне не кажется это хорошим решением.
@@ -53,11 +53,11 @@ public class MoexIssAdapter extends SpringMarketDataProvider<MoexIssAdapter> {
      * <p>Входные параметры {@code props} и {@code webClient} передаются конструктору
      * для сборки обработчика {@link MoexIssFxSpotHandler}.</p>
      *
-     * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProps}
+     * @param props     параметры подключения к провайдеру {@see MoexIssAdapterProperties}
      * @param webClient web-клиент, настроенный для данного провайдера {@see MoexIssWebConfig}
      */
     public MoexIssAdapter(
-            MoexIssAdapterProps props,
+            MoexIssAdapterProperties props,
             @Qualifier("moexIssWebClient") WebClient webClient
     ) {
         // Инициализируем базовый класс

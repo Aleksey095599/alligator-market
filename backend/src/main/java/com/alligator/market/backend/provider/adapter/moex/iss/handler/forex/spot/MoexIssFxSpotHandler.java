@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
-import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProps;
+import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.MoexIssWebConfig;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
@@ -58,11 +58,11 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     /**
      * Конструктор обработчика.
      *
-     * @param props     параметры подключения к провайдеру {@link MoexIssAdapterProps}
+     * @param props     параметры подключения к провайдеру {@link MoexIssAdapterProperties}
      * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssWebConfig}
      */
     public MoexIssFxSpotHandler(
-            MoexIssAdapterProps props,
+            MoexIssAdapterProperties props,
             WebClient webClient
     ) {
         // Инициализируем базовый класс

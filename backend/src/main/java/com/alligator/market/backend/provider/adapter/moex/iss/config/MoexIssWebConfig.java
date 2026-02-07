@@ -12,13 +12,13 @@ import reactor.netty.http.client.HttpClient;
  * Конфигурация web-клиента провайдера рыночных данных MOEX ISS.
  *
  * <p>Использует единый для всех провайдеров HTTP-клиент из {@link ProviderHttpConfigGlobal}
- * и параметры подключения из {@link MoexIssAdapterProps}.</p>
+ * и параметры подключения из {@link MoexIssAdapterProperties}.</p>
  */
 @Configuration
 public class MoexIssWebConfig {
 
     /* Параметры подключения к провайдеру MOEX ISS. */
-    private final MoexIssAdapterProps props;
+    private final MoexIssAdapterProperties props;
 
     /* Единый HTTP-клиент провайдеров. */
     private final HttpClient httpClient;
@@ -27,7 +27,7 @@ public class MoexIssWebConfig {
      * Конструктор конфигурации web-клиента MOEX ISS.
      */
     public MoexIssWebConfig(
-            MoexIssAdapterProps props, // <-- инжекция бина с параметрами подключения
+            MoexIssAdapterProperties props, // <-- инжекция бина с параметрами подключения
             @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция бина единого HTTP-клиента для провайдеров
 
     ) {
