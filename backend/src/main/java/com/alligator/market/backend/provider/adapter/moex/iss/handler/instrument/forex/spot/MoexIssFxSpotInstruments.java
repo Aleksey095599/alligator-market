@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
+package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot;
 
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;

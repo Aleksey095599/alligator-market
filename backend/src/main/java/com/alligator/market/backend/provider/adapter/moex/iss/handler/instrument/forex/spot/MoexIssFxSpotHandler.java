@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
+package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot;
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Обработчик инструментов FX_SPOT для провайдера MOEX ISS {@link MoexIssAdapter}.
+ * Обработчик инструментов FX_SPOT провайдера MOEX ISS {@link MoexIssAdapter}.
  */
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapter, FxSpot> {

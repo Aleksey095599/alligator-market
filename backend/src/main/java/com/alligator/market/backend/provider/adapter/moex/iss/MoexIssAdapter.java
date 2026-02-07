@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.config.props.MoexIssAdapterProperties;
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.adapter.common.SpringMarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
