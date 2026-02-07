@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.config.props;
+package com.alligator.market.backend.provider.adapter.moex.iss.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

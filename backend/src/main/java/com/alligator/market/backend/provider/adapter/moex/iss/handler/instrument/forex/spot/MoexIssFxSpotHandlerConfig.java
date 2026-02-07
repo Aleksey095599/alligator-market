@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.config.props.MoexIssAdapterProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

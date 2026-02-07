@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrumen
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
-import com.alligator.market.backend.provider.adapter.moex.iss.config.props.MoexIssAdapterProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.web.MoexIssWebConfig;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;

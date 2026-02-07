@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.config.web;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.config.props.MoexIssAdapterProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.config.http.ProviderHttpConfigGlobal;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
