@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -31,7 +31,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
     void liveQuoteForCnyRubTom() {
         // 1) Собираем WebClient с реальным baseUrl и задаем настройки подключения
         String baseUrl = "https://iss.moex.com/iss";
-        MoexIssAdapterProperties props = new MoexIssAdapterProperties(baseUrl);
+        MoexIssConnectionProperties connectionProps = new MoexIssConnectionProperties(baseUrl);
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)
@@ -39,8 +39,8 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
                 .build();
 
         // 2) Собираем реальный обработчик и адаптер
-        MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(props, webClient);
-        handler.attachTo(new MoexIssAdapter(props, webClient));
+        MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(connectionProps, webClient);
+        handler.attachTo(new MoexIssAdapter(connectionProps, webClient));
 
         // 3) Инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);

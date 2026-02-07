@@ -11,5 +11,5 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @ConfigurationProperties("provider.connection-config.moex.iss")
-public record MoexIssAdapterProperties(@NotBlank String baseUrl) {
+public record MoexIssConnectionProperties(@NotBlank String baseUrl) {
 }
