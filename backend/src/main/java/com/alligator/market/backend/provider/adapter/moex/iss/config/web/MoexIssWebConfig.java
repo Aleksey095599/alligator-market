@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.config.web;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
 import com.alligator.market.backend.provider.config.http.ProviderHttpConfigGlobal;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,13 +13,13 @@ import reactor.netty.http.client.HttpClient;
  * Конфигурация web-клиента провайдера рыночных данных MOEX ISS.
  *
  * <p>Использует единый для всех провайдеров HTTP-клиент из {@link ProviderHttpConfigGlobal}
- * и параметры подключения из {@link MoexIssAdapterProperties}.</p>
+ * и параметры подключения из {@link MoexIssConnectionProperties}.</p>
  */
 @Configuration
 public class MoexIssWebConfig {
 
     /* Параметры подключения к провайдеру MOEX ISS. */
-    private final MoexIssAdapterProperties props;
+    private final MoexIssConnectionProperties connectionProps;
 
     /* Единый HTTP-клиент провайдеров. */
     private final HttpClient httpClient;
@@ -28,12 +28,12 @@ public class MoexIssWebConfig {
      * Конструктор конфигурации web-клиента MOEX ISS.
      */
     public MoexIssWebConfig(
-            MoexIssAdapterProperties props, // <-- инжекция бина с параметрами подключения
+            MoexIssConnectionProperties connectionProps, // <-- инжекция бина с параметрами подключения
             @Qualifier("providerHttpClient") HttpClient httpClient // <-- инжекция бина единого HTTP-клиента для провайдеров
 
     ) {
         this.httpClient = httpClient;
-        this.props = props;
+        this.connectionProps = connectionProps;
     }
 
 
@@ -43,7 +43,7 @@ public class MoexIssWebConfig {
     @Bean("moexIssWebClient")
     public WebClient moexIssWebClient(WebClient.Builder builder) {
         return builder
-                .baseUrl(props.baseUrl())
+                .baseUrl(connectionProps.baseUrl())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .defaultHeader("User-Agent", "Alligator Market")
                 .build();

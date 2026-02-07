@@ -2,8 +2,8 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrumen
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssAdapterProperties;
 import com.alligator.market.backend.provider.adapter.moex.iss.config.web.MoexIssWebConfig;
+import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -58,17 +58,17 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssAdapt
     /**
      * Конструктор обработчика.
      *
-     * @param props     параметры подключения к провайдеру {@link MoexIssAdapterProperties}
+     * @param connectionProps параметры подключения к провайдеру {@link MoexIssConnectionProperties}
      * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssWebConfig}
      */
     public MoexIssFxSpotHandler(
-            MoexIssAdapterProperties props,
+            MoexIssConnectionProperties connectionProps,
             WebClient webClient
     ) {
         // Инициализируем базовый класс
         super(HANDLER_CODE, FxSpot.class, InstrumentType.FX_SPOT, SUPPORTED_CODES);
 
-        Objects.requireNonNull(props, "props must not be null");
+        Objects.requireNonNull(connectionProps, "connectionProps must not be null");
         Objects.requireNonNull(webClient, "webClient must not be null");
 
         this.webClient = webClient;
