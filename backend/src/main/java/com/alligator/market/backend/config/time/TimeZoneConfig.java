@@ -13,7 +13,7 @@ import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 /**
- * Конфигурация времени в приложении.
+ * Конфигурационный класс {@link Configuration} для времени в приложении.
  *
  * <p>Настраивает временную зону для системы, Jackson и Hibernate.</p>
  */

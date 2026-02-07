@@ -16,12 +16,19 @@ import java.time.Instant;
 
 /**
  * Родительская JPA-сущность, содержащая поля аудита и версии.
+ *
+ * <p>Пояснения некоторых аннотаций:</p>
+ * <ul>
+ *     <li>{@link MappedSuperclass}: наследники получают маппинг полей в таблицы.</li>
+ *     <li>{@link EntityListeners}: подключаем JPA-слушатель аудита.</li>
+ *     <li>{@link Access} c {@code AccessType.FIELD}: ORM работает напрямую с полями, минуя геттеры/сеттеры.</li>
+ * </ul>
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
 @Getter
 @NoArgsConstructor
-@Access(AccessType.FIELD) // <-- Маппинг по полям: при чтении/записи ORM не вызывает геттеры/сеттеры
+@Access(AccessType.FIELD)
 public abstract class BaseEntity {
 
     @Version
@@ -52,7 +59,7 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private String updatedVia;
 
-    /* (JPA-callback) При вставке: via ставим из AuditContextHolder. */
+    /* (JPA-callback) При вставке: "via" ставим из AuditContextHolder. */
     @PrePersist
     private void __onCreateAudit() {
         String via = AuditContextHolder.viaOrFallback();
@@ -61,7 +68,7 @@ public abstract class BaseEntity {
         onPrePersist();
     }
 
-    /* (JPA-callback) При обновлении: via ставим из AuditContextHolder. */
+    /* (JPA-callback) При обновлении: "via" ставим из AuditContextHolder. */
     @PreUpdate
     private void __onUpdateAudit() {
         this.updatedVia = AuditContextHolder.viaOrFallback();
