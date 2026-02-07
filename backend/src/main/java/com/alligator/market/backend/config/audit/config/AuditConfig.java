@@ -3,25 +3,26 @@ package com.alligator.market.backend.config.audit.config;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.Optional;
 
 /**
- * Конфигурация JPA Auditing.
+ * Конфигурационный класс {@link Configuration} для инфраструктуры аудита:
+ * <ul>
+ *     <li>Активирует инфраструктуру Spring Data JPA auditing {@link EnableJpaAuditing};</li>
+ *     <li>Задает бин поставщика текущего аудитора для Spring Data JPA.</li>
+ * </ul>
  */
 @Configuration
-@EnableJpaAuditing // <-- Включаем инфраструктуру JPA-аудита
+@EnableJpaAuditing
 public class AuditConfig {
 
     /**
-     * Поставщик текущего аудитора для Spring Data JPA.
+     * Поставщик текущего аудитора для инфраструктуры Spring JPA-аудита.
      *
-     * <p>Используется для заполнения полей {@link CreatedBy} и {@link LastModifiedBy}.
-     * Источник значений для указанных полей – {@link AuditContextHolder#actorOrFallback()}.</p>
+     * <p>Использует {@link AuditContextHolder#actorOrFallback()} в качестве источника данных о текущем аудиторе.</p>
      */
     @Bean
     public AuditorAware<String> auditorAware() {
