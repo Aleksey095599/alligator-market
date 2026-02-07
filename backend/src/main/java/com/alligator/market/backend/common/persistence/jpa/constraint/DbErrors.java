@@ -13,7 +13,7 @@ import java.util.Set;
  * <p>Пример: Предположим, что в БД есть таблица, в которой задано ограничение (UNIQUE) на уникальность
  * значений в одной из колонок. В данном приложении, согласно лучшим практикам, каждому ограничению назначается
  * уникальное имя. Поэтому в нашем примере ограничению будет присвоено уникальное имя, например, "uq_some_column".
- * Если при операции сохранения записи в таблицу было выброшено исключение, мы можем с помощью данной утилиты
+ * Если при операции сохранения записи в таблицу будет выброшено исключение, мы сможем с помощью данной утилиты
  * просканировать cause-цепочку исключения с целью найти в ней "uq_some_column". Если имя "uq_some_column"
  * найдено в cause-цепочке исключения, с высокой долей вероятности исключение вызвано нарушением именно этого
  * ограничения.</p>
@@ -26,7 +26,7 @@ import java.util.Set;
 public final class DbErrors {
 
     /**
-     * Приватный конструктор: запрещаем создание экземпляров класса-утилиты.
+     * Приватный конструктор: запрещаем создание экземпляров, так как класс является утилитой.
      */
     private DbErrors() {
         throw new UnsupportedOperationException("Utility class instantiation is not allowed");
@@ -89,14 +89,14 @@ public final class DbErrors {
      * Проверяет, содержит ли строка {@code haystack} подстроку {@code needle} без учёта регистра.
      */
     private static boolean containsIgnoreCase(String haystack, String needle) {
-        // needle == null/blank трактуется как ошибка, потому что в контексте основного метода
-        // это равносильно передаче null/blank имени ограничения БД
+        // needle (null/blank) считаем ошибкой — это эквивалент невалидного имени ограничения.
         Objects.requireNonNull(needle, "needle must not be null");
         if (needle.isBlank()) {
             throw new IllegalArgumentException("needle must not be blank");
         }
 
-        // haystack может быть null (Throwable#getMessage() нередко возвращает null) --> считаем, что совпадения нет
+        // haystack может быть null (Throwable#getMessage() иногда возвращает null) — это не ошибка,
+        // трактуем как отсутствие совпадения
         if (haystack == null) {
             return false;
         }
