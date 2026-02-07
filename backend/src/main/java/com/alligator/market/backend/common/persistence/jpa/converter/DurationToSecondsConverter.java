@@ -3,7 +3,7 @@ package com.alligator.market.backend.common.persistence.jpa.converter;
 import jakarta.persistence.Converter;
 
 /**
- * JPA-конвертер {@link java.time.Duration} ↔ {@link Long} (секунды) для хранения в БД.
+ * JPA-конвертер {@link java.time.Duration} ↔ {@link Long} (количество секунд) для хранения в БД.
  */
 @Converter
 public class DurationToSecondsConverter
