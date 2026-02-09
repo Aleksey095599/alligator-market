@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.handler.registry;
+package com.alligator.market.backend.provider.adapter.moex.iss.config.registry;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
@@ -16,10 +16,10 @@ import java.util.Set;
 public class MoexIssHandlersRegistryConfig {
 
     /**
-     * Единый реестр обработчиков MOEX ISS.
+     * Единый реестр всех обработчиков MOEX ISS.
      */
     @Bean("moexIssHandlers")
-    public Set<AbstractInstrumentHandler<MoexIssAdapter, ? extends Instrument>> moexIssHandlers(
+    public Set<AbstractInstrumentHandler<MoexIssProvider, ? extends Instrument>> moexIssHandlers(
             MoexIssFxSpotHandler fxSpotHandler
     ) {
         return Set.of(fxSpotHandler);

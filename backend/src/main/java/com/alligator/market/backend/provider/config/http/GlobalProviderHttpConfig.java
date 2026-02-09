@@ -19,18 +19,25 @@ import java.time.Duration;
  * </ul>
  *
  * <p>Поверх заданного HTTP-клиента для провайдеров в приложении реализованы более высокоуровневые сетевые абстракции,
- * в частности, web-клиенты для провайдеров.</p>
+ * в частности, web-клиенты обработчиков провайдеров.</p>
  */
-@Configuration
-public class ProviderHttpConfigGlobal {
+@Configuration(proxyBeanMethods = false)
+public class GlobalProviderHttpConfig {
+
+    /* Наименования бинов. */
+    public static final String BEAN_CONNECTION_POOL = "providerConnectionPool";
+    public static final String BEAN_HTTP_CLIENT = "providerHttpClient";
+
+    /* Название пула TCP-соединений. */
+    private static final String POOL_NAME = "provider-connection-pool";
 
     /**
      * <b>Пул TCP-соединений для провайдеров.</b>
      */
-    @Bean("providerConnectionPool")
+    @Bean(BEAN_CONNECTION_POOL)
     public ConnectionProvider providerConnectionPool() {
 
-        return ConnectionProvider.builder("provider-connection-pool")
+        return ConnectionProvider.builder(POOL_NAME)
                 // Верхний предел одновременно открытых TCP-соединений
                 .maxConnections(100)
                 // Лимит количества запросов в ожидании свободного TCP-соединения
@@ -45,8 +52,8 @@ public class ProviderHttpConfigGlobal {
     /**
      * <b>Низкоуровневый HTTP-клиент для провайдеров.</b>
      */
-    @Bean("providerHttpClient")
-    public HttpClient providerHttpClient(@Qualifier("providerConnectionPool") ConnectionProvider cp) {
+    @Bean(BEAN_HTTP_CLIENT)
+    public HttpClient providerHttpClient(@Qualifier(BEAN_CONNECTION_POOL) ConnectionProvider cp) {
 
         return HttpClient.create(cp)
                 // Лимит времени установления TCP-соединения (handshake)

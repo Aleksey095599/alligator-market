@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
 import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
@@ -40,7 +40,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
 
         // 2) Собираем реальный обработчик и адаптер
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(connectionProps, webClient);
-        handler.attachTo(new MoexIssAdapter(connectionProps, webClient));
+        handler.attachTo(new MoexIssProvider(connectionProps, webClient));
 
         // 3) Инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);

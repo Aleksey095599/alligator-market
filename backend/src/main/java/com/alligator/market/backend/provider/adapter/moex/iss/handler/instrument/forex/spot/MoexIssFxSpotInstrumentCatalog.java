@@ -13,7 +13,7 @@ import java.util.*;
  *
  * <p>Содержит инструменты и соответствия "код инструмента ↔ SECID MOEX ISS".</p>
  */
-public class MoexIssFxSpotInstruments {
+public class MoexIssFxSpotInstrumentCatalog {
 
     /* Доменные валюты. */
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
@@ -69,6 +69,6 @@ public class MoexIssFxSpotInstruments {
     }
 
     /* Скрываем конструктор. */
-    private MoexIssFxSpotInstruments() {
+    private MoexIssFxSpotInstrumentCatalog() {
     }
 }

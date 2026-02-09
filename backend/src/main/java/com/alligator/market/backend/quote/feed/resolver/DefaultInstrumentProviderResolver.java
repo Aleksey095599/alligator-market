@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quote.feed.resolver;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssAdapter;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -20,7 +20,7 @@ import java.util.Objects;
 public class DefaultInstrumentProviderResolver implements InstrumentProviderResolver {
 
     /* Код провайдера MOEX ISS. */
-    private static final ProviderCode MOEX_ISS_PROVIDER_CODE = MoexIssAdapter.PROVIDER_CODE;
+    private static final ProviderCode MOEX_ISS_PROVIDER_CODE = MoexIssProvider.PROVIDER_CODE;
 
     @Override
     public ProviderCode resolveProvider(Instrument instrument) {

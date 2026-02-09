@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.audit.config;
+package com.alligator.market.backend.config.audit;
 
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.util.Optional;
 
 /**
- * Конфигурационный класс {@link Configuration} для инфраструктуры аудита:
+ * Конфигурационный класс инфраструктуры аудита:
  * <ul>
  *     <li>Активирует инфраструктуру Spring Data JPA auditing {@link EnableJpaAuditing};</li>
  *     <li>Задает бин поставщика текущего аудитора для Spring Data JPA.</li>
