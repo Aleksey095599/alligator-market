@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -52,7 +52,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
 
         // 2) Готовим baseUrl для WebClient и props
         String baseUrl = mockWebServer.url("/iss").toString();
-        MoexIssConnectionProperties connectionProps = new MoexIssConnectionProperties(baseUrl);
+        MoexIssFxSpotConnectionProperties connectionProps = new MoexIssFxSpotConnectionProperties(baseUrl);
 
         // 3) Создаём WebClient с тестовым baseUrl
         WebClient webClient = WebClient.builder()

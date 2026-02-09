@@ -1,9 +1,10 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot;
+package com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler;
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.config.web.MoexIssWebClientConfig;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.config.instrument.type.forex.spot.web.MoexIssFxSpotWebClientConfig;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.support.catalog.MoexIssFxSpotSupportCatalog;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -40,7 +41,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
     /* Поддерживаемые коды инструментов FX_SPOT. */
-    private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotInstrumentCatalog.SUPPORTED_DOMAIN_CODES;
+    private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotSupportCatalog.SUPPORTED_DOMAIN_CODES;
 
     /* Web-клиент. */
     private final WebClient webClient;
@@ -58,11 +59,11 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /**
      * Конструктор обработчика.
      *
-     * @param connectionProps параметры подключения к провайдеру {@link MoexIssConnectionProperties}
-     * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssWebClientConfig}
+     * @param connectionProps параметры подключения к провайдеру {@link MoexIssFxSpotConnectionProperties}
+     * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssFxSpotWebClientConfig}
      */
     public MoexIssFxSpotHandler(
-            MoexIssConnectionProperties connectionProps,
+            MoexIssFxSpotConnectionProperties connectionProps,
             WebClient webClient
     ) {
         // Инициализируем базовый класс
@@ -128,7 +129,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
 
         // 1) Код инструмента --> SECID MOEX ISS
         InstrumentCode domainCode = instrument.instrumentCode();
-        String secid = MoexIssFxSpotInstrumentCatalog.moexSecidOf(domainCode);
+        String secid = MoexIssFxSpotSupportCatalog.moexSecidOf(domainCode);
 
         // 2) Запрос к MOEX ISS для получения таблицы marketdata для полученного secid
         return webClient

@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -31,7 +31,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
     void liveQuoteForCnyRubTom() {
         // 1) Собираем WebClient с реальным baseUrl и задаем настройки подключения
         String baseUrl = "https://iss.moex.com/iss";
-        MoexIssConnectionProperties connectionProps = new MoexIssConnectionProperties(baseUrl);
+        MoexIssFxSpotConnectionProperties connectionProps = new MoexIssFxSpotConnectionProperties(baseUrl);
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)

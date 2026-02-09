@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.config.handler.instrument.forex.spot;
+package com.alligator.market.backend.provider.adapter.moex.iss.config.instrument.type.forex.spot.handler;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
-import com.alligator.market.backend.provider.adapter.moex.iss.properties.MoexIssConnectionProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class MoexIssFxSpotHandlerConfig {
      */
     @Bean
     public MoexIssFxSpotHandler moexIssFxSpotHandler(
-            MoexIssConnectionProperties connectionProps,
+            MoexIssFxSpotConnectionProperties connectionProps,
             @Qualifier("moexIssWebClient") WebClient webClient
     ) {
         return new MoexIssFxSpotHandler(connectionProps, webClient);

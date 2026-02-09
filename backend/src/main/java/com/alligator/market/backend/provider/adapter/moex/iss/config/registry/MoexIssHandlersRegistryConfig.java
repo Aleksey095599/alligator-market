@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.config.registry;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.handler.instrument.forex.spot.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import org.springframework.context.annotation.Bean;
