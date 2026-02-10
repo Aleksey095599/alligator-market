@@ -10,16 +10,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * <b>Единая для всех провайдеров рыночных данных конфигурация базового слоя WebClient.</b>
+ * Единая для всех провайдеров рыночных данных конфигурация базового слоя web-клиента.
  *
  * <p>В данном конфигурационном классе задаются Spring-бины:</p>
  * <ul>
- *     <li>Базовый {@link WebClient} для провайдеров.</li>
+ *     <li>Базовый {@link WebClient} для всех провайдеров.</li>
  * </ul>
  *
- * <p>Базовый {@link WebClient} настраивается поверх низкоуровневого HTTP-клиента для провайдеров
- * {@link GlobalProviderHttpConfig} и используется как "шаблон" для создания конкретных WebClient экземпляров
- * в конфигурациях обработчиков через {@link WebClient#mutate()}.</p>
+ * <p>Базовый {@link WebClient} используется как "шаблон" при создании конфигураций web-клиентов для
+ * обработчиков финансовых инструментов через {@link WebClient#mutate()}.</p>
  */
 @Configuration(proxyBeanMethods = false)
 @Import(GlobalProviderHttpConfig.class)
@@ -28,6 +27,11 @@ public class GlobalProviderWebClientConfig {
     /* Наименования бина. */
     public static final String BEAN_BASE_WEB_CLIENT = "providerBaseWebClient";
 
+    /**
+     * Создаёт базовый {@link WebClient} для всех провайдеров.
+     *
+     * @param httpClient низкоуровневый reactor-netty HTTP-клиент для всех провайдеров
+     */
     @Bean(BEAN_BASE_WEB_CLIENT)
     public WebClient providerBaseWebClient(
             @Qualifier(GlobalProviderHttpConfig.BEAN_HTTP_CLIENT) HttpClient httpClient

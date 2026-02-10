@@ -9,20 +9,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Конфигурация web-клиента провайдера рыночных данных MOEX ISS.
- *
- * <p>Использует единую для всех провайдеров конфигурацию базового слоя WebClient {@link GlobalProviderWebClientConfig}
- * и параметры подключения {@link MoexIssFxSpotConnectionProperties}.</p>
+ * Конфигурация web-клиента обработчика финансового инструмента FX_SPOT (провайдер MOEX ISS).
  */
 @Configuration(proxyBeanMethods = false)
 @Import(GlobalProviderWebClientConfig.class)
 public class MoexIssFxSpotWebClientConfig {
 
-    /* Параметры подключения к провайдеру MOEX ISS. */
-    private final MoexIssFxSpotConnectionProperties connectionProps;
-
     /**
-     * Бин Web-клиента провайдера рыночных данных MOEX ISS.
+     * Бин web-клиента обработчика финансового инструмента FX_SPOT (провайдер MOEX ISS).
+     *
+     * @param baseWebClient базовый web-клиент для всех провайдеров
+     * @param props параметры подключения к провайдеру MOEX ISS для инструментов FX_SPOT
      */
     @Bean("moexIssFxSpotWebClient")
     public WebClient moexIssFxSpotWebClient(

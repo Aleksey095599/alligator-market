@@ -10,7 +10,7 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * <b>Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных.</b>
+ * Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных.
  *
  * <p>В данном конфигурационном классе задаются Spring-бины:</p>
  * <ul>
@@ -32,7 +32,7 @@ public class GlobalProviderHttpConfig {
     private static final String POOL_NAME = "provider-connection-pool";
 
     /**
-     * <b>Пул TCP-соединений для провайдеров.</b>
+     * Пул TCP-соединений для всех провайдеров.
      */
     @Bean(BEAN_CONNECTION_POOL)
     public ConnectionProvider providerConnectionPool() {
@@ -50,7 +50,9 @@ public class GlobalProviderHttpConfig {
     }
 
     /**
-     * <b>Низкоуровневый HTTP-клиент для провайдеров.</b>
+     * Низкоуровневый reactor-netty HTTP-клиент для всех провайдеров.
+     *
+     * @param cp пул TCP-соединений {@link ConnectionProvider}
      */
     @Bean(BEAN_HTTP_CLIENT)
     public HttpClient providerHttpClient(@Qualifier(BEAN_CONNECTION_POOL) ConnectionProvider cp) {
