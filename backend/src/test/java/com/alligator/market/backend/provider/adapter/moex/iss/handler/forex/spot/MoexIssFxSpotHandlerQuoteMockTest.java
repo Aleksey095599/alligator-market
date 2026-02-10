@@ -60,7 +60,7 @@ class MoexIssFxSpotHandlerQuoteMockTest {
                 .build();
 
         // 4) Создаём обработчик и прикрепляем к реальному адаптеру
-        handler = new MoexIssFxSpotHandler(connectionProps, webClient);
+        handler = new MoexIssFxSpotHandler(webClient);
         handler.attachTo(new MoexIssProvider(connectionProps, webClient));
 
         // 5) Готовим инструмент CNYRUB_TOM
