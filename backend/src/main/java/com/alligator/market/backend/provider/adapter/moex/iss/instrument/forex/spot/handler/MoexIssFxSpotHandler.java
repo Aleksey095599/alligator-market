@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler;
 
-import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.type.InstrumentType;
