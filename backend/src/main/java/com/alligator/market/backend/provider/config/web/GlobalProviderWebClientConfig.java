@@ -12,13 +12,9 @@ import reactor.netty.http.client.HttpClient;
 /**
  * Единая для всех провайдеров рыночных данных конфигурация базового слоя web-клиента.
  *
- * <p>В данном конфигурационном классе задаются Spring-бины:</p>
- * <ul>
- *     <li>Базовый {@link WebClient} для всех провайдеров.</li>
- * </ul>
- *
- * <p>Базовый {@link WebClient} используется как "шаблон" при создании конфигураций web-клиентов для
- * обработчиков финансовых инструментов через {@link WebClient#mutate()}.</p>
+ * <p>В данном конфигурационном классе задается Spring-бин базового {@link WebClient} для всех провайдеров,
+ * который является "шаблоном" для создания конфигураций web-клиентов обработчиков финансовых инструментов
+ * (через {@link WebClient#mutate()}).</p>
  */
 @Configuration(proxyBeanMethods = false)
 @Import(GlobalProviderHttpConfig.class)
@@ -38,10 +34,7 @@ public class GlobalProviderWebClientConfig {
     ) {
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
-                // Здесь место для общих настроек:
                 // .filter(...)
-                // .exchangeStrategies(...)
-                // .defaultHeader(...)
                 .build();
     }
 }

@@ -1,17 +1,15 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler;
+package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler;
 
 import com.alligator.market.backend.config.time.TimeZoneConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.config.instrument.type.forex.spot.web.MoexIssFxSpotWebClientConfig;
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.support.catalog.MoexIssFxSpotSupportCatalog;
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.provider.model.passport.AccessMethod;
-import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -59,19 +57,12 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /**
      * Конструктор обработчика.
      *
-     * @param connectionProps параметры подключения к провайдеру {@link MoexIssFxSpotConnectionProperties}
-     * @param webClient web-клиент, настроенный для данного провайдера {@link MoexIssFxSpotWebClientConfig}
+     * @param webClient web-клиент настроенный для запросов провайдеру MOEX ISS по инструментам типа FX_SPOT
      */
-    public MoexIssFxSpotHandler(
-            MoexIssFxSpotConnectionProperties connectionProps,
-            WebClient webClient
-    ) {
-        // Инициализируем базовый класс
+    public MoexIssFxSpotHandler(WebClient webClient) {
         super(HANDLER_CODE, FxSpot.class, InstrumentType.FX_SPOT, SUPPORTED_CODES);
 
-        Objects.requireNonNull(connectionProps, "connectionProps must not be null");
         Objects.requireNonNull(webClient, "webClient must not be null");
-
         this.webClient = webClient;
     }
 
@@ -164,8 +155,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /**
      * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
      *
-     * <p>Примечание: в итоговом {@link QuoteTick} конвертируем временную зону для поля {@link QuoteTick#exchangeTimestamp()}
-     * в UTC, согласно конфигурации времени в приложении {@link TimeZoneConfig}.</p>
+     * <p>Примечание: SYSTIME приходит без временной зоны. Мы предполагаем что это время {@link #MOEX_ZONE}
+     * и переводим в {@link Instant}.</p>
      */
     private QuoteTick mapMarketdataToQuoteTick(InstrumentCode instrumentCode, JsonNode root) {
         /*

@@ -1,6 +1,5 @@
-package com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.support.catalog;
+package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -12,7 +11,7 @@ import java.util.*;
 /**
  * Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
  *
- * <p>Содержит инструменты и соответствия "код инструмента ↔ SECID MOEX ISS".</p>
+ * <p>Содержит инструменты и соответствия "код инструмента в приложении ↔ SECID MOEX ISS".</p>
  */
 public class MoexIssFxSpotSupportCatalog {
 
@@ -49,12 +48,10 @@ public class MoexIssFxSpotSupportCatalog {
     /**
      * Конвертер доменного кода инструмента в SECID MOEX ISS.
      *
-     * <p>Конвертер максимально прост и опирается на следующие инварианты:
-     * <ul>
-     *   <li>Карта соответствий строится на основе надёжных доменных моделей;</li>
-     *   <li>Обработчик {@link MoexIssFxSpotHandler} перед вызовом конвертера гарантирует,
-     *       что {@code instrumentCode} принадлежит {@link #SUPPORTED_DOMAIN_CODES}.</li>
-     * </ul>
+     * <p>Конвертер опирается на карту соответствий доменных кодов и SECID MOEX ISS {@link #DOMAIN_CODE_TO_SECID}.</p>
+     *
+     * @param instrumentCode доменный код инструмента
+     * @return SECID MOEX ISS
      */
     public static String moexSecidOf(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -71,5 +68,6 @@ public class MoexIssFxSpotSupportCatalog {
 
     /* Скрываем конструктор. */
     private MoexIssFxSpotSupportCatalog() {
+        throw new UnsupportedOperationException("Utility class");
     }
 }

@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.handler.MoexIssFxSpotHandler;
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.type.forex.spot.properties.MoexIssFxSpotConnectionProperties;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
+import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;

@@ -34,7 +34,7 @@ public class GlobalProviderHttpConfig {
     /**
      * Пул TCP-соединений для всех провайдеров.
      */
-    @Bean(BEAN_CONNECTION_POOL)
+    @Bean(value = BEAN_CONNECTION_POOL, destroyMethod = "dispose")
     public ConnectionProvider providerConnectionPool() {
 
         return ConnectionProvider.builder(POOL_NAME)
