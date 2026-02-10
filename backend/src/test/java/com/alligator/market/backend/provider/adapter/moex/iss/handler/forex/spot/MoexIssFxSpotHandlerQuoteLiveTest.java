@@ -39,7 +39,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
                 .build();
 
         // 2) Собираем реальный обработчик и адаптер
-        MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(connectionProps, webClient);
+        MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(webClient);
         handler.attachTo(new MoexIssProvider(connectionProps, webClient));
 
         // 3) Инструмент для теста
