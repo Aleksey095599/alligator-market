@@ -20,7 +20,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки п.
+ * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
  */
 @Disabled("Manual run only: long integration scenario")
 class MoexIssFxSpotHandlerQuoteLiveTest {
