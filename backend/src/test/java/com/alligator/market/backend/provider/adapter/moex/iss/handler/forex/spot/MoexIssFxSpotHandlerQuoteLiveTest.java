@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
-import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.properties.MoexIssFxSpotConnectionProperties;
 import com.alligator.market.domain.instrument.type.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
@@ -16,6 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,18 +29,17 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
     @Tag("external")
     @Tag("slow")
     void liveQuoteForCnyRubTom() {
-        // 1) Собираем WebClient с реальным baseUrl и задаем настройки подключения
+        // 1) Собираем WebClient с реальным baseUrl
         String baseUrl = "https://iss.moex.com/iss";
-        MoexIssFxSpotConnectionProperties connectionProps = new MoexIssFxSpotConnectionProperties(baseUrl);
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader("User-Agent", "Alligator Market TEST")
                 .build();
 
-        // 2) Собираем реальный обработчик и адаптер
+        // 2) Собираем реальный обработчик и провайдер
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(webClient);
-        handler.attachTo(new MoexIssProvider(connectionProps, webClient));
+        MoexIssProvider provider = new MoexIssProvider(Set.of(handler));
 
         // 3) Инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
@@ -48,7 +47,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Запускаем запрос к реальному MOEX ISS
-        Mono<QuoteTick> result = Mono.from(handler.quote(cnyRubTom));
+        Mono<QuoteTick> result = Mono.from(provider.quote(cnyRubTom));
 
         // Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
         StepVerifier.create(result)
