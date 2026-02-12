@@ -49,7 +49,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         // 4) Запускаем запрос к реальному MOEX ISS
         Mono<QuoteTick> result = Mono.from(provider.quote(cnyRubTom));
 
-        // Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
+        // 5) Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
         StepVerifier.create(result)
                 .assertNext(tick -> {
                     // ВРЕМЕННЫЙ вывод для наглядности
