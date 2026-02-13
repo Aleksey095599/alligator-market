@@ -22,6 +22,7 @@ import java.time.Instant;
  *     <li>{@link MappedSuperclass}: наследники получают маппинг полей в таблицы.</li>
  *     <li>{@link EntityListeners}: подключаем JPA-слушатель аудита.</li>
  *     <li>{@link Access} c {@code AccessType.FIELD}: ORM работает напрямую с полями, минуя геттеры/сеттеры.</li>
+ *     <li>{@link Setter} c {@code AccessType.NONE}: поле нельзя назначить сеттером, используется JPA-callback.</li>
  * </ul>
  */
 @MappedSuperclass
@@ -43,7 +44,7 @@ public abstract class BaseEntity {
     @Column(updatable = false, nullable = false)
     private String createdBy;
 
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, только callback
+    @Setter(AccessLevel.NONE) // <-- Поле назначается через callback
     @Column(updatable = false, nullable = false)
     private String createdVia;
 
@@ -55,7 +56,7 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private String updatedBy;
 
-    @Setter(AccessLevel.NONE) // <-- Поле нельзя переназначать сеттером, только callback
+    @Setter(AccessLevel.NONE) // <-- Поле назначается через callback
     @Column(nullable = false)
     private String updatedVia;
 

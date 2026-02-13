@@ -57,3 +57,10 @@ Closes #123, Fixes #456, Related to #789.
 fix(auth): handle expired JWT tokens
 feat(order): add discount code support
 docs(readme): update local setup instructions
+
+7. --- Конвенция config (Spring wiring) ---
+config/** содержит только wiring Spring-бинов: @Configuration, @Bean, @Import, @EnableConfigurationProperties (и при необходимости пост-процессоры/валидаторы контекста).
+Любой класс *Config самодостаточен: если его бинам нужны другие бины — он обязан явно подключить соответствующие конфиги через @Import (не полагаться на “верхние” импорты).
+Классы внешних настроек называются *Properties, лежат вне config/** и подключаются явно через @EnableConfigurationProperties(...) там, где используются.
+Бизнес-логика и модели не зависят от Spring: без @Component/@Service/..., без импорта классов из config/**.
+Имена бинов не дублируются строками: использовать константы (BEAN_...) в @Bean и @Qualifier.
