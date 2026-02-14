@@ -1,13 +1,11 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProperties;
+import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -21,15 +19,22 @@ import java.util.Objects;
  * <p>Назначение: координировать запуск задач обслуживания провайдеров.</p>
  */
 @Slf4j
-@Service
-@RequiredArgsConstructor
 public class ProviderMaintenanceOrchestrator {
 
-    /* Набор задач обслуживания (порядок задается через @Order на задачах). */
+    /* Набор задач обслуживания (порядок задается в wiring-конфиге). */
     private final List<ProviderMaintenanceTask> tasks;
 
     /* Настройки maintenance. */
     private final ProviderMaintenanceProperties props;
+
+    /* Конструктор. */
+    public ProviderMaintenanceOrchestrator(
+            List<ProviderMaintenanceTask> tasks,
+            ProviderMaintenanceProperties props
+    ) {
+        this.tasks = List.copyOf(Objects.requireNonNull(tasks, "tasks must not be null"));
+        this.props = Objects.requireNonNull(props, "props must not be null");
+    }
 
     /**
      * Запустить все задачи обслуживания и вернуть отчёт.

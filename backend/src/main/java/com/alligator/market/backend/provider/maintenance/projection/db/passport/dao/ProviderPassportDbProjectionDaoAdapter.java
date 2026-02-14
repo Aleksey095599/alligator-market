@@ -6,7 +6,6 @@ import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,7 +17,6 @@ import java.util.Objects;
 /**
  * JDBC-адаптер доменного DAO для прямых пакетных операций с паспортами провайдеров в БД (контекст PostgreSQL).
  */
-@Repository
 public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportDbProjectionDao {
 
     /* Spring JdbcTemplate. */
