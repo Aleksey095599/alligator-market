@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.maintenance.projection.db.passport.config;
+package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
 
 import com.alligator.market.backend.provider.maintenance.projection.db.passport.task.ProviderPassportDbProjectionTask;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;

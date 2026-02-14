@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.maintenance.projection.db.passport.config;
+package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
 
-import com.alligator.market.backend.provider.maintenance.context.config.ProviderMaintenanceContextScannerConfig;
+import com.alligator.market.backend.provider.maintenance.config.context.scanner.ProviderMaintenanceContextScannerConfig;
 import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;

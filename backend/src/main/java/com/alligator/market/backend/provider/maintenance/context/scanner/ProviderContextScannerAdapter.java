@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Адаптер доменного сканера контекста приложения в среде Spring.
+ * Backend реализация доменного абстрактного сканера контекста приложения.
  */
 public class ProviderContextScannerAdapter extends AbstractProviderContextScanner {
 
