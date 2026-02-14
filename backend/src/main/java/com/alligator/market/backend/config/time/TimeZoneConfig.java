@@ -17,7 +17,7 @@ import java.util.TimeZone;
  *
  * <p>Настраивает временную зону для системы, Jackson и Hibernate.</p>
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Slf4j
 public class TimeZoneConfig {
 
