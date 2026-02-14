@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.maintenance.orchestration.config;
+package com.alligator.market.backend.provider.maintenance.orchestration.properties;
 
 import lombok.Getter;
 import lombok.Setter;

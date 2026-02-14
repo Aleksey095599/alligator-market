@@ -2,21 +2,20 @@ package com.alligator.market.backend.provider.maintenance.orchestration.bootstra
 
 import com.alligator.market.backend.config.audit.context.AuditContext;
 import com.alligator.market.backend.config.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.maintenance.orchestration.config.ProviderMaintenanceProperties;
+import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 /**
  * Bootstrap-компонент: запускает процесс обслуживания провайдеров рыночных данных при старте приложения.
  */
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class ProviderMaintenanceBootstrap implements ApplicationRunner {
 
     /* Оркестратор процессов обслуживания провайдеров. */
@@ -24,6 +23,15 @@ public class ProviderMaintenanceBootstrap implements ApplicationRunner {
 
     /* Единый источник конфигурации для provider maintenance. */
     private final ProviderMaintenanceProperties props;
+
+    /* Конструктор. */
+    public ProviderMaintenanceBootstrap(
+            ProviderMaintenanceOrchestrator orchestrator,
+            ProviderMaintenanceProperties props
+    ) {
+        this.orchestrator = Objects.requireNonNull(orchestrator, "orchestrator must not be null");
+        this.props = Objects.requireNonNull(props, "props must not be null");
+    }
 
     @Override
     public void run(ApplicationArguments args) {
