@@ -33,10 +33,7 @@ public class AppTimeConfig {
     }
 
     /**
-     * Часы приложения — использовать во всём коде вместо {@code Instant.now()} / {@code ZonedDateTime.now()}.
-     *
-     * <p>Важно: {@link Clock} нужен не для хранения времени (в БД всё равно {@code Instant}),
-     * а для единообразного получения "now" и корректной календарной логики в бизнес-зоне.</p>
+     * Часы приложения:
      */
     @Bean(BEAN_APP_CLOCK)
     public Clock appClock(@Qualifier(BEAN_APP_BUSINESS_ZONE_ID) ZoneId appBusinessZoneId) {
