@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
 
-import com.alligator.market.backend.provider.maintenance.config.context.scanner.ProviderMaintenanceContextScannerConfig;
+import com.alligator.market.backend.provider.maintenance.config.context.scanner.ProviderContextScannerConfig;
 import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        ProviderMaintenanceContextScannerConfig.class,
+        ProviderContextScannerConfig.class,
         ProviderPassportDbProjectionDaoConfig.class
 })
 public class ProviderPassportDbProjectionConfig {
@@ -27,7 +27,7 @@ public class ProviderPassportDbProjectionConfig {
      */
     @Bean(BEAN_PROVIDER_PASSPORT_DB_PROJECTION)
     public ProviderPassportDbProjection providerPassportDbProjection(
-            @Qualifier(ProviderMaintenanceContextScannerConfig.BEAN_PROVIDER_CONTEXT_SCANNER)
+            @Qualifier(ProviderContextScannerConfig.BEAN_PROVIDER_CONTEXT_SCANNER)
             ProviderContextScanner scanner,
             ProviderPassportRepository repository,
             @Qualifier(ProviderPassportDbProjectionDaoConfig.BEAN_PROVIDER_PASSPORT_DB_PROJECTION_DAO)

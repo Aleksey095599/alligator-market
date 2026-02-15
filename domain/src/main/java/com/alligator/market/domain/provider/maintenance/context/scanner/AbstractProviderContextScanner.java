@@ -9,7 +9,7 @@ import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplica
 import java.util.*;
 
 /**
- * Абстрактная реализация сканера контекста приложения.
+ * Абстрактная реализация {@link ProviderContextScanner}.
  */
 public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
 
