@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.maintenance.config.orchestration.service;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.bootstrap.ProviderMaintenanceBootstrap;
 import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
@@ -33,14 +32,4 @@ public class ProviderMaintenanceOrchestrationConfig {
         return new ProviderMaintenanceOrchestrator(tasks, props);
     }
 
-    /**
-     * Бин bootstrap-процесса.
-     */
-    @Bean
-    public ProviderMaintenanceBootstrap providerMaintenanceBootstrap(
-            ProviderMaintenanceOrchestrator orchestrator,
-            ProviderMaintenanceProperties props
-    ) {
-        return new ProviderMaintenanceBootstrap(orchestrator, props);
-    }
 }
