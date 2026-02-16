@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.maintenance.config.orchestration;
+package com.alligator.market.backend.provider.maintenance.config.orchestration.service;
 
 import com.alligator.market.backend.provider.maintenance.orchestration.bootstrap.ProviderMaintenanceBootstrap;
 import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 
 /**
- * Конфигурация wiring оркестрации provider maintenance.
+ * Конфигурация wiring {@link ProviderMaintenanceOrchestrator}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(ProviderMaintenanceTasksConfig.class)
@@ -22,7 +22,7 @@ import java.util.List;
 public class ProviderMaintenanceOrchestrationConfig {
 
     /**
-     * Бин оркестратора задач обслуживания провайдеров.
+     * Бин оркестратора.
      */
     @Bean
     public ProviderMaintenanceOrchestrator providerMaintenanceOrchestrator(
@@ -34,7 +34,7 @@ public class ProviderMaintenanceOrchestrationConfig {
     }
 
     /**
-     * Бин bootstrap-процесса обслуживания при старте приложения.
+     * Бин bootstrap-процесса.
      */
     @Bean
     public ProviderMaintenanceBootstrap providerMaintenanceBootstrap(

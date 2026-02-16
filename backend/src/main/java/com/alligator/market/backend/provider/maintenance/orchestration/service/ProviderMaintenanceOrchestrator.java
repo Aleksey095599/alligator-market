@@ -15,8 +15,6 @@ import java.util.Objects;
 
 /**
  * Оркестратор задач обслуживания провайдеров.
- *
- * <p>Назначение: координировать запуск задач обслуживания провайдеров.</p>
  */
 @Slf4j
 public class ProviderMaintenanceOrchestrator {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Адаптер доменного {@link ProviderContextScannerAdapter}.
+ * Адаптер доменного {@link AbstractProviderContextScanner}.
  */
 public class ProviderContextScannerAdapter extends AbstractProviderContextScanner {
 
