@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.maintenance.config.orchestration.tasks;
 
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
-import com.alligator.market.backend.provider.maintenance.config.projection.db.passport.ProviderPassportDbProjectionTaskConfig;
+import com.alligator.market.backend.provider.maintenance.config.projection.db.passport.task.ProviderPassportDbProjectionTaskConfig;
 import com.alligator.market.backend.provider.maintenance.projection.db.passport.task.ProviderPassportDbProjectionTask;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 
 /**
- * Конфигурация wiring единого набора задач по обсулживанию провайдеров.
+ * Конфигурация wiring единого набора ВСЕХ задач по обслуживанию провайдеров.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(ProviderPassportDbProjectionTaskConfig.class)

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JDBC-адаптер доменного DAO для прямых пакетных операций с паспортами провайдеров в БД (контекст PostgreSQL).
+ * JDBC-адаптер доменного DAO {@link ProviderPassportDbProjectionDao} (контекст PostgreSQL).
  */
 public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportDbProjectionDao {
 

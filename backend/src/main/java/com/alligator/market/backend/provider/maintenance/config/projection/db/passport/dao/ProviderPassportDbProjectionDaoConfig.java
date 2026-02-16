@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
+package com.alligator.market.backend.provider.maintenance.config.projection.db.passport.dao;
 
 import com.alligator.market.backend.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDaoAdapter;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Конфигурация wiring JDBC DAO для проекции паспортов провайдеров.
+ * Конфигурация wiring {@link ProviderPassportDbProjectionDao}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportDbProjectionDaoConfig {

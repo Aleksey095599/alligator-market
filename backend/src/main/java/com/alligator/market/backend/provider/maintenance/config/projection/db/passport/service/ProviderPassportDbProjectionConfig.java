@@ -1,6 +1,7 @@
-package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
+package com.alligator.market.backend.provider.maintenance.config.projection.db.passport.service;
 
 import com.alligator.market.backend.provider.maintenance.config.context.scanner.ProviderContextScannerConfig;
+import com.alligator.market.backend.provider.maintenance.config.projection.db.passport.dao.ProviderPassportDbProjectionDaoConfig;
 import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Конфигурация wiring для доменного сервиса проекции паспортов провайдеров из контекста приложения в БД.
+ * Конфигурация wiring доменного сервиса {@link ProviderPassportDbProjection}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

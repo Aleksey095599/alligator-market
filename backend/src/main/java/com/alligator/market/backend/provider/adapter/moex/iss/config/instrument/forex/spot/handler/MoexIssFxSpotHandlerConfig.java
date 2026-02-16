@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Конфигурация бина обработчика инструментов типа FX_SPOT провайдера MOEX ISS.
+ * Конфигурация wiring {@link MoexIssFxSpotHandler}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssFxSpotWebClientConfig.class)

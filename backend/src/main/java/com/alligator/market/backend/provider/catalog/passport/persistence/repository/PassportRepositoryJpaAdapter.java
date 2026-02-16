@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Адаптер доменного репозитория паспортов провайдеров (в контексте Spring Data JPA).
+ * Адаптер доменного {@link ProviderPassportRepository} (контекст Spring Data JPA).
  *
- * <p>{@link Transactional} в режиме только чтение, так как таблица {@code provider_passport} — статичный справочник
- * метаданных провайдеров.</p>
+ * <p>Примечание: {@link Transactional} с {@code readOnly} – потому что таблица БД с пасспортами провайдеров это
+ * статичный справочник метаданных.</p>
  */
 @Repository
 @Transactional(readOnly = true)

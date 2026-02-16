@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация bootstrap-процесса обслуживания провайдеров.
+ * Конфигурация wiring {@link ProviderMaintenanceBootstrap}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderMaintenanceBootstrapConfig {

@@ -1,5 +1,6 @@
-package com.alligator.market.backend.provider.maintenance.config.projection.db.passport;
+package com.alligator.market.backend.provider.maintenance.config.projection.db.passport.task;
 
+import com.alligator.market.backend.provider.maintenance.config.projection.db.passport.service.ProviderPassportDbProjectionConfig;
 import com.alligator.market.backend.provider.maintenance.projection.db.passport.task.ProviderPassportDbProjectionTask;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Конфигурация wiring задачи обновления проекции паспортов провайдеров.
+ * Конфигурация wiring {@link ProviderPassportDbProjectionTask}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(ProviderPassportDbProjectionConfig.class)

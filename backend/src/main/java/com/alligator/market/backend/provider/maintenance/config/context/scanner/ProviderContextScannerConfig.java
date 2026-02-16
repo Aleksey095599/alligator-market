@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * Конфигурация wiring {@link ProviderContextScannerAdapter}.
+ * Конфигурация wiring {@link ProviderContextScanner}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderContextScannerConfig {
