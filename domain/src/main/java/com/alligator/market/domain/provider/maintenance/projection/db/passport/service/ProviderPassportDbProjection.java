@@ -18,13 +18,12 @@ import java.util.Set;
  * <p><b>Логика</b></p>
  * <ul>
  *     <li>Источник истины — контекст приложения.</li>
- *     <li>Сканер контекста {@link ProviderContextScanner} извлекает из контекста приложения паспорта провайдеров,
- *         индексированные по коду провайдера.</li>
- *     <li>Репозиторий {@link ProviderPassportRepository} извлекает коды провайдеров,
- *         для которых в БД есть паспорта.</li>
- *     <li>DAO {@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта,
- *         соответствующие устаревшим кодам провайдеров.</li>
- *     <li>DAO {@link ProviderPassportDbProjectionDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>{@link ProviderContextScanner} извлекает из контекста приложения паспорта провайдеров, индексированные
+ *     по коду провайдера.</li>
+ *     <li>{@link ProviderPassportRepository} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
+ *     <li>{@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта, соответствующие устаревшим
+ *     кодам провайдеров.</li>
+ *     <li>{@link ProviderPassportDbProjectionDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
  * <p><b>Преимущества применения DAO:</b></p>
