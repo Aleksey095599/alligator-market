@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.maintenance.orchestration.properties;
+package com.alligator.market.backend.provider.maintenance.properties;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

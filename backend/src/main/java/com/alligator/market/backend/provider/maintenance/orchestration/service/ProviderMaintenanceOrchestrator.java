@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.orchestration.service;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
+import com.alligator.market.backend.provider.maintenance.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;

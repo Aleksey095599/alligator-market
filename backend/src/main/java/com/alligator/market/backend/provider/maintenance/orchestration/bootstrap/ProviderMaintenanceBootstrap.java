@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.maintenance.orchestration.bootstra
 
 import com.alligator.market.backend.audit.context.AuditContext;
 import com.alligator.market.backend.audit.context.AuditContextHolder;
-import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
+import com.alligator.market.backend.provider.maintenance.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import org.springframework.boot.ApplicationArguments;

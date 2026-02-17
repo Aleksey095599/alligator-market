@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.config.orchestration.service;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.properties.ProviderMaintenanceProperties;
+import com.alligator.market.backend.provider.maintenance.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
 import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
 import com.alligator.market.backend.provider.maintenance.config.orchestration.tasks.ProviderMaintenanceTasksConfig;
