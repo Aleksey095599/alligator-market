@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.audit.context;
+package com.alligator.market.backend.audit.context;
 
 /**
  * Контекст аудита приложения.

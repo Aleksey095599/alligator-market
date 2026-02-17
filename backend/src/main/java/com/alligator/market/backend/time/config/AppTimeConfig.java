@@ -1,6 +1,6 @@
-package com.alligator.market.backend.config.time;
+package com.alligator.market.backend.time.config;
 
-import com.alligator.market.backend.time.AppTimeProperties;
+import com.alligator.market.backend.time.properties.AppTimeProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
