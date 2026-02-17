@@ -40,10 +40,10 @@ public class ProviderMaintenanceProperties {
     @NotNull
     private BootstrapProperties bootstrap = new BootstrapProperties();
 
-    /* Настройки задач maintenance (вкл/выкл задач и т.п.). */
+    /* Настройки задач maintenance по коду: provider.maintenance.tasks.<task-code>.* */
     @Valid
     @NotNull
-    private TasksProperties tasks = new TasksProperties();
+    private Map<String, TaskProperties> tasks = new HashMap<>();
 
     /**
      * Удобный метод: проверить, включена ли задача по её коду.
@@ -55,7 +55,8 @@ public class ProviderMaintenanceProperties {
         if (code.isBlank()) {
             throw new IllegalArgumentException("task code must not be blank");
         }
-        return tasks.isTaskEnabled(code, defaultEnabled);
+        TaskProperties props = tasks.get(code);
+        return props == null ? defaultEnabled : props.enabled;
     }
 
     /**
@@ -70,30 +71,6 @@ public class ProviderMaintenanceProperties {
 
         /* provider.maintenance.bootstrap.fail-fast */
         private boolean failFast = false;
-    }
-
-    /**
-     * Группа настроек {@code provider.maintenance.tasks.*}.
-     */
-    @Getter
-    @Setter
-    public static class TasksProperties {
-
-        /**
-         * Настройки задач по коду задачи.
-         *
-         * <p>Пример: ключ {@code provider-passport-db-projection} попадёт в {@code map.get("provider-passport-db-projection")}.</p>
-         */
-        @NotNull
-        private Map<String, TaskProperties> map = new HashMap<>();
-
-        /**
-         * Удобный метод: если задача не описана в конфиге, вернуть {@code defaultEnabled}.
-         */
-        public boolean isTaskEnabled(String code, boolean defaultEnabled) {
-            TaskProperties props = map.get(code);
-            return props == null ? defaultEnabled : props.enabled;
-        }
     }
 
     /**
