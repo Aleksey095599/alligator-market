@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.maintenance.config.context.scanner;
+package com.alligator.market.backend.provider.maintenance.config.scanner.context;
 
-import com.alligator.market.backend.provider.maintenance.context.scanner.ProviderContextScannerAdapter;
+import com.alligator.market.backend.provider.maintenance.scanner.context.ProviderContextScannerAdapter;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
+import com.alligator.market.domain.provider.maintenance.scanner.context.ProviderContextScanner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

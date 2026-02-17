@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.maintenance.context.scanner;
+package com.alligator.market.domain.provider.maintenance.scanner.context;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;

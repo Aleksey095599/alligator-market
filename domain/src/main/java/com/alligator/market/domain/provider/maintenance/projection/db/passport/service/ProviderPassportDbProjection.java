@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.maintenance.projection.db.passport.
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
-import com.alligator.market.domain.provider.maintenance.context.scanner.ProviderContextScanner;
+import com.alligator.market.domain.provider.maintenance.scanner.context.ProviderContextScanner;
 import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;

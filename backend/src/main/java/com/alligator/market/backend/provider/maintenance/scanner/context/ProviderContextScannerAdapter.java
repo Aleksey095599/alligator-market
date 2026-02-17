@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.maintenance.context.scanner;
+package com.alligator.market.backend.provider.maintenance.scanner.context;
 
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.maintenance.context.scanner.AbstractProviderContextScanner;
+import com.alligator.market.domain.provider.maintenance.scanner.context.AbstractProviderContextScanner;
 
 import java.util.List;
 import java.util.Objects;
