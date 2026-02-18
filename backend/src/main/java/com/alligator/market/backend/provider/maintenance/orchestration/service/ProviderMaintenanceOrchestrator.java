@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.maintenance.properties.ProviderMain
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceReport;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskResult;
 import com.alligator.market.backend.provider.maintenance.orchestration.report.ProviderMaintenanceTaskStatus;
-import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
+import com.alligator.market.domain.provider.maintenance.task.ProviderMaintenanceTask;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

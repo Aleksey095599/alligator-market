@@ -1,21 +1,21 @@
 package com.alligator.market.backend.provider.maintenance.scanner.context;
 
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.maintenance.scanner.context.AbstractProviderContextScanner;
+import com.alligator.market.domain.provider.registry.passport.AbstractProviderPassportRegistry;
 
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Адаптер доменного {@link AbstractProviderContextScanner}.
+ * Адаптер доменного {@link AbstractProviderPassportRegistry}.
  */
-public class ProviderContextScannerAdapter extends AbstractProviderContextScanner {
+public class ProviderPassportRegistryAdapter extends AbstractProviderPassportRegistry {
 
     /* Список провайдеров. */
     private final List<MarketDataProvider> providers;
 
     /* Конструктор. */
-    public ProviderContextScannerAdapter(List<MarketDataProvider> providers) {
+    public ProviderPassportRegistryAdapter(List<MarketDataProvider> providers) {
         this.providers = Objects.requireNonNull(providers, "providers must not be null");
     }
 

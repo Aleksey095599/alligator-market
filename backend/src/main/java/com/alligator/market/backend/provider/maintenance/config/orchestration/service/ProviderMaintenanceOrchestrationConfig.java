@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.maintenance.config.orchestration.s
 
 import com.alligator.market.backend.provider.maintenance.properties.ProviderMaintenanceProperties;
 import com.alligator.market.backend.provider.maintenance.orchestration.service.ProviderMaintenanceOrchestrator;
-import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
+import com.alligator.market.domain.provider.maintenance.task.ProviderMaintenanceTask;
 import com.alligator.market.backend.provider.maintenance.config.orchestration.tasks.ProviderMaintenanceTasksConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

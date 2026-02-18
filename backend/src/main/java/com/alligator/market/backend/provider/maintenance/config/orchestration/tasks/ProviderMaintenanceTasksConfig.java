@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.config.orchestration.tasks;
 
-import com.alligator.market.backend.provider.maintenance.orchestration.task.ProviderMaintenanceTask;
+import com.alligator.market.domain.provider.maintenance.task.ProviderMaintenanceTask;
 import com.alligator.market.backend.provider.maintenance.config.projection.db.passport.task.ProviderPassportDbProjectionTaskConfig;
 import com.alligator.market.backend.provider.maintenance.projection.db.passport.task.ProviderPassportDbProjectionTask;
 import org.springframework.beans.factory.annotation.Qualifier;

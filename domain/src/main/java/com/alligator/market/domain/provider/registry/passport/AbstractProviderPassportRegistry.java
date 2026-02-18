@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.maintenance.scanner.context;
+package com.alligator.market.domain.provider.registry.passport;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
@@ -9,17 +9,17 @@ import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplica
 import java.util.*;
 
 /**
- * Абстрактная реализация {@link ProviderContextScanner}.
+ * Абстрактная реализация {@link ProviderPassportRegistry}.
  */
-public abstract non-sealed class AbstractProviderContextScanner implements ProviderContextScanner {
+public abstract non-sealed class AbstractProviderPassportRegistry implements ProviderPassportRegistry {
 
     /**
-     * Возвращает последовательность провайдеров из контекста приложения.
+     * Возвращает последовательность провайдеров.
      */
     protected abstract Iterable<MarketDataProvider> providers();
 
     /**
-     * Возвращает из контекста неизменяемую карту "код провайдера → паспорт провайдера" и валидирует инварианты:
+     * Возвращает неизменяемую карту "код провайдера → паспорт провайдера" и валидирует инварианты:
      * <ul>
      *     <li>Коды провайдеров уникальны;</li>
      *     <li>Имена провайдеров уникальны.</li>

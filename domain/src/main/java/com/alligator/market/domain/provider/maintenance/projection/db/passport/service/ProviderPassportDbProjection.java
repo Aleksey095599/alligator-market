@@ -2,8 +2,8 @@ package com.alligator.market.domain.provider.maintenance.projection.db.passport.
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
-import com.alligator.market.domain.provider.maintenance.scanner.context.ProviderContextScanner;
-import com.alligator.market.domain.provider.repository.passport.ProviderPassportRepository;
+import com.alligator.market.domain.provider.registry.passport.ProviderPassportRegistry;
+import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelStore;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
@@ -18,9 +18,9 @@ import java.util.Set;
  * <p><b>Логика</b></p>
  * <ul>
  *     <li>Источник истины — контекст приложения.</li>
- *     <li>{@link ProviderContextScanner} извлекает из контекста приложения паспорта провайдеров, индексированные
+ *     <li>{@link ProviderPassportRegistry} извлекает из контекста приложения паспорта провайдеров, индексированные
  *     по коду провайдера.</li>
- *     <li>{@link ProviderPassportRepository} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
+ *     <li>{@link ProviderPassportReadModelStore} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
  *     <li>{@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта, соответствующие устаревшим
  *     кодам провайдеров.</li>
  *     <li>{@link ProviderPassportDbProjectionDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
@@ -38,17 +38,17 @@ import java.util.Set;
 public class ProviderPassportDbProjection {
 
     /* Сканер контекста. */
-    private final ProviderContextScanner contextScanner;
+    private final ProviderPassportRegistry contextScanner;
 
     /* Репозиторий паспортов. */
-    private final ProviderPassportRepository repository;
+    private final ProviderPassportReadModelStore repository;
 
     /* DAO для прямых пакетных операций с паспортами. */
     private final ProviderPassportDbProjectionDao projectionDao;
 
     /* Конструктор. */
-    public ProviderPassportDbProjection(ProviderContextScanner contextScanner,
-                                        ProviderPassportRepository repository,
+    public ProviderPassportDbProjection(ProviderPassportRegistry contextScanner,
+                                        ProviderPassportReadModelStore repository,
                                         ProviderPassportDbProjectionDao projectionDao) {
         Objects.requireNonNull(contextScanner, "contextScanner must not be null");
         Objects.requireNonNull(repository, "repository must not be null");
