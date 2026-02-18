@@ -10,19 +10,20 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * Единая конфигурация низкоуровневого сетевого слоя для всех провайдеров рыночных данных.
+ * Базовая конфигурация wiring низкоуровневого сетевого слоя для всех провайдеров рыночных данных.
  *
- * <p>В данном конфигурационном классе задаются Spring-бины:</p>
+ * <p>Описание: В данном конфигурационном классе задаются Spring-бины:</p>
  * <ul>
- *     <li>Пул TCP-соединений для провайдеров {@link ConnectionProvider};</li>
- *     <li>Низкоуровневый reactor-netty {@link HttpClient} для провайдеров (поверх пула TCP-соединений).</li>
+ *     <li>Пул TCP-соединений для провайдеров {@link #providerConnectionPool};</li>
+ *     <li>Низкоуровневый reactor-netty {@link #providerHttpClient} для провайдеров (поверх
+ *     {@link #providerConnectionPool}).</li>
  * </ul>
  *
- * <p>Примечание: Поверх полученного {@link HttpClient} реализована единая конфигурация базового слоя WebClient
+ * <p>Назначение: Поверх полученного {@link #providerHttpClient} реализована базовая wiring конфигурация web-клиента
  * для всех провайдеров рыночных данных.</p>
  */
 @Configuration(proxyBeanMethods = false)
-public class GlobalProviderHttpConfig {
+public class BaseProviderHttpConfig {
 
     /* Наименования бинов. */
     public static final String BEAN_CONNECTION_POOL = "providerConnectionPool";
@@ -32,7 +33,7 @@ public class GlobalProviderHttpConfig {
     private static final String POOL_NAME = "provider-connection-pool";
 
     /**
-     * Пул TCP-соединений для всех провайдеров.
+     * Бин пула TCP-соединений для всех провайдеров.
      */
     @Bean(value = BEAN_CONNECTION_POOL, destroyMethod = "dispose")
     public ConnectionProvider providerConnectionPool() {
@@ -50,14 +51,14 @@ public class GlobalProviderHttpConfig {
     }
 
     /**
-     * Низкоуровневый reactor-netty HTTP-клиент для всех провайдеров.
+     * Бин низкоуровневого reactor-netty HTTP-клиента для всех провайдеров.
      *
-     * @param cp пул TCP-соединений {@link ConnectionProvider}
+     * @param connectionProvider пул TCP-соединений
      */
     @Bean(BEAN_HTTP_CLIENT)
-    public HttpClient providerHttpClient(@Qualifier(BEAN_CONNECTION_POOL) ConnectionProvider cp) {
+    public HttpClient providerHttpClient(@Qualifier(BEAN_CONNECTION_POOL) ConnectionProvider connectionProvider) {
 
-        return HttpClient.create(cp)
+        return HttpClient.create(connectionProvider)
                 // Лимит времени установления TCP-соединения (handshake)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
                 // Лимит времени ожидания первого байта ответа после отправки HTTP-запроса

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import java.util.Set;
 
 /**
- * Конфигурация бина набора ВСЕХ обработчиков провайдера MOEX ISS.
+ * Конфигурация wiring набора всех обработчиков провайдера MOEX ISS.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
@@ -21,14 +21,17 @@ import java.util.Set;
 })
 public class MoexIssHandlersConfig {
 
-    public static final String BEAN_HANDLERS = "moexIssHandlers";
+    public static final String BEAN_NAME = "moexIssHandlers";
 
     /**
-     * Единый набор ВСЕХ обработчиков MOEX ISS.
+     * Бин набора всех обработчиков MOEX ISS.
+     *
+     * @param fxSpotHandler обработчик инструмента FX_SPOT
      */
-    @Bean(BEAN_HANDLERS)
+    @Bean(BEAN_NAME)
     public Set<AbstractInstrumentHandler<MoexIssProvider, ? extends Instrument>> moexIssHandlers(
             MoexIssFxSpotHandler fxSpotHandler
+            // + другие *Handler по мере добавления
     ) {
         return Set.of(fxSpotHandler);
     }

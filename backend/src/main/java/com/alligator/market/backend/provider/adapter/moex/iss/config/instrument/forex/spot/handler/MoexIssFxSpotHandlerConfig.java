@@ -15,14 +15,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Import(MoexIssFxSpotWebClientConfig.class)
 public class MoexIssFxSpotHandlerConfig {
 
+    public static final String BEAN_NAME = "moexIssFxSpotHandler";
+
     /**
-     * Бин обработчика инструментов типа FX_SPOT провайдера MOEX ISS.
+     * Бин {@link MoexIssFxSpotHandler}.
      *
-     * @param webClient web-клиент для выполнения запросов к провайдеру
+     * @param webClient web-клиент обработчика финансового инструмента FX_SPOT провайдера MOEX ISS
      */
-    @Bean
+    @Bean(BEAN_NAME)
     public MoexIssFxSpotHandler moexIssFxSpotHandler(
-            @Qualifier(MoexIssFxSpotWebClientConfig.BEAN_WEB_CLIENT) WebClient webClient
+            @Qualifier(MoexIssFxSpotWebClientConfig.BEAN_NAME) WebClient webClient
     ) {
         return new MoexIssFxSpotHandler(webClient);
     }

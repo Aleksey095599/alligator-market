@@ -12,7 +12,7 @@ import java.util.*;
  * Абстрактная реализация {@link ProviderRegistry}.
  *
  * <p>Назначение: Содержит общую логику построения реестра из последовательности провайдеров и
- * гарантирует требуемые инварианты исходного контракта.</p>
+ * обеспечивает требуемые инварианты исходного контракта.</p>
  */
 public abstract non-sealed class AbstractProviderRegistry implements ProviderRegistry {
 

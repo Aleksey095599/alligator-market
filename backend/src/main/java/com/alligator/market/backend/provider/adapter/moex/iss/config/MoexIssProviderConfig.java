@@ -18,10 +18,16 @@ import java.util.Set;
 @Import(MoexIssHandlersConfig.class)
 public class MoexIssProviderConfig {
 
-    /* Бин провайдера MOEX ISS. */
-    @Bean
+    public static final String BEAN_NAME = "moexIssProvider";
+
+    /**
+     * Бин {@link MoexIssProvider}.
+     *
+     * @param handlers набор обработчиков инструментов провайдера MOEX ISS
+     */
+    @Bean(BEAN_NAME)
     public MoexIssProvider moexIssProvider(
-            @Qualifier(MoexIssHandlersConfig.BEAN_HANDLERS)
+            @Qualifier(MoexIssHandlersConfig.BEAN_NAME)
             Set<AbstractInstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
     ) {
         return new MoexIssProvider(handlers);
