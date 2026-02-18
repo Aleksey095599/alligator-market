@@ -25,7 +25,7 @@ public class BaseProviderWebClientConfig {
     /**
      * Бин базового web-клиента для всех провайдеров.
      *
-     * @param httpClient низкоуровневый reactor-netty HTTP-клиент для всех провайдеров
+     * @param httpClient базовый низкоуровневый reactor-netty HTTP-клиент для всех провайдеров
      */
     @Bean(BEAN_NAME)
     public WebClient providerBaseWebClient(
