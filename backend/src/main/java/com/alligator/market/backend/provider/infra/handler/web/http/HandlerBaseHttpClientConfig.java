@@ -18,16 +18,16 @@ import java.time.Duration;
 @Import(HandlerBaseConnectionPoolConfig.class)
 public class HandlerBaseHttpClientConfig {
 
-    public static final String BEAN_NAME = "handlerBaseHttpClient";
+    public static final String BEAN_HANDLER_BASE_HTTP_CLIENT = "handlerBaseHttpClient";
 
     /**
      * Бин базового HTTP-клиента всех обработчиков.
      *
      * @param handlerBaseConnectionPool базовый пул TCP-соединений всех обработчиков
      */
-    @Bean(BEAN_NAME)
+    @Bean(BEAN_HANDLER_BASE_HTTP_CLIENT)
     public HttpClient handlerBaseHttpClient(
-            @Qualifier(HandlerBaseConnectionPoolConfig.BEAN_NAME)
+            @Qualifier(HandlerBaseConnectionPoolConfig.BEAN_HANDLER_BASE_CONNECTION_POOL)
             ConnectionProvider handlerBaseConnectionPool
     ) {
 
