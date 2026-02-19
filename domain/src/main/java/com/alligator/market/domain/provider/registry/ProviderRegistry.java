@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Реестр действующих провайдеров рыночных данных.
  *
- * <p>Назначение: Источник истины по составу действующих провайдеров внутри приложения.</p>
+ * <p>Назначение: Источник истины касательно набора действующих провайдеров внутри приложения.</p>
  *
  * <p>Инварианты контракта:</p>
  * <ul>
@@ -29,9 +29,7 @@ public sealed interface ProviderRegistry permits AbstractProviderRegistry {
     Map<ProviderCode, MarketDataProvider> providersByCode();
 
     /**
-     * Возвращает неизменяемую карту "код провайдера → паспорт провайдера".
-     *
-     * <p>Примечание: Паспорта извлекаются из {@link #providersByCode()}.</p>
+     * Возвращает неизменяемую карту "код провайдера → паспорт провайдера" из {@link #providersByCode()}.
      */
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();

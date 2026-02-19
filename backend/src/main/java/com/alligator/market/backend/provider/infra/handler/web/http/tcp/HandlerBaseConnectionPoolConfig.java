@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.infra.handler.web.http;
+package com.alligator.market.backend.provider.infra.handler.web.http.tcp;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,22 +7,18 @@ import reactor.netty.resources.ConnectionProvider;
 import java.time.Duration;
 
 /**
- * Базовая конфигурация пула TCP-соединений для всех провайдеров рыночных данных.
+ * Конфигурация базового пула TCP-соединений для всех обработчиков финансовых инструментов.
  */
-@Configuration(proxyBeanMethods = false)
-public class BaseProviderConnectionPoolConfig {
+@Configuration(proxyBeanMethods = false) public class HandlerBaseConnectionPoolConfig {
 
-    /* Наименование бина пула TCP-соединений. */
-    public static final String BEAN_CONNECTION_POOL = "providerConnectionPool";
-
-    /* Название пула TCP-соединений. */
-    private static final String POOL_NAME = "provider-connection-pool";
+    public static final String BEAN_NAME = "handlerConnectionPool";
+    private static final String POOL_NAME = "handler-connection-pool";
 
     /**
-     * Бин пула TCP-соединений для всех провайдеров.
+     * Бин базового пула TCP-соединений обработчиков.
      */
-    @Bean(value = BEAN_CONNECTION_POOL, destroyMethod = "dispose")
-    public ConnectionProvider providerConnectionPool() {
+    @Bean(value = BEAN_NAME, destroyMethod = "dispose")
+    public ConnectionProvider handlerBaseConnectionPool() {
 
         return ConnectionProvider.builder(POOL_NAME)
                 // Верхний предел одновременно открытых TCP-соединений
