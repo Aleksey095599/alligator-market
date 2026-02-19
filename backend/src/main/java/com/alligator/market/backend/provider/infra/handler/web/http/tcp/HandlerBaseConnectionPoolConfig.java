@@ -11,7 +11,7 @@ import java.time.Duration;
  */
 @Configuration(proxyBeanMethods = false) public class HandlerBaseConnectionPoolConfig {
 
-    public static final String BEAN_NAME = "handlerConnectionPool";
+    public static final String BEAN_NAME = "handlerBaseConnectionPool";
     private static final String POOL_NAME = "handler-connection-pool";
 
     /**

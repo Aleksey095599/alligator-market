@@ -18,7 +18,7 @@ import java.time.Duration;
 @Import(HandlerBaseConnectionPoolConfig.class)
 public class HandlerBaseHttpClientConfig {
 
-    public static final String BEAN_NAME = "providerHttpClient";
+    public static final String BEAN_NAME = "handlerBaseHttpClient";
 
     /**
      * Бин базового HTTP-клиента всех обработчиков.

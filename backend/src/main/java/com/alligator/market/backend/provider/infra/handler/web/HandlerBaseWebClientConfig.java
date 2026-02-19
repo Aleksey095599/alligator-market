@@ -32,8 +32,8 @@ public class HandlerBaseWebClientConfig {
             HttpClient handlerBaseHttpClient
     ) {
         return WebClient.builder()
+                // Подключаем WebClient к базовому HTTP-клиенту
                 .clientConnector(new ReactorClientHttpConnector(handlerBaseHttpClient))
-                // .filter(...)
                 .build();
     }
 }
