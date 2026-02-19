@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.infra.handler.web;
 
-import com.alligator.market.backend.provider.infra.handler.web.http.BaseProviderHttpConfig;
+import com.alligator.market.backend.provider.infra.handler.web.http.BaseProviderConnectionPoolConfig;
+import com.alligator.market.backend.provider.infra.handler.web.http.BaseProviderHttpClientConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,10 @@ import reactor.netty.http.client.HttpClient;
  * обработчиков финансовых инструментов (через {@link WebClient#mutate()}).</p>
  */
 @Configuration(proxyBeanMethods = false)
-@Import(BaseProviderHttpConfig.class)
+@Import({
+        BaseProviderConnectionPoolConfig.class,
+        BaseProviderHttpClientConfig.class
+})
 public class BaseProviderWebClientConfig {
 
     /* Наименования бина. */
@@ -29,7 +33,7 @@ public class BaseProviderWebClientConfig {
      */
     @Bean(BEAN_NAME)
     public WebClient providerBaseWebClient(
-            @Qualifier(BaseProviderHttpConfig.BEAN_HTTP_CLIENT) HttpClient httpClient
+            @Qualifier(BaseProviderHttpClientConfig.BEAN_HTTP_CLIENT) HttpClient httpClient
     ) {
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
@@ -37,5 +41,4 @@ public class BaseProviderWebClientConfig {
                 .build();
     }
 }
-
 
