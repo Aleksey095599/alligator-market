@@ -10,18 +10,19 @@ import java.util.List;
 
 /**
  * Конфигурация wiring {@link ProviderRegistry}.
+ *
+ * <p>Spring внедряет {@code List<MarketDataProvider>} как список всех бинов типа {@link MarketDataProvider}.</p>
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderRegistryWiringConfig {
 
-    public static final String BEAN_NAME = "providerRegistry";
+    public static final String BEAN_PROVIDER_REGISTRY = "providerRegistry";
 
     /**
-     * Бин {@link ProviderRegistry}.
+     * Доменный реестр провайдеров.
      */
-    @Bean(BEAN_NAME)
+    @Bean(BEAN_PROVIDER_REGISTRY)
     public ProviderRegistry providerRegistry(List<MarketDataProvider> providers) {
         return new ProviderRegistryAdapter(providers);
     }
-
 }

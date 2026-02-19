@@ -12,10 +12,14 @@ import java.util.Objects;
  */
 public final class ProviderRegistryAdapter extends AbstractProviderRegistry {
 
-    /* Набор объектов типа MarketDataProvider. */
+    //=================================================================================================================
+    // ВХОДНЫЕ ДАННЫЕ И КОНСТРУКТОР
+    //=================================================================================================================
+
+    /* Зарегистрированные в приложении провайдеры. */
     private final List<MarketDataProvider> providers;
 
-    /* Конструктор. */
+    /* Конструктор: фиксируем список провайдеров и валидируем базовые предпосылки. */
     public ProviderRegistryAdapter(List<MarketDataProvider> providers) {
         this.providers = List.copyOf(Objects.requireNonNull(providers, "providers must not be null"));
 
@@ -25,7 +29,7 @@ public final class ProviderRegistryAdapter extends AbstractProviderRegistry {
     }
 
     //=================================================================================================================
-    // РЕАЛИЗАЦИЯ РОДИТЕЛЬСКИХ АБСТРАКЦИЙ
+    // РЕАЛИЗАЦИЯ ТОЧЕК РАСШИРЕНИЯ БАЗОВОГО КЛАССА
     //=================================================================================================================
 
     /**

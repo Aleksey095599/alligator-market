@@ -29,10 +29,7 @@ public sealed interface ProviderRegistry permits AbstractProviderRegistry {
     Map<ProviderCode, MarketDataProvider> providersByCode();
 
     /**
-     * Неизменяемая карта "код провайдера → паспорт провайдера".
-     *
-     * <p>Реализация по умолчанию: строится поверх {@link #providersByCode()}; переопределять не требуется,
-     * если логика по умолчанию подходит.</p>
+     * Неизменяемая карта "код провайдера → паспорт провайдера" (дефолтная реализация).
      */
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();

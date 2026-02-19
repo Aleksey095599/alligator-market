@@ -26,7 +26,7 @@ public abstract non-sealed class AbstractProviderRegistry implements ProviderReg
     //=================================================================================================================
 
     /**
-     * Источник провайдеров для построения реестра (задаётся наследником).
+     * Источник провайдеров для построения доменного реестра.
      */
     protected abstract Iterable<MarketDataProvider> providers();
 
