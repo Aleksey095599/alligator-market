@@ -9,19 +9,28 @@ import java.util.Objects;
 
 /**
  * Адаптер доменного {@link AbstractProviderRegistry}.
- *
- * <p>Источник провайдеров — Spring-контекст (внедряется как список бинов {@link MarketDataProvider}).</p>
  */
 public final class ProviderRegistryAdapter extends AbstractProviderRegistry {
 
-    /* Провайдеры из DI-контейнера (порядок задаётся Spring: @Order / Ordered). */
+    /* Набор объектов типа MarketDataProvider. */
     private final List<MarketDataProvider> providers;
 
     /* Конструктор. */
     public ProviderRegistryAdapter(List<MarketDataProvider> providers) {
         this.providers = List.copyOf(Objects.requireNonNull(providers, "providers must not be null"));
+
+        if (providers.isEmpty()) {
+            throw new IllegalArgumentException("providers must not be empty");
+        }
     }
 
+    //=================================================================================================================
+    // РЕАЛИЗАЦИЯ КОНТРАКТА
+    //=================================================================================================================
+
+    /**
+     * Возвращает последовательность провайдеров (источник задаётся реализацией).
+     */
     @Override
     protected Iterable<MarketDataProvider> providers() {
         return providers;

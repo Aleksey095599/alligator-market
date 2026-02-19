@@ -24,12 +24,15 @@ import java.util.Objects;
 public sealed interface ProviderRegistry permits AbstractProviderRegistry {
 
     /**
-     * Возвращает неизменяемую карту "код провайдера → провайдер".
+     * Неизменяемая карта "код провайдера → провайдер".
      */
     Map<ProviderCode, MarketDataProvider> providersByCode();
 
     /**
-     * Возвращает неизменяемую карту "код провайдера → паспорт провайдера" из {@link #providersByCode()}.
+     * Неизменяемая карта "код провайдера → паспорт провайдера".
+     *
+     * <p>Реализация по умолчанию: строится поверх {@link #providersByCode()}; переопределять не требуется,
+     * если логика по умолчанию подходит.</p>
      */
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
