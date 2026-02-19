@@ -27,7 +27,7 @@ public class MoexIssFxSpotWebClientConfig {
      */
     @Bean(BEAN_NAME)
     public WebClient moexIssFxSpotWebClient(
-            @Qualifier(HandlerBaseWebClientConfig.BEAN_NAME) WebClient globalWebClient,
+            @Qualifier(HandlerBaseWebClientConfig.BEAN_HANDLER_BASE_WEB_CLIENT) WebClient globalWebClient,
             MoexIssFxSpotConnectionProperties props
     ) {
         return globalWebClient.mutate()

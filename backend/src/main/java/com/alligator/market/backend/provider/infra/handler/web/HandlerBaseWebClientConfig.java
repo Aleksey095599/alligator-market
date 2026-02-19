@@ -19,16 +19,16 @@ import reactor.netty.http.client.HttpClient;
 @Import({HandlerBaseHttpClientConfig.class})
 public class HandlerBaseWebClientConfig {
 
-    public static final String BEAN_NAME = "handlerBaseWebClient";
+    public static final String BEAN_HANDLER_BASE_WEB_CLIENT = "handlerBaseWebClient";
 
     /**
      * Бин базового web-клиента всех обработчиков.
      *
      * @param handlerBaseHttpClient базовый HTTP-клиент всех обработчиков
      */
-    @Bean(BEAN_NAME)
+    @Bean(BEAN_HANDLER_BASE_WEB_CLIENT)
     public WebClient handlerBaseWebClient(
-            @Qualifier(HandlerBaseHttpClientConfig.BEAN_NAME)
+            @Qualifier(HandlerBaseHttpClientConfig.BEAN_HANDLER_BASE_HTTP_CLIENT)
             HttpClient handlerBaseHttpClient
     ) {
         return WebClient.builder()
@@ -37,4 +37,3 @@ public class HandlerBaseWebClientConfig {
                 .build();
     }
 }
-

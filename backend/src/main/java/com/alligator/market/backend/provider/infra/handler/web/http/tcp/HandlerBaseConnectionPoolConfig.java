@@ -12,13 +12,13 @@ import java.time.Duration;
 @Configuration(proxyBeanMethods = false)
 public class HandlerBaseConnectionPoolConfig {
 
-    public static final String BEAN_NAME = "handlerBaseConnectionPool";
+    public static final String BEAN_HANDLER_BASE_CONNECTION_POOL = "handlerBaseConnectionPool";
     private static final String POOL_NAME = "handler-connection-pool";
 
     /**
      * Бин базового пула TCP-соединений обработчиков.
      */
-    @Bean(value = BEAN_NAME, destroyMethod = "dispose")
+    @Bean(value = BEAN_HANDLER_BASE_CONNECTION_POOL, destroyMethod = "dispose")
     public ConnectionProvider handlerBaseConnectionPool() {
 
         return ConnectionProvider.builder(POOL_NAME)
