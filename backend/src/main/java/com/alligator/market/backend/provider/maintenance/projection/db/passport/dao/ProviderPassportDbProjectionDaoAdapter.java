@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.projection.db.passport.dao;
 
-import com.alligator.market.backend.audit.context.AuditContextHolder;
+import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;

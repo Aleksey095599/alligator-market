@@ -1,4 +1,4 @@
-package com.alligator.market.backend.audit.context;
+package com.alligator.market.backend.infra.jpa.audit.context;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

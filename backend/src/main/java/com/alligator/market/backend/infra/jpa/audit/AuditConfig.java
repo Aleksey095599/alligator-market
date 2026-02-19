@@ -1,6 +1,6 @@
-package com.alligator.market.backend.audit.config;
+package com.alligator.market.backend.infra.jpa.audit;
 
-import com.alligator.market.backend.audit.context.AuditContextHolder;
+import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
