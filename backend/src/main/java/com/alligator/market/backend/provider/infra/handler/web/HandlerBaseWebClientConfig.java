@@ -12,8 +12,8 @@ import reactor.netty.http.client.HttpClient;
 /**
  * Конфигурация базового web-клиента для всех обработчиков финансовых инструментов.
  *
- * <p>Примечание: конфигурации web-клиентов конкретных обработчиков выстраиваются поверх базовой конфигурации
- * через {@link WebClient#mutate()}.</p>
+ * <p>Примечание: конфигурация web-клиента любого обработчика конкретного провайдера выстраивается поверх базового
+ * web-клиента через {@link WebClient#mutate()}.</p>
  */
 @Configuration(proxyBeanMethods = false)
 @Import({HandlerBaseHttpClientConfig.class})
