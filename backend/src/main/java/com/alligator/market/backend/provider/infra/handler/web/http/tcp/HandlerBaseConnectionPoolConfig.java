@@ -9,7 +9,8 @@ import java.time.Duration;
 /**
  * Конфигурация базового пула TCP-соединений для всех обработчиков финансовых инструментов.
  */
-@Configuration(proxyBeanMethods = false) public class HandlerBaseConnectionPoolConfig {
+@Configuration(proxyBeanMethods = false)
+public class HandlerBaseConnectionPoolConfig {
 
     public static final String BEAN_NAME = "handlerBaseConnectionPool";
     private static final String POOL_NAME = "handler-connection-pool";
