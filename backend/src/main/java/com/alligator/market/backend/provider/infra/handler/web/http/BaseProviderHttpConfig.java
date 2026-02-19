@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.infra.web.http;
+package com.alligator.market.backend.provider.infra.handler.web.http;
 
 import io.netty.channel.ChannelOption;
 import org.springframework.beans.factory.annotation.Qualifier;

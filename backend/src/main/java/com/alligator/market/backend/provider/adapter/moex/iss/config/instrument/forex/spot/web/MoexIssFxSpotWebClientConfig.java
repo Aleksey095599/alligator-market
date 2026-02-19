@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.config.instrument.forex.spot.web;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.properties.MoexIssFxSpotConnectionProperties;
-import com.alligator.market.backend.provider.infra.web.BaseProviderWebClientConfig;
+import com.alligator.market.backend.provider.infra.handler.web.BaseProviderWebClientConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

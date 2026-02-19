@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.infra.web;
+package com.alligator.market.backend.provider.infra.handler.web;
 
-import com.alligator.market.backend.provider.infra.web.http.BaseProviderHttpConfig;
+import com.alligator.market.backend.provider.infra.handler.web.http.BaseProviderHttpConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
