@@ -115,26 +115,6 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return handler.quote(instrument);
     }
 
-    /* Ищет обработчик инструмента или бросает исключение. */
-    @SuppressWarnings("unchecked")
-    protected final <I extends Instrument> InstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
-
-        InstrumentCode code = Objects.requireNonNull(
-                instrument.instrumentCode(),
-                "instrumentCode must not be null"
-        );
-
-        InstrumentHandler<P, I> handler =
-                (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
-
-        if (handler == null) {
-            throw new HandlerNotFoundException(code, providerCode);
-        }
-
-        return handler;
-    }
-
     //=================================================================================================================
     // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
     //=================================================================================================================
@@ -189,6 +169,25 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
         return Collections.unmodifiableMap(map);
     }
 
+    /**
+     * Ищет обработчик инструмента или бросает исключение.
+     */
+    @SuppressWarnings("unchecked")
+    protected final <I extends Instrument> InstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+
+        InstrumentCode code = Objects.requireNonNull(instrument.instrumentCode(),
+                "instrumentCode must not be null");
+
+        InstrumentHandler<P, I> handler =
+                (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
+
+        if (handler == null) {
+            throw new HandlerNotFoundException(code, providerCode);
+        }
+
+        return handler;
+    }
 
     /**
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
