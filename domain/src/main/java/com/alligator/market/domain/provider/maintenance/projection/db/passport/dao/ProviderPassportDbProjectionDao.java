@@ -1,11 +1,9 @@
 package com.alligator.market.domain.provider.maintenance.projection.db.passport.dao;
 
-import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelWriteStore;
-
 /**
- * Legacy alias.
+ * Legacy alias: write-порт read-model хранилища паспортов.
  *
- * <p>В домене используем более общий термин readmodel-store. Этот интерфейс будет удалён на следующих шагах.</p>
+ * <p>Нужен для плавной миграции. Будет удалён после переноса инфраструктуры.</p>
  */
-public interface ProviderPassportDbProjectionDao extends ProviderPassportReadModelWriteStore {
+public interface ProviderPassportDbProjectionDao extends ProviderPassportWriteStore {
 }

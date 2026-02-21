@@ -2,8 +2,6 @@ package com.alligator.market.domain.provider.maintenance.projection.db.passport.
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
-import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelStore;
-import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelWriteStore;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
@@ -20,10 +18,10 @@ import java.util.Set;
  *     <li>Источник истины — контекст приложения.</li>
  *     <li>{@link ProviderRegistry} извлекает из контекста приложения паспорта провайдеров, индексированные
  *     по коду провайдера.</li>
- *     <li>{@link ProviderPassportReadModelStore} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
- *     <li>{@link ProviderPassportReadModelWriteStore} пакетно удаляет из БД паспорта, соответствующие устаревшим
+ *     <li>{@link ProviderPassportReadStore} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
+ *     <li>{@link ProviderPassportWriteStore} пакетно удаляет из БД паспорта, соответствующие устаревшим
  *     кодам провайдеров.</li>
- *     <li>{@link ProviderPassportReadModelWriteStore} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>{@link ProviderPassportWriteStore} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
  * <p><b>Преимущества пакетной записи:</b></p>
@@ -41,15 +39,15 @@ public class ProviderPassportDbProjection {
     private final ProviderRegistry providerRegistry;
 
     /* Репозиторий паспортов. */
-    private final ProviderPassportReadModelStore repository;
+    private final ProviderPassportReadStore repository;
 
     /* Порт записи read model паспортов. */
-    private final ProviderPassportReadModelWriteStore writeStore;
+    private final ProviderPassportWriteStore writeStore;
 
     /* Конструктор. */
     public ProviderPassportDbProjection(ProviderRegistry providerRegistry,
-                                        ProviderPassportReadModelStore repository,
-                                        ProviderPassportReadModelWriteStore writeStore) {
+                                        ProviderPassportReadStore repository,
+                                        ProviderPassportWriteStore writeStore) {
         Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         Objects.requireNonNull(repository, "repository must not be null");
         Objects.requireNonNull(writeStore, "writeStore must not be null");

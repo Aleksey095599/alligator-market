@@ -15,10 +15,14 @@ import org.reactivestreams.Publisher;
 import java.util.*;
 
 /**
- * Абстрактная реализация провайдера рыночных данных {@link MarketDataProvider}.
+ * Абстрактная реализация {@link MarketDataProvider}.
  */
 public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
+
+    //=================================================================================================================
+    // ТОЧКИ РАСШИРЕНИЯ ДЛЯ НАСЛЕДНИКОВ
+    //=================================================================================================================
 
     /* Код провайдера. */
     protected final ProviderCode providerCode;

@@ -5,7 +5,6 @@ import com.alligator.market.backend.provider.maintenance.config.projection.db.pa
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.service.ProviderPassportDbProjection;
-import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +29,7 @@ public class ProviderPassportDbProjectionConfig {
     public ProviderPassportDbProjection providerPassportDbProjection(
             @Qualifier(ProviderRegistryWiringConfig.BEAN_PROVIDER_REGISTRY)
             ProviderRegistry providerRegistry,
-            ProviderPassportReadModelStore repository,
+            ProviderPassportReadStore repository,
             @Qualifier(ProviderPassportDbProjectionDaoConfig.BEAN_PROVIDER_PASSPORT_DB_PROJECTION_DAO)
             ProviderPassportDbProjectionDao projectionDao
     ) {

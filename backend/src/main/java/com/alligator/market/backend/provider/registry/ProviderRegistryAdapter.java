@@ -16,14 +16,14 @@ public final class ProviderRegistryAdapter extends AbstractProviderRegistry {
     // ВХОДНЫЕ ДАННЫЕ И КОНСТРУКТОР
     //=================================================================================================================
 
-    /* Зарегистрированные в приложении провайдеры. */
-    private final List<MarketDataProvider> providers;
+    /* Список зарегистрированных в приложении провайдеры. */
+    private final List<MarketDataProvider> providerList;
 
     /* Конструктор: фиксируем список провайдеров и валидируем базовые предпосылки. */
-    public ProviderRegistryAdapter(List<MarketDataProvider> providers) {
-        this.providers = List.copyOf(Objects.requireNonNull(providers, "providers must not be null"));
+    public ProviderRegistryAdapter(List<MarketDataProvider> providerList) {
+        this.providerList = List.copyOf(Objects.requireNonNull(providerList, "providers must not be null"));
 
-        if (providers.isEmpty()) {
+        if (providerList.isEmpty()) {
             throw new IllegalArgumentException("providers must not be empty");
         }
     }
@@ -33,10 +33,10 @@ public final class ProviderRegistryAdapter extends AbstractProviderRegistry {
     //=================================================================================================================
 
     /**
-     * Возвращает последовательность провайдеров (источник задаётся реализацией).
+     * Источник провайдеров для построения доменного реестра.
      */
     @Override
     protected Iterable<MarketDataProvider> providers() {
-        return providers;
+        return providerList;
     }
 }
