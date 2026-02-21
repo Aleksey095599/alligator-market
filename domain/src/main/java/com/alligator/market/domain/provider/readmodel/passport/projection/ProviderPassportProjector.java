@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.readmodel.passport.projection;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportStore;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 
 import java.util.LinkedHashSet;
@@ -10,16 +11,13 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Проекция read-model паспортов провайдеров в хранилище.
- *
- * <p>Источник истины: {@link ProviderRegistry}.
- * Витрина: {@link ProviderPassportReadStore}/{@link ProviderPassportWriteStore}.</p>
+ * Проекция паспортов провайдеров из реестра {@link ProviderRegistry} в хранилище {@link ProviderPassportStore}.
  */
-public class ProviderPassportReadModelProjector {
+public class ProviderPassportProjector {
 
     private final ProviderRegistry providerRegistry;
-    private final ProviderPassportReadStore readStore;
-    private final ProviderPassportWriteStore writeStore;
+    private final ProviderPassportStore.Read readStore;
+    private final ProviderPassportStore.Write writeStore;
 
     /**
      * Конструктор.
@@ -28,10 +26,10 @@ public class ProviderPassportReadModelProjector {
      * @param readStore Хранилище паспортов (порты для чтения)
      * @param writeStore Хранилище паспортов (порты для записи)
      */
-    public ProviderPassportReadModelProjector(
+    public ProviderPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportReadStore readStore,
-            ProviderPassportWriteStore writeStore
+            ProviderPassportStore.Read readStore,
+            ProviderPassportStore.Write writeStore
     ) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         this.readStore = Objects.requireNonNull(readStore, "readStore must not be null");
@@ -39,9 +37,9 @@ public class ProviderPassportReadModelProjector {
     }
 
     public void project() {
-        // Карта "код провайдера → паспорт провайдера" из реестра
+        // Карта реестра: "код провайдера → паспорт провайдера"
         Map<ProviderCode, ProviderPassport> registryPassports = providerRegistry.passportsByCode();
-        // Коды провайдеров из хранилища
+        // Коды провайдеров в хранилище
         Set<ProviderCode> storeCodes = new LinkedHashSet<>(readStore.findAllCodes());
 
         // 1) Если реестр пуст, удаляем все записи из хранилища
@@ -52,7 +50,7 @@ public class ProviderPassportReadModelProjector {
             return;
         }
 
-        // 2) Если в хранилище есть паспорта, которых нет в реестре, удаляем их
+        // 2) Удаляем из хранилища записи для кодов провайдеров, которых нет в карте реестра
         Set<ProviderCode> obsolete = new LinkedHashSet<>(storeCodes);
         obsolete.removeAll(registryPassports.keySet());
         if (!obsolete.isEmpty()) {
