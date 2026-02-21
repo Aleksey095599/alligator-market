@@ -108,21 +108,31 @@ public abstract non-sealed class AbstractMarketDataProvider<P extends MarketData
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // Извлекаем код инструмента
-        InstrumentCode code = Objects.requireNonNull(instrument.instrumentCode(),
-                "instrumentCode must not be null");
+        // Находим обработчик (или бросаем исключение)
+        InstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
 
-        // Используем карту для поиска обработчика
-        @SuppressWarnings("unchecked")
-        InstrumentHandler<P, I> handler = (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
+        // Делегируем вызов обработчику
+        return handler.quote(instrument);
+    }
 
-        // Если обработчик не найден, значит инструмент не поддерживается провайдером
+    /* Ищет обработчик инструмента или бросает исключение. */
+    @SuppressWarnings("unchecked")
+    protected final <I extends Instrument> InstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+
+        InstrumentCode code = Objects.requireNonNull(
+                instrument.instrumentCode(),
+                "instrumentCode must not be null"
+        );
+
+        InstrumentHandler<P, I> handler =
+                (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
+
         if (handler == null) {
             throw new HandlerNotFoundException(code, providerCode);
         }
 
-        // Делегируем вызов обработчику
-        return handler.quote(instrument);
+        return handler;
     }
 
     //=================================================================================================================
