@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.maintenance.projection.db.passport.
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
-import com.alligator.market.domain.provider.registry.passport.ProviderPassportRegistry;
+import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelStore;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -18,7 +18,7 @@ import java.util.Set;
  * <p><b>Логика</b></p>
  * <ul>
  *     <li>Источник истины — контекст приложения.</li>
- *     <li>{@link ProviderPassportRegistry} извлекает из контекста приложения паспорта провайдеров, индексированные
+ *     <li>{@link ProviderRegistry} извлекает из контекста приложения паспорта провайдеров, индексированные
  *     по коду провайдера.</li>
  *     <li>{@link ProviderPassportReadModelStore} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
  *     <li>{@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта, соответствующие устаревшим
@@ -38,7 +38,7 @@ import java.util.Set;
 public class ProviderPassportDbProjection {
 
     /* Сканер контекста. */
-    private final ProviderPassportRegistry contextScanner;
+    private final ProviderRegistry providerRegistry;
 
     /* Репозиторий паспортов. */
     private final ProviderPassportReadModelStore repository;
@@ -47,14 +47,14 @@ public class ProviderPassportDbProjection {
     private final ProviderPassportDbProjectionDao projectionDao;
 
     /* Конструктор. */
-    public ProviderPassportDbProjection(ProviderPassportRegistry contextScanner,
+    public ProviderPassportDbProjection(ProviderRegistry providerRegistry,
                                         ProviderPassportReadModelStore repository,
                                         ProviderPassportDbProjectionDao projectionDao) {
-        Objects.requireNonNull(contextScanner, "contextScanner must not be null");
+        Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         Objects.requireNonNull(repository, "repository must not be null");
         Objects.requireNonNull(projectionDao, "projectionDao must not be null");
 
-        this.contextScanner = contextScanner;
+        this.providerRegistry = providerRegistry;
         this.repository = repository;
         this.projectionDao = projectionDao;
     }
@@ -64,7 +64,7 @@ public class ProviderPassportDbProjection {
      */
     public void refresh() {
         // 1) Извлекаем мапу с паспортами из контекста (индексация по кодам провайдеров)
-        Map<ProviderCode, ProviderPassport> ctxPassports = contextScanner.passportsByCode();
+        Map<ProviderCode, ProviderPassport> ctxPassports = providerRegistry.passportsByCode();
         // 2) Извлекаем коды провайдеров для хранящихся в БД паспортов
         Set<ProviderCode> dbProviderCodes = new LinkedHashSet<>(repository.findAllCodes());
 
