@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider.maintenance.projection.db.passport.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelStore;
+import com.alligator.market.domain.provider.readmodel.store.passport.ProviderPassportReadModelWriteStore;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
@@ -21,17 +21,17 @@ import java.util.Set;
  *     <li>{@link ProviderRegistry} извлекает из контекста приложения паспорта провайдеров, индексированные
  *     по коду провайдера.</li>
  *     <li>{@link ProviderPassportReadModelStore} извлекает коды провайдеров, для которых в БД есть паспорта.</li>
- *     <li>{@link ProviderPassportDbProjectionDao} пакетно удаляет из БД паспорта, соответствующие устаревшим
+ *     <li>{@link ProviderPassportReadModelWriteStore} пакетно удаляет из БД паспорта, соответствующие устаревшим
  *     кодам провайдеров.</li>
- *     <li>{@link ProviderPassportDbProjectionDao} осуществляет пакетный UPSERT паспортов из контекста.</li>
+ *     <li>{@link ProviderPassportReadModelWriteStore} осуществляет пакетный UPSERT паспортов из контекста.</li>
  * </ul>
  *
- * <p><b>Преимущества применения DAO:</b></p>
+ * <p><b>Преимущества пакетной записи:</b></p>
  * <ul>
  *     <li>Минимум обращений к БД → меньше сетевых задержек и нагрузка на пул соединений.</li>
  *     <li>Прямой UPSERT/DELETE без ORM-накладных расходов → быстрее и проще предсказать нагрузку.</li>
  *     <li>Стабильная атомарность операции → все изменения выполняются единым набором пакетных команд.</li>
- *     <li>Единый контракт DAO → легче поддерживать и масштабировать процесс.</li>
+ *     <li>Единый контракт write-store → легче поддерживать и масштабировать процесс.</li>
  * </ul>
  */
 @SuppressWarnings("ClassCanBeRecord")
@@ -43,20 +43,20 @@ public class ProviderPassportDbProjection {
     /* Репозиторий паспортов. */
     private final ProviderPassportReadModelStore repository;
 
-    /* DAO для прямых пакетных операций с паспортами. */
-    private final ProviderPassportDbProjectionDao projectionDao;
+    /* Порт записи read model паспортов. */
+    private final ProviderPassportReadModelWriteStore writeStore;
 
     /* Конструктор. */
     public ProviderPassportDbProjection(ProviderRegistry providerRegistry,
                                         ProviderPassportReadModelStore repository,
-                                        ProviderPassportDbProjectionDao projectionDao) {
+                                        ProviderPassportReadModelWriteStore writeStore) {
         Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         Objects.requireNonNull(repository, "repository must not be null");
-        Objects.requireNonNull(projectionDao, "projectionDao must not be null");
+        Objects.requireNonNull(writeStore, "writeStore must not be null");
 
         this.providerRegistry = providerRegistry;
         this.repository = repository;
-        this.projectionDao = projectionDao;
+        this.writeStore = writeStore;
     }
 
     /**
@@ -71,7 +71,7 @@ public class ProviderPassportDbProjection {
         // Если в контексте пусто — чистим таблицу и выходим
         if (ctxPassports.isEmpty()) {
             if (!dbProviderCodes.isEmpty()) {
-                projectionDao.deleteByCodes(dbProviderCodes);
+                writeStore.deleteByCodes(dbProviderCodes);
             }
             return;
         }
@@ -80,11 +80,11 @@ public class ProviderPassportDbProjection {
         Set<ProviderCode> obsolete = new LinkedHashSet<>(dbProviderCodes);
         obsolete.removeAll(ctxPassports.keySet());
         if (!obsolete.isEmpty()) {
-            projectionDao.deleteByCodes(obsolete);
+            writeStore.deleteByCodes(obsolete);
         }
 
         // 4) UPSERT всех паспортов из контекста (новые/изменившиеся обновятся, актуальные — без изменений)
-        projectionDao.upsertAll(ctxPassports);
+        writeStore.upsertAll(ctxPassports);
         // Готово
     }
 }
