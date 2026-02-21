@@ -40,7 +40,7 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
     /**
      * Неизменяемая карта "код инструмента → обработчик инструмента".
      */
-    Map<InstrumentCode, InstrumentHandler> handlerByInstrumentCode();
+    Map<InstrumentCode, InstrumentHandler> handlersByInstrumentCode();
 
     /**
      * Поток котировок для заданного инструмента.
