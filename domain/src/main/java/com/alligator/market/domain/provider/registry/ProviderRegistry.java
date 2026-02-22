@@ -10,18 +10,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Реестр действующих провайдеров рыночных данных.
+ * Реестр провайдеров рыночных данных, зарегистрированных в приложении.
  *
- * <p>Назначение: Источник истины касательно набора действующих провайдеров внутри приложения.</p>
+ * <p>Назначение: Реестр используется как источник истины для получения данных о провайдерах,
+ * зарегистрированных в приложении.</p>
  *
- * <p>Инварианты контракта:</p>
+ * <p><b>Инварианты провайдеров в реестре:</b></p>
  * <ul>
- *     <li>Коды провайдеров уникальны;</li>
- *     <li>Имена провайдеров (displayName в паспорте) уникальны без учёта регистра;</li>
- *     <li>Паспорт провайдера не null.</li>
+ *     <li>Код провайдера {@link MarketDataProvider#providerCode()} не null и уникален;</li>
+ *     <li>Паспорт провайдера {@link MarketDataProvider#passport()} не null;</li>
+ *     <li>Политика провайдера {@link MarketDataProvider#policy()} не null;</li>
+ *     <li>Имя провайдера в паспорте {@link ProviderPassport#displayName()} не null и уникально без учёта регистра.</li>
  * </ul>
  */
-public sealed interface ProviderRegistry permits AbstractProviderRegistry {
+public interface ProviderRegistry {
 
     /**
      * Неизменяемая карта "код провайдера → провайдер".
@@ -29,7 +31,9 @@ public sealed interface ProviderRegistry permits AbstractProviderRegistry {
     Map<ProviderCode, MarketDataProvider> providersByCode();
 
     /**
-     * Неизменяемая карта "код провайдера → паспорт провайдера" (дефолтная реализация).
+     * Неизменяемая карта "код провайдера → паспорт провайдера".
+     *
+     * <p>Примечание: Дефолтная реализация может быть переопределена более эффективным способом.</p>
      */
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
@@ -39,7 +43,7 @@ public sealed interface ProviderRegistry permits AbstractProviderRegistry {
             MarketDataProvider provider = entry.getValue();
 
             ProviderPassport passport = Objects.requireNonNull(provider.passport(),
-                    "passport must not be null");
+                    "provider.passport must not be null");
 
             map.put(code, passport);
         }
