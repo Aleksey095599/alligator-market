@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.maintenance.config.projection.db.passport.dao;
 
-import com.alligator.market.backend.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDaoAdapter;
+import com.alligator.market.backend.provider.readmodel.passport.store.write.jdbc.ProviderPassportWriteStoreJdbcAdapter;
 import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,6 @@ public class ProviderPassportDbProjectionDaoConfig {
      */
     @Bean(BEAN_PROVIDER_PASSPORT_DB_PROJECTION_DAO)
     public ProviderPassportDbProjectionDao providerPassportDbProjectionDao(JdbcTemplate jdbcTemplate) {
-        return new ProviderPassportDbProjectionDaoAdapter(jdbcTemplate);
+        return new ProviderPassportWriteStoreJdbcAdapter(jdbcTemplate);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Проекция паспортов провайдеров из реестра {@link ProviderRegistry} в хранилище {@link ProviderPassportStore}.
+ * Проектор паспортов провайдеров из реестра {@link ProviderRegistry} в хранилище {@link ProviderPassportStore}.
  */
 public class ProviderPassportProjector {
 

@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.maintenance.projection.db.passport.dao;
+package com.alligator.market.backend.provider.readmodel.passport.store.write.jdbc;
 
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.maintenance.projection.db.passport.dao.ProviderPassportDbProjectionDao;
+import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportStore;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,21 +15,16 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JDBC-адаптер доменного DAO {@link ProviderPassportDbProjectionDao} (контекст PostgreSQL).
+ * JDBC-адаптер write-порта {@link ProviderPassportStore.Write} (контекст PostgreSQL).
  */
-public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportDbProjectionDao {
+public class ProviderPassportWriteStoreJdbcAdapter implements ProviderPassportStore.Write {
 
-    /* Spring JdbcTemplate. */
     private final JdbcTemplate jdbc;
 
-    /* Конструктор. */
-    public ProviderPassportDbProjectionDaoAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportWriteStoreJdbcAdapter(JdbcTemplate jdbc) {
         this.jdbc = Objects.requireNonNull(jdbc, "jdbc must not be null");
     }
 
-    /**
-     * Пакетное удаление (DELETE) паспортов по их кодам.
-     */
     @Override
     public void deleteByCodes(Collection<ProviderCode> codes) {
         if (codes == null || codes.isEmpty()) return;
@@ -41,7 +36,6 @@ public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportD
             }
         }
 
-        // SQL-команда
         final String sql = "DELETE FROM provider_passport WHERE provider_code = ?";
 
         // Преобразуем коллекцию в список (предполагаем, что коды уже нормализованы)
@@ -63,9 +57,6 @@ public class ProviderPassportDbProjectionDaoAdapter implements ProviderPassportD
         });
     }
 
-    /**
-     * Пакетная вставка или обновление (UPSERT) паспортов.
-     */
     @Override
     public void upsertAll(Map<ProviderCode, ProviderPassport> providerPassports) {
         if (providerPassports == null || providerPassports.isEmpty()) return;

@@ -16,16 +16,11 @@ import java.util.Set;
  */
 public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssProvider> {
 
-    /* Код провайдера. */
     public static final String PROVIDER_CODE_VALUE = "MOEX_ISS";
-
-    /* Код провайдера как VO. */
     public static final ProviderCode PROVIDER_CODE = ProviderCode.of(PROVIDER_CODE_VALUE);
 
-    /* Отображаемое имя провайдера. */
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";
 
-    /* Паспорт провайдера. */
     private static final ProviderPassport PASSPORT = new ProviderPassport(
             DISPLAY_NAME,
             DeliveryMode.PULL,
@@ -33,7 +28,6 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
             false
     );
 
-    /* Политика провайдера. */
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1);
 
     /**

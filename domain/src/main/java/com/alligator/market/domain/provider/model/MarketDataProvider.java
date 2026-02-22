@@ -1,15 +1,11 @@
 package com.alligator.market.domain.provider.model;
 
 import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
-
-import java.util.Map;
 
 /**
  * Провайдер рыночных данных.
@@ -36,11 +32,6 @@ public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
      * Политика провайдера.
      */
     ProviderPolicy policy();
-
-    /**
-     * Неизменяемая карта "код инструмента → обработчик инструмента".
-     */
-    Map<InstrumentCode, InstrumentHandler> handlersByInstrumentCode();
 
     /**
      * Поток котировок для заданного инструмента.
