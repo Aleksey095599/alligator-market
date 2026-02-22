@@ -17,7 +17,7 @@ public interface PassportJpaRepository extends JpaRepository<PassportEntity, Lon
     /**
      * Возвращает список всех кодов провайдеров.
      *
-     * <p>Запрос оптимизирован через проекцию и режим read-only для снижения нагрузки на память и CPU.</p>
+     * <p>Запрос оптимизирован как "дешёвая проекция" с помощью {@link Query} и {@link QueryHints}.</p>
      */
     @Query("select p.providerCode from PassportEntity p")
     @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_READ_ONLY, value = "true"))

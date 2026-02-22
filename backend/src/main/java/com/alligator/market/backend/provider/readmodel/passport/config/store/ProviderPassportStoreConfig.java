@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+/**
+ * Конфигурация wiring {@link ProviderPassportStore}.
+ */
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportStoreConfig {
 
