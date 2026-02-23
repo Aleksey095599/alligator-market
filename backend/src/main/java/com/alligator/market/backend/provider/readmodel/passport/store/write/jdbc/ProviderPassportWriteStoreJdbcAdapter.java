@@ -16,6 +16,14 @@ import java.util.Objects;
 
 /**
  * JDBC-адаптер write-порта {@link ProviderPassportStore.Write} (контекст PostgreSQL).
+ *
+ * <p><b>Преимущества пакетной записи:</b></p>
+ * <ul>
+ *     <li>Минимум обращений к БД → меньше сетевых задержек и нагрузка на пул соединений.</li>
+ *     <li>Прямой UPSERT/DELETE без ORM-накладных расходов → быстрее и проще предсказать нагрузку.</li>
+ *     <li>Стабильная атомарность операции → все изменения выполняются единым набором пакетных команд.</li>
+ *     <li>Единый контракт write-store → легче поддерживать и масштабировать процесс.</li>
+ * </ul>
  */
 public class ProviderPassportWriteStoreJdbcAdapter implements ProviderPassportStore.Write {
 
