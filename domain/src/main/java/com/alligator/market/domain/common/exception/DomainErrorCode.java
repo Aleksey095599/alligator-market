@@ -8,6 +8,7 @@ import java.util.Objects;
 public enum DomainErrorCode {
 
     /* Провайдеры: */
+    PROVIDER_REGISTRY_EMPTY(DomainErrorType.BAD_REQUEST),
     PROVIDER_CODE_DUPLICATE(DomainErrorType.CONFLICT),
     PROVIDER_DISPLAY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
     HANDLER_NOT_FOUND(DomainErrorType.NOT_FOUND),
