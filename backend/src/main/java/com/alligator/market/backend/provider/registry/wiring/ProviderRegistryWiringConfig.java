@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.registry.wiring;
 
-import com.alligator.market.backend.provider.registry.ProviderRegistryAdapter;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
+import com.alligator.market.domain.provider.registry.SnapshotProviderRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +19,10 @@ public class ProviderRegistryWiringConfig {
     public static final String BEAN_PROVIDER_REGISTRY = "providerRegistry";
 
     /**
-     * Доменный реестр провайдеров.
+     * Доменный snapshot-реестр провайдеров.
      */
     @Bean(BEAN_PROVIDER_REGISTRY)
     public ProviderRegistry providerRegistry(List<MarketDataProvider> providers) {
-        return new ProviderRegistryAdapter(providers);
+        return new SnapshotProviderRegistry(providers);
     }
 }
