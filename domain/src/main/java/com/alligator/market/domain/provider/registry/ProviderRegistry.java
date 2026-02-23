@@ -12,15 +12,18 @@ import java.util.Objects;
 /**
  * Реестр провайдеров рыночных данных, зарегистрированных в приложении.
  *
- * <p>Назначение: Реестр используется как источник истины для получения данных о провайдерах,
- * зарегистрированных в приложении.</p>
+ * <p><b>Роль:</b> единый источник истины о доступных {@link MarketDataProvider} в рамках приложения
+ * и точка валидации их консистентности.</p>
  *
- * <p><b>Инварианты провайдеров в реестре:</b></p>
+ * <p><b>Типичный жизненный цикл</b>: реестр формируется при старте приложения и далее используется
+ * как неизменяемый snapshot.</p>
+ *
+ * <p><b>Инварианты, обеспечивающие консистентность данных реестра:</b></p>
  * <ul>
- *     <li>Код провайдера {@link MarketDataProvider#providerCode()} не null и уникален;</li>
- *     <li>Паспорт провайдера {@link MarketDataProvider#passport()} не null;</li>
- *     <li>Политика провайдера {@link MarketDataProvider#policy()} не null;</li>
- *     <li>Имя провайдера в паспорте {@link ProviderPassport#displayName()} не null и уникально без учёта регистра.</li>
+ *     <li>Для каждого провайдера {@link MarketDataProvider#providerCode()} не null и уникален;</li>
+ *     <li>Для каждого провайдера {@link MarketDataProvider#passport()} не null;</li>
+ *     <li>Для каждого провайдера {@link MarketDataProvider#policy()} не null;</li>
+ *     <li>{@link ProviderPassport#displayName()} не null и уникален без учёта регистра.</li>
  * </ul>
  */
 public interface ProviderRegistry {
@@ -31,9 +34,11 @@ public interface ProviderRegistry {
     Map<ProviderCode, MarketDataProvider> providersByCode();
 
     /**
-     * Неизменяемая карта "код провайдера → паспорт провайдера".
+     * Производная проекция: неизменяемая карта "код провайдера → паспорт провайдера".
      *
-     * <p>Примечание: Дефолтная реализация может быть переопределена более эффективным способом.</p>
+     * <p>Дефолтная реализация строит карту на основе {@link #providersByCode()} и пересоздаёт её
+     * при каждом вызове. Snapshot-реализации могут переопределить метод и возвращать заранее
+     * подготовленную неизменяемую карту.</p>
      */
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
