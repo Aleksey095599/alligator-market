@@ -6,16 +6,10 @@ import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Реализация {@link ProviderRegistry} в виде snapshot (immutable-слепка) набора действующих провайдеров.
+ * Реализация {@link ProviderRegistry} в виде неизменяемого snapshot набора действующих провайдеров.
  *
  * <p>Инварианты, заданные в {@link ProviderRegistry}, валидируются в конструкторе и далее гарантируются
  * на протяжении жизни экземпляра.</p>
@@ -31,18 +25,16 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
     /**
      * Конструктор snapshot-реестра.
      *
-     * <p>Собирает неизменяемые карты и валидирует инварианты {@link ProviderRegistry}:</p>
-     * <ul>
-     *     <li>Для каждого провайдера {@link MarketDataProvider#providerCode()} не null и уникален;</li>
-     *     <li>Для каждого провайдера {@link MarketDataProvider#passport()} не null;</li>
-     *     <li>Для каждого провайдера {@link MarketDataProvider#policy()} не null;</li>
-     *     <li>{@link ProviderPassport#displayName()} не null и уникален без учёта регистра.</li>
-     * </ul>
+     * <p>Собирает неизменяемые карты и валидирует инварианты заданные для {@link ProviderRegistry}.</p>
      *
-     * @param providers итерируемый источник провайдеров
+     * @param providers список провайдеров
      */
-    public SnapshotProviderRegistry(Iterable<? extends MarketDataProvider> providers) {
+    public SnapshotProviderRegistry(List<? extends MarketDataProvider> providers) {
         Objects.requireNonNull(providers, "providers must not be null");
+
+        if (providers.isEmpty()) {
+            throw new IllegalArgumentException("providers must not be empty");
+        }
 
         Map<ProviderCode, MarketDataProvider> providersMap = new LinkedHashMap<>();
         Map<ProviderCode, ProviderPassport> passportsMap = new LinkedHashMap<>();

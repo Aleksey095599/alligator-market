@@ -23,7 +23,8 @@ import java.util.Objects;
  *     <li>Для каждого провайдера {@link MarketDataProvider#providerCode()} не null и уникален;</li>
  *     <li>Для каждого провайдера {@link MarketDataProvider#passport()} не null;</li>
  *     <li>Для каждого провайдера {@link MarketDataProvider#policy()} не null;</li>
- *     <li>{@link ProviderPassport#displayName()} не null и уникален без учёта регистра.</li>
+ *     <li>Для каждого провайдера {@link ProviderPassport#displayName()} не null и уникален без учёта регистра;</li>
+ *     <li>Реестр должен содержать не менее одного провайдера.</li>
  * </ul>
  */
 public interface ProviderRegistry {
