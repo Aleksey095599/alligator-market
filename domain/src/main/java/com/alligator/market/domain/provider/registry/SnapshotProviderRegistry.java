@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.registry;
 
 import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
+import com.alligator.market.domain.provider.exception.ProviderRegistryEmptyException;
 import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
@@ -33,7 +34,7 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
         Objects.requireNonNull(providers, "providers must not be null");
 
         if (providers.isEmpty()) {
-            throw new IllegalArgumentException("providers must not be empty");
+            throw new ProviderRegistryEmptyException();
         }
 
         Map<ProviderCode, MarketDataProvider> providersMap = new LinkedHashMap<>();
