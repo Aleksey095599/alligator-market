@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * JDBC-адаптер write-порта {@link ProviderPassportProjectionWriteStore} (PostgreSQL).
  *
- * <p>Почему JDBC в проекции:</p>
+ * <p>Почему используется JDBC:</p>
  * <ul>
  *   <li>Предсказуемый SQL без ORM-накладных расходов (быстрее и проще в сопровождении для read model);</li>
  *   <li>Массовая синхронизация через batch UPSERT (минимум round-trip к БД);</li>
