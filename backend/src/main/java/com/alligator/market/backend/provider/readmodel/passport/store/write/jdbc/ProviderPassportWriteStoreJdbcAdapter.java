@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.readmodel.passport.store.write.jdb
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportStore;
+import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportProjectionStore;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * JDBC-адаптер write-порта {@link ProviderPassportStore.Write} (контекст PostgreSQL).
+ * JDBC-адаптер write-порта {@link ProviderPassportProjectionStore.Write} (контекст PostgreSQL).
  *
  * <p><b>Преимущества пакетной записи:</b></p>
  * <ul>
@@ -25,7 +25,7 @@ import java.util.Objects;
  *     <li>Единый контракт write-store → легче поддерживать и масштабировать процесс.</li>
  * </ul>
  */
-public class ProviderPassportWriteStoreJdbcAdapter implements ProviderPassportStore.Write {
+public class ProviderPassportWriteStoreJdbcAdapter implements ProviderPassportProjectionStore.Write {
 
     private final JdbcTemplate jdbc;
 

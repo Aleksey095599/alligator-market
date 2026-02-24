@@ -13,7 +13,7 @@ import java.util.Map;
  * <p>Примечание: Разделение на {@link Read} и {@link Write} обусловлено различной реализацией данных методов
  * и позволяет не смешивать необходимые зависимости при реализации.</p>
  */
-public interface ProviderPassportStore {
+public interface ProviderPassportProjectionStore {
 
     /**
      * Операции чтения (read-порты).

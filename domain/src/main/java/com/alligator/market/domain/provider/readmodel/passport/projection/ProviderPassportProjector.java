@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.readmodel.passport.projection;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportStore;
+import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportProjectionStore;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 
 import java.util.LinkedHashSet;
@@ -11,13 +11,13 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Проектор паспортов провайдеров из реестра {@link ProviderRegistry} в хранилище {@link ProviderPassportStore}.
+ * Проектор паспортов провайдеров из реестра {@link ProviderRegistry} в хранилище {@link ProviderPassportProjectionStore}.
  */
 public class ProviderPassportProjector {
 
     private final ProviderRegistry providerRegistry;
-    private final ProviderPassportStore.Read readStore;
-    private final ProviderPassportStore.Write writeStore;
+    private final ProviderPassportProjectionStore.Read readStore;
+    private final ProviderPassportProjectionStore.Write writeStore;
 
     /**
      * Конструктор.
@@ -28,8 +28,8 @@ public class ProviderPassportProjector {
      */
     public ProviderPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportStore.Read readStore,
-            ProviderPassportStore.Write writeStore
+            ProviderPassportProjectionStore.Read readStore,
+            ProviderPassportProjectionStore.Write writeStore
     ) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         this.readStore = Objects.requireNonNull(readStore, "readStore must not be null");
