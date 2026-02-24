@@ -3,43 +3,75 @@ package com.alligator.market.domain.provider.readmodel.passport.store;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
-import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Write-хранилище (порт) проекции паспортов провайдеров.
+ * Write-порт проекции паспортов провайдеров.
  *
  * <p>Назначение: поддерживать materialized view (read model) паспортов провайдеров в согласованном состоянии
- * относительно реестра провайдеров рыночных данных {@code ProviderRegistry}.</p>
+ * относительно реестра провайдеров {@link com.alligator.market.domain.provider.registry.ProviderRegistry}.</p>
+ *
+ * <p>Порт описывает только контракт операций. Конкретная технология хранения/обновления
+ * (JDBC/JPA и т.п.) — ответственность backend-адаптеров.</p>
+ *
+ * <p>Типовой сценарий синхронизации:</p>
+ * <ul>
+ *   <li>Если реестр пуст — {@link #deleteAll()};</li>
+ *   <li>Иначе — {@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</li>
+ * </ul>
+ *
+ * <p>Примечания:</p>
+ * <ul>
+ *   <li>Рекомендуется выполнять последовательность синхронизации в одной транзакции
+ *       (транзакционность обеспечивает вызывающая сторона).</li>
+ *   <li>При нарушении требований к аргументам реализация вправе выбросить {@link IllegalArgumentException}.</li>
+ * </ul>
  */
 public interface ProviderPassportProjectionWriteStore {
 
     /**
-     * Удалить все записи из проекции.
+     * Удалить все записи проекции.
      *
-     * <p>Используется, когда в реестре нет активных провайдеров.</p>
+     * <p>Операция идемпотентна.</p>
      */
     void deleteAll();
 
     /**
-     * Удалить записи из проекции для всех провайдеров, кроме указанных.
+     * Удалить все записи проекции, кроме указанных кодов провайдеров.
      *
-     * <p>Используется для синхронизации проекции с реестром без предварительного чтения кодов из хранилища.</p>
+     * <p>Семантика: после успешного выполнения в проекции остаются записи только для кодов из {@code activeCodes}.</p>
      *
-     * @param activeCodes коды активных провайдеров (не {@code null}, без {@code null}-элементов)
+     * <p>Требования:</p>
+     * <ul>
+     *   <li>{@code activeCodes} не {@code null};</li>
+     *   <li>{@code activeCodes} не содержит {@code null}-элементов;</li>
+     *   <li>Операция идемпотентна относительно множества {@code activeCodes} (порядок элементов не важен).</li>
+     * </ul>
+     *
+     * <p>Если {@code activeCodes} пуст, операция эквивалентна {@link #deleteAll()}.</p>
+     *
+     * @param activeCodes коды активных провайдеров
      */
-    void deleteAllExcept(Collection<ProviderCode> activeCodes);
+    void deleteAllExcept(Set<ProviderCode> activeCodes);
 
     /**
      * Вставить или обновить паспорта провайдеров в проекции.
      *
-     * <p>Требования к реализации:</p>
+     * <p>Семантика: для каждого {@link ProviderCode} из {@code passports} в проекции должна существовать
+     * ровно одна актуальная запись, содержащая значения паспорта из входных данных.</p>
+     *
+     * <p>Требования:</p>
      * <ul>
-     *   <li>операция должна быть идемпотентной на уровне натурального ключа {@code provider_code};</li>
-     *   <li>все ключи и значения в {@code passports} должны быть не {@code null}.</li>
+     *   <li>{@code passports} не {@code null};</li>
+     *   <li>{@code passports} не содержит {@code null}-ключей и {@code null}-значений;</li>
+     *   <li>Операция идемпотентна относительно отображения {@code ProviderCode → ProviderPassport}
+     *       (повторный вызов с теми же парами приводит к тому же результату по содержательным полям паспорта).</li>
      * </ul>
      *
-     * @param passports карта "код провайдера → паспорт провайдера" (не {@code null}, без {@code null}-ключей/значений)
+     * <p>Пустая карта трактуется как no-op.</p>
+     *
+     * @param passports карта "код провайдера → паспорт провайдера"
      */
     void upsertAll(Map<ProviderCode, ProviderPassport> passports);
 }
