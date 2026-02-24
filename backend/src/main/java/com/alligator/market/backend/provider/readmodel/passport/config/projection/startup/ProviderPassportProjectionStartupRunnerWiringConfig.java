@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.config.startup;
+package com.alligator.market.backend.provider.readmodel.passport.config.projection.startup;
 
 import com.alligator.market.backend.provider.readmodel.passport.projection.startup.ProviderPassportProjectionStartupRunner;
 import com.alligator.market.domain.provider.readmodel.passport.projection.ProviderPassportProjector;
