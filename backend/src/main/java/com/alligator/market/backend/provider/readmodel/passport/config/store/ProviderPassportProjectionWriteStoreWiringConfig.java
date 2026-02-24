@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Конфигурация wiring write-порта {@link ProviderPassportProjectionWriteStore}.
+ * Конфигурация wiring {@link ProviderPassportProjectionWriteStore}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportProjectionWriteStoreWiringConfig {
