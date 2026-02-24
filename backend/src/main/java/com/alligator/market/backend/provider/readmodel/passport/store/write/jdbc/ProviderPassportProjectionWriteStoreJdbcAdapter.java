@@ -25,8 +25,6 @@ import java.util.*;
  */
 public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
     
-    private static final String SQL_DELETE_ALL = "DELETE FROM provider_passport";
-
     // PostgreSQL: "<> ALL (array)" эквивалентно "NOT IN (...)".
     private static final String SQL_DELETE_ALL_EXCEPT = """
             DELETE FROM provider_passport
@@ -72,23 +70,17 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
     }
 
     @Override
-    public void deleteAll() {
-        jdbc.update(SQL_DELETE_ALL);
-    }
-
-    @Override
     public void deleteAllExcept(Set<ProviderCode> activeCodes) {
         if (activeCodes == null) {
             throw new IllegalArgumentException("activeCodes must not be null");
+        }
+        if (activeCodes.isEmpty()) {
+            throw new IllegalArgumentException("activeCodes must not be empty");
         }
         for (ProviderCode code : activeCodes) {
             if (code == null) {
                 throw new IllegalArgumentException("activeCodes must not contain null");
             }
-        }
-        if (activeCodes.isEmpty()) {
-            deleteAll();
-            return;
         }
 
         // Передаём набор кодов в PostgreSQL как массив (быстрее и чище, чем динамический IN (...)).

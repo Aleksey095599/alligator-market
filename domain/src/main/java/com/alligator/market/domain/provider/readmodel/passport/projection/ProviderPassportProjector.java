@@ -1,6 +1,7 @@
 package com.alligator.market.domain.provider.readmodel.passport.projection;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
+import com.alligator.market.domain.provider.exception.ProviderRegistryEmptyException;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.readmodel.passport.store.ProviderPassportProjectionWriteStore;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
@@ -43,10 +44,9 @@ public class ProviderPassportProjector {
                 Objects.requireNonNull(providerRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        // Реестр пуст -> проекция должна быть пустой.
+        // Инвариант доменной модели: реестр активных провайдеров не бывает пустым.
         if (registryPassports.isEmpty()) {
-            writeStore.deleteAll();
-            return;
+            throw new ProviderRegistryEmptyException();
         }
 
         Set<ProviderCode> activeCodes = Set.copyOf(registryPassports.keySet());

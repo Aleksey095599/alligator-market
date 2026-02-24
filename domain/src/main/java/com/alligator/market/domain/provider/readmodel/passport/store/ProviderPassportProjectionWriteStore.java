@@ -17,8 +17,7 @@ import java.util.Set;
  *
  * <p>Типовой сценарий синхронизации:</p>
  * <ul>
- *   <li>Если реестр пуст — {@link #deleteAll()};</li>
- *   <li>Иначе — {@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</li>
+ *   <li>{@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</li>
  * </ul>
  *
  * <p>Примечания:</p>
@@ -31,13 +30,6 @@ import java.util.Set;
 public interface ProviderPassportProjectionWriteStore {
 
     /**
-     * Удалить все записи проекции.
-     *
-     * <p>Операция идемпотентна.</p>
-     */
-    void deleteAll();
-
-    /**
      * Удалить все записи проекции, кроме указанных кодов провайдеров.
      *
      * <p>Семантика: после успешного выполнения в проекции остаются записи только для кодов из {@code activeCodes}.</p>
@@ -45,11 +37,10 @@ public interface ProviderPassportProjectionWriteStore {
      * <p>Требования:</p>
      * <ul>
      *   <li>{@code activeCodes} не {@code null};</li>
+     *   <li>{@code activeCodes} не пуст;</li>
      *   <li>{@code activeCodes} не содержит {@code null}-элементов;</li>
      *   <li>Операция идемпотентна относительно множества {@code activeCodes} (порядок элементов не важен).</li>
      * </ul>
-     *
-     * <p>Если {@code activeCodes} пуст, операция эквивалентна {@link #deleteAll()}.</p>
      *
      * @param activeCodes коды активных провайдеров
      */
