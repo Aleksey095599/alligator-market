@@ -11,24 +11,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * JDBC-адаптер write-порта {@link ProviderPassportProjectionWriteStore} (PostgreSQL).
  *
  * <p>Почему JDBC в проекции:</p>
  * <ul>
- *   <li>предсказуемый SQL без ORM-накладных расходов (быстрее и проще в сопровождении для read model);</li>
- *   <li>массовая синхронизация через batch UPSERT (минимум round-trip к БД);</li>
- *   <li>очистка "всё кроме активных" выполняется одним запросом (PostgreSQL array).</li>
+ *   <li>Предсказуемый SQL без ORM-накладных расходов (быстрее и проще в сопровождении для read model);</li>
+ *   <li>Массовая синхронизация через batch UPSERT (минимум round-trip к БД);</li>
+ *   <li>Очистка "всё кроме активных" выполняется одним запросом (PostgreSQL array).</li>
  * </ul>
  */
 public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
-
+    
     private static final String SQL_DELETE_ALL = "DELETE FROM provider_passport";
 
     // PostgreSQL: "<> ALL (array)" эквивалентно "NOT IN (...)".
