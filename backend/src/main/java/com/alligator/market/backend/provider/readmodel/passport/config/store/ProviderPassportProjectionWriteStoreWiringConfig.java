@@ -16,7 +16,7 @@ public class ProviderPassportProjectionWriteStoreWiringConfig {
             "providerPassportProjectionWriteStore";
 
     /**
-     * JDBC-реализация write-порта проекции паспортов провайдеров.
+     * Write-порт проекции паспортов провайдеров.
      */
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTION_WRITE_STORE)
     public ProviderPassportProjectionWriteStore providerPassportProjectionWriteStore(JdbcTemplate jdbcTemplate) {

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring доменного {@link ProviderPassportProjector}.
+ * Конфигурация wiring {@link ProviderPassportProjector}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderPassportProjectorWiringConfig {
@@ -15,7 +15,7 @@ public class ProviderPassportProjectorWiringConfig {
     public static final String BEAN_PROVIDER_PASSPORT_PROJECTOR = "providerPassportProjector";
 
     /**
-     * Доменный projector паспортов провайдеров без дополнительного adapter-слоя.
+     * Проектор паспортов провайдеров.
      */
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTOR)
     public ProviderPassportProjector providerPassportProjector(
