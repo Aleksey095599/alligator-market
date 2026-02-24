@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.store.write.jdbc;
+package com.alligator.market.backend.provider.readmodel.passport.store;
 
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
@@ -24,7 +24,7 @@ import java.util.*;
  * </ul>
  */
 public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
-    
+
     // PostgreSQL: "<> ALL (array)" эквивалентно "NOT IN (...)".
     private static final String SQL_DELETE_ALL_EXCEPT = """
             DELETE FROM provider_passport
