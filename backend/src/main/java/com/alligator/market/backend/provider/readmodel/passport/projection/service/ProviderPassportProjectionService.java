@@ -6,7 +6,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.util.Objects;
 
 /**
- * Use case: построить/обновить проекцию паспортов провайдеров.
+ * Use case сервис: построить/обновить проекцию паспортов провайдеров.
  *
  * <p>Здесь задаётся граница транзакции для доменного процесса проекции.</p>
  */
