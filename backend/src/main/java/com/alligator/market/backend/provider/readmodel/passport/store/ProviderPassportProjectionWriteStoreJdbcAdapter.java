@@ -71,17 +71,7 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
 
     @Override
     public void deleteAllExcept(Set<ProviderCode> activeCodes) {
-        if (activeCodes == null) {
-            throw new IllegalArgumentException("activeCodes must not be null");
-        }
-        if (activeCodes.isEmpty()) {
-            throw new IllegalArgumentException("activeCodes must not be empty");
-        }
-        for (ProviderCode code : activeCodes) {
-            if (code == null) {
-                throw new IllegalArgumentException("activeCodes must not contain null");
-            }
-        }
+        validateActiveCodes(activeCodes);
 
         // Передаём набор кодов в PostgreSQL как массив (быстрее и чище, чем динамический IN (...)).
         final String[] values = activeCodes.stream()
@@ -103,24 +93,13 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
 
     @Override
     public void upsertAll(Map<ProviderCode, ProviderPassport> passports) {
-        if (passports == null) {
-            throw new IllegalArgumentException("passports must not be null");
-        }
+        validatePassportsMap(passports);
         if (passports.isEmpty()) {
             return; // no-op по контракту
         }
 
-        // Явно валидируем вход, чтобы не скрывать ошибки вызывающей стороны.
-        List<Map.Entry<ProviderCode, ProviderPassport>> entries = new ArrayList<>(passports.size());
-        for (Map.Entry<ProviderCode, ProviderPassport> e : passports.entrySet()) {
-            if (e.getKey() == null) {
-                throw new IllegalArgumentException("passports must not contain null keys");
-            }
-            if (e.getValue() == null) {
-                throw new IllegalArgumentException("passports must not contain null values");
-            }
-            entries.add(e);
-        }
+        // Явно валидируем каждую пару "ключ-значение", чтобы строго выполнить контракт write-порта.
+        List<Map.Entry<ProviderCode, ProviderPassport>> entries = toValidatedEntries(passports);
 
         final String actor = AuditContextHolder.actorOrFallback();
         final String via = AuditContextHolder.viaOrFallback();
@@ -137,6 +116,46 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
                 return entries.size();
             }
         });
+    }
+
+    /* Проверка аргумента deleteAllExcept согласно контракту интерфейса. */
+    private static void validateActiveCodes(Set<ProviderCode> activeCodes) {
+        if (activeCodes == null) {
+            throw new IllegalArgumentException("activeCodes must not be null");
+        }
+        if (activeCodes.isEmpty()) {
+            throw new IllegalArgumentException("activeCodes must not be empty");
+        }
+
+        for (ProviderCode code : activeCodes) {
+            if (code == null) {
+                throw new IllegalArgumentException("activeCodes must not contain null");
+            }
+        }
+    }
+
+    /* Проверка аргумента upsertAll на null-карту. */
+    private static void validatePassportsMap(Map<ProviderCode, ProviderPassport> passports) {
+        if (passports == null) {
+            throw new IllegalArgumentException("passports must not be null");
+        }
+    }
+
+    /* Подготовка и проверка записей upsertAll: null-ключи и null-значения запрещены. */
+    private static List<Map.Entry<ProviderCode, ProviderPassport>> toValidatedEntries(
+            Map<ProviderCode, ProviderPassport> passports
+    ) {
+        List<Map.Entry<ProviderCode, ProviderPassport>> entries = new ArrayList<>(passports.size());
+        for (Map.Entry<ProviderCode, ProviderPassport> entry : passports.entrySet()) {
+            if (entry.getKey() == null) {
+                throw new IllegalArgumentException("passports must not contain null keys");
+            }
+            if (entry.getValue() == null) {
+                throw new IllegalArgumentException("passports must not contain null values");
+            }
+            entries.add(entry);
+        }
+        return entries;
     }
 
     /**
