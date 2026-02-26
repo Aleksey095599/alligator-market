@@ -9,19 +9,16 @@ import java.util.Set;
 /**
  * Write-порт проекции паспортов провайдеров.
  *
- * <p><b>Назначение</b>: поддерживать materialized view (read model) паспортов провайдеров в согласованном состоянии
+ * <p>Назначение: поддерживать materialized view (read model) паспортов провайдеров в согласованном состоянии
  * относительно реестра провайдеров {@link com.alligator.market.domain.provider.registry.ProviderRegistry}.</p>
  *
- * <p><b>Типовой сценарий синхронизации:</b></p>
- * <ul>
- *   <li>{@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</li>
- * </ul>
+ * <p>Типовой сценарий синхронизации: {@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</p>
  *
- * <p><b>Примечания:</b></p>
+ * <p>Примечания:</p>
  * <ul>
- *   <li>Рекомендуется выполнять последовательность синхронизации в одной транзакции
- *       (транзакционность обеспечивает вызывающая сторона).</li>
- *   <li>При нарушении требований к аргументам реализация вправе выбросить {@link IllegalArgumentException}.</li>
+ *     <li>Рекомендуется выполнять последовательность синхронизации в одной транзакции
+ *     (транзакционность обеспечивает вызывающая сторона).</li>
+ *     <li>При нарушении требований к аргументам реализация вправе выбросить {@link IllegalArgumentException}.</li>
  * </ul>
  */
 public interface ProviderPassportProjectionWriteStore {
@@ -29,10 +26,10 @@ public interface ProviderPassportProjectionWriteStore {
     /**
      * Удалить все записи проекции, кроме указанных кодов провайдеров.
      *
-     * <p><b>Семантика:</b> после успешного выполнения в проекции остаются записи только для
+     * <p>Семантика: после успешного выполнения в проекции остаются записи только для
      * кодов из {@code activeCodes}.</p>
      *
-     * <p><b>Требования:</b></p>
+     * <p>Требования:</p>
      * <ul>
      *     <li>{@code activeCodes} не {@code null};</li>
      *     <li>{@code activeCodes} не пуст;</li>
@@ -47,10 +44,10 @@ public interface ProviderPassportProjectionWriteStore {
     /**
      * Вставить или обновить паспорта провайдеров в проекции.
      *
-     * <p><b>Семантика</b>: для каждого {@link ProviderCode} из {@code passports} в проекции должна существовать
+     * <p>Семантика: для каждого {@link ProviderCode} из {@code passports} в проекции должна существовать
      * ровно одна актуальная запись, содержащая значения паспорта из входных данных.</p>
      *
-     * <p><b>Требования:</b></p>
+     * <p>Требования:</p>
      * <ul>
      *     <li>{@code passports} не {@code null};</li>
      *     <li>{@code passports} не содержит {@code null}-ключей и {@code null}-значений;</li>

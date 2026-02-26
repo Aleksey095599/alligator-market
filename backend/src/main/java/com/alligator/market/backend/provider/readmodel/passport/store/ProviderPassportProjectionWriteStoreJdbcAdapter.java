@@ -13,7 +13,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 
-/** JDBC-реализация write-порта {@link ProviderPassportProjectionWriteStore} для PostgreSQL. */
+/**
+ * JDBC-реализация write-порта {@link ProviderPassportProjectionWriteStore} для PostgreSQL.
+ *
+ * <p>Причины использования JDBC:</p>
+ * <ul>
+ *   <li>Предсказуемый SQL без ORM-накладных расходов (быстрее и проще в сопровождении для read model);</li>
+ *   <li>Массовая синхронизация через batch UPSERT (минимум round-trip к БД);</li>
+ *   <li>Очистка "всё кроме активных" выполняется одним запросом (PostgreSQL array).</li>
+ * </ul>
+ */
 public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
 
     // Удаляем всё, кроме activeCodes: deleteAllExcept(Set).
