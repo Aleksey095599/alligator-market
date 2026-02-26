@@ -1,10 +1,9 @@
-package com.alligator.market.backend.provider.readmodel.passport.startup;
+package com.alligator.market.backend.provider.readmodel.passport.projection.startup;
 
-import com.alligator.market.domain.provider.readmodel.passport.projection.ProviderPassportProjector;
+import com.alligator.market.backend.provider.readmodel.passport.projection.service.ProviderPassportProjectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Objects;
 
@@ -14,15 +13,10 @@ import java.util.Objects;
 @Slf4j
 public final class ProviderPassportProjectionStartupRunner implements ApplicationRunner {
 
-    private final ProviderPassportProjector projector;
-    private final TransactionTemplate tx;
+    private final ProviderPassportProjectionService service;
 
-    public ProviderPassportProjectionStartupRunner(
-            ProviderPassportProjector projector,
-            TransactionTemplate tx
-    ) {
-        this.projector = Objects.requireNonNull(projector, "projector must not be null");
-        this.tx = Objects.requireNonNull(tx, "tx must not be null");
+    public ProviderPassportProjectionStartupRunner(ProviderPassportProjectionService service) {
+        this.service = Objects.requireNonNull(service, "service must not be null");
     }
 
     @Override
@@ -30,7 +24,7 @@ public final class ProviderPassportProjectionStartupRunner implements Applicatio
         log.info("Provider passport projection started");
 
         try {
-            tx.executeWithoutResult(status -> projector.project());
+            service.project();
             log.info("Provider passport projection finished");
         } catch (RuntimeException ex) {
             log.error("Provider passport projection failed", ex);
