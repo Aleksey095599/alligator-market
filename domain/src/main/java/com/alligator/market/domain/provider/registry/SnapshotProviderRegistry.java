@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Реализация {@link ProviderRegistry} в виде неизменяемого snapshot набора действующих провайдеров.
  *
- * <p>Инварианты, заданные в {@link ProviderRegistry}, валидируются в конструкторе и далее гарантируются
+ * <p>Инварианты и ограничения, заданные в {@link ProviderRegistry}, валидируются в конструкторе и далее гарантируются
  * на протяжении жизни экземпляра.</p>
  */
 public final class SnapshotProviderRegistry implements ProviderRegistry {
