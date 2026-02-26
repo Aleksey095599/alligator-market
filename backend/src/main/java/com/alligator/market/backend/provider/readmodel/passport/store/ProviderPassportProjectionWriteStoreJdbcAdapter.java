@@ -13,25 +13,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- * JDBC-адаптер write-порта {@link ProviderPassportProjectionWriteStore} (PostgreSQL).
- *
- * <p>Почему используется JDBC:</p>
- * <ul>
- *   <li>Предсказуемый SQL без ORM-накладных расходов (быстрее и проще в сопровождении для read model);</li>
- *   <li>Массовая синхронизация через batch UPSERT (минимум round-trip к БД);</li>
- *   <li>Очистка "всё кроме активных" выполняется одним запросом (PostgreSQL array).</li>
- * </ul>
- */
+/** JDBC-реализация write-порта {@link ProviderPassportProjectionWriteStore} для PostgreSQL. */
 public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
 
-    // PostgreSQL: "<> ALL (array)" эквивалентно "NOT IN (...)".
+    // Удаляем всё, кроме activeCodes: deleteAllExcept(Set).
     private static final String SQL_DELETE_ALL_EXCEPT = """
             DELETE FROM provider_passport
             WHERE provider_code <> ALL (?)
             """;
 
-    // UPSERT с обновлением только при изменении содержательных полей (сильнее идемпотентность).
+    // upsertAll(Map): вставка/обновление, version растёт только при изменении бизнес-полей.
     private static final String SQL_UPSERT = """
             INSERT INTO provider_passport(
               provider_code,
@@ -73,7 +64,7 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
     public void deleteAllExcept(Set<ProviderCode> activeCodes) {
         validateActiveCodes(activeCodes);
 
-        // Передаём набор кодов в PostgreSQL как массив (быстрее и чище, чем динамический IN (...)).
+        // Маппим activeCodes в SQL-массив для одного DELETE-запроса.
         final String[] values = activeCodes.stream()
                 .map(ProviderCode::value)
                 .toArray(String[]::new);
@@ -95,16 +86,16 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
     public void upsertAll(Map<ProviderCode, ProviderPassport> passports) {
         validatePassportsMap(passports);
         if (passports.isEmpty()) {
-            return; // no-op по контракту
+            return; // Контракт: пустая карта = no-op.
         }
 
-        // Явно валидируем каждую пару "ключ-значение", чтобы строго выполнить контракт write-порта.
+        // Контракт: null-ключи и null-значения запрещены.
         List<Map.Entry<ProviderCode, ProviderPassport>> entries = toValidatedEntries(passports);
 
         final String actor = AuditContextHolder.actorOrFallback();
         final String via = AuditContextHolder.viaOrFallback();
 
-        // Batch UPSERT: одна запись = одна привязка параметров.
+        // Batch для минимального числа round-trip.
         jdbc.batchUpdate(SQL_UPSERT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
@@ -118,7 +109,7 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
         });
     }
 
-    /* Проверка аргумента deleteAllExcept согласно контракту интерфейса. */
+    /* Контракт deleteAllExcept: set не null/не пустой/без null-элементов. */
     private static void validateActiveCodes(Set<ProviderCode> activeCodes) {
         if (activeCodes == null) {
             throw new IllegalArgumentException("activeCodes must not be null");
@@ -134,14 +125,14 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
         }
     }
 
-    /* Проверка аргумента upsertAll на null-карту. */
+    /* Контракт upsertAll: map не null. */
     private static void validatePassportsMap(Map<ProviderCode, ProviderPassport> passports) {
         if (passports == null) {
             throw new IllegalArgumentException("passports must not be null");
         }
     }
 
-    /* Подготовка и проверка записей upsertAll: null-ключи и null-значения запрещены. */
+    /* Контракт upsertAll: map без null-ключей и null-значений. */
     private static List<Map.Entry<ProviderCode, ProviderPassport>> toValidatedEntries(
             Map<ProviderCode, ProviderPassport> passports
     ) {
@@ -158,9 +149,7 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
         return entries;
     }
 
-    /**
-     * Привязка параметров UPSERT для одной строки (заполнение "?" конкретными значениями).
-     */
+    /** Привязка параметров UPSERT для одной записи. */
     private static void bindUpsert(
             PreparedStatement ps,
             Map.Entry<ProviderCode, ProviderPassport> entry,
@@ -175,16 +164,16 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
         ProviderCode code = entry.getKey();
         ProviderPassport passport = entry.getValue();
 
-        // 1) provider_code (идентификатор записи проекции)
+        // 1) Идентификатор записи.
         ps.setString(1, code.value());
 
-        // 2) содержательные поля паспорта
+        // 2) Бизнес-поля паспорта.
         ps.setString(2, passport.displayName());
         ps.setString(3, passport.deliveryMode().name());
         ps.setString(4, passport.accessMethod().name());
         ps.setBoolean(5, passport.bulkSubscription());
 
-        // 3) audit-атрибуты (actor/via) — одинаковые для created_* и updated_* в рамках операции
+        // 3) Audit-поля.
         ps.setString(6, actor);
         ps.setString(7, via);
         ps.setString(8, actor);
