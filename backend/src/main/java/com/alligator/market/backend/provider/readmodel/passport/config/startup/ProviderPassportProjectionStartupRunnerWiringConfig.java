@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.readmodel.passport.config.projection.startup;
+package com.alligator.market.backend.provider.readmodel.passport.config.startup;
 
-import com.alligator.market.backend.provider.readmodel.passport.projection.startup.ProviderPassportProjectionStartupRunner;
+import com.alligator.market.backend.provider.readmodel.passport.startup.ProviderPassportProjectionStartupRunner;
 import com.alligator.market.domain.provider.readmodel.passport.projection.ProviderPassportProjector;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
