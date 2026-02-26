@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * <p>Источник истины — реестр. Результат выполнения {@link #project()} — проекция, эквивалентная реестру.</p>
  *
- * <p>Рекомендуется выполнять вызов атомарно на стороне приложения (например, в транзакции).</p>
+ * <p>Транзакционность обеспечивает вызывающая сторона (application/use-case слой).</p>
  */
 public class ProviderPassportProjector {
 
@@ -51,9 +51,8 @@ public class ProviderPassportProjector {
 
         Set<ProviderCode> activeCodes = Set.copyOf(registryPassports.keySet());
 
-        // Сначала upsert, затем "cleanup": так уменьшаем окно отсутствия активных записей,
-        // если вызывающая сторона не обернула операцию в транзакцию.
-        writeStore.upsertAll(registryPassports);
+        // Синхронизация состава и значений проекции с реестром.
         writeStore.deleteAllExcept(activeCodes);
+        writeStore.upsertAll(registryPassports);
     }
 }
