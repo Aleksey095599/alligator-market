@@ -73,7 +73,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region КОНТРАКТ InstrumentHandler (простые геттеры + attach)
+    //region КОНТРАКТ: простые методы
 
     @Override
     public final HandlerCode handlerCode() {
@@ -109,7 +109,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region QUOTE: TEMPLATE METHOD
+    //region КОНТРАКТ: quote
 
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
