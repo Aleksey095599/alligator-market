@@ -25,6 +25,8 @@ import java.util.Set;
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
+    //region СОСТОЯНИЕ
+
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
@@ -41,9 +43,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     private final java.util.concurrent.atomic.AtomicReference<P> providerRef =
             new java.util.concurrent.atomic.AtomicReference<>();
 
-    //=================================================================================================================
-    // КОНСТРУКТОР
-    //=================================================================================================================
+    //endregion
+
+    //region КОНСТРУКТОР
 
     /**
      * Конструктор с базовыми проверками.
@@ -69,9 +71,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
     }
 
-    //=================================================================================================================
-    // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
-    //=================================================================================================================
+    //endregion
+
+    //region КОНТРАКТ InstrumentHandler (простые геттеры + attach)
 
     @Override
     public final HandlerCode handlerCode() {
@@ -104,6 +106,10 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
             throw new ProviderAlreadyAttachedException(handlerCode);
         }
     }
+
+    //endregion
+
+    //region QUOTE: TEMPLATE METHOD
 
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
@@ -171,10 +177,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         return doQuote(instrument);
     }
 
-    //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-    //=================================================================================================================
-
     /**
      * Чистая логика получения потока котировок для переданного инструмента.
      *
@@ -193,9 +195,9 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         return current;
     }
 
-    //=================================================================================================================
-    // УТИЛИТЫ
-    //=================================================================================================================
+    //endregion
+
+    //region ВНУТРЕННЕЕ
 
     /**
      * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.
@@ -213,4 +215,6 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
         return java.util.Collections.unmodifiableSet(copy);
     }
+
+    //endregion
 }
