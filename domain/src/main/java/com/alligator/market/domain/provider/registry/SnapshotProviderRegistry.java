@@ -1,8 +1,8 @@
 package com.alligator.market.domain.provider.registry;
 
-import com.alligator.market.domain.provider.exception.ProviderCodeDuplicateException;
-import com.alligator.market.domain.provider.exception.ProviderRegistryEmptyException;
-import com.alligator.market.domain.provider.exception.ProviderDisplayNameDuplicateException;
+import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
+import com.alligator.market.domain.provider.registry.exception.ProviderRegistryEmptyException;
+import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;

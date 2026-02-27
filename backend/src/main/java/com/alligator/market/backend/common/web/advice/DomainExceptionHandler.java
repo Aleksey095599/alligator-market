@@ -6,6 +6,8 @@ import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.type.forex.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.provider.exception.*;
+import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
+import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
