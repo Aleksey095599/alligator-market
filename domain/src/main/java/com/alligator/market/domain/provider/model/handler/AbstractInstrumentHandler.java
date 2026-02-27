@@ -184,6 +184,10 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
+    //endregion
+
+    //region ДЛЯ НАСЛЕДНИКОВ
+
     /**
      * Полезный геттер для наследников: возвращает прикреплённого провайдера.
      */
