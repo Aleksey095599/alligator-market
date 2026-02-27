@@ -3,9 +3,13 @@ package com.alligator.market.domain.provider.model.handler;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.provider.model.handler.exception.InstrumentCodeMissingException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongTypeException;
+import com.alligator.market.domain.provider.model.handler.exception.ProviderAlreadyAttachedException;
+import com.alligator.market.domain.provider.model.handler.exception.ProviderNotAttachedException;
+import com.alligator.market.domain.provider.model.handler.exception.SupportedInstrumentCodesEmptyException;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
@@ -56,7 +60,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
         if (supportedInstrumentCodes.isEmpty()) {
-            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
+            throw new SupportedInstrumentCodesEmptyException(handlerCode);
         }
 
         this.handlerCode = handlerCode;
@@ -97,7 +101,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         Objects.requireNonNull(provider, "provider must not be null");
 
         if (!providerRef.compareAndSet(null, provider)) {
-            throw new IllegalStateException("Provider is already attached");
+            throw new ProviderAlreadyAttachedException(handlerCode);
         }
     }
 
@@ -118,10 +122,10 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * @param instrument инструмент, для которого требуется котировка
      * @return поток котировок
      * @throws NullPointerException            если {@code instrument == null}
-     * @throws IllegalStateException           если провайдер не прикреплён
+     * @throws ProviderNotAttachedException     если провайдер не прикреплён
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
      * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws IllegalArgumentException        если код инструмента {@code null}
+     * @throws InstrumentCodeMissingException   если код инструмента {@code null}
      * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
@@ -131,7 +135,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         // 1) Проверяем, что провайдер прикреплен к данному обработчику
         P currentProvider = providerRef.get();
         if (currentProvider == null) {
-            throw new IllegalStateException("Provider is not attached");
+            throw new ProviderNotAttachedException(handlerCode);
         }
 
         // 2) Проверяем, что класс инструмента соответствует ожиданиям обработчика
@@ -157,7 +161,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         // 4) Проверяем, что код инструмента поддерживается обработчиком
         final InstrumentCode instrumentCode = instrument.instrumentCode();
         if (instrumentCode == null) {
-            throw new IllegalArgumentException("instrumentCode must not be null");
+            throw new InstrumentCodeMissingException(handlerCode);
         }
         if (!supportedInstrumentCodes.contains(instrumentCode)) {
             throw new InstrumentNotSupportedException( // <-- Не поддерживается
@@ -184,7 +188,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     protected final P provider() {
         P current = providerRef.get();
         if (current == null) {
-            throw new IllegalStateException("Provider is not attached");
+            throw new ProviderNotAttachedException(handlerCode);
         }
         return current;
     }
