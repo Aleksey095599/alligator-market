@@ -29,6 +29,9 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
      * <p>Собирает неизменяемые карты и валидирует инварианты заданные для {@link ProviderRegistry}.</p>
      *
      * @param providers список провайдеров
+     * @throws ProviderRegistryEmptyException если список провайдеров пуст
+     * @throws ProviderCodeDuplicateException если код провайдера дублируется
+     * @throws ProviderDisplayNameDuplicateException если название провайдера дублируется
      */
     public SnapshotProviderRegistry(List<? extends MarketDataProvider> providers) {
         Objects.requireNonNull(providers, "providers must not be null");
