@@ -3,14 +3,8 @@ package com.alligator.market.domain.provider.model.handler;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.type.InstrumentType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentCodeMissingException;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongTypeException;
-import com.alligator.market.domain.provider.model.handler.exception.ProviderAlreadyAttachedException;
-import com.alligator.market.domain.provider.model.handler.exception.ProviderNotAttachedException;
-import com.alligator.market.domain.provider.model.handler.exception.SupportedInstrumentCodesEmptyException;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
+import com.alligator.market.domain.provider.model.handler.exception.*;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
@@ -25,7 +19,7 @@ import java.util.Set;
 public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    //region СОСТОЯНИЕ
+    //region FIELDS
 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
@@ -45,7 +39,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region КОНСТРУКТОР
+    //region CONSTRUCTION
 
     /**
      * Конструктор с базовыми проверками.
@@ -73,7 +67,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region КОНТРАКТ: простые методы
+    //region PUBLIC API
 
     @Override
     public final HandlerCode handlerCode() {
@@ -109,98 +103,68 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region КОНТРАКТ: quote
+    //region TEMPLATE METHOD
 
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
      *
-     * <p>Выполняет базовые проверки инструмента и факта прикрепления обработчика к провайдеру,
-     * после чего делегирует выполнение в чистую логику получения потока котировок методом {@link #doQuote doQuote()}.</p>
+     * <p>Назначение: Валидирует инварианты и трбоевания контракта {@link InstrumentHandler}, после чего вызывает
+     * хук {@link #doQuote doQuote()}, который описывает чистую логику получения потока котировок.</p>
      *
-     * <p>Поток:
+     * <p>Поток может быть реализован как:</p>
      * <ul>
-     *     <li>Может быть реализован как опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
-     *     <li>Может быть реализован как push‑подписка (websocket, streaming API и т.п.).</li>
-     * </ul></p>
+     *     <li>Опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
+     *     <li>Push‑подписка (websocket, streaming API и т.п.).</li>
+     * </ul>
      *
      * <p>Примечание: возврат Mono<QuoteTick> допустим как частный случай, когда нужна единичная котировка.</p>
      *
-     * @param instrument инструмент, для которого требуется котировка
+     * @param instrument инструмент, для которого требуется получить поток котировок
      * @return поток котировок
-     * @throws NullPointerException            если {@code instrument == null}
-     * @throws ProviderNotAttachedException     если провайдер не прикреплён
+     * @throws ProviderNotAttachedException    если провайдер не прикреплён
      * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
      * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws InstrumentCodeMissingException   если код инструмента {@code null}
+     * @throws InstrumentCodeMissingException  если код инструмента {@code null}
      * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
+        //Проверки:
+
+        // Обработчик прикреплён к провайдеру
         requireProviderAttached();
+
+        // Класс инструмента соответствует контракту
         validateInstrumentClass(instrument);
+
+        // Тип инструмента соответствует контракту
         validateInstrumentType(instrument);
+
+        // Код инструмента валиден и поддерживается обработчиком
         validateInstrumentCode(instrument);
 
         return doQuote(instrument);
     }
 
     /**
-     * Чистая логика получения потока котировок для переданного инструмента.
+     * Точка расширения (hook) шаблонного метода {@link #quote(Instrument)}: чистая логика получения потока котировок
+     * для переданного инструмента.
      *
-     * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все необходимые проверки.</p>
+     * @param instrument инструмент, для которого требуется получить поток котировок
+     * @return поток котировок
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
-    /* Проверка: обработчик уже прикреплён к провайдеру. */
-    private void requireProviderAttached() {
-        if (providerRef.get() == null) {
-            throw new ProviderNotAttachedException(handlerCode);
-        }
-    }
-
-    /* Проверка: класс инструмента соответствует контракту обработчика. */
-    private void validateInstrumentClass(I instrument) {
-        if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException(
-                    instrument.instrumentCode(),
-                    instrument.getClass(),
-                    handlerCode,
-                    instrumentClass
-            );
-        }
-    }
-
-    /* Проверка: тип инструмента соответствует контракту обработчика. */
-    private void validateInstrumentType(I instrument) {
-        if (instrument.instrumentType() != instrumentType) {
-            throw new InstrumentWrongTypeException(
-                    instrument.instrumentCode(),
-                    instrument.instrumentType(),
-                    handlerCode,
-                    instrumentType
-            );
-        }
-    }
-
-    /* Проверка: код инструмента валиден и поддерживается обработчиком. */
-    private void validateInstrumentCode(I instrument) {
-        final InstrumentCode instrumentCode = instrument.instrumentCode();
-        if (instrumentCode == null) {
-            throw new InstrumentCodeMissingException(handlerCode);
-        }
-        if (!supportedInstrumentCodes.contains(instrumentCode)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), handlerCode);
-        }
-    }
-
     //endregion
 
-    //region ДЛЯ НАСЛЕДНИКОВ
+    //region PROTECTED API
 
     /**
-     * Полезный геттер для наследников: возвращает прикреплённого провайдера.
+     * Возвращает провайдера, к которому прикреплен обработчик.
+     *
+     * <p>Примечание: это удобный getter для наследников.</p>
      */
     protected final P provider() {
         P current = providerRef.get();
@@ -212,7 +176,57 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
 
     //endregion
 
-    //region ВНУТРЕННЕЕ
+    //region INTERNALS
+
+    /**
+     * Проверка: обработчик уже прикреплён к провайдеру.
+     */
+    private void requireProviderAttached() {
+        if (providerRef.get() == null) {
+            throw new ProviderNotAttachedException(handlerCode);
+        }
+    }
+
+    /**
+     * Проверка: класс инструмента соответствует контракту обработчика.
+     */
+    private void validateInstrumentClass(I instrument) {
+        if (!instrumentClass.isInstance(instrument)) {
+            throw new InstrumentWrongClassException(
+                    instrument.instrumentCode(),
+                    instrument.getClass(),
+                    handlerCode,
+                    instrumentClass
+            );
+        }
+    }
+
+    /**
+     * Проверка: тип инструмента соответствует контракту обработчика.
+     */
+    private void validateInstrumentType(I instrument) {
+        if (instrument.instrumentType() != instrumentType) {
+            throw new InstrumentWrongTypeException(
+                    instrument.instrumentCode(),
+                    instrument.instrumentType(),
+                    handlerCode,
+                    instrumentType
+            );
+        }
+    }
+
+    /**
+     * Проверка: код инструмента валиден и поддерживается обработчиком.
+     */
+    private void validateInstrumentCode(I instrument) {
+        final InstrumentCode instrumentCode = instrument.instrumentCode();
+        if (instrumentCode == null) {
+            throw new InstrumentCodeMissingException(handlerCode);
+        }
+        if (!supportedInstrumentCodes.contains(instrumentCode)) {
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), handlerCode);
+        }
+    }
 
     /**
      * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.

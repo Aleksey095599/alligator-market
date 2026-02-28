@@ -14,7 +14,7 @@ import java.util.Set;
  * Обработчик (handler) финансового инструмента.
  *
  * <p>Примечание: бизнес-логика предполагает, что обработчик жёстко привязан к одному конкретному провайдеру и
- * нацелен на работу с одним конкретным классом финансового инструмента.</p>
+ * нацелен на работу с одним конкретным классом/типом финансового инструмента.</p>
  */
 public sealed interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         permits AbstractInstrumentHandler {
