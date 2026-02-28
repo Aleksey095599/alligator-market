@@ -81,7 +81,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     }
 
     @Override
-    public Class<I> instrumentClass() {
+    public final Class<I> instrumentClass() {
         return instrumentClass;
     }
 
@@ -138,42 +138,11 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // 1) Проверяем, что провайдер прикреплен к данному обработчику
-        P currentProvider = providerRef.get();
-        if (currentProvider == null) {
-            throw new ProviderNotAttachedException(handlerCode);
-        }
+        requireProviderAttached();
+        validateInstrumentClass(instrument);
+        validateInstrumentType(instrument);
+        validateInstrumentCode(instrument);
 
-        // 2) Проверяем, что класс инструмента соответствует ожиданиям обработчика
-        if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException( // <-- Неверный класс
-                    instrument.instrumentCode(),
-                    instrument.getClass(),
-                    handlerCode,
-                    instrumentClass
-            );
-        }
-
-        // 3) Проверяем, что тип инструмента соответствует ожиданиям обработчика
-        if (instrument.instrumentType() != instrumentType) {
-            throw new InstrumentWrongTypeException( // <-- Неверный тип
-                    instrument.instrumentCode(),
-                    instrument.instrumentType(),
-                    handlerCode,
-                    instrumentType
-            );
-        }
-
-        // 4) Проверяем, что код инструмента поддерживается обработчиком
-        final InstrumentCode instrumentCode = instrument.instrumentCode();
-        if (instrumentCode == null) {
-            throw new InstrumentCodeMissingException(handlerCode);
-        }
-        if (!supportedInstrumentCodes.contains(instrumentCode)) {
-            throw new InstrumentNotSupportedException( // <-- Не поддерживается
-                    instrument.instrumentCode(),
-                    handlerCode);
-        }
         return doQuote(instrument);
     }
 
@@ -183,6 +152,48 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
      * <p>Вызывается final-методом {@link #quote(Instrument)} после того, как выполнены все необходимые проверки.</p>
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
+
+    /* Проверка: обработчик уже прикреплён к провайдеру. */
+    private void requireProviderAttached() {
+        if (providerRef.get() == null) {
+            throw new ProviderNotAttachedException(handlerCode);
+        }
+    }
+
+    /* Проверка: класс инструмента соответствует контракту обработчика. */
+    private void validateInstrumentClass(I instrument) {
+        if (!instrumentClass.isInstance(instrument)) {
+            throw new InstrumentWrongClassException(
+                    instrument.instrumentCode(),
+                    instrument.getClass(),
+                    handlerCode,
+                    instrumentClass
+            );
+        }
+    }
+
+    /* Проверка: тип инструмента соответствует контракту обработчика. */
+    private void validateInstrumentType(I instrument) {
+        if (instrument.instrumentType() != instrumentType) {
+            throw new InstrumentWrongTypeException(
+                    instrument.instrumentCode(),
+                    instrument.instrumentType(),
+                    handlerCode,
+                    instrumentType
+            );
+        }
+    }
+
+    /* Проверка: код инструмента валиден и поддерживается обработчиком. */
+    private void validateInstrumentCode(I instrument) {
+        final InstrumentCode instrumentCode = instrument.instrumentCode();
+        if (instrumentCode == null) {
+            throw new InstrumentCodeMissingException(handlerCode);
+        }
+        if (!supportedInstrumentCodes.contains(instrumentCode)) {
+            throw new InstrumentNotSupportedException(instrument.instrumentCode(), handlerCode);
+        }
+    }
 
     //endregion
 
