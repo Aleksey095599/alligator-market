@@ -171,7 +171,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.
      *
-     * <p>Примечание: это удобный getter для наследников.</p>
+     * <p>Назначение: Обработчик может обращаться к провайдеру для получения дополнительной информации.</p>
      */
     protected final P provider() {
         P current = providerRef.get();

@@ -8,7 +8,6 @@ import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,9 +31,25 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     InstrumentType instrumentType();
 
     /**
+     * Признак: инструмент сопоставим с обработчиком по доменным признакам (класс + тип).
+     */
+    default boolean isCompatible(Instrument instrument) {
+        return instrument != null
+                && instrumentClass().isInstance(instrument)
+                && instrument.instrumentType() == instrumentType();
+    }
+
+    /**
      * Коды поддерживаемых инструментов.
      */
     Set<InstrumentCode> supportedInstrumentCodes();
+
+    /**
+     * Признак: поддерживается ли конкретный код инструмента.
+     */
+    default boolean isSupported(InstrumentCode instrumentCode) {
+        return instrumentCode != null && supportedInstrumentCodes().contains(instrumentCode);
+    }
 
     /**
      * Прикрепление обработчика к провайдеру.
@@ -44,7 +59,8 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     /**
      * Признак: обработчик уже прикреплён к провайдеру.
      *
-     * <p>Назначение: безопасная проверка состояния жизненного цикла (до вызова {@link #quote(Instrument)}).</p>
+     * <p>Назначение: Одно из требований корректного состояния обработчика – прикрепление к провайдеру.
+     * Перед выполнением метода получения потока котировок, обработчик проверяет прикрепление к провайдеру.</p>
      */
     boolean isAttached();
 
@@ -52,30 +68,4 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
      * Поток котировок для заданного инструмента.
      */
     Publisher<QuoteTick> quote(I instrument);
-
-    /**
-     * Поддерживается ли конкретный код инструмента (дефолтная реализация).
-     */
-    default boolean supportsByCode(InstrumentCode instrumentCode) {
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return supportedInstrumentCodes().contains(instrumentCode);
-    }
-
-    /**
-     * Производная проекция: поддерживается ли конкретный инструмент с точки зрения контракта обработчика
-     * (класс + тип + код + membership в supported-наборе).
-     */
-    default boolean supports(Instrument instrument) {
-        if (instrument == null) {
-            return false;
-        }
-        if (!instrumentClass().isInstance(instrument)) {
-            return false;
-        }
-        if (instrument.instrumentType() != instrumentType()) {
-            return false;
-        }
-        InstrumentCode code = instrument.instrumentCode();
-        return code != null && supportedInstrumentCodes().contains(code);
-    }
 }
