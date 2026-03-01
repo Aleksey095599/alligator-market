@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.readmodel.passport.store;
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWriteStore;
+import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * JDBC-реализация write-порта {@link ProviderPassportProjectionWriteStore} для PostgreSQL.
+ * JDBC-реализация write-порта {@link ProviderPassportProjectionWritePort} для PostgreSQL.
  *
  * <p>Причины использования JDBC:</p>
  * <ul>
@@ -23,7 +23,7 @@ import java.util.*;
  *   <li>Очистка "всё кроме активных" выполняется одним запросом (PostgreSQL array).</li>
  * </ul>
  */
-public class ProviderPassportProjectionWriteStoreJdbcAdapter implements ProviderPassportProjectionWriteStore {
+public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderPassportProjectionWritePort {
 
     // Удаляем всё, кроме activeCodes: deleteAllExcept(Set).
     private static final String SQL_DELETE_ALL_EXCEPT = """
@@ -65,7 +65,7 @@ public class ProviderPassportProjectionWriteStoreJdbcAdapter implements Provider
 
     private final JdbcTemplate jdbc;
 
-    public ProviderPassportProjectionWriteStoreJdbcAdapter(JdbcTemplate jdbc) {
+    public ProviderPassportProjectionWritePortJdbcAdapter(JdbcTemplate jdbc) {
         this.jdbc = Objects.requireNonNull(jdbc, "jdbc must not be null");
     }
 

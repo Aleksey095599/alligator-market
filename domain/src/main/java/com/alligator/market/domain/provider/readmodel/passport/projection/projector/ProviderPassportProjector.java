@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.readmodel.passport.projection.projector;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWriteStore;
+import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.registry.exception.ProviderRegistryEmptyException;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class ProviderPassportProjector {
 
     private final ProviderRegistry providerRegistry;
-    private final ProviderPassportProjectionWriteStore writeStore;
+    private final ProviderPassportProjectionWritePort writeStore;
 
     /**
      * Конструктор.
@@ -30,7 +30,7 @@ public class ProviderPassportProjector {
      */
     public ProviderPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportProjectionWriteStore writeStore
+            ProviderPassportProjectionWritePort writeStore
     ) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         this.writeStore = Objects.requireNonNull(writeStore, "writeStore must not be null");

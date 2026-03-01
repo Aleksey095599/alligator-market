@@ -21,7 +21,7 @@ import java.util.Set;
  *     <li>При нарушении требований к аргументам реализация вправе выбросить {@link IllegalArgumentException}.</li>
  * </ul>
  */
-public interface ProviderPassportProjectionWriteStore {
+public interface ProviderPassportProjectionWritePort {
 
     /**
      * Удалить все записи проекции, кроме указанных кодов провайдеров.

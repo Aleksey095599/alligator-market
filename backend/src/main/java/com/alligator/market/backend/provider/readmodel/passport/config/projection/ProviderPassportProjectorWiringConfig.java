@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.readmodel.passport.config.projection;
 
-import com.alligator.market.backend.provider.readmodel.passport.config.store.ProviderPassportProjectionWriteStoreWiringConfig;
+import com.alligator.market.backend.provider.readmodel.passport.config.store.ProviderPassportProjectionWritePortWiringConfig;
 import com.alligator.market.backend.provider.registry.wiring.ProviderRegistryWiringConfig;
 import com.alligator.market.domain.provider.readmodel.passport.projection.projector.ProviderPassportProjector;
-import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWriteStore;
+import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import({
         ProviderRegistryWiringConfig.class,
-        ProviderPassportProjectionWriteStoreWiringConfig.class,
+        ProviderPassportProjectionWritePortWiringConfig.class,
 })
 public class ProviderPassportProjectorWiringConfig {
 
@@ -27,7 +27,7 @@ public class ProviderPassportProjectorWiringConfig {
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTOR)
     public ProviderPassportProjector providerPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportProjectionWriteStore writeStore
+            ProviderPassportProjectionWritePort writeStore
     ) {
         return new ProviderPassportProjector(providerRegistry, writeStore);
     }
