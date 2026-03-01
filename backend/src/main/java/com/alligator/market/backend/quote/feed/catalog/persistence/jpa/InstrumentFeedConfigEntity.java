@@ -2,7 +2,6 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
-import com.alligator.market.backend.provider.catalog.passport.persistence.jpa.PassportEntity;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
@@ -94,9 +93,9 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      * TODO: Подумать нельзя ли задать как обычную ссылку (жесткую), но допускающую null. Например, если будет удален
      * пасспрот провайдера, то в таблице значения где ссылались на него заменяться на null.
      *
-     * <p>Soft reference – без внешнего ключа таблицу {@link PassportEntity} (БД не гарантирует существование провайдера);
-     * можно обновлять; frontend должен предлагать текущий доступный список кодов провайдеров из таблицы провайдеров
-     * {@link PassportEntity} при попытке заполнения формы для данного поля.</p>
+     * <p>Soft reference – без внешнего ключа на таблицу provider_passport (БД не гарантирует существование провайдера);
+     * можно обновлять; frontend должен предлагать текущий доступный список кодов провайдеров
+     * из таблицы provider_passport при попытке заполнения формы для данного поля.</p>
      */
     @NotBlank
     @Size(max = 50)
