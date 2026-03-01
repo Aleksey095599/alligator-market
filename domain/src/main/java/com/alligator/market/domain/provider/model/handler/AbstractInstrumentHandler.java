@@ -145,7 +145,7 @@ public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataP
         // Код инструмента валиден и поддерживается обработчиком
         validateInstrumentCode(instrument);
 
-        return doQuote(instrument);
+        return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
     }
 
     /**
