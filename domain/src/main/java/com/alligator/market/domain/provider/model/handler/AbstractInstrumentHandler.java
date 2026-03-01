@@ -91,8 +91,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final boolean isCompatible(Instrument instrument) {
-        return instrument != null
-                && instrumentClass.isInstance(instrument)
+        return instrumentClass.isInstance(instrument)
                 && instrument.instrumentType() == instrumentType;
     }
 
