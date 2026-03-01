@@ -10,7 +10,7 @@ import org.reactivestreams.Publisher;
 /**
  * Провайдер рыночных данных.
  */
-public sealed interface MarketDataProvider permits AbstractMarketDataProvider {
+public interface MarketDataProvider {
 
     /**
      * Код провайдера.

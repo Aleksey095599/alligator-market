@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Абстрактная реализация {@link MarketDataProvider}.
  */
-public abstract non-sealed class AbstractMarketDataProvider<P extends MarketDataProvider>
+public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
     //=================================================================================================================
