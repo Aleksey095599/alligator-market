@@ -42,6 +42,13 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     void attachTo(P provider);
 
     /**
+     * Признак: обработчик уже прикреплён к провайдеру.
+     *
+     * <p>Назначение: безопасная проверка состояния жизненного цикла (до вызова {@link #quote(Instrument)}).</p>
+     */
+    boolean isAttached();
+
+    /**
      * Поток котировок для заданного инструмента.
      */
     Publisher<QuoteTick> quote(I instrument);

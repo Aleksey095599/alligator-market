@@ -101,6 +101,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
     }
 
+    @Override
+    public final boolean isAttached() {
+        return providerRef.get() != null;
+    }
+
     //endregion
 
     //region TEMPLATE METHOD
@@ -134,7 +139,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         //Проверки:
 
         // Обработчик прикреплён к провайдеру
-        requireProviderAttached();
+        if (!isAttached()) {
+            throw new ProviderNotAttachedException(handlerCode);
+        }
 
         // Класс инструмента соответствует контракту
         validateInstrumentClass(instrument);
@@ -177,15 +184,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     //endregion
 
     //region INTERNALS
-
-    /**
-     * Проверка: обработчик уже прикреплён к провайдеру.
-     */
-    private void requireProviderAttached() {
-        if (providerRef.get() == null) {
-            throw new ProviderNotAttachedException(handlerCode);
-        }
-    }
 
     /**
      * Проверка: класс инструмента соответствует контракту обработчика.
