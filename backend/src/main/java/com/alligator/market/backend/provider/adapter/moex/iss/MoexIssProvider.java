@@ -16,8 +16,6 @@ import java.util.Set;
  */
 public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssProvider> {
 
-    //region FIELDS
-
     public static final String PROVIDER_CODE_VALUE = "MOEX_ISS";
     public static final ProviderCode PROVIDER_CODE = ProviderCode.of(PROVIDER_CODE_VALUE);
 
@@ -32,10 +30,6 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
 
     private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1);
 
-    //endregion
-
-    //region CONSTRUCTION
-
     /**
      * Конструктор адаптера MOEX ISS.
      *
@@ -49,14 +43,8 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
         super(PROVIDER_CODE, PASSPORT, POLICY, handlers);
     }
 
-    //endregion
-
-    //region EXTENSION POINT
-
     @Override
     protected MoexIssProvider self() {
         return this;
     }
-
-    //endregion
 }
