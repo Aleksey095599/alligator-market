@@ -3,31 +3,34 @@ package com.alligator.market.backend.provider.catalog.passport.service;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Реализация сервиса {@link PassportCatalogService}.
+ *
+ * <p>Чтение выполняется через доменный query-порт materialized view.</p>
  */
-@Slf4j
-@Service
-@RequiredArgsConstructor
-public class PassportCatalogServiceImpl implements PassportCatalogService {
+public final class PassportCatalogServiceImpl implements PassportCatalogService {
+
+    private static final Logger log = LoggerFactory.getLogger(PassportCatalogServiceImpl.class);
 
     /* Query-порт чтения паспортов провайдеров из read model (provider_passport). */
     private final ProviderPassportQueryPort queryPort;
 
+    public PassportCatalogServiceImpl(ProviderPassportQueryPort queryPort) {
+        this.queryPort = Objects.requireNonNull(queryPort, "queryPort must not be null");
+    }
+
     @Override
-    @Transactional(readOnly = true)
     public List<ProviderPassport> findAll() {
         Map<ProviderCode, ProviderPassport> passports = queryPort.findAll();
 
-        // Сохраняем порядок итерации карты (если адаптер возвращает LinkedHashMap с ORDER BY в SQL).
+        // Сохраняем порядок итерации карты (если адаптер сортирует через ORDER BY).
         List<ProviderPassport> result = List.copyOf(passports.values());
 
         log.debug("Found {} provider passports", result.size());
