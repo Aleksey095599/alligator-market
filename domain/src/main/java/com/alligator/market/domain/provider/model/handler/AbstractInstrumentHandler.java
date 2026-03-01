@@ -89,9 +89,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return supportedInstrumentCodes;
     }
 
-    /**
-     * Признак: инструмент сопоставим с обработчиком по доменным признакам (класс + тип).
-     */
     @Override
     public final boolean isCompatible(Instrument instrument) {
         return instrument != null
@@ -99,17 +96,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                 && instrument.instrumentType() == instrumentType;
     }
 
-    /**
-     * Признак: поддерживается ли конкретный код инструмента.
-     */
     @Override
     public final boolean isSupported(InstrumentCode instrumentCode) {
         return instrumentCode != null && supportedInstrumentCodes.contains(instrumentCode);
     }
 
-    /**
-     * Однократное прикрепление обработчика к провайдеру.
-     */
     @Override
     public final void attachTo(P provider) {
         Objects.requireNonNull(provider, "provider must not be null");
@@ -133,22 +124,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      *
      * <p>Назначение: Валидирует инварианты и трбоевания контракта {@link InstrumentHandler}, после чего вызывает
      * хук {@link #doQuote doQuote()}, который описывает чистую логику получения потока котировок.</p>
-     *
-     * <p>Поток может быть реализован как:</p>
-     * <ul>
-     *     <li>Опрос внешнего API (API_POLL) с интервалами согласно ProviderPolicy;</li>
-     *     <li>Push‑подписка (websocket, streaming API и т.п.).</li>
-     * </ul>
-     *
-     * <p>Примечание: возврат Mono<QuoteTick> допустим как частный случай, когда нужна единичная котировка.</p>
-     *
-     * @param instrument инструмент, для которого требуется получить поток котировок
-     * @return поток котировок
-     * @throws ProviderNotAttachedException    если провайдер не прикреплён
-     * @throws InstrumentWrongClassException   если класс инструмента не соответствует {@link #instrumentClass()}
-     * @throws InstrumentWrongTypeException    если тип инструмента не соответствует {@link #instrumentType()}
-     * @throws InstrumentCodeMissingException  если код инструмента {@code null}
-     * @throws InstrumentNotSupportedException если код инструмента не входит в поддерживаемый набор
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
@@ -164,9 +139,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /**
      * Точка расширения (hook) шаблонного метода {@link #quote(Instrument)}: чистая логика получения потока котировок
      * для переданного инструмента.
-     *
-     * @param instrument инструмент, для которого требуется получить поток котировок
-     * @return поток котировок
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
