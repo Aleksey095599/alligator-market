@@ -13,8 +13,6 @@ import java.util.Map;
 
 /**
  * Реализация сервиса {@link PassportCatalogService}.
- *
- * <p>Чтение выполняется через доменный query-порт materialized view, без зависимости от JPA.</p>
  */
 @Slf4j
 @Service
