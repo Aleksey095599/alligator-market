@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Абстрактная реализация обработчика инструмента {@link InstrumentHandler}.
  */
-public abstract non-sealed class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
+public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
     //region FIELDS
