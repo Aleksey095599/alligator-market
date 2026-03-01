@@ -90,6 +90,24 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     /**
+     * Признак: инструмент сопоставим с обработчиком по доменным признакам (класс + тип).
+     */
+    @Override
+    public final boolean isCompatible(Instrument instrument) {
+        return instrument != null
+                && instrumentClass.isInstance(instrument)
+                && instrument.instrumentType() == instrumentType;
+    }
+
+    /**
+     * Признак: поддерживается ли конкретный код инструмента.
+     */
+    @Override
+    public final boolean isSupported(InstrumentCode instrumentCode) {
+        return instrumentCode != null && supportedInstrumentCodes.contains(instrumentCode);
+    }
+
+    /**
      * Однократное прикрепление обработчика к провайдеру.
      */
     @Override
@@ -136,21 +154,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     public final Publisher<QuoteTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        //Проверки:
-
-        // Обработчик прикреплён к провайдеру
-        if (!isAttached()) {
-            throw new ProviderNotAttachedException(handlerCode);
-        }
-
-        // Класс инструмента соответствует контракту
-        validateInstrumentClass(instrument);
-
-        // Тип инструмента соответствует контракту
-        validateInstrumentType(instrument);
-
-        // Код инструмента валиден и поддерживается обработчиком
-        validateInstrumentCode(instrument);
+        requireProviderAttached();
+        requireCompatible(instrument);
+        requireSupportedCode(instrument);
 
         return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
     }
@@ -185,10 +191,17 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     //region INTERNALS
 
+    /* Требование контракта: обработчик прикреплён к провайдеру. */
+    private void requireProviderAttached() {
+        if (!isAttached()) {
+            throw new ProviderNotAttachedException(handlerCode);
+        }
+    }
+
     /**
-     * Проверка: класс инструмента соответствует контракту обработчика.
+     * Требование контракта: инструмент совместим с обработчиком (класс + тип).
      */
-    private void validateInstrumentClass(I instrument) {
+    private void requireCompatible(I instrument) {
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException(
                     instrument.instrumentCode(),
@@ -197,12 +210,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                     instrumentClass
             );
         }
-    }
 
-    /**
-     * Проверка: тип инструмента соответствует контракту обработчика.
-     */
-    private void validateInstrumentType(I instrument) {
         if (instrument.instrumentType() != instrumentType) {
             throw new InstrumentWrongTypeException(
                     instrument.instrumentCode(),
@@ -214,15 +222,17 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     /**
-     * Проверка: код инструмента валиден и поддерживается обработчиком.
+     * Требование контракта: код инструмента задан и поддерживается обработчиком.
      */
-    private void validateInstrumentCode(I instrument) {
+    private void requireSupportedCode(I instrument) {
         final InstrumentCode instrumentCode = instrument.instrumentCode();
+
         if (instrumentCode == null) {
             throw new InstrumentCodeMissingException(handlerCode);
         }
-        if (!supportedInstrumentCodes.contains(instrumentCode)) {
-            throw new InstrumentNotSupportedException(instrument.instrumentCode(), handlerCode);
+
+        if (!isSupported(instrumentCode)) {
+            throw new InstrumentNotSupportedException(instrumentCode, handlerCode);
         }
     }
 
