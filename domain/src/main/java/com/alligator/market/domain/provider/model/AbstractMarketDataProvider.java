@@ -3,7 +3,6 @@ package com.alligator.market.domain.provider.model;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
@@ -36,6 +35,17 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
 
     //endregion
 
+    //region EXTENSION POINT
+
+    /**
+     * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
+     *
+     * <p>Назначение: Используется для прикрепления обработчиков к провайдеру.</p>
+     */
+    protected abstract P self();
+
+    //endregion
+
     //region CONSTRUCTION
 
     /**
@@ -53,7 +63,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
-            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
@@ -72,7 +82,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
-        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
             h.attachTo(self());
         }
     }
@@ -129,7 +139,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             ProviderCode providerCode,
-            Set<? extends AbstractInstrumentHandler<P, ? extends Instrument>> handlers
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
@@ -137,7 +147,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
         Set<HandlerCode> handlerCodes = new HashSet<>();
 
-        for (AbstractInstrumentHandler<P, ? extends Instrument> h : handlers) {
+        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
             Objects.requireNonNull(h, "handler must not be null");
 
             HandlerCode handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
@@ -184,17 +194,6 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
 
         return handler;
     }
-
-    //endregion
-
-    //region EXTENSION POINT
-
-    /**
-     * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
-     *
-     * <p>Назначение: Используется для прикрепления обработчиков к провайдеру.</p>
-     */
-    protected abstract P self();
 
     //endregion
 }
