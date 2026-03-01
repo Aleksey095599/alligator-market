@@ -34,6 +34,8 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, FxSpot> {
 
+    //region FIELDS
+
     /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
@@ -49,9 +51,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /* Временная зона MOEX (используется для конвертации SYSTIME в Instant). */
     private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
-    //=================================================================================================================
-    // КОНСТРУКТОР
-    //=================================================================================================================
+    //endregion
+
+    //region CONSTRUCTION
 
     /**
      * Конструктор обработчика.
@@ -65,9 +67,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         this.webClient = webClient;
     }
 
-    //=================================================================================================================
-    // РЕАЛИЗАЦИЯ МЕТОДОВ КОНТРАКТА
-    //=================================================================================================================
+    //endregion
+
+    //region TEMPLATE METHOD
 
     /**
      * Чистая логика получения потока котировок для переданного инструмента FX_SPOT.
@@ -97,9 +99,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
                 .repeatWhen(completed -> completed.delayElements(pollInterval));
     }
 
-    //=================================================================================================================
-    // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-    //=================================================================================================================
+    //endregion
+
+    //region INTERNALS
 
     /**
      * Один запрос к MOEX ISS --> одна котировка инструмента FX_SPOT.
@@ -259,9 +261,9 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         );
     }
 
-    //=================================================================================================================
-    // УТИЛИТЫ
-    //=================================================================================================================
+    //endregion
+
+    //region UTILS
 
     /**
      * Поиск индекса колонки по имени в массиве "columns".
@@ -274,4 +276,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         }
         return -1;
     }
+
+    //endregion
 }
