@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.store;
+package com.alligator.market.backend.provider.readmodel.passport.projection.jdbc;
 
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
