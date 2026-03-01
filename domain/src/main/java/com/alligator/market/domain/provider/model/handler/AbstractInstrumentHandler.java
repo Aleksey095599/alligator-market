@@ -174,6 +174,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      * Требование контракта: инструмент совместим с обработчиком (класс + тип).
      */
     private void requireCompatible(I instrument) {
+        if (isCompatible(instrument)) {
+            return;
+        }
+
         if (!instrumentClass.isInstance(instrument)) {
             throw new InstrumentWrongClassException(
                     instrument.instrumentCode(),
