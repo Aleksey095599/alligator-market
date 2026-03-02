@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.model;
+package com.alligator.market.domain.instrument.base;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;

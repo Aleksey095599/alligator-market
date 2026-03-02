@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.base.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
