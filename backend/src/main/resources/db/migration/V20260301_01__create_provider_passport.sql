@@ -26,7 +26,7 @@ CREATE TABLE provider_passport
     -- Уникальность натурального ключа
     CONSTRAINT uq_provider_code UNIQUE (provider_code),
 
-
+    -- Ограничения полей
     CONSTRAINT chk_provider_code_pattern
         CHECK (provider_code ~ '^[A-Z0-9_.-]+$'),
     CONSTRAINT chk_provider_code_not_blank
