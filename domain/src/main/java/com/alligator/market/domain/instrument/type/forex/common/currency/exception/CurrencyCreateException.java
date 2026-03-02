@@ -1,15 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка обновления валюты.
+ * Ошибка создания валюты.
  */
-public final class CurrencyUpdateException extends BaseDomainException {
+public final class CurrencyCreateException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -19,8 +19,8 @@ public final class CurrencyUpdateException extends BaseDomainException {
      * @param code код валюты
      */
     @SuppressWarnings("unused")
-    public CurrencyUpdateException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_UPDATE_FAILED, msg(code));
+    public CurrencyCreateException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -30,8 +30,8 @@ public final class CurrencyUpdateException extends BaseDomainException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    public CurrencyUpdateException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_UPDATE_FAILED, msg(code), cause);
+    public CurrencyCreateException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class CurrencyUpdateException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Failed to update Currency (code=" + c.value() + ")";
+        return "Failed to create Currency (code=" + c.value() + ")";
     }
 
     /**

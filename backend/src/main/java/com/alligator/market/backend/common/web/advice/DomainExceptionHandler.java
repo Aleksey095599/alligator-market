@@ -3,7 +3,7 @@ package com.alligator.market.backend.common.web.advice;
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.currency.exception.*;
+import com.alligator.market.domain.instrument.type.forex.common.currency.exception.*;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.*;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;

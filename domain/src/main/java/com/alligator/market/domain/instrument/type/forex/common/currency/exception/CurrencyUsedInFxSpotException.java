@@ -1,15 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка: валюта уже существует.
+ * Ошибка: валюта используется в FX_SPOT инструменте.
  */
-public final class CurrencyAlreadyExistsException extends BaseDomainException {
+public final class CurrencyUsedInFxSpotException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +18,8 @@ public final class CurrencyAlreadyExistsException extends BaseDomainException {
      *
      * @param code код валюты
      */
-    public CurrencyAlreadyExistsException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code));
+    public CurrencyUsedInFxSpotException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -30,8 +30,8 @@ public final class CurrencyAlreadyExistsException extends BaseDomainException {
      * @param cause причина ошибки
      */
     @SuppressWarnings("unused")
-    public CurrencyAlreadyExistsException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code), cause);
+    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class CurrencyAlreadyExistsException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency already exists (code=" + c.value() + ")";
+        return "Currency used in FX_SPOT instrument (code=" + c.value() + ")";
     }
 
     /**

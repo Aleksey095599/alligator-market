@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type.forex.currency.exception;
+package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
