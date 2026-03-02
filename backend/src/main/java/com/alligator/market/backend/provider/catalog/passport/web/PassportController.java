@@ -28,8 +28,10 @@ public class PassportController {
      */
     @GetMapping
     public ResponseEntity<ApiResponse<List<PassportResponseDto>>> getAll() {
-        List<PassportResponseDto> list = service.findAll().stream()
-                .map(PassportDtoMapper::toProviderPassportResponseDto)
+        var passports = service.findAll();
+
+        List<PassportResponseDto> list = passports.entrySet().stream()
+                .map(entry -> PassportDtoMapper.toProviderPassportResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
         return ResponseEntityFactory.ok(list);
     }

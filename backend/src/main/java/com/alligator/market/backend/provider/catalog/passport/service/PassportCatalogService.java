@@ -1,8 +1,9 @@
 package com.alligator.market.backend.provider.catalog.passport.service;
 
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
+import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Application-сервис (use case) для операций с паспортами провайдеров рыночных данных.
@@ -12,5 +13,5 @@ public interface PassportCatalogService {
     /**
      * Вернуть все паспорта.
      */
-    List<ProviderPassport> findAll();
+    Map<ProviderCode, ProviderPassport> findAll();
 }
