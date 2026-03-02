@@ -1,4 +1,4 @@
-package com.alligator.market.backend.infra.time;
+package com.alligator.market.backend.infra.time.config;
 
 import com.alligator.market.backend.infra.time.prop.AppTimeProperties;
 import org.springframework.beans.factory.annotation.Qualifier;

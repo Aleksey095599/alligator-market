@@ -1,4 +1,4 @@
-package com.alligator.market.backend.infra.jpa.audit;
+package com.alligator.market.backend.infra.jpa.audit.config;
 
 import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.infra.time;
+package com.alligator.market.backend.infra.time.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
