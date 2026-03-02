@@ -6,7 +6,6 @@ import com.alligator.market.domain.provider.readmodel.passport.query.port.Provid
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,13 +26,10 @@ public final class PassportCatalogServiceImpl implements PassportCatalogService 
     }
 
     @Override
-    public List<ProviderPassport> findAll() {
+    public Map<ProviderCode, ProviderPassport> findAll() {
         Map<ProviderCode, ProviderPassport> passports = queryPort.findAll();
 
-        // Сохраняем порядок итерации карты (если адаптер сортирует через ORDER BY).
-        List<ProviderPassport> result = List.copyOf(passports.values());
-
-        log.debug("Found {} provider passports", result.size());
-        return result;
+        log.debug("Found {} provider passports", passports.size());
+        return passports;
     }
 }
