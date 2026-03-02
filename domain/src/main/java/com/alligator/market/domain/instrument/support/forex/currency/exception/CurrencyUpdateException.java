@@ -1,15 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
+package com.alligator.market.domain.instrument.support.forex.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка: валюта используется в FX_SPOT инструменте.
+ * Ошибка обновления валюты.
  */
-public final class CurrencyUsedInFxSpotException extends BaseDomainException {
+public final class CurrencyUpdateException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +18,9 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      *
      * @param code код валюты
      */
-    public CurrencyUsedInFxSpotException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code));
+    @SuppressWarnings("unused")
+    public CurrencyUpdateException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_UPDATE_FAILED, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -29,9 +30,8 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    @SuppressWarnings("unused")
-    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code), cause);
+    public CurrencyUpdateException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_UPDATE_FAILED, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency used in FX_SPOT instrument (code=" + c.value() + ")";
+        return "Failed to update Currency (code=" + c.value() + ")";
     }
 
     /**

@@ -1,10 +1,10 @@
 package com.alligator.market.domain.instrument.type.forex.spot.model;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.instrument.type.forex.common.currency.model.Currency;
+import com.alligator.market.domain.instrument.support.forex.currency.model.Currency;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.exception.FxSpotSameCurrenciesException;
 

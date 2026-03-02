@@ -1,15 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
+package com.alligator.market.domain.instrument.support.forex.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка поиска валюты.
+ * Ошибка создания валюты.
  */
-public final class CurrencyNotFoundException extends BaseDomainException {
+public final class CurrencyCreateException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +18,9 @@ public final class CurrencyNotFoundException extends BaseDomainException {
      *
      * @param code код валюты
      */
-    public CurrencyNotFoundException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_NOT_FOUND, msg(code));
+    @SuppressWarnings("unused")
+    public CurrencyCreateException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -29,9 +30,8 @@ public final class CurrencyNotFoundException extends BaseDomainException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    @SuppressWarnings("unused")
-    public CurrencyNotFoundException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_NOT_FOUND, msg(code), cause);
+    public CurrencyCreateException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_CREATE_FAILED, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class CurrencyNotFoundException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency not found (code=" + c.value() + ")";
+        return "Failed to create Currency (code=" + c.value() + ")";
     }
 
     /**

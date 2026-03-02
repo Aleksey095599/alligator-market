@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.type.forex.currency.catalog.persi
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.InstrumentType;
-import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;

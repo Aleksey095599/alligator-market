@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
-import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.model.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;

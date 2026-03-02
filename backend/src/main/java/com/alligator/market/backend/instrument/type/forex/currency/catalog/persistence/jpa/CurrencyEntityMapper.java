@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.type.forex.currency.catalog.persistence.jpa;
 
-import com.alligator.market.domain.instrument.type.forex.common.currency.model.Currency;
+import com.alligator.market.domain.instrument.support.forex.currency.model.Currency;
 
 import java.util.Objects;
 

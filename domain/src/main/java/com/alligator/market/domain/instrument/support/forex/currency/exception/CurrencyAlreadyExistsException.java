@@ -1,15 +1,15 @@
-package com.alligator.market.domain.instrument.type.forex.common.currency.exception;
+package com.alligator.market.domain.instrument.support.forex.currency.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Ошибка удаления валюты.
+ * Ошибка: валюта уже существует.
  */
-public final class CurrencyDeleteException extends BaseDomainException {
+public final class CurrencyAlreadyExistsException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,9 +18,8 @@ public final class CurrencyDeleteException extends BaseDomainException {
      *
      * @param code код валюты
      */
-    @SuppressWarnings("unused")
-    public CurrencyDeleteException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_DELETE_FAILED, msg(code));
+    public CurrencyAlreadyExistsException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -30,8 +29,9 @@ public final class CurrencyDeleteException extends BaseDomainException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    public CurrencyDeleteException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_DELETE_FAILED, msg(code), cause);
+    @SuppressWarnings("unused")
+    public CurrencyAlreadyExistsException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_ALREADY_EXISTS, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class CurrencyDeleteException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Failed to delete Currency (code=" + c.value() + ")";
+        return "Currency already exists (code=" + c.value() + ")";
     }
 
     /**

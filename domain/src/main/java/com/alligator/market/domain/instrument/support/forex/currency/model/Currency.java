@@ -1,11 +1,13 @@
-package com.alligator.market.domain.instrument.type.forex.common.currency.model;
+package com.alligator.market.domain.instrument.support.forex.currency.model;
 
-import com.alligator.market.domain.instrument.type.forex.common.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
 /**
- * Базовая модель валюты.
+ * Модель валюты.
+ *
+ * <p>Назначение: Используется как вспомогательная модель для инструментов типа FOREX.</p>
  *
  * @param code           Уникальный код валюты
  * @param name           Наименование валюты
