@@ -7,7 +7,8 @@ CREATE TABLE instrument
     -- Идентичность инструмента
     code              VARCHAR(50)  NOT NULL,
     symbol            VARCHAR(50)  NOT NULL,
-    type              VARCHAR(32)  NOT NULL,
+    asset_class       VARCHAR(32)  NOT NULL,
+    contract_type     VARCHAR(32)  NOT NULL,
 
     -- Аудит/версионирование
     version           BIGINT       NOT NULL DEFAULT 0,
@@ -26,11 +27,14 @@ CREATE TABLE instrument
         CHECK (code ~ '^[A-Z0-9_]+$'),
     CONSTRAINT chk_instrument_symbol_pattern
         CHECK (symbol ~ '^[A-Z0-9_]+$'),
-    CONSTRAINT chk_instrument_type_allowed
-        CHECK (type IN ('FOREX_SPOT', 'FOREX_FORWARD', 'FOREX_SWAP')),
+    CONSTRAINT chk_instrument_asset_class_allowed
+        CHECK (asset_class IN ('COMMODITY', 'EQUITY', 'FOREX')),
+    CONSTRAINT chk_instrument_contract_type_allowed
+        CHECK (contract_type IN ('SPOT', 'FORWARD', 'SWAP')),
     CONSTRAINT chk_instrument_version_non_negative
         CHECK (version >= 0)
 );
 
--- Индекс для быстрого отбора по типу инструмента.
-CREATE INDEX idx_instrument_type ON instrument (type);
+-- Индексы для быстрого отбора по доменным признакам инструмента.
+CREATE INDEX idx_instrument_asset_class ON instrument (asset_class);
+CREATE INDEX idx_instrument_contract_type ON instrument (contract_type);

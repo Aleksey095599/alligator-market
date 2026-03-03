@@ -2,7 +2,6 @@ package com.alligator.market.domain.instrument.asset.forex.contract.spot.codec;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
-import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
 
@@ -14,8 +13,8 @@ import java.util.Objects;
  */
 public final class FxSpotCodec {
 
-    /* Префикс кода инструмента: отображает тип FOREX_SPOT. */
-    private static final String TYPE_PREFIX = InstrumentType.FOREX_SPOT.name() + "_";
+    /* Префикс кода инструмента: класс актива + тип контракта (FOREX_SPOT). */
+    private static final String TYPE_PREFIX = "FOREX_SPOT_";
 
     /* Разделитель между парой и тенором. */
     private static final char SEP = '_';

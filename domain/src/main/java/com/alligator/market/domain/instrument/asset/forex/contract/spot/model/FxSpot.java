@@ -5,7 +5,6 @@ import com.alligator.market.domain.instrument.type.ContractType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
-import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.exception.FxSpotSameCurrenciesException;
@@ -69,8 +68,4 @@ public record FxSpot(
         return ContractType.SPOT;
     }
 
-    @Override
-    public InstrumentType instrumentType() {
-        return InstrumentType.FOREX_SPOT;
-    }
 }

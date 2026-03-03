@@ -8,6 +8,8 @@ import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.Fx
 public record FxSpotResponseDto(
         String instrumentCode,
         String symbol,
+        String assetClass,
+        String contractType,
         String baseCurrency,
         String quoteCurrency,
         Integer defaultQuoteFractionDigits,

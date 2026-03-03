@@ -4,9 +4,10 @@ import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentCodeConverter;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentSymbolConverter;
 import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.instrument.type.AssetClass;
+import com.alligator.market.domain.instrument.type.ContractType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
-import com.alligator.market.domain.instrument.InstrumentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -22,26 +23,16 @@ import java.util.Objects;
  *
  * <p>Назначение: хранение и представление в базе данных общих атрибутов финансовых инструментов; все финансовые
  * поля сущности соответствуют доменному контракту {@link Instrument}.</p>
- *
- * <p>Пояснение некоторых аннотаций:</p>
- * <ul>
- *     <li>{@link Inheritance}: используется стратегия {@code JOINED}, при которой общие для всех финансовых
- *     инструментов поля хранятся в родительской таблице, а специфичные – в таблицах наследников.</li>
- *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
- *     вручную создаются только сущности-наследники, которые вызывают метод однократной инициализации
- *     полей родительской сущности.</li>
- * </ul>
  */
 @Entity
 @Table(
         name = "instrument",
-        // Уникальность натурального ключа:
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
         },
-        // Индекс по типу инструмента полезен для быстрого поиска:
         indexes = {
-                @Index(name = "idx_instrument_type", columnList = "type")
+                @Index(name = "idx_instrument_asset_class", columnList = "asset_class"),
+                @Index(name = "idx_instrument_contract_type", columnList = "contract_type")
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -58,79 +49,63 @@ public abstract class InstrumentEntity extends BaseEntity {
     private Long id;
 
     /**
-     * Внутренний код инструмента (уникален в контексте приложения).
-     *
-     * <p>Поле является натуральным ключом, поэтому {@code updatable=false} и
-     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
+     * Внутренний код инструмента (идентификатор).
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @NaturalId()
+    @NaturalId
     @Convert(converter = InstrumentCodeConverter.class)
-    @Column(
-            name = "code", length = 50,
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "code", length = 50, nullable = false, updatable = false)
     private InstrumentCode code;
 
     /**
      * Символ инструмента для отображения в UI.
-     *
-     * <p>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и
-     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
      */
     @Setter(AccessLevel.NONE)
     @NotNull
     @Convert(converter = InstrumentSymbolConverter.class)
-    @Column(
-            name = "symbol", length = 50,
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "symbol", length = 50, nullable = false, updatable = false)
     private InstrumentSymbol symbol;
 
     /**
-     * Тип финансового инструмента.
-     *
-     * <p>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и
-     * запрет на переназначение через сеттер {@code @Setter(AccessLevel.NONE)}.</p>
+     * Класс актива инструмента.
      */
     @Setter(AccessLevel.NONE)
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(
-            name = "type", length = 32,
-            nullable = false,
-            updatable = false
-    )
-    private InstrumentType type;
+    @Column(name = "asset_class", length = 32, nullable = false, updatable = false)
+    private AssetClass assetClass;
+
+    /**
+     * Тип контракта инструмента.
+     */
+    @Setter(AccessLevel.NONE)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "contract_type", length = 32, nullable = false, updatable = false)
+    private ContractType contractType;
 
     /**
      * Метод однократной инициализации полей родительской сущности.
-     *
-     * <p>Вызывается из конструктора сущности-наследника и заполняет поля
-     * {@code code}, {@code symbol}, {@code type}.</p>
      */
-    // Пока не появились иные инструменты кроме FOREX_SPOT, давим предупреждение типа "SameParameterValue"
-    @SuppressWarnings("SameParameterValue")
     protected final void initIdentity(
             InstrumentCode instrumentCode,
             InstrumentSymbol instrumentSymbol,
-            InstrumentType type
+            AssetClass assetClass,
+            ContractType contractType
     ) {
-        // Защита от повторной инициализации
-        if (this.code != null || this.symbol != null || this.type != null) {
+        if (this.code != null || this.symbol != null || this.assetClass != null || this.contractType != null) {
             throw new IllegalStateException("Instrument identity already initialized");
         }
 
-        // Базовые проверки аргументов
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(instrumentSymbol, "instrumentSymbol must not be null");
-        Objects.requireNonNull(type, "type must not be null");
+        Objects.requireNonNull(assetClass, "assetClass must not be null");
+        Objects.requireNonNull(contractType, "contractType must not be null");
 
         this.code = instrumentCode;
         this.symbol = instrumentSymbol;
-        this.type = type;
+        this.assetClass = assetClass;
+        this.contractType = contractType;
     }
 }
