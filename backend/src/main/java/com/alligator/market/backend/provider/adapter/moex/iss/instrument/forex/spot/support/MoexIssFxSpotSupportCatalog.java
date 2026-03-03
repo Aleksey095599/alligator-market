@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support;
 
-import com.alligator.market.domain.instrument.support.forex.currency.model.Currency;
-import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.model.Currency;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.type.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.type.spot.model.FxSpotTenor;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.*;

@@ -3,12 +3,12 @@ package com.alligator.market.backend.instrument.type.forex.spot.catalog.service;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.support.forex.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.support.forex.currency.model.Currency;
-import com.alligator.market.domain.instrument.support.forex.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.support.forex.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.type.forex.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.type.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.model.Currency;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.support.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.asset.forex.type.spot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.asset.forex.type.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

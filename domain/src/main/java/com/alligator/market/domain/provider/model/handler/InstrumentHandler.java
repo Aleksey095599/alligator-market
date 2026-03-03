@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.model.handler;
 
 import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.type.InstrumentType;
+import com.alligator.market.domain.instrument.asset.InstrumentType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
