@@ -7,8 +7,8 @@ import com.alligator.market.domain.instrument.market.forex.support.currency.exce
 import com.alligator.market.domain.instrument.market.forex.support.currency.model.Currency;
 import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.market.forex.support.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.market.forex.contract.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.spot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.market.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

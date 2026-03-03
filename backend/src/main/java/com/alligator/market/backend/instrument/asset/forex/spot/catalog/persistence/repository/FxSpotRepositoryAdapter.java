@@ -6,12 +6,12 @@ import com.alligator.market.backend.instrument.asset.forex.currency.catalog.pers
 import com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa.FxSpotEntity;
 import com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa.FxSpotJpaRepository;
-import com.alligator.market.domain.instrument.market.forex.contract.spot.exception.*;
+import com.alligator.market.domain.instrument.market.forex.spot.exception.*;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.market.forex.support.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.market.forex.contract.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.market.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.spot.repository.FxSpotRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;

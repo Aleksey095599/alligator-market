@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.market.forex.contract.spot.model;
+package com.alligator.market.domain.instrument.market.forex.spot.model;
 
 import java.util.Arrays;
 import java.util.List;
