@@ -1,7 +1,8 @@
 package com.alligator.market.domain.provider.model.handler;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.type.AssetClass;
+import com.alligator.market.domain.instrument.type.ContractType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.handler.exception.*;
@@ -27,8 +28,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
 
-    /* Тип поддерживаемых инструментов. */
-    private final InstrumentType instrumentType;
+    /* Класс актива поддерживаемых инструментов. */
+    private final AssetClass assetClass;
+
+    /* Тип контракта поддерживаемых инструментов. */
+    private final ContractType contractType;
 
     /* Коды поддерживаемых инструментов. */
     private final Set<InstrumentCode> supportedInstrumentCodes;
@@ -47,12 +51,14 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
             Class<I> instrumentClass,
-            InstrumentType instrumentType,
+            AssetClass assetClass,
+            ContractType contractType,
             Set<InstrumentCode> supportedInstrumentCodes
     ) {
         Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
-        Objects.requireNonNull(instrumentType, "instrumentType must not be null");
+        Objects.requireNonNull(assetClass, "assetClass must not be null");
+        Objects.requireNonNull(contractType, "contractType must not be null");
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
         if (supportedInstrumentCodes.isEmpty()) {
@@ -61,7 +67,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
         this.handlerCode = handlerCode;
         this.instrumentClass = instrumentClass;
-        this.instrumentType = instrumentType;
+        this.assetClass = assetClass;
+        this.contractType = contractType;
         this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
     }
 
@@ -80,8 +87,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     @Override
-    public final InstrumentType instrumentType() {
-        return instrumentType;
+    public final AssetClass assetClass() {
+        return assetClass;
+    }
+
+    @Override
+    public final ContractType contractType() {
+        return contractType;
     }
 
     @Override
@@ -91,8 +103,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final boolean isCompatible(Instrument instrument) {
-        return instrumentClass.isInstance(instrument)
-                && instrument.instrumentType() == instrumentType;
+        return instrument != null
+                && instrumentClass.isInstance(instrument)
+                && instrument.assetClass() == assetClass
+                && instrument.contractType() == contractType;
     }
 
     @Override
@@ -170,7 +184,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     /**
-     * Требование контракта: инструмент совместим с обработчиком (класс + тип).
+     * Требование контракта: инструмент совместим с обработчиком (java-класс + класс актива + тип контракта).
      */
     private void requireCompatible(I instrument) {
         if (isCompatible(instrument)) {
@@ -186,12 +200,21 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             );
         }
 
-        if (instrument.instrumentType() != instrumentType) {
-            throw new InstrumentWrongTypeException(
+        if (instrument.assetClass() != assetClass) {
+            throw new InstrumentWrongAssetClassException(
                     instrument.instrumentCode(),
-                    instrument.instrumentType(),
+                    instrument.assetClass(),
                     handlerCode,
-                    instrumentType
+                    assetClass
+            );
+        }
+
+        if (instrument.contractType() != contractType) {
+            throw new InstrumentWrongContractTypeException(
+                    instrument.instrumentCode(),
+                    instrument.contractType(),
+                    handlerCode,
+                    contractType
             );
         }
     }

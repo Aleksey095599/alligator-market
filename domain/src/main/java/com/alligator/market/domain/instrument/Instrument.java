@@ -33,8 +33,4 @@ public interface Instrument {
      */
     ContractType contractType();
 
-    /**
-     * Тип финансового инструмента.
-     */
-    InstrumentType instrumentType();
 }

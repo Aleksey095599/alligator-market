@@ -8,7 +8,8 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.exc
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongTypeException;
+import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongAssetClassException;
+import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongContractTypeException;
 import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import lombok.extern.slf4j.Slf4j;
@@ -109,14 +110,23 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Некорректный класс или тип инструмента --> 400.
+     * Некорректный класс актива, тип контракта или java-класс инструмента --> 400.
      */
-    @ExceptionHandler({InstrumentWrongClassException.class, InstrumentWrongTypeException.class})
+    @ExceptionHandler({
+            InstrumentWrongClassException.class,
+            InstrumentWrongAssetClassException.class,
+            InstrumentWrongContractTypeException.class
+    })
     public ResponseEntity<ApiResponse<Void>> instrumentWrong(RuntimeException ex) {
         log.warn("Instrument mismatch: {}", ex.getMessage());
-        String code = ex instanceof InstrumentWrongClassException
-                ? DomainErrorCode.INSTRUMENT_WRONG_CLASS.name()
-                : DomainErrorCode.INSTRUMENT_WRONG_TYPE.name();
+        String code;
+        if (ex instanceof InstrumentWrongClassException) {
+            code = DomainErrorCode.INSTRUMENT_WRONG_CLASS.name();
+        } else if (ex instanceof InstrumentWrongAssetClassException) {
+            code = DomainErrorCode.INSTRUMENT_WRONG_ASSET_CLASS.name();
+        } else {
+            code = DomainErrorCode.INSTRUMENT_WRONG_CONTRACT_TYPE.name();
+        }
         return ResponseEntityFactory.badRequest(code, ex.getMessage());
     }
 

@@ -4,7 +4,8 @@ import com.alligator.market.backend.instrument.catalog.persistence.jpa.Instrumen
 import com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
-import com.alligator.market.domain.instrument.InstrumentType;
+import com.alligator.market.domain.instrument.type.AssetClass;
+import com.alligator.market.domain.instrument.type.ContractType;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
@@ -169,6 +170,6 @@ public class FxSpotEntity extends InstrumentEntity {
         final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
 
         // Инициализируем родительскую сущность
-        initIdentity(code, symbol, InstrumentType.FOREX_SPOT);
+        initIdentity(code, symbol, AssetClass.FOREX, ContractType.SPOT);
     }
 }
