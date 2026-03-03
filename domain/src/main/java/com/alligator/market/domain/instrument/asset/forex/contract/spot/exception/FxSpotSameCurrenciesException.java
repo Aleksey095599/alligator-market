@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.type.spot.exception;
+package com.alligator.market.domain.instrument.asset.forex.contract.spot.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;

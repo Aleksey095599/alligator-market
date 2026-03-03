@@ -9,7 +9,7 @@ import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.i
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.mapper.FxSpotDtoMapper;
 import com.alligator.market.backend.instrument.type.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.type.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

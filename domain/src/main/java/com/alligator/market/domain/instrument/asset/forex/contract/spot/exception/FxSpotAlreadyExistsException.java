@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.type.spot.exception;
+package com.alligator.market.domain.instrument.asset.forex.contract.spot.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
@@ -7,9 +7,9 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Ошибка поиска инструмента FX_SPOT.
+ * Ошибка повторного создания инструмента FX_SPOT.
  */
-public final class FxSpotNotFoundException extends BaseDomainException {
+public final class FxSpotAlreadyExistsException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
 
@@ -18,8 +18,8 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      *
      * @param instrumentCode код инструмента
      */
-    public FxSpotNotFoundException(InstrumentCode instrumentCode) {
-        super(DomainErrorCode.FX_SPOT_NOT_FOUND, msg(instrumentCode));
+    public FxSpotAlreadyExistsException(InstrumentCode instrumentCode) {
+        super(DomainErrorCode.FX_SPOT_ALREADY_EXISTS, msg(instrumentCode));
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -30,8 +30,8 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      * @param cause          причина ошибки
      */
     @SuppressWarnings("unused")
-    public FxSpotNotFoundException(InstrumentCode instrumentCode, Throwable cause) {
-        super(DomainErrorCode.FX_SPOT_NOT_FOUND, msg(instrumentCode), cause);
+    public FxSpotAlreadyExistsException(InstrumentCode instrumentCode, Throwable cause) {
+        super(DomainErrorCode.FX_SPOT_ALREADY_EXISTS, msg(instrumentCode), cause);
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -42,8 +42,8 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      * @return текст сообщения
      */
     private static String msg(InstrumentCode instrumentCode) {
-        InstrumentCode c = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "FX_SPOT instrument not found (code=" + c.value() + ")";
+        InstrumentCode code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return "FX_SPOT instrument already exists (code=" + code.value() + ")";
     }
 
     /**

@@ -2,7 +2,7 @@ package com.alligator.market.backend.quote.feed.resolver;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.asset.forex.type.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentProviderResolver;
 import org.springframework.stereotype.Service;

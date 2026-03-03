@@ -1,12 +1,12 @@
-package com.alligator.market.domain.instrument.asset.forex.type.spot.model;
+package com.alligator.market.domain.instrument.asset.forex.contract.spot.model;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.model.InstrumentType;
 import com.alligator.market.domain.instrument.asset.forex.support.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.type.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.type.spot.exception.FxSpotSameCurrenciesException;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.exception.FxSpotSameCurrenciesException;
 
 import java.util.Objects;
 
