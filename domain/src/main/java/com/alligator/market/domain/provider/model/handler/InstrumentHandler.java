@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.model.handler;
 
-import com.alligator.market.domain.instrument.model.Instrument;
-import com.alligator.market.domain.instrument.model.InstrumentType;
+import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.instrument.InstrumentType;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
@@ -16,7 +16,7 @@ import java.util.Set;
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
     /**
-     * Код обработчика.
+     * Уникальный код обработчика (идентификатор).
      */
     HandlerCode handlerCode();
 

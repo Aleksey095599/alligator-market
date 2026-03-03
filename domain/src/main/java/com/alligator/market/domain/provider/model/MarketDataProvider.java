@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.model;
 
-import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -13,7 +13,7 @@ import org.reactivestreams.Publisher;
 public interface MarketDataProvider {
 
     /**
-     * Код провайдера.
+     * Уникальный код провайдера (идентификатор).
      */
     ProviderCode providerCode();
 

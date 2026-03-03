@@ -1,7 +1,7 @@
 package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.backend.instrument.base.persistence.jpa.InstrumentBaseEntity;
+import com.alligator.market.backend.instrument.catalog.persistence.jpa.InstrumentEntity;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
@@ -72,7 +72,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      * Инструмент, для которого задаётся источник котировок.
      *
      * <p>Задается как внешний ключ на таблицу инструментов; нельзя обновлять – задается один раз при создании записи;
-     * frontend должен предлагать список инструментов из таблицы инструментов {@link InstrumentBaseEntity} при попытке
+     * frontend должен предлагать список инструментов из таблицы инструментов {@link InstrumentEntity} при попытке
      * заполнения формы для передачи данных в backend.</p>
      */
     @Setter(AccessLevel.NONE)
@@ -85,7 +85,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
             nullable = false,
             updatable = false
     )
-    private InstrumentBaseEntity instrument;
+    private InstrumentEntity instrument;
 
     /**
      * Код провайдера.
@@ -137,7 +137,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
      * Специальный конструктор – единственный безопасный способ создать сущность.
      */
     public InstrumentFeedConfigEntity(
-            InstrumentBaseEntity instrument,
+            InstrumentEntity instrument,
             String providerCode,
             InstrumentFeedRole feedRole,
             boolean enabled
