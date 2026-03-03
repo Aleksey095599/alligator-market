@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.exception.FxSpotNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.exception.FxSpotNotFoundException;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

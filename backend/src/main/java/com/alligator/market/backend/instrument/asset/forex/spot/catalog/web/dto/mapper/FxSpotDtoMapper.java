@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.mapper;
 
 import com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
 
 import java.util.Objects;
 

@@ -1,14 +1,15 @@
-package com.alligator.market.backend.instrument.asset.forex.currency.catalog.service;
+package com.alligator.market.domain.instrument.market.forex.support.currency.repository;
 
 import com.alligator.market.domain.instrument.market.forex.support.currency.model.Currency;
 import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Application-сервис (use case) для операций с валютами.
+ * Репозиторий валют.
  */
-public interface CurrencyCatalogService {
+public interface CurrencyRepository {
 
     /**
      * Создать новую валюту.
@@ -16,14 +17,19 @@ public interface CurrencyCatalogService {
     Currency create(Currency currency);
 
     /**
-     * Обновить существующую валюту.
+     * Обновить валюту.
      */
-    void update(Currency currency);
+    Currency update(Currency currency);
 
     /**
      * Удалить валюту по коду.
      */
-    void delete(CurrencyCode code);
+    void deleteByCode(CurrencyCode code);
+
+    /**
+     * Найти валюту по коду.
+     */
+    Optional<Currency> findByCode(CurrencyCode code);
 
     /**
      * Вернуть все валюты.

@@ -1,11 +1,11 @@
 package com.alligator.market.backend.instrument.asset.forex.currency.catalog.service;
 
-import com.alligator.market.domain.instrument.asset.forex.support.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.exception.CurrencyUsedInFxSpotException;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.market.forex.support.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.domain.instrument.market.forex.support.currency.exception.CurrencyUsedInFxSpotException;
+import com.alligator.market.domain.instrument.market.forex.support.currency.model.Currency;
+import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.market.forex.support.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -9,11 +9,12 @@ import java.util.Objects;
  * Типы финансовых инструментов.
  */
 public enum InstrumentType {
-    /* Поддерживаемые типы инструментов (константы). */
-    FX_SPOT, FX_SWAP;
+    /* Типы инструментов (константы). */
+    FX_SPOT;
 
-    /* Список всех типов и представление этого списка в виде единой строки (иногда полезно). */
+    /* Список всех типов. */
     private static final List<String> SUPPORTED_TYPES = Arrays.stream(values()).map(Enum::name).toList();
+    /* Представление списка всех типов в виде единой строки (иногда полезно). */
     private static final String SUPPORTED_TYPES_JOINED = String.join(", ", SUPPORTED_TYPES);
 
     /**

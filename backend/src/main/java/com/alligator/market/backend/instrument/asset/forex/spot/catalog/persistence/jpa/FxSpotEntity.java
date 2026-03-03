@@ -5,10 +5,10 @@ import com.alligator.market.backend.instrument.asset.forex.currency.catalog.pers
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.model.InstrumentType;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpotTenor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

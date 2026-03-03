@@ -1,9 +1,9 @@
 package com.alligator.market.backend.quote.streaming;
 
-import com.alligator.market.domain.instrument.asset.forex.support.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.support.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.market.forex.support.currency.model.Currency;
+import com.alligator.market.domain.instrument.market.forex.support.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.market.forex.contract.spot.model.FxSpotTenor;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
