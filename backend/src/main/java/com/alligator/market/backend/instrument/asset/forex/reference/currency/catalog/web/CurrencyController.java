@@ -1,11 +1,11 @@
-package com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.web;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.service.CurrencyCatalogService;
-import com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.web.dto.common.CurrencyDto;
-import com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.web.dto.in.CurrencyUpdateDto;
-import com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.service.CurrencyCatalogService;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web.dto.common.CurrencyDto;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web.dto.in.CurrencyUpdateDto;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web.dto.mapper.CurrencyDtoMapper;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import lombok.RequiredArgsConstructor;

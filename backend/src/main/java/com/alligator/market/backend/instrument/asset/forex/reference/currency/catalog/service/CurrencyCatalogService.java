@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.service;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;

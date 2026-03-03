@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 

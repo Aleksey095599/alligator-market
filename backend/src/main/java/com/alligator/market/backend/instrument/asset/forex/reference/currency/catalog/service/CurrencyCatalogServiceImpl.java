@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.support.currency.catalog.service;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.service;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyUsedInFxSpotException;
