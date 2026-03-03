@@ -46,7 +46,7 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Валюта используется в инструментах FX_SPOT --> 409.
+     * Валюта используется в инструментах FOREX_SPOT --> 409.
      */
     @ExceptionHandler(CurrencyUsedInFxSpotException.class)
     public ResponseEntity<ApiResponse<Void>> currencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
@@ -64,7 +64,7 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Валюта уже используется при создании FX_SPOT --> 409.
+     * Валюта уже используется при создании FOREX_SPOT --> 409.
      */
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
@@ -73,7 +73,7 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Инструмент FX_SPOT не найден --> 404.
+     * Инструмент FOREX_SPOT не найден --> 404.
      */
     @ExceptionHandler(FxSpotNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
@@ -82,7 +82,7 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Указаны одинаковые валюты для FX_SPOT --> 400.
+     * Указаны одинаковые валюты для FOREX_SPOT --> 400.
      */
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {

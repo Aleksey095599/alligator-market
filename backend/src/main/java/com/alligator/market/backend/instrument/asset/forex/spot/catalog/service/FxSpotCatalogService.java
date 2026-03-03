@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.List;
 
 /**
- * Application-сервис (use case) для операций с инструментами FX_SPOT.
+ * Application-сервис (use case) для операций с инструментами FOREX_SPOT.
  */
 public interface FxSpotCatalogService {
 

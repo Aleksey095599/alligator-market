@@ -9,13 +9,13 @@ import com.alligator.market.domain.instrument.market.forex.spot.model.FxSpotTeno
 import java.util.Objects;
 
 /**
- * Утилита содержит методы формирования кода и символа инструмента FX_SPOT,
- * а также метод разложения строкового кода инструмента FX_SPOT на составные компоненты.
+ * Утилита содержит методы формирования кода и символа инструмента FOREX_SPOT,
+ * а также метод разложения строкового кода инструмента FOREX_SPOT на составные компоненты.
  */
 public final class FxSpotCodec {
 
-    /* Префикс кода инструмента: отображает тип FX_SPOT. */
-    private static final String TYPE_PREFIX = InstrumentType.FX_SPOT.code() + "_";
+    /* Префикс кода инструмента: отображает тип FOREX_SPOT. */
+    private static final String TYPE_PREFIX = InstrumentType.FOREX_SPOT.name() + "_";
 
     /* Разделитель между парой и тенором. */
     private static final char SEP = '_';

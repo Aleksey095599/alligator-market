@@ -26,7 +26,7 @@ public class MoexIssHandlersConfig {
     /**
      * Бин набора всех обработчиков MOEX ISS.
      *
-     * @param fxSpotHandler обработчик инструмента FX_SPOT
+     * @param fxSpotHandler обработчик инструмента FOREX_SPOT
      */
     @Bean(BEAN_NAME)
     public Set<AbstractInstrumentHandler<MoexIssProvider, ? extends Instrument>> moexIssHandlers(

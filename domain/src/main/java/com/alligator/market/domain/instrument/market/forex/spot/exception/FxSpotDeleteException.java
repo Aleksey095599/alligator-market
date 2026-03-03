@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Ошибка удаления инструмента FX_SPOT.
+ * Ошибка удаления инструмента FOREX_SPOT.
  */
 public final class FxSpotDeleteException extends BaseDomainException {
 

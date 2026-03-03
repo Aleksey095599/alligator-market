@@ -61,7 +61,7 @@ public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
     public void delete(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        // Бизнес‑правило: валюта не должна использоваться в FX_SPOT
+        // Бизнес‑правило: валюта не должна использоваться в FOREX_SPOT
         if (fxSpotRepository.existsByCurrencyCode(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }

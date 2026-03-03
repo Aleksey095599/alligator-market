@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST-контроллер для инструментов FX_SPOT.
+ * REST-контроллер для инструментов FOREX_SPOT.
  */
 @RestController
 @RequestMapping("/api/v1/fx-spot")

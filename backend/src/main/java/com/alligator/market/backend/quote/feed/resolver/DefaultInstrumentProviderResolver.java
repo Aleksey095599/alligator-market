@@ -13,7 +13,7 @@ import java.util.Objects;
  * Реализация доменного контракта {@link InstrumentProviderResolver}, который разрешает соответствие
  * «финансовый инструмент → провайдер рыночных данных».
  *
- * <p>Временная реализация: для любых FX_SPOT инструментов --> провайдер MOEX ISS.
+ * <p>Временная реализация: для любых FOREX_SPOT инструментов --> провайдер MOEX ISS.
  * TODO: реализовать чтение правил соответствия финансовый инструмент --> провайдер из БД.
  */
 @Service
@@ -26,7 +26,7 @@ public class DefaultInstrumentProviderResolver implements InstrumentProviderReso
     public ProviderCode resolveProvider(Instrument instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // Пока что вся FX_SPOT-линейка обслуживается только MOEX ISS.
+        // Пока что вся FOREX_SPOT-линейка обслуживается только MOEX ISS.
         if (instrument instanceof FxSpot) {
             return MOEX_ISS_PROVIDER_CODE;
         }

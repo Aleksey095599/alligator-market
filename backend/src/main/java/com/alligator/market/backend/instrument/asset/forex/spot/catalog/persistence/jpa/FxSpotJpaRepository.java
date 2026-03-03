@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Spring Data JPA-репозиторий инструментов FX_SPOT.
+ * Spring Data JPA-репозиторий инструментов FOREX_SPOT.
  */
 public interface FxSpotJpaRepository extends JpaRepository<FxSpotEntity, Long> {
 

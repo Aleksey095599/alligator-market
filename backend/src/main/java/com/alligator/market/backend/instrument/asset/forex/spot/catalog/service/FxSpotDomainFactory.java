@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Фабрика доменной модели FX_SPOT из входных DTO.
+ * Фабрика доменной модели FOREX_SPOT из входных DTO.
  *
  * <p>Не является "чистым преобразованием типов": методы обращаются к репозиторию с валютами {@link CurrencyRepository}
  * и используют доменную утилиту {@link FxSpotCodec}.</p>
@@ -27,7 +27,7 @@ public class FxSpotDomainFactory {
     private final CurrencyRepository currencyRepository;
 
     /**
-     * DTO создания -> доменная модель инструмента FX_SPOT.
+     * DTO создания -> доменная модель инструмента FOREX_SPOT.
      *
      * <p>Загружает валюты из репозитория и возвращает полностью собранную доменную модель.</p>
      */
@@ -45,7 +45,7 @@ public class FxSpotDomainFactory {
     }
 
     /**
-     * DTO обновления + код инструмента -> доменная модель инструмента FX_SPOT.
+     * DTO обновления + код инструмента -> доменная модель инструмента FOREX_SPOT.
      *
      * <p>Парсит код инструмента с помощью {@link FxSpotCodec} для получения кодов валют,
      * загружает валюты из репозитория {@link CurrencyRepository} и собирает доменную модель.</p>

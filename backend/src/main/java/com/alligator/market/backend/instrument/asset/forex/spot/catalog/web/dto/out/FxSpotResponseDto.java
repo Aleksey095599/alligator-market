@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto
 import com.alligator.market.domain.instrument.market.forex.spot.model.FxSpotTenor;
 
 /**
- * DTO ответа для инструментов FX_SPOT (out).
+ * DTO ответа для инструментов FOREX_SPOT (out).
  */
 public record FxSpotResponseDto(
         String instrumentCode,
