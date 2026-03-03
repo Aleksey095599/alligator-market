@@ -110,7 +110,7 @@ public abstract class InstrumentBaseEntity extends BaseEntity {
      * <p>Вызывается из конструктора сущности-наследника и заполняет поля
      * {@code code}, {@code symbol}, {@code type}.</p>
      */
-    // Пока не появились иные инструменты кроме FX_SPOT, давим предупреждение типа "SameParameterValue"
+    // Пока не появились иные инструменты кроме FOREX_SPOT, давим предупреждение типа "SameParameterValue"
     @SuppressWarnings("SameParameterValue")
     protected final void initIdentity(
             InstrumentCode instrumentCode,

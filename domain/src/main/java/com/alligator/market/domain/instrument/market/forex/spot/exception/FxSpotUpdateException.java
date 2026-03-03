@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Ошибка обновления инструмента FX_SPOT.
+ * Ошибка обновления инструмента FOREX_SPOT.
  */
 public final class FxSpotUpdateException extends BaseDomainException {
 

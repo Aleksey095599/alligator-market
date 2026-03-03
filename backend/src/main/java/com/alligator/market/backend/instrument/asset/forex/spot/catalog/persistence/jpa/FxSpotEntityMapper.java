@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.market.forex.spot.model.FxSpot;
 import java.util.Objects;
 
 /**
- *  Маппер преобразования между JPA-сущностью и доменной моделью для FX_SPOT инструмента.
+ *  Маппер преобразования между JPA-сущностью и доменной моделью для FOREX_SPOT инструмента.
  *
  *  <p>Является "чистым преобразованием типов".</p>
  */
@@ -22,7 +22,7 @@ public final class FxSpotEntityMapper {
     }
 
     /**
-     * Доменная модель + JPA-сущности валют -> JPA-сущность инструмента FX_SPOT.
+     * Доменная модель + JPA-сущности валют -> JPA-сущность инструмента FOREX_SPOT.
      */
     public static FxSpotEntity toNewEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
         Objects.requireNonNull(model, "FxSpot model must not be null");
@@ -62,7 +62,7 @@ public final class FxSpotEntityMapper {
     }
 
     /**
-     * JPA-сущность -> доменная модель FX_SPOT.
+     * JPA-сущность -> доменная модель FOREX_SPOT.
      */
     public static FxSpot toDomain(FxSpotEntity e) {
         Objects.requireNonNull(e, "entity must not be null");

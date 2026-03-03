@@ -29,7 +29,7 @@ public enum DomainErrorCode {
     CURRENCY_UPDATE_FAILED(DomainErrorType.TECHNICAL),
     CURRENCY_DELETE_FAILED(DomainErrorType.TECHNICAL),
 
-    /* FX_SPOT инструмент: */
+    /* FOREX_SPOT инструмент: */
     FX_SPOT_ALREADY_EXISTS(DomainErrorType.CONFLICT),
     FX_SPOT_NOT_FOUND(DomainErrorType.NOT_FOUND),
     FX_SPOT_SAME_CURRENCIES(DomainErrorType.BAD_REQUEST),

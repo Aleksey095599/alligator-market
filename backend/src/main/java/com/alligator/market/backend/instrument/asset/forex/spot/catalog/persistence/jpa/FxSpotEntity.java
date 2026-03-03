@@ -23,10 +23,10 @@ import org.hibernate.annotations.Checks;
 import java.util.Objects;
 
 /**
- * JPA-сущность финансового инструмента FX_SPOT.
+ * JPA-сущность финансового инструмента FOREX_SPOT.
  *
- * <p>Назначение: хранение и представление финансового инструмента FX_SPOT в базе данных;
- * поля сущности соответствуют доменной модели инструмента FX_SPOT {@link FxSpot}.</p>
+ * <p>Назначение: хранение и представление финансового инструмента FOREX_SPOT в базе данных;
+ * поля сущности соответствуют доменной модели инструмента FOREX_SPOT {@link FxSpot}.</p>
  *
  * <p>Пояснение некоторых аннотаций:</p>
  * <ul>
@@ -55,7 +55,7 @@ import java.util.Objects;
 @Table(
         name = "fx_spot",
         uniqueConstraints = {
-                // Поля, задающие бизнес-уникальность инструмента FX_SPOT
+                // Поля, задающие бизнес-уникальность инструмента FOREX_SPOT
                 @UniqueConstraint(name = "uq_fx_spot_pair_tenor",
                         columnNames = {"base_currency", "quote_currency", "tenor"})
         },
@@ -79,7 +79,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
      * <ul>
      *   <li>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и запрет
      *   на переназначение через сеттер {@link Setter}.</li>
-     *   <li>{@link ManyToOne}: связь по внешнему ключу (многие FX_SPOT могут ссылаться на одну валюту).</li>
+     *   <li>{@link ManyToOne}: связь по внешнему ключу (многие FOREX_SPOT могут ссылаться на одну валюту).</li>
      *   <li>{@link JoinColumn}: FK-колонка {@code base_currency} ссылается на {@code currency.code}.</li>
      *   <li>{@code fetch = LAZY}: валюту загружаем только при обращении к полю.</li>
      *   <li>{@code optional = false}: ссылка обязательна.</li>
@@ -129,7 +129,7 @@ public class FxSpotEntity extends InstrumentBaseEntity {
     private FxSpotTenor tenor;
 
     /**
-     * Количество знаков после запятой в котировке инструмента FX_SPOT (по умолчанию).
+     * Количество знаков после запятой в котировке инструмента FOREX_SPOT (по умолчанию).
      *
      * <p>На уровне кода задан дефолт {@code 4} – наиболее распространенное значение на практике.
      * Рекомендуется закрепить {@code DEFAULT 4} в БД миграцией.</p>
@@ -169,6 +169,6 @@ public class FxSpotEntity extends InstrumentBaseEntity {
         final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
 
         // Инициализируем родительскую сущность
-        initIdentity(code, symbol, InstrumentType.FX_SPOT);
+        initIdentity(code, symbol, InstrumentType.FOREX_SPOT);
     }
 }

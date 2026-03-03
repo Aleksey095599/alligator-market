@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.market.forex.support.currency.vo.C
 import java.util.Objects;
 
 /**
- * Ошибка: валюта используется в FX_SPOT инструменте.
+ * Ошибка: валюта используется в FOREX_SPOT инструменте.
  */
 public final class CurrencyUsedInFxSpotException extends BaseDomainException {
 

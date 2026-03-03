@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Обработчик инструментов FX_SPOT провайдера MOEX ISS {@link MoexIssProvider}.
+ * Обработчик инструментов FOREX_SPOT провайдера MOEX ISS {@link MoexIssProvider}.
  */
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, FxSpot> {
@@ -39,7 +39,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
-    /* Поддерживаемые коды инструментов FX_SPOT. */
+    /* Поддерживаемые коды инструментов FOREX_SPOT. */
     private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotSupportCatalog.SUPPORTED_DOMAIN_CODES;
 
     /* Web-клиент. */
@@ -58,10 +58,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /**
      * Конструктор обработчика.
      *
-     * @param webClient web-клиент настроенный для запросов провайдеру MOEX ISS по инструментам типа FX_SPOT
+     * @param webClient web-клиент настроенный для запросов провайдеру MOEX ISS по инструментам типа FOREX_SPOT
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
-        super(HANDLER_CODE, FxSpot.class, InstrumentType.FX_SPOT, SUPPORTED_CODES);
+        super(HANDLER_CODE, FxSpot.class, InstrumentType.FOREX_SPOT, SUPPORTED_CODES);
 
         Objects.requireNonNull(webClient, "webClient must not be null");
         this.webClient = webClient;
@@ -72,7 +72,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     //region TEMPLATE METHOD
 
     /**
-     * Чистая логика получения потока котировок для переданного инструмента FX_SPOT.
+     * Чистая логика получения потока котировок для переданного инструмента FOREX_SPOT.
      *
      * <p>Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
      * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
@@ -104,7 +104,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     //region INTERNALS
 
     /**
-     * Один запрос к MOEX ISS --> одна котировка инструмента FX_SPOT.
+     * Один запрос к MOEX ISS --> одна котировка инструмента FOREX_SPOT.
      *
      * <p>Алгоритм:
      * <ul>

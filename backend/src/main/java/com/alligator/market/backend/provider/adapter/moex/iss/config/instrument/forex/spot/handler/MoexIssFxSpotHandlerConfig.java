@@ -20,7 +20,7 @@ public class MoexIssFxSpotHandlerConfig {
     /**
      * Бин {@link MoexIssFxSpotHandler}.
      *
-     * @param webClient web-клиент обработчика финансового инструмента FX_SPOT провайдера MOEX ISS
+     * @param webClient web-клиент обработчика финансового инструмента FOREX_SPOT провайдера MOEX ISS
      */
     @Bean(BEAN_NAME)
     public MoexIssFxSpotHandler moexIssFxSpotHandler(

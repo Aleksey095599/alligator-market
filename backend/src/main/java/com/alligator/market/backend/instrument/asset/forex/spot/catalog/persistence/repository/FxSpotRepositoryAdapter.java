@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Адаптер доменного репозитория инструментов FX_SPOT (в контексте Spring Data JPA).
+ * Адаптер доменного репозитория инструментов FOREX_SPOT (в контексте Spring Data JPA).
  */
 @Repository
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     /* Имя UQ ограничения (должно совпадать с фактическим именем в DDL/схеме). */
     private static final String UQ_INSTRUMENT_CODE = "uq_instrument_code";
 
-    /* JPA-репозитории для инструментов FX_SPOT и валют. */
+    /* JPA-репозитории для инструментов FOREX_SPOT и валют. */
     private final FxSpotJpaRepository jpaRepository;
     private final CurrencyJpaRepository currencyJpaRepository;
 
@@ -72,7 +72,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public FxSpot update(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot model must not be null");
 
-        // Ищем JPA-сущность инструмента FX_SPOT к обновлению
+        // Ищем JPA-сущность инструмента FOREX_SPOT к обновлению
         FxSpotEntity e = jpaRepository.findByCode(fxSpot.instrumentCode().value())
                 .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 

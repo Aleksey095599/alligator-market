@@ -11,7 +11,7 @@ import com.alligator.market.domain.instrument.market.forex.spot.exception.FxSpot
 import java.util.Objects;
 
 /**
- * Модель финансового инструмента FX_SPOT.
+ * Модель финансового инструмента FOREX_SPOT.
  *
  * <p>Реализует базовый контракт финансового инструмента {@link Instrument}.</p>
  *
@@ -59,6 +59,6 @@ public record FxSpot(
 
     @Override
     public InstrumentType instrumentType() {
-        return InstrumentType.FX_SPOT;
+        return InstrumentType.FOREX_SPOT;
     }
 }

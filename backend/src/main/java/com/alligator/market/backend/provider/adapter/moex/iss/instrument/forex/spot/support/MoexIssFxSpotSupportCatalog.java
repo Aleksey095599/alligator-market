@@ -9,7 +9,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.*;
 
 /**
- * Каталог FX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
+ * Каталог FOREX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
  *
  * <p>Содержит инструменты и соответствия "код инструмента в приложении ↔ SECID MOEX ISS".</p>
  */
