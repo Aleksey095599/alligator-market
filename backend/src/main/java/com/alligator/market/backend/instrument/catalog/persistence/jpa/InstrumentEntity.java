@@ -1,6 +1,8 @@
 package com.alligator.market.backend.instrument.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
+import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.AssetClassConverter;
+import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.ContractTypeConverter;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentCodeConverter;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentSymbolConverter;
 import com.alligator.market.domain.instrument.Instrument;
@@ -72,7 +74,7 @@ public abstract class InstrumentEntity extends BaseEntity {
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = AssetClassConverter.class)
     @Column(name = "asset_class", length = 32, nullable = false, updatable = false)
     private AssetClass assetClass;
 
@@ -81,7 +83,7 @@ public abstract class InstrumentEntity extends BaseEntity {
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ContractTypeConverter.class)
     @Column(name = "contract_type", length = 32, nullable = false, updatable = false)
     private ContractType contractType;
 

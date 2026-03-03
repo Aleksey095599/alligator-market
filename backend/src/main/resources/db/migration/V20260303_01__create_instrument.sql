@@ -27,10 +27,6 @@ CREATE TABLE instrument
         CHECK (code ~ '^[A-Z0-9_]+$'),
     CONSTRAINT chk_instrument_symbol_pattern
         CHECK (symbol ~ '^[A-Z0-9_]+$'),
-    CONSTRAINT chk_instrument_asset_class_allowed
-        CHECK (asset_class IN ('COMMODITY', 'EQUITY', 'FOREX')),
-    CONSTRAINT chk_instrument_contract_type_allowed
-        CHECK (contract_type IN ('SPOT', 'FORWARD', 'SWAP')),
     CONSTRAINT chk_instrument_version_non_negative
         CHECK (version >= 0)
 );
