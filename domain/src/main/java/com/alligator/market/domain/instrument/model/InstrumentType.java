@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset;
+package com.alligator.market.domain.instrument.model;
 
 import java.util.Arrays;
 import java.util.List;
