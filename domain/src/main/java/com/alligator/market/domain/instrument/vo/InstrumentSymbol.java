@@ -40,9 +40,6 @@ public record InstrumentSymbol(
 
     /**
      * Метод проверки и нормализации входящего строкового значения символа инструмента.
-     *
-     * @param raw исходное строковое значение символа инструмента
-     * @return нормализованное значение символа инструмента
      */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "instrumentSymbol must not be null");

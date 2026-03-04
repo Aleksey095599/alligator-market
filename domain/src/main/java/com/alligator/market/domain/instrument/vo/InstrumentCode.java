@@ -41,9 +41,6 @@ public record InstrumentCode(
 
     /**
      * Метод проверки и нормализации входящего строкового значения кода инструмента.
-     *
-     * @param raw исходное строковое значение кода инструмента
-     * @return нормализованное значение кода инструмента
      */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "instrumentCode must not be null");
