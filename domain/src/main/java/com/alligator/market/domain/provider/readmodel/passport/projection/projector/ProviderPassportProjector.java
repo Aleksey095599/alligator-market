@@ -19,20 +19,20 @@ import java.util.Set;
 public class ProviderPassportProjector {
 
     private final ProviderRegistry providerRegistry;
-    private final ProviderPassportProjectionWritePort writeStore;
+    private final ProviderPassportProjectionWritePort writePort;
 
     /**
      * Конструктор.
      *
      * @param providerRegistry реестр провайдеров (источник истины)
-     * @param writeStore write-порт проекции паспортов
+     * @param writePort write-порт проекции паспортов
      */
     public ProviderPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportProjectionWritePort writeStore
+            ProviderPassportProjectionWritePort writePort
     ) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
-        this.writeStore = Objects.requireNonNull(writeStore, "writeStore must not be null");
+        this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
     }
 
     /**
@@ -51,7 +51,7 @@ public class ProviderPassportProjector {
         Set<ProviderCode> activeCodes = Set.copyOf(registryPassports.keySet());
 
         // Синхронизация состава и значений проекции с реестром.
-        writeStore.deleteAllExcept(activeCodes);
-        writeStore.upsertAll(registryPassports);
+        writePort.deleteAllExcept(activeCodes);
+        writePort.upsertAll(registryPassports);
     }
 }
