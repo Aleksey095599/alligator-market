@@ -11,11 +11,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Проектор паспортов провайдеров: синхронизирует materialized view паспортов с {@link ProviderRegistry}.
+ * Проектор паспортов провайдеров: проецирует текущее состояние {@link ProviderRegistry} (источник истины) в проекцию
+ * паспортов, записываемую через {@link ProviderPassportProjectionWritePort}.
  *
- * <p>Источник истины — реестр. Результат выполнения {@link #project()} — проекция, эквивалентная реестру.</p>
- *
- * <p>Транзакционность обеспечивает вызывающая сторона (application/use-case слой).</p>
+ * <p>Примечание: Транзакционность обеспечивает вызывающая сторона (application/use-case слой).</p>
  */
 public class ProviderPassportProjector {
 
@@ -37,7 +36,7 @@ public class ProviderPassportProjector {
     }
 
     /**
-     * Выполнить синхронизацию проекции паспортов с текущим состоянием реестра.
+     * Спроецировать текущее состояние {@link ProviderRegistry} в проекцию паспортов провайдеров.
      */
     public void project() {
         Map<ProviderCode, ProviderPassport> registryPassports = Map.copyOf(
