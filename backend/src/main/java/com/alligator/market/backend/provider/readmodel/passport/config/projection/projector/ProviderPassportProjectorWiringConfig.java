@@ -27,8 +27,8 @@ public class ProviderPassportProjectorWiringConfig {
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTOR)
     public ProviderPassportProjector providerPassportProjector(
             ProviderRegistry providerRegistry,
-            ProviderPassportProjectionWritePort writeStore
+            ProviderPassportProjectionWritePort writePort
     ) {
-        return new ProviderPassportProjector(providerRegistry, writeStore);
+        return new ProviderPassportProjector(providerRegistry, writePort);
     }
 }
