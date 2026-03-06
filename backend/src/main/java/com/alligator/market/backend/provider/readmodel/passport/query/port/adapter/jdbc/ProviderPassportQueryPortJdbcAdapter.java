@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.query.jdbc;
+package com.alligator.market.backend.provider.readmodel.passport.query.port.adapter.jdbc;
 
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.passport.DeliveryMode;

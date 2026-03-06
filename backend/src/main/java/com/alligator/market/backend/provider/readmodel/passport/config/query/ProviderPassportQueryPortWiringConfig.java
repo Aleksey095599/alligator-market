@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.readmodel.passport.config.query;
 
-import com.alligator.market.backend.provider.readmodel.passport.query.jdbc.ProviderPassportQueryPortJdbcAdapter;
+import com.alligator.market.backend.provider.readmodel.passport.query.port.adapter.jdbc.ProviderPassportQueryPortJdbcAdapter;
 import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

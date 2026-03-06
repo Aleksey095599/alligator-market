@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.readmodel.passport.config.projection.jdbc;
 
-import com.alligator.market.backend.provider.readmodel.passport.projection.jdbc.ProviderPassportProjectionWritePortJdbcAdapter;
+import com.alligator.market.backend.provider.readmodel.passport.projection.port.adapter.jdbc.ProviderPassportProjectionWritePortJdbcAdapter;
 import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
