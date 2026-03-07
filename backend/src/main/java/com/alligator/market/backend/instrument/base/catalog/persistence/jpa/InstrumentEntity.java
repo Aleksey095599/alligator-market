@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(
-        name = "instrument",
+        name = "instrument_base",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
         },
