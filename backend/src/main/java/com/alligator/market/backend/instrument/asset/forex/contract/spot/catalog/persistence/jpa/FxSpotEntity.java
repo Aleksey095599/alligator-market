@@ -32,8 +32,8 @@ import java.util.Objects;
  *
  * <p>Пояснение некоторых аннотаций:</p>
  * <ul>
- *     <li>{@link PrimaryKeyJoinColumn}: PK таблицы {@code fx_spot} является одновременно FK на PK таблицы
- *     {@code instrument}; таблица {@code fx_spot} является наследницей таблицы {@code instrument}, которая содержит
+ *     <li>{@link PrimaryKeyJoinColumn}: PK таблицы {@code instrument_fx_spot} является одновременно FK на PK таблицы
+ *     {@code instrument_base}; таблица {@code instrument_fx_spot} является наследницей таблицы {@code instrument_base}, которая содержит
  *     общие поля для всех финансовых инструментов.</li>
  *     <li>{@link NoArgsConstructor} с {@code PROTECTED}: конструктор без аргументов нужен только для ORM;
  *     вручную сущность создается через специализированный конструктор.</li>
@@ -42,26 +42,26 @@ import java.util.Objects;
 @Entity
 @Checks({
         @Check(
-                name = "chk_fx_spot_base_quote_diff",
+                name = "chk_instrument_fx_spot_base_quote_diff",
                 constraints = "base_currency <> quote_currency"
         ),
         @Check(
-                name = "chk_fx_spot_digits_range",
+                name = "chk_instrument_fx_spot_digits_range",
                 constraints = "quote_fraction_digits BETWEEN 0 AND 10"
         )
 })
 @Table(
-        name = "fx_spot",
+        name = "instrument_fx_spot",
         uniqueConstraints = {
                 // Поля, задающие бизнес-уникальность инструмента FOREX_SPOT
-                @UniqueConstraint(name = "uq_fx_spot_pair_tenor",
+                @UniqueConstraint(name = "uq_instrument_fx_spot_pair_tenor",
                         columnNames = {"base_currency", "quote_currency", "tenor"})
         },
         indexes = {
                 // Индекс на FK-колонке ускоряет операции
-                @Index(name = "idx_fx_spot_base", columnList = "base_currency"),
+                @Index(name = "idx_instrument_fx_spot_base", columnList = "base_currency"),
                 // Индекс на FK-колонке ускоряет операции
-                @Index(name = "idx_fx_spot_quote", columnList = "quote_currency")
+                @Index(name = "idx_instrument_fx_spot_quote", columnList = "quote_currency")
         }
 )
 @PrimaryKeyJoinColumn(name = "id")
@@ -88,7 +88,7 @@ public class FxSpotEntity extends InstrumentEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
             name = "base_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_base"),
+            foreignKey = @ForeignKey(name = "fk_instrument_fx_spot_base"),
             nullable = false,
             updatable = false
     )
@@ -104,7 +104,7 @@ public class FxSpotEntity extends InstrumentEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
             name = "quote_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_quote"),
+            foreignKey = @ForeignKey(name = "fk_instrument_fx_spot_quote"),
             nullable = false,
             updatable = false
     )

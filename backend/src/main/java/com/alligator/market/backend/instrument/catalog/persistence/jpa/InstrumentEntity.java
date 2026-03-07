@@ -28,13 +28,13 @@ import java.util.Objects;
  */
 @Entity
 @Table(
-        name = "instrument",
+        name = "instrument_base",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uq_instrument_code", columnNames = "code")
+                @UniqueConstraint(name = "uq_instrument_base_code", columnNames = "code")
         },
         indexes = {
-                @Index(name = "idx_instrument_asset_class", columnList = "asset_class"),
-                @Index(name = "idx_instrument_contract_type", columnList = "contract_type")
+                @Index(name = "idx_instrument_base_asset_class", columnList = "asset_class"),
+                @Index(name = "idx_instrument_base_contract_type", columnList = "contract_type")
         }
 )
 @Inheritance(strategy = InheritanceType.JOINED)

@@ -81,7 +81,7 @@ public class InstrumentFeedConfigEntity extends BaseEntity {
     @JoinColumn(
             name = "instrument_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_ifc_instrument"),
+            foreignKey = @ForeignKey(name = "fk_ifc_instrument_base"),
             nullable = false,
             updatable = false
     )
