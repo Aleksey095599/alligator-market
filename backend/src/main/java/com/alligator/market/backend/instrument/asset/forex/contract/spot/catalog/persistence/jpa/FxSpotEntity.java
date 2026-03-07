@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalo
 
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.persistence.jpa.converter.FxSpotTenorConverter;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.type.AssetClass;
@@ -47,10 +48,6 @@ import java.util.Objects;
         @Check(
                 name = "chk_fx_spot_digits_range",
                 constraints = "quote_fraction_digits BETWEEN 0 AND 10"
-        ),
-        @Check(
-                name = "chk_fx_spot_tenor_allowed",
-                constraints = "tenor IN ('TOD','TOM','SPOT')"
         )
 })
 @Table(
@@ -121,9 +118,9 @@ public class FxSpotEntity extends InstrumentEntity {
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = FxSpotTenorConverter.class)
     @Column(
-            name = "tenor", length = 4,
+            name = "tenor", length = 5,
             nullable = false,
             updatable = false
     )
