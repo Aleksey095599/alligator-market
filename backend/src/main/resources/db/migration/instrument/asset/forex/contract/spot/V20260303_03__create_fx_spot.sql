@@ -7,17 +7,8 @@ CREATE TABLE instrument_fx_spot
     -- Валютная пара
     base_currency         VARCHAR(3)   NOT NULL,
     quote_currency        VARCHAR(3)   NOT NULL,
-    tenor                 VARCHAR(4)   NOT NULL,
+    tenor                 VARCHAR(5)   NOT NULL,
     quote_fraction_digits INTEGER      NOT NULL DEFAULT 4,
-
-    -- Аудит/версионирование
-    version               BIGINT       NOT NULL DEFAULT 0,
-    created_timestamp     TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by            VARCHAR(255) NOT NULL,
-    created_via           VARCHAR(255) NOT NULL,
-    updated_timestamp     TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by            VARCHAR(255) NOT NULL,
-    updated_via           VARCHAR(255) NOT NULL,
 
     -- Ограничения ссылочной целостности
     CONSTRAINT fk_fx_spot_instrument
@@ -34,11 +25,7 @@ CREATE TABLE instrument_fx_spot
     CONSTRAINT chk_fx_spot_base_quote_diff
         CHECK (base_currency <> quote_currency),
     CONSTRAINT chk_fx_spot_digits_range
-        CHECK (quote_fraction_digits BETWEEN 0 AND 10),
-    CONSTRAINT chk_fx_spot_tenor_allowed
-        CHECK (tenor IN ('TOD', 'TOM', 'SPOT')),
-    CONSTRAINT chk_fx_spot_version_non_negative
-        CHECK (version >= 0)
+        CHECK (quote_fraction_digits BETWEEN 0 AND 10)
 );
 
 -- Индексы на FK-колонках для ускорения join/фильтрации.
