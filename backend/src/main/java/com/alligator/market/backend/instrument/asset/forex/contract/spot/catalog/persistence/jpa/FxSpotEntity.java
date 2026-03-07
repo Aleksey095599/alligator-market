@@ -50,7 +50,7 @@ import java.util.Objects;
         )
 })
 @Table(
-        name = "fx_spot",
+        name = "instrument_fx_spot",
         uniqueConstraints = {
                 // Поля, задающие бизнес-уникальность инструмента FOREX_SPOT
                 @UniqueConstraint(name = "uq_fx_spot_pair_tenor",

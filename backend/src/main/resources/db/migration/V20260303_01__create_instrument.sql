@@ -1,5 +1,5 @@
--- instrument: базовая таблица финансовых инструментов (JOINED inheritance root).
-CREATE TABLE instrument
+-- instrument_base: базовая таблица финансовых инструментов (JOINED inheritance root).
+CREATE TABLE instrument_base
 (
     -- Суррогатный PK
     id                BIGSERIAL PRIMARY KEY,
@@ -32,5 +32,5 @@ CREATE TABLE instrument
 );
 
 -- Индексы для быстрого отбора по доменным признакам инструмента.
-CREATE INDEX idx_instrument_asset_class ON instrument (asset_class);
-CREATE INDEX idx_instrument_contract_type ON instrument (contract_type);
+CREATE INDEX idx_instrument_asset_class ON instrument_base (asset_class);
+CREATE INDEX idx_instrument_contract_type ON instrument_base (contract_type);

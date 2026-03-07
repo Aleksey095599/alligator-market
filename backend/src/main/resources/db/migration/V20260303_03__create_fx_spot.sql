@@ -1,7 +1,7 @@
--- fx_spot: таблица-наследник instrument для инструмента FOREX_SPOT.
-CREATE TABLE fx_spot
+-- instrument_fx_spot: таблица-наследник instrument_base для инструмента FOREX_SPOT.
+CREATE TABLE instrument_fx_spot
 (
-    -- PK одновременно является FK на instrument.id (JOINED inheritance)
+    -- PK одновременно является FK на instrument_base.id (JOINED inheritance)
     id                    BIGINT       PRIMARY KEY,
 
     -- Валютная пара
@@ -21,7 +21,7 @@ CREATE TABLE fx_spot
 
     -- Ограничения ссылочной целостности
     CONSTRAINT fk_fx_spot_instrument
-        FOREIGN KEY (id) REFERENCES instrument (id),
+        FOREIGN KEY (id) REFERENCES instrument_base (id),
     CONSTRAINT fk_fx_spot_base
         FOREIGN KEY (base_currency) REFERENCES currency (code),
     CONSTRAINT fk_fx_spot_quote
@@ -42,5 +42,5 @@ CREATE TABLE fx_spot
 );
 
 -- Индексы на FK-колонках для ускорения join/фильтрации.
-CREATE INDEX idx_fx_spot_base ON fx_spot (base_currency);
-CREATE INDEX idx_fx_spot_quote ON fx_spot (quote_currency);
+CREATE INDEX idx_fx_spot_base ON instrument_fx_spot (base_currency);
+CREATE INDEX idx_fx_spot_quote ON instrument_fx_spot (quote_currency);

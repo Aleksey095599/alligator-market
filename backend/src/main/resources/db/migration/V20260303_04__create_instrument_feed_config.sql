@@ -21,7 +21,7 @@ CREATE TABLE instrument_feed_config
 
     -- Ограничения ссылочной целостности
     CONSTRAINT fk_ifc_instrument
-        FOREIGN KEY (instrument_id) REFERENCES instrument (id),
+        FOREIGN KEY (instrument_id) REFERENCES instrument_base (id),
 
     -- Ограничения уникальности
     CONSTRAINT uq_ifc_instrument_feed_role UNIQUE (instrument_id, feed_role),
