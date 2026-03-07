@@ -38,7 +38,7 @@ public final class FxSpotCodec {
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return InstrumentSymbol.of(baseCode.value() + quoteCode.value() + SEP + tenor.value());
+        return InstrumentSymbol.of(baseCode.value() + quoteCode.value() + SEP + tenor.name());
     }
 
     /**
@@ -90,7 +90,7 @@ public final class FxSpotCodec {
         final CurrencyCode quoteCode = CurrencyCode.of(quoteRaw);
 
         // Валидация тенора даты валютирования
-        final FxSpotTenor tenor = FxSpotTenor.fromValue(tenorRaw);
+        final FxSpotTenor tenor = FxSpotTenor.valueOf(tenorRaw);
 
         return new FxSpotCodeParts(baseCode, quoteCode, tenor);
     }
