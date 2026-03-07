@@ -1,10 +1,10 @@
-package com.alligator.market.backend.instrument.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.base.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
-import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.AssetClassConverter;
-import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.ContractTypeConverter;
-import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentCodeConverter;
-import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentSymbolConverter;
+import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.AssetClassConverter;
+import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.ContractTypeConverter;
+import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.InstrumentCodeConverter;
+import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.InstrumentSymbolConverter;
 import com.alligator.market.domain.instrument.base.model.Instrument;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
