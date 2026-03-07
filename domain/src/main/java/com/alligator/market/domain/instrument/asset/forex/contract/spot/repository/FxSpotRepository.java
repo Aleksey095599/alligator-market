@@ -2,7 +2,7 @@ package com.alligator.market.domain.instrument.asset.forex.contract.spot.reposit
 
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +15,12 @@ public interface FxSpotRepository {
     /**
      * Создать новый инструмент.
      */
-    FxSpot create(FxSpot fxSpot);
+    InstrumentFxSpot create(InstrumentFxSpot fxSpot);
 
     /**
      * Обновить инструмент.
      */
-    FxSpot update(FxSpot fxSpot);
+    InstrumentFxSpot update(InstrumentFxSpot fxSpot);
 
     /**
      * Удалить инструмент по коду.
@@ -30,12 +30,12 @@ public interface FxSpotRepository {
     /**
      * Найти инструмент по коду.
      */
-    Optional<FxSpot> findByCode(InstrumentCode instrumentCode);
+    Optional<InstrumentFxSpot> findByCode(InstrumentCode instrumentCode);
 
     /**
      * Вернуть все инструменты.
      */
-    List<FxSpot> findAll();
+    List<InstrumentFxSpot> findAll();
 
     /**
      * Проверить, используется ли код валюты хотя бы в одном инструменте.

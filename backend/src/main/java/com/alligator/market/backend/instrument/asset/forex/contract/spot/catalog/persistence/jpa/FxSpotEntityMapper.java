@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalo
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 
 import java.util.Objects;
 
@@ -24,8 +24,8 @@ public final class FxSpotEntityMapper {
     /**
      * Доменная модель + JPA-сущности валют -> JPA-сущность инструмента FOREX_SPOT.
      */
-    public static FxSpotEntity toNewEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
-        Objects.requireNonNull(model, "FxSpot model must not be null");
+    public static FxSpotEntity toNewEntity(InstrumentFxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
+        Objects.requireNonNull(model, "InstrumentFxSpot model must not be null");
         Objects.requireNonNull(baseEntity, "entity of base currency must not be null");
         Objects.requireNonNull(quoteEntity, "entity of quote currency must not be null");
 
@@ -45,7 +45,7 @@ public final class FxSpotEntityMapper {
     /**
      * Обновляет изменяемые поля JPA-сущности из доменной модели.
      */
-    public static void applyToEntity(FxSpot m, FxSpotEntity e) {
+    public static void applyToEntity(InstrumentFxSpot m, FxSpotEntity e) {
         Objects.requireNonNull(m, "model must not be null");
         Objects.requireNonNull(e, "entity must not be null");
 
@@ -64,7 +64,7 @@ public final class FxSpotEntityMapper {
     /**
      * JPA-сущность -> доменная модель FOREX_SPOT.
      */
-    public static FxSpot toDomain(FxSpotEntity e) {
+    public static InstrumentFxSpot toDomain(FxSpotEntity e) {
         Objects.requireNonNull(e, "entity must not be null");
 
         // Поле defaultQuoteFractionDigits не является идентичностью сущности и теоретически может быть null,
@@ -73,7 +73,7 @@ public final class FxSpotEntityMapper {
                 "defaultQuoteFractionDigits must not be null");
 
         // Собираем и возвращаем доменную модель
-        return new FxSpot(
+        return new InstrumentFxSpot(
                 CurrencyEntityMapper.toDomain(e.getBaseCurrency()),
                 CurrencyEntityMapper.toDomain(e.getQuoteCurrency()),
                 e.getTenor(),

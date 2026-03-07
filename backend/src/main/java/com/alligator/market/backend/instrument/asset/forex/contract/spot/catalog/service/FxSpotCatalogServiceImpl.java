@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.exception.FxSpotNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +24,22 @@ public class FxSpotCatalogServiceImpl implements FxSpotCatalogService {
 
     @Override
     @Transactional
-    public FxSpot create(FxSpot fxSpot) {
+    public InstrumentFxSpot create(InstrumentFxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальность проверяет адаптер репозитория
-        FxSpot created = fxSpotRepository.create(fxSpot);
+        InstrumentFxSpot created = fxSpotRepository.create(fxSpot);
         log.info("FX_SPOT instrument {} created", created.instrumentCode().value());
         return created;
     }
 
     @Override
     @Transactional
-    public void update(FxSpot fxSpot) {
+    public void update(InstrumentFxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Ищем инструмент к обновлению
-        FxSpot current = fxSpotRepository.findByCode(fxSpot.instrumentCode())
+        InstrumentFxSpot current = fxSpotRepository.findByCode(fxSpot.instrumentCode())
                 .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
 
         // Если изменений нет – возвращаем текущее состояние без записи в БД
@@ -49,7 +49,7 @@ public class FxSpotCatalogServiceImpl implements FxSpotCatalogService {
         }
 
         // Проверки целостности (валидация JPA/ограничения БД) и маппинг ошибок выполнит адаптер репозитория
-        FxSpot updated = fxSpotRepository.update(fxSpot);
+        InstrumentFxSpot updated = fxSpotRepository.update(fxSpot);
         log.info("FX_SPOT instrument {} updated", updated.instrumentCode().value());
     }
 
@@ -65,9 +65,9 @@ public class FxSpotCatalogServiceImpl implements FxSpotCatalogService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<FxSpot> findAll() {
+    public List<InstrumentFxSpot> findAll() {
 
-        List<FxSpot> result = fxSpotRepository.findAll();
+        List<InstrumentFxSpot> result = fxSpotRepository.findAll();
         log.debug("Found {} FX_SPOT instruments", result.size());
         return result;
     }

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.service;
 
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 
 import java.util.List;
@@ -13,12 +13,12 @@ public interface FxSpotCatalogService {
     /**
      * Создать новый инструмент.
      */
-    FxSpot create(FxSpot fxSpot);
+    InstrumentFxSpot create(InstrumentFxSpot fxSpot);
 
     /**
      * Обновить существующий инструмент.
      */
-    void update(FxSpot fxSpot);
+    void update(InstrumentFxSpot fxSpot);
 
     /**
      * Удалить инструмент по коду.
@@ -28,5 +28,5 @@ public interface FxSpotCatalogService {
     /**
      * Вернуть все инструменты.
      */
-    List<FxSpot> findAll();
+    List<InstrumentFxSpot> findAll();
 }

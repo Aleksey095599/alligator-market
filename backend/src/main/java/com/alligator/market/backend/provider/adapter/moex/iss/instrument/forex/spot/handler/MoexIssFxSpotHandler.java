@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.model.AssetClass;
 import com.alligator.market.domain.instrument.model.ContractType;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
@@ -33,7 +33,7 @@ import java.util.Set;
  * Обработчик инструментов FOREX_SPOT провайдера MOEX ISS {@link MoexIssProvider}.
  */
 @Slf4j
-public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, FxSpot> {
+public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, InstrumentFxSpot> {
 
     //region FIELDS
 
@@ -62,7 +62,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * @param webClient web-клиент настроенный для запросов провайдеру MOEX ISS по инструментам класса FOREX с типом контракта SPOT
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
-        super(HANDLER_CODE, FxSpot.class, AssetClass.FOREX, ContractType.SPOT, SUPPORTED_CODES);
+        super(HANDLER_CODE, InstrumentFxSpot.class, AssetClass.FOREX, ContractType.SPOT, SUPPORTED_CODES);
 
         Objects.requireNonNull(webClient, "webClient must not be null");
         this.webClient = webClient;
@@ -79,7 +79,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
      */
     @Override
-    protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
+    protected Publisher<QuoteTick> doQuote(InstrumentFxSpot instrument) {
         // 1) Получаем минимальный интервал обновления из "политики" провайдера
         Duration pollInterval = provider().policy().minUpdateInterval();
 
@@ -117,7 +117,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      *
      * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(InstrumentCode, JsonNode)}.</p>
      */
-    private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
+    private Mono<QuoteTick> fetchQuoteOnce(InstrumentFxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
         // 1) Код инструмента --> SECID MOEX ISS

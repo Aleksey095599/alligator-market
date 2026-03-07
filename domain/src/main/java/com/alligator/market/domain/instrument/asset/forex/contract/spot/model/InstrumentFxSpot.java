@@ -21,7 +21,7 @@ import java.util.Objects;
  * @param tenor                      Тенор даты валютирования
  * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
  */
-public record FxSpot(
+public record InstrumentFxSpot(
         Currency base,
         Currency quote,
         FxSpotTenor tenor,
@@ -32,7 +32,7 @@ public record FxSpot(
     /**
      * Конструктор с проверками.
      */
-    public FxSpot {
+    public InstrumentFxSpot {
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");

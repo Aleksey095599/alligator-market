@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.web.dto.mapper;
 
 import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.web.dto.out.FxSpotResponseDto;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public class FxSpotDtoMapper {
     /**
      * Модель --> DTO ответа.
      */
-    public static FxSpotResponseDto toFxSpotResponseDto(FxSpot fxSpot) {
+    public static FxSpotResponseDto toFxSpotResponseDto(InstrumentFxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         return new FxSpotResponseDto(

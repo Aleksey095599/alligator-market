@@ -9,7 +9,7 @@ import com.alligator.market.domain.instrument.model.AssetClass;
 import com.alligator.market.domain.instrument.model.ContractType;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -28,7 +28,7 @@ import java.util.Objects;
  * JPA-сущность финансового инструмента FOREX_SPOT.
  *
  * <p>Назначение: хранение и представление финансового инструмента FOREX_SPOT в базе данных;
- * поля сущности соответствуют доменной модели инструмента FOREX_SPOT {@link FxSpot}.</p>
+ * поля сущности соответствуют доменной модели инструмента FOREX_SPOT {@link InstrumentFxSpot}.</p>
  *
  * <p>Пояснение некоторых аннотаций:</p>
  * <ul>

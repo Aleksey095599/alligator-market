@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 
@@ -21,8 +21,8 @@ public class MoexIssFxSpotSupportCatalog {
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
 
     /* Доменные инструменты. */
-    private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
-    private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
+    private static final InstrumentFxSpot USD_RUB = new InstrumentFxSpot(USD, RUB, FxSpotTenor.TOM, 4);
+    private static final InstrumentFxSpot CNY_RUB = new InstrumentFxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
     /* Карта соответствий: код инструмента ↔ SECID. */
     private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_SECID;

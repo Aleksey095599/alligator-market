@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.mod
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class FxSpotDomainFactory {
      *
      * <p>Загружает валюты из репозитория и возвращает полностью собранную доменную модель.</p>
      */
-    public FxSpot fromCreateDto(FxSpotCreateDto dto) {
+    public InstrumentFxSpot fromCreateDto(FxSpotCreateDto dto) {
         Objects.requireNonNull(dto, "dto must not be null");
 
         // Обращаемся к репозиторию для получения валют
@@ -41,7 +41,7 @@ public class FxSpotDomainFactory {
                 .orElseThrow(() -> new CurrencyNotFoundException(CurrencyCode.of(dto.quoteCurrency())));
 
         // Собираем и возвращаем доменную модель
-        return new FxSpot(base, quote, dto.tenor(), dto.defaultQuoteFractionDigits());
+        return new InstrumentFxSpot(base, quote, dto.tenor(), dto.defaultQuoteFractionDigits());
     }
 
     /**
@@ -50,7 +50,7 @@ public class FxSpotDomainFactory {
      * <p>Парсит код инструмента с помощью {@link FxSpotCodec} для получения кодов валют,
      * загружает валюты из репозитория {@link CurrencyRepository} и собирает доменную модель.</p>
      */
-    public FxSpot fromUpdateDto(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
+    public InstrumentFxSpot fromUpdateDto(InstrumentCode instrumentCode, FxSpotUpdateDto dto) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(dto, "dto must not be null");
 
@@ -66,6 +66,6 @@ public class FxSpotDomainFactory {
                 .orElseThrow(() -> new CurrencyNotFoundException(quoteCode));
 
         // Собираем и возвращаем доменную модель
-        return new FxSpot(base, quote, parts.tenor(), dto.defaultQuoteFractionDigits());
+        return new InstrumentFxSpot(base, quote, parts.tenor(), dto.defaultQuoteFractionDigits());
     }
 }

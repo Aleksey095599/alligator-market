@@ -10,7 +10,7 @@ import com.alligator.market.domain.instrument.asset.forex.contract.spot.exceptio
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     private final CurrencyJpaRepository currencyJpaRepository;
 
     @Override
-    public FxSpot create(FxSpot fxSpot) {
+    public InstrumentFxSpot create(InstrumentFxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         // Ищем JPA-сущности составных валют (бизнес‑ошибки при отсутствии)
@@ -69,7 +69,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public FxSpot update(FxSpot fxSpot) {
+    public InstrumentFxSpot update(InstrumentFxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot model must not be null");
 
         // Ищем JPA-сущность инструмента FOREX_SPOT к обновлению
@@ -116,7 +116,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public Optional<FxSpot> findByCode(InstrumentCode instrumentCode) {
+    public Optional<InstrumentFxSpot> findByCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         // Строковое значение кода инструмента для запроса в БД
         String codeValue = instrumentCode.value();
@@ -126,7 +126,7 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     }
 
     @Override
-    public List<FxSpot> findAll() {
+    public List<InstrumentFxSpot> findAll() {
 
         return jpaRepository.findAll(Sort.by(Sort.Order.asc("code")))
                 .stream()

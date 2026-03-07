@@ -9,7 +9,7 @@ import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog
 import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.web.dto.mapper.FxSpotDtoMapper;
 import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.web.dto.out.FxSpotResponseDto;
 import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.InstrumentFxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class FxSpotController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody FxSpotCreateDto dto) {
 
-        FxSpot created = service.create(factory.fromCreateDto(dto));
+        InstrumentFxSpot created = service.create(factory.fromCreateDto(dto));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{instrumentCode}")
