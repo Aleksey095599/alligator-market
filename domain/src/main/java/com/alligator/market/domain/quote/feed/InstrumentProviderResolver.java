@@ -1,6 +1,6 @@
 package com.alligator.market.domain.quote.feed;
 
-import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.instrument.model.Instrument;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 /**

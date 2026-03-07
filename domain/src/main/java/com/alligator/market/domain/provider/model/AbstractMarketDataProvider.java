@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.model;
 
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;

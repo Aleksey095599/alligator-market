@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider.model.handler;
 
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.type.AssetClass;
-import com.alligator.market.domain.instrument.type.ContractType;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.AssetClass;
+import com.alligator.market.domain.instrument.model.ContractType;
+import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.quote.tick.model.QuoteTick;

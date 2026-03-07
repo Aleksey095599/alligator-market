@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.type;
+package com.alligator.market.domain.instrument.model;
 
 /**
  * Тип контракта финансового инструмента.

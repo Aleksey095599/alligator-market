@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.catalog.persistence.jpa.converter;
 
-import com.alligator.market.domain.instrument.type.ContractType;
+import com.alligator.market.domain.instrument.model.ContractType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

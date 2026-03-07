@@ -1,9 +1,7 @@
-package com.alligator.market.domain.instrument;
+package com.alligator.market.domain.instrument.model;
 
-import com.alligator.market.domain.instrument.type.AssetClass;
-import com.alligator.market.domain.instrument.type.ContractType;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
+import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.model.vo.InstrumentSymbol;
 
 /**
  * Базовый контракт финансового инструмента.
@@ -32,5 +30,4 @@ public interface Instrument {
      * Тип контракта финансового инструмента.
      */
     ContractType contractType();
-
 }

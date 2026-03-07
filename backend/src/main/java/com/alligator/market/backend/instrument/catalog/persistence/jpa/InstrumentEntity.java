@@ -5,11 +5,11 @@ import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.ContractTypeConverter;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentCodeConverter;
 import com.alligator.market.backend.instrument.catalog.persistence.jpa.converter.InstrumentSymbolConverter;
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.type.AssetClass;
-import com.alligator.market.domain.instrument.type.ContractType;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
+import com.alligator.market.domain.instrument.model.Instrument;
+import com.alligator.market.domain.instrument.model.AssetClass;
+import com.alligator.market.domain.instrument.model.ContractType;
+import com.alligator.market.domain.instrument.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.model.vo.InstrumentSymbol;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
