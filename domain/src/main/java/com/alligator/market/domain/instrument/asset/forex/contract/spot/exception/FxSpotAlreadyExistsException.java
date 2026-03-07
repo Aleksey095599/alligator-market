@@ -2,7 +2,7 @@ package com.alligator.market.domain.instrument.asset.forex.contract.spot.excepti
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 
 import java.util.Objects;
 

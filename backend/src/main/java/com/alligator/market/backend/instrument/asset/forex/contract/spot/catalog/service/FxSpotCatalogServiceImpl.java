@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalo
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

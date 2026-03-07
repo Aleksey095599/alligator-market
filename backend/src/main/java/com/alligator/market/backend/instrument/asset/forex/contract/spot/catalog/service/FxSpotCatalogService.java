@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.service;
 
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 
 import java.util.List;
 
