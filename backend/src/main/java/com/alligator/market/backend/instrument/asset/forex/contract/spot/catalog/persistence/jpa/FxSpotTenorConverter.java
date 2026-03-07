@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.persistence.jpa.converter;
+package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
 import jakarta.persistence.AttributeConverter;

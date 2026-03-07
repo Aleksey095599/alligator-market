@@ -2,7 +2,6 @@ package com.alligator.market.backend.instrument.asset.forex.contract.spot.catalo
 
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.asset.forex.contract.spot.catalog.persistence.jpa.converter.FxSpotTenorConverter;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
