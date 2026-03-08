@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.mod
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpotTenor;
-import com.alligator.market.domain.quote.tick.model.QuoteTick;
+import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

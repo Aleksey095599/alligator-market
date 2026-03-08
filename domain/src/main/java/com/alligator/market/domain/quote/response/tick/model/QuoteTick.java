@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.tick.model;
+package com.alligator.market.domain.quote.response.tick.model;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -8,9 +8,9 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Глобальная модель тика котировки для валютной пары.
+ * Модель тика котировки.
  *
- * <p>Используется как унифицированное представление любых рыночных тиков:
+ * <p>Назначение: Используется как унифицированное представление любых рыночных тиков:
  * по последней сделке (LAST) и по котировке bid/ask.</p>
  *
  * @param instrumentCode    Код инструмента

@@ -10,7 +10,7 @@ import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHand
 import com.alligator.market.domain.provider.model.passport.AccessMethod;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.quote.tick.model.QuoteTick;
+import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;
