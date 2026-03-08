@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.base.model.Instrument;
 import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.marketdata.provider.model.MarketDataProvider;
 import com.alligator.market.domain.quote.feed.InstrumentProviderResolver;
-import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Service;
 

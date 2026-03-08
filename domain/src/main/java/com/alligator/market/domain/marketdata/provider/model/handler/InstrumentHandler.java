@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.base.model.classification.Contract
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.provider.model.MarketDataProvider;
 import com.alligator.market.domain.marketdata.provider.model.vo.HandlerCode;
-import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.Set;

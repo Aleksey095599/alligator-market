@@ -1,4 +1,4 @@
-package com.alligator.market.domain.quote.response.tick.model;
+package com.alligator.market.domain.marketdata.tick.model;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;

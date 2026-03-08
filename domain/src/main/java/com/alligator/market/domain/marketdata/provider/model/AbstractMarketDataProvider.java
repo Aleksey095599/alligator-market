@@ -8,7 +8,7 @@ import com.alligator.market.domain.marketdata.provider.model.passport.ProviderPa
 import com.alligator.market.domain.marketdata.provider.model.policy.ProviderPolicy;
 import com.alligator.market.domain.marketdata.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.*;
