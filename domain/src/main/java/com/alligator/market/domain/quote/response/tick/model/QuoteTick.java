@@ -1,7 +1,7 @@
 package com.alligator.market.domain.quote.response.tick.model;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
 
 import java.math.BigDecimal;
 import java.time.Instant;

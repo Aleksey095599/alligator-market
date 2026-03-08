@@ -2,7 +2,7 @@ package com.alligator.market.backend.quote.feed.catalog.persistence.jpa;
 
 import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.InstrumentEntity;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.feed.InstrumentFeedRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

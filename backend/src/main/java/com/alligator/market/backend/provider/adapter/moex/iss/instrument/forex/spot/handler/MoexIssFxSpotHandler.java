@@ -6,10 +6,10 @@ import com.alligator.market.domain.instrument.base.model.classification.AssetCla
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.provider.model.passport.AccessMethod;
-import com.alligator.market.domain.provider.model.vo.HandlerCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.marketdata.provider.model.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.marketdata.provider.model.passport.AccessMethod;
+import com.alligator.market.domain.marketdata.provider.model.vo.HandlerCode;
+import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.quote.response.tick.model.QuoteTick;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;

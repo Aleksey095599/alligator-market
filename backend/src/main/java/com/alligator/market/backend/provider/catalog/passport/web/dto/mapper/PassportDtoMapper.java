@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.catalog.passport.web.dto.mapper;
 
 import com.alligator.market.backend.provider.catalog.passport.web.dto.out.PassportResponseDto;
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.marketdata.provider.model.passport.ProviderPassport;
+import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
 
 import java.util.Objects;
 
