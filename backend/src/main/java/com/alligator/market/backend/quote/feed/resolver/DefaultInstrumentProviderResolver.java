@@ -1,6 +1,6 @@
 package com.alligator.market.backend.quote.feed.resolver;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
+import com.alligator.market.backend.marketdata.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.domain.instrument.base.model.Instrument;
 import com.alligator.market.domain.instrument.asset.forex.contract.spot.model.FxSpot;
 import com.alligator.market.domain.marketdata.provider.model.vo.ProviderCode;
