@@ -7,6 +7,8 @@ import java.util.Objects;
 
 /**
  * Доменная модель маршрута рыночных данных: определяет, через какого провайдера запрашиваются данные для конкретного инструмента.
+ *
+ * TODO: может path?
  */
 public record MarketDataRoute(
         InstrumentCode instrumentCode,
