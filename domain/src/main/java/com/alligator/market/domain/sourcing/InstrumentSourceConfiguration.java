@@ -12,8 +12,9 @@ import java.util.Set;
 /**
  * Конфигурация источников рыночных данных для конкретного инструмента.
  *
- * <p>Примечание: Порядок элементов в {@code sources} = приоритет источников.</p>
+ * <p>Примечание: Порядок элементов в {@code sources} определяет приоритет источников.</p>
  */
+@SuppressWarnings("ClassCanBeRecord")
 public final class InstrumentSourceConfiguration {
 
     /* Код инструмента. */

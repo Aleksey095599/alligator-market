@@ -7,29 +7,14 @@ import java.util.Objects;
 /**
  * Источник рыночных данных для конкретного инструмента.
  *
- * <p>Примечание: На текущем этапе задает только провайдера и признак активности.</p>
+ * @param providerCode Код провайдера, который является источником рыночных данных
+ * @param active       Признак активности источника
  */
-public final class InstrumentMarketDataSource {
-
-    /* Код провайдера, который является источником рыночных данных. */
-    private final ProviderCode providerCode;
-
-    /* Признак активности источника. */
-    private final boolean active;
-
-    public InstrumentMarketDataSource(
-            ProviderCode providerCode,
-            boolean active
-    ) {
-        this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
-        this.active = active;
-    }
-
-    public ProviderCode providerCode() {
-        return providerCode;
-    }
-
-    public boolean active() {
-        return active;
+public record InstrumentMarketDataSource(
+        ProviderCode providerCode,
+        boolean active
+) {
+    public InstrumentMarketDataSource {
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
 }
