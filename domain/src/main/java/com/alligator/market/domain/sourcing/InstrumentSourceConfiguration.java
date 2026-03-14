@@ -3,14 +3,18 @@ package com.alligator.market.domain.sourcing;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Конфигурация источников рыночных данных для конкретного инструмента.
  *
  * <p>Примечание: Порядок элементов в {@code sources} = приоритет источников.</p>
  */
-public class InstrumentSourceConfiguration {
+public final class InstrumentSourceConfiguration {
 
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
@@ -22,7 +26,7 @@ public class InstrumentSourceConfiguration {
             InstrumentCode instrumentCode,
             List<InstrumentMarketDataSource> sources
     ) {
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
 
         if (sources.isEmpty()) {
@@ -39,8 +43,8 @@ public class InstrumentSourceConfiguration {
             InstrumentMarketDataSource checkedSource = Objects.requireNonNull(source, "source must not be null");
 
             if (!providerCodes.add(checkedSource.providerCode())) {
-                throw new IllegalStateException(
-                        "Instrument sourcing contains duplicate provider code '" +
+                throw new IllegalArgumentException(
+                        "Instrument source configuration contains duplicate provider code '" +
                                 checkedSource.providerCode().value() + "'"
                 );
             }
@@ -48,7 +52,6 @@ public class InstrumentSourceConfiguration {
             sourceCopy.add(checkedSource);
         }
 
-        this.instrumentCode = instrumentCode;
         this.sources = List.copyOf(sourceCopy);
     }
 
