@@ -2,6 +2,7 @@ package com.alligator.market.domain.sourcing;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,12 +11,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Конфигурация источников рыночных данных для конкретного инструмента.
+ * План источников рыночных данных для конкретного инструмента.
  *
  * <p>Примечание: Порядок элементов в {@code sources} определяет приоритет источников.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public final class InstrumentSourceConfiguration {
+public final class InstrumentSourcePlan {
 
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
@@ -23,7 +24,7 @@ public final class InstrumentSourceConfiguration {
     /* Список источников рыночных данных. */
     private final List<InstrumentMarketDataSource> sources;
 
-    public InstrumentSourceConfiguration(
+    public InstrumentSourcePlan(
             InstrumentCode instrumentCode,
             List<InstrumentMarketDataSource> sources
     ) {

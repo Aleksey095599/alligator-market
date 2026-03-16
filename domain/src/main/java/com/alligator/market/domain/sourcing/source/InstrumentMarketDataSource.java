@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourcing;
+package com.alligator.market.domain.sourcing.source;
 
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
