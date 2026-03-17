@@ -12,9 +12,14 @@ import java.util.Objects;
  */
 public record InstrumentMarketDataSource(
         ProviderCode providerCode,
-        boolean active
+        boolean active,
+        int priority
 ) {
     public InstrumentMarketDataSource {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
+
+        if (priority < 0) {
+            throw new IllegalArgumentException("priority must be greater than or equal to 0");
+        }
     }
 }
