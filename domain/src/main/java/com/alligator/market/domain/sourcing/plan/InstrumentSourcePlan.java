@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourcing.pool;
+package com.alligator.market.domain.sourcing.plan;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -11,12 +11,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Пул источников рыночных данных для конкретного инструмента.
+ * План (упорядоченный набор) источников рыночных данных для конкретного инструмента.
  *
  * <p>Примечание: Порядок элементов в {@code sources} определяет приоритет источников.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public final class InstrumentSourcesPool {
+public final class InstrumentSourcePlan {
 
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
@@ -24,7 +24,7 @@ public final class InstrumentSourcesPool {
     /* Список источников рыночных данных. */
     private final List<InstrumentMarketDataSource> sources;
 
-    public InstrumentSourcesPool(
+    public InstrumentSourcePlan(
             InstrumentCode instrumentCode,
             List<InstrumentMarketDataSource> sources
     ) {
@@ -46,7 +46,7 @@ public final class InstrumentSourcesPool {
 
             if (!providerCodes.add(checkedSource.providerCode())) {
                 throw new IllegalArgumentException(
-                        "Instrument source configuration contains duplicate provider code '" +
+                        "Instrument source plan contains duplicate provider code '" +
                                 checkedSource.providerCode().value() + "'"
                 );
             }
