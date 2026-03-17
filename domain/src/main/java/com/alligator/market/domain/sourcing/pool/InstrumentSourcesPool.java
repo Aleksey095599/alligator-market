@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourcing;
+package com.alligator.market.domain.sourcing.pool;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -11,12 +11,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * План источников рыночных данных для конкретного инструмента.
+ * План набора источников рыночных данных для конкретного инструмента.
  *
  * <p>Примечание: Порядок элементов в {@code sources} определяет приоритет источников.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
-public final class InstrumentSourcePlan {
+public final class InstrumentSourcesPool {
 
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
@@ -24,7 +24,7 @@ public final class InstrumentSourcePlan {
     /* Список источников рыночных данных. */
     private final List<InstrumentMarketDataSource> sources;
 
-    public InstrumentSourcePlan(
+    public InstrumentSourcesPool(
             InstrumentCode instrumentCode,
             List<InstrumentMarketDataSource> sources
     ) {
