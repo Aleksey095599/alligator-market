@@ -15,7 +15,8 @@ import java.util.Set;
  * План источников рыночных данных для конкретного инструмента: набор источников {@link InstrumentMarketDataSource},
  * упорядоченных по приоритету.
  *
- * <p>Примечание: Конструктор нормализует список {@code sources} по возрастанию приоритета.</p>
+ * <p>Примечание: Приоритет источников определяется полем {@link InstrumentMarketDataSource#priority()} (чем меньше
+ * значение, тем выше приоритет). Конструктор нормализует список {@code sources} по возрастанию приоритета.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
 public final class InstrumentSourcePlan {

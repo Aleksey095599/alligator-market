@@ -9,6 +9,7 @@ import java.util.Objects;
  *
  * @param providerCode Код провайдера, который является источником рыночных данных
  * @param active       Признак активности источника
+ * @param priority     Приоритет источника (чем меньше число, тем выше приоритет)
  */
 public record InstrumentMarketDataSource(
         ProviderCode providerCode,
