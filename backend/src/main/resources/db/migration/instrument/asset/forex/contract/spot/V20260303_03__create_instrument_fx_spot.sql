@@ -4,7 +4,7 @@ CREATE TABLE instrument_fx_spot
     -- PK одновременно является FK на instrument_base.id (JOINED inheritance)
     id                    BIGINT       PRIMARY KEY,
 
-    -- Валютная пара
+    -- Идентичность валютной пары
     base_currency         VARCHAR(3)   NOT NULL,
     quote_currency        VARCHAR(3)   NOT NULL,
     tenor                 VARCHAR(5)   NOT NULL,

@@ -7,7 +7,7 @@ CREATE TABLE currency
     -- Натуральный ключ
     code              VARCHAR(3)   NOT NULL,
 
-    -- Данные валюты
+    -- Идентичность валюты
     name              VARCHAR(50)  NOT NULL,
     country           VARCHAR(100) NOT NULL,
     fraction_digits   INTEGER      NOT NULL DEFAULT 2,

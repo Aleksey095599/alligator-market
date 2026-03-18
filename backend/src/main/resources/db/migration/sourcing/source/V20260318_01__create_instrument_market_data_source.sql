@@ -4,11 +4,9 @@ CREATE TABLE instrument_market_data_source
     -- Суррогатный PK
     id              BIGSERIAL   PRIMARY KEY,
 
-    -- Натуральные ссылки на инструмент и провайдера
+    -- Идентичность источника рыночных данных
     instrument_code VARCHAR(50) NOT NULL,
     provider_code   VARCHAR(50) NOT NULL,
-
-    -- Управление активностью и порядком выбора источника
     active          BOOLEAN     NOT NULL,
     priority        INTEGER     NOT NULL,
 
