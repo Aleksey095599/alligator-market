@@ -5,15 +5,17 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * План (упорядоченный набор) источников рыночных данных для конкретного инструмента.
+ * План источников рыночных данных для конкретного инструмента.
  *
- * <p>Примечание: Порядок элементов в {@code sources} определяет приоритет источников.</p>
+ * <p>Приоритет источников определяется полем {@code priority}.
+ * Конструктор нормализует список {@code sources} по возрастанию приоритета.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
 public final class InstrumentSourcePlan {
@@ -21,7 +23,7 @@ public final class InstrumentSourcePlan {
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
 
-    /* Список источников рыночных данных. */
+    /* Список источников рыночных данных, отсортированный по приоритету. */
     private final List<InstrumentMarketDataSource> sources;
 
     public InstrumentSourcePlan(
@@ -41,6 +43,9 @@ public final class InstrumentSourcePlan {
         // Набор кодов провайдеров для проверки дубликатов
         Set<ProviderCode> providerCodes = new HashSet<>();
 
+        // Набор приоритетов для проверки дубликатов
+        Set<Integer> priorities = new HashSet<>();
+
         for (InstrumentMarketDataSource source : sources) {
             InstrumentMarketDataSource checkedSource = Objects.requireNonNull(source, "source must not be null");
 
@@ -51,8 +56,18 @@ public final class InstrumentSourcePlan {
                 );
             }
 
+            if (!priorities.add(checkedSource.priority())) {
+                throw new IllegalArgumentException(
+                        "Instrument source plan contains duplicate priority '" +
+                                checkedSource.priority() + "'"
+                );
+            }
+
             sourceCopy.add(checkedSource);
         }
+
+        // Нормализуем порядок источников по приоритету
+        sourceCopy.sort(Comparator.comparingInt(InstrumentMarketDataSource::priority));
 
         this.sources = List.copyOf(sourceCopy);
     }
