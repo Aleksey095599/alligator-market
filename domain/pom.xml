@@ -12,6 +12,23 @@
     <name>Alligator Market Domain</name>
     <description>Domain model for Alligator Market</description>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Управление версией Jackson Core для транзитивных зависимостей -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson-core.version}</version>
+            </dependency>
+            <!-- Управление версией Commons Lang3 для транзитивных зависимостей -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Reactor для реактивных типов домена -->
         <dependency>
@@ -23,12 +40,34 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <version>${spring-framework.version}</version>
         </dependency>
         <!-- Avro для генерации классов -->
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
             <version>${avro.version}</version>
+            <exclusions>
+                <!-- Исключаем уязвимые транзитивные версии, подключаем безопасные ниже -->
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Безопасная версия Jackson Core для Avro -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <!-- Безопасная версия Commons Lang3 для Avro -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.transaction</groupId>
