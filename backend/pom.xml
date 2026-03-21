@@ -16,6 +16,7 @@
     <properties>
         <commons-compress.version>1.28.0</commons-compress.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
+        <assertj.version>3.27.3</assertj.version>
         <flyway.version>12.1.1</flyway.version>
         <jackson.version>2.21.2</jackson.version>
         <jsoup.version>1.22.1</jsoup.version>
@@ -30,6 +31,7 @@
         <netty.version>4.1.131.Final</netty.version>
         <postgresql.version>42.7.10</postgresql.version>
         <reactor-netty.version>1.2.16</reactor-netty.version>
+        <spring-security.version>6.4.7</spring-security.version>
         <tomcat.version>10.1.52</tomcat.version>
     </properties>
     <dependencies>
@@ -157,6 +159,12 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <!-- Управление версией assertj-core -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+            </dependency>
             <!-- Управление версиями Jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -216,6 +224,12 @@
                 <groupId>org.lz4</groupId>
                 <artifactId>lz4-java</artifactId>
                 <version>${lz4-java.version}</version>
+            </dependency>
+            <!-- Управление версией Spring Security Core -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
