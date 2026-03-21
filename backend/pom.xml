@@ -291,7 +291,7 @@
                                     <excludes>flyway_schema_history</excludes>
                                 </database>
                                 <target>
-                                    <packageName>com/alligator/market/backend/infra/jooq/generated</packageName>
+                                    <packageName>com.alligator.market.backend.infra.jooq.generated</packageName>
                                     <directory>${project.build.directory}/generated-sources/jooq</directory>
                                 </target>
                             </generator>
