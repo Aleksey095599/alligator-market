@@ -1,9 +1,9 @@
-package com.alligator.market.backend.infra.persistence.sourcing.repository;
+package com.alligator.market.backend.sourcing.plan.adapter;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
-import com.alligator.market.domain.sourcing.port.InstrumentSourcePlanRepository;
+import com.alligator.market.domain.sourcing.plan.port.InstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 import org.jooq.DSLContext;
 
