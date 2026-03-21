@@ -95,6 +95,24 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
     @Override
     public void save(InstrumentSourcePlan plan) {
-        throw new UnsupportedOperationException("save is not implemented yet");
+        Objects.requireNonNull(plan, "plan must not be null");
+
+        dsl.transaction(configuration -> {
+            DSLContext tx = configuration.dsl();
+
+            // Полностью заменяем план источников для инструмента
+            tx.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
+                    .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .execute();
+
+            for (InstrumentMarketDataSource source : plan.sources()) {
+                tx.insertInto(INSTRUMENT_MARKET_DATA_SOURCE)
+                        .set(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE, plan.instrumentCode().value())
+                        .set(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
+                        .set(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE, source.active())
+                        .set(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY, source.priority())
+                        .execute();
+            }
+        });
     }
 }
