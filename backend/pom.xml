@@ -17,6 +17,9 @@
         <commons-compress.version>1.28.0</commons-compress.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <assertj.version>3.27.7</assertj.version>
+        <db.url>jdbc:postgresql://localhost:5432/postgres</db.url>
+        <db.user>postgres</db.user>
+        <db.password>1234</db.password>
         <flyway.version>12.1.1</flyway.version>
         <jackson.version>2.21.2</jackson.version>
         <jsoup.version>1.22.1</jsoup.version>
@@ -99,6 +102,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- Runtime-интеграция jOOQ со Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <!-- Набор тестовых утилит Spring Boot -->
         <dependency>
@@ -249,9 +257,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway.version}</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                    <user>postgres</user>
-                    <password>1234</password>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
                     <schemas>main</schemas>
                 </configuration>
             </plugin>
@@ -268,17 +276,18 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <logging>WARN</logging>
                             <jdbc>
                                 <driver>org.postgresql.Driver</driver>
-                                <url>jdbc:postgresql://localhost:5432/postgres</url>
-                                <user>postgres</user>
-                                <password>1234</password>
+                                <url>${db.url}</url>
+                                <user>${db.user}</user>
+                                <password>${db.password}</password>
                             </jdbc>
                             <generator>
                                 <database>
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
                                     <inputSchema>main</inputSchema>
-                                    <includes>.*</includes>
+                                    <includes>instrument_market_data_source</includes>
                                     <excludes>flyway_schema_history</excludes>
                                 </database>
                                 <target>
