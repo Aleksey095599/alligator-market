@@ -286,7 +286,7 @@
                             <generator>
                                 <database>
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                                    <inputSchema>main</inputSchema>
+                                    <inputSchema>public</inputSchema>
                                     <includes>instrument_market_data_source</includes>
                                     <excludes>flyway_schema_history</excludes>
                                 </database>
