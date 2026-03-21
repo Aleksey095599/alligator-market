@@ -15,13 +15,22 @@
     <description>Spring Boot backend for Alligator Market</description>
     <properties>
         <commons-compress.version>1.26.2</commons-compress.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <flyway.version>11.8.2</flyway.version>
+        <jackson.version>2.18.5</jackson.version>
         <jsoup.version>1.21.2</jsoup.version>
         <jooq.version>3.19.21</jooq.version>
         <kafka-avro-serializer.version>7.6.0</kafka-avro-serializer.version>
+        <kafka-clients.version>3.9.1</kafka-clients.version>
+        <logback.version>1.5.20</logback.version>
+        <lz4-java.version>1.9.0</lz4-java.version>
         <market-domain.version>1.0-SNAPSHOT</market-domain.version>
         <mockwebserver.version>5.1.0</mockwebserver.version>
         <mockito.version>5.2.0</mockito.version>
+        <netty.version>4.1.123.Final</netty.version>
+        <postgresql.version>42.7.7</postgresql.version>
+        <reactor-netty.version>1.2.8</reactor-netty.version>
+        <tomcat.version>10.1.44</tomcat.version>
     </properties>
     <dependencies>
         <!-- Библиотека доменных моделей -->
@@ -70,6 +79,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Генерация кода с Lombok -->
@@ -140,6 +150,72 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons-compress.version}</version>
+            </dependency>
+            <!-- Управление версией commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <!-- Управление версиями Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- Управление версией Kafka clients -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka-clients.version}</version>
+            </dependency>
+            <!-- Управление версией logback-core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <!-- Управление версией PostgreSQL JDBC -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <!-- Управление версией Tomcat embed core -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <!-- Управление версиями Netty codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- Управление версиями Netty HTTP codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- Управление версиями Netty HTTP/2 codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- Управление версией Reactor Netty HTTP -->
+            <dependency>
+                <groupId>io.projectreactor.netty</groupId>
+                <artifactId>reactor-netty-http</artifactId>
+                <version>${reactor-netty.version}</version>
+            </dependency>
+            <!-- Управление версией lz4-java -->
+            <dependency>
+                <groupId>org.lz4</groupId>
+                <artifactId>lz4-java</artifactId>
+                <version>${lz4-java.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
