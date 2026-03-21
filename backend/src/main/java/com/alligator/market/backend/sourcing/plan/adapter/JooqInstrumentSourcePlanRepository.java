@@ -7,7 +7,10 @@ import com.alligator.market.domain.sourcing.plan.port.InstrumentSourcePlanReposi
 import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 import org.jooq.DSLContext;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -51,7 +54,43 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
     @Override
     public List<InstrumentSourcePlan> findAll() {
-        throw new UnsupportedOperationException("findAll is not implemented yet");
+        Map<InstrumentCode, List<InstrumentMarketDataSource>> groupedSources = new LinkedHashMap<>();
+
+        dsl.select(
+                        INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE,
+                        INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE,
+                        INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE,
+                        INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY
+                )
+                .from(INSTRUMENT_MARKET_DATA_SOURCE)
+                .orderBy(
+                        INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
+                        INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY.asc()
+                )
+                .fetch()
+                .forEach(record -> {
+                    InstrumentCode instrumentCode =
+                            new InstrumentCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE));
+
+                    InstrumentMarketDataSource source =
+                            new InstrumentMarketDataSource(
+                                    new ProviderCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE)),
+                                    record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
+                                    record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
+                            );
+
+                    groupedSources
+                            .computeIfAbsent(instrumentCode, ignored -> new ArrayList<>())
+                            .add(source);
+                });
+
+        List<InstrumentSourcePlan> plans = new ArrayList<>(groupedSources.size());
+
+        for (Map.Entry<InstrumentCode, List<InstrumentMarketDataSource>> entry : groupedSources.entrySet()) {
+            plans.add(new InstrumentSourcePlan(entry.getKey(), entry.getValue()));
+        }
+
+        return List.copyOf(plans);
     }
 
     @Override
