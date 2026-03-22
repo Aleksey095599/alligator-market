@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.config.plan.adapter;
+package com.alligator.market.backend.sourcing.config.plan;
 
 import com.alligator.market.backend.sourcing.plan.adapter.JooqInstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.plan.port.InstrumentSourcePlanRepository;
