@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.config;
+package com.alligator.market.backend.sourcing.config.plan.adapter;
 
 import com.alligator.market.backend.sourcing.plan.adapter.JooqInstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.plan.port.InstrumentSourcePlanRepository;
@@ -12,8 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class InstrumentSourcePlanRepositoryWiringConfig {
 
-    public static final String BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY =
-            "instrumentSourcePlanRepository";
+    public static final String BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY = "instrumentSourcePlanRepository";
 
     /**
      * Доменный порт репозитория планов источников через jOOQ-адаптер.

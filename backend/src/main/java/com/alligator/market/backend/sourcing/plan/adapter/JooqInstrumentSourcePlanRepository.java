@@ -16,7 +16,9 @@ import java.util.Optional;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentMarketDataSource.INSTRUMENT_MARKET_DATA_SOURCE;
 
-/* jOOQ-адаптер репозитория планов источников. */
+/**
+ * jOOQ-адаптер репозитория планов источников.
+ */
 public final class JooqInstrumentSourcePlanRepository implements InstrumentSourcePlanRepository {
 
     /* DSLContext для выполнения SQL через jOOQ. */
