@@ -22,10 +22,12 @@ public interface InstrumentSourcePlanRepository {
     List<InstrumentSourcePlan> findAll();
 
     /**
-     * Сохраняет план источников для заданного инструмента.
-     *
-     * <p>Если план источников заданного инструмента уже существует,
-     * репозиторий должен заменить его целиком.</p>
+     * Создаёт план источников для заданного инструмента.
      */
-    void save(InstrumentSourcePlan plan);
+    void create(InstrumentSourcePlan plan);
+
+    /**
+     * Удаляет план источников для заданного инструмента.
+     */
+    void deleteByInstrumentCode(InstrumentCode instrumentCode);
 }
