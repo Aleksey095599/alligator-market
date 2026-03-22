@@ -41,8 +41,8 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                 .from(INSTRUMENT_MARKET_DATA_SOURCE)
                 .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .orderBy(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY.asc())
-                .fetch(record -> new InstrumentMarketDataSource(
-                        new ProviderCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE)),
+                .fetch(record -> toSource(
+                        record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE),
                         record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
                         record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
                 ));
@@ -74,12 +74,11 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                     InstrumentCode instrumentCode =
                             new InstrumentCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE));
 
-                    InstrumentMarketDataSource source =
-                            new InstrumentMarketDataSource(
-                                    new ProviderCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE)),
-                                    record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
-                                    record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
-                            );
+                    InstrumentMarketDataSource source = toSource(
+                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE),
+                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
+                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
+                    );
 
                     groupedSources
                             .computeIfAbsent(instrumentCode, ignored -> new ArrayList<>())
@@ -96,25 +95,69 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     }
 
     @Override
-    public void save(InstrumentSourcePlan plan) {
+    public void create(InstrumentSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
         dsl.transaction(configuration -> {
             DSLContext tx = configuration.dsl();
 
-            // Полностью заменяем план источников для инструмента
-            tx.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
-                    .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
-                    .execute();
+            if (planExists(tx, plan.instrumentCode())) {
+                throw new IllegalStateException(
+                        "Instrument source plan for instrument '"
+                                + plan.instrumentCode().value()
+                                + "' already exists"
+                );
+            }
 
             for (InstrumentMarketDataSource source : plan.sources()) {
-                tx.insertInto(INSTRUMENT_MARKET_DATA_SOURCE)
-                        .set(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE, plan.instrumentCode().value())
-                        .set(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
-                        .set(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE, source.active())
-                        .set(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY, source.priority())
-                        .execute();
+                insertSource(tx, plan.instrumentCode(), source);
             }
         });
+    }
+
+    @Override
+    public void deleteByInstrumentCode(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        dsl.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
+                .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .execute();
+    }
+
+    /* Проверяет, существует ли уже план для инструмента. */
+    private boolean planExists(DSLContext dsl, InstrumentCode instrumentCode) {
+        return dsl.select(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE)
+                .from(INSTRUMENT_MARKET_DATA_SOURCE)
+                .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .limit(1)
+                .fetchOptional()
+                .isPresent();
+    }
+
+    /* Вставляет один источник инструмента. */
+    private void insertSource(
+            DSLContext dsl,
+            InstrumentCode instrumentCode,
+            InstrumentMarketDataSource source
+    ) {
+        dsl.insertInto(INSTRUMENT_MARKET_DATA_SOURCE)
+                .set(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
+                .set(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
+                .set(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE, source.active())
+                .set(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY, source.priority())
+                .execute();
+    }
+
+    /* Маппинг строки БД в доменный источник. */
+    private InstrumentMarketDataSource toSource(
+            String providerCode,
+            Boolean active,
+            Integer priority
+    ) {
+        return new InstrumentMarketDataSource(
+                new ProviderCode(providerCode),
+                active,
+                priority
+        );
     }
 }
