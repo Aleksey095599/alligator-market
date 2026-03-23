@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourcing.plan.port;
+package com.alligator.market.domain.sourcing.plan.repository;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
