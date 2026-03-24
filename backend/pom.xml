@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<!-- Backend-модуль: вся Spring Boot и инфраструктурная специфика живет здесь. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -10,237 +11,146 @@
     </parent>
 
     <artifactId>market-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>Alligator Market Backend</name>
     <description>Spring Boot backend for Alligator Market</description>
+
     <properties>
-        <commons-compress.version>1.28.0</commons-compress.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
-        <assertj.version>3.27.7</assertj.version>
+        <!-- Локальные dev-настройки БД. Позже лучше вынести в settings.xml / env / CI secrets. -->
         <db.url>jdbc:postgresql://localhost:5432/postgres</db.url>
         <db.user>postgres</db.user>
         <db.password>1234</db.password>
-        <flyway.version>12.1.1</flyway.version>
-        <jackson.version>2.21.2</jackson.version>
+
+        <!-- Версии только для библиотек вне Boot BOM или осознанных overrides. -->
+        <!-- Confluent 7.8.x -> Kafka 3.8.x, что согласовано с Boot 3.4.x. -->
+        <kafka-avro-serializer.version>7.8.7</kafka-avro-serializer.version>
         <jsoup.version>1.22.1</jsoup.version>
-        <jooq.version>3.19.30</jooq.version>
-        <kafka-avro-serializer.version>8.2.0</kafka-avro-serializer.version>
-        <kafka-clients.version>4.2.0</kafka-clients.version>
-        <logback.version>1.5.32</logback.version>
-        <lz4-java.version>1.8.1</lz4-java.version>
-        <market-domain.version>1.0-SNAPSHOT</market-domain.version>
         <mockwebserver.version>5.3.2</mockwebserver.version>
-        <mockito.version>5.2.0</mockito.version>
-        <netty.version>4.1.131.Final</netty.version>
-        <postgresql.version>42.7.10</postgresql.version>
-        <reactor-netty.version>1.2.16</reactor-netty.version>
-        <spring-security.version>7.1.0-M3</spring-security.version>
-        <tomcat.version>10.1.52</tomcat.version>
     </properties>
+
     <dependencies>
-        <!-- Библиотека доменных моделей -->
+        <!-- Внутренний доменный модуль -->
         <dependency>
             <groupId>com.alligator</groupId>
             <artifactId>market-domain</artifactId>
-            <version>${market-domain.version}</version>
         </dependency>
-        <!-- HTTP мок-сервер для тестов -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>mockwebserver</artifactId>
-            <version>${mockwebserver.version}</version>
-            <scope>test</scope>
-        </dependency>
+
         <!-- Avro-сериализация сообщений Kafka -->
         <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
             <version>${kafka-avro-serializer.version}</version>
         </dependency>
-        <!-- Тестирование реактивного кода -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- Ядро миграций Flyway -->
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-        <!-- Поддержка PostgreSQL в Flyway -->
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway.version}</version>
-        </dependency>
-        <!-- HTML-парсер jsoup -->
+
+        <!-- HTML-парсер -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
-        <!-- JDBC драйвер PostgreSQL -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- Генерация кода с Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+
         <!-- Метрики и мониторинг -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <!-- JPA и работа с БД -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <!-- Runtime-интеграция jOOQ со Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
-        <!-- Набор тестовых утилит Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <!-- Валидация входящих данных -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
         <!-- REST-контроллеры на Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- Реактивные HTTP-клиенты WebFlux -->
+
+        <!-- Реактивный HTTP-клиент WebClient -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+
         <!-- Интеграция с Kafka -->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
-        <!-- Spring Security Core для работы с контекстом безопасности -->
+
+        <!-- Core-компоненты Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+
+        <!-- Миграции БД -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <!-- Поддержка PostgreSQL в Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
+        <!-- JDBC драйвер PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok только для compile-time -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Тестовый стек Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Тесты для Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Мокинг final-классов и records в unit-тестах -->
+
+        <!-- Тестирование реактивного кода -->
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- HTTP mock server для тестов -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>${mockwebserver.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Управление версией commons-compress -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>${commons-compress.version}</version>
-            </dependency>
-            <!-- Управление версией commons-lang3 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <!-- Управление версией assertj-core -->
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>${assertj.version}</version>
-            </dependency>
-            <!-- Управление версиями Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <!-- Управление версией Kafka clients -->
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>${kafka-clients.version}</version>
-            </dependency>
-            <!-- Управление версией logback-core -->
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <!-- Управление версией PostgreSQL JDBC -->
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-            </dependency>
-            <!-- Управление версией Tomcat embed core -->
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>${tomcat.version}</version>
-            </dependency>
-            <!-- Управление версиями Netty codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <!-- Управление версиями Netty HTTP codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <!-- Управление версиями Netty HTTP/2 codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <!-- Управление версией Reactor Netty HTTP -->
-            <dependency>
-                <groupId>io.projectreactor.netty</groupId>
-                <artifactId>reactor-netty-http</artifactId>
-                <version>${reactor-netty.version}</version>
-            </dependency>
-            <!-- Управление версией lz4-java -->
-            <dependency>
-                <groupId>org.lz4</groupId>
-                <artifactId>lz4-java</artifactId>
-                <version>${lz4-java.version}</version>
-            </dependency>
-            <!-- Управление версией Spring Security Core -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring-security.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -260,9 +170,12 @@
                     <url>${db.url}</url>
                     <user>${db.user}</user>
                     <password>${db.password}</password>
-                    <schemas>public</schemas>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
                 </configuration>
             </plugin>
+
             <!-- Генерация jOOQ-кода из схемы БД -->
             <plugin>
                 <groupId>org.jooq</groupId>
@@ -277,12 +190,14 @@
                         </goals>
                         <configuration>
                             <logging>WARN</logging>
+
                             <jdbc>
                                 <driver>org.postgresql.Driver</driver>
                                 <url>${db.url}</url>
                                 <user>${db.user}</user>
                                 <password>${db.password}</password>
                             </jdbc>
+
                             <generator>
                                 <database>
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
@@ -290,6 +205,7 @@
                                     <includes>instrument_market_data_source</includes>
                                     <excludes>flyway_schema_history</excludes>
                                 </database>
+
                                 <target>
                                     <packageName>com.alligator.market.backend.infra.jooq.generated</packageName>
                                     <directory>${project.build.directory}/generated-sources/jooq</directory>
@@ -307,20 +223,22 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!-- Настройки компилятора и Lombok -->
+
+            <!-- Annotation processors -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessorPaths>
-                        <!-- Lombok процессор аннотаций -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
             <!-- Сборка Spring Boot приложения -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -343,5 +261,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
