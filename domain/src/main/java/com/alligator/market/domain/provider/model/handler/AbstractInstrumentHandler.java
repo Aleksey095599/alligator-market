@@ -5,7 +5,6 @@ import com.alligator.market.domain.instrument.base.model.classification.AssetCla
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.marketdata.provider.model.handler.exception.*;
 import com.alligator.market.domain.provider.model.handler.exception.*;
 import com.alligator.market.domain.provider.model.vo.HandlerCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
@@ -104,8 +103,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final boolean isCompatible(Instrument instrument) {
-        return instrument != null
-                && instrumentClass.isInstance(instrument)
+        return instrumentClass.isInstance(instrument)
                 && instrument.assetClass() == assetClass
                 && instrument.contractType() == contractType;
     }
@@ -136,7 +134,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
      *
-     * <p>Назначение: Валидирует инварианты и трбоевания контракта {@link InstrumentHandler}, после чего вызывает
+     * <p>Назначение: Валидирует инварианты и требования контракта {@link InstrumentHandler}, после чего вызывает
      * хук {@link #doQuote doQuote()}, который описывает чистую логику получения потока котировок.</p>
      */
     @Override
