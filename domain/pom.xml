@@ -18,38 +18,5 @@
             <groupId>org.reactivestreams</groupId>
             <artifactId>reactive-streams</artifactId>
         </dependency>
-        <!-- Avro для генерации классов -->
-        <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>${avro.version}</version>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <!-- Плагин генерации Avro-схем -->
-            <plugin>
-                <groupId>org.apache.avro</groupId>
-                <artifactId>avro-maven-plugin</artifactId>
-                <version>${avro.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-avro</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>schema</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sourceDirectory>${project.basedir}/src/main/avro</sourceDirectory>
-                    <outputDirectory>${project.build.directory}/generated-sources/avro</outputDirectory>
-                    <fieldVisibility>private</fieldVisibility>
-                    <stringType>String</stringType>
-                    <enableDecimalLogicalType>true</enableDecimalLogicalType>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
