@@ -23,8 +23,6 @@
         <!-- Версии только для библиотек вне Boot BOM или осознанных overrides. -->
         <!-- Confluent 7.8.x -> Kafka 3.8.x, что согласовано с Boot 3.4.x. -->
         <kafka-avro-serializer.version>7.8.7</kafka-avro-serializer.version>
-        <jsoup.version>1.22.1</jsoup.version>
-        <mockwebserver.version>5.3.2</mockwebserver.version>
     </properties>
 
     <dependencies>
@@ -39,13 +37,6 @@
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
             <version>${kafka-avro-serializer.version}</version>
-        </dependency>
-
-        <!-- HTML-парсер -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
 
         <!-- Метрики и мониторинг -->
@@ -90,12 +81,6 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-        <!-- Core-компоненты Security -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
-
         <!-- Миграции БД -->
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -129,13 +114,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Тесты для Spring Security -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Тестирование реактивного кода -->
         <dependency>
             <groupId>io.projectreactor</groupId>
@@ -143,13 +121,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- HTTP mock server для тестов -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>mockwebserver</artifactId>
-            <version>${mockwebserver.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <repositories>
@@ -161,21 +132,6 @@
 
     <build>
         <plugins>
-            <!-- Миграции базы данных -->
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway.version}</version>
-                <configuration>
-                    <url>${db.url}</url>
-                    <user>${db.user}</user>
-                    <password>${db.password}</password>
-                    <schemas>
-                        <schema>public</schema>
-                    </schemas>
-                </configuration>
-            </plugin>
-
             <!-- Генерация jOOQ-кода из схемы БД -->
             <plugin>
                 <groupId>org.jooq</groupId>
