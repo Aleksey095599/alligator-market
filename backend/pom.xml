@@ -19,10 +19,6 @@
         <db.url>jdbc:postgresql://localhost:5432/postgres</db.url>
         <db.user>postgres</db.user>
         <db.password>1234</db.password>
-
-        <!-- Версии только для библиотек вне Boot BOM или осознанных overrides. -->
-        <!-- Confluent 7.8.x -> Kafka 3.8.x, что согласовано с Boot 3.4.x. -->
-        <kafka-avro-serializer.version>7.8.7</kafka-avro-serializer.version>
     </properties>
 
     <dependencies>
@@ -30,13 +26,6 @@
         <dependency>
             <groupId>com.alligator</groupId>
             <artifactId>market-domain</artifactId>
-        </dependency>
-
-        <!-- Avro-сериализация сообщений Kafka -->
-        <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-avro-serializer</artifactId>
-            <version>${kafka-avro-serializer.version}</version>
         </dependency>
 
         <!-- Метрики и мониторинг -->
@@ -73,12 +62,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-
-        <!-- Интеграция с Kafka -->
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
         </dependency>
 
         <!-- Миграции БД -->
@@ -122,13 +105,6 @@
         </dependency>
 
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>confluent</id>
-            <url>https://packages.confluent.io/maven/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
