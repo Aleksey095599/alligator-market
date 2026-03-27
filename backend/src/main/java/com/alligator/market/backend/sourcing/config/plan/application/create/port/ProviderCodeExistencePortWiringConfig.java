@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.config.plan.application.create;
+package com.alligator.market.backend.sourcing.config.plan.application.create.port;
 
 import com.alligator.market.backend.sourcing.plan.application.create.adapter.JooqProviderCodeExistenceAdapter;
 import com.alligator.market.backend.sourcing.plan.application.create.port.ProviderCodeExistencePort;
