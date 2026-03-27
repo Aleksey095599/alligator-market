@@ -21,12 +21,12 @@ public final class JooqInstrumentCodeExistenceAdapter implements InstrumentCodeE
     }
 
     @Override
-    public boolean existsByCode(InstrumentCode code) {
-        Objects.requireNonNull(code, "code must not be null");
+    public boolean existsByCode(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return dsl.fetchExists(
                 dsl.selectFrom(INSTRUMENT_BASE)
-                        .where(INSTRUMENT_BASE.CODE.eq(code.value()))
+                        .where(INSTRUMENT_BASE.CODE.eq(instrumentCode.value()))
         );
     }
 }

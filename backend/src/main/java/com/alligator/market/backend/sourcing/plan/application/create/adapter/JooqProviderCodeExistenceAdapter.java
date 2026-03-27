@@ -21,12 +21,12 @@ public final class JooqProviderCodeExistenceAdapter implements ProviderCodeExist
     }
 
     @Override
-    public boolean existsByCode(ProviderCode code) {
-        Objects.requireNonNull(code, "code must not be null");
+    public boolean existsByCode(ProviderCode providerCode) {
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
 
         return dsl.fetchExists(
                 dsl.selectFrom(PROVIDER_PASSPORT)
-                        .where(PROVIDER_PASSPORT.PROVIDER_CODE.eq(code.value()))
+                        .where(PROVIDER_PASSPORT.PROVIDER_CODE.eq(providerCode.value()))
         );
     }
 }
