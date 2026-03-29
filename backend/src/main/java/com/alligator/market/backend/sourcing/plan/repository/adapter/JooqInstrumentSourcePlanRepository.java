@@ -7,12 +7,7 @@ import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlan
 import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 import org.jooq.DSLContext;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentMarketDataSource.INSTRUMENT_MARKET_DATA_SOURCE;
 
@@ -126,6 +121,9 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
     /* Проверяет, существует ли уже план для инструмента. */
     private boolean planExists(DSLContext dsl, InstrumentCode instrumentCode) {
+        Objects.requireNonNull(dsl, "dsl must not be null");
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
         return dsl.select(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE)
                 .from(INSTRUMENT_MARKET_DATA_SOURCE)
                 .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
@@ -140,6 +138,10 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
             InstrumentCode instrumentCode,
             InstrumentMarketDataSource source
     ) {
+        Objects.requireNonNull(dsl, "dsl must not be null");
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        Objects.requireNonNull(source, "source must not be null");
+
         dsl.insertInto(INSTRUMENT_MARKET_DATA_SOURCE)
                 .set(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
                 .set(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
@@ -154,6 +156,10 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
             Boolean active,
             Integer priority
     ) {
+        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(active, "active must not be null");
+        Objects.requireNonNull(priority, "priority must not be null");
+
         return new InstrumentMarketDataSource(
                 new ProviderCode(providerCode),
                 active,

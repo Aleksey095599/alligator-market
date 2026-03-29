@@ -26,10 +26,9 @@ public class CreateInstrumentSourcePlanController {
     public CreateInstrumentSourcePlanController(
             CreateInstrumentSourcePlanService createInstrumentSourcePlanService
     ) {
-        this.createInstrumentSourcePlanService = Objects.requireNonNull(
-                createInstrumentSourcePlanService,
-                "createInstrumentSourcePlanService must not be null"
-        );
+        Objects.requireNonNull(createInstrumentSourcePlanService, "createInstrumentSourcePlanService must not be null");
+
+        this.createInstrumentSourcePlanService = createInstrumentSourcePlanService;
     }
 
     /**
@@ -54,7 +53,9 @@ public class CreateInstrumentSourcePlanController {
     }
 
     /* Маппинг HTTP-модели источника в доменный источник. */
-    private InstrumentMarketDataSource toSource(CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request) {
+    private InstrumentMarketDataSource toSource(
+            CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request
+    ) {
         return new InstrumentMarketDataSource(
                 new ProviderCode(request.providerCode()),
                 request.active(),
