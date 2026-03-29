@@ -11,7 +11,7 @@ import java.time.ZoneId;
 /* Spring wiring для времени приложения. */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(AppTimeProperties.class)
-public class TimeConfig {
+public class TimeWiringConfig {
 
     /* Технические часы приложения в UTC. */
     @Bean
