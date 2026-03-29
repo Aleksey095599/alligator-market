@@ -121,7 +121,6 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
     /* Проверяет, существует ли уже план для инструмента. */
     private boolean planExists(DSLContext dsl, InstrumentCode instrumentCode) {
-        Objects.requireNonNull(dsl, "dsl must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return dsl.select(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE)
@@ -138,7 +137,6 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
             InstrumentCode instrumentCode,
             InstrumentMarketDataSource source
     ) {
-        Objects.requireNonNull(dsl, "dsl must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(source, "source must not be null");
 

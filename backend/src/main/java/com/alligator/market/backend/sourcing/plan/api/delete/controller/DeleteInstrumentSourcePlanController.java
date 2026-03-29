@@ -21,7 +21,9 @@ public class DeleteInstrumentSourcePlanController {
             DeleteInstrumentSourcePlanService deleteInstrumentSourcePlanService
     ) {
         this.deleteInstrumentSourcePlanService = Objects.requireNonNull(
-                deleteInstrumentSourcePlanService, "deleteInstrumentSourcePlanService must not be null");
+                deleteInstrumentSourcePlanService,
+                "deleteInstrumentSourcePlanService must not be null"
+        );
     }
 
     /**
@@ -30,6 +32,8 @@ public class DeleteInstrumentSourcePlanController {
     @DeleteMapping("/{instrumentCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
         deleteInstrumentSourcePlanService.delete(new InstrumentCode(instrumentCode));
     }
 }

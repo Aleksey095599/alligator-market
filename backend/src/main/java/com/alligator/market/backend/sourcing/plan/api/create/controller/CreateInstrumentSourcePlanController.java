@@ -26,9 +26,10 @@ public class CreateInstrumentSourcePlanController {
     public CreateInstrumentSourcePlanController(
             CreateInstrumentSourcePlanService createInstrumentSourcePlanService
     ) {
-        Objects.requireNonNull(createInstrumentSourcePlanService, "createInstrumentSourcePlanService must not be null");
-
-        this.createInstrumentSourcePlanService = createInstrumentSourcePlanService;
+        this.createInstrumentSourcePlanService = Objects.requireNonNull(
+                createInstrumentSourcePlanService,
+                "createInstrumentSourcePlanService must not be null"
+        );
     }
 
     /**
@@ -37,11 +38,15 @@ public class CreateInstrumentSourcePlanController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody CreateInstrumentSourcePlanRequest request) {
+        Objects.requireNonNull(request, "request must not be null");
+
         createInstrumentSourcePlanService.create(toPlan(request));
     }
 
     /* Маппинг HTTP-запроса в доменный план. */
     private InstrumentSourcePlan toPlan(CreateInstrumentSourcePlanRequest request) {
+        Objects.requireNonNull(request, "request must not be null");
+
         List<InstrumentMarketDataSource> sources = request.sources().stream()
                 .map(this::toSource)
                 .toList();
@@ -56,6 +61,8 @@ public class CreateInstrumentSourcePlanController {
     private InstrumentMarketDataSource toSource(
             CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request
     ) {
+        Objects.requireNonNull(request, "request must not be null");
+
         return new InstrumentMarketDataSource(
                 new ProviderCode(request.providerCode()),
                 request.active(),
