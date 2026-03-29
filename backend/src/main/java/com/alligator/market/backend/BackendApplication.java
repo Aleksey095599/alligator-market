@@ -16,9 +16,11 @@ import java.util.TimeZone;
 @ConfigurationPropertiesScan("com.alligator.market")
 public class BackendApplication {
 
+    private static final TimeZone TECHNICAL_TIME_ZONE = TimeZone.getTimeZone(ZoneOffset.UTC);
+
     public static void main(String[] args) {
-        // Глобальная техническая зона приложения.
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.UTC));
+        // Глобальная техническая зона JVM для всего приложения.
+        TimeZone.setDefault(TECHNICAL_TIME_ZONE);
 
         SpringApplication.run(BackendApplication.class, args);
     }
