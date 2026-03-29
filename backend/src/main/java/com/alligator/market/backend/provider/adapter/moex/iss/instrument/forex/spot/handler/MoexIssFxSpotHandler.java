@@ -226,7 +226,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         JsonNode systimeNode = row.get(systimeIdx);
         JsonNode lastNode = row.get(lastIdx);
 
-        if (systimeNode == null || systimeNode.isNull() || !systimeNode.isTextual()) {
+        if (systimeNode == null || systimeNode.isNull() || !systimeNode.isString()) {
             throw new IllegalStateException("MOEX ISS SYSTIME must be non-null string");
         }
         if (lastNode == null || lastNode.isNull() || !lastNode.isNumber()) {
@@ -234,7 +234,11 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         }
 
         // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss")
-        String systimeStr = systimeNode.asText();
+        String systimeStr = systimeNode.textValue();
+        if (systimeStr == null) {
+            throw new IllegalStateException("MOEX ISS SYSTIME must be non-null string");
+        }
+
         Instant exchangeTs;
         try {
             LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME); // <-- Парсим во временную зону MOEX
@@ -271,7 +275,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      */
     private static int indexOfColumn(ArrayNode columns, String name) {
         for (int i = 0; i < columns.size(); i++) {
-            if (name.equalsIgnoreCase(columns.get(i).asText())) {
+            String columnName = columns.get(i).textValue();
+            if (columnName != null && name.equalsIgnoreCase(columnName)) {
                 return i;
             }
         }
