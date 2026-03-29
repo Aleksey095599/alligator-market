@@ -4,12 +4,7 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * План источников рыночных данных для конкретного инструмента: набор источников {@link InstrumentMarketDataSource},
@@ -48,7 +43,8 @@ public final class InstrumentSourcePlan {
         Set<Integer> priorities = new HashSet<>();
 
         for (InstrumentMarketDataSource source : sources) {
-            InstrumentMarketDataSource checkedSource = Objects.requireNonNull(source, "source must not be null");
+            InstrumentMarketDataSource checkedSource = Objects.requireNonNull(source,
+                    "source must not be null");
 
             if (!providerCodes.add(checkedSource.providerCode())) {
                 throw new IllegalArgumentException(
