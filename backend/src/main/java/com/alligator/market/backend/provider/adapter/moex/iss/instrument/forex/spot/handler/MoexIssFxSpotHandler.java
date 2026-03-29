@@ -234,10 +234,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         }
 
         // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss")
-        String systimeStr = systimeNode.textValue();
-        if (systimeStr == null) {
-            throw new IllegalStateException("MOEX ISS SYSTIME must be non-null string");
-        }
+        String systimeStr = systimeNode.stringValue();
 
         Instant exchangeTs;
         try {
@@ -275,8 +272,15 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      */
     private static int indexOfColumn(ArrayNode columns, String name) {
         for (int i = 0; i < columns.size(); i++) {
-            String columnName = columns.get(i).textValue();
-            if (columnName != null && name.equalsIgnoreCase(columnName)) {
+            JsonNode columnNode = columns.get(i);
+
+            // Ищем только строковые имена колонок, без scalar-coercion.
+            if (!columnNode.isString()) {
+                continue;
+            }
+
+            String columnName = columnNode.stringValue();
+            if (name.equalsIgnoreCase(columnName)) {
                 return i;
             }
         }
