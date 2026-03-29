@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.create;
+package com.alligator.market.backend.sourcing.plan.api.create.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,13 +19,13 @@ public record CreateInstrumentSourcePlanRequest(
 
         /* Источники рыночных данных для инструмента. */
         @NotEmpty(message = "sources must not be empty")
-        List<@Valid SourceRequest> sources
+        List<@Valid InstrumentMarketDataSourceRequest> sources
 ) {
 
     /**
      * HTTP-модель одного источника в составе плана.
      */
-    public record SourceRequest(
+    public record InstrumentMarketDataSourceRequest(
 
             /* Код провайдера-источника. */
             @NotBlank(message = "providerCode must not be blank")

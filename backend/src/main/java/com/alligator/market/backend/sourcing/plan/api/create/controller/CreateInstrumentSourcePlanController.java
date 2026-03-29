@@ -1,5 +1,6 @@
-package com.alligator.market.backend.sourcing.plan.api.create;
+package com.alligator.market.backend.sourcing.plan.api.create.controller;
 
+import com.alligator.market.backend.sourcing.plan.api.create.dto.CreateInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.application.create.CreateInstrumentSourcePlanService;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
@@ -53,7 +54,7 @@ public class CreateInstrumentSourcePlanController {
     }
 
     /* Маппинг HTTP-модели источника в доменный источник. */
-    private InstrumentMarketDataSource toSource(CreateInstrumentSourcePlanRequest.SourceRequest request) {
+    private InstrumentMarketDataSource toSource(CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request) {
         return new InstrumentMarketDataSource(
                 new ProviderCode(request.providerCode()),
                 request.active(),
