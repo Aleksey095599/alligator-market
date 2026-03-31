@@ -1,5 +1,8 @@
 package com.alligator.market.backend.sourcing.plan.application.create;
 
+import com.alligator.market.backend.sourcing.plan.application.create.exception.InstrumentCodeNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.create.exception.InstrumentSourcePlanAlreadyExistsException;
+import com.alligator.market.backend.sourcing.plan.application.create.exception.ProviderCodesNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.create.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.create.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
@@ -70,9 +73,7 @@ public final class CreateInstrumentSourcePlanService {
      */
     private void ensureInstrumentExists(InstrumentSourcePlan plan) {
         if (!instrumentCodeExistencePort.existsByCode(plan.instrumentCode())) {
-            throw new IllegalArgumentException(
-                    "Instrument code '" + plan.instrumentCode().value() + "' does not exist"
-            );
+            throw new InstrumentCodeNotFoundException(plan.instrumentCode());
         }
     }
 
@@ -89,9 +90,7 @@ public final class CreateInstrumentSourcePlanService {
         }
 
         if (!missingProviderCodes.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Provider codes do not exist: " + String.join(", ", missingProviderCodes)
-            );
+            throw new ProviderCodesNotFoundException(missingProviderCodes);
         }
     }
 
@@ -100,9 +99,7 @@ public final class CreateInstrumentSourcePlanService {
      */
     private void ensurePlanDoesNotExist(InstrumentSourcePlan plan) {
         if (instrumentSourcePlanRepository.findByInstrumentCode(plan.instrumentCode()).isPresent()) {
-            throw new IllegalStateException(
-                    "Instrument source plan for instrument '" + plan.instrumentCode().value() + "' already exists"
-            );
+            throw new InstrumentSourcePlanAlreadyExistsException(plan.instrumentCode());
         }
     }
 }
