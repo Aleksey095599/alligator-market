@@ -4,7 +4,9 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/* Исключение: план источников для инструмента не найден. */
+/**
+ * Исключение: план источников для инструмента не найден.
+ */
 public final class InstrumentSourcePlanNotFoundException extends IllegalStateException {
 
     public InstrumentSourcePlanNotFoundException(InstrumentCode instrumentCode) {

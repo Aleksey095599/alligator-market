@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-/* Исключение: один или несколько кодов провайдеров не найдены. */
+/**
+ * Исключение: один или несколько кодов провайдеров не найдены.
+ */
 public final class ProviderCodesNotFoundException extends IllegalArgumentException {
 
     public ProviderCodesNotFoundException(Collection<String> providerCodes) {

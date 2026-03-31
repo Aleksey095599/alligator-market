@@ -4,7 +4,9 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/* Исключение: план источников для инструмента уже существует. */
+/**
+ * Исключение: план источников для инструмента уже существует.
+ */
 public final class InstrumentSourcePlanAlreadyExistsException extends IllegalStateException {
 
     public InstrumentSourcePlanAlreadyExistsException(InstrumentCode instrumentCode) {
