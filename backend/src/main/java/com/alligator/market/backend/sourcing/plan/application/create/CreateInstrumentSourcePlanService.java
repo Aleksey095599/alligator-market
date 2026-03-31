@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.create;
 
 import com.alligator.market.backend.sourcing.plan.application.create.exception.InstrumentCodeNotFoundException;
-import com.alligator.market.backend.sourcing.plan.application.create.exception.InstrumentSourcePlanAlreadyExistsException;
+import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.create.exception.ProviderCodesNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.create.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.create.port.ProviderCodeExistencePort;

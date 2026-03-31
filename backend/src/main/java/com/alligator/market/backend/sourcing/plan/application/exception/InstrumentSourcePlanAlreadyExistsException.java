@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.application.create.exception;
+package com.alligator.market.backend.sourcing.plan.application.exception;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 

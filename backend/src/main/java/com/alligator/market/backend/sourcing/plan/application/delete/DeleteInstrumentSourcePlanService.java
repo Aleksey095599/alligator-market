@@ -1,5 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.delete;
 
+import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 
@@ -39,9 +40,7 @@ public final class DeleteInstrumentSourcePlanService {
      */
     private void ensurePlanExists(InstrumentCode instrumentCode) {
         if (instrumentSourcePlanRepository.findByInstrumentCode(instrumentCode).isEmpty()) {
-            throw new IllegalStateException(
-                    "Instrument source plan for instrument '" + instrumentCode.value() + "' does not exist"
-            );
+            throw new InstrumentSourcePlanNotFoundException(instrumentCode);
         }
     }
 }
