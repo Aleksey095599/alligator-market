@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.exception;
+package com.alligator.market.backend.sourcing.plan.api.advice;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
