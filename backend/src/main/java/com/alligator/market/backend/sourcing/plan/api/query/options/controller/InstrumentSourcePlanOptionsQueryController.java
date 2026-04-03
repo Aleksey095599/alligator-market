@@ -5,6 +5,7 @@ import com.alligator.market.backend.sourcing.plan.api.query.options.dto.Instrume
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.ProviderOptionDto;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +41,8 @@ public class InstrumentSourcePlanOptionsQueryController {
      * Возвращает данные для dropdown экрана управления планами источников.
      */
     @GetMapping("/api/v1/instrument-source-plans/options")
-    public InstrumentSourcePlanOptionsResponse getOptions() {
-        return new InstrumentSourcePlanOptionsResponse(
+    public ResponseEntity<InstrumentSourcePlanOptionsResponse> getOptions() {
+        InstrumentSourcePlanOptionsResponse response = new InstrumentSourcePlanOptionsResponse(
                 instrumentOptionsQueryPort.findAllInstrumentCodes().stream()
                         .map(code -> new InstrumentOptionDto(code.value()))
                         .toList(),
@@ -49,5 +50,7 @@ public class InstrumentSourcePlanOptionsQueryController {
                         .map(code -> new ProviderOptionDto(code.value()))
                         .toList()
         );
+
+        return ResponseEntity.ok(response);
     }
 }
