@@ -5,9 +5,10 @@ import com.alligator.market.backend.sourcing.plan.application.create.CreateInstr
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,18 +37,14 @@ public class CreateInstrumentSourcePlanController {
      * Создаёт новый план источников для инструмента.
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody CreateInstrumentSourcePlanRequest request) {
-        Objects.requireNonNull(request, "request must not be null");
-
+    public ResponseEntity<Void> create(@Valid @RequestBody CreateInstrumentSourcePlanRequest request) {
         createInstrumentSourcePlanService.create(toPlan(request));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /* Маппинг HTTP-запроса в доменный план. */
     private InstrumentSourcePlan toPlan(CreateInstrumentSourcePlanRequest request) {
-        Objects.requireNonNull(request, "request must not be null");
-
-        List<MarketDataSource> sources = request.sources().stream()
+        List<InstrumentMarketDataSource> sources = request.sources().stream()
                 .map(this::toSource)
                 .toList();
 
@@ -58,12 +55,10 @@ public class CreateInstrumentSourcePlanController {
     }
 
     /* Маппинг HTTP-модели источника в доменный источник. */
-    private MarketDataSource toSource(
+    private InstrumentMarketDataSource toSource(
             CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request
     ) {
-        Objects.requireNonNull(request, "request must not be null");
-
-        return new MarketDataSource(
+        return new InstrumentMarketDataSource(
                 new ProviderCode(request.providerCode()),
                 request.active(),
                 request.priority()
