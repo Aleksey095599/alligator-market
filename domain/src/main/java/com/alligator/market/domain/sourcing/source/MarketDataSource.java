@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import java.util.Objects;
 
 /**
- * Атомарный источник рыночных данных для конкретного инструмента.
+ * Источник рыночных данных.
  *
  * @param providerCode Код провайдера, который является источником рыночных данных
  * @param active       Признак активности источника
