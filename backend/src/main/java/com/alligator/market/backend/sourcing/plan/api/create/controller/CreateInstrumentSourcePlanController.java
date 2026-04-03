@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourcing.plan.application.create.CreateInstr
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
-import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
+import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,7 @@ public class CreateInstrumentSourcePlanController {
 
     /* Маппинг HTTP-запроса в доменный план. */
     private InstrumentSourcePlan toPlan(CreateInstrumentSourcePlanRequest request) {
-        List<InstrumentMarketDataSource> sources = request.sources().stream()
+        List<MarketDataSource> sources = request.sources().stream()
                 .map(this::toSource)
                 .toList();
 
@@ -55,10 +55,10 @@ public class CreateInstrumentSourcePlanController {
     }
 
     /* Маппинг HTTP-модели источника в доменный источник. */
-    private InstrumentMarketDataSource toSource(
+    private MarketDataSource toSource(
             CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request
     ) {
-        return new InstrumentMarketDataSource(
+        return new MarketDataSource(
                 new ProviderCode(request.providerCode()),
                 request.active(),
                 request.priority()
