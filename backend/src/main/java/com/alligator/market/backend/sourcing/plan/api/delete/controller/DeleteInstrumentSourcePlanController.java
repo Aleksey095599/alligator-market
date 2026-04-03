@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.plan.api.delete.controller;
 
 import com.alligator.market.backend.sourcing.plan.application.delete.DeleteInstrumentSourcePlanService;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -30,10 +30,10 @@ public class DeleteInstrumentSourcePlanController {
      * Удаляет план источников для заданного инструмента.
      */
     @DeleteMapping("/{instrumentCode}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String instrumentCode) {
+    public ResponseEntity<Void> delete(@PathVariable String instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         deleteInstrumentSourcePlanService.delete(new InstrumentCode(instrumentCode));
+        return ResponseEntity.noContent().build();
     }
 }
