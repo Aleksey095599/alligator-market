@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
-import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
+import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import org.jooq.DSLContext;
 
 import java.util.*;
@@ -27,7 +27,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     public Optional<InstrumentSourcePlan> findByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        List<InstrumentMarketDataSource> sources = dsl
+        List<MarketDataSource> sources = dsl
                 .select(
                         INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE,
                         INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE,
@@ -51,7 +51,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
     @Override
     public List<InstrumentSourcePlan> findAll() {
-        Map<InstrumentCode, List<InstrumentMarketDataSource>> groupedSources = new LinkedHashMap<>();
+        Map<InstrumentCode, List<MarketDataSource>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
                         INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE,
@@ -69,7 +69,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                     InstrumentCode instrumentCode =
                             new InstrumentCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE));
 
-                    InstrumentMarketDataSource source = toSource(
+                    MarketDataSource source = toSource(
                             record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE),
                             record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
                             record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
@@ -82,7 +82,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
         List<InstrumentSourcePlan> plans = new ArrayList<>(groupedSources.size());
 
-        for (Map.Entry<InstrumentCode, List<InstrumentMarketDataSource>> entry : groupedSources.entrySet()) {
+        for (Map.Entry<InstrumentCode, List<MarketDataSource>> entry : groupedSources.entrySet()) {
             plans.add(new InstrumentSourcePlan(entry.getKey(), entry.getValue()));
         }
 
@@ -104,7 +104,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                 );
             }
 
-            for (InstrumentMarketDataSource source : plan.sources()) {
+            for (MarketDataSource source : plan.sources()) {
                 insertSource(tx, plan.instrumentCode(), source);
             }
         });
@@ -135,7 +135,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     private void insertSource(
             DSLContext dsl,
             InstrumentCode instrumentCode,
-            InstrumentMarketDataSource source
+            MarketDataSource source
     ) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(source, "source must not be null");
@@ -149,7 +149,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     }
 
     /* Маппинг строки БД в доменный источник. */
-    private InstrumentMarketDataSource toSource(
+    private MarketDataSource toSource(
             String providerCode,
             Boolean active,
             Integer priority
@@ -158,7 +158,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         Objects.requireNonNull(active, "active must not be null");
         Objects.requireNonNull(priority, "priority must not be null");
 
-        return new InstrumentMarketDataSource(
+        return new MarketDataSource(
                 new ProviderCode(providerCode),
                 active,
                 priority

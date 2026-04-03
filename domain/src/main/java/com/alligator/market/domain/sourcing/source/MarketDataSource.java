@@ -5,18 +5,18 @@ import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import java.util.Objects;
 
 /**
- * Источник рыночных данных для конкретного инструмента.
+ * Атомарный источник рыночных данных для конкретного инструмента.
  *
  * @param providerCode Код провайдера, который является источником рыночных данных
  * @param active       Признак активности источника
  * @param priority     Приоритет источника (чем меньше число, тем выше приоритет)
  */
-public record InstrumentMarketDataSource(
+public record MarketDataSource(
         ProviderCode providerCode,
         boolean active,
         int priority
 ) {
-    public InstrumentMarketDataSource {
+    public MarketDataSource {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
 
         if (priority < 0) {

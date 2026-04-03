@@ -2,16 +2,13 @@ package com.alligator.market.domain.sourcing.plan;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
+import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
 import java.util.*;
 
 /**
- * План источников рыночных данных для конкретного инструмента: набор источников {@link InstrumentMarketDataSource},
- * упорядоченных по приоритету.
- *
- * <p>Примечание: Приоритет источников определяется полем {@link InstrumentMarketDataSource#priority()} (чем меньше
- * значение, тем выше приоритет). Конструктор нормализует список {@code sources} по возрастанию приоритета.</p>
+ * План источников рыночных данных для конкретного инструмента: упорядочченный набор атомарных источников
+ * рыночных данных.
  */
 @SuppressWarnings("ClassCanBeRecord")
 public final class InstrumentSourcePlan {
@@ -20,11 +17,11 @@ public final class InstrumentSourcePlan {
     private final InstrumentCode instrumentCode;
 
     /* Список источников рыночных данных, отсортированный по приоритету. */
-    private final List<InstrumentMarketDataSource> sources;
+    private final List<MarketDataSource> sources;
 
     public InstrumentSourcePlan(
             InstrumentCode instrumentCode,
-            List<InstrumentMarketDataSource> sources
+            List<MarketDataSource> sources
     ) {
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
@@ -34,7 +31,7 @@ public final class InstrumentSourcePlan {
         }
 
         // Безопасная копия источников
-        List<InstrumentMarketDataSource> sourceCopy = new ArrayList<>(sources.size());
+        List<MarketDataSource> sourceCopy = new ArrayList<>(sources.size());
 
         // Набор кодов провайдеров для проверки дубликатов
         Set<ProviderCode> providerCodes = new HashSet<>();
@@ -42,29 +39,29 @@ public final class InstrumentSourcePlan {
         // Набор приоритетов для проверки дубликатов
         Set<Integer> priorities = new HashSet<>();
 
-        for (InstrumentMarketDataSource source : sources) {
-            InstrumentMarketDataSource checkedSource = Objects.requireNonNull(source,
+        for (MarketDataSource source : sources) {
+            MarketDataSource sourceToCheck = Objects.requireNonNull(source,
                     "source must not be null");
 
-            if (!providerCodes.add(checkedSource.providerCode())) {
+            if (!providerCodes.add(sourceToCheck.providerCode())) {
                 throw new IllegalArgumentException(
                         "Instrument source plan contains duplicate provider code '" +
-                                checkedSource.providerCode().value() + "'"
+                                sourceToCheck.providerCode().value() + "'"
                 );
             }
 
-            if (!priorities.add(checkedSource.priority())) {
+            if (!priorities.add(sourceToCheck.priority())) {
                 throw new IllegalArgumentException(
                         "Instrument source plan contains duplicate priority '" +
-                                checkedSource.priority() + "'"
+                                sourceToCheck.priority() + "'"
                 );
             }
 
-            sourceCopy.add(checkedSource);
+            sourceCopy.add(sourceToCheck);
         }
 
-        // Нормализуем порядок источников по приоритету
-        sourceCopy.sort(Comparator.comparingInt(InstrumentMarketDataSource::priority));
+        // Сортируем порядок источников по приоритету (чем выше приоритет источника, тем ниже значение priority)
+        sourceCopy.sort(Comparator.comparingInt(MarketDataSource::priority));
 
         this.sources = List.copyOf(sourceCopy);
     }
@@ -73,7 +70,7 @@ public final class InstrumentSourcePlan {
         return instrumentCode;
     }
 
-    public List<InstrumentMarketDataSource> sources() {
+    public List<MarketDataSource> sources() {
         return sources;
     }
 }

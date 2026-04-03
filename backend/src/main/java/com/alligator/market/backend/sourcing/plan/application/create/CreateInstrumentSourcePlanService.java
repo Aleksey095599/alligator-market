@@ -7,7 +7,7 @@ import com.alligator.market.backend.sourcing.plan.application.create.port.Instru
 import com.alligator.market.backend.sourcing.plan.application.create.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
-import com.alligator.market.domain.sourcing.source.InstrumentMarketDataSource;
+import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -83,7 +83,7 @@ public final class CreateInstrumentSourcePlanService {
     private void ensureProvidersExist(InstrumentSourcePlan plan) {
         Set<String> missingProviderCodes = new LinkedHashSet<>();
 
-        for (InstrumentMarketDataSource source : plan.sources()) {
+        for (MarketDataSource source : plan.sources()) {
             if (!providerCodeExistencePort.existsByCode(source.providerCode())) {
                 missingProviderCodes.add(source.providerCode().value());
             }
