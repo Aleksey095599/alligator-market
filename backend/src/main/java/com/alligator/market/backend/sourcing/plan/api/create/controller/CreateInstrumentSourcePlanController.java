@@ -56,7 +56,7 @@ public class CreateInstrumentSourcePlanController {
 
     /* Маппинг HTTP-модели источника в доменный источник. */
     private MarketDataSource toSource(
-            CreateInstrumentSourcePlanRequest.InstrumentMarketDataSourceRequest request
+            CreateInstrumentSourcePlanRequest.MarketDataSourceRequest request
     ) {
         return new MarketDataSource(
                 new ProviderCode(request.providerCode()),

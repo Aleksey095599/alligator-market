@@ -19,13 +19,13 @@ public record CreateInstrumentSourcePlanRequest(
 
         /* Источники рыночных данных для инструмента. */
         @NotEmpty(message = "sources must not be empty")
-        List<@Valid InstrumentMarketDataSourceRequest> sources
+        List<@Valid MarketDataSourceRequest> sources
 ) {
 
     /**
      * HTTP-модель одного источника в составе плана.
      */
-    public record InstrumentMarketDataSourceRequest(
+    public record MarketDataSourceRequest(
 
             /* Код провайдера-источника. */
             @NotBlank(message = "providerCode must not be blank")
