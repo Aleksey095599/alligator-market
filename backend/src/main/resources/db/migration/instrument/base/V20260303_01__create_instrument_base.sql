@@ -10,14 +10,8 @@ CREATE TABLE instrument_base
     asset_class       VARCHAR(32)  NOT NULL,
     contract_type     VARCHAR(32)  NOT NULL,
 
-    -- Аудит/версионирование
+    -- Версионирование
     version           BIGINT       NOT NULL DEFAULT 0,
-    created_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by        VARCHAR(255) NOT NULL,
-    created_via       VARCHAR(255) NOT NULL,
-    updated_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by        VARCHAR(255) NOT NULL,
-    updated_via       VARCHAR(255) NOT NULL,
 
     -- Ограничения уникальности
     CONSTRAINT uq_instrument_code UNIQUE (code),
