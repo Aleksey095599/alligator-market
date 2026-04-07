@@ -116,7 +116,7 @@
                                 <database>
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
                                     <inputSchema>public</inputSchema>
-                                    <includes>(instrument_market_data_source|instrument_base|provider_passport)</includes>
+                                    <includes>(instrument_source_plan|instrument_market_data_source|instrument_base|provider_passport)</includes>
                                 </database>
 
                                 <target>
