@@ -12,14 +12,8 @@ CREATE TABLE currency
     country           VARCHAR(100) NOT NULL,
     fraction_digits   INTEGER      NOT NULL DEFAULT 2,
 
-    -- Аудит/версионирование
+    -- Версионирование
     version           BIGINT       NOT NULL DEFAULT 0,
-    created_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by        VARCHAR(255) NOT NULL,
-    created_via       VARCHAR(255) NOT NULL,
-    updated_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by        VARCHAR(255) NOT NULL,
-    updated_via       VARCHAR(255) NOT NULL,
 
     -- Ограничения уникальности
     CONSTRAINT uq_currency_code UNIQUE (code),
