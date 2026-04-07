@@ -14,14 +14,8 @@ CREATE TABLE provider_passport
     access_method     VARCHAR(20)  NOT NULL,
     bulk_subscription BOOLEAN      NOT NULL,
 
-    -- Аудит/версионирование
+    -- Версионирование
     version           BIGINT       NOT NULL DEFAULT 0,
-    created_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by        VARCHAR(255) NOT NULL,
-    created_via       VARCHAR(255) NOT NULL,
-    updated_timestamp TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by        VARCHAR(255) NOT NULL,
-    updated_via       VARCHAR(255) NOT NULL,
 
     -- Уникальность натурального ключа
     CONSTRAINT uq_provider_code UNIQUE (provider_code),
