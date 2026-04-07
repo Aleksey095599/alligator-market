@@ -61,11 +61,10 @@ public final class CreateInstrumentSourcePlanService {
         // Проверяем, что все коды провайдеров из плана существуют
         ensureProvidersExist(plan);
 
-        // Проверяем, что сценарий действительно является create, а не попыткой тихо заменить уже существующий план
-        ensurePlanDoesNotExist(plan);
-
-        // После прикладных проверок делегируем создание в репозиторий
-        instrumentSourcePlanRepository.create(plan);
+        // Атомарно создаём план, если он ещё не существует
+        if (!instrumentSourcePlanRepository.createIfAbsent(plan)) {
+            throw new InstrumentSourcePlanAlreadyExistsException(plan.instrumentCode());
+        }
     }
 
     /**
@@ -94,12 +93,4 @@ public final class CreateInstrumentSourcePlanService {
         }
     }
 
-    /**
-     * Проверяет, что план для инструмента ещё не создан.
-     */
-    private void ensurePlanDoesNotExist(InstrumentSourcePlan plan) {
-        if (instrumentSourcePlanRepository.findByInstrumentCode(plan.instrumentCode()).isPresent()) {
-            throw new InstrumentSourcePlanAlreadyExistsException(plan.instrumentCode());
-        }
-    }
 }
