@@ -11,7 +11,10 @@ CREATE TABLE instrument_market_data_source
     priority        INTEGER     NOT NULL,
 
     -- Ограничения ссылочной целостности
-    CONSTRAINT fk_instr_market_data_source_instrument FOREIGN KEY (instrument_code) REFERENCES instrument_base (code),
+    CONSTRAINT fk_instr_market_data_source_plan
+        FOREIGN KEY (instrument_code)
+            REFERENCES instrument_source_plan (instrument_code)
+            ON DELETE CASCADE,
 
     -- Ограничения уникальности
     CONSTRAINT uk_instr_market_data_source_instr_provider UNIQUE (instrument_code, provider_code),
