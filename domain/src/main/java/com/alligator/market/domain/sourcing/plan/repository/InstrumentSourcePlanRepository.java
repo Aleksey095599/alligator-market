@@ -22,9 +22,12 @@ public interface InstrumentSourcePlanRepository {
     List<InstrumentSourcePlan> findAll();
 
     /**
-     * Создаёт план источников для заданного инструмента.
+     * Создаёт план источников для заданного инструмента,
+     * если он ещё не существует.
+     *
+     * @return true, если план создан; false, если план уже существует
      */
-    void create(InstrumentSourcePlan plan);
+    boolean createIfAbsent(InstrumentSourcePlan plan);
 
     /**
      * Удаляет план источников для заданного инструмента.
