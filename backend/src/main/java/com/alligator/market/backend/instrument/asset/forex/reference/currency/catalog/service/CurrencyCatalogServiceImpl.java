@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.exc
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.asset.forex.contract.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
