@@ -10,6 +10,7 @@ import org.jooq.DSLContext;
 import java.util.*;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentMarketDataSource.INSTRUMENT_MARKET_DATA_SOURCE;
+import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentSourcePlan.INSTRUMENT_SOURCE_PLAN;
 
 /**
  * jOOQ-адаптер репозитория планов источников.
@@ -90,23 +91,27 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     }
 
     @Override
-    public void create(InstrumentSourcePlan plan) {
+    public boolean createIfAbsent(InstrumentSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        dsl.transaction(configuration -> {
+        return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
 
-            if (planExists(tx, plan.instrumentCode())) {
-                throw new IllegalStateException(
-                        "Instrument source plan for instrument '"
-                                + plan.instrumentCode().value()
-                                + "' already exists"
-                );
+            int insertedPlans = tx.insertInto(INSTRUMENT_SOURCE_PLAN)
+                    .set(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
+                    .onConflict(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE)
+                    .doNothing()
+                    .execute();
+
+            if (insertedPlans == 0) {
+                return false;
             }
 
             for (MarketDataSource source : plan.sources()) {
                 insertSource(tx, plan.instrumentCode(), source);
             }
+
+            return true;
         });
     }
 
@@ -117,18 +122,6 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         dsl.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
                 .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
-    }
-
-    /* Проверяет, существует ли уже план для инструмента. */
-    private boolean planExists(DSLContext dsl, InstrumentCode instrumentCode) {
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-
-        return dsl.select(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE)
-                .from(INSTRUMENT_MARKET_DATA_SOURCE)
-                .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
-                .limit(1)
-                .fetchOptional()
-                .isPresent();
     }
 
     /* Вставляет один источник инструмента. */
