@@ -31,6 +31,8 @@ public interface InstrumentSourcePlanRepository {
 
     /**
      * Удаляет план источников для заданного инструмента.
+     *
+     * @return true, если план был удалён; false, если плана не было
      */
-    void deleteByInstrumentCode(InstrumentCode instrumentCode);
+    boolean deleteByInstrumentCode(InstrumentCode instrumentCode);
 }
