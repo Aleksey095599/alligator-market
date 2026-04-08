@@ -4,6 +4,7 @@ import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.sourcing.plan.api.command.create.controller.CreateInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.command.delete.controller.DeleteInstrumentSourcePlanController;
+import com.alligator.market.backend.sourcing.plan.api.command.replace.controller.ReplaceInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;
 import com.alligator.market.backend.sourcing.plan.application.command.create.exception.InstrumentCodeNotFoundException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(assignableTypes = {
         CreateInstrumentSourcePlanController.class,
         DeleteInstrumentSourcePlanController.class,
+        ReplaceInstrumentSourcePlanController.class,
         GetInstrumentSourcePlanController.class,
         InstrumentSourcePlanOptionsQueryController.class
 })

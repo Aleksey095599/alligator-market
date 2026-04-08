@@ -29,6 +29,12 @@ public interface InstrumentSourcePlanRepository {
      */
     boolean createIfAbsent(InstrumentSourcePlan plan);
 
+
+    /**
+     * Полностью заменяет содержимое существующего плана источников.
+     */
+    void replace(InstrumentSourcePlan plan);
+
     /**
      * Удаляет план источников для заданного инструмента.
      *
