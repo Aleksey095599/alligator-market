@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa;
 
-import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import jakarta.persistence.*;
@@ -53,7 +52,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CurrencyEntity extends BaseEntity {
+public class CurrencyEntity {
 
     /**
      * Суррогатный PK.
@@ -62,6 +61,10 @@ public class CurrencyEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     /**
      * Код валюты (натуральный ключ).

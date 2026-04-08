@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.base.catalog.persistence.jpa;
 
-import com.alligator.market.backend.common.persistence.jpa.entity.BaseEntity;
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.AssetClassConverter;
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.ContractTypeConverter;
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.converter.InstrumentCodeConverter;
@@ -40,7 +39,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class InstrumentEntity extends BaseEntity {
+public abstract class InstrumentEntity {
 
     /**
      * Суррогатный PK.
@@ -49,6 +48,10 @@ public abstract class InstrumentEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     /**
      * Внутренний код инструмента (идентификатор).
