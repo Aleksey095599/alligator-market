@@ -1,6 +1,5 @@
 package com.alligator.market.backend.provider.readmodel.passport.projection.port.adapter.jdbc;
 
-import com.alligator.market.backend.infra.jpa.audit.context.AuditContextHolder;
 import com.alligator.market.domain.provider.model.passport.ProviderPassport;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
@@ -32,23 +31,14 @@ public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderP
               delivery_mode,
               access_method,
               bulk_subscription,
-              version,
-              created_timestamp,
-              created_by,
-              created_via,
-              updated_timestamp,
-              updated_by,
-              updated_via
-            ) VALUES (?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, CURRENT_TIMESTAMP, ?, ?)
+              version
+            ) VALUES (?, ?, ?, ?, ?, 0)
             ON CONFLICT (provider_code) DO UPDATE SET
               display_name = EXCLUDED.display_name,
               delivery_mode = EXCLUDED.delivery_mode,
               access_method = EXCLUDED.access_method,
               bulk_subscription = EXCLUDED.bulk_subscription,
-              version = provider_passport.version + 1,
-              updated_timestamp = CURRENT_TIMESTAMP,
-              updated_by = EXCLUDED.updated_by,
-              updated_via = EXCLUDED.updated_via
+              version = provider_passport.version + 1
             WHERE
               provider_passport.display_name IS DISTINCT FROM EXCLUDED.display_name
               OR provider_passport.delivery_mode IS DISTINCT FROM EXCLUDED.delivery_mode
@@ -94,14 +84,11 @@ public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderP
         // Контракт: null-ключи и null-значения запрещены.
         List<Map.Entry<ProviderCode, ProviderPassport>> entries = toValidatedEntries(passports);
 
-        final String actor = AuditContextHolder.actorOrFallback();
-        final String via = AuditContextHolder.viaOrFallback();
-
         // Batch для минимального числа round-trip.
         jdbc.batchUpdate(SQL_UPSERT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(@org.springframework.lang.NonNull PreparedStatement ps, int i) throws SQLException {
-                bindUpsert(ps, entries.get(i), actor, via);
+                bindUpsert(ps, entries.get(i));
             }
 
             @Override
@@ -154,14 +141,10 @@ public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderP
     /** Привязка параметров UPSERT для одной записи. */
     private static void bindUpsert(
             PreparedStatement ps,
-            Map.Entry<ProviderCode, ProviderPassport> entry,
-            String actor,
-            String via
+            Map.Entry<ProviderCode, ProviderPassport> entry
     ) throws SQLException {
         Objects.requireNonNull(ps, "ps must not be null");
         Objects.requireNonNull(entry, "entry must not be null");
-        Objects.requireNonNull(actor, "actor must not be null");
-        Objects.requireNonNull(via, "via must not be null");
 
         ProviderCode code = entry.getKey();
         ProviderPassport passport = entry.getValue();
@@ -174,11 +157,5 @@ public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderP
         ps.setString(3, passport.deliveryMode().name());
         ps.setString(4, passport.accessMethod().name());
         ps.setBoolean(5, passport.bulkSubscription());
-
-        // 3) Audit-поля.
-        ps.setString(6, actor);
-        ps.setString(7, via);
-        ps.setString(8, actor);
-        ps.setString(9, via);
     }
 }
