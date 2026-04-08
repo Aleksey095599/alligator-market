@@ -115,13 +115,33 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         });
     }
 
+
     @Override
-    public void deleteByInstrumentCode(InstrumentCode instrumentCode) {
+    public void replace(InstrumentSourcePlan plan) {
+        Objects.requireNonNull(plan, "plan must not be null");
+
+        dsl.transaction(configuration -> {
+            DSLContext tx = configuration.dsl();
+
+            tx.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
+                    .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .execute();
+
+            for (MarketDataSource source : plan.sources()) {
+                insertSource(tx, plan.instrumentCode(), source);
+            }
+        });
+    }
+
+    @Override
+    public boolean deleteByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        dsl.deleteFrom(INSTRUMENT_SOURCE_PLAN)
+        int deletedRows = dsl.deleteFrom(INSTRUMENT_SOURCE_PLAN)
                 .where(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
+
+        return deletedRows > 0;
     }
 
     /* Вставляет один источник инструмента. */
