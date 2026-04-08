@@ -119,8 +119,8 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     public void deleteByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        dsl.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
-                .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+        dsl.deleteFrom(INSTRUMENT_SOURCE_PLAN)
+                .where(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
     }
 
