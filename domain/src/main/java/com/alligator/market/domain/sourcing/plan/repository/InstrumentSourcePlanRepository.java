@@ -22,24 +22,24 @@ public interface InstrumentSourcePlanRepository {
     List<InstrumentSourcePlan> findAll();
 
     /**
-     * Создаёт root-plan, если он ещё не существует.
+     * Создаёт план, если он ещё не существует.
      *
-     * @return true, если root-plan создан; false, если план уже существует
+     * @return true, если план создан; false, если план уже существует
      */
     boolean createIfAbsent(InstrumentSourcePlan plan);
 
 
     /**
-     * Условно заменяет содержимое существующего root-plan.
+     * Заменяет содержимое существующего плана.
      *
-     * @return true, если root-plan существовал и был обновлён; false, если план отсутствует
+     * @return true, если план существовал и был обновлён; false, если план отсутствует
      */
     boolean replaceIfExists(InstrumentSourcePlan plan);
 
     /**
-     * Условно удаляет существующий root-plan инструмента.
+     * Удаляет существующий план инструмента.
      *
-     * @return true, если root-plan существовал и был удалён; false, если плана не было
+     * @return true, если план существовал и был удалён; false, если плана не было
      */
     boolean deleteIfExistsByInstrumentCode(InstrumentCode instrumentCode);
 }
