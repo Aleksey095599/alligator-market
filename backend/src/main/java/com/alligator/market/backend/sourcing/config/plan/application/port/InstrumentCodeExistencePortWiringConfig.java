@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.config.plan.application.command.create.port;
+package com.alligator.market.backend.sourcing.config.plan.application.port;
 
 import com.alligator.market.backend.sourcing.plan.application.port.adapter.JooqInstrumentCodeExistenceAdapter;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
