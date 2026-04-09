@@ -5,8 +5,8 @@ import com.alligator.market.backend.sourcing.plan.api.command.create.controller.
 import com.alligator.market.backend.sourcing.plan.api.command.replace.controller.ReplaceInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateInstrumentSourcePlanService;
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.InstrumentCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.command.delete.DeleteInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetInstrumentSourcePlanService;
@@ -18,7 +18,6 @@ import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlan
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;

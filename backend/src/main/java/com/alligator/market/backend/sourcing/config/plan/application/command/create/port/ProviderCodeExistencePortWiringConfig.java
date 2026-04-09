@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.config.plan.application.command.create.port;
 
-import com.alligator.market.backend.sourcing.plan.application.command.create.adapter.JooqProviderCodeExistenceAdapter;
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.adapter.JooqProviderCodeExistenceAdapter;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

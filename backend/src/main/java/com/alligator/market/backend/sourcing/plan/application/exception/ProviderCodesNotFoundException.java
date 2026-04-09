@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.application.command.create.exception;
+package com.alligator.market.backend.sourcing.plan.application.exception;
 
 import java.util.Collection;
 import java.util.Objects;

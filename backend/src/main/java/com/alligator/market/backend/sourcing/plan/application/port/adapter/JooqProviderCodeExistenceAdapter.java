@@ -1,6 +1,6 @@
-package com.alligator.market.backend.sourcing.plan.application.command.create.adapter;
+package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import org.jooq.DSLContext;
 

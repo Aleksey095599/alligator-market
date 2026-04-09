@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.application.command.create.port;
+package com.alligator.market.backend.sourcing.plan.application.port;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 

@@ -3,8 +3,8 @@ package com.alligator.market.backend.sourcing.config.plan.application.command.re
 import com.alligator.market.backend.sourcing.config.plan.application.command.create.port.InstrumentCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.command.create.port.ProviderCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.repository.InstrumentSourcePlanRepositoryWiringConfig;
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.InstrumentCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.command.create.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
