@@ -257,12 +257,16 @@ class InstrumentSourcePlanReplaceApiIntegrationTest {
         }
 
         @Override
-        public void replace(InstrumentSourcePlan plan) {
+        public boolean replaceIfExists(InstrumentSourcePlan plan) {
+            if (!plans.containsKey(plan.instrumentCode())) {
+                return false;
+            }
             plans.put(plan.instrumentCode(), plan);
+            return true;
         }
 
         @Override
-        public boolean deleteByInstrumentCode(InstrumentCode instrumentCode) {
+        public boolean deleteIfExistsByInstrumentCode(InstrumentCode instrumentCode) {
             return plans.remove(instrumentCode) != null;
         }
 

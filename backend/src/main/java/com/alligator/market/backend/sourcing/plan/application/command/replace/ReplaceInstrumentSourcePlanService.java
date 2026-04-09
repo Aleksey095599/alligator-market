@@ -58,11 +58,11 @@ public final class ReplaceInstrumentSourcePlanService {
         // Проверяем, что все коды провайдеров из плана существуют
         ensureProvidersExist(plan);
 
-        // Проверяем, что заменяемый план уже существует
-        ensurePlanExists(plan);
-
-        // Атомарно заменяем весь состав источников в репозитории
-        instrumentSourcePlanRepository.replace(plan);
+        // Условно заменяем содержимое root-plan и сигнализируем, если плана не было
+        boolean replaced = instrumentSourcePlanRepository.replaceIfExists(plan);
+        if (!replaced) {
+            throw new InstrumentSourcePlanNotFoundException(plan.instrumentCode());
+        }
     }
 
     /**
@@ -91,12 +91,4 @@ public final class ReplaceInstrumentSourcePlanService {
         }
     }
 
-    /**
-     * Проверяет существование плана перед заменой.
-     */
-    private void ensurePlanExists(InstrumentSourcePlan plan) {
-        if (instrumentSourcePlanRepository.findByInstrumentCode(plan.instrumentCode()).isEmpty()) {
-            throw new InstrumentSourcePlanNotFoundException(plan.instrumentCode());
-        }
-    }
 }
