@@ -3,7 +3,9 @@ package com.alligator.market.backend.sourcing.plan.api;
 import com.alligator.market.backend.sourcing.plan.api.advice.InstrumentSourcePlanRestExceptionHandler;
 import com.alligator.market.backend.sourcing.plan.api.command.create.controller.CreateInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.controller.ReplaceInstrumentSourcePlanController;
+import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.InstrumentSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
+import com.alligator.market.backend.sourcing.plan.api.query.list.controller.ListInstrumentSourcePlansController;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
@@ -29,6 +31,7 @@ import java.util.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,7 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = {
         CreateInstrumentSourcePlanController.class,
         ReplaceInstrumentSourcePlanController.class,
-        GetInstrumentSourcePlanController.class
+        GetInstrumentSourcePlanController.class,
+        ListInstrumentSourcePlansController.class
 })
 @Import({
         InstrumentSourcePlanRestExceptionHandler.class,
@@ -159,6 +163,33 @@ class InstrumentSourcePlanReplaceApiIntegrationTest {
                 .andExpect(jsonPath("$.sources[0].providerCode").value("REUTERS"));
     }
 
+    @Test
+    void listReturnsAllPlansUsingSharedResponseShape() throws Exception {
+        instrumentCatalog.add("EURUSD_TOM");
+        instrumentCatalog.add("USDJPY_TOM");
+        providerCatalog.addAll("MOEX", "BLOOMBERG", "REUTERS");
+
+        createInitialPlan();
+
+        mockMvc.perform(post("/api/v1/instrument-source-plans")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "instrumentCode": "USDJPY_TOM",
+                                  "sources": [
+                                    {"providerCode": "REUTERS", "active": true, "priority": 0}
+                                  ]
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/v1/instrument-source-plans"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.plans.length()").value(2))
+                .andExpect(jsonPath("$.plans[?(@.instrumentCode=='EURUSD_TOM')].sources[0].providerCode").value(hasItem("MOEX")))
+                .andExpect(jsonPath("$.plans[?(@.instrumentCode=='USDJPY_TOM')].sources[0].providerCode").value(hasItem("REUTERS")));
+    }
+
     /* Подготовка исходного плана для replace-сценариев. */
     private void createInitialPlan() throws Exception {
         mockMvc.perform(post("/api/v1/instrument-source-plans")
@@ -227,6 +258,11 @@ class InstrumentSourcePlanReplaceApiIntegrationTest {
         @Bean
         DeleteInstrumentSourcePlanService deleteInstrumentSourcePlanService(InstrumentSourcePlanRepository repository) {
             return new DeleteInstrumentSourcePlanService(repository);
+        }
+
+        @Bean
+        InstrumentSourcePlanResponseMapper instrumentSourcePlanResponseMapper() {
+            return new InstrumentSourcePlanResponseMapper();
         }
     }
 
