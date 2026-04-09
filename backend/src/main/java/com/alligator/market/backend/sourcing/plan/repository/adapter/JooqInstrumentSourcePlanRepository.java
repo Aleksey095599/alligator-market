@@ -117,11 +117,22 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
 
     @Override
-    public void replace(InstrumentSourcePlan plan) {
+    public boolean replaceIfExists(InstrumentSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        dsl.transaction(configuration -> {
+        return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
+
+            boolean planExists = tx.selectOne()
+                    .from(INSTRUMENT_SOURCE_PLAN)
+                    .where(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .forUpdate()
+                    .fetchOptional()
+                    .isPresent();
+
+            if (!planExists) {
+                return false;
+            }
 
             tx.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
                     .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
@@ -130,11 +141,13 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
             for (MarketDataSource source : plan.sources()) {
                 insertSource(tx, plan.instrumentCode(), source);
             }
+
+            return true;
         });
     }
 
     @Override
-    public boolean deleteByInstrumentCode(InstrumentCode instrumentCode) {
+    public boolean deleteIfExistsByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         int deletedRows = dsl.deleteFrom(INSTRUMENT_SOURCE_PLAN)

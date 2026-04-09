@@ -29,17 +29,9 @@ public final class DeleteInstrumentSourcePlanService {
     public void delete(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Проверяем, что удаляемый план существует
-        ensurePlanExists(instrumentCode);
-
-        instrumentSourcePlanRepository.deleteByInstrumentCode(instrumentCode);
-    }
-
-    /**
-     * Проверяет существование плана перед удалением.
-     */
-    private void ensurePlanExists(InstrumentCode instrumentCode) {
-        if (instrumentSourcePlanRepository.findByInstrumentCode(instrumentCode).isEmpty()) {
+        // Условно удаляем root-plan и сигнализируем, если его не было
+        boolean deleted = instrumentSourcePlanRepository.deleteIfExistsByInstrumentCode(instrumentCode);
+        if (!deleted) {
             throw new InstrumentSourcePlanNotFoundException(instrumentCode);
         }
     }
