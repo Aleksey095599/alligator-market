@@ -5,13 +5,13 @@
   <!-- Верхняя карточка: whole-plan editor и toolbar действий -->
   <mat-card class="toolbar-card">
     <mat-card-header>
-      <mat-card-title>Source Plan Editor</mat-card-title>
+      <mat-card-title>Source Plan Toolbar</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="form" class="editor-form">
 
+        <div class="section-label">Select instrument</div>
         <mat-form-field appearance="outline" class="instrument-field">
-          <mat-label>Instrument</mat-label>
           <mat-select formControlName="instrumentCode">
             <mat-option *ngFor="let instrument of instruments" [value]="instrument.code">
               {{ instrument.code }}
@@ -23,9 +23,9 @@
         </mat-form-field>
 
         <div class="sources-header-row">
-          <h3>Sources</h3>
+          <div class="section-label">Sources</div>
           <button mat-stroked-button type="button" (click)="onAddSourceRow()">
-            Add source row
+            Add source
           </button>
         </div>
 
@@ -114,7 +114,7 @@
   <!-- Нижняя карточка: обзор существующих plans -->
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Existing Source Plans</mat-card-title>
+      <mat-card-title>Source Plans</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
