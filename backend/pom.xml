@@ -153,6 +153,16 @@
                 </dependencies>
             </plugin>
 
+
+            <!-- Управление запуском тестов по тегам (manual-тесты исключены по умолчанию). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedTags>manual</excludedTags>
+                </configuration>
+            </plugin>
+
             <!-- Annotation processors -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

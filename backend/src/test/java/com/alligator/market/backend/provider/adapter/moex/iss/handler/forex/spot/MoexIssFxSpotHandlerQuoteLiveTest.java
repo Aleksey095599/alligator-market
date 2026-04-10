@@ -7,7 +7,6 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpotTenor;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
  */
-@Disabled("Manual run only: long integration scenario")
+@Tag("manual")
 class MoexIssFxSpotHandlerQuoteLiveTest {
 
     @Test
