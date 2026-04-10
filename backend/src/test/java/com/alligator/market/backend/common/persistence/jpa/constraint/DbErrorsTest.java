@@ -1,7 +1,7 @@
 package com.alligator.market.backend.common.persistence.jpa.constraint;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Тесты класса {@link DbErrors} для проверки распознавания нарушений ограничений БД.
  */
-@Disabled("Tests passed and disabled to speed up the build process")
+@Tag("manual")
 class DbErrorsTest {
 
     /**
