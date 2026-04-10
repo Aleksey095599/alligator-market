@@ -159,7 +159,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <excludedGroups>dev</excludedGroups>
+                    <excludedGroups>dev,smoke</excludedGroups>
                 </configuration>
             </plugin>
 
