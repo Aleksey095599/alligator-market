@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-/* Smoke-тест: проверяет, что Spring context приложения поднимается в test-профиле. */
+/**
+ * Smoke-тест: проверяет, что Spring context приложения поднимается в test-профиле.
+ */
 @Tag("smoke")
 @SpringBootTest
 @ActiveProfiles("test")
