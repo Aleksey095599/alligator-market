@@ -1,69 +1,171 @@
+/* Контейнер страницы с ограничением ширины и единым вертикальным ритмом. */
 .center-box {
-  max-width: 1160px;
-  margin: 32px auto;
+  max-width: 1200px;
+  margin: 24px auto 40px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  padding: 0 16px;
+  gap: 24px;
+  padding: 0 20px;
 }
 
+/* Верхняя панель всегда остается доступной при прокрутке таблицы. */
 .toolbar-card {
   position: sticky;
-  top: 0;
+  top: 12px;
   z-index: 10;
   background: #fff;
+  border-radius: 14px;
 }
 
+/* Основная форма редактирования плана. */
 .editor-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
+/* Логически обособленные секции формы. */
+.form-section {
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+/* Секция источников имеет более плотный ритм для повторяющихся строк. */
+.form-section--sources {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Блок с действиями отделяем от контента и выравниваем по правому краю. */
+.form-section--actions {
+  background: #fff;
+}
+
+/* Поле выбора инструмента с ограничением читаемой ширины. */
 .instrument-field {
-  max-width: 340px;
+  max-width: 360px;
+  width: 100%;
 }
 
+/* Унифицированный заголовок секции. */
 .section-label {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.2px;
   color: rgba(0, 0, 0, 0.72);
 }
 
+/* Заголовок секции sources с action-кнопкой. */
 .sources-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
+/* Сетка строк источников. */
 .sources-grid {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* Одна строка источника в виде карты. */
 .source-row {
   display: grid;
   grid-template-columns: minmax(220px, 1fr) 120px 140px 56px;
   gap: 12px;
   align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+/* Ошибки валидации плана. */
 .validation-row {
   color: #b3261e;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-top: 4px;
 }
 
+/* Ряд с действиями формы. */
 .action-row {
   display: flex;
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
+/* Ячейка с action-кнопками в таблице. */
 .actions-cell {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Контент карточки таблицы без лишних внутренних отступов. */
+.table-content {
+  padding-top: 8px;
+}
+
+/* Таблица планов с аккуратным скроллом на узких экранах. */
+.plans-table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Адаптив для планшетов и мобильных экранов. */
+@media (max-width: 960px) {
+  .source-row {
+    grid-template-columns: 1fr 1fr auto;
+    grid-template-areas:
+      'provider provider remove'
+      'active priority remove';
+    row-gap: 8px;
+  }
+
+  .source-row mat-form-field:first-child {
+    grid-area: provider;
+  }
+
+  .source-row mat-checkbox {
+    grid-area: active;
+  }
+
+  .source-row mat-form-field:nth-of-type(2) {
+    grid-area: priority;
+  }
+
+  .source-row button {
+    grid-area: remove;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 600px) {
+  .center-box {
+    margin-top: 16px;
+    padding: 0 12px;
+  }
+
+  .form-section {
+    padding: 12px;
+  }
+
+  .action-row {
+    justify-content: stretch;
+  }
+
+  .action-row > button {
+    flex: 1 1 100%;
+  }
 }
