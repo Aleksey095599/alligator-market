@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
-import { ApiResponse } from '../../../shared/api/api-response.model';
 import {
   InstrumentSourcePlanListResponseDto,
   InstrumentSourcePlanResponseDto
@@ -25,24 +24,18 @@ export class InstrumentSourcePlanService {
   /* Получить все sourcing plans. */
   list(): Observable<InstrumentSourcePlanResponseDto[]> {
     return this.http
-      .get<ApiResponse<InstrumentSourcePlanListResponseDto>>(this.baseUrl)
-      .pipe(map(res => res.data?.plans ?? []));
+      .get<InstrumentSourcePlanListResponseDto>(this.baseUrl)
+      .pipe(map(res => res.plans ?? []));
   }
 
   /* Получить whole-plan по instrumentCode. */
   get(instrumentCode: string): Observable<InstrumentSourcePlanResponseDto> {
-    return this.http
-      .get<ApiResponse<InstrumentSourcePlanResponseDto>>(`${this.baseUrl}/${instrumentCode}`)
-      .pipe(map(res => res.data as InstrumentSourcePlanResponseDto));
+    return this.http.get<InstrumentSourcePlanResponseDto>(`${this.baseUrl}/${instrumentCode}`);
   }
 
   /* Получить опции инструментов и провайдеров для формы. */
   getOptions(): Observable<InstrumentSourcePlanOptionsResponseDto> {
-    return this.http
-      .get<ApiResponse<InstrumentSourcePlanOptionsResponseDto>>(`${this.baseUrl}/options`)
-      .pipe(
-        map(res => res.data ?? { instruments: [], providers: [] })
-      );
+    return this.http.get<InstrumentSourcePlanOptionsResponseDto>(`${this.baseUrl}/options`);
   }
 
   /* Создать новый whole-plan. */
