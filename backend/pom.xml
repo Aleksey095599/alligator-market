@@ -79,6 +79,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Тестовый стек для Spring MVC (WebMvcTest, MockMvc) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Тестирование реактивного кода -->
         <dependency>
             <groupId>io.projectreactor</groupId>
