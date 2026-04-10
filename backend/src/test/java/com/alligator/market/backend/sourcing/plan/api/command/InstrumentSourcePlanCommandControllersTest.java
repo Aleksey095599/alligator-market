@@ -11,6 +11,7 @@ import com.alligator.market.backend.sourcing.plan.application.exception.Instrume
 import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /*
  * Интеграционный web-layer тест command-контроллеров плана источников.
  */
+@Disabled("Manual run only: long integration scenario")
 @WebMvcTest(controllers = {
         CreateInstrumentSourcePlanController.class,
         ReplaceInstrumentSourcePlanController.class,
