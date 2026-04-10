@@ -18,6 +18,12 @@ export const routes: Routes = [
         .then(m => m.ProviderPassportModule)
   },
   {
+    path: 'instrument-source-plans',
+    loadChildren: () =>
+      import('./features/instrument_source_plan/instrument-source-plan.module')
+        .then(m => m.InstrumentSourcePlanModule)
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)
