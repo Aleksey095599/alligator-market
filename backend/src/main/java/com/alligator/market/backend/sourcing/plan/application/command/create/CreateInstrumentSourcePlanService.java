@@ -8,6 +8,7 @@ import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeE
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import java.util.Set;
  * <p>Назначение сервиса — выполнить внешние логические проверки перед созданием плана,
  * а затем делегировать сохранение в доменный репозиторий.</p>
  */
+@Slf4j
 public final class CreateInstrumentSourcePlanService {
 
     /* Репозиторий планов источников. */
@@ -63,8 +65,11 @@ public final class CreateInstrumentSourcePlanService {
 
         // Атомарно создаём план, если он ещё не существует
         if (!instrumentSourcePlanRepository.createIfAbsent(plan)) {
+            log.warn("Instrument source plan already exists and was not created: instrumentCode={}", plan.instrumentCode().value());
             throw new InstrumentSourcePlanAlreadyExistsException(plan.instrumentCode());
         }
+
+        log.info("Instrument source plan created: instrumentCode={}, sourceCount={}", plan.instrumentCode().value(), plan.sources().size());
     }
 
     /**

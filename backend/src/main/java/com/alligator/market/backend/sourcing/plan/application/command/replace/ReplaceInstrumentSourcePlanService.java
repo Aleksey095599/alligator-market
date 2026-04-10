@@ -8,6 +8,7 @@ import com.alligator.market.backend.sourcing.plan.application.exception.Instrume
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -16,6 +17,7 @@ import java.util.Set;
 /**
  * Сервис полной замены плана источников рыночных данных для инструмента.
  */
+@Slf4j
 public final class ReplaceInstrumentSourcePlanService {
 
     /* Репозиторий планов источников. */
@@ -61,8 +63,11 @@ public final class ReplaceInstrumentSourcePlanService {
         // Условно заменяем содержимое root-plan и сигнализируем, если плана не было
         boolean replaced = instrumentSourcePlanRepository.replaceIfExists(plan);
         if (!replaced) {
+            log.warn("Instrument source plan was not found and was not replaced: instrumentCode={}", plan.instrumentCode().value());
             throw new InstrumentSourcePlanNotFoundException(plan.instrumentCode());
         }
+
+        log.info("Instrument source plan replaced: instrumentCode={}, sourceCount={}", plan.instrumentCode().value(), plan.sources().size());
     }
 
     /**
