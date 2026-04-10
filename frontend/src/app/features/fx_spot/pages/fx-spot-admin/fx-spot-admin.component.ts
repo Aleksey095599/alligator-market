@@ -225,7 +225,7 @@ export class FxSpotAdminComponent implements OnInit {
   private refresh(): void {
     this.service.list().subscribe({
       next: list => {
-        this.dataSource.data = list;
+        this.dataSource.data = [...list].sort((left, right) => left.symbol.localeCompare(right.symbol));
       },
       error: err => {
         this.snack.open(err.message ?? 'Load failed', 'Close');
