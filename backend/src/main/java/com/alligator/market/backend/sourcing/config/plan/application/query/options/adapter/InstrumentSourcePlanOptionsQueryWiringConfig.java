@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.config.plan.application.query.options;
+package com.alligator.market.backend.sourcing.config.plan.application.query.options.adapter;
 
 import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqInstrumentOptionsQueryAdapter;
 import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqProviderOptionsQueryAdapter;
