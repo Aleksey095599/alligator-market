@@ -9,11 +9,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.time.ZoneOffset;
 import java.util.TimeZone;
 
-/* Точка входа приложения. */
+/**
+ * Точка входа приложения.
+ */
 @SpringBootApplication
-@ComponentScan("com.alligator.market")
 @EnableScheduling
-@ConfigurationPropertiesScan("com.alligator.market")
+@ConfigurationPropertiesScan("com.alligator.market.backend")
 public class BackendApplication {
 
     private static final TimeZone TECHNICAL_TIME_ZONE = TimeZone.getTimeZone(ZoneOffset.UTC);
