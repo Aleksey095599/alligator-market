@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
  */
-@Tag("manual")
+@Tag("dev")
 class MoexIssFxSpotHandlerQuoteLiveTest {
 
     @Test

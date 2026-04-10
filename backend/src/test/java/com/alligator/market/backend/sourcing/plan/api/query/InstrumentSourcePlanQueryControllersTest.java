@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /*
  * Интеграционный web-layer тест query-контроллеров плана источников.
  */
-@Tag("manual")
+@Tag("dev")
 @WebMvcTest(controllers = {
         GetInstrumentSourcePlanController.class,
         ListInstrumentSourcePlansController.class,

@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /*
  * Интеграционный web-layer тест command-контроллеров плана источников.
  */
-@Tag("manual")
+@Tag("dev")
 @WebMvcTest(controllers = {
         CreateInstrumentSourcePlanController.class,
         ReplaceInstrumentSourcePlanController.class,

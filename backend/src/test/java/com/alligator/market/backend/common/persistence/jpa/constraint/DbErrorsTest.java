@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Тесты класса {@link DbErrors} для проверки распознавания нарушений ограничений БД.
  */
-@Tag("manual")
+@Tag("dev")
 class DbErrorsTest {
 
     /**
