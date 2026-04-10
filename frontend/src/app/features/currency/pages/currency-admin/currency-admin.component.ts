@@ -209,12 +209,17 @@ export class CurrencyAdminComponent implements OnInit {
   private refresh(): void {
     this.service.list().subscribe({
       next: list => {
-        this.dataSource.data = list;
+        this.dataSource.data = this.sortCurrenciesAlphabetically(list);
       },
       error: err => {
         this.snack.open(err.message ?? 'Load failed', 'Close');
       }
     });
+  }
+
+  /* Утилита: стабильная сортировка валют по алфавиту (по коду). */
+  private sortCurrenciesAlphabetically(list: CurrencyResponseDto[]): CurrencyResponseDto[] {
+    return [...list].sort((a, b) => a.code.localeCompare(b.code, 'en', { sensitivity: 'base' }));
   }
 
 }
