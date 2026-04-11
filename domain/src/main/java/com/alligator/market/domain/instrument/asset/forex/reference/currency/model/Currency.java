@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.mod
 import java.util.Objects;
 
 /**
- * Aggregate-root модель валюты.
+ * Модель валюты (aggregate-root).
  *
  * <p>Назначение: Используется как вспомогательная модель для инструментов типа FOREX.</p>
  *
