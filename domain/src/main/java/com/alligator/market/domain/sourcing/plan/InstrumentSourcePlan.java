@@ -7,7 +7,7 @@ import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import java.util.*;
 
 /**
- * Aggregate root плана источников рыночных данных для конкретного инструмента.
+ * Aggregate-root план источников рыночных данных для конкретного инструмента.
  * Содержит упорядоченный по приоритету набор источников рыночных данных.
  */
 @SuppressWarnings("ClassCanBeRecord")
