@@ -1,12 +1,12 @@
 package com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa;
 
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.InstrumentEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.spot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpotTenor;

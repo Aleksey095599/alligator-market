@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.persistence.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
 

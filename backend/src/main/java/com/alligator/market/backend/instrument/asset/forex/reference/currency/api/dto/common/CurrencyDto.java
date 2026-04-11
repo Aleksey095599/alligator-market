@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web.dto.common;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common;
 
 /**
  * Общий DTO валюты (используется как in/out).

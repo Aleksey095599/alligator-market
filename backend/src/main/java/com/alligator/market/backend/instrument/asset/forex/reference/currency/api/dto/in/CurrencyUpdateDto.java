@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.web.dto.in;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.in;
 
 /**
  * DTO обновления валюты (in).

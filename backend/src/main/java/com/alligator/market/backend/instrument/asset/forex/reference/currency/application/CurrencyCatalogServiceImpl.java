@@ -1,9 +1,9 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.catalog.service;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.application;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyUsedInFxSpotException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpotRepository;
 import lombok.RequiredArgsConstructor;

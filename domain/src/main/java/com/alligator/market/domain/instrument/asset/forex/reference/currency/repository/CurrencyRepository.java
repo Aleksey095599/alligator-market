@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.asset.forex.reference.currency.repository;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 
 import java.util.List;
 import java.util.Optional;

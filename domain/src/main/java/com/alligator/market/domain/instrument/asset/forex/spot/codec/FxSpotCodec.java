@@ -2,7 +2,7 @@ package com.alligator.market.domain.instrument.asset.forex.spot.codec;
 
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentSymbol;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpotTenor;
 
 import java.util.Objects;
