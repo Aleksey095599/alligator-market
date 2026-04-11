@@ -1,0 +1,25 @@
+Канонический шаблон для архитектуры фичи:
+
+domain/
+  aggregate root
+  value objects / child entities
+  repository port
+
+backend/feature/
+  api/
+    command/
+    query/
+    advice/
+    dto/
+    mapper/
+  application/
+    command/
+    query/
+    port/
+    exception/
+  repository/
+    adapter/
+  config/
+    application/
+    repository/
+    api/   <- при необходимости wiring mapper-ов и т.п.
