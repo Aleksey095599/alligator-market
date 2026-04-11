@@ -7,9 +7,9 @@ import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetIn
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.ListInstrumentSourcePlansController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
-import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -126,7 +126,8 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 .stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
-                        fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(), "Invalid value"),
+                        fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(),
+                                "Invalid value"),
                         (first, second) -> first
                 ));
         problemDetail.setProperty("fieldErrors", fieldErrors);
