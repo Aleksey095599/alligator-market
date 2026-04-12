@@ -6,7 +6,6 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,16 +47,6 @@ public class CurrencyController {
     public ResponseEntity<Void> update(@PathVariable String code, @RequestBody CurrencyUpdateDto dto) {
 
         service.update(CurrencyDtoMapper.toDomainUpdate(code, dto));
-        return ResponseEntityFactory.noContent();
-    }
-
-    /**
-     * Удалить валюту.
-     */
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> delete(@PathVariable String code) {
-
-        service.delete(CurrencyCode.of(code));
         return ResponseEntityFactory.noContent();
     }
 
