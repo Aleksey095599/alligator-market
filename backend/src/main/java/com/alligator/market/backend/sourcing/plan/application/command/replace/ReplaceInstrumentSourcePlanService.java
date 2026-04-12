@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.command.replace;
 
-import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanExistenceValidator;
+import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
@@ -18,11 +18,11 @@ public final class ReplaceInstrumentSourcePlanService {
     private final InstrumentSourcePlanRepository instrumentSourcePlanRepository;
 
     /* Валидатор существования инструмента и провайдеров из плана. */
-    private final InstrumentSourcePlanExistenceValidator existenceValidator;
+    private final InstrumentSourcePlanValidator existenceValidator;
 
     public ReplaceInstrumentSourcePlanService(
             InstrumentSourcePlanRepository instrumentSourcePlanRepository,
-            InstrumentSourcePlanExistenceValidator existenceValidator
+            InstrumentSourcePlanValidator existenceValidator
     ) {
         this.instrumentSourcePlanRepository = Objects.requireNonNull(
                 instrumentSourcePlanRepository,

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.command.create;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
-import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanExistenceValidator;
+import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanValidator;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +21,11 @@ public final class CreateInstrumentSourcePlanService {
     private final InstrumentSourcePlanRepository instrumentSourcePlanRepository;
 
     /* Валидатор существования инструмента и провайдеров из плана. */
-    private final InstrumentSourcePlanExistenceValidator existenceValidator;
+    private final InstrumentSourcePlanValidator existenceValidator;
 
     public CreateInstrumentSourcePlanService(
             InstrumentSourcePlanRepository instrumentSourcePlanRepository,
-            InstrumentSourcePlanExistenceValidator existenceValidator
+            InstrumentSourcePlanValidator existenceValidator
     ) {
         this.instrumentSourcePlanRepository = Objects.requireNonNull(
                 instrumentSourcePlanRepository,

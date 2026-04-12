@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Валидатор существования связанных сущностей для плана источников.
  */
-public final class InstrumentSourcePlanExistenceValidator {
+public final class InstrumentSourcePlanValidator {
 
     /* Порт проверки существования инструмента по коду. */
     private final InstrumentCodeExistencePort instrumentCodeExistencePort;
@@ -22,7 +22,7 @@ public final class InstrumentSourcePlanExistenceValidator {
     /* Порт проверки существования провайдера по коду. */
     private final ProviderCodeExistencePort providerCodeExistencePort;
 
-    public InstrumentSourcePlanExistenceValidator(
+    public InstrumentSourcePlanValidator(
             InstrumentCodeExistencePort instrumentCodeExistencePort,
             ProviderCodeExistencePort providerCodeExistencePort
     ) {

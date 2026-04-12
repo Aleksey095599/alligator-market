@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.config.plan.application.command.cr
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.InstrumentSourcePlanRepositoryWiringConfig;
-import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanExistenceValidator;
+import com.alligator.market.backend.sourcing.plan.application.command.common.InstrumentSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
@@ -40,7 +40,7 @@ public class CreateInstrumentSourcePlanServiceWiringConfig {
     ) {
         return new CreateInstrumentSourcePlanService(
                 instrumentSourcePlanRepository,
-                new InstrumentSourcePlanExistenceValidator(
+                new InstrumentSourcePlanValidator(
                         instrumentCodeExistencePort,
                         providerCodeExistencePort
                 )
