@@ -6,13 +6,10 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -24,21 +21,6 @@ import java.util.List;
 public class CurrencyController {
 
     private final CurrencyCatalogService service;
-
-    /**
-     * Создать валюту.
-     */
-    @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody CurrencyDto dto) {
-
-        Currency created = service.create(CurrencyDtoMapper.toDomain(dto));
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{code}")
-                .buildAndExpand(created.code().value())
-                .toUri();
-        return ResponseEntityFactory.created(location, created.code().value());
-    }
 
     /**
      * Обновить валюту.
