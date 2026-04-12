@@ -1,6 +1,6 @@
-package com.alligator.market.backend.sourcing.config.plan.repository.adapter;
+package com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository;
 
-import com.alligator.market.backend.sourcing.plan.repository.adapter.JooqInstrumentSourcePlanRepository;
+import com.alligator.market.backend.sourcing.plan.persistence.jooq.repository.JooqInstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
