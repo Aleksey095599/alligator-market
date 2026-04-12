@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring query-портов получения options для UI.
+ * Wiring-конфигурация {@link JooqInstrumentOptionsQueryAdapter}.
  */
 @Configuration(proxyBeanMethods = false)
 public class InstrumentSourcePlanOptionsQueryWiringConfig {

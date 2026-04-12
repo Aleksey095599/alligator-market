@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Clock;
 import java.time.ZoneId;
 
-/* Spring wiring для времени приложения. */
+/**
+ * Wiring-конфигурация {@link AppTimeProperties}.
+ */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(AppTimeProperties.class)
 public class TimeWiringConfig {

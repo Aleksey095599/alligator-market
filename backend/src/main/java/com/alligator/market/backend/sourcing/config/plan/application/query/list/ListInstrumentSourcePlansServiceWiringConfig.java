@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Конфигурация wiring {@link ListInstrumentSourcePlansService}.
+ * Wiring-конфигурация {@link ListInstrumentSourcePlansService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

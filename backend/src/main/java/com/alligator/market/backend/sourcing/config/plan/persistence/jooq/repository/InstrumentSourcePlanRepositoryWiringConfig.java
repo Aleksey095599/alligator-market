@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring репозитория планов источников инструмента.
+ * Wiring-конфигурация {@link InstrumentSourcePlanRepository}.
  */
 @Configuration(proxyBeanMethods = false)
 public class InstrumentSourcePlanRepositoryWiringConfig {
