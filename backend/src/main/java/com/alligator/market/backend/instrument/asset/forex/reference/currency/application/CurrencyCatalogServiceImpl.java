@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyUsedInFxSpotException;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyInUseException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
@@ -63,7 +63,7 @@ public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
 
         // Бизнес‑правило: валюта не должна использоваться внешними фичами/агрегатами
         if (currencyUsageCheckPort.isUsed(code)) {
-            throw new CurrencyUsedInFxSpotException(code);
+            throw new CurrencyInUseException(code);
         }
 
         // Случай отсутствия инструмента и прочие сбои БД определит адаптер репозитория

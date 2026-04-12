@@ -47,12 +47,12 @@ public class DomainExceptionHandler {
     }
 
     /**
-     * Валюта используется в инструментах FOREX_SPOT --> 409.
+     * Валюта используется внешними фичами/агрегатами --> 409.
      */
-    @ExceptionHandler(CurrencyUsedInFxSpotException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyUsedInFxSpot(CurrencyUsedInFxSpotException ex) {
-        log.warn("Currency used in FX Spot: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT.name(), ex.getMessage());
+    @ExceptionHandler(CurrencyInUseException.class)
+    public ResponseEntity<ApiResponse<Void>> currencyInUse(CurrencyInUseException ex) {
+        log.warn("Currency is in use: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_IN_USE.name(), ex.getMessage());
     }
 
     /**
