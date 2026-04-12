@@ -1,11 +1,10 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.delete.DeleteCurrencyService;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageCheckPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ import java.util.Objects;
 public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
 
     private final CurrencyRepository currencyRepository;
-    private final CurrencyUsageCheckPort currencyUsageCheckPort;
+    private final DeleteCurrencyService deleteCurrencyService;
 
     @Override
     @Transactional
@@ -59,16 +58,8 @@ public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
     @Override
     @Transactional
     public void delete(CurrencyCode code) {
-        Objects.requireNonNull(code, "code must not be null");
-
-        // Бизнес‑правило: валюта не должна использоваться внешними фичами/агрегатами
-        if (currencyUsageCheckPort.isUsed(code)) {
-            throw new CurrencyInUseException(code);
-        }
-
-        // Случай отсутствия инструмента и прочие сбои БД определит адаптер репозитория
-        currencyRepository.deleteByCode(code);
-        log.info("Currency {} deleted", code.value());
+        // Делегируем delete use case в выделенный command service.
+        deleteCurrencyService.delete(code);
     }
 
     @Override
