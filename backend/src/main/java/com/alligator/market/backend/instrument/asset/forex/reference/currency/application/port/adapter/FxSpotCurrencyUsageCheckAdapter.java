@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpot
 import java.util.Objects;
 
 /**
- * Адаптер порта проверки использования валюты в FX Spot инструментах.
+ * Адаптер порта проверки использования валюты для инструментов FX_SPOT.
  */
 public final class FxSpotCurrencyUsageCheckAdapter implements CurrencyUsageCheckPort {
 
