@@ -1,6 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.create.CreateCurrencyService;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.delete.DeleteCurrencyService;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
@@ -22,17 +23,14 @@ import java.util.Objects;
 public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
 
     private final CurrencyRepository currencyRepository;
+    private final CreateCurrencyService createCurrencyService;
     private final DeleteCurrencyService deleteCurrencyService;
 
     @Override
     @Transactional
     public Currency create(Currency currency) {
-        Objects.requireNonNull(currency, "currency must not be null");
-
-        // Без пред‑проверок на уникальность (устраняем TOCTOU) – уникальность проверяет адаптер репозитория
-        Currency created = currencyRepository.create(currency);
-        log.info("Currency {} created", created.code().value());
-        return created;
+        // Делегируем create use case в выделенный command service.
+        return createCurrencyService.create(currency);
     }
 
     @Override
