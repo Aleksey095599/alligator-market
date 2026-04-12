@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 /**
- * Use-case сервис удаления валюты из каталога.
+ * Use-case сервис удаления валюты.
  */
 @Slf4j
 public final class DeleteCurrencyService {
@@ -35,7 +35,6 @@ public final class DeleteCurrencyService {
             throw new CurrencyInUseException(code);
         }
 
-        // Удаляем валюту через repository, детали ошибок делегированы адаптеру.
         currencyRepository.deleteByCode(code);
         log.info("Currency {} deleted", code.value());
     }
