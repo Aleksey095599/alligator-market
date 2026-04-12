@@ -26,9 +26,9 @@ public class DeleteCurrencyController {
      */
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable String code) {
-
-        // Делегируем удаление в application-service.
+        // Делегируем удаление application-service
         deleteCurrencyService.delete(CurrencyCode.of(code));
+
         return ResponseEntityFactory.noContent();
     }
 }
