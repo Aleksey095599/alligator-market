@@ -1,6 +1,5 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.contributor;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.spot;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageContributor;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpotRepository;
 
