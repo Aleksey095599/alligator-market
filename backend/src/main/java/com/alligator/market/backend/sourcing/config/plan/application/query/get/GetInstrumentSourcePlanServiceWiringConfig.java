@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.config.plan.application.query.get;
 
-import com.alligator.market.backend.sourcing.config.plan.repository.adapter.InstrumentSourcePlanRepositoryWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.InstrumentSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetInstrumentSourcePlanService;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.config.plan.application.command.re
 
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderCodeExistencePortWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.repository.adapter.InstrumentSourcePlanRepositoryWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.InstrumentSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
