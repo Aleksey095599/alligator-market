@@ -1,40 +1,18 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.dto;
 
+import com.alligator.market.backend.sourcing.plan.api.command.common.dto.MarketDataSourceRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.List;
 
 /**
- * HTTP-запрос на полную замену плана источников инструмента.
+ * DTO тела HTTP-запроса на полную замену состава источников в плане инструмента.
  */
 public record ReplaceInstrumentSourcePlanRequest(
 
-        /* Источники рыночных данных для инструмента. */
+        /* Новый полный состав источников, который должен заменить текущий план. */
         @NotEmpty(message = "sources must not be empty")
         List<@Valid MarketDataSourceRequest> sources
 ) {
-
-    /**
-     * HTTP-модель одного источника в составе плана.
-     */
-    public record MarketDataSourceRequest(
-
-            /* Код провайдера-источника. */
-            @NotBlank(message = "providerCode must not be blank")
-            String providerCode,
-
-            /* Признак активности источника. */
-            @NotNull(message = "active must not be null")
-            Boolean active,
-
-            /* Приоритет источника. */
-            @NotNull(message = "priority must not be null")
-            @PositiveOrZero(message = "priority must be greater than or equal to 0")
-            Integer priority
-    ) {
-    }
 }
