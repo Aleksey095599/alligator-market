@@ -7,9 +7,9 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.mod
 import java.util.Objects;
 
 /**
- * Ошибка: валюта используется в FOREX_SPOT инструменте.
+ * Ошибка: валюта используется внешними фичами/агрегатами.
  */
-public final class CurrencyUsedInFxSpotException extends BaseDomainException {
+public final class CurrencyInUseException extends BaseDomainException {
 
     private final CurrencyCode code;
 
@@ -18,8 +18,8 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      *
      * @param code код валюты
      */
-    public CurrencyUsedInFxSpotException(CurrencyCode code) {
-        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code));
+    public CurrencyInUseException(CurrencyCode code) {
+        super(DomainErrorCode.CURRENCY_IN_USE, msg(code));
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -29,9 +29,8 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      * @param code  код валюты
      * @param cause причина ошибки
      */
-    @SuppressWarnings("unused")
-    public CurrencyUsedInFxSpotException(CurrencyCode code, Throwable cause) {
-        super(DomainErrorCode.CURRENCY_USED_IN_FX_SPOT, msg(code), cause);
+    public CurrencyInUseException(CurrencyCode code, Throwable cause) {
+        super(DomainErrorCode.CURRENCY_IN_USE, msg(code), cause);
         this.code = Objects.requireNonNull(code, "code must not be null");
     }
 
@@ -43,7 +42,7 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      */
     private static String msg(CurrencyCode code) {
         CurrencyCode c = Objects.requireNonNull(code, "code must not be null");
-        return "Currency used in FX_SPOT instrument (code=" + c.value() + ")";
+        return "Currency is in use (code=" + c.value() + ")";
     }
 
     /**
@@ -51,7 +50,6 @@ public final class CurrencyUsedInFxSpotException extends BaseDomainException {
      *
      * @return код валюты
      */
-    @SuppressWarnings("unused")
     public CurrencyCode getCode() {
         return code;
     }
