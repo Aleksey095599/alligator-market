@@ -12,17 +12,16 @@ import java.util.Objects;
  */
 public final class CompositeCurrencyUsageCheckAdapter implements CurrencyUsageCheckPort {
 
-    /* Набор contributor, участвующих в общей проверке использования валюты. */
+    /* Набор contributors, участвующих в общей проверке использования валюты. */
     private final List<CurrencyUsageContributor> contributors;
 
     public CompositeCurrencyUsageCheckAdapter(List<CurrencyUsageContributor> contributors) {
-        // Проверяем, что входной список задан.
         Objects.requireNonNull(contributors, "contributors must not be null");
 
-        // Делаем безопасную неизменяемую копию.
+        // Делаем безопасную неизменяемую копию
         this.contributors = List.copyOf(contributors);
 
-        // Проверяем, что каждый contributor присутствует.
+        // Проверяем, что каждый contributor присутствует
         for (CurrencyUsageContributor contributor : this.contributors) {
             Objects.requireNonNull(contributor, "contributor must not be null");
         }
@@ -30,7 +29,6 @@ public final class CompositeCurrencyUsageCheckAdapter implements CurrencyUsageCh
 
     @Override
     public boolean isUsed(CurrencyCode currencyCode) {
-        // Проверяем обязательный входной аргумент.
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
 
         for (CurrencyUsageContributor contributor : contributors) {

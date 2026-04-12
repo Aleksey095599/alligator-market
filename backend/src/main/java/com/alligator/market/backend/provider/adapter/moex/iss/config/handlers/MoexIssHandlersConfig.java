@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import java.util.Set;
 
 /**
- * Конфигурация wiring набора всех обработчиков провайдера MOEX ISS.
+ * Wiring-конфигурация набора всех обработчиков провайдера MOEX ISS.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

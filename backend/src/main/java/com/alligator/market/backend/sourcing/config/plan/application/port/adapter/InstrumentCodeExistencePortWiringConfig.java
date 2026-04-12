@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring {@link InstrumentCodeExistencePort}.
+ * Wiring-конфигурация {@link InstrumentCodeExistencePort}.
  */
 @Configuration(proxyBeanMethods = false)
 public class InstrumentCodeExistencePortWiringConfig {

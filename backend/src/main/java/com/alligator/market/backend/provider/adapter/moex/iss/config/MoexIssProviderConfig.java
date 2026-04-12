@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import java.util.Set;
 
 /**
- * Конфигурация wiring {@link MoexIssProvider}.
+ * Wiring-конфигурация {@link MoexIssProvider}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssHandlersConfig.class)

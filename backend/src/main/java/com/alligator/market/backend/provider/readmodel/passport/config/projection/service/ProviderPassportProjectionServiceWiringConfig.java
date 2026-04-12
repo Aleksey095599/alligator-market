@@ -10,7 +10,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Конфигурация wiring {@link ProviderPassportProjectionService}.
+ * Wiring-конфигурация {@link ProviderPassportProjectionService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

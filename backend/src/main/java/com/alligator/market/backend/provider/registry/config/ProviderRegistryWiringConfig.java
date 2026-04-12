@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * Конфигурация wiring {@link ProviderRegistry}.
+ * Wiring-конфигурация {@link ProviderRegistry}.
  *
  * <p>Spring внедряет {@code List<MarketDataProvider>} как список всех бинов типа {@link MarketDataProvider}.</p>
  */

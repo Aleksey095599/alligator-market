@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Конфигурация wiring {@link PassportCatalogService}.
+ * Wiring-конфигурация {@link PassportCatalogService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

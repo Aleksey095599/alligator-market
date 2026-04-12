@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring {@link ProviderCodeExistencePort}.
+ * Wiring-конфигурация {@link ProviderCodeExistencePort}.
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderCodeExistencePortWiringConfig {

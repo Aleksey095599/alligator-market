@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Конфигурация wiring contributor для проверки использования валюты.
+ * Wiring-конфигурация {@link CurrencyUsageContributor}.
  */
 @Configuration(proxyBeanMethods = false)
 public class CurrencyUsageContributorWiringConfig {

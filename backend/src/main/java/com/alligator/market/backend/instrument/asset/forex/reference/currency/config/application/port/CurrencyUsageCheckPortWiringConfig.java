@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.port.adapter;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.port;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.CurrencyUsageContributor;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageCheckPort;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * Конфигурация wiring {@link CurrencyUsageCheckPort}.
+ * Wiring-конфигурация {@link CurrencyUsageCheckPort}.
  */
 @Configuration(proxyBeanMethods = false)
 public class CurrencyUsageCheckPortWiringConfig {

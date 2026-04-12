@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Конфигурация wiring {@link MoexIssFxSpotHandler}.
+ * Wiring-конфигурация {@link MoexIssFxSpotHandler}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssFxSpotWebClientConfig.class)

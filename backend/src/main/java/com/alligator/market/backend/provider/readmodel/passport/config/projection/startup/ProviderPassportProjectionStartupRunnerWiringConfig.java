@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Конфигурация wiring startup-runner для проекции паспортов провайдеров.
+ * Wiring-конфигурация startup-runner для проекции паспортов провайдеров.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
