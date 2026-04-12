@@ -10,15 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/* REST-контроллер delete use case для валют. */
+/**
+ * REST-контроллер удаления валюты.
+ */
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
 public class DeleteCurrencyController {
 
+    /* Сервис удаления валюты. */
     private final DeleteCurrencyService deleteCurrencyService;
 
-    /* Удалить валюту по коду. */
+    /**
+     * Удалить валюту по коду.
+     */
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable String code) {
 

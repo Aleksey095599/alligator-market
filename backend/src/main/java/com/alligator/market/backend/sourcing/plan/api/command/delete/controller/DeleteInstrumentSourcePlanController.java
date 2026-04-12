@@ -14,7 +14,7 @@ import java.util.Objects;
 @RequestMapping("/api/v1/instrument-source-plans")
 public class DeleteInstrumentSourcePlanController {
 
-    /* Сервис delete-use case. */
+    /* Сервис удаления плана источников. */
     private final DeleteInstrumentSourcePlanService deleteInstrumentSourcePlanService;
 
     public DeleteInstrumentSourcePlanController(

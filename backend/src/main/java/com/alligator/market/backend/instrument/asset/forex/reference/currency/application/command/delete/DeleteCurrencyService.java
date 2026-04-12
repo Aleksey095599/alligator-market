@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/* Use case сервис удаления валюты из каталога. */
+/**
+ * Use-case сервис удаления валюты из каталога.
+ */
 @Slf4j
 public final class DeleteCurrencyService {
 
@@ -19,8 +21,10 @@ public final class DeleteCurrencyService {
             CurrencyRepository currencyRepository,
             CurrencyUsageCheckPort currencyUsageCheckPort
     ) {
-        this.currencyRepository = Objects.requireNonNull(currencyRepository, "currencyRepository must not be null");
-        this.currencyUsageCheckPort = Objects.requireNonNull(currencyUsageCheckPort, "currencyUsageCheckPort must not be null");
+        this.currencyRepository = Objects.requireNonNull(currencyRepository,
+                "currencyRepository must not be null");
+        this.currencyUsageCheckPort = Objects.requireNonNull(currencyUsageCheckPort,
+                "currencyUsageCheckPort must not be null");
     }
 
     public void delete(CurrencyCode code) {
