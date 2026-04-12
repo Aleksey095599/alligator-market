@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.exc
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpotRepository;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageCheckPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
 
     private final CurrencyRepository currencyRepository;
-    private final FxSpotRepository fxSpotRepository;
+    private final CurrencyUsageCheckPort currencyUsageCheckPort;
 
     @Override
     @Transactional
@@ -61,8 +61,8 @@ public class CurrencyCatalogServiceImpl implements CurrencyCatalogService {
     public void delete(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        // Бизнес‑правило: валюта не должна использоваться в FOREX_SPOT
-        if (fxSpotRepository.existsByCurrencyCode(code)) {
+        // Бизнес‑правило: валюта не должна использоваться внешними фичами/агрегатами
+        if (currencyUsageCheckPort.isUsed(code)) {
             throw new CurrencyUsedInFxSpotException(code);
         }
 
