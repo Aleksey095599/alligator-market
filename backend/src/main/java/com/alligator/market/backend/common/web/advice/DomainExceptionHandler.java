@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.*;
-import com.alligator.market.domain.instrument.asset.forex.spot.exception.*;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.*;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;

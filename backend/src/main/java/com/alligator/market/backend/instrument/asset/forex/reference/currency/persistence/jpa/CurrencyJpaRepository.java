@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa;
 
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

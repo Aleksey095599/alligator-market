@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor;
 
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 /**
  * Точка расширения проверки использования валюты внешней фичей/агрегатом.

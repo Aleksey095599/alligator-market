@@ -6,8 +6,8 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.spot.exception;
+package com.alligator.market.domain.instrument.asset.forex.fxspot.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
@@ -7,9 +7,9 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Ошибка поиска инструмента FOREX_SPOT.
+ * Ошибка удаления инструмента FOREX_SPOT.
  */
-public final class FxSpotNotFoundException extends BaseDomainException {
+public final class FxSpotDeleteException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
 
@@ -18,8 +18,9 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      *
      * @param instrumentCode код инструмента
      */
-    public FxSpotNotFoundException(InstrumentCode instrumentCode) {
-        super(DomainErrorCode.FX_SPOT_NOT_FOUND, msg(instrumentCode));
+    @SuppressWarnings("unused")
+    public FxSpotDeleteException(InstrumentCode instrumentCode) {
+        super(DomainErrorCode.FX_SPOT_DELETE_FAILED, msg(instrumentCode));
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -29,9 +30,8 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      * @param instrumentCode код инструмента
      * @param cause          причина ошибки
      */
-    @SuppressWarnings("unused")
-    public FxSpotNotFoundException(InstrumentCode instrumentCode, Throwable cause) {
-        super(DomainErrorCode.FX_SPOT_NOT_FOUND, msg(instrumentCode), cause);
+    public FxSpotDeleteException(InstrumentCode instrumentCode, Throwable cause) {
+        super(DomainErrorCode.FX_SPOT_DELETE_FAILED, msg(instrumentCode), cause);
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -42,8 +42,8 @@ public final class FxSpotNotFoundException extends BaseDomainException {
      * @return текст сообщения
      */
     private static String msg(InstrumentCode instrumentCode) {
-        InstrumentCode c = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "FX_SPOT instrument not found (code=" + c.value() + ")";
+        InstrumentCode code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        return "Failed to delete FX_SPOT instrument (code=" + code.value() + ")";
     }
 
     /**

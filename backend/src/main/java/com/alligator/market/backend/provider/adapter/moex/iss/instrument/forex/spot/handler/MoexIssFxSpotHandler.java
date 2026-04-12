@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
-import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.model.FxSpot;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.model.passport.AccessMethod;

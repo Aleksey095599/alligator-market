@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa;
 
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

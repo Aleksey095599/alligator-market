@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persi
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.model.FxSpot;
 
 import java.util.Objects;
 

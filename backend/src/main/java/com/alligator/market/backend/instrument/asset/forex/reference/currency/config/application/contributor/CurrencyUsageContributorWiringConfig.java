@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.c
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.CurrencyUsageContributor;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.fxspot.FxSpotCurrencyUsageContributor;
-import com.alligator.market.domain.instrument.asset.forex.spot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

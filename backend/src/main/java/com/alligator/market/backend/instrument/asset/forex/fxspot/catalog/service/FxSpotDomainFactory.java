@@ -4,11 +4,11 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dt
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
-import com.alligator.market.domain.instrument.asset.forex.spot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.codec.FxSpotCodec;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.model.FxSpot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

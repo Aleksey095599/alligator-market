@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.spot.exception;
+package com.alligator.market.domain.instrument.asset.forex.fxspot.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
@@ -7,9 +7,9 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Ошибка удаления инструмента FOREX_SPOT.
+ * Ошибка повторного создания инструмента FOREX_SPOT.
  */
-public final class FxSpotDeleteException extends BaseDomainException {
+public final class FxSpotAlreadyExistsException extends BaseDomainException {
 
     private final InstrumentCode instrumentCode;
 
@@ -18,9 +18,8 @@ public final class FxSpotDeleteException extends BaseDomainException {
      *
      * @param instrumentCode код инструмента
      */
-    @SuppressWarnings("unused")
-    public FxSpotDeleteException(InstrumentCode instrumentCode) {
-        super(DomainErrorCode.FX_SPOT_DELETE_FAILED, msg(instrumentCode));
+    public FxSpotAlreadyExistsException(InstrumentCode instrumentCode) {
+        super(DomainErrorCode.FX_SPOT_ALREADY_EXISTS, msg(instrumentCode));
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -30,8 +29,9 @@ public final class FxSpotDeleteException extends BaseDomainException {
      * @param instrumentCode код инструмента
      * @param cause          причина ошибки
      */
-    public FxSpotDeleteException(InstrumentCode instrumentCode, Throwable cause) {
-        super(DomainErrorCode.FX_SPOT_DELETE_FAILED, msg(instrumentCode), cause);
+    @SuppressWarnings("unused")
+    public FxSpotAlreadyExistsException(InstrumentCode instrumentCode, Throwable cause) {
+        super(DomainErrorCode.FX_SPOT_ALREADY_EXISTS, msg(instrumentCode), cause);
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
     }
 
@@ -43,7 +43,7 @@ public final class FxSpotDeleteException extends BaseDomainException {
      */
     private static String msg(InstrumentCode instrumentCode) {
         InstrumentCode code = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        return "Failed to delete FX_SPOT instrument (code=" + code.value() + ")";
+        return "FX_SPOT instrument already exists (code=" + code.value() + ")";
     }
 
     /**

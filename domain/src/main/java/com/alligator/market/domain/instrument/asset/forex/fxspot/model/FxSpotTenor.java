@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.spot.model;
+package com.alligator.market.domain.instrument.asset.forex.fxspot.model;
 
 /**
  * Теноры дат валютирования инструмента FOREX_SPOT.
