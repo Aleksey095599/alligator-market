@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 /**
- * REST-контроллер для create use case валюты.
+ * REST-контроллер создания валюты.
  */
 @RestController
 @RequestMapping("/api/v1/currencies")
@@ -31,9 +31,10 @@ public class CreateCurrencyController {
      */
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody CurrencyDto dto) {
-
+        // Делегируем удаление application-service
         Currency created = createCurrencyService.create(CurrencyDtoMapper.toDomain(dto));
-        // Формируем location для созданного ресурса по его коду.
+
+        // Формируем location для созданного ресурса по его коду
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")
