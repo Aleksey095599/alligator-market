@@ -9,12 +9,8 @@ import java.util.Objects;
  */
 public final class CurrencyInUseException extends IllegalStateException {
 
-    /**
-     * Создает исключение для используемой валюты.
-     *
-     * @param currencyCode код валюты
-     */
     public CurrencyInUseException(CurrencyCode currencyCode) {
-        super("Currency is in use (code=" + Objects.requireNonNull(currencyCode, "currencyCode must not be null").value() + ")");
+        super("Currency is in use (code=" + Objects.requireNonNull(currencyCode,
+                "currencyCode must not be null").value() + ")");
     }
 }
