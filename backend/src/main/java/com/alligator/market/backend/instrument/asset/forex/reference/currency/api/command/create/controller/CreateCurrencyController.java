@@ -2,10 +2,10 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.dto.CreateCurrencyRequest;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.create.CreateCurrencyService;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +30,17 @@ public class CreateCurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody CurrencyDto dto) {
-        // Делегируем удаление application-service
-        Currency created = createCurrencyService.create(CurrencyDtoMapper.toDomain(dto));
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody CreateCurrencyRequest request) {
+        // Собираем доменную модель из create-request
+        Currency currency = new Currency(
+                CurrencyCode.of(request.code()),
+                request.name(),
+                request.country(),
+                request.fractionDigits()
+        );
+
+        // Делегируем создание валюты application-service
+        Currency created = createCurrencyService.create(currency);
 
         // Формируем location для созданного ресурса по его коду
         URI location = ServletUriComponentsBuilder
