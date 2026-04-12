@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.model.vo.CurrencyCode;
 import org.springframework.data.jpa.repository.JpaRepository;

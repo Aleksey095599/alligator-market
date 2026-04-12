@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.repository.adapter;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.repository.adapter;
 
 import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;

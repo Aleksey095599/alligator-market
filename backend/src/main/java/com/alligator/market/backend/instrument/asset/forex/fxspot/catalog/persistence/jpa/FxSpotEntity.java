@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.persistence.jpa;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa;
 
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.InstrumentEntity;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.out;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.out;
 
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpotTenor;
 

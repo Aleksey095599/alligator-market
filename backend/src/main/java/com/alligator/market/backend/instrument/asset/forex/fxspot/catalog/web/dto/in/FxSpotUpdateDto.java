@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.in;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in;
 
 /**
  * DTO обновления инструмента FOREX_SPOT (in).

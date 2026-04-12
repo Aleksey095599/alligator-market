@@ -1,13 +1,13 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.web;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.service.FxSpotDomainFactory;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.service.FxSpotCatalogService;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.in.FxSpotCreateDto;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.in.FxSpotUpdateDto;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.mapper.FxSpotDtoMapper;
-import com.alligator.market.backend.instrument.asset.forex.spot.catalog.web.dto.out.FxSpotResponseDto;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.service.FxSpotDomainFactory;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.service.FxSpotCatalogService;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in.FxSpotCreateDto;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in.FxSpotUpdateDto;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.mapper.FxSpotDtoMapper;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.out.FxSpotResponseDto;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.spot.catalog.service;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.service;
 
 import com.alligator.market.domain.instrument.asset.forex.spot.model.FxSpot;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
