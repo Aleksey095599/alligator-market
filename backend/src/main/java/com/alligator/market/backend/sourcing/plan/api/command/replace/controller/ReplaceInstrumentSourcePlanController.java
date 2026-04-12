@@ -1,5 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.controller;
 
+import com.alligator.market.backend.sourcing.plan.api.command.common.dto.MarketDataSourceRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
@@ -60,7 +61,7 @@ public class ReplaceInstrumentSourcePlanController {
 
     /* Маппинг HTTP-модели источника в доменный источник. */
     private MarketDataSource toSource(
-            ReplaceInstrumentSourcePlanRequest.MarketDataSourceRequest request
+            MarketDataSourceRequest request
     ) {
         return new MarketDataSource(
                 new ProviderCode(request.providerCode()),
