@@ -23,13 +23,19 @@ import java.util.Objects;
 public class CreateInstrumentSourcePlanController {
 
     private final CreateInstrumentSourcePlanService createInstrumentSourcePlanService;
+    private final CreateInstrumentSourcePlanMapper createInstrumentSourcePlanMapper;
 
     public CreateInstrumentSourcePlanController(
-            CreateInstrumentSourcePlanService createInstrumentSourcePlanService
+            CreateInstrumentSourcePlanService createInstrumentSourcePlanService,
+            CreateInstrumentSourcePlanMapper createInstrumentSourcePlanMapper
     ) {
         this.createInstrumentSourcePlanService = Objects.requireNonNull(
                 createInstrumentSourcePlanService,
                 "createInstrumentSourcePlanService must not be null"
+        );
+        this.createInstrumentSourcePlanMapper = Objects.requireNonNull(
+                createInstrumentSourcePlanMapper,
+                "createInstrumentSourcePlanMapper must not be null"
         );
     }
 
