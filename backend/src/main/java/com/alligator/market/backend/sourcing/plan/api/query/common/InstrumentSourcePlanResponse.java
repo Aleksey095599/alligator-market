@@ -1,9 +1,9 @@
-package com.alligator.market.backend.sourcing.plan.api.query.get.dto;
+package com.alligator.market.backend.sourcing.plan.api.query.common;
 
 import java.util.List;
 
 /**
- * DTO ответа с планом источников по инструменту.
+ * DTO ответа с планом источников для инструмента.
  */
 public record InstrumentSourcePlanResponse(
         String instrumentCode,

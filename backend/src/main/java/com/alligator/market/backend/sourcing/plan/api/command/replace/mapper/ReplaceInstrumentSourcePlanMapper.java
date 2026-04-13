@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceInstrumentSourcePlanRequest;
-import com.alligator.market.backend.sourcing.plan.api.common.mapper.MarketDataSourceRequestMapper;
+import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
@@ -28,7 +28,7 @@ public class ReplaceInstrumentSourcePlanMapper {
     }
 
     /**
-     * Преобразует запрос замены плана в доменную модель {@link InstrumentSourcePlan}.
+     * Преобразует запрос {@link ReplaceInstrumentSourcePlanRequest} в доменную модель {@link InstrumentSourcePlan}.
      */
     public InstrumentSourcePlan toPlan(String instrumentCode, ReplaceInstrumentSourcePlanRequest request) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");

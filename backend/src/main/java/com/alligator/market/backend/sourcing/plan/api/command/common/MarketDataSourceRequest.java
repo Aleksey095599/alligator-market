@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.common.dto;
+package com.alligator.market.backend.sourcing.plan.api.command.common;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

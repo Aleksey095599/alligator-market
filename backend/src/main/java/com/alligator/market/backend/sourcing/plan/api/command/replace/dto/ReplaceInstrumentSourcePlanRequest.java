@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.dto;
 
-import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
+import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 

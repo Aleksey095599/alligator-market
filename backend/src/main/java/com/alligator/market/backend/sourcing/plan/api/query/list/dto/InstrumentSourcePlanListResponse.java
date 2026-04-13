@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.query.list.dto;
 
-import com.alligator.market.backend.sourcing.plan.api.query.get.dto.InstrumentSourcePlanResponse;
+import com.alligator.market.backend.sourcing.plan.api.query.common.InstrumentSourcePlanResponse;
 
 import java.util.List;
 

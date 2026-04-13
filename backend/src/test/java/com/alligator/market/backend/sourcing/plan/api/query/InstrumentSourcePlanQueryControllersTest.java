@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.query;
 
-import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.InstrumentSourcePlanResponseMapper;
+import com.alligator.market.backend.sourcing.plan.api.query.common.InstrumentSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.ListInstrumentSourcePlansController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;

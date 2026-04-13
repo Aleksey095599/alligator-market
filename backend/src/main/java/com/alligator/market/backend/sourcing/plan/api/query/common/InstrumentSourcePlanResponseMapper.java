@@ -1,7 +1,5 @@
-package com.alligator.market.backend.sourcing.plan.api.query.common.mapper;
+package com.alligator.market.backend.sourcing.plan.api.query.common;
 
-import com.alligator.market.backend.sourcing.plan.api.query.get.dto.InstrumentSourcePlanResponse;
-import com.alligator.market.backend.sourcing.plan.api.query.get.dto.MarketDataSourceResponse;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import org.springframework.stereotype.Component;
@@ -9,13 +7,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Единый mapper доменной модели плана в read-side HTTP DTO.
+ * Маппер доменной модели {@link InstrumentSourcePlan} в DTO read-side ответов.
  */
 @Component
 public class InstrumentSourcePlanResponseMapper {
 
     /**
-     * Конвертирует доменный план в DTO ответа.
+     * Конвертирует доменный {@link InstrumentSourcePlan} в DTO ответа {@link InstrumentSourcePlanResponse}.
      */
     public InstrumentSourcePlanResponse toPlanResponse(InstrumentSourcePlan plan) {
         List<MarketDataSourceResponse> sources = plan.sources().stream()

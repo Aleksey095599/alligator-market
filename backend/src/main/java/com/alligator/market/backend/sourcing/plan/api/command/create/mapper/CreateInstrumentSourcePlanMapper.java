@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.api.command.create.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.command.create.dto.CreateInstrumentSourcePlanRequest;
-import com.alligator.market.backend.sourcing.plan.api.common.mapper.MarketDataSourceRequestMapper;
+import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
@@ -28,7 +28,7 @@ public class CreateInstrumentSourcePlanMapper {
     }
 
     /**
-     * Преобразует {@link CreateInstrumentSourcePlanRequest} в доменную модель {@link InstrumentSourcePlan}.
+     * Преобразует запрос {@link CreateInstrumentSourcePlanRequest} в доменную модель {@link InstrumentSourcePlan}.
      */
     public InstrumentSourcePlan toDomain(CreateInstrumentSourcePlanRequest request) {
         List<MarketDataSource> sources = request.sources().stream()
