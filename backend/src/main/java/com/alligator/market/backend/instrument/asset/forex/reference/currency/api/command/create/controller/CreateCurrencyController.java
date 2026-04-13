@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.create.CreateCurrencyService;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class CreateCurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@RequestBody CreateCurrencyRequest request) {
+    public ResponseEntity<ApiResponse<String>> create(@Valid @RequestBody CreateCurrencyRequest request) {
         // Собираем доменную модель из create-request
         Currency currency = new Currency(
                 CurrencyCode.of(request.code()),
