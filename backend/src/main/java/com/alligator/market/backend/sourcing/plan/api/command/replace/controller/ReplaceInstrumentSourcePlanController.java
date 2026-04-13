@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.controller;
 
-import com.alligator.market.backend.sourcing.plan.api.command.common.dto.MarketDataSourceRequest;
+import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;

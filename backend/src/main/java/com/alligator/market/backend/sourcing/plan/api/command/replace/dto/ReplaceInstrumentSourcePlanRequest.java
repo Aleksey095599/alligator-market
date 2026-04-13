@@ -1,13 +1,13 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.dto;
 
-import com.alligator.market.backend.sourcing.plan.api.command.common.dto.MarketDataSourceRequest;
+import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
 /**
- * DTO тела HTTP-запроса на полную замену состава источников в плане инструмента.
+ * Тело HTTP-запроса на полную замену состава источников в плане инструмента.
  */
 public record ReplaceInstrumentSourcePlanRequest(
 

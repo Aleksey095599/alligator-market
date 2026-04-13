@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.command.create.controller;
 
-import com.alligator.market.backend.sourcing.plan.api.command.common.dto.MarketDataSourceRequest;
+import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.create.dto.CreateInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateInstrumentSourcePlanService;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
@@ -22,7 +22,6 @@ import java.util.Objects;
 @RequestMapping("/api/v1/instrument-source-plans")
 public class CreateInstrumentSourcePlanController {
 
-    /* Сервис create-use case. */
     private final CreateInstrumentSourcePlanService createInstrumentSourcePlanService;
 
     public CreateInstrumentSourcePlanController(

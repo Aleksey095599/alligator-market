@@ -1,11 +1,11 @@
-package com.alligator.market.backend.sourcing.plan.api.command.common.dto;
+package com.alligator.market.backend.sourcing.plan.api.common.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * DTO одного источника рыночных данных в составе плана источников инструмента.
+ * Входная модель одного источника в составе плана источников инструмента.
  */
 public record MarketDataSourceRequest(
 
