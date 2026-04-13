@@ -6,13 +6,13 @@ import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import org.springframework.stereotype.Component;
 
 /**
- * Маппер входной модели источника рыночных данных в доменную модель.
+ * Маппер для {@link MarketDataSourceRequest}.
  */
 @Component
 public class MarketDataSourceRequestMapper {
 
     /**
-     * Конвертирует входную модель источника в доменную модель.
+     * Преобразует {@link MarketDataSourceRequest} в доменную модель {@link MarketDataSource}.
      */
     public MarketDataSource toDomain(MarketDataSourceRequest request) {
         return new MarketDataSource(

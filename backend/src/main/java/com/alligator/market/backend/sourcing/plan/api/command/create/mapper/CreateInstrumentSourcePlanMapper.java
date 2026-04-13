@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Маппер создания плана источников инструмента.
+ * Маппер для {@link CreateInstrumentSourcePlanRequest}.
  */
 @Component
 public class CreateInstrumentSourcePlanMapper {
@@ -28,7 +28,7 @@ public class CreateInstrumentSourcePlanMapper {
     }
 
     /**
-     * Преобразует тело HTTP-запроса в доменную модель плана.
+     * Преобразует {@link CreateInstrumentSourcePlanRequest} в доменную модель {@link InstrumentSourcePlan}.
      */
     public InstrumentSourcePlan toDomain(CreateInstrumentSourcePlanRequest request) {
         List<MarketDataSource> sources = request.sources().stream()

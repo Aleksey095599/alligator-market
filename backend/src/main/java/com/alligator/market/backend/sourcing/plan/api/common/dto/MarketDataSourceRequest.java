@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * Входная модель источника рыночных данных.
+ * Источник рыночных данных для HTTP-запросов.
  */
 public record MarketDataSourceRequest(
 
