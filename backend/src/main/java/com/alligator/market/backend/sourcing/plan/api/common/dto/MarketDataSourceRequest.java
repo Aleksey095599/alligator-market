@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * Входная модель одного источника в составе плана источников инструмента.
+ * Входная модель источника рыночных данных.
  */
 public record MarketDataSourceRequest(
 
