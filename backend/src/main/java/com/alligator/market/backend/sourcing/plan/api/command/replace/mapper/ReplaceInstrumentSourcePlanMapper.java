@@ -5,7 +5,6 @@ import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataS
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +12,6 @@ import java.util.Objects;
 /**
  * Маппер для {@link ReplaceInstrumentSourcePlanRequest}.
  */
-@Component
 public class ReplaceInstrumentSourcePlanMapper {
 
     private final MarketDataSourceRequestMapper marketDataSourceRequestMapper;
