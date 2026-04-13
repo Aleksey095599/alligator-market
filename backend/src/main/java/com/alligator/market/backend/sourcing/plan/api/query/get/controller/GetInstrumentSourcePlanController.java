@@ -22,6 +22,7 @@ public class GetInstrumentSourcePlanController {
 
     /* Сервис get-use case. */
     private final GetInstrumentSourcePlanService getInstrumentSourcePlanService;
+
     /* Единый mapper read-side DTO. */
     private final InstrumentSourcePlanResponseMapper responseMapper;
 
