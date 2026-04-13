@@ -21,7 +21,6 @@ import java.util.Objects;
 @RequestMapping("/api/v1/instrument-source-plans")
 public class ReplaceInstrumentSourcePlanController {
 
-    /* Сервис replace-use case. */
     private final ReplaceInstrumentSourcePlanService replaceInstrumentSourcePlanService;
 
     public ReplaceInstrumentSourcePlanController(
