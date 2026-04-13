@@ -39,10 +39,8 @@ public class CreateCurrencyController {
                 request.fractionDigits()
         );
 
-        // Делегируем создание валюты application-service
         Currency created = createCurrencyService.create(currency);
 
-        // Формируем location для созданного ресурса по его коду
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{code}")

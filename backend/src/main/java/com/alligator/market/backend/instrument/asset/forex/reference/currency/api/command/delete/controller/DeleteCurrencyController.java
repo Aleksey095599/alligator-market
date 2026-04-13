@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DeleteCurrencyController {
 
-    /* Сервис удаления валюты. */
     private final DeleteCurrencyService deleteCurrencyService;
 
     /**
@@ -26,9 +25,7 @@ public class DeleteCurrencyController {
      */
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable String code) {
-        // Делегируем удаление application-service
         deleteCurrencyService.delete(CurrencyCode.of(code));
-
         return ResponseEntityFactory.noContent();
     }
 }
