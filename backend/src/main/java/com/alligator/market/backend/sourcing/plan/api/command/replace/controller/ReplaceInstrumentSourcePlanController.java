@@ -1,17 +1,12 @@
 package com.alligator.market.backend.sourcing.plan.api.command.replace.controller;
 
-import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceInstrumentSourcePlanRequest;
+import com.alligator.market.backend.sourcing.plan.api.command.replace.mapper.ReplaceInstrumentSourcePlanMapper;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
-import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,13 +17,19 @@ import java.util.Objects;
 public class ReplaceInstrumentSourcePlanController {
 
     private final ReplaceInstrumentSourcePlanService replaceInstrumentSourcePlanService;
+    private final ReplaceInstrumentSourcePlanMapper replaceInstrumentSourcePlanMapper;
 
     public ReplaceInstrumentSourcePlanController(
-            ReplaceInstrumentSourcePlanService replaceInstrumentSourcePlanService
+            ReplaceInstrumentSourcePlanService replaceInstrumentSourcePlanService,
+            ReplaceInstrumentSourcePlanMapper replaceInstrumentSourcePlanMapper
     ) {
         this.replaceInstrumentSourcePlanService = Objects.requireNonNull(
                 replaceInstrumentSourcePlanService,
                 "replaceInstrumentSourcePlanService must not be null"
+        );
+        this.replaceInstrumentSourcePlanMapper = Objects.requireNonNull(
+                replaceInstrumentSourcePlanMapper,
+                "replaceInstrumentSourcePlanMapper must not be null"
         );
     }
 
@@ -40,32 +41,7 @@ public class ReplaceInstrumentSourcePlanController {
             @PathVariable String instrumentCode,
             @Valid @RequestBody ReplaceInstrumentSourcePlanRequest request
     ) {
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-
-        replaceInstrumentSourcePlanService.replace(toPlan(instrumentCode, request));
+        replaceInstrumentSourcePlanService.replace(replaceInstrumentSourcePlanMapper.toPlan(instrumentCode, request));
         return ResponseEntity.noContent().build();
-    }
-
-    /* Маппинг HTTP-запроса в доменный план. */
-    private InstrumentSourcePlan toPlan(String instrumentCode, ReplaceInstrumentSourcePlanRequest request) {
-        List<MarketDataSource> sources = request.sources().stream()
-                .map(this::toSource)
-                .toList();
-
-        return new InstrumentSourcePlan(
-                new InstrumentCode(instrumentCode),
-                sources
-        );
-    }
-
-    /* Маппинг HTTP-модели источника в доменный источник. */
-    private MarketDataSource toSource(
-            MarketDataSourceRequest request
-    ) {
-        return new MarketDataSource(
-                new ProviderCode(request.providerCode()),
-                request.active(),
-                request.priority()
-        );
     }
 }
