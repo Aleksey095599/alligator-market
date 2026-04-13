@@ -2,7 +2,6 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.CurrencyCatalogService;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.in.CurrencyUpdateDto;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
