@@ -17,10 +17,7 @@ import java.util.Objects;
 @RestController
 public class InstrumentSourcePlanOptionsQueryController {
 
-    /* Query-порт получения доступных инструментов. */
     private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
-
-    /* Query-порт получения доступных провайдеров. */
     private final ProviderOptionsQueryPort providerOptionsQueryPort;
 
     public InstrumentSourcePlanOptionsQueryController(

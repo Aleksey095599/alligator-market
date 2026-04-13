@@ -1,5 +1,6 @@
-package com.alligator.market.backend.sourcing.plan.api.query.common;
+package com.alligator.market.backend.sourcing.plan.api.query.common.mapper;
 
+import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDataSourceResponse;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import org.springframework.stereotype.Component;
 

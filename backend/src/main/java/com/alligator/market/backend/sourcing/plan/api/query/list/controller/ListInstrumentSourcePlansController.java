@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.api.query.list.controller;
 
-import com.alligator.market.backend.sourcing.plan.api.query.common.InstrumentSourcePlanResponse;
-import com.alligator.market.backend.sourcing.plan.api.query.common.InstrumentSourcePlanResponseMapper;
+import com.alligator.market.backend.sourcing.plan.api.query.common.dto.InstrumentSourcePlanResponse;
+import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.InstrumentSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.api.query.list.dto.InstrumentSourcePlanListResponse;
 import com.alligator.market.backend.sourcing.plan.application.query.list.ListInstrumentSourcePlansService;
 import org.springframework.http.ResponseEntity;

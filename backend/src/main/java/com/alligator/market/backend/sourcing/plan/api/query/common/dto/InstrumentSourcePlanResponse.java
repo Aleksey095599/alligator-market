@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.query.common;
+package com.alligator.market.backend.sourcing.plan.api.query.common.dto;
 
 import java.util.List;
 
