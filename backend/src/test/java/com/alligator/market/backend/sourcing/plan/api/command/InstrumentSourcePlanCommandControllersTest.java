@@ -3,6 +3,7 @@ package com.alligator.market.backend.sourcing.plan.api.command;
 import com.alligator.market.backend.sourcing.plan.api.command.create.controller.CreateInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.command.delete.controller.DeleteInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.controller.ReplaceInstrumentSourcePlanController;
+import com.alligator.market.backend.sourcing.config.plan.api.mapper.InstrumentSourcePlanApiMapperWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.command.delete.DeleteInstrumentSourcePlanService;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceInstrumentSourcePlanService;
@@ -18,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -42,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         ReplaceInstrumentSourcePlanController.class,
         DeleteInstrumentSourcePlanController.class
 })
+@Import(InstrumentSourcePlanApiMapperWiringConfig.class)
 class InstrumentSourcePlanCommandControllersTest {
 
     @Autowired

@@ -3,14 +3,12 @@ package com.alligator.market.backend.sourcing.plan.api.query.common.mapper;
 import com.alligator.market.backend.sourcing.plan.api.query.common.dto.InstrumentSourcePlanResponse;
 import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDataSourceResponse;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Маппер доменной модели {@link InstrumentSourcePlan} в DTO read-side ответов.
  */
-@Component
 public class InstrumentSourcePlanResponseMapper {
 
     private final MarketDataSourceResponseMapper marketDataSourceResponseMapper;

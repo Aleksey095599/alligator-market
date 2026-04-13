@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.query;
 
-import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.InstrumentSourcePlanResponseMapper;
+import com.alligator.market.backend.sourcing.config.plan.api.mapper.InstrumentSourcePlanApiMapperWiringConfig;
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.ListInstrumentSourcePlansController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         ListInstrumentSourcePlansController.class,
         InstrumentSourcePlanOptionsQueryController.class
 })
-@Import(InstrumentSourcePlanResponseMapper.class)
+@Import(InstrumentSourcePlanApiMapperWiringConfig.class)
 class InstrumentSourcePlanQueryControllersTest {
 
     @Autowired
