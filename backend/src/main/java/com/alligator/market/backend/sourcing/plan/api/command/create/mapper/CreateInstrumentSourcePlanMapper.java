@@ -1,25 +1,38 @@
 package com.alligator.market.backend.sourcing.plan.api.command.create.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.command.create.dto.CreateInstrumentSourcePlanRequest;
-import com.alligator.market.backend.sourcing.plan.api.common.dto.MarketDataSourceRequest;
+import com.alligator.market.backend.sourcing.plan.api.common.mapper.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Маппер создания плана источников инструмента.
  */
+@Component
 public class CreateInstrumentSourcePlanMapper {
+
+    private final MarketDataSourceRequestMapper marketDataSourceRequestMapper;
+
+    public CreateInstrumentSourcePlanMapper(
+            MarketDataSourceRequestMapper marketDataSourceRequestMapper
+    ) {
+        this.marketDataSourceRequestMapper = Objects.requireNonNull(
+                marketDataSourceRequestMapper,
+                "marketDataSourceRequestMapper must not be null"
+        );
+    }
 
     /**
      * Преобразует тело HTTP-запроса в доменную модель плана.
      */
-    public InstrumentSourcePlan toPlan(CreateInstrumentSourcePlanRequest request) {
+    public InstrumentSourcePlan toDomain(CreateInstrumentSourcePlanRequest request) {
         List<MarketDataSource> sources = request.sources().stream()
-                .map(this::toSource)
+                .map(marketDataSourceRequestMapper::toDomain)
                 .toList();
 
         return new InstrumentSourcePlan(
