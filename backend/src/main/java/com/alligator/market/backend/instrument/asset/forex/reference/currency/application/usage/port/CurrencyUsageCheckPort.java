@@ -3,12 +3,12 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 /**
- * Порт проверки использования валюты во внешних фичах/агрегатах.
+ * Порт проверки использования валюты во внешних фичах.
  */
 public interface CurrencyUsageCheckPort {
 
     /**
-     * Проверка использования валюты во внешних фичах/агрегатах.
+     * Проверка использования валюты во внешних фичах.
      */
     boolean isUsed(CurrencyCode currencyCode);
 }
