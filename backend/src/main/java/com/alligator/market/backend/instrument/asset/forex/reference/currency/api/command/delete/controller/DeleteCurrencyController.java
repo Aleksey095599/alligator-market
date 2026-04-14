@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST-контроллер delete-slice валюты.
+ * REST API-адаптер use case удаления валюты.
  */
 @RestController
 @RequestMapping("/api/v1/currencies")

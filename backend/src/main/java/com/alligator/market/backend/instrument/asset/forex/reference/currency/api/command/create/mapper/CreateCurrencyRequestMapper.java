@@ -7,19 +7,16 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import java.util.Objects;
 
 /**
- * Локальный маппер create-slice для преобразования transport-request в доменную модель.
+ * Маппер преобразования Request DTO в доменную модель валюты.
  */
 public final class CreateCurrencyRequestMapper {
 
-    /**
-     * Приватный конструктор (запрещает создание экземпляров).
-     */
     private CreateCurrencyRequestMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
     /**
-     * Create-request --> доменная модель валюты.
+     * Request DTO --> доменная модель.
      */
     public static Currency toDomain(CreateCurrencyRequest request) {
         Objects.requireNonNull(request, "request must not be null");
