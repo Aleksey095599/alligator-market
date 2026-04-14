@@ -13,16 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/* Query-контроллер для получения списка валют. */
+/**
+ * REST API-адаптер query use case списка валют.
+ */
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
 public class ListCurrenciesController {
 
-    /* Сервис получения справочника валют. */
     private final ListCurrenciesService listCurrenciesService;
 
-    /* Вернуть все валюты в неизменном response-контракте. */
+    /**
+     * Вернуть все валюты.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
         // Конвертируем доменные сущности в DTO ответа.

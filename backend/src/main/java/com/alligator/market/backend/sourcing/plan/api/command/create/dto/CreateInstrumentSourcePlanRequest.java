@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * Тело HTTP-запроса на создание плана источников для инструмента.
+ * Request DTO use case создание плана источников для инструмента.
  */
 public record CreateInstrumentSourcePlanRequest(
 

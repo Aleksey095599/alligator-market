@@ -13,7 +13,6 @@ import java.util.Objects;
 @Slf4j
 public final class ListCurrenciesService {
 
-    /* Репозиторий для чтения справочника валют. */
     private final CurrencyRepository currencyRepository;
 
     public ListCurrenciesService(CurrencyRepository currencyRepository) {
@@ -22,7 +21,7 @@ public final class ListCurrenciesService {
     }
 
     public List<Currency> findAll() {
-        // Загружаем полный список валют.
+
         List<Currency> result = currencyRepository.findAll();
         log.debug("Found {} currencies", result.size());
 

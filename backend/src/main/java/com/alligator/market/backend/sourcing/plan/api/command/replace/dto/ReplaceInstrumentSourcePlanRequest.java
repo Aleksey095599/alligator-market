@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * Тело HTTP-запроса на полную замену состава источников в плане инструмента.
+ * Request DTO use case полная замена состава источников в плане инструмента.
  */
 public record ReplaceInstrumentSourcePlanRequest(
 
