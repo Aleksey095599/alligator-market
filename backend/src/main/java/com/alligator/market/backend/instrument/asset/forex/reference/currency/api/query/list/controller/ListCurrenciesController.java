@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST API-адаптер query use case списка валют.
+ * REST API-адаптер use case получение списка валют.
  */
 @RestController
 @RequestMapping("/api/v1/currencies")
