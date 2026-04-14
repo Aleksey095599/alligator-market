@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.c
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.CurrencyUsageCheckPort;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.adapter.CompositeCurrencyUsageCheckAdapter;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.adapter.CurrencyUsageCheckAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +21,6 @@ public class CurrencyUsageCheckPortWiringConfig {
      */
     @Bean(BEAN_CURRENCY_USAGE_CHECK_PORT)
     public CurrencyUsageCheckPort currencyUsageCheckPort(List<CurrencyUsageContributor> contributors) {
-        return new CompositeCurrencyUsageCheckAdapter(contributors);
+        return new CurrencyUsageCheckAdapter(contributors);
     }
 }

@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Композитный адаптер общей проверки использования валюты по всем подключенным contributor.
+ * Адаптер проверки использования валюты по всем подключенным contributors.
  */
-public final class CompositeCurrencyUsageCheckAdapter implements CurrencyUsageCheckPort {
+public final class CurrencyUsageCheckAdapter implements CurrencyUsageCheckPort {
 
     /* Набор contributors, участвующих в общей проверке использования валюты. */
     private final List<CurrencyUsageContributor> contributors;
 
-    public CompositeCurrencyUsageCheckAdapter(List<CurrencyUsageContributor> contributors) {
+    public CurrencyUsageCheckAdapter(List<CurrencyUsageContributor> contributors) {
         Objects.requireNonNull(contributors, "contributors must not be null");
 
         this.contributors = List.copyOf(contributors);
