@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.exception;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 

@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.port;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.CurrencyUsageContributor;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageCheckPort;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.adapter.CompositeCurrencyUsageCheckAdapter;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.CurrencyUsageCheckPort;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.adapter.CompositeCurrencyUsageCheckAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

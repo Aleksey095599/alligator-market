@@ -2,7 +2,7 @@ package com.alligator.market.backend.common.web.advice;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.exception.CurrencyInUseException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.*;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.*;

@@ -1,7 +1,7 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.adapter;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.adapter;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.contributor.CurrencyUsageContributor;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.port.CurrencyUsageCheckPort;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.CurrencyUsageCheckPort;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.List;
@@ -18,10 +18,8 @@ public final class CompositeCurrencyUsageCheckAdapter implements CurrencyUsageCh
     public CompositeCurrencyUsageCheckAdapter(List<CurrencyUsageContributor> contributors) {
         Objects.requireNonNull(contributors, "contributors must not be null");
 
-        // Делаем безопасную неизменяемую копию
         this.contributors = List.copyOf(contributors);
 
-        // Проверяем, что каждый contributor присутствует
         for (CurrencyUsageContributor contributor : this.contributors) {
             Objects.requireNonNull(contributor, "contributor must not be null");
         }
