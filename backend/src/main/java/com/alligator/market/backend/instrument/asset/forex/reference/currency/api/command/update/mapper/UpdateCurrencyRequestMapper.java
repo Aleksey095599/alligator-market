@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import java.util.Objects;
 
 /**
- * Локальный маппер преобразования Update request в доменную модель валюты.
+ * Маппер {@link UpdateCurrencyRequest} и доменной модели валюты.
  */
 public final class UpdateCurrencyRequestMapper {
 
@@ -16,7 +16,7 @@ public final class UpdateCurrencyRequestMapper {
     }
 
     /**
-     * Преобразование входного request в доменную модель.
+     * {@link UpdateCurrencyRequest} --> доменная модель.
      */
     public static Currency toDomain(String code, UpdateCurrencyRequest request) {
         Objects.requireNonNull(code, "code must not be null");
