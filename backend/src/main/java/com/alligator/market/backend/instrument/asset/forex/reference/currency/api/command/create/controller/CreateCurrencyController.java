@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 /**
- * REST-контроллер create-slice валюты.
+ * REST API-адаптер use case создания валюты.
  */
 @RestController
 @RequestMapping("/api/v1/currencies")

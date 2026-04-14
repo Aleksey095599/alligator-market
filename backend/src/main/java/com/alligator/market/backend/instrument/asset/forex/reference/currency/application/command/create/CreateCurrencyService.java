@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 /**
- * Use-case сервис создания валюты.
+ * Use-case сервис для сценария создания валюты.
  */
 @Slf4j
 public final class CreateCurrencyService {
