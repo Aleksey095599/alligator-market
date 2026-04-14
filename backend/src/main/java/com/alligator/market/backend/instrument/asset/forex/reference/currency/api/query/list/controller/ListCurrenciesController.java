@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.controller;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.dto.CurrencyListResponse;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.mapper.CurrencyListResponseMapper;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.query.list.ListCurrenciesService;
@@ -27,13 +25,13 @@ public class ListCurrenciesController {
      * Вернуть все валюты.
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CurrencyListResponse>>> getAll() {
+    public ResponseEntity<List<CurrencyListResponse>> getAll() {
 
-        List<CurrencyListResponse> currencyDtoList = listCurrenciesService.findAll()
+        List<CurrencyListResponse> currencies = listCurrenciesService.findAll()
                 .stream()
                 .map(CurrencyListResponseMapper::toResponse)
                 .toList();
 
-        return ResponseEntityFactory.ok(currencyDtoList);
+        return ResponseEntity.ok(currencies);
     }
 }

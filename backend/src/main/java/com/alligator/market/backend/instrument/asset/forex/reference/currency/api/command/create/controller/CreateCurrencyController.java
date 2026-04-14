@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.controller;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.dto.CreateCurrencyRequest;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.mapper.CreateCurrencyRequestMapper;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.create.CreateCurrencyService;
@@ -31,7 +29,7 @@ public class CreateCurrencyController {
      * Создать валюту.
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@Valid @RequestBody CreateCurrencyRequest request) {
+    public ResponseEntity<String> create(@Valid @RequestBody CreateCurrencyRequest request) {
         Currency created = createCurrencyService.create(
                 CreateCurrencyRequestMapper.toDomain(request)
         );
@@ -41,6 +39,6 @@ public class CreateCurrencyController {
                 .path("/{code}")
                 .buildAndExpand(created.code().value())
                 .toUri();
-        return ResponseEntityFactory.created(location, created.code().value());
+        return ResponseEntity.created(location).body(created.code().value());
     }
 }
