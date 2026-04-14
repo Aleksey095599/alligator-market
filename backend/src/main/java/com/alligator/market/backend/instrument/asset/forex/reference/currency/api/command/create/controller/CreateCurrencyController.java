@@ -39,6 +39,7 @@ public class CreateCurrencyController {
                 .path("/{code}")
                 .buildAndExpand(created.code().value())
                 .toUri();
+
         return ResponseEntity.created(location).body(created.code().value());
     }
 }
