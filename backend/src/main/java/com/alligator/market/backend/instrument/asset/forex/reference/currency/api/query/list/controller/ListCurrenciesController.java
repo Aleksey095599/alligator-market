@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.common.CurrencyDto;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.dto.mapper.CurrencyDtoMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.dto.CurrencyListResponse;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.mapper.CurrencyListResponseMapper;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.query.list.ListCurrenciesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +27,11 @@ public class ListCurrenciesController {
      * Вернуть все валюты.
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CurrencyDto>>> getAll() {
-        // Конвертируем доменные сущности в DTO ответа.
-        List<CurrencyDto> currencyDtoList = listCurrenciesService.findAll()
+    public ResponseEntity<ApiResponse<List<CurrencyListResponse>>> getAll() {
+
+        List<CurrencyListResponse> currencyDtoList = listCurrenciesService.findAll()
                 .stream()
-                .map(CurrencyDtoMapper::toCurrencyDto)
+                .map(CurrencyListResponseMapper::toResponse)
                 .toList();
 
         return ResponseEntityFactory.ok(currencyDtoList);
