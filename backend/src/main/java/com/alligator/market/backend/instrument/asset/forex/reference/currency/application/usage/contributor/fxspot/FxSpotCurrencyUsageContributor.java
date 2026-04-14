@@ -11,7 +11,6 @@ import java.util.Objects;
  */
 public final class FxSpotCurrencyUsageContributor implements CurrencyUsageContributor {
 
-    /* Репозиторий FxSpot для проверки использования валюты. */
     private final FxSpotRepository fxSpotRepository;
 
     public FxSpotCurrencyUsageContributor(FxSpotRepository fxSpotRepository) {
@@ -20,7 +19,6 @@ public final class FxSpotCurrencyUsageContributor implements CurrencyUsageContri
 
     @Override
     public boolean isUsed(CurrencyCode currencyCode) {
-        // Проверяем обязательный входной аргумент.
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
 
         return fxSpotRepository.existsByCurrencyCode(currencyCode);
