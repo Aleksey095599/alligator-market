@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,7 +39,7 @@ public class GlobalRestExceptionHandler {
         log.warn("Validation failed: {}", ex.getMessage());
 
         ProblemDetail problemDetail = buildProblemDetail(
-                HttpStatus.UNPROCESSABLE_ENTITY,
+                HttpStatus.UNPROCESSABLE_CONTENT,
                 "Validation failed",
                 "Request validation failed",
                 TYPE_VALIDATION_ERROR
@@ -49,7 +50,7 @@ public class GlobalRestExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
-                        error -> error.getField(),
+                        FieldError::getField,
                         error -> Objects.requireNonNullElse(error.getDefaultMessage(), "Invalid value"),
                         (first, second) -> first
                 ));
