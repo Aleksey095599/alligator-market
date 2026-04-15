@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +21,6 @@ import java.util.Optional;
 /**
  * Адаптер доменного репозитория валют (в контексте Spring Data JPA).
  */
-@Repository
 @RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
 
