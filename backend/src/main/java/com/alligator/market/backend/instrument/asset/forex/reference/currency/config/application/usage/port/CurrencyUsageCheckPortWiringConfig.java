@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.port;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.usage.port;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.CurrencyUsageCheckPort;
@@ -16,9 +16,6 @@ public class CurrencyUsageCheckPortWiringConfig {
 
     public static final String BEAN_CURRENCY_USAGE_CHECK_PORT = "currencyUsageCheckPort";
 
-    /**
-     * Порт общей проверки использования валюты через набор contributor.
-     */
     @Bean(BEAN_CURRENCY_USAGE_CHECK_PORT)
     public CurrencyUsageCheckPort currencyUsageCheckPort(List<CurrencyUsageContributor> contributors) {
         return new CurrencyUsageCheckAdapter(contributors);
