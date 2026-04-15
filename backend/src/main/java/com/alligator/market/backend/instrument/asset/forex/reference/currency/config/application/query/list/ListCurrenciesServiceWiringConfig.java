@@ -17,9 +17,6 @@ public class ListCurrenciesServiceWiringConfig {
 
     public static final String BEAN_LIST_CURRENCIES_SERVICE = "listCurrenciesService";
 
-    /**
-     * Собирает query service для получения списка валют.
-     */
     @Bean(BEAN_LIST_CURRENCIES_SERVICE)
     public ListCurrenciesService listCurrenciesService(
             @Qualifier(CurrencyRepositoryWiringConfig.BEAN_CURRENCY_REPOSITORY)

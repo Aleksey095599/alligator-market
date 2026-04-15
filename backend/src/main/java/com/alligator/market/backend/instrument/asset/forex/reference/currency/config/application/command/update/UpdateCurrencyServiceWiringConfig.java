@@ -17,9 +17,6 @@ public class UpdateCurrencyServiceWiringConfig {
 
     public static final String BEAN_UPDATE_CURRENCY_SERVICE = "updateCurrencyService";
 
-    /**
-     * Собирает application service для обновления валюты.
-     */
     @Bean(BEAN_UPDATE_CURRENCY_SERVICE)
     public UpdateCurrencyService updateCurrencyService(
             @Qualifier(CurrencyRepositoryWiringConfig.BEAN_CURRENCY_REPOSITORY)
