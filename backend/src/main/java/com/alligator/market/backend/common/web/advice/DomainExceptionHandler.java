@@ -153,7 +153,6 @@ public class DomainExceptionHandler {
      * Технические ошибки доменных операций --> 500.
      */
     @ExceptionHandler({
-            CurrencyCreateException.class,
             CurrencyUpdateException.class,
             CurrencyDeleteException.class,
             FxSpotCreateException.class,
@@ -168,9 +167,6 @@ public class DomainExceptionHandler {
 
     /* Подбираем код ошибки для технических доменных исключений. */
     private String resolveTechnicalErrorCode(RuntimeException ex) {
-        if (ex instanceof CurrencyCreateException) {
-            return DomainErrorCode.CURRENCY_CREATE_FAILED.name();
-        }
         if (ex instanceof CurrencyUpdateException) {
             return DomainErrorCode.CURRENCY_UPDATE_FAILED.name();
         }
