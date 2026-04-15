@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.controller;
 
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.dto.UpdateCurrencyRequest;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.mapper.UpdateCurrencyRequestMapper;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.update.UpdateCurrencyService;
@@ -29,6 +28,6 @@ public class UpdateCurrencyController {
     @PutMapping("/{code}")
     public ResponseEntity<Void> update(@PathVariable String code, @Valid @RequestBody UpdateCurrencyRequest request) {
         updateCurrencyService.update(UpdateCurrencyRequestMapper.toDomain(code, request));
-        return ResponseEntityFactory.noContent();
+        return ResponseEntity.noContent().build();
     }
 }
