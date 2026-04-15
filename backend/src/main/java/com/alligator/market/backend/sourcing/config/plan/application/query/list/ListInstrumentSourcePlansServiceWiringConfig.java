@@ -19,9 +19,6 @@ public class ListInstrumentSourcePlansServiceWiringConfig {
 
     public static final String BEAN_LIST_INSTRUMENT_SOURCE_PLANS_SERVICE = "listInstrumentSourcePlansService";
 
-    /**
-     * Сервис чтения планов источников рыночных данных.
-     */
     @Bean(BEAN_LIST_INSTRUMENT_SOURCE_PLANS_SERVICE)
     public ListInstrumentSourcePlansService listInstrumentSourcePlansService(
             @Qualifier(InstrumentSourcePlanRepositoryWiringConfig.BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY)

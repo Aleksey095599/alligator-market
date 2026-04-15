@@ -17,17 +17,11 @@ public class InstrumentSourcePlanOptionsQueryWiringConfig {
     public static final String BEAN_INSTRUMENT_OPTIONS_QUERY_PORT = "instrumentOptionsQueryPort";
     public static final String BEAN_PROVIDER_OPTIONS_QUERY_PORT = "providerOptionsQueryPort";
 
-    /**
-     * Query-порт получения доступных кодов инструментов.
-     */
     @Bean(BEAN_INSTRUMENT_OPTIONS_QUERY_PORT)
     public InstrumentOptionsQueryPort instrumentOptionsQueryPort(DSLContext dsl) {
         return new JooqInstrumentOptionsQueryAdapter(dsl);
     }
 
-    /**
-     * Query-порт получения доступных кодов провайдеров.
-     */
     @Bean(BEAN_PROVIDER_OPTIONS_QUERY_PORT)
     public ProviderOptionsQueryPort providerOptionsQueryPort(DSLContext dsl) {
         return new JooqProviderOptionsQueryAdapter(dsl);

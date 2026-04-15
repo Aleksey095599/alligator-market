@@ -19,9 +19,6 @@ public class DeleteInstrumentSourcePlanServiceWiringConfig {
 
     public static final String BEAN_DELETE_INSTRUMENT_SOURCE_PLAN_SERVICE = "deleteInstrumentSourcePlanService";
 
-    /**
-     * Сервис удаления плана источников рыночных данных для инструмента.
-     */
     @Bean(BEAN_DELETE_INSTRUMENT_SOURCE_PLAN_SERVICE)
     public DeleteInstrumentSourcePlanService deleteInstrumentSourcePlanService(
             @Qualifier(InstrumentSourcePlanRepositoryWiringConfig.BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY)

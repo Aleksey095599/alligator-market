@@ -14,9 +14,6 @@ public class InstrumentSourcePlanRepositoryWiringConfig {
 
     public static final String BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY = "instrumentSourcePlanRepository";
 
-    /**
-     * Доменный порт репозитория планов источников через jOOQ-адаптер.
-     */
     @Bean(BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY)
     public InstrumentSourcePlanRepository instrumentSourcePlanRepository(DSLContext dsl) {
         return new JooqInstrumentSourcePlanRepository(dsl);

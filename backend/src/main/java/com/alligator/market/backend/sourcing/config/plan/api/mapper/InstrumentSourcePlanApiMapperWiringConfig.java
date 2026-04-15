@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Wiring-конфигурация API mapper-ов фичи sourcing/plan.
+ * Wiring-конфигурация API mapper-ов фичи sourcing.
  */
 @Configuration(proxyBeanMethods = false)
 public class InstrumentSourcePlanApiMapperWiringConfig {

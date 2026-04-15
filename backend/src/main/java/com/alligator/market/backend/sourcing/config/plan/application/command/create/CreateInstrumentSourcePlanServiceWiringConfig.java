@@ -26,9 +26,6 @@ public class CreateInstrumentSourcePlanServiceWiringConfig {
 
     public static final String BEAN_CREATE_INSTRUMENT_SOURCE_PLAN_SERVICE = "createInstrumentSourcePlanService";
 
-    /**
-     * Сервис создания плана источников рыночных данных для инструмента.
-     */
     @Bean(BEAN_CREATE_INSTRUMENT_SOURCE_PLAN_SERVICE)
     public CreateInstrumentSourcePlanService createInstrumentSourcePlanService(
             @Qualifier(InstrumentSourcePlanRepositoryWiringConfig.BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY)

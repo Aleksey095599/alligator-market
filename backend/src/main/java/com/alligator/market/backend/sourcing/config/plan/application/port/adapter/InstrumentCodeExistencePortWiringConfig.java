@@ -14,9 +14,6 @@ public class InstrumentCodeExistencePortWiringConfig {
 
     public static final String BEAN_INSTRUMENT_CODE_EXISTENCE_PORT = "instrumentCodeExistencePort";
 
-    /**
-     * Порт проверки существования инструмента по коду.
-     */
     @Bean(BEAN_INSTRUMENT_CODE_EXISTENCE_PORT)
     public InstrumentCodeExistencePort instrumentCodeExistencePort(DSLContext dsl) {
         return new JooqInstrumentCodeExistenceAdapter(dsl);

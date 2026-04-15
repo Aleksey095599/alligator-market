@@ -26,9 +26,6 @@ public class ReplaceInstrumentSourcePlanServiceWiringConfig {
 
     public static final String BEAN_REPLACE_INSTRUMENT_SOURCE_PLAN_SERVICE = "replaceInstrumentSourcePlanService";
 
-    /**
-     * Сервис полной замены плана источников рыночных данных для инструмента.
-     */
     @Bean(BEAN_REPLACE_INSTRUMENT_SOURCE_PLAN_SERVICE)
     public ReplaceInstrumentSourcePlanService replaceInstrumentSourcePlanService(
             @Qualifier(InstrumentSourcePlanRepositoryWiringConfig.BEAN_INSTRUMENT_SOURCE_PLAN_REPOSITORY)

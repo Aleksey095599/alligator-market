@@ -7,19 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Явный wiring доменного {@link CurrencyRepository} через текущий adapter.
+ * Wiring-конфигурация {@link CurrencyRepository}.
  */
 @Configuration(proxyBeanMethods = false)
 public class CurrencyRepositoryWiringConfig {
 
     public static final String BEAN_CURRENCY_REPOSITORY = "currencyRepository";
 
-    /**
-     * Сборка доменного repository-port для currency feature.
-     */
     @Bean(BEAN_CURRENCY_REPOSITORY)
     public CurrencyRepository currencyRepository(CurrencyJpaRepository jpaRepository) {
-        // Передаем зависимости adapter'а в явной точке сборки.
         return new CurrencyRepositoryAdapter(jpaRepository);
     }
 }
