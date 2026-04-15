@@ -1,5 +1,6 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.mapper;
 
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 
 import java.util.Objects;

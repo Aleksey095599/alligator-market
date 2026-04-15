@@ -1,5 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa;
 
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.converter.CurrencyCodeConverter;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import jakarta.persistence.*;

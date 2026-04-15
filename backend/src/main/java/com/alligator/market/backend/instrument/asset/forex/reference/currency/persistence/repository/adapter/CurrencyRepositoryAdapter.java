@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.p
 
 import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntityMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.mapper.CurrencyEntityMapper;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.*;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
