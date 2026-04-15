@@ -2,11 +2,7 @@ package com.alligator.market.backend.common.web.advice;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyAlreadyExistsException;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.*;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
@@ -30,42 +26,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class DomainExceptionHandler {
-
-    /**
-     * Валюта с таким кодом уже существует --> 409.
-     */
-    @ExceptionHandler(CurrencyAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyAlreadyExists(CurrencyAlreadyExistsException ex) {
-        log.warn("Currency already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_ALREADY_EXISTS.name(), ex.getMessage());
-    }
-
-    /**
-     * Валюта с таким именем уже существует --> 409.
-     */
-    @ExceptionHandler(CurrencyNameDuplicateException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyNameDuplicate(CurrencyNameDuplicateException ex) {
-        log.warn("Currency name duplicate: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_NAME_DUPLICATE.name(), ex.getMessage());
-    }
-
-    /**
-     * Валюта используется внешними фичами/агрегатами --> 409.
-     */
-    @ExceptionHandler(CurrencyInUseException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyInUse(CurrencyInUseException ex) {
-        log.warn("Currency is in use: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCode.CURRENCY_IN_USE.name(), ex.getMessage());
-    }
-
-    /**
-     * Валюта не найдена --> 404.
-     */
-    @ExceptionHandler(CurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
-        log.warn("Currency not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(DomainErrorCode.CURRENCY_NOT_FOUND.name(), ex.getMessage());
-    }
 
     /**
      * Валюта уже используется при создании FOREX_SPOT --> 409.
