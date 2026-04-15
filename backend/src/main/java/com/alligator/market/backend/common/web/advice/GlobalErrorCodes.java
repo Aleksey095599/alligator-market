@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.web.error;
+package com.alligator.market.backend.common.web.advice;
 
 /**
  * Глобальные коды ошибок.
