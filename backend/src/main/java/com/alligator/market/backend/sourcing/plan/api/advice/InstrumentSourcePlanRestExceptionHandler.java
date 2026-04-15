@@ -15,15 +15,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Feature-specific обработчик ошибок API.
@@ -45,8 +38,6 @@ public class InstrumentSourcePlanRestExceptionHandler {
     private static final String PROVIDER_CODES_NOT_FOUND = "PROVIDER_CODES_NOT_FOUND";
     private static final String INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS = "INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS";
     private static final String INSTRUMENT_SOURCE_PLAN_NOT_FOUND = "INSTRUMENT_SOURCE_PLAN_NOT_FOUND";
-    private static final String VALIDATION_ERROR = "VALIDATION_ERROR";
-    private static final String MALFORMED_REQUEST = "MALFORMED_REQUEST";
 
     /**
      * Код инструмента отсутствует в registry --> 400.
@@ -103,49 +94,6 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 "Instrument source plan not found",
                 ex.getMessage(),
                 INSTRUMENT_SOURCE_PLAN_NOT_FOUND
-        );
-    }
-
-    /**
-     * Ошибки валидации входного DTO (@Valid) --> 400.
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        log.warn("Request validation failed: {}", ex.getMessage());
-
-        ProblemDetail problemDetail = buildProblemDetail(
-                HttpStatus.BAD_REQUEST,
-                "Validation failed",
-                "Request validation failed",
-                VALIDATION_ERROR
-        );
-
-        /* Поля с ошибками -> компактная карта field -> message. */
-        Map<String, String> fieldErrors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        FieldError::getField,
-                        fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(),
-                                "Invalid value"),
-                        (first, second) -> first
-                ));
-        problemDetail.setProperty("fieldErrors", fieldErrors);
-
-        return problemDetail;
-    }
-
-    /**
-     * Некорректное тело запроса (JSON parse / type mismatch) --> 400.
-     */
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ProblemDetail handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-        log.warn("Malformed request body: {}", ex.getMessage());
-        return buildProblemDetail(
-                HttpStatus.BAD_REQUEST,
-                "Malformed request",
-                "Request body is malformed or unreadable",
-                MALFORMED_REQUEST
         );
     }
 

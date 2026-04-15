@@ -1,18 +1,18 @@
 package com.alligator.market.backend.common.web.advice;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.error.GlobalErrorCodes;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+import java.util.Objects;
+import java.net.URI;
 import java.util.stream.Collectors;
 
 /**
@@ -22,75 +22,137 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
 
+    /* Базовый namespace для type URI в ProblemDetail. */
+    private static final String ERROR_TYPE_BASE = "https://api.alligator.market/errors/";
+
+    /* Глобальные type-коды ошибок в формате RFC7807. */
+    private static final String TYPE_VALIDATION_ERROR = ERROR_TYPE_BASE + "validation-error";
+    private static final String TYPE_BAD_ARGUMENT = ERROR_TYPE_BASE + "bad-argument";
+    private static final String TYPE_MALFORMED_JSON = ERROR_TYPE_BASE + "malformed-json";
+    private static final String TYPE_DATA_INTEGRITY_VIOLATION = ERROR_TYPE_BASE + "data-integrity-violation";
+    private static final String TYPE_UNEXPECTED_ERROR = ERROR_TYPE_BASE + "unexpected-error";
+
     /**
      * Ошибки валидации тела запроса (@Valid) --> 422.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult()
+    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        log.warn("Validation failed: {}", ex.getMessage());
+
+        ProblemDetail problemDetail = buildProblemDetail(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                "Validation failed",
+                "Request validation failed",
+                TYPE_VALIDATION_ERROR
+        );
+
+        /* Ошибки полей -> компактная карта field -> message. */
+        Map<String, String> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining("; "));
-        log.warn("Validation failed: {}", message);
-        return ResponseEntityFactory.unprocessableEntity(GlobalErrorCodes.VALIDATION_ERROR.name(), message);
+                .collect(Collectors.toMap(
+                        error -> error.getField(),
+                        error -> Objects.requireNonNullElse(error.getDefaultMessage(), "Invalid value"),
+                        (first, second) -> first
+                ));
+        problemDetail.setProperty("fieldErrors", fieldErrors);
+
+        return problemDetail;
     }
 
     /**
      * Ошибки валидации параметров (@Validated) --> 400.
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleConstraintViolation(ConstraintViolationException ex) {
+    public ProblemDetail handleConstraintViolation(ConstraintViolationException ex) {
         String message = ex.getConstraintViolations()
                 .stream()
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .collect(Collectors.joining("; "));
         log.warn("Constraint violation: {}", message);
-        return ResponseEntityFactory.badRequest(GlobalErrorCodes.BAD_ARGUMENT.name(), message);
+        return buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "Bad argument",
+                message,
+                TYPE_BAD_ARGUMENT
+        );
     }
 
     /**
      * Тело запроса не удалось распарсить --> 400.
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+    public ProblemDetail handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         log.warn("Malformed JSON: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(GlobalErrorCodes.MALFORMED_JSON.name(), "Malformed JSON");
+        return buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "Malformed JSON",
+                "Request body is malformed or unreadable",
+                TYPE_MALFORMED_JSON
+        );
     }
 
     /**
      * Нарушение целостности данных --> 409.
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+    public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
-        return ResponseEntityFactory.conflict(GlobalErrorCodes.DATA_INTEGRITY_VIOLATION.name(), "Data integrity violation");
+        return buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "Data integrity violation",
+                "Data integrity violation",
+                TYPE_DATA_INTEGRITY_VIOLATION
+        );
     }
 
     /**
      * Некорректно переданные аргументы --> 400.
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
+    public ProblemDetail handleIllegalArgument(IllegalArgumentException ex) {
         log.warn("Illegal argument: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(GlobalErrorCodes.BAD_ARGUMENT.name(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "Bad argument",
+                ex.getMessage(),
+                TYPE_BAD_ARGUMENT
+        );
     }
 
     /**
      * Неподдерживаемые операции --> 500.
      */
     @ExceptionHandler({IllegalStateException.class, UnsupportedOperationException.class})
-    public ResponseEntity<ApiResponse<Void>> handleIllegalState(RuntimeException ex) {
+    public ProblemDetail handleIllegalState(RuntimeException ex) {
         log.error("Illegal state: {}", ex.getMessage(), ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, GlobalErrorCodes.UNEXPECTED_ERROR.name(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Unexpected error",
+                ex.getMessage(),
+                TYPE_UNEXPECTED_ERROR
+        );
     }
 
     /**
      * Непредвиденные ошибки --> 500.
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleUnexpected(Exception ex) {
+    public ProblemDetail handleUnexpected(Exception ex) {
         log.error("Unhandled exception", ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, GlobalErrorCodes.UNEXPECTED_ERROR.name(), "Unexpected server error");
+        return buildProblemDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Unexpected error",
+                "Unexpected server error",
+                TYPE_UNEXPECTED_ERROR
+        );
+    }
+
+    /* Единый builder ProblemDetail для общего контракта ошибок REST-слоя. */
+    private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String typeUri) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
+        problemDetail.setTitle(title);
+        problemDetail.setType(URI.create(typeUri));
+        return problemDetail;
     }
 }
