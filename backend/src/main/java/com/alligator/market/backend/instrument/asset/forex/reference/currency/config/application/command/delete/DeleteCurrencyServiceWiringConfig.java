@@ -22,9 +22,6 @@ public class DeleteCurrencyServiceWiringConfig {
 
     public static final String BEAN_DELETE_CURRENCY_SERVICE = "deleteCurrencyService";
 
-    /**
-     * Явно собираем use-case сервис удаления валюты из требуемых портов.
-     */
     @Bean(BEAN_DELETE_CURRENCY_SERVICE)
     public DeleteCurrencyService deleteCurrencyService(
             @Qualifier(CurrencyRepositoryWiringConfig.BEAN_CURRENCY_REPOSITORY)
