@@ -4,7 +4,9 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/* Бизнес-ошибка: валюта используется в связанных сценариях. */
+/**
+ * Ошибка application-слоя: валюта используется в связанных сценариях.
+ */
 public final class CurrencyInUseException extends IllegalStateException {
 
     public CurrencyInUseException(CurrencyCode currencyCode) {

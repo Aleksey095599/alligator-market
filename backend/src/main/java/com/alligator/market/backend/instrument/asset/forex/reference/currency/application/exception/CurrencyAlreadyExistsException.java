@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import java.util.Objects;
 
 /**
- * Бизнес-ошибка: валюта с таким кодом уже существует.
+ * Ошибка application-слоя: валюта с таким кодом уже существует.
  */
 public final class CurrencyAlreadyExistsException extends IllegalStateException {
 

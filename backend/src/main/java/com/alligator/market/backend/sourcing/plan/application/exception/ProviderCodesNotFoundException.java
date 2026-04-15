@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * Исключение: один или несколько кодов провайдеров не найдены.
+ * Ошибка application-слоя: один или несколько кодов провайдеров не найдены.
  */
 public final class ProviderCodesNotFoundException extends IllegalArgumentException {
 

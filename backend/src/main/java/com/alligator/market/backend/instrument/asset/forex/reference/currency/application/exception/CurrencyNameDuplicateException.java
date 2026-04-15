@@ -2,7 +2,9 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 
 import java.util.Objects;
 
-/* Бизнес-ошибка: валюта с таким именем уже существует. */
+/**
+ * Ошибка application-слоя: валюта с таким именем уже существует.
+ */
 public final class CurrencyNameDuplicateException extends IllegalStateException {
 
     public CurrencyNameDuplicateException(String name) {

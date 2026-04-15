@@ -4,7 +4,9 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/* Бизнес-ошибка: валюта не найдена по коду. */
+/**
+ * Ошибка application-слоя: валюта не найдена по коду.
+ */
 public final class CurrencyNotFoundException extends IllegalStateException {
 
     public CurrencyNotFoundException(CurrencyCode currencyCode) {

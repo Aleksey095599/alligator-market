@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Исключение: инструмент с указанным кодом не найден.
+ * Ошибка application-слоя: инструмент с указанным кодом не найден.
  */
 public final class InstrumentCodeNotFoundException extends IllegalArgumentException {
 
