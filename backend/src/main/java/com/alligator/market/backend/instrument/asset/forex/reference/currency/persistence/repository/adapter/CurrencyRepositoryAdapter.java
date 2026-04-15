@@ -106,7 +106,7 @@ public class CurrencyRepositoryAdapter implements CurrencyRepository {
             jpaRepository.delete(e);
             jpaRepository.flush();
         } catch (DataAccessException ex) {
-            throw new CurrencyDeleteException(code, ex);
+            throw ex;
         }
     }
 
