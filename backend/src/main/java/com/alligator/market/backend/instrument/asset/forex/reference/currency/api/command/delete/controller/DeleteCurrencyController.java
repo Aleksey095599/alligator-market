@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.delete.controller;
 
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.delete.DeleteCurrencyService;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,6 @@ public class DeleteCurrencyController {
     @DeleteMapping("/{code}")
     public ResponseEntity<Void> delete(@PathVariable String code) {
         deleteCurrencyService.delete(CurrencyCode.of(code));
-        return ResponseEntityFactory.noContent();
+        return ResponseEntity.noContent().build();
     }
 }
