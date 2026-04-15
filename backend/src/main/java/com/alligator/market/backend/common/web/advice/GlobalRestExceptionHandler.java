@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -20,6 +21,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
+
+    /* Типы ошибок в формате ProblemDetail type (RFC 7807). */
+    private static final String PROBLEM_TYPE_PREFIX = "urn:alligator:problem:";
+    private static final String TYPE_VALIDATION_ERROR = PROBLEM_TYPE_PREFIX + "validation-error";
+    private static final String TYPE_BAD_ARGUMENT = PROBLEM_TYPE_PREFIX + "bad-argument";
+    private static final String TYPE_MALFORMED_JSON = PROBLEM_TYPE_PREFIX + "malformed-json";
+    private static final String TYPE_DATA_INTEGRITY_VIOLATION = PROBLEM_TYPE_PREFIX + "data-integrity-violation";
+    private static final String TYPE_UNEXPECTED_ERROR = PROBLEM_TYPE_PREFIX + "unexpected-error";
 
     /**
      * Ошибки валидации тела запроса (@Valid) --> 422.
@@ -32,7 +41,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY,
                 "Validation failed",
                 "Request validation failed",
-                GlobalErrorCodes.VALIDATION_ERROR.name()
+                TYPE_VALIDATION_ERROR
         );
 
         /* Ошибки полей -> компактная карта field -> message. */
@@ -63,7 +72,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Bad argument",
                 message,
-                GlobalErrorCodes.BAD_ARGUMENT.name()
+                TYPE_BAD_ARGUMENT
         );
     }
 
@@ -77,7 +86,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Malformed JSON",
                 "Request body is malformed or unreadable",
-                GlobalErrorCodes.MALFORMED_JSON.name()
+                TYPE_MALFORMED_JSON
         );
     }
 
@@ -91,7 +100,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Data integrity violation",
                 "Data integrity violation",
-                GlobalErrorCodes.DATA_INTEGRITY_VIOLATION.name()
+                TYPE_DATA_INTEGRITY_VIOLATION
         );
     }
 
@@ -105,7 +114,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Bad argument",
                 ex.getMessage(),
-                GlobalErrorCodes.BAD_ARGUMENT.name()
+                TYPE_BAD_ARGUMENT
         );
     }
 
@@ -119,7 +128,7 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Unexpected error",
                 ex.getMessage(),
-                GlobalErrorCodes.UNEXPECTED_ERROR.name()
+                TYPE_UNEXPECTED_ERROR
         );
     }
 
@@ -133,15 +142,15 @@ public class GlobalRestExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Unexpected error",
                 "Unexpected server error",
-                GlobalErrorCodes.UNEXPECTED_ERROR.name()
+                TYPE_UNEXPECTED_ERROR
         );
     }
 
     /* Единый builder ProblemDetail для общего контракта ошибок REST-слоя. */
-    private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String errorCode) {
+    private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String type) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(title);
-        problemDetail.setProperty("errorCode", errorCode);
+        problemDetail.setType(URI.create(type));
         return problemDetail;
     }
 }
