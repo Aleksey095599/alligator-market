@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.servi
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in.FxSpotCreateDto;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in.FxSpotUpdateDto;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.exception.CurrencyNotFoundException;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;

@@ -1,12 +1,10 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.exception;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception;
 
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
-/**
- * Исключение: валюта используется внешними фичами/агрегатами.
- */
+/* Бизнес-ошибка: валюта используется в связанных сценариях. */
 public final class CurrencyInUseException extends IllegalStateException {
 
     public CurrencyInUseException(CurrencyCode currencyCode) {
