@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Feature-specific обработчик ошибок API для сценариев InstrumentSourcePlan.
+ * Feature-specific обработчик ошибок API.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)

@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Локальный обработчик ошибок currency feature для REST-контроллеров.
+ * Feature-specific обработчик ошибок API.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
