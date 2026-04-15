@@ -26,9 +26,6 @@ public enum DomainErrorCode {
     CURRENCY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
     CURRENCY_NOT_FOUND(DomainErrorType.NOT_FOUND),
     CURRENCY_IN_USE(DomainErrorType.CONFLICT),
-    CURRENCY_CREATE_FAILED(DomainErrorType.TECHNICAL),
-    CURRENCY_UPDATE_FAILED(DomainErrorType.TECHNICAL),
-    CURRENCY_DELETE_FAILED(DomainErrorType.TECHNICAL),
 
     /* FOREX_SPOT инструмент: */
     FX_SPOT_ALREADY_EXISTS(DomainErrorType.CONFLICT),
