@@ -1,5 +1,6 @@
-package com.alligator.market.domain.instrument.asset.forex.fxspot.model;
+package com.alligator.market.domain.instrument.asset.forex.fxspot;
 
+import com.alligator.market.domain.instrument.asset.forex.fxspot.tenor.FxSpotTenor;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
@@ -12,7 +13,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpo
 import java.util.Objects;
 
 /**
- * Модель финансового инструмента FOREX_SPOT.
+ * Модель финансового инструмента FOREX_SPOT (aggregate root).
  *
  * <p>Реализует базовый контракт финансового инструмента {@link Instrument}.</p>
  *

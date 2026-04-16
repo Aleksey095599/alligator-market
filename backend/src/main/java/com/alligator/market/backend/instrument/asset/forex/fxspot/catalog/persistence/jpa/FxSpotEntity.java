@@ -8,8 +8,8 @@ import com.alligator.market.domain.instrument.base.model.classification.AssetCla
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.codec.FxSpotCodec;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.model.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.model.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.tenor.FxSpotTenor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
