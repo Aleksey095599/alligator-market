@@ -1,7 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa;
 
 import com.alligator.market.backend.instrument.base.catalog.persistence.jpa.InstrumentEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.base.classification.AssetClass;
@@ -70,44 +69,29 @@ import java.util.Objects;
 public class FxSpotEntity extends InstrumentEntity {
 
     /**
-     * Базовая валюта инструмента (FK на {@code currency.code}).
+     * Базовая валюта инструмента (FK на {@code currency.code} на уровне БД).
      *
      * <p>Ключевые моменты:</p>
      * <ul>
      *   <li>Поле задает неизменяемый атрибут инструмента, поэтому {@code updatable=false} и запрет
      *   на переназначение через сеттер {@link Setter}.</li>
-     *   <li>{@link ManyToOne}: связь по внешнему ключу (многие FOREX_SPOT могут ссылаться на одну валюту).</li>
-     *   <li>{@link JoinColumn}: FK-колонка {@code base_currency} ссылается на {@code currency.code}.</li>
-     *   <li>{@code fetch = LAZY}: валюту загружаем только при обращении к полю.</li>
-     *   <li>{@code optional = false}: ссылка обязательна.</li>
+     *   <li>Храним scalar-значение {@link CurrencyCode}, без {@code @ManyToOne} зависимости от currency-JPA модели.</li>
      * </ul>
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "base_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_base"),
-            nullable = false,
-            updatable = false
-    )
-    private CurrencyEntity baseCurrency;
+    @Column(name = "base_currency", nullable = false, updatable = false)
+    private CurrencyCode baseCurrencyCode;
 
     /**
-     * Котируемая валюта инструмента (FK на {@code currency.code}).
+     * Котируемая валюта инструмента (FK на {@code currency.code} на уровне БД).
      *
-     * <p>Ключевые моменты аналогичны {@link #baseCurrency}.</p>
+     * <p>Ключевые моменты аналогичны {@link #baseCurrencyCode}.</p>
      */
     @Setter(AccessLevel.NONE)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "quote_currency", referencedColumnName = "code",
-            foreignKey = @ForeignKey(name = "fk_fx_spot_quote"),
-            nullable = false,
-            updatable = false
-    )
-    private CurrencyEntity quoteCurrency;
+    @Column(name = "quote_currency", nullable = false, updatable = false)
+    private CurrencyCode quoteCurrencyCode;
 
     /**
      * Тенор даты расчетов.
@@ -147,23 +131,20 @@ public class FxSpotEntity extends InstrumentEntity {
      * родительскую сущность финансового инструмента.</p>
      */
     public FxSpotEntity(
-            CurrencyEntity baseCurrency,
-            CurrencyEntity quoteCurrency,
+            CurrencyCode baseCurrencyCode,
+            CurrencyCode quoteCurrencyCode,
             FxSpotTenor tenor
     ) {
-        this.baseCurrency = Objects.requireNonNull(baseCurrency, "baseCurrency must not be null");
-        this.quoteCurrency = Objects.requireNonNull(quoteCurrency, "quoteCurrency must not be null");
+        this.baseCurrencyCode = Objects.requireNonNull(baseCurrencyCode, "baseCurrencyCode must not be null");
+        this.quoteCurrencyCode = Objects.requireNonNull(quoteCurrencyCode, "quoteCurrencyCode must not be null");
         this.tenor = Objects.requireNonNull(tenor, "tenor must not be null");
 
-        final CurrencyCode baseCode = baseCurrency.getCode();
-        final CurrencyCode quoteCode = quoteCurrency.getCode();
-
-        if (baseCode.equals(quoteCode)) {
+        if (baseCurrencyCode.equals(quoteCurrencyCode)) {
             throw new IllegalArgumentException("base and quote currencies must be different");
         }
 
-        final InstrumentSymbol symbol = FxSpotCodec.fxSpotSymbol(baseCode, quoteCode, tenor);
-        final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCode, quoteCode, tenor);
+        final InstrumentSymbol symbol = FxSpotCodec.fxSpotSymbol(baseCurrencyCode, quoteCurrencyCode, tenor);
+        final InstrumentCode code = FxSpotCodec.fxSpotCode(baseCurrencyCode, quoteCurrencyCode, tenor);
 
         // Инициализируем родительскую сущность
         initIdentity(code, symbol, AssetClass.FOREX, ContractType.SPOT);

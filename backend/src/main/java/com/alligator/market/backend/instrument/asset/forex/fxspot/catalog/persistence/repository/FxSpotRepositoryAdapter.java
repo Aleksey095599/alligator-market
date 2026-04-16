@@ -1,8 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.repository;
 
 import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyJpaRepository;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa.FxSpotEntity;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa.FxSpotEntityMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa.FxSpotJpaRepository;
@@ -10,6 +8,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.*;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import jakarta.validation.ConstraintViolationException;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,29 +24,26 @@ import java.util.Optional;
 /**
  * Адаптер доменного репозитория инструментов FOREX_SPOT (в контексте Spring Data JPA).
  */
-@Repository
 @RequiredArgsConstructor
 public class FxSpotRepositoryAdapter implements FxSpotRepository {
 
     /* Имя UQ ограничения (должно совпадать с фактическим именем в DDL/схеме). */
     private static final String UQ_INSTRUMENT_CODE = "uq_instrument_code";
 
-    /* JPA-репозитории для инструментов FOREX_SPOT и валют. */
+    /* JPA-репозиторий FOREX_SPOT + доменный репозиторий валют для existence-check. */
     private final FxSpotJpaRepository jpaRepository;
-    private final CurrencyJpaRepository currencyJpaRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Override
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Ищем JPA-сущности составных валют (бизнес‑ошибки при отсутствии)
-        CurrencyEntity baseEntity = currencyJpaRepository.findByCode(fxSpot.base().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.base().code()));
-        CurrencyEntity quoteEntity = currencyJpaRepository.findByCode(fxSpot.quote().code())
-                .orElseThrow(() -> new CurrencyNotFoundException(fxSpot.quote().code()));
+        // Проверяем существование составных валют (бизнес‑ошибки при отсутствии)
+        ensureCurrencyExists(fxSpot.base().code());
+        ensureCurrencyExists(fxSpot.quote().code());
 
         // Создаем JPA-сущность, используя специальный метод
-        FxSpotEntity entity = FxSpotEntityMapper.toNewEntity(fxSpot, baseEntity, quoteEntity);
+        FxSpotEntity entity = FxSpotEntityMapper.toNewEntity(fxSpot);
 
         // Пробуем сохранить созданную сущность и маппим наиболее вероятные ошибки
         try {
@@ -138,6 +133,14 @@ public class FxSpotRepositoryAdapter implements FxSpotRepository {
     public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
 
-        return jpaRepository.existsByBaseCurrency_CodeOrQuoteCurrency_Code(currencyCode, currencyCode);
+        return jpaRepository.existsByBaseCurrencyCodeOrQuoteCurrencyCode(currencyCode, currencyCode);
+    }
+
+    /* Проверяет наличие валюты в reference-справочнике. */
+    private void ensureCurrencyExists(CurrencyCode code) {
+        Objects.requireNonNull(code, "currency code must not be null");
+        if (currencyRepository.findByCode(code).isEmpty()) {
+            throw new CurrencyNotFoundException(code);
+        }
     }
 }
