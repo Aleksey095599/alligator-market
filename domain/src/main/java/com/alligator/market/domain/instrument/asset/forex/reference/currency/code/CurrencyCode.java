@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.reference.currency.vo;
+package com.alligator.market.domain.instrument.asset.forex.reference.currency.code;
 
 import java.util.Locale;
 import java.util.Objects;

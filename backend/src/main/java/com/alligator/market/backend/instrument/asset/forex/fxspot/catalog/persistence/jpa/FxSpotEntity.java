@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.model.classification.ContractType;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.tenor.FxSpotTenor;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.fxspot;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 
 import java.util.Objects;

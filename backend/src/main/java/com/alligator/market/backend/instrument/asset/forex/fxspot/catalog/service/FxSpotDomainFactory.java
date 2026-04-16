@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dt
 import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
