@@ -22,6 +22,8 @@ import java.util.Optional;
 
 /**
  * Адаптер доменного репозитория валют (в контексте Spring Data JPA).
+ *
+ * <p>Currency хранится как reference data, поэтому optimistic locking в этой feature не используется.</p>
  */
 @RequiredArgsConstructor
 public class CurrencyRepositoryAdapter implements CurrencyRepository {
