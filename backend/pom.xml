@@ -131,6 +131,7 @@
                                             | instrument_source_plan
                                             | instrument_market_data_source
                                             | provider_passport
+                                            | currency
                                         )
                                     </includes>
                                 </database>
