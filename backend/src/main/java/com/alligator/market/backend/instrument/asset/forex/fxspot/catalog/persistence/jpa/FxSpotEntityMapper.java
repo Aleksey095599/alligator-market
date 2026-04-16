@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.persistence.jpa;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.CurrencyEntity;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jpa.mapper.CurrencyEntityMapper;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
@@ -22,17 +20,15 @@ public final class FxSpotEntityMapper {
     }
 
     /**
-     * Доменная модель + JPA-сущности валют -> JPA-сущность инструмента FOREX_SPOT.
+     * Доменная модель -> новая JPA-сущность инструмента FOREX_SPOT.
      */
-    public static FxSpotEntity toNewEntity(FxSpot model, CurrencyEntity baseEntity, CurrencyEntity quoteEntity) {
+    public static FxSpotEntity toNewEntity(FxSpot model) {
         Objects.requireNonNull(model, "FxSpot model must not be null");
-        Objects.requireNonNull(baseEntity, "entity of base currency must not be null");
-        Objects.requireNonNull(quoteEntity, "entity of quote currency must not be null");
 
         // Создаем JPA-сущность, используя специальный безопасный конструктор
         FxSpotEntity entity = new FxSpotEntity(
-                baseEntity,
-                quoteEntity,
+                model.base().code(),
+                model.quote().code(),
                 model.tenor()
         );
 
@@ -74,8 +70,8 @@ public final class FxSpotEntityMapper {
 
         // Собираем и возвращаем доменную модель
         return new FxSpot(
-                CurrencyEntityMapper.toDomain(e.getBaseCurrency()),
-                CurrencyEntityMapper.toDomain(e.getQuoteCurrency()),
+                e.getBaseCurrencyCode(),
+                e.getQuoteCurrencyCode(),
                 e.getTenor(),
                 digits
         );

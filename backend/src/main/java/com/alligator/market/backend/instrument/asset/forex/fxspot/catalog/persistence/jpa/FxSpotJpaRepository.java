@@ -18,5 +18,5 @@ public interface FxSpotJpaRepository extends JpaRepository<FxSpotEntity, Long> {
     /**
      * Проверить, используется ли заданная валюта хотя бы в одном инструменте.
      */
-    boolean existsByBaseCurrency_CodeOrQuoteCurrency_Code(CurrencyCode baseCurrency, CurrencyCode quoteCurrency);
+    boolean existsByBaseCurrencyCodeOrQuoteCurrencyCode(CurrencyCode baseCurrency, CurrencyCode quoteCurrency);
 }
