@@ -63,10 +63,6 @@ public class CurrencyEntity {
     @Column(name = "id")
     private Long id;
 
-    @Version
-    @Column(name = "version", nullable = false)
-    private Long version;
-
     /**
      * Код валюты (натуральный ключ).
      *
