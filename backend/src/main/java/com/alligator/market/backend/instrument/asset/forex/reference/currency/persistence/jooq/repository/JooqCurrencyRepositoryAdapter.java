@@ -5,11 +5,10 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
@@ -38,7 +37,6 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
     public Currency create(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        /* Создаем новую запись валюты и маппим нарушения уникальности в application-ошибки. */
         try {
             Record createdRecord = dsl.insertInto(CURRENCY)
                     .set(CURRENCY.CODE, currency.code().value())
@@ -52,11 +50,9 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                             CURRENCY.FRACTION_DIGITS
                     )
                     .fetchOne();
-
             if (createdRecord == null) {
                 throw new IllegalStateException("Currency insert returned no row");
             }
-
             return toDomain(createdRecord);
         } catch (DataIntegrityViolationException ex) {
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_CODE)) {
@@ -66,8 +62,6 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                 throw new CurrencyNameDuplicateException(currency.name());
             }
             throw ex;
-        } catch (DataAccessException ex) {
-            throw ex;
         }
     }
 
@@ -75,7 +69,6 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
     public Currency update(Currency currency) {
         Objects.requireNonNull(currency, "currency must not be null");
 
-        /* Обновляем только изменяемые поля и возвращаем актуальную модель после update. */
         try {
             Optional<Currency> updatedCurrency = dsl.update(CURRENCY)
                     .set(CURRENCY.NAME, currency.name())
@@ -89,15 +82,12 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                             CURRENCY.FRACTION_DIGITS
                     )
                     .fetchOptional(this::toDomain);
-
             return updatedCurrency
                     .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
         } catch (DataIntegrityViolationException ex) {
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(currency.name());
             }
-            throw ex;
-        } catch (DataAccessException ex) {
             throw ex;
         }
     }
@@ -106,11 +96,9 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
     public void deleteByCode(CurrencyCode code) {
         Objects.requireNonNull(code, "code must not be null");
 
-        /* Удаляем валюту по коду, отсутствие записи считаем бизнес-ошибкой. */
         int deletedRows = dsl.deleteFrom(CURRENCY)
                 .where(CURRENCY.CODE.eq(code.value()))
                 .execute();
-
         if (deletedRows == 0) {
             throw new CurrencyNotFoundException(code);
         }
