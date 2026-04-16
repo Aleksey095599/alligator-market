@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.exception;
 
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 
 import java.util.Objects;
 

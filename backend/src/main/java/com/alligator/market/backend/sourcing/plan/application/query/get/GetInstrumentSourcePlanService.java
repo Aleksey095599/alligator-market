@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.query.get;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 

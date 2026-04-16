@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.model;
 
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 
 import java.math.BigDecimal;

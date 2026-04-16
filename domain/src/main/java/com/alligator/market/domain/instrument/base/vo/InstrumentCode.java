@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.base.model.vo;
+package com.alligator.market.domain.instrument.base.vo;
 
 import java.util.Locale;
 import java.util.Objects;

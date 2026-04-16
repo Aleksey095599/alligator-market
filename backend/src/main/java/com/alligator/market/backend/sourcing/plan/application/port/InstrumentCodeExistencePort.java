@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.port;
 
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 
 /**
  * Порт проверки существования инструмента по его коду.

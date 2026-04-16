@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in;
 
-import com.alligator.market.domain.instrument.asset.forex.fxspot.tenor.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 
 /**
  * DTO создания инструмента FOREX_SPOT (in).

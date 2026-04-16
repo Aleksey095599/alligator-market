@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import org.jooq.DSLContext;
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.provider.model.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;

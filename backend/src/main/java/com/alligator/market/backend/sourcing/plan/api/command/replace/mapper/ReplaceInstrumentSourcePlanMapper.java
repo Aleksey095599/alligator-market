@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.plan.api.command.replace.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 

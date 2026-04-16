@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import org.jooq.DSLContext;
 import org.jooq.Record;

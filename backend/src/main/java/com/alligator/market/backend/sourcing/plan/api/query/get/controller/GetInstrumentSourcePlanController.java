@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.api.query.get.controller;
 import com.alligator.market.backend.sourcing.plan.api.query.common.dto.InstrumentSourcePlanResponse;
 import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.InstrumentSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetInstrumentSourcePlanService;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

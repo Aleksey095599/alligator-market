@@ -1,11 +1,11 @@
 package com.alligator.market.domain.instrument.asset.forex.fxspot;
 
-import com.alligator.market.domain.instrument.asset.forex.fxspot.tenor.FxSpotTenor;
-import com.alligator.market.domain.instrument.base.model.classification.AssetClass;
-import com.alligator.market.domain.instrument.base.model.classification.ContractType;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.base.model.Instrument;
-import com.alligator.market.domain.instrument.base.model.vo.InstrumentSymbol;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.base.classification.AssetClass;
+import com.alligator.market.domain.instrument.base.classification.ContractType;
+import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.codec.FxSpotCodec;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpotSameCurrenciesException;

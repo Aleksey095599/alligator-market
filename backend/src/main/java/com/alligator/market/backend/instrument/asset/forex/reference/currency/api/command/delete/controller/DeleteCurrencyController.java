@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.delete.controller;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.delete.DeleteCurrencyService;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.code.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
