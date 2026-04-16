@@ -77,7 +77,7 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
 
         /* Обновляем только изменяемые поля и возвращаем актуальную модель после update. */
         try {
-            Optional<Record> updatedRecord = dsl.update(CURRENCY)
+            Optional<Currency> updatedCurrency = dsl.update(CURRENCY)
                     .set(CURRENCY.NAME, currency.name())
                     .set(CURRENCY.COUNTRY, currency.country())
                     .set(CURRENCY.FRACTION_DIGITS, currency.fractionDigits())
@@ -88,10 +88,9 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                             CURRENCY.COUNTRY,
                             CURRENCY.FRACTION_DIGITS
                     )
-                    .fetchOptional();
+                    .fetchOptional(this::toDomain);
 
-            return updatedRecord
-                    .map(this::toDomain)
+            return updatedCurrency
                     .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
         } catch (DataIntegrityViolationException ex) {
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
