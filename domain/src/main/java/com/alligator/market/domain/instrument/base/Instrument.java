@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
 
 /**
- * Базовый контракт финансового инструмента.
+ * Базовый финансовый инструмент (aggregate root).
  *
  * <p>Назначение: Определяет базовый набор атрибутов, общих для всех финансовых инструментов.
  * Специфические характеристики конкретных инструментов задаются через классы-наследники.</p>
@@ -32,5 +32,4 @@ public interface Instrument {
      * Тип контракта финансового инструмента.
      */
     ContractType contractType();
-
 }

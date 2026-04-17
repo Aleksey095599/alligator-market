@@ -69,7 +69,7 @@ import java.util.Objects;
 public class FxSpotEntity extends InstrumentEntity {
 
     /**
-     * Базовая валюта инструмента (FK на {@code currency.code} на уровне БД).
+     * Базовая валюта инструмента.
      *
      * <p>Ключевые моменты:</p>
      * <ul>
@@ -84,7 +84,7 @@ public class FxSpotEntity extends InstrumentEntity {
     private CurrencyCode baseCurrencyCode;
 
     /**
-     * Котируемая валюта инструмента (FK на {@code currency.code} на уровне БД).
+     * Котируемая валюта инструмента.
      *
      * <p>Ключевые моменты аналогичны {@link #baseCurrencyCode}.</p>
      */
