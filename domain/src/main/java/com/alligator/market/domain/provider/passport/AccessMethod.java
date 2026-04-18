@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.model.passport;
+package com.alligator.market.domain.provider.passport;
 
 /**
  * Методы доступа провайдеров к рыночным данным.

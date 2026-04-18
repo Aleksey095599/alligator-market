@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.catalog.passport.service;
 
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.passport.ProviderPassport;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

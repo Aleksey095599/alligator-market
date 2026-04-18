@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.model.passport;
+package com.alligator.market.domain.provider.passport;
 
 import java.util.Objects;
 

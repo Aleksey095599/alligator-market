@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.DSLContext;
 
 import java.util.Objects;

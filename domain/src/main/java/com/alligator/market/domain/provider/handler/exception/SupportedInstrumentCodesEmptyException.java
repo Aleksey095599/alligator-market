@@ -1,15 +1,15 @@
-package com.alligator.market.domain.provider.model.handler.exception;
+package com.alligator.market.domain.provider.handler.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.provider.model.vo.HandlerCode;
+import com.alligator.market.domain.provider.vo.HandlerCode;
 
 import java.util.Objects;
 
 /**
- * Провайдер не прикреплен к обработчику.
+ * Список поддерживаемых инструментов пуст.
  */
-public final class ProviderNotAttachedException extends BaseDomainException {
+public final class SupportedInstrumentCodesEmptyException extends BaseDomainException {
 
     private final HandlerCode handlerCode;
 
@@ -18,8 +18,8 @@ public final class ProviderNotAttachedException extends BaseDomainException {
      *
      * @param handlerCode код обработчика
      */
-    public ProviderNotAttachedException(HandlerCode handlerCode) {
-        super(DomainErrorCode.PROVIDER_NOT_ATTACHED, msg(handlerCode));
+    public SupportedInstrumentCodesEmptyException(HandlerCode handlerCode) {
+        super(DomainErrorCode.SUPPORTED_INSTRUMENT_CODES_EMPTY, msg(handlerCode));
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
@@ -30,8 +30,8 @@ public final class ProviderNotAttachedException extends BaseDomainException {
      * @param cause       причина ошибки
      */
     @SuppressWarnings("unused")
-    public ProviderNotAttachedException(HandlerCode handlerCode, Throwable cause) {
-        super(DomainErrorCode.PROVIDER_NOT_ATTACHED, msg(handlerCode), cause);
+    public SupportedInstrumentCodesEmptyException(HandlerCode handlerCode, Throwable cause) {
+        super(DomainErrorCode.SUPPORTED_INSTRUMENT_CODES_EMPTY, msg(handlerCode), cause);
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
@@ -40,7 +40,7 @@ public final class ProviderNotAttachedException extends BaseDomainException {
      */
     private static String msg(HandlerCode handlerCode) {
         HandlerCode hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        return "Provider is not attached (handlerCode=" + hc.value() + ")";
+        return "Supported instrument codes must not be empty (handlerCode=" + hc.value() + ")";
     }
 
     /**

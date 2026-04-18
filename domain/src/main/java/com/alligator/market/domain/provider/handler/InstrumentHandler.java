@@ -1,11 +1,11 @@
-package com.alligator.market.domain.provider.model.handler;
+package com.alligator.market.domain.provider.handler;
 
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.base.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.MarketDataProvider;
-import com.alligator.market.domain.provider.model.vo.HandlerCode;
+import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.vo.HandlerCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 

@@ -1,9 +1,9 @@
 package com.alligator.market.backend.provider.readmodel.passport.query.port.adapter.jdbc;
 
-import com.alligator.market.domain.provider.model.passport.AccessMethod;
-import com.alligator.market.domain.provider.model.passport.DeliveryMode;
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.passport.AccessMethod;
+import com.alligator.market.domain.provider.passport.DeliveryMode;
+import com.alligator.market.domain.provider.passport.ProviderPassport;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 

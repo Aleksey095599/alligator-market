@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.model.policy;
+package com.alligator.market.domain.provider.policy;
 
 import java.time.Duration;
 import java.util.Objects;

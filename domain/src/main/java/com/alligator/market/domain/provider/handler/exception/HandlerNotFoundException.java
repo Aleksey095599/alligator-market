@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.model.handler.exception;
+package com.alligator.market.domain.provider.handler.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 
 import java.util.Objects;
 

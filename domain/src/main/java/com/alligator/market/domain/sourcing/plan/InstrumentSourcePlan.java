@@ -1,7 +1,7 @@
 package com.alligator.market.domain.sourcing.plan;
 
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
 import java.util.*;

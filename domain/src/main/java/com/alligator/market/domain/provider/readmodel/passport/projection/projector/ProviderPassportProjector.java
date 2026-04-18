@@ -1,9 +1,9 @@
 package com.alligator.market.domain.provider.readmodel.passport.projection.projector;
 
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
+import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.registry.exception.ProviderRegistryEmptyException;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 
 import java.util.Map;

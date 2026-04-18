@@ -1,15 +1,15 @@
-package com.alligator.market.domain.provider.model.handler.exception;
+package com.alligator.market.domain.provider.handler.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.provider.model.vo.HandlerCode;
+import com.alligator.market.domain.provider.vo.HandlerCode;
 
 import java.util.Objects;
 
 /**
- * Провайдер уже прикреплен к обработчику.
+ * Код инструмента отсутствует.
  */
-public final class ProviderAlreadyAttachedException extends BaseDomainException {
+public final class InstrumentCodeMissingException extends BaseDomainException {
 
     private final HandlerCode handlerCode;
 
@@ -18,8 +18,8 @@ public final class ProviderAlreadyAttachedException extends BaseDomainException 
      *
      * @param handlerCode код обработчика
      */
-    public ProviderAlreadyAttachedException(HandlerCode handlerCode) {
-        super(DomainErrorCode.PROVIDER_ALREADY_ATTACHED, msg(handlerCode));
+    public InstrumentCodeMissingException(HandlerCode handlerCode) {
+        super(DomainErrorCode.INSTRUMENT_CODE_MISSING, msg(handlerCode));
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
@@ -30,8 +30,8 @@ public final class ProviderAlreadyAttachedException extends BaseDomainException 
      * @param cause       причина ошибки
      */
     @SuppressWarnings("unused")
-    public ProviderAlreadyAttachedException(HandlerCode handlerCode, Throwable cause) {
-        super(DomainErrorCode.PROVIDER_ALREADY_ATTACHED, msg(handlerCode), cause);
+    public InstrumentCodeMissingException(HandlerCode handlerCode, Throwable cause) {
+        super(DomainErrorCode.INSTRUMENT_CODE_MISSING, msg(handlerCode), cause);
         this.handlerCode = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
     }
 
@@ -40,7 +40,7 @@ public final class ProviderAlreadyAttachedException extends BaseDomainException 
      */
     private static String msg(HandlerCode handlerCode) {
         HandlerCode hc = Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        return "Provider is already attached (handlerCode=" + hc.value() + ")";
+        return "Instrument code must not be null (handlerCode=" + hc.value() + ")";
     }
 
     /**

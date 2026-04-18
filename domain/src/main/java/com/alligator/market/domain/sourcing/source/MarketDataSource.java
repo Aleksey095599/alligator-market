@@ -1,6 +1,6 @@
 package com.alligator.market.domain.sourcing.source;
 
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 
 import java.util.Objects;
 

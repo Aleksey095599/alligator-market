@@ -1,13 +1,13 @@
-package com.alligator.market.domain.provider.model;
+package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.model.handler.InstrumentHandler;
-import com.alligator.market.domain.provider.model.passport.ProviderPassport;
-import com.alligator.market.domain.provider.model.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.model.vo.HandlerCode;
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.handler.exception.HandlerNotFoundException;
+import com.alligator.market.domain.provider.handler.InstrumentHandler;
+import com.alligator.market.domain.provider.passport.ProviderPassport;
+import com.alligator.market.domain.provider.policy.ProviderPolicy;
+import com.alligator.market.domain.provider.vo.HandlerCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 

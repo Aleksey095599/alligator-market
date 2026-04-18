@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.port;
 
-import com.alligator.market.domain.provider.model.vo.ProviderCode;
+import com.alligator.market.domain.provider.vo.ProviderCode;
 
 /**
  * Порт проверки существования провайдера по его коду.
