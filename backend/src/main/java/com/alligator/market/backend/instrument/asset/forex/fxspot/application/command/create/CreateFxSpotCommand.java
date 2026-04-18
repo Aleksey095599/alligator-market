@@ -1,11 +1,11 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.in;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 
 /**
- * DTO создания инструмента FOREX_SPOT (in).
+ * Команда use case создания инструмента FOREX_SPOT.
  */
-public record FxSpotCreateDto(
+public record CreateFxSpotCommand(
         String baseCurrency,
         String quoteCurrency,
         FxSpotTenor tenor,

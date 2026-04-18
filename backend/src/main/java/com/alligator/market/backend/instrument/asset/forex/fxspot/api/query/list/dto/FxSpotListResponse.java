@@ -1,11 +1,11 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.out;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 
 /**
- * DTO ответа для инструментов FOREX_SPOT (out).
+ * API-ответ для списка инструментов FOREX_SPOT.
  */
-public record FxSpotResponseDto(
+public record FxSpotListResponse(
         String instrumentCode,
         String symbol,
         String assetClass,
