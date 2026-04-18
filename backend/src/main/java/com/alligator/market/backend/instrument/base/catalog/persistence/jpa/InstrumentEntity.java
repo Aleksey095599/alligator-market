@@ -49,10 +49,6 @@ public abstract class InstrumentEntity {
     @Column(name = "id")
     private Long id;
 
-    @Version
-    @Column(name = "version", nullable = false)
-    private Long version;
-
     /**
      * Внутренний код инструмента (идентификатор).
      */
