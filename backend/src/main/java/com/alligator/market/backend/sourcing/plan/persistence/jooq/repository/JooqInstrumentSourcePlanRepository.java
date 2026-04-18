@@ -9,8 +9,8 @@ import org.jooq.DSLContext;
 
 import java.util.*;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentMarketDataSource.INSTRUMENT_MARKET_DATA_SOURCE;
-import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentSourcePlan.INSTRUMENT_SOURCE_PLAN;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
+import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePlan.SOURCE_PLAN;
 
 /**
  * jOOQ-адаптер репозитория планов источников.
@@ -30,17 +30,17 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
 
         List<MarketDataSource> sources = dsl
                 .select(
-                        INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE,
-                        INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE,
-                        INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY
+                        MARKET_DATA_SOURCE.PROVIDER_CODE,
+                        MARKET_DATA_SOURCE.ACTIVE,
+                        MARKET_DATA_SOURCE.PRIORITY
                 )
-                .from(INSTRUMENT_MARKET_DATA_SOURCE)
-                .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
-                .orderBy(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY.asc())
+                .from(MARKET_DATA_SOURCE)
+                .where(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
                 .fetch(record -> toSource(
-                        record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE),
-                        record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
-                        record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
+                        record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
+                        record.get(MARKET_DATA_SOURCE.ACTIVE),
+                        record.get(MARKET_DATA_SOURCE.PRIORITY)
                 ));
 
         if (sources.isEmpty()) {
@@ -55,25 +55,25 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         Map<InstrumentCode, List<MarketDataSource>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
-                        INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE,
-                        INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE,
-                        INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE,
-                        INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY
+                        MARKET_DATA_SOURCE.INSTRUMENT_CODE,
+                        MARKET_DATA_SOURCE.PROVIDER_CODE,
+                        MARKET_DATA_SOURCE.ACTIVE,
+                        MARKET_DATA_SOURCE.PRIORITY
                 )
-                .from(INSTRUMENT_MARKET_DATA_SOURCE)
+                .from(MARKET_DATA_SOURCE)
                 .orderBy(
-                        INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
-                        INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY.asc()
+                        MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
+                        MARKET_DATA_SOURCE.PRIORITY.asc()
                 )
                 .fetch()
                 .forEach(record -> {
                     InstrumentCode instrumentCode =
-                            new InstrumentCode(record.get(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE));
+                            new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE));
 
                     MarketDataSource source = toSource(
-                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE),
-                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE),
-                            record.get(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY)
+                            record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
+                            record.get(MARKET_DATA_SOURCE.ACTIVE),
+                            record.get(MARKET_DATA_SOURCE.PRIORITY)
                     );
 
                     groupedSources
@@ -97,9 +97,9 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
 
-            int insertedPlans = tx.insertInto(INSTRUMENT_SOURCE_PLAN)
-                    .set(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
-                    .onConflict(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE)
+            int insertedPlans = tx.insertInto(SOURCE_PLAN)
+                    .set(SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
+                    .onConflict(SOURCE_PLAN.INSTRUMENT_CODE)
                     .doNothing()
                     .execute();
 
@@ -124,8 +124,8 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
             DSLContext tx = configuration.dsl();
 
             boolean planExists = tx.selectOne()
-                    .from(INSTRUMENT_SOURCE_PLAN)
-                    .where(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .from(SOURCE_PLAN)
+                    .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .forUpdate()
                     .fetchOptional()
                     .isPresent();
@@ -134,8 +134,8 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                 return false;
             }
 
-            tx.deleteFrom(INSTRUMENT_MARKET_DATA_SOURCE)
-                    .where(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+            tx.deleteFrom(MARKET_DATA_SOURCE)
+                    .where(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .execute();
 
             for (MarketDataSource source : plan.sources()) {
@@ -150,8 +150,8 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     public boolean deleteIfExistsByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        int deletedRows = dsl.deleteFrom(INSTRUMENT_SOURCE_PLAN)
-                .where(INSTRUMENT_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
+        int deletedRows = dsl.deleteFrom(SOURCE_PLAN)
+                .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
 
         return deletedRows > 0;
@@ -166,11 +166,11 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(source, "source must not be null");
 
-        dsl.insertInto(INSTRUMENT_MARKET_DATA_SOURCE)
-                .set(INSTRUMENT_MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
-                .set(INSTRUMENT_MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
-                .set(INSTRUMENT_MARKET_DATA_SOURCE.ACTIVE, source.active())
-                .set(INSTRUMENT_MARKET_DATA_SOURCE.PRIORITY, source.priority())
+        dsl.insertInto(MARKET_DATA_SOURCE)
+                .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
+                .set(MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
+                .set(MARKET_DATA_SOURCE.ACTIVE, source.active())
+                .set(MARKET_DATA_SOURCE.PRIORITY, source.priority())
                 .execute();
     }
 
