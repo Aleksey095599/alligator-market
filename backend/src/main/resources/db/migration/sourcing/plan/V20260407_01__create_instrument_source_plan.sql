@@ -6,5 +6,5 @@ CREATE TABLE instrument_source_plan
 
     -- Ограничение ссылочной целостности
     CONSTRAINT fk_instr_source_plan_instrument
-        FOREIGN KEY (instrument_code) REFERENCES instrument_base (code)
+        FOREIGN KEY (instrument_code) REFERENCES instrument_registry (code)
 );
