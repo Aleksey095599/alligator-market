@@ -23,15 +23,18 @@ public final class FxSpotCodec {
     private static final int CURRENCY_CODE_LENGTH = 3;
     private static final int CURRENCY_PAIR_LENGTH = 2 * CURRENCY_CODE_LENGTH;
 
-    /*
-     * Приватный конструктор: запрещаем создание экземпляров класса-утилиты.
-     */
+    /* Приватный конструктор: запрещаем создание экземпляров класса-утилиты. */
     private FxSpotCodec() {
         throw new UnsupportedOperationException("Utility class instantiation is not allowed");
     }
 
     /**
-     * Формирует строковый символ инструмента из кодов валют и тенора даты валютирования.
+     * Формирует строковый символ инструмента.
+     *
+     * @param baseCode  Код базовой валюты
+     * @param quoteCode Код котируемой валюты
+     * @param tenor     Тенор даты валютирования
+     * @return Символ инструмента
      */
     public static InstrumentSymbol fxSpotSymbol(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -42,7 +45,12 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Формирует внутренний код инструмента из кодов валют и тенора даты валютирования.
+     * Формирует внутренний код инструмента.
+     *
+     * @param baseCode  Код базовой валюты
+     * @param quoteCode Код котируемой валюты
+     * @param tenor     Тенор даты валютирования
+     * @return Код инструмента
      */
     public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
         Objects.requireNonNull(baseCode, "baseCode must not be null");
@@ -53,7 +61,10 @@ public final class FxSpotCodec {
     }
 
     /**
-     * Разбирает объект-значение кода инструмента на составные компоненты {@see FxSpotCodeParts}.
+     * Разбирает объект-значение кода инструмента на составные компоненты.
+     *
+     * @param instrumentCode Код инструмента
+     * @return Составные компоненты кода инструмента {@link FxSpotCodeParts}
      */
     public static FxSpotCodeParts parseFxSpotCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
