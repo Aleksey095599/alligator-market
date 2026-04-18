@@ -3,18 +3,16 @@ package com.alligator.market.backend.common.web.advice;
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.*;
 import com.alligator.market.domain.provider.model.handler.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentNotSupportedException;
-import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongAssetClassException;
+import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongClassException;
 import com.alligator.market.domain.provider.model.handler.exception.InstrumentWrongContractTypeException;
 import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,33 +24,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class DomainExceptionHandler {
-
-    /**
-     * Валюта уже используется при создании FOREX_SPOT --> 409.
-     */
-    @ExceptionHandler(FxSpotAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
-        log.warn("FX Spot already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(DomainErrorCode.FX_SPOT_ALREADY_EXISTS.name(), ex.getMessage());
-    }
-
-    /**
-     * Инструмент FOREX_SPOT не найден --> 404.
-     */
-    @ExceptionHandler(FxSpotNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
-        log.warn("FX Spot not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(DomainErrorCode.FX_SPOT_NOT_FOUND.name(), ex.getMessage());
-    }
-
-    /**
-     * Указаны одинаковые валюты для FOREX_SPOT --> 400.
-     */
-    @ExceptionHandler(FxSpotSameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
-        log.warn("FX Spot same currencies: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(DomainErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
-    }
 
     /**
      * Инструмент не поддерживается провайдером --> 400.
@@ -109,30 +80,5 @@ public class DomainExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> providerDisplayNameDuplicate(ProviderDisplayNameDuplicateException ex) {
         log.warn("Provider display name duplicate: {}", ex.getMessage());
         return ResponseEntityFactory.conflict(DomainErrorCode.PROVIDER_DISPLAY_NAME_DUPLICATE.name(), ex.getMessage());
-    }
-
-    /**
-     * Технические ошибки доменных операций --> 500.
-     */
-    @ExceptionHandler({
-            FxSpotCreateException.class,
-            FxSpotUpdateException.class,
-            FxSpotDeleteException.class
-    })
-    public ResponseEntity<ApiResponse<Void>> domainTechnicalError(RuntimeException ex) {
-        log.error("Domain operation failed: {}", ex.getMessage(), ex);
-        String errorCode = resolveTechnicalErrorCode(ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, errorCode, ex.getMessage());
-    }
-
-    /* Подбираем код ошибки для технических доменных исключений. */
-    private String resolveTechnicalErrorCode(RuntimeException ex) {
-        if (ex instanceof FxSpotCreateException) {
-            return DomainErrorCode.FX_SPOT_CREATE_FAILED.name();
-        }
-        if (ex instanceof FxSpotUpdateException) {
-            return DomainErrorCode.FX_SPOT_UPDATE_FAILED.name();
-        }
-        return DomainErrorCode.FX_SPOT_DELETE_FAILED.name();
     }
 }

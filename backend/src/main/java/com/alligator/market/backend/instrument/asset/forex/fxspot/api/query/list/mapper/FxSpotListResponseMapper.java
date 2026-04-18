@@ -1,29 +1,23 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.mapper;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper;
 
-import com.alligator.market.backend.instrument.asset.forex.fxspot.catalog.web.dto.out.FxSpotResponseDto;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListResponse;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
 import java.util.Objects;
 
 /**
- * Маппер DTO для инструмента FOREX_SPOT.
+ * Маппер доменной модели FOREX_SPOT в API-ответ.
  */
-public class FxSpotDtoMapper {
+public final class FxSpotListResponseMapper {
 
-    /**
-     * Приватный конструктор (запрещает создание экземпляров).
-     */
-    private FxSpotDtoMapper() {
+    private FxSpotListResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /**
-     * Модель --> DTO ответа.
-     */
-    public static FxSpotResponseDto toFxSpotResponseDto(FxSpot fxSpot) {
+    public static FxSpotListResponse toResponse(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        return new FxSpotResponseDto(
+        return new FxSpotListResponse(
                 fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol().value(),
                 fxSpot.assetClass().name(),
