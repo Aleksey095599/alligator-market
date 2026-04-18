@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
 
 /**
- * Базовый финансовый инструмент (aggregate root).
+ * Базовый финансовый инструмент (доменный контракт).
  *
  * <p>Назначение: Определяет базовый набор атрибутов, общих для всех финансовых инструментов.
  * Специфические характеристики конкретных инструментов задаются через классы-наследники.</p>
