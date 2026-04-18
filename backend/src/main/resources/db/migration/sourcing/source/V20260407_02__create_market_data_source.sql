@@ -13,7 +13,7 @@ CREATE TABLE market_data_source
     -- Ограничения ссылочной целостности
     CONSTRAINT fk_market_data_source_plan
         FOREIGN KEY (instrument_code)
-            REFERENCES instrument_source_plan (instrument_code)
+            REFERENCES source_plan (instrument_code)
             ON DELETE CASCADE,
 
     -- Ограничения уникальности
