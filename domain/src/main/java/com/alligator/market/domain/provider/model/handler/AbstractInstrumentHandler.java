@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Абстрактная реализация обработчика инструмента {@link InstrumentHandler}.
+ * Обработчик финансового инструмента.
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {

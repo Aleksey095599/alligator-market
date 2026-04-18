@@ -14,7 +14,7 @@ import org.reactivestreams.Publisher;
 import java.util.*;
 
 /**
- * Абстрактная реализация {@link MarketDataProvider}.
+ * Провайдер рыночных данных (aggregate-root).
  */
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {

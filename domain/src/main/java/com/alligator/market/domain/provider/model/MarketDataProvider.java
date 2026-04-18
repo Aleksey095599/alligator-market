@@ -8,7 +8,7 @@ import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
 
 /**
- * Провайдер рыночных данных (aggregate-root).
+ * Доменный контракт провайдера рыночных данных.
  */
 public interface MarketDataProvider {
 

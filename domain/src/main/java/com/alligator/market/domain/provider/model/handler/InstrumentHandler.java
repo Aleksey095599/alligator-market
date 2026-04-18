@@ -12,7 +12,7 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Обработчик (handler) финансового инструмента {@link Instrument} для заданного провайдера {@link MarketDataProvider}.
+ * Доменный контракт обработчика финансового инструмента.
  */
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
