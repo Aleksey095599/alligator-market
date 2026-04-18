@@ -6,7 +6,7 @@ import org.jooq.DSLContext;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentBase.INSTRUMENT_BASE;
+import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
 /**
  * jOOQ-адаптер порта проверки существования инструмента.
@@ -25,8 +25,8 @@ public final class JooqInstrumentCodeExistenceAdapter implements InstrumentCodeE
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return dsl.fetchExists(
-                dsl.selectFrom(INSTRUMENT_BASE)
-                        .where(INSTRUMENT_BASE.CODE.eq(instrumentCode.value()))
+                dsl.selectFrom(INSTRUMENT_REGISTRY)
+                        .where(INSTRUMENT_REGISTRY.CODE.eq(instrumentCode.value()))
         );
     }
 }

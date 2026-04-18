@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentBase.INSTRUMENT_BASE;
+import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
 /**
  * jOOQ-адаптер порта получения доступных кодов инструментов.
@@ -23,10 +23,10 @@ public final class JooqInstrumentOptionsQueryAdapter implements InstrumentOption
 
     @Override
     public List<InstrumentCode> findAllInstrumentCodes() {
-        return dsl.select(INSTRUMENT_BASE.CODE)
-                .from(INSTRUMENT_BASE)
-                .orderBy(INSTRUMENT_BASE.CODE.asc())
-                .fetch(INSTRUMENT_BASE.CODE)
+        return dsl.select(INSTRUMENT_REGISTRY.CODE)
+                .from(INSTRUMENT_REGISTRY)
+                .orderBy(INSTRUMENT_REGISTRY.CODE.asc())
+                .fetch(INSTRUMENT_REGISTRY.CODE)
                 .stream()
                 .map(InstrumentCode::new)
                 .toList();
