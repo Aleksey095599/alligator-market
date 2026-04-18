@@ -127,7 +127,7 @@
                                     <includes>
                                         (?x)
                                         (
-                                            | instrument_base
+                                            | instrument_registry
                                             | instrument_source_plan
                                             | instrument_market_data_source
                                             | provider_passport
