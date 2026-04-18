@@ -14,8 +14,8 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectFieldOrAsterisk;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,8 +82,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                                 "Created FX_SPOT instrument was not found after insert"
                         ));
             });
-        } catch (FxSpotAlreadyExistsException ex) {
-            throw ex;
         } catch (DataAccessException ex) {
             throw new FxSpotCreateException(fxSpot.instrumentCode(), ex);
         }
@@ -108,8 +106,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
 
             return findByCode(fxSpot.instrumentCode())
                     .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
-        } catch (FxSpotNotFoundException ex) {
-            throw ex;
         } catch (DataAccessException ex) {
             throw new FxSpotUpdateException(fxSpot.instrumentCode(), ex);
         }
@@ -135,10 +131,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                         .where(INSTRUMENT_REGISTRY.CODE.eq(instrumentCode.value()))
                         .execute();
             });
-        } catch (FxSpotNotFoundException ex) {
-            throw ex;
-        } catch (DataIntegrityViolationException ex) {
-            throw new FxSpotDeleteException(instrumentCode, ex);
         } catch (DataAccessException ex) {
             throw new FxSpotDeleteException(instrumentCode, ex);
         }
@@ -156,21 +148,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         var baseCurrencyRef = CURRENCY.as("base_currency_ref");
         var quoteCurrencyRef = CURRENCY.as("quote_currency_ref");
 
-        return dsl.select(
-                        INSTRUMENT_FX_SPOT.INSTRUMENT_CODE,
-                        INSTRUMENT_FX_SPOT.BASE_CURRENCY,
-                        INSTRUMENT_FX_SPOT.QUOTE_CURRENCY,
-                        INSTRUMENT_FX_SPOT.TENOR,
-                        INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS,
-                        baseCurrencyRef.CODE,
-                        baseCurrencyRef.NAME,
-                        baseCurrencyRef.COUNTRY,
-                        baseCurrencyRef.FRACTION_DIGITS,
-                        quoteCurrencyRef.CODE,
-                        quoteCurrencyRef.NAME,
-                        quoteCurrencyRef.COUNTRY,
-                        quoteCurrencyRef.FRACTION_DIGITS
-                )
+        return dsl.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
                 .on(INSTRUMENT_REGISTRY.CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
@@ -214,21 +192,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         var baseCurrencyRef = CURRENCY.as("base_currency_ref");
         var quoteCurrencyRef = CURRENCY.as("quote_currency_ref");
 
-        return context.select(
-                        INSTRUMENT_FX_SPOT.INSTRUMENT_CODE,
-                        INSTRUMENT_FX_SPOT.BASE_CURRENCY,
-                        INSTRUMENT_FX_SPOT.QUOTE_CURRENCY,
-                        INSTRUMENT_FX_SPOT.TENOR,
-                        INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS,
-                        baseCurrencyRef.CODE,
-                        baseCurrencyRef.NAME,
-                        baseCurrencyRef.COUNTRY,
-                        baseCurrencyRef.FRACTION_DIGITS,
-                        quoteCurrencyRef.CODE,
-                        quoteCurrencyRef.NAME,
-                        quoteCurrencyRef.COUNTRY,
-                        quoteCurrencyRef.FRACTION_DIGITS
-                )
+        return context.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
                 .on(INSTRUMENT_REGISTRY.CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
@@ -238,6 +202,28 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 .on(quoteCurrencyRef.CODE.eq(INSTRUMENT_FX_SPOT.QUOTE_CURRENCY))
                 .where(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .fetchOptional(record -> toDomain(record, baseCurrencyRef, quoteCurrencyRef));
+    }
+
+    /* Набор полей для выборки FX_SPOT вместе с алиасами базовой и котируемой валют. */
+    private SelectFieldOrAsterisk[] fxSpotSelectFields(
+            com.alligator.market.backend.infra.jooq.generated.tables.Currency baseCurrencyRef,
+            com.alligator.market.backend.infra.jooq.generated.tables.Currency quoteCurrencyRef
+    ) {
+        return new SelectFieldOrAsterisk[]{
+                INSTRUMENT_FX_SPOT.INSTRUMENT_CODE,
+                INSTRUMENT_FX_SPOT.BASE_CURRENCY,
+                INSTRUMENT_FX_SPOT.QUOTE_CURRENCY,
+                INSTRUMENT_FX_SPOT.TENOR,
+                INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS,
+                baseCurrencyRef.CODE,
+                baseCurrencyRef.NAME,
+                baseCurrencyRef.COUNTRY,
+                baseCurrencyRef.FRACTION_DIGITS,
+                quoteCurrencyRef.CODE,
+                quoteCurrencyRef.NAME,
+                quoteCurrencyRef.COUNTRY,
+                quoteCurrencyRef.FRACTION_DIGITS
+        };
     }
 
     /* Маппинг записи jOOQ в доменную модель FxSpot. */
