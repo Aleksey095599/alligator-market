@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'instrument-source-plans',
     loadChildren: () =>
-      import('./features/instrument_source_plan/instrument-source-plan.module')
+      import('./features/source_plan/instrument-source-plan.module')
         .then(m => m.InstrumentSourcePlanModule)
   },
   {

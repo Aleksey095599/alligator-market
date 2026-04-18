@@ -128,7 +128,7 @@
                                         (?x)
                                         (
                                             | instrument_registry
-                                            | instrument_source_plan
+                                            | source_plan
                                             | market_data_source
                                             | provider_passport
                                             | currency

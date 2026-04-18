@@ -1,5 +1,5 @@
--- instrument_source_plan: план источников рыночных данных для конкретного инструмента.
-CREATE TABLE instrument_source_plan
+-- source_plan: план источников рыночных данных для конкретного инструмента.
+CREATE TABLE source_plan
 (
     -- Идентичность плана источников
     instrument_code VARCHAR(50) PRIMARY KEY,
