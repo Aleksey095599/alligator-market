@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.catalog.passport.service;
+package com.alligator.market.backend.provider.passport.service;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
