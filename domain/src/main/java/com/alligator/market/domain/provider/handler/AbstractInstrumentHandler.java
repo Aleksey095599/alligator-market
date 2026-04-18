@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.exception.*;
-import com.alligator.market.domain.provider.model.handler.exception.*;
+import com.alligator.market.domain.provider.handler.exception.*;
 import com.alligator.market.domain.provider.vo.HandlerCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
