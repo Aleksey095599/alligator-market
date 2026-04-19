@@ -185,7 +185,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private void requireCompatible(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        final InstrumentCode instrumentCode = instrument.instrumentCode();
+        final InstrumentCode instrumentCode = Objects.requireNonNull(
+                instrument.instrumentCode(),
+                "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
+        );
 
         if (!instrumentClass.isInstance(instrument)) {
             throw new IllegalArgumentException(buildClassMismatchMessage(instrumentCode, instrument.getClass()));
@@ -208,14 +211,12 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     /* Проверка, что код инструмента поддерживается обработчиком. */
     private void requireSupportedCode(I instrument) {
-        final InstrumentCode instrumentCode = instrument.instrumentCode();
+        Objects.requireNonNull(instrument, "instrument must not be null");
 
-        if (instrumentCode == null) {
-            throw new IllegalArgumentException(
-                    "Instrument code is missing for handler '%s'"
-                            .formatted(handlerCode.value())
-            );
-        }
+        final InstrumentCode instrumentCode = Objects.requireNonNull(
+                instrument.instrumentCode(),
+                "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
+        );
 
         if (!isSupported(instrumentCode)) {
             throw new IllegalArgumentException(
