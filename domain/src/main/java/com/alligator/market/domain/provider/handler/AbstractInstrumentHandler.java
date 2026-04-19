@@ -181,10 +181,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
     }
 
-    /**
-     * Требование контракта: инструмент совместим с обработчиком (java-класс + класс актива + тип контракта).
-     */
+    /* Проверка, что инструмент совместим с обработчиком. */
     private void requireCompatible(I instrument) {
+        Objects.requireNonNull(instrument, "instrument must not be null");
+
         final InstrumentCode instrumentCode = instrument.instrumentCode();
 
         if (!instrumentClass.isInstance(instrument)) {
@@ -206,9 +206,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
     }
 
-    /**
-     * Требование контракта: код инструмента задан и поддерживается обработчиком.
-     */
+    /* Проверка, что код инструмента поддерживается обработчиком. */
     private void requireSupportedCode(I instrument) {
         final InstrumentCode instrumentCode = instrument.instrumentCode();
 
@@ -233,9 +231,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                 .formatted(instrumentCode, actualClass.getName(), handlerCode.value(), instrumentClass.getName());
     }
 
-    /**
-     * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.
-     */
+    /* Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов. */
     private static Set<InstrumentCode> freezeSupportedInstrumentCodes(Set<InstrumentCode> supportedInstrumentCodes) {
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
