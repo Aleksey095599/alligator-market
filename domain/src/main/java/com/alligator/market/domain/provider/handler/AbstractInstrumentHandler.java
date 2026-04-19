@@ -4,11 +4,9 @@ import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.base.classification.AssetClass;
 import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.provider.handler.exception.*;
-import com.alligator.market.domain.provider.handler.exception.*;
-import com.alligator.market.domain.provider.vo.HandlerCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
+import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.vo.HandlerCode;
 import org.reactivestreams.Publisher;
 
 import java.util.LinkedHashSet;
@@ -63,7 +61,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
         if (supportedInstrumentCodes.isEmpty()) {
-            throw new SupportedInstrumentCodesEmptyException(handlerCode);
+            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
         }
 
         this.handlerCode = handlerCode;
@@ -119,7 +117,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         Objects.requireNonNull(provider, "provider must not be null");
 
         if (!providerRef.compareAndSet(null, provider)) {
-            throw new ProviderAlreadyAttachedException(handlerCode);
+            throw new IllegalStateException("Provider is already attached to handler '%s'".formatted(handlerCode.value()));
         }
     }
 
@@ -167,7 +165,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     protected final P provider() {
         P current = providerRef.get();
         if (current == null) {
-            throw new ProviderNotAttachedException(handlerCode);
+            throw new IllegalStateException("Provider is not attached to handler '%s'".formatted(handlerCode.value()));
         }
         return current;
     }
@@ -179,7 +177,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Требование контракта: обработчик прикреплён к провайдеру. */
     private void requireProviderAttached() {
         if (!isAttached()) {
-            throw new ProviderNotAttachedException(handlerCode);
+            throw new IllegalStateException("Provider is not attached to handler '%s'".formatted(handlerCode.value()));
         }
     }
 
@@ -187,34 +185,23 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      * Требование контракта: инструмент совместим с обработчиком (java-класс + класс актива + тип контракта).
      */
     private void requireCompatible(I instrument) {
-        if (isCompatible(instrument)) {
-            return;
-        }
+        final InstrumentCode instrumentCode = instrument.instrumentCode();
 
         if (!instrumentClass.isInstance(instrument)) {
-            throw new InstrumentWrongClassException(
-                    instrument.instrumentCode(),
-                    instrument.getClass(),
-                    handlerCode,
-                    instrumentClass
-            );
+            throw new IllegalArgumentException(buildClassMismatchMessage(instrumentCode, instrument.getClass()));
         }
 
         if (instrument.assetClass() != assetClass) {
-            throw new InstrumentWrongAssetClassException(
-                    instrument.instrumentCode(),
-                    instrument.assetClass(),
-                    handlerCode,
-                    assetClass
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has assetClass '%s', but handler '%s' expects '%s'"
+                            .formatted(instrumentCode, instrument.assetClass(), handlerCode.value(), assetClass)
             );
         }
 
         if (instrument.contractType() != contractType) {
-            throw new InstrumentWrongContractTypeException(
-                    instrument.instrumentCode(),
-                    instrument.contractType(),
-                    handlerCode,
-                    contractType
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has contractType '%s', but handler '%s' expects '%s'"
+                            .formatted(instrumentCode, instrument.contractType(), handlerCode.value(), contractType)
             );
         }
     }
@@ -226,12 +213,24 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         final InstrumentCode instrumentCode = instrument.instrumentCode();
 
         if (instrumentCode == null) {
-            throw new InstrumentCodeMissingException(handlerCode);
+            throw new IllegalArgumentException(
+                    "Instrument code is missing for handler '%s'"
+                            .formatted(handlerCode.value())
+            );
         }
 
         if (!isSupported(instrumentCode)) {
-            throw new InstrumentNotSupportedException(instrumentCode, handlerCode);
+            throw new IllegalArgumentException(
+                    "Instrument '%s' is not supported by handler '%s'"
+                            .formatted(instrumentCode, handlerCode.value())
+            );
         }
+    }
+
+    /* Формирует диагностическое сообщение для несовпадения java-класса инструмента. */
+    private String buildClassMismatchMessage(InstrumentCode instrumentCode, Class<?> actualClass) {
+        return "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
+                .formatted(instrumentCode, actualClass.getName(), handlerCode.value(), instrumentClass.getName());
     }
 
     /**
