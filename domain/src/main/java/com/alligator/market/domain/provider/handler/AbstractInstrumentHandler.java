@@ -117,7 +117,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         Objects.requireNonNull(provider, "provider must not be null");
 
         if (!providerRef.compareAndSet(null, provider)) {
-            throw new IllegalStateException("Provider is already attached to handler '%s'".formatted(handlerCode.value()));
+            throw new IllegalStateException(
+                    "Provider is already attached to handler '%s'".formatted(handlerCode.value()));
         }
     }
 
@@ -174,7 +175,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     //region INTERNALS
 
-    /* Требование контракта: обработчик прикреплён к провайдеру. */
+    /* Проверка, что обработчик прикреплён к провайдеру. */
     private void requireProviderAttached() {
         if (!isAttached()) {
             throw new IllegalStateException("Provider is not attached to handler '%s'".formatted(handlerCode.value()));
