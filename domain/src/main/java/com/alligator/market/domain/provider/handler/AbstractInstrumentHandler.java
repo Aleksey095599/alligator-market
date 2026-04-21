@@ -22,8 +22,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
-    /* Класс поддерживаемых инструментов. */
-    private final Class<I> instrumentClass;
+    /* Java-класс поддерживаемых инструментов. */
+    private final Class<I> instrumentJavaClass;
 
     /* Класс актива поддерживаемых инструментов. */
     private final AssetClass assetClass;
@@ -43,13 +43,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
-            Class<I> instrumentClass,
+            Class<I> instrumentJavaClass,
             AssetClass assetClass,
             ContractType contractType,
             Set<InstrumentCode> supportedInstrumentCodes
     ) {
         Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
+        Objects.requireNonNull(instrumentJavaClass, "instrumentJavaClass must not be null");
         Objects.requireNonNull(assetClass, "assetClass must not be null");
         Objects.requireNonNull(contractType, "contractType must not be null");
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
@@ -59,7 +59,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
 
         this.handlerCode = handlerCode;
-        this.instrumentClass = instrumentClass;
+        this.instrumentJavaClass = instrumentJavaClass;
         this.assetClass = assetClass;
         this.contractType = contractType;
         this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
@@ -70,9 +70,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return handlerCode;
     }
 
-    @Override
-    public final Class<I> instrumentClass() {
-        return instrumentClass;
+    public final Class<I> instrumentJavaClass() {
+        return instrumentJavaClass;
     }
 
     @Override
@@ -92,7 +91,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final boolean isCompatible(Instrument instrument) {
-        return instrumentClass.isInstance(instrument)
+        return instrumentJavaClass.isInstance(instrument)
                 && instrument.assetClass() == assetClass
                 && instrument.contractType() == contractType;
     }
@@ -169,7 +168,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                 "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
         );
 
-        if (!instrumentClass.isInstance(instrument)) {
+        if (!instrumentJavaClass.isInstance(instrument)) {
             throw new IllegalArgumentException(buildClassMismatchMessage(instrumentCode, instrument.getClass()));
         }
 
@@ -208,7 +207,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Формирует диагностическое сообщение для несовпадения java-класса инструмента. */
     private String buildClassMismatchMessage(InstrumentCode instrumentCode, Class<?> actualClass) {
         return "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
-                .formatted(instrumentCode, actualClass.getName(), handlerCode.value(), instrumentClass.getName());
+                .formatted(instrumentCode, actualClass.getName(), handlerCode.value(), instrumentJavaClass.getName());
     }
 
     /* Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов. */
