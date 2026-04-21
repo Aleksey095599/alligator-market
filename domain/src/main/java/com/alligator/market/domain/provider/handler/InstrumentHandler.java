@@ -22,11 +22,6 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     HandlerCode handlerCode();
 
     /**
-     * Класс поддерживаемых инструментов.
-     */
-    Class<I> instrumentClass();
-
-    /**
      * Класс актива поддерживаемых инструментов.
      */
     AssetClass assetClass();
@@ -37,39 +32,9 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     ContractType contractType();
 
     /**
-     * Признак: инструмент сопоставим с обработчиком по доменным признакам (java-класс + класс актива + тип контракта).
-     */
-    default boolean isCompatible(Instrument instrument) {
-        return instrument != null
-                && instrumentClass().isInstance(instrument)
-                && instrument.assetClass() == assetClass()
-                && instrument.contractType() == contractType();
-    }
-
-    /**
      * Коды поддерживаемых инструментов.
      */
     Set<InstrumentCode> supportedInstrumentCodes();
-
-    /**
-     * Признак: поддерживается ли конкретный код инструмента.
-     */
-    default boolean isSupported(InstrumentCode instrumentCode) {
-        return instrumentCode != null && supportedInstrumentCodes().contains(instrumentCode);
-    }
-
-    /**
-     * Прикрепление обработчика к провайдеру.
-     */
-    void attachTo(P provider);
-
-    /**
-     * Признак: обработчик уже прикреплён к провайдеру.
-     *
-     * <p>Назначение: Одно из требований корректного состояния обработчика – прикрепление к провайдеру.
-     * Перед выполнением метода получения потока котировок, обработчик проверяет прикрепление к провайдеру.</p>
-     */
-    boolean isAttached();
 
     /**
      * Поток котировок для заданного инструмента.
