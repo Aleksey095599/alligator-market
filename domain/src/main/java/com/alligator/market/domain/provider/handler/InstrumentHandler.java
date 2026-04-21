@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * <p>Примечание: это provider-facing контракт, а не внешний доменный API.</p>
  */
-public interface ProviderManagedInstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
+public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
     /**
      * Уникальный код обработчика (идентификатор).
