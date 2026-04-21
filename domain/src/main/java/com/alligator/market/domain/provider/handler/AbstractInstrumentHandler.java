@@ -19,8 +19,6 @@ import java.util.Set;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    //region FIELDS
-
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
@@ -39,10 +37,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Ссылка на провайдера (однократная потокобезопасная привязка). */
     private final java.util.concurrent.atomic.AtomicReference<P> providerRef =
             new java.util.concurrent.atomic.AtomicReference<>();
-
-    //endregion
-
-    //region CONSTRUCTION
 
     /**
      * Конструктор с базовыми проверками.
@@ -70,10 +64,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         this.contractType = contractType;
         this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
     }
-
-    //endregion
-
-    //region PUBLIC API
 
     @Override
     public final HandlerCode handlerCode() {
@@ -127,10 +117,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return providerRef.get() != null;
     }
 
-    //endregion
-
-    //region TEMPLATE METHOD
-
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
      *
@@ -154,10 +140,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
-    //endregion
-
-    //region PROTECTED API
-
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.
      *
@@ -170,10 +152,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
         return current;
     }
-
-    //endregion
-
-    //region INTERNALS
 
     /* Проверка, что обработчик прикреплён к провайдеру. */
     private void requireProviderAttached() {
@@ -247,6 +225,4 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
         return java.util.Collections.unmodifiableSet(copy);
     }
-
-    //endregion
 }
