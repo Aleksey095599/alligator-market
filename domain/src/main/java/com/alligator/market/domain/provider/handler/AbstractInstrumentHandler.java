@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Базовая реализация внутреннего SPI обработчика инструмента.
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
-        implements ProviderManagedInstrumentHandler<P, I> {
+        implements InstrumentHandler<P, I> {
 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
