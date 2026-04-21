@@ -1,8 +1,6 @@
 package com.alligator.market.domain.provider.handler;
 
 import com.alligator.market.domain.instrument.base.Instrument;
-import com.alligator.market.domain.instrument.base.classification.AssetClass;
-import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.vo.HandlerCode;
@@ -12,9 +10,11 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Доменный контракт обработчика финансового инструмента.
+ * Внутренний SPI обработчика инструмента, управляемого провайдером.
+ *
+ * <p>Важно: это provider-facing контракт и не внешний доменный API.</p>
  */
-public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
+public interface ProviderManagedInstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 
     /**
      * Уникальный код обработчика (идентификатор).
@@ -22,19 +22,14 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     HandlerCode handlerCode();
 
     /**
-     * Класс актива поддерживаемых инструментов.
-     */
-    AssetClass assetClass();
-
-    /**
-     * Тип контракта поддерживаемых инструментов.
-     */
-    ContractType contractType();
-
-    /**
      * Коды поддерживаемых инструментов.
      */
     Set<InstrumentCode> supportedInstrumentCodes();
+
+    /**
+     * Прикрепляет обработчик к провайдеру.
+     */
+    void attachTo(P provider);
 
     /**
      * Поток котировок для заданного инструмента.
