@@ -19,8 +19,6 @@ import java.util.*;
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    //region FIELDS
-
     /* Код провайдера. */
     protected final ProviderCode providerCode;
 
@@ -33,20 +31,12 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     /* Карта "код инструмента → обработчик инструмента". */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
-    //endregion
-
-    //region EXTENSION POINT
-
     /**
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
      *
      * <p>Назначение: Используется для прикрепления обработчиков к провайдеру.</p>
      */
     protected abstract P self();
-
-    //endregion
-
-    //region CONSTRUCTION
 
     /**
      * Конструктор.
@@ -87,10 +77,6 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         }
     }
 
-    //endregion
-
-    //region PUBLIC API
-
     @Override
     public ProviderCode providerCode() {
         return providerCode;
@@ -120,10 +106,6 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         // Делегируем вызов обработчику
         return handler.quote(instrument);
     }
-
-    //endregion
-
-    //region INTERNALS
 
     /**
      * Собирает неизменяемую карту и валидирует инварианты:
@@ -194,6 +176,4 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
 
         return handler;
     }
-
-    //endregion
 }
