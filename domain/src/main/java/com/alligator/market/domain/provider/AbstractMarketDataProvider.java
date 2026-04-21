@@ -103,7 +103,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         // Находим обработчик (или бросаем исключение)
         ProviderManagedInstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
 
-        // Делегируем вызов обработчику
+        // Делегируем запрос котировки обработчику
         return handler.quote(instrument);
     }
 
