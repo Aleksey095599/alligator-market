@@ -30,5 +30,5 @@ public interface MarketDataProvider {
     /**
      * Поток котировок для заданного инструмента.
      */
-    Publisher<QuoteTick> quote(Instrument instrument);
+    <I extends Instrument> Publisher<QuoteTick> quote(I instrument);
 }
