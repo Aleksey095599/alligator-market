@@ -100,10 +100,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     public final Publisher<QuoteTick> quote(I instrument) {
         validateQuoteRequest(instrument);
 
-        return Objects.requireNonNull(
-                doQuote(instrument),
-                "quote publisher must not be null"
-        );
+        return Objects.requireNonNull(doQuote(instrument),"quote publisher must not be null");
     }
 
     /**
