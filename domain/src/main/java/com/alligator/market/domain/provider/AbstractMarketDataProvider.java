@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider;
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.provider.handler.exception.HandlerNotFoundException;
-import com.alligator.market.domain.provider.handler.InstrumentHandler;
+import com.alligator.market.domain.provider.handler.ProviderManagedInstrumentHandler;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.vo.HandlerCode;
@@ -29,7 +29,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     protected final ProviderPolicy policy;
 
     /* Карта "код инструмента → обработчик инструмента". */
-    private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
+    private final Map<InstrumentCode, ProviderManagedInstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /**
      * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
@@ -53,7 +53,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
-            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
+            Set<? extends ProviderManagedInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
@@ -72,7 +72,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
-        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
+        for (ProviderManagedInstrumentHandler<P, ? extends Instrument> h : handlers) {
             h.attachTo(self());
         }
     }
@@ -101,7 +101,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // Находим обработчик (или бросаем исключение)
-        InstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
+        ProviderManagedInstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
 
         // Делегируем вызов обработчику
         return handler.quote(instrument);
@@ -118,18 +118,18 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      * @param handlers     набор обработчиков
      * @return неизменяемую карту
      */
-    private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
+    private static <P extends MarketDataProvider> Map<InstrumentCode, ProviderManagedInstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             ProviderCode providerCode,
-            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
+            Set<? extends ProviderManagedInstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
-        Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
+        Map<InstrumentCode, ProviderManagedInstrumentHandler<P, ? extends Instrument>> map = new LinkedHashMap<>();
         Set<HandlerCode> handlerCodes = new HashSet<>();
 
-        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
+        for (ProviderManagedInstrumentHandler<P, ? extends Instrument> h : handlers) {
             Objects.requireNonNull(h, "handler must not be null");
 
             HandlerCode handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
@@ -144,7 +144,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
             for (InstrumentCode instrumentCode : codes) {
                 Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-                InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(instrumentCode, h);
+                ProviderManagedInstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(instrumentCode, h);
                 if (prev != null) {
                     throw new IllegalStateException("Provider '" + providerCode.value() +
                             "' contains instrument code '" + instrumentCode.value() +
@@ -161,14 +161,14 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      * Ищет обработчик инструмента или бросает исключение.
      */
     @SuppressWarnings("unchecked")
-    protected final <I extends Instrument> InstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
+    protected final <I extends Instrument> ProviderManagedInstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         InstrumentCode code = Objects.requireNonNull(instrument.instrumentCode(),
                 "instrumentCode must not be null");
 
-        InstrumentHandler<P, I> handler =
-                (InstrumentHandler<P, I>) instrumentHandlerMap.get(code);
+        ProviderManagedInstrumentHandler<P, I> handler =
+                (ProviderManagedInstrumentHandler<P, I>) instrumentHandlerMap.get(code);
 
         if (handler == null) {
             throw new HandlerNotFoundException(code, providerCode);

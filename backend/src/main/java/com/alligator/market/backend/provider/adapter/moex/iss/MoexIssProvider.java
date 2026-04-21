@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.domain.instrument.base.Instrument;
 import com.alligator.market.domain.provider.AbstractMarketDataProvider;
-import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.provider.handler.ProviderManagedInstrumentHandler;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.passport.AccessMethod;
 import com.alligator.market.domain.provider.passport.DeliveryMode;
@@ -38,7 +38,7 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
      * @param handlers набор обработчиков инструментов
      */
     public MoexIssProvider(
-            Set<? extends AbstractInstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
+            Set<? extends ProviderManagedInstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
     ) {
         super(PROVIDER_CODE, PASSPORT, POLICY, handlers);
     }

@@ -15,10 +15,10 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Обработчик финансового инструмента.
+ * Базовая реализация внутреннего SPI обработчика инструмента.
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
-        implements InstrumentHandler<P, I> {
+        implements ProviderManagedInstrumentHandler<P, I> {
 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
@@ -70,13 +70,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return handlerCode;
     }
 
-    @Override
-    public final AssetClass assetClass() {
+    protected final AssetClass assetClass() {
         return assetClass;
     }
 
-    @Override
-    public final ContractType contractType() {
+    protected final ContractType contractType() {
         return contractType;
     }
 
