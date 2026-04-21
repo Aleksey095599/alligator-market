@@ -89,19 +89,25 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return supportedInstrumentCodes;
     }
 
-    @Override
+    /**
+     * Проверка, что инструмент совместим с конфигурацией обработчика.
+     */
     public final boolean isCompatible(Instrument instrument) {
         return instrumentJavaClass.isInstance(instrument)
                 && instrument.assetClass() == assetClass
                 && instrument.contractType() == contractType;
     }
 
-    @Override
+    /**
+     * Проверка, что код инструмента поддерживается обработчиком.
+     */
     public final boolean isSupported(InstrumentCode instrumentCode) {
         return instrumentCode != null && supportedInstrumentCodes.contains(instrumentCode);
     }
 
-    @Override
+    /**
+     * Присоединяет обработчик к указанному провайдеру.
+     */
     public final void attachTo(P provider) {
         Objects.requireNonNull(provider, "provider must not be null");
 
@@ -111,16 +117,15 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         }
     }
 
-    @Override
+    /**
+     * Проверяет, присоединен ли обработчик к провайдеру.
+     */
     public final boolean isAttached() {
         return providerRef.get() != null;
     }
 
     /**
      * Возвращает реактивный поток котировок для указанного инструмента.
-     *
-     * <p>Назначение: Валидирует инварианты и требования контракта {@link InstrumentHandler}, после чего вызывает
-     * хук {@link #doQuote doQuote()}, который описывает чистую логику получения потока котировок.</p>
      */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
@@ -134,7 +139,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     /**
-     * Точка расширения (hook) шаблонного метода {@link #quote(Instrument)}: чистая логика получения потока котировок
+     * Точка расширения (hook) метода {@link #quote(Instrument)}: чистая логика получения потока котировок
      * для переданного инструмента.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
