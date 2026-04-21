@@ -35,8 +35,6 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, FxSpot> {
 
-    //region FIELDS
-
     /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
@@ -52,14 +50,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /* Временная зона MOEX (используется для конвертации SYSTIME в Instant). */
     private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
-    //endregion
-
-    //region CONSTRUCTION
-
     /**
      * Конструктор обработчика.
      *
-     * @param webClient web-клиент настроенный для запросов провайдеру MOEX ISS по инструментам класса FOREX с типом контракта SPOT
+     * @param webClient web-клиент, настроенный для запросов провайдеру MOEX ISS по инструментам FOREX_SPOT
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
         super(HANDLER_CODE, FxSpot.class, AssetClass.FOREX, ContractType.SPOT, SUPPORTED_CODES);
@@ -68,14 +62,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         this.webClient = webClient;
     }
 
-    //endregion
-
-    //region TEMPLATE METHOD
-
     /**
      * Чистая логика получения потока котировок для переданного инструмента FOREX_SPOT.
      *
-     * <p>Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
+     * <p>Примечание: Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
      * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
      */
     @Override
@@ -99,10 +89,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
                 })
                 .repeatWhen(completed -> completed.delayElements(pollInterval));
     }
-
-    //endregion
-
-    //region INTERNALS
 
     /**
      * Один запрос к MOEX ISS --> одна котировка инструмента FOREX_SPOT.
@@ -174,10 +160,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
          * }
          *
          * Где:
-         * - "marketdata" – объект-таблица с данными;
-         * - "columns"    – массив имён колонок (порядок важен);
-         * - "data"       – массив строк таблицы;
-         * - ["2025-03-01 19:00:03", 10.95] – одна строка: [SYSTIME, LAST].
+         * "marketdata" – объект-таблица с данными;
+         * "columns" – массив имён колонок (порядок важен);
+         * "data" – массив строк таблицы;
+         * ["2025-03-01 19:00:03", 10.95] – одна строка: [SYSTIME, LAST].
          */
 
         // 1) Достаём объект "marketdata" и проверяем, что он существует и является объектом
@@ -263,10 +249,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         );
     }
 
-    //endregion
-
-    //region UTILS
-
     /**
      * Поиск индекса колонки по имени в массиве "columns".
      */
@@ -286,6 +268,4 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         }
         return -1;
     }
-
-    //endregion
 }

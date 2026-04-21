@@ -39,7 +39,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     protected abstract P self();
 
     /**
-     * Конструктор.
+     * Конструктор:
      *
      * <p>Собирает объект из переданных параметров и выполняет следующие действия:</p>
      * <ul>
@@ -93,8 +93,8 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     }
 
     /**
-     * Шаблонная реализация получения потока котировок: с помощью карты находит обработчик для заданного
-     * инструмента и делегирует ему вызов.
+     * Шаблонная реализация получения потока котировок:
+     * С помощью карты находит обработчик для заданного инструмента и делегирует ему вызов.
      */
     @Override
     public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
