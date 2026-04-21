@@ -12,6 +12,7 @@ import org.reactivestreams.Publisher;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Обработчик финансового инструмента.
@@ -35,8 +36,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
     /* Ссылка на провайдера (однократная потокобезопасная привязка). */
-    private final java.util.concurrent.atomic.AtomicReference<P> providerRef =
-            new java.util.concurrent.atomic.AtomicReference<>();
+    private final AtomicReference<P> providerRef = new AtomicReference<>();
 
     /**
      * Конструктор с базовыми проверками.
@@ -70,10 +70,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return handlerCode;
     }
 
-    public final Class<I> instrumentJavaClass() {
-        return instrumentJavaClass;
-    }
-
     @Override
     public final AssetClass assetClass() {
         return assetClass;
@@ -89,141 +85,136 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return supportedInstrumentCodes;
     }
 
-    /**
-     * Проверка, что инструмент совместим с конфигурацией обработчика.
-     */
-    public final boolean isCompatible(Instrument instrument) {
-        return instrumentJavaClass.isInstance(instrument)
-                && instrument.assetClass() == assetClass
-                && instrument.contractType() == contractType;
-    }
-
-    /**
-     * Проверка, что код инструмента поддерживается обработчиком.
-     */
-    public final boolean isSupported(InstrumentCode instrumentCode) {
-        return instrumentCode != null && supportedInstrumentCodes.contains(instrumentCode);
-    }
-
-    /**
-     * Присоединяет обработчик к указанному провайдеру.
-     */
+    @Override
     public final void attachTo(P provider) {
         Objects.requireNonNull(provider, "provider must not be null");
 
         if (!providerRef.compareAndSet(null, provider)) {
             throw new IllegalStateException(
-                    "Provider is already attached to handler '%s'".formatted(handlerCode.value()));
+                    "Provider is already attached to handler '%s'".formatted(handlerCode.value())
+            );
         }
     }
 
-    /**
-     * Проверяет, присоединен ли обработчик к провайдеру.
-     */
-    public final boolean isAttached() {
-        return providerRef.get() != null;
-    }
-
-    /**
-     * Возвращает реактивный поток котировок для указанного инструмента.
-     */
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
+        validateQuoteRequest(instrument);
 
-        requireProviderAttached();
-        requireCompatible(instrument);
-        requireSupportedCode(instrument);
-
-        return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
+        return Objects.requireNonNull(
+                doQuote(instrument),
+                "quote publisher must not be null"
+        );
     }
 
     /**
-     * Точка расширения (hook) метода {@link #quote(Instrument)}: чистая логика получения потока котировок
+     * Точка расширения метода {@link #quote(Instrument)}: чистая логика получения потока котировок
      * для переданного инструмента.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.
-     *
-     * <p>Назначение: Обработчик может обращаться к провайдеру для получения дополнительной информации.</p>
      */
     protected final P provider() {
-        P current = providerRef.get();
-        if (current == null) {
-            throw new IllegalStateException("Provider is not attached to handler '%s'".formatted(handlerCode.value()));
-        }
-        return current;
+        return requireAttachedProvider();
     }
 
-    /* Проверка, что обработчик прикреплён к провайдеру. */
-    private void requireProviderAttached() {
-        if (!isAttached()) {
-            throw new IllegalStateException("Provider is not attached to handler '%s'".formatted(handlerCode.value()));
-        }
-    }
-
-    /* Проверка, что инструмент совместим с обработчиком. */
-    private void requireCompatible(I instrument) {
+    /*
+     * Единая точка валидации запроса на котировку.
+     */
+    private void validateQuoteRequest(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        final InstrumentCode instrumentCode = Objects.requireNonNull(
-                instrument.instrumentCode(),
+        requireAttachedProvider();
+        InstrumentCode instrumentCode = requireInstrumentCode(instrument);
+        requireCompatibleInstrument(instrument, instrumentCode);
+        requireSupportedInstrumentCode(instrumentCode);
+    }
+
+    /*
+     * Проверка, что обработчик прикреплён к провайдеру.
+     */
+    private P requireAttachedProvider() {
+        P provider = providerRef.get();
+        if (provider == null) {
+            throw new IllegalStateException(
+                    "Provider is not attached to handler '%s'".formatted(handlerCode.value())
+            );
+        }
+        return provider;
+    }
+
+    /*
+     * Извлекает и валидирует код инструмента.
+     */
+    private InstrumentCode requireInstrumentCode(I instrument) {
+        return Objects.requireNonNull(instrument.instrumentCode(),
                 "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
         );
+    }
 
+    /*
+     * Проверка совместимости инструмента с конфигурацией обработчика.
+     */
+    private void requireCompatibleInstrument(I instrument, InstrumentCode instrumentCode) {
         if (!instrumentJavaClass.isInstance(instrument)) {
-            throw new IllegalArgumentException(buildClassMismatchMessage(instrumentCode, instrument.getClass()));
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.getClass().getName(),
+                                    handlerCode.value(),
+                                    instrumentJavaClass.getName()
+                            )
+            );
         }
 
         if (instrument.assetClass() != assetClass) {
             throw new IllegalArgumentException(
                     "Instrument '%s' has assetClass '%s', but handler '%s' expects '%s'"
-                            .formatted(instrumentCode, instrument.assetClass(), handlerCode.value(), assetClass)
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.assetClass(),
+                                    handlerCode.value(),
+                                    assetClass
+                            )
             );
         }
 
         if (instrument.contractType() != contractType) {
             throw new IllegalArgumentException(
                     "Instrument '%s' has contractType '%s', but handler '%s' expects '%s'"
-                            .formatted(instrumentCode, instrument.contractType(), handlerCode.value(), contractType)
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.contractType(),
+                                    handlerCode.value(),
+                                    contractType
+                            )
             );
         }
     }
 
-    /* Проверка, что код инструмента поддерживается обработчиком. */
-    private void requireSupportedCode(I instrument) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
-
-        final InstrumentCode instrumentCode = Objects.requireNonNull(
-                instrument.instrumentCode(),
-                "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
-        );
-
-        if (!isSupported(instrumentCode)) {
+    /*
+     * Проверка, что код инструмента поддерживается обработчиком.
+     */
+    private void requireSupportedInstrumentCode(InstrumentCode instrumentCode) {
+        if (!supportedInstrumentCodes.contains(instrumentCode)) {
             throw new IllegalArgumentException(
                     "Instrument '%s' is not supported by handler '%s'"
-                            .formatted(instrumentCode, handlerCode.value())
+                            .formatted(instrumentCode.value(), handlerCode.value())
             );
         }
     }
 
-    /* Формирует диагностическое сообщение для несовпадения java-класса инструмента. */
-    private String buildClassMismatchMessage(InstrumentCode instrumentCode, Class<?> actualClass) {
-        return "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
-                .formatted(instrumentCode, actualClass.getName(), handlerCode.value(), instrumentJavaClass.getName());
-    }
-
-    /* Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов. */
+    /*
+     * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.
+     */
     private static Set<InstrumentCode> freezeSupportedInstrumentCodes(Set<InstrumentCode> supportedInstrumentCodes) {
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
-        final LinkedHashSet<InstrumentCode> copy = new LinkedHashSet<>(supportedInstrumentCodes.size());
-
+        LinkedHashSet<InstrumentCode> copy = new LinkedHashSet<>(supportedInstrumentCodes.size());
         for (InstrumentCode code : supportedInstrumentCodes) {
             Objects.requireNonNull(code, "code must not be null");
-
             copy.add(code);
         }
 
