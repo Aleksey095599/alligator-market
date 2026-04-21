@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Внутренний SPI обработчика инструмента, управляемого провайдером.
  *
- * <p>Примечание: это provider-facing контракт, а не внешний доменный API.</p>
+ * <p>Примечание: Это provider-facing контракт, а не внешний доменный API.</p>
  */
 public interface InstrumentHandler<P extends MarketDataProvider, I extends Instrument> {
 

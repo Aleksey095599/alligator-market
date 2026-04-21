@@ -102,8 +102,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     /**
-     * Точка расширения метода {@link #quote(Instrument)}: чистая логика получения потока котировок
-     * для переданного инструмента.
+     * Точка расширения метода {@link #quote(Instrument)}:
+     * Чистая логика получения потока котировок для переданного инструмента.
      */
     protected abstract Publisher<QuoteTick> doQuote(I instrument);
 
