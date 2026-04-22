@@ -27,11 +27,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
-    /* Класс поддерживаемых инструментов. */
-    private final Class<I> instrumentClass;
-
-    /* Коды поддерживаемых инструментов. */
-    private final Set<InstrumentCode> supportedInstrumentCodes;
+    /* Сводный runtime-профиль поддерживаемых инструментов. */
+    private final SupportedInstrumentsProfile supportedInstrumentsProfile;
 
     /* Ссылка на провайдера (однократная потокобезопасная привязка). */
     private final AtomicReference<P> providerRef = new AtomicReference<>();
@@ -56,8 +53,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                 buildSupportedInstrumentProfile(handlerCode, instrumentClass, supportedInstruments);
 
         this.handlerCode = handlerCode;
-        this.instrumentClass = instrumentClass;
-        this.supportedInstrumentCodes = profile.supportedInstrumentCodes();
+        this.supportedInstrumentsProfile = profile;
     }
 
     @Override
@@ -67,7 +63,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final Set<InstrumentCode> supportedInstrumentCodes() {
-        return supportedInstrumentCodes;
+        return supportedInstrumentsProfile.supportedInstrumentCodes();
     }
 
     @Override
@@ -188,6 +184,46 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         );
     }
 
+    /*
+     * Проверка соответствия инструмента сводному профилю поддерживаемых инструментов.
+     */
+    private void requireInstrumentMatchesSupportedProfile(I instrument, InstrumentCode instrumentCode) {
+        if (!supportedInstrumentsProfile.instrumentClass().isInstance(instrument)) {
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.getClass().getName(),
+                                    handlerCode.value(),
+                                    supportedInstrumentsProfile.instrumentClass().getName()
+                            )
+            );
+        }
+
+        if (instrument.asset() != supportedInstrumentsProfile.asset()) {
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has asset '%s', but handler '%s' expects '%s'"
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.asset(),
+                                    handlerCode.value(),
+                                    supportedInstrumentsProfile.asset()
+                            )
+            );
+        }
+
+        if (instrument.product() != supportedInstrumentsProfile.product()) {
+            throw new IllegalArgumentException(
+                    "Instrument '%s' has product '%s', but handler '%s' expects '%s'"
+                            .formatted(
+                                    instrumentCode.value(),
+                                    instrument.product(),
+                                    handlerCode.value(),
+                                    supportedInstrumentsProfile.product()
+                            )
+            );
+        }
+    }
 
     /*
      * Единая точка валидации запроса на котировку.
@@ -221,47 +257,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return Objects.requireNonNull(instrument.instrumentCode(),
                 "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
         );
-    }
-
-    /*
-     * Проверка совместимости инструмента с конфигурацией обработчика.
-     */
-    private void requireCompatibleInstrument(I instrument, InstrumentCode instrumentCode) {
-        if (!instrumentJavaClass.isInstance(instrument)) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.getClass().getName(),
-                                    handlerCode.value(),
-                                    instrumentJavaClass.getName()
-                            )
-            );
-        }
-
-        if (instrument.asset() != asset) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has asset '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.asset(),
-                                    handlerCode.value(),
-                                    asset
-                            )
-            );
-        }
-
-        if (instrument.product() != product) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has product '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.product(),
-                                    handlerCode.value(),
-                                    product
-                            )
-            );
-        }
     }
 
     /*
