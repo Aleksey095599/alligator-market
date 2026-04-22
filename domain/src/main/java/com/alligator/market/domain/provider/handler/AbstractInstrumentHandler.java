@@ -30,12 +30,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Класс поддерживаемых инструментов. */
     private final Class<I> instrumentClass;
 
-    /* Класс актива поддерживаемых инструментов. */
-    private final Asset asset;
-
-    /* Продукт поддерживаемых инструментов. */
-    private final Product product;
-
     /* Коды поддерживаемых инструментов. */
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
@@ -63,8 +57,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
         this.handlerCode = handlerCode;
         this.instrumentClass = instrumentClass;
-        this.asset = profile.asset();
-        this.product = profile.product();
         this.supportedInstrumentCodes = profile.supportedInstrumentCodes();
     }
 
