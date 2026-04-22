@@ -1,7 +1,7 @@
 package com.alligator.market.domain.provider.handler;
 
 import com.alligator.market.domain.instrument.base.Instrument;
-import com.alligator.market.domain.instrument.base.classification.AssetClass;
+import com.alligator.market.domain.instrument.base.classification.Asset;
 import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
@@ -27,7 +27,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final Class<I> instrumentJavaClass;
 
     /* Класс актива поддерживаемых инструментов. */
-    private final AssetClass assetClass;
+    private final Asset asset;
 
     /* Тип контракта поддерживаемых инструментов. */
     private final ContractType contractType;
@@ -44,13 +44,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
             Class<I> instrumentJavaClass,
-            AssetClass assetClass,
+            Asset asset,
             ContractType contractType,
             Set<InstrumentCode> supportedInstrumentCodes
     ) {
         Objects.requireNonNull(handlerCode, "handlerCode must not be null");
         Objects.requireNonNull(instrumentJavaClass, "instrumentJavaClass must not be null");
-        Objects.requireNonNull(assetClass, "assetClass must not be null");
+        Objects.requireNonNull(asset, "asset must not be null");
         Objects.requireNonNull(contractType, "contractType must not be null");
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 
@@ -60,7 +60,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
         this.handlerCode = handlerCode;
         this.instrumentJavaClass = instrumentJavaClass;
-        this.assetClass = assetClass;
+        this.asset = asset;
         this.contractType = contractType;
         this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
     }
@@ -70,8 +70,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return handlerCode;
     }
 
-    protected final AssetClass assetClass() {
-        return assetClass;
+    protected final Asset asset() {
+        return asset;
     }
 
     protected final ContractType contractType() {
@@ -164,14 +164,14 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             );
         }
 
-        if (instrument.assetClass() != assetClass) {
+        if (instrument.asset() != asset) {
             throw new IllegalArgumentException(
-                    "Instrument '%s' has assetClass '%s', but handler '%s' expects '%s'"
+                    "Instrument '%s' has asset '%s', but handler '%s' expects '%s'"
                             .formatted(
                                     instrumentCode.value(),
-                                    instrument.assetClass(),
+                                    instrument.asset(),
                                     handlerCode.value(),
-                                    assetClass
+                                    asset
                             )
             );
         }

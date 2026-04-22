@@ -8,7 +8,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.
 public record FxSpotListResponse(
         String instrumentCode,
         String symbol,
-        String assetClass,
+        String asset,
         String contractType,
         String baseCurrency,
         String quoteCurrency,

@@ -20,7 +20,7 @@ public final class FxSpotListResponseMapper {
         return new FxSpotListResponse(
                 fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol().value(),
-                fxSpot.assetClass().name(),
+                fxSpot.asset().name(),
                 fxSpot.contractType().name(),
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),

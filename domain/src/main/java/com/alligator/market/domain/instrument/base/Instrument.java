@@ -1,6 +1,6 @@
 package com.alligator.market.domain.instrument.base;
 
-import com.alligator.market.domain.instrument.base.classification.AssetClass;
+import com.alligator.market.domain.instrument.base.classification.Asset;
 import com.alligator.market.domain.instrument.base.classification.ContractType;
 import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
@@ -26,7 +26,7 @@ public interface Instrument {
     /**
      * Актив финансового инструмента.
      */
-    AssetClass assetClass();
+    Asset asset();
 
     /**
      * Контракт финансового инструмента.
