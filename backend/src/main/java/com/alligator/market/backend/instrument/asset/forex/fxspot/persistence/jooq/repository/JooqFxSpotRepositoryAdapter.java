@@ -11,7 +11,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpo
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectFieldOrAsterisk;

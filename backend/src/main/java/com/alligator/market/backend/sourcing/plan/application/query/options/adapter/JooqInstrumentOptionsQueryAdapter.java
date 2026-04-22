@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.query.options.adapter;
 
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 
 import java.util.List;

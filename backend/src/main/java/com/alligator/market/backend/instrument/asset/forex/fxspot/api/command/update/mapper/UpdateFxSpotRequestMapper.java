@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.u
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.dto.UpdateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update.UpdateFxSpotCommand;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.base.classification;
+package com.alligator.market.domain.instrument.classification;
 
 /**
  * Класс актива, к которому относится финансовый инструмент.

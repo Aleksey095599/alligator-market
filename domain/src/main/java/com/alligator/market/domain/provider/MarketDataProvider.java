@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider;
 
-import com.alligator.market.domain.instrument.base.Instrument;
+import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.vo.HandlerCode;

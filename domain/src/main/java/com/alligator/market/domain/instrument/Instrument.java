@@ -1,9 +1,9 @@
-package com.alligator.market.domain.instrument.base;
+package com.alligator.market.domain.instrument;
 
-import com.alligator.market.domain.instrument.base.classification.Asset;
-import com.alligator.market.domain.instrument.base.classification.ContractType;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
+import com.alligator.market.domain.instrument.classification.Asset;
+import com.alligator.market.domain.instrument.classification.ContractType;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 
 /**
  * Доменный контракт финансового инструмента.

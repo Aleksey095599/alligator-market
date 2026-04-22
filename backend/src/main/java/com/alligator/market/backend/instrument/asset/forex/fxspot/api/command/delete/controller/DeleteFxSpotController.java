@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.d
 
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.delete.DeleteFxSpotService;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

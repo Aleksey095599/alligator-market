@@ -9,7 +9,7 @@ import com.alligator.market.backend.sourcing.plan.application.query.get.GetInstr
 import com.alligator.market.backend.sourcing.plan.application.query.list.ListInstrumentSourcePlansService;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;

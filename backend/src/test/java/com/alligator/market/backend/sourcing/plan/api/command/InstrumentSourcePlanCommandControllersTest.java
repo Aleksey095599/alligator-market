@@ -10,7 +10,7 @@ import com.alligator.market.backend.sourcing.plan.application.command.replace.Re
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

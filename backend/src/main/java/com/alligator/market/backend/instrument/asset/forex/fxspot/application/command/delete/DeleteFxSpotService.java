@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.delete;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;

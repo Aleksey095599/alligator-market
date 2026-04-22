@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.plan.api.command.create.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.command.create.dto.CreateInstrumentSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 

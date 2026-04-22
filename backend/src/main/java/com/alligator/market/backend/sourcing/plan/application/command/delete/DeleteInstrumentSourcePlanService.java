@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.command.delete;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 

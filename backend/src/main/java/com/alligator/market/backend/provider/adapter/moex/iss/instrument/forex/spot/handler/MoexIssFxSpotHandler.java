@@ -2,10 +2,10 @@ package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
-import com.alligator.market.domain.instrument.base.classification.Asset;
-import com.alligator.market.domain.instrument.base.classification.ContractType;
+import com.alligator.market.domain.instrument.classification.Asset;
+import com.alligator.market.domain.instrument.classification.ContractType;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.passport.AccessMethod;
 import com.alligator.market.domain.provider.vo.HandlerCode;

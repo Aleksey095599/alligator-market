@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument.asset.forex.fxspot.codec;
 
-import com.alligator.market.domain.instrument.base.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.base.vo.InstrumentSymbol;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 
