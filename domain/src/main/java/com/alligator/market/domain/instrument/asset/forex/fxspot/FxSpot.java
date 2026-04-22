@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * Финансовый инструмент FOREX_SPOT (aggregate root).
  *
- * <p>Примечание: FOREX_SPOT – наследник базового финансового инструмента {@link Instrument}.</p>
+ * <p>Примечание: FOREX_SPOT реализует доменный контракт инструмента {@link Instrument}.</p>
  *
  * @param base                       Базовая валюта
  * @param quote                      Котируемая валюта
