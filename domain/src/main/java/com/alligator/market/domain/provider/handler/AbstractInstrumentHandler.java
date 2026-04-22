@@ -82,6 +82,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         requireAttachedProvider();
+
         InstrumentCode instrumentCode = requireInstrumentCode(instrument);
         requireInstrumentMatchesSupportedProfile(instrument, instrumentCode);
 
@@ -227,6 +228,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                             )
             );
         }
+
+        if (!supportedInstrumentsProfile.supportedInstrumentCodes().contains(instrumentCode)) {
+            throw new IllegalArgumentException(
+                    "Instrument '%s' is not supported by handler '%s'"
+                            .formatted(instrumentCode.value(), handlerCode.value())
+            );
+        }
     }
 
     /*
@@ -249,18 +257,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         return Objects.requireNonNull(instrument.instrumentCode(),
                 "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
         );
-    }
-
-    /*
-     * Проверка, что код инструмента поддерживается обработчиком.
-     */
-    private void requireSupportedInstrumentCode(InstrumentCode instrumentCode) {
-        if (!supportedInstrumentCodes.contains(instrumentCode)) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' is not supported by handler '%s'"
-                            .formatted(instrumentCode.value(), handlerCode.value())
-            );
-        }
     }
 
     /*
