@@ -79,7 +79,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     @Override
     public final Publisher<QuoteTick> quote(I instrument) {
-        validateQuoteRequest(instrument);
+        Objects.requireNonNull(instrument, "instrument must not be null");
+
+        requireAttachedProvider();
+        InstrumentCode instrumentCode = requireInstrumentCode(instrument);
+        requireInstrumentMatchesSupportedProfile(instrument, instrumentCode);
 
         return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
     }
@@ -223,18 +227,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
                             )
             );
         }
-    }
-
-    /*
-     * Единая точка валидации запроса на котировку.
-     */
-    private void validateQuoteRequest(I instrument) {
-        Objects.requireNonNull(instrument, "instrument must not be null");
-
-        requireAttachedProvider();
-        InstrumentCode instrumentCode = requireInstrumentCode(instrument);
-        requireCompatibleInstrument(instrument, instrumentCode);
-        requireSupportedInstrumentCode(instrumentCode);
     }
 
     /*
