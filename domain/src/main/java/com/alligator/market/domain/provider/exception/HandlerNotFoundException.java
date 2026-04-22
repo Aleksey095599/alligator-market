@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.handler.exception;
+package com.alligator.market.domain.provider.exception;
 
 import com.alligator.market.domain.common.exception.BaseDomainException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;

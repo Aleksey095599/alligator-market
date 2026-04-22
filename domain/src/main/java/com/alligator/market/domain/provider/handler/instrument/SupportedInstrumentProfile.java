@@ -8,10 +8,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Компактный профиль поддерживаемого инструмента для конфигурации обработчика.
- *
- * <p>Назначение: отделяет служебные признаки supported-инструмента
- * от полной доменной модели и снижает шум в сборке handler.</p>
+ * Профиль поддерживаемого инструмента для конфигурации обработчика.
  */
 public record SupportedInstrumentProfile(
         InstrumentCode instrumentCode,

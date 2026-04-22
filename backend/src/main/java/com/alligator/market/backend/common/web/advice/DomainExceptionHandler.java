@@ -3,7 +3,7 @@ package com.alligator.market.backend.common.web.advice;
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
-import com.alligator.market.domain.provider.handler.exception.HandlerNotFoundException;
+import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
 import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import lombok.extern.slf4j.Slf4j;
