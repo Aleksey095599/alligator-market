@@ -85,7 +85,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     public final Publisher<QuoteTick> quote(I instrument) {
         validateQuoteRequest(instrument);
 
-        return Objects.requireNonNull(doQuote(instrument),"quote publisher must not be null");
+        return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
     }
 
     /**
@@ -100,6 +100,94 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     protected final P provider() {
         return requireAttachedProvider();
     }
+
+    /*
+     * Собирает и валидирует сводный профиль поддерживаемых инструментов.
+     */
+    private static <I extends Instrument> SupportedInstrumentsProfile buildSupportedInstrumentProfile(
+            HandlerCode handlerCode,
+            Class<I> instrumentClass,
+            Set<? extends I> supportedInstruments
+    ) {
+        Asset resolvedAsset = null;
+        Product resolvedProduct = null;
+        LinkedHashSet<InstrumentCode> resolvedCodes = new LinkedHashSet<>();
+
+        for (I instrument : supportedInstruments) {
+            Objects.requireNonNull(instrument, "supportedInstrument must not be null");
+
+            InstrumentCode instrumentCode = Objects.requireNonNull(
+                    instrument.instrumentCode(),
+                    "supported instrumentCode must not be null"
+            );
+
+            if (!instrumentClass.isInstance(instrument)) {
+                throw new IllegalArgumentException(
+                        "Supported instrument '%s' has java class '%s', but handler '%s' expects '%s'"
+                                .formatted(
+                                        instrumentCode.value(),
+                                        instrument.getClass().getName(),
+                                        handlerCode.value(),
+                                        instrumentClass.getName()
+                                )
+                );
+            }
+
+            Asset currentAsset = Objects.requireNonNull(
+                    instrument.asset(),
+                    "supported asset must not be null"
+            );
+
+            Product currentProduct = Objects.requireNonNull(
+                    instrument.product(),
+                    "supported product must not be null"
+            );
+
+            if (resolvedAsset == null) {
+                resolvedAsset = currentAsset;
+                resolvedProduct = currentProduct;
+            } else {
+                if (currentAsset != resolvedAsset) {
+                    throw new IllegalArgumentException(
+                            "Supported instruments of handler '%s' have inconsistent asset: expected '%s', but found '%s' for instrument '%s'"
+                                    .formatted(
+                                            handlerCode.value(),
+                                            resolvedAsset,
+                                            currentAsset,
+                                            instrumentCode.value()
+                                    )
+                    );
+                }
+
+                if (currentProduct != resolvedProduct) {
+                    throw new IllegalArgumentException(
+                            "Supported instruments of handler '%s' have inconsistent product: expected '%s', but found '%s' for instrument '%s'"
+                                    .formatted(
+                                            handlerCode.value(),
+                                            resolvedProduct,
+                                            currentProduct,
+                                            instrumentCode.value()
+                                    )
+                    );
+                }
+            }
+
+            if (!resolvedCodes.add(instrumentCode)) {
+                throw new IllegalArgumentException(
+                        "Supported instrument code '%s' is duplicated in handler '%s'"
+                                .formatted(instrumentCode.value(), handlerCode.value())
+                );
+            }
+        }
+
+        return new SupportedInstrumentsProfile(
+                freezeSupportedInstrumentCodes(resolvedCodes),
+                instrumentClass,
+                resolvedAsset,
+                resolvedProduct
+        );
+    }
+
 
     /*
      * Единая точка валидации запроса на котировку.
