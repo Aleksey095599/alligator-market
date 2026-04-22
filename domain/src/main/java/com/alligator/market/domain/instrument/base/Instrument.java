@@ -24,12 +24,12 @@ public interface Instrument {
     InstrumentSymbol instrumentSymbol();
 
     /**
-     * Класс актива, к которому относится финансовый инструмент.
+     * Актив финансового инструмента.
      */
     AssetClass assetClass();
 
     /**
-     * Тип контракта финансового инструмента.
+     * Контракт финансового инструмента.
      */
     ContractType contractType();
 }

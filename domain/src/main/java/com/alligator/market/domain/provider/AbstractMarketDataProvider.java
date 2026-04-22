@@ -68,7 +68,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         this.passport = passport;
         this.policy = policy;
 
-        // Собираем неизменяемую карту и валидируем инварианты
+        // Собираем неизменяемую однозначную карту "код инструмента → обработчик инструмента"
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
         // Прикрепляем обработчики к провайдеру
@@ -111,7 +111,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      * Собирает неизменяемую карту и валидирует инварианты:
      * <ul>
      *     <li>Уникальность кодов обработчиков;</li>
-     *     <li>Один код инструмента → один обработчик.</li>
+     *     <li>Один код инструмента → один обработчик (однозначность).</li>
      * </ul>
      *
      * @param providerCode код провайдера, к которому прикреплены обработчики
