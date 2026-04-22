@@ -33,9 +33,8 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
     /**
      * Конструктор адаптера MOEX ISS.
      *
-     * <p>Примечание: проверки входящих параметров и инвариантов реализованы в {@link AbstractMarketDataProvider}.</p>
-     *
-     * @param handlers набор обработчиков инструментов
+     * <p>Примечание: Spring автоматически инжектит все бины InstrumentHandler, совместимые с MoexIssProvider
+     * для любых Instrument и объединяет их в единый Set.<p/>
      */
     public MoexIssProvider(
             Set<? extends InstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
