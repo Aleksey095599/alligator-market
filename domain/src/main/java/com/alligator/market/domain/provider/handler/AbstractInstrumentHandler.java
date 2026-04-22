@@ -6,6 +6,7 @@ import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentProfile;
 import com.alligator.market.domain.provider.vo.HandlerCode;
 import org.reactivestreams.Publisher;
 
@@ -17,8 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Базовая реализация внутреннего SPI обработчика инструмента.
  *
- * <p>Примечание: Обработчик за счёт дженериков параметризован конкретным провайдером и Java-классом
- * финансового инструмента.</p>
+ * <p>Примечание: Обработчик за счёт дженериков параметризован конкретным провайдером и классом финансового
+ * инструмента.</p>
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
@@ -26,8 +27,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     /* Код обработчика. */
     private final HandlerCode handlerCode;
 
-    /* Java-класс поддерживаемых инструментов. */
-    private final Class<I> instrumentJavaClass;
+    /* Класс поддерживаемых инструментов. */
+    private final Class<I> instrumentClass;
 
     /* Класс актива поддерживаемых инструментов. */
     private final Asset asset;
@@ -42,31 +43,45 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     private final AtomicReference<P> providerRef = new AtomicReference<>();
 
     /**
-     * Конструктор с базовыми проверками.
+     * Конструктор: обработчик сам выводит свой профиль из набора поддерживаемых инструментов.
      */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
-            Class<I> instrumentJavaClass,
-            Asset asset,
-            Product product,
-            Set<InstrumentCode> supportedInstrumentCodes
+            Class<I> instrumentClass,
+            Set<? extends I> supportedInstruments
     ) {
         Objects.requireNonNull(handlerCode, "handlerCode must not be null");
-        Objects.requireNonNull(instrumentJavaClass, "instrumentJavaClass must not be null");
-        Objects.requireNonNull(asset, "asset must not be null");
-        Objects.requireNonNull(product, "product must not be null");
-        Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
+        Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
+        Objects.requireNonNull(supportedInstruments, "supportedInstruments must not be null");
 
-        if (supportedInstrumentCodes.isEmpty()) {
-            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
+        if (supportedInstruments.isEmpty()) {
+            throw new IllegalArgumentException("supportedInstruments must not be empty");
         }
 
+        SupportedInstrumentProfile profile =
+                buildSupportedInstrumentProfile(handlerCode, instrumentClass, supportedInstruments);
+
         this.handlerCode = handlerCode;
-        this.instrumentJavaClass = instrumentJavaClass;
-        this.asset = asset;
-        this.product = product;
-        this.supportedInstrumentCodes = freezeSupportedInstrumentCodes(supportedInstrumentCodes);
+        this.instrumentClass = instrumentClass;
+        this.asset = profile.asset();
+        this.product = profile.product();
+        this.supportedInstrumentCodes = profile.supportedInstrumentCodes();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public final HandlerCode handlerCode() {
