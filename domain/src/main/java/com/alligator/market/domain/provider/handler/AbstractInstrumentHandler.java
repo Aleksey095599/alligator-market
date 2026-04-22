@@ -60,32 +60,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         this.supportedInstrumentCodes = profile.supportedInstrumentCodes();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public final HandlerCode handlerCode() {
         return handlerCode;
-    }
-
-    protected final Asset asset() {
-        return asset;
-    }
-
-    protected final Product product() {
-        return product;
     }
 
     @Override
