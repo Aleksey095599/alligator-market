@@ -40,7 +40,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['instrumentCode', 'symbol', 'assetClass', 'contractType', 'baseCurrency', 'quoteCurrency', 'tenor', 'defaultQuoteFractionDigits', 'actions'];
+  displayed: string[] = ['instrumentCode', 'symbol', 'assetClass', 'product', 'baseCurrency', 'quoteCurrency', 'tenor', 'defaultQuoteFractionDigits', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================

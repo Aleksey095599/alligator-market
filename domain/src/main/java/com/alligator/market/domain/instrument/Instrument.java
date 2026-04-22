@@ -1,7 +1,7 @@
 package com.alligator.market.domain.instrument;
 
 import com.alligator.market.domain.instrument.classification.Asset;
-import com.alligator.market.domain.instrument.classification.ContractType;
+import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 
@@ -29,7 +29,7 @@ public interface Instrument {
     Asset asset();
 
     /**
-     * Контракт финансового инструмента.
+     * Продукт финансового инструмента.
      */
-    ContractType contractType();
+    Product product();
 }

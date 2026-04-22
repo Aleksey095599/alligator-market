@@ -4,8 +4,8 @@ import { FxSpotTenor } from './fx-spot-tenor.model';
 export interface FxSpotDto {
   /* Класс актива */
   assetClass: string;
-  /* Тип контракта */
-  contractType: string;
+  /* Продукт инструмента */
+  product: string;
   /* Код базовой валюты */
   baseCurrency: string;
   /* Код котируемой валюты */
@@ -24,8 +24,8 @@ export interface FxSpotListItemDto {
   symbol: string;
   /* Класс актива */
   assetClass: string;
-  /* Тип контракта */
-  contractType: string;
+  /* Продукт инструмента */
+  product: string;
   /* Код базовой валюты */
   baseCurrency: string;
   /* Код котируемой валюты */

@@ -2,7 +2,7 @@ package com.alligator.market.domain.instrument.asset.forex.fxspot;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 import com.alligator.market.domain.instrument.classification.Asset;
-import com.alligator.market.domain.instrument.classification.ContractType;
+import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
@@ -65,8 +65,8 @@ public record FxSpot(
     }
 
     @Override
-    public ContractType contractType() {
-        return ContractType.SPOT;
+    public Product product() {
+        return Product.SPOT;
     }
 
 }

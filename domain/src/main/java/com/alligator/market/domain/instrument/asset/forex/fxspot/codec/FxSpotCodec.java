@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public final class FxSpotCodec {
 
-    /* Префикс кода инструмента: класс актива + тип контракта (FOREX_SPOT). */
+    /* Префикс кода инструмента: класс актива + продукт (FOREX_SPOT). */
     private static final String TYPE_PREFIX = "FOREX_SPOT_";
 
     /* Разделитель между парой и тенором. */
