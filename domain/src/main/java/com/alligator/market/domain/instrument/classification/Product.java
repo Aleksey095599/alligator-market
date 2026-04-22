@@ -1,9 +1,9 @@
 package com.alligator.market.domain.instrument.classification;
 
 /**
- * Тип контракта финансового инструмента.
+ * Продукт финансового инструмента.
  */
-public enum ContractType {
+public enum Product {
     FORWARD,
     SPOT,
     SWAP

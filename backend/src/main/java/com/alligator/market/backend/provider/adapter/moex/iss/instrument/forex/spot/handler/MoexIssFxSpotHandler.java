@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.classification.Asset;
-import com.alligator.market.domain.instrument.classification.ContractType;
+import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
@@ -56,7 +56,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * @param webClient web-клиент, настроенный для запросов провайдеру MOEX ISS по инструментам FOREX_SPOT
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
-        super(HANDLER_CODE, FxSpot.class, Asset.FOREX, ContractType.SPOT, SUPPORTED_CODES);
+        super(HANDLER_CODE, FxSpot.class, Asset.FOREX, Product.SPOT, SUPPORTED_CODES);
 
         Objects.requireNonNull(webClient, "webClient must not be null");
         this.webClient = webClient;

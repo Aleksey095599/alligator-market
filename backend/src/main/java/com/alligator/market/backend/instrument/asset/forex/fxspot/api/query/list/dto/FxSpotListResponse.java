@@ -9,7 +9,7 @@ public record FxSpotListResponse(
         String instrumentCode,
         String symbol,
         String asset,
-        String contractType,
+        String product,
         String baseCurrency,
         String quoteCurrency,
         Integer defaultQuoteFractionDigits,

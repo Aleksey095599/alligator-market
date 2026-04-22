@@ -21,7 +21,7 @@ public final class FxSpotListResponseMapper {
                 fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol().value(),
                 fxSpot.asset().name(),
-                fxSpot.contractType().name(),
+                fxSpot.product().name(),
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),
                 fxSpot.defaultQuoteFractionDigits(),
