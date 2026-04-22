@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import com.alligator.market.domain.provider.MarketDataProvider;
-import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentProfile;
+import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.provider.vo.HandlerCode;
 import org.reactivestreams.Publisher;
 
@@ -52,7 +52,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
             throw new IllegalArgumentException("supportedInstruments must not be empty");
         }
 
-        SupportedInstrumentProfile profile =
+        SupportedInstrumentsProfile profile =
                 buildSupportedInstrumentProfile(handlerCode, instrumentClass, supportedInstruments);
 
         this.handlerCode = handlerCode;
