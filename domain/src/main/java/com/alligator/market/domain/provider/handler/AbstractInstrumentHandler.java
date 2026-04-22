@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Базовая реализация внутреннего SPI обработчика инструмента.
+ *
+ * <p>Примечание: Обработчик за счёт дженериков параметризован конкретным провайдером и Java-классом
+ * финансового инструмента.</p>
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
