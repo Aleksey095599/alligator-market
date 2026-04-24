@@ -3,12 +3,9 @@ package com.alligator.market.domain.provider;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.vo.HandlerCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
 import org.reactivestreams.Publisher;
-
-import java.util.Set;
 
 /**
  * Доменный контракт провайдера рыночных данных.
@@ -29,11 +26,6 @@ public interface MarketDataProvider {
      * Политика провайдера.
      */
     ProviderPolicy policy();
-
-    /**
-     * Список кодов обработчиков, подключенных к провайдеру.
-     */
-    Set<HandlerCode> attachedHandlerCodes();
 
     /**
      * Поток котировок для заданного инструмента.

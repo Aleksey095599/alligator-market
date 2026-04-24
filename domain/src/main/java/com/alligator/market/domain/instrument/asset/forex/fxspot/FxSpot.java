@@ -13,7 +13,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpo
 import java.util.Objects;
 
 /**
- * Финансовый инструмент FOREX_SPOT (aggregate root).
+ * Финансовый инструмент FOREX_SPOT.
  *
  * <p>Примечание: FOREX_SPOT реализует доменный контракт инструмента {@link Instrument}.</p>
  *
