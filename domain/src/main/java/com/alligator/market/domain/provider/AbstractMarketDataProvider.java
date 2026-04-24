@@ -28,6 +28,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
+    /* Набор кодов подключенных обработчиков. */
+    private final Set<HandlerCode> attachedHandlerCodes;
+
     /* Карта "код инструмента → обработчик инструмента". */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
@@ -65,6 +68,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         this.providerCode = providerCode;
         this.passport = passport;
         this.policy = policy;
+        this.attachedHandlerCodes = buildAttachedHandlerCodes(handlers);
 
         // Собираем неизменяемую однозначную карту "код инструмента → обработчик инструмента"
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
@@ -88,6 +92,11 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     @Override
     public ProviderPolicy policy() {
         return policy;
+    }
+
+    @Override
+    public Set<HandlerCode> attachedHandlerCodes() {
+        return attachedHandlerCodes;
     }
 
     /**
@@ -153,6 +162,20 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         }
 
         return Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * Собирает неизменяемый набор кодов подключенных обработчиков.
+     */
+    private static <P extends MarketDataProvider> Set<HandlerCode> buildAttachedHandlerCodes(
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
+    ) {
+        Set<HandlerCode> result = new LinkedHashSet<>();
+        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
+            Objects.requireNonNull(h, "handler must not be null");
+            result.add(Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null"));
+        }
+        return Collections.unmodifiableSet(result);
     }
 
     /**
