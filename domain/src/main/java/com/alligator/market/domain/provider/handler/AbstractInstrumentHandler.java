@@ -32,6 +32,11 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
 
     /**
      * Конструктор: обработчик сам выводит свой профиль из набора поддерживаемых инструментов.
+     * <ul>
+     *     <li>Выполняет базовые проверки параметров;</li>
+     *     <li>Собирает сводный профиль инструментов, поддерживаемых обработчиком;</li>
+     *     <li>Валидирует инварианты: ;</li>
+     * </ul>
      */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,

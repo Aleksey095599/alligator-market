@@ -14,7 +14,7 @@ import org.reactivestreams.Publisher;
 import java.util.*;
 
 /**
- * Абстрактный провайдер рыночных данных (aggregate-root).
+ * Абстрактный провайдер рыночных данных.
  */
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
@@ -40,8 +40,6 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
 
     /**
      * Конструктор:
-     *
-     * <p>Собирает объект из переданных параметров и выполняет следующие действия:</p>
      * <ul>
      *     <li>Выполняет базовые проверки параметров;</li>
      *     <li>Собирает неизменяемую карту "код инструмента → обработчик инструмента";</li>
