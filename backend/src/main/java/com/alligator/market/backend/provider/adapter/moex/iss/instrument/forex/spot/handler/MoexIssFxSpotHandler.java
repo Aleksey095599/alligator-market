@@ -2,8 +2,6 @@ package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
-import com.alligator.market.domain.instrument.classification.Asset;
-import com.alligator.market.domain.instrument.classification.Product;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
@@ -38,8 +36,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
 
-    /* Поддерживаемые коды инструментов FOREX_SPOT. */
-    private static final Set<InstrumentCode> SUPPORTED_CODES = MoexIssFxSpotSupportCatalog.SUPPORTED_DOMAIN_CODES;
+    /* Поддерживаемые инструменты FOREX_SPOT. */
+    private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
 
     /* Web-клиент. */
     private final WebClient webClient;
@@ -56,7 +54,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * @param webClient web-клиент, настроенный для запросов провайдеру MOEX ISS по инструментам FOREX_SPOT
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
-        super(HANDLER_CODE, FxSpot.class, Asset.FOREX, Product.SPOT, SUPPORTED_CODES);
+        super(HANDLER_CODE, FxSpot.class, SUPPORTED_INSTRUMENTS);
 
         Objects.requireNonNull(webClient, "webClient must not be null");
         this.webClient = webClient;
