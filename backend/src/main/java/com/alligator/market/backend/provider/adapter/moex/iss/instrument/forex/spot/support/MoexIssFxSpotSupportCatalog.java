@@ -28,6 +28,11 @@ public class MoexIssFxSpotSupportCatalog {
     private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_SECID;
 
     /**
+     * Набор поддерживаемых доменных инструментов.
+     */
+    public static final Set<FxSpot> SUPPORTED_INSTRUMENTS;
+
+    /**
      * Набор кодов поддерживаемых доменных инструментов.
      */
     public static final Set<InstrumentCode> SUPPORTED_DOMAIN_CODES;
@@ -40,6 +45,9 @@ public class MoexIssFxSpotSupportCatalog {
         map.put(CNY_RUB.instrumentCode(), "CNYRUB_TOM");
 
         DOMAIN_CODE_TO_SECID = Collections.unmodifiableMap(map);
+        SUPPORTED_INSTRUMENTS = Collections.unmodifiableSet(
+                new LinkedHashSet<>(List.of(USD_RUB, CNY_RUB))
+        );
         SUPPORTED_DOMAIN_CODES = Collections.unmodifiableSet(
                 new LinkedHashSet<>(DOMAIN_CODE_TO_SECID.keySet())
         );
