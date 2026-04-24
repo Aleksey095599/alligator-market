@@ -34,5 +34,8 @@ public record SupportedInstrumentsProfile(
         Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
         Objects.requireNonNull(asset, "asset must not be null");
         Objects.requireNonNull(product, "product must not be null");
+
+        // Создаём защитную копию набора, чтобы исключить внешние мутации.
+        supportedInstrumentCodes = Set.copyOf(supportedInstrumentCodes);
     }
 }
