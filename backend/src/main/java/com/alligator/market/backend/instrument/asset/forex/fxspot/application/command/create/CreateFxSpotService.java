@@ -1,5 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create;
 
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.dto.CreateFxSpotCommand;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;

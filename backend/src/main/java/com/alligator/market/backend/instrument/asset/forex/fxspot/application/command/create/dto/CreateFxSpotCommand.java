@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.dto;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 
