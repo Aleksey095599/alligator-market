@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.cr
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller.UpdateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.ListFxSpotsController;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotInUseException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpotAlreadyExistsException;
@@ -51,6 +52,13 @@ public class FxSpotRestExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
         log.warn("FX Spot same currencies: {}", ex.getMessage());
         return ResponseEntityFactory.badRequest(DomainErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
+    }
+
+
+    @ExceptionHandler(FxSpotInUseException.class)
+    public ResponseEntity<ApiResponse<Void>> fxSpotInUse(FxSpotInUseException ex) {
+        log.warn("FX Spot is in use: {}", ex.getMessage());
+        return ResponseEntityFactory.conflict(DomainErrorCode.FX_SPOT_IN_USE.name(), ex.getMessage());
     }
 
     @ExceptionHandler(CurrencyNotFoundException.class)
