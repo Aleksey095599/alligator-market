@@ -23,6 +23,7 @@ public enum DomainErrorCode {
     FX_SPOT_ALREADY_EXISTS(DomainErrorType.CONFLICT),
     FX_SPOT_NOT_FOUND(DomainErrorType.NOT_FOUND),
     FX_SPOT_SAME_CURRENCIES(DomainErrorType.BAD_REQUEST),
+    FX_SPOT_IN_USE(DomainErrorType.CONFLICT),
     FX_SPOT_CREATE_FAILED(DomainErrorType.TECHNICAL),
     FX_SPOT_UPDATE_FAILED(DomainErrorType.TECHNICAL),
     FX_SPOT_DELETE_FAILED(DomainErrorType.TECHNICAL);
