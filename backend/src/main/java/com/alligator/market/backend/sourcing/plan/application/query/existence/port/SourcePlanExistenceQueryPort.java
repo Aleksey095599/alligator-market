@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.application.query.existence.p
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 /**
- * Query-порт existence-проверки source plan по коду инструмента.
+ * Порт проверки существования source plan по коду инструмента.
  */
 public interface SourcePlanExistenceQueryPort {
 
