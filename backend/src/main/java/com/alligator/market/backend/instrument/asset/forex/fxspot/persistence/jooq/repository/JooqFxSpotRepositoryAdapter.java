@@ -164,18 +164,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 .fetch(record -> toDomain(record, baseCurrencyRef, quoteCurrencyRef));
     }
 
-    @Override
-    public boolean existsByCurrencyCode(CurrencyCode currencyCode) {
-        Objects.requireNonNull(currencyCode, "currencyCode must not be null");
-
-        return dsl.fetchExists(
-                dsl.selectOne()
-                        .from(INSTRUMENT_FX_SPOT)
-                        .where(INSTRUMENT_FX_SPOT.BASE_CURRENCY.eq(currencyCode.value())
-                                .or(INSTRUMENT_FX_SPOT.QUOTE_CURRENCY.eq(currencyCode.value())))
-        );
-    }
-
     /* Проверяет наличие валюты в reference-таблице currency. */
     private void ensureCurrencyExists(CurrencyCode currencyCode) {
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
