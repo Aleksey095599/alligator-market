@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.port;
+package com.alligator.market.backend.sourcing.plan.application.query.existence.port;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 

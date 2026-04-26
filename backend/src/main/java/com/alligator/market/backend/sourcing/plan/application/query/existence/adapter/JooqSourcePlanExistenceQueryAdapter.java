@@ -1,6 +1,6 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.adapter;
+package com.alligator.market.backend.sourcing.plan.application.query.existence.adapter;
 
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.port.SourcePlanExistenceQueryPort;
+import com.alligator.market.backend.sourcing.plan.application.query.existence.port.SourcePlanExistenceQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 

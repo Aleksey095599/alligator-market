@@ -1,7 +1,7 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.config.application.usage.contributor.sourcing;
+package com.alligator.market.backend.sourcing.config.plan.application.query.existence;
 
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.adapter.JooqSourcePlanExistenceQueryAdapter;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.port.SourcePlanExistenceQueryPort;
+import com.alligator.market.backend.sourcing.plan.application.query.existence.adapter.JooqSourcePlanExistenceQueryAdapter;
+import com.alligator.market.backend.sourcing.plan.application.query.existence.port.SourcePlanExistenceQueryPort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
