@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public final class SourcePlanFxSpotUsageContributor implements FxSpotUsageContributor {
 
+    /* Query-порт existence-проверки source plan по коду инструмента. */
     private final SourcePlanExistenceQueryPort sourcePlanExistenceQueryPort;
 
     public SourcePlanFxSpotUsageContributor(SourcePlanExistenceQueryPort sourcePlanExistenceQueryPort) {
