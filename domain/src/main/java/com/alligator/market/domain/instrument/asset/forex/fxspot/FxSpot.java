@@ -45,7 +45,7 @@ public record FxSpot(
 
         // Валюты не должны совпадать
         if (base.code().equals(quote.code())) {
-            throw new FxSpotSameCurrenciesException(base.code(), quote.code());
+            throw new FxSpotSameCurrenciesException(base.code());
         }
     }
 
