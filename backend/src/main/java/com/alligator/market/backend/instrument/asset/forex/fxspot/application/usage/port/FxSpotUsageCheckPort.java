@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.application.u
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 /**
- * Порт проверки использования FX_SPOT инструмента.
+ * Порт проверки использования FOREX_SPOT инструмента.
  */
 public interface FxSpotUsageCheckPort {
 
