@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.
 /**
  * API-ответ для списка инструментов FOREX_SPOT.
  */
-public record FxSpotListResponse(
+public record FxSpotListItemResponse(
         String instrumentCode,
         String symbol,
         String asset,

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.mapper;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.dto.CreateFxSpotRequest;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.dto.CreateFxSpotCommand;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotCommand;
 
 import java.util.Objects;
 

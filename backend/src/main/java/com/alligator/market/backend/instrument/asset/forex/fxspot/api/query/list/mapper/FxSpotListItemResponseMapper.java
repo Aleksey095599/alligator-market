@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper;
 
-import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListResponse;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListItemResponse;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
 import java.util.Objects;
@@ -8,16 +8,16 @@ import java.util.Objects;
 /**
  * Маппер доменной модели FOREX_SPOT в API-ответ списка.
  */
-public final class FxSpotListResponseMapper {
+public final class FxSpotListItemResponseMapper {
 
-    private FxSpotListResponseMapper() {
+    private FxSpotListItemResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    public static FxSpotListResponse toResponse(FxSpot fxSpot) {
+    public static FxSpotListItemResponse toResponse(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        return new FxSpotListResponse(
+        return new FxSpotListItemResponse(
                 fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol().value(),
                 fxSpot.asset().name(),

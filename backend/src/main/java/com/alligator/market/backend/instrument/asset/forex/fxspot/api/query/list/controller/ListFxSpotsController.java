@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.lis
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListResponse;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper.FxSpotListResponseMapper;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListItemResponse;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper.FxSpotListItemResponseMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.list.ListFxSpotsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +26,9 @@ public class ListFxSpotsController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FxSpotListResponse>>> getAll() {
-        List<FxSpotListResponse> list = listFxSpotsService.findAll().stream()
-                .map(FxSpotListResponseMapper::toResponse)
+    public ResponseEntity<ApiResponse<List<FxSpotListItemResponse>>> getAll() {
+        List<FxSpotListItemResponse> list = listFxSpotsService.findAll().stream()
+                .map(FxSpotListItemResponseMapper::toResponse)
                 .toList();
 
         return ResponseEntityFactory.ok(list);
