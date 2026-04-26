@@ -54,7 +54,6 @@ public class FxSpotRestExceptionHandler {
         return ResponseEntityFactory.badRequest(DomainErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
     }
 
-
     @ExceptionHandler(FxSpotInUseException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotInUse(FxSpotInUseException ex) {
         log.warn("FX Spot is in use: {}", ex.getMessage());
@@ -78,7 +77,7 @@ public class FxSpotRestExceptionHandler {
         return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, errorCode, ex.getMessage());
     }
 
-    /* Подбираем код ошибки для технических доменных исключений. */
+    /* Подбираем код ошибки для технических application-исключений FX_SPOT. */
     private String resolveTechnicalErrorCode(RuntimeException ex) {
         if (ex instanceof FxSpotCreateException) {
             return DomainErrorCode.FX_SPOT_CREATE_FAILED.name();

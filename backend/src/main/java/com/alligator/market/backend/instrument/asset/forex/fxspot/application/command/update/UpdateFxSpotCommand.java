@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update.dto;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 

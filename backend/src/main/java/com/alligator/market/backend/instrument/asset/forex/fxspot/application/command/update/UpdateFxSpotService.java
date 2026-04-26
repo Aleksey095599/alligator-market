@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update;
 
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update.dto.UpdateFxSpotCommand;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
