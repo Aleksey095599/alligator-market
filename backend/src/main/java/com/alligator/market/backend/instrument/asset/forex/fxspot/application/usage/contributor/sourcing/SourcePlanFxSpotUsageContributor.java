@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.FxSpotUsageContributor;
-import com.alligator.market.backend.sourcing.plan.application.query.existence.port.SourcePlanExistenceQueryPort;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.port.SourcePlanExistenceQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
