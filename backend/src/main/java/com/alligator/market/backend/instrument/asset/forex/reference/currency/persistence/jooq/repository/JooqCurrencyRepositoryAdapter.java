@@ -23,7 +23,6 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.Currency.
 public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
 
     /* Имена UQ ограничений (должны совпадать с фактическими именами в DDL/схеме). */
-    private static final String UQ_CURRENCY_CODE = "uq_currency_code";
     private static final String UQ_CURRENCY_NAME = "uq_currency_name";
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
@@ -43,6 +42,8 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                     .set(CURRENCY.NAME, currency.name())
                     .set(CURRENCY.COUNTRY, currency.country())
                     .set(CURRENCY.FRACTION_DIGITS, currency.fractionDigits())
+                    .onConflict(CURRENCY.CODE)
+                    .doNothing()
                     .returning(
                             CURRENCY.CODE,
                             CURRENCY.NAME,
@@ -51,13 +52,10 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
                     )
                     .fetchOne();
             if (createdRecord == null) {
-                throw new IllegalStateException("Currency insert returned no row");
+                throw new CurrencyAlreadyExistsException(currency.code());
             }
             return toDomain(createdRecord);
         } catch (DataIntegrityViolationException ex) {
-            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_CODE)) {
-                throw new CurrencyAlreadyExistsException(currency.code());
-            }
             if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(currency.name());
             }
