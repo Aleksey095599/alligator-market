@@ -127,9 +127,13 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                     throw new FxSpotNotFoundException(instrumentCode);
                 }
 
-                tx.deleteFrom(INSTRUMENT_REGISTRY)
+                int deletedRegistryRows = tx.deleteFrom(INSTRUMENT_REGISTRY)
                         .where(INSTRUMENT_REGISTRY.CODE.eq(instrumentCode.value()))
                         .execute();
+
+                if (deletedRegistryRows == 0) {
+                    throw new IllegalStateException("FX_SPOT registry row was not found during delete");
+                }
             });
         } catch (DataAccessException ex) {
             throw new FxSpotDeleteException(instrumentCode, ex);
