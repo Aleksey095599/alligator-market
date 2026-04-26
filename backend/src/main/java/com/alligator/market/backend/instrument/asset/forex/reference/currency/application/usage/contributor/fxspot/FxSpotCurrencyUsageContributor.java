@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.fxspot;
 
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.reference.currency.port.FxSpotCurrencyReferenceQueryPort;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.contributor.CurrencyUsageContributor;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.usage.port.FxSpotCurrencyUsageQueryPort;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;
@@ -11,12 +11,12 @@ import java.util.Objects;
  */
 public final class FxSpotCurrencyUsageContributor implements CurrencyUsageContributor {
 
-    private final FxSpotCurrencyUsageQueryPort fxSpotCurrencyUsageQueryPort;
+    private final FxSpotCurrencyReferenceQueryPort fxSpotCurrencyReferenceQueryPort;
 
-    public FxSpotCurrencyUsageContributor(FxSpotCurrencyUsageQueryPort fxSpotCurrencyUsageQueryPort) {
-        this.fxSpotCurrencyUsageQueryPort = Objects.requireNonNull(
-                fxSpotCurrencyUsageQueryPort,
-                "fxSpotCurrencyUsageQueryPort must not be null"
+    public FxSpotCurrencyUsageContributor(FxSpotCurrencyReferenceQueryPort fxSpotCurrencyReferenceQueryPort) {
+        this.fxSpotCurrencyReferenceQueryPort = Objects.requireNonNull(
+                fxSpotCurrencyReferenceQueryPort,
+                "fxSpotCurrencyReferenceQueryPort must not be null"
         );
     }
 
@@ -24,6 +24,6 @@ public final class FxSpotCurrencyUsageContributor implements CurrencyUsageContri
     public boolean isUsed(CurrencyCode currencyCode) {
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
 
-        return fxSpotCurrencyUsageQueryPort.existsByCurrencyCode(currencyCode);
+        return fxSpotCurrencyReferenceQueryPort.referencesCurrency(currencyCode);
     }
 }
