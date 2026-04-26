@@ -1,7 +1,6 @@
 package com.alligator.market.domain.instrument.asset.forex.fxspot.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
 import java.util.List;
@@ -36,9 +35,4 @@ public interface FxSpotRepository {
      * Вернуть все инструменты.
      */
     List<FxSpot> findAll();
-
-    /**
-     * Проверить, используется ли код валюты хотя бы в одном инструменте.
-     */
-    boolean existsByCurrencyCode(CurrencyCode currencyCode);
 }
