@@ -12,9 +12,6 @@ CREATE TABLE currency
     country           VARCHAR(100) NOT NULL,
     fraction_digits   INTEGER      NOT NULL DEFAULT 2,
 
-    -- Версионирование
-    version           BIGINT       NOT NULL DEFAULT 0,
-
     -- Ограничения уникальности
     CONSTRAINT uq_currency_code UNIQUE (code),
     CONSTRAINT uq_currency_name UNIQUE (name),
@@ -27,7 +24,5 @@ CREATE TABLE currency
     CONSTRAINT chk_currency_country_not_blank
         CHECK (length(btrim(country)) > 0),
     CONSTRAINT chk_currency_fraction_digits
-        CHECK (fraction_digits BETWEEN 0 AND 10),
-    CONSTRAINT chk_currency_version_non_negative
-        CHECK (version >= 0)
+        CHECK (fraction_digits BETWEEN 0 AND 10)
 );
