@@ -8,7 +8,7 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.common.exception.DomainErrorCode;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error.CurrencyApiErrorCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -40,7 +40,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency already exists",
                 ex.getMessage(),
-                DomainErrorCode.CURRENCY_ALREADY_EXISTS.name()
+                CurrencyApiErrorCodes.CURRENCY_ALREADY_EXISTS
         );
     }
 
@@ -54,7 +54,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency name duplicate",
                 ex.getMessage(),
-                DomainErrorCode.CURRENCY_NAME_DUPLICATE.name()
+                CurrencyApiErrorCodes.CURRENCY_NAME_DUPLICATE
         );
     }
 
@@ -68,7 +68,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency is in use",
                 ex.getMessage(),
-                DomainErrorCode.CURRENCY_IN_USE.name()
+                CurrencyApiErrorCodes.CURRENCY_IN_USE
         );
     }
 
@@ -82,7 +82,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 "Currency not found",
                 ex.getMessage(),
-                DomainErrorCode.CURRENCY_NOT_FOUND.name()
+                CurrencyApiErrorCodes.CURRENCY_NOT_FOUND
         );
     }
 
