@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.persistence.jpa.constraint;
+package com.alligator.market.backend.common.persistence.constraint;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Tag;
@@ -6,14 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Тесты класса {@link DbErrors} для проверки распознавания нарушений ограничений БД.
+ * Тесты класса {@link DbConstraintErrors} для проверки распознавания нарушений ограничений БД.
  */
 @Tag("dev")
-class DbErrorsTest {
+class DbConstraintErrorsTest {
 
     /**
      * Должен вернуть true так как это “идеальный” вариант алгоритма:
@@ -28,7 +30,7 @@ class DbErrorsTest {
 
         RuntimeException ex = new RuntimeException("wrap", cve);
 
-        assertTrue(DbErrors.isViolationOf(ex, "UQ_SOME_COLUMN")); // <-- Заглавными буквами для проверки, что регистр не влияет
+        assertTrue(DbConstraintErrors.isViolationOf(ex, "UQ_SOME_COLUMN")); // <-- Заглавными буквами для проверки, что регистр не влияет
     }
 
     /**
@@ -40,7 +42,7 @@ class DbErrorsTest {
         RuntimeException root = new RuntimeException("violates constraint uq_some_column");
         RuntimeException ex = new RuntimeException("wrap", root);
 
-        assertTrue(DbErrors.isViolationOf(ex, "uq_some_column"));
+        assertTrue(DbConstraintErrors.isViolationOf(ex, "uq_some_column"));
     }
 
     /**
@@ -50,16 +52,42 @@ class DbErrorsTest {
     @Test
     void shouldReturnFalseWhenNotMatched() {
         RuntimeException ex = new RuntimeException("some error");
-        assertFalse(DbErrors.isViolationOf(ex, "uq_some_column"));
+        assertFalse(DbConstraintErrors.isViolationOf(ex, "uq_some_column"));
     }
 
     /**
-     * Должен корректно завершаться при циклической cause-цепочке (защита от зацикливания) и вернуть false,
-     * если совпадение не найдено.
+     * Должен вернуть true, если совпадение по сообщению найдено только в другом регистре.
+     */
+    @Test
+    void shouldCompareConstraintNameCaseInsensitiveInMessages() {
+        RuntimeException ex = new RuntimeException("violates constraint UQ_SOME_COLUMN");
+
+        assertTrue(DbConstraintErrors.isViolationOf(ex, "uq_some_column"));
+    }
+
+    @Test
+    void shouldThrowWhenExceptionIsNull() {
+        assertThrows(NullPointerException.class, () -> DbConstraintErrors.isViolationOf(null, "uq_some_column"));
+    }
+
+    @Test
+    void shouldThrowWhenConstraintNameIsNull() {
+        RuntimeException ex = new RuntimeException("error");
+        assertThrows(NullPointerException.class, () -> DbConstraintErrors.isViolationOf(ex, null));
+    }
+
+    @Test
+    void shouldThrowWhenConstraintNameIsBlank() {
+        RuntimeException ex = new RuntimeException("error");
+        assertThrows(IllegalArgumentException.class, () -> DbConstraintErrors.isViolationOf(ex, "   "));
+    }
+
+    /**
+     * Должен корректно завершаться при циклической cause-цепочке (защита от зацикливания).
      */
     @SuppressWarnings("UnnecessaryInitCause")
     @Test
-    void shouldNotHangOnCyclicCauseChain() {
+    void shouldHandleCyclicCauseChainSafely() {
         RuntimeException a = new RuntimeException("a");
         RuntimeException b = new RuntimeException("b");
 
@@ -67,6 +95,7 @@ class DbErrorsTest {
         a.initCause(b);
         b.initCause(a);
 
-        assertFalse(DbErrors.isViolationOf(a, "uq_some_column"));
+        assertDoesNotThrow(() -> DbConstraintErrors.isViolationOf(a, "uq_some_column"));
+        assertFalse(DbConstraintErrors.isViolationOf(a, "uq_some_column"));
     }
 }
