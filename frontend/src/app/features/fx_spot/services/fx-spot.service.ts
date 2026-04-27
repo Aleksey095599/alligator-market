@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-
-import { ApiResponse } from '../../../shared/api/api-response.model';
 import { FxSpotCreateDto } from '../models/fx-spot-create.model';
 import { FxSpotListItemDto } from '../models/fx-spot.model';
 import { FxSpotUpdateDto } from '../models/fx-spot-update.model';
@@ -20,16 +18,12 @@ export class FxSpotService {
 
   /* Получить список всех инструментов FX_SPOT. */
   list(): Observable<FxSpotListItemDto[]> {
-    return this.http
-      .get<ApiResponse<FxSpotListItemDto[]>>(this.baseUrl)
-      .pipe(map(res => res.data ?? []));
+    return this.http.get<FxSpotListItemDto[]>(this.baseUrl).pipe(map(res => res ?? []));
   }
 
   /* Добавить инструмент FX_SPOT, backend вернёт его код. */
   add(dto: FxSpotCreateDto): Observable<string> {
-    return this.http
-      .post<ApiResponse<string>>(this.baseUrl, dto)
-      .pipe(map(res => res.data ?? ''));
+    return this.http.post(this.baseUrl, dto, { responseType: 'text' }).pipe(map(res => res ?? ''));
   }
 
   /* Удалить инструмент FX_SPOT по коду. */
