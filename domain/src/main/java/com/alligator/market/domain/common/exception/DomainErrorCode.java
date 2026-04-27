@@ -11,14 +11,7 @@ public enum DomainErrorCode {
     PROVIDER_REGISTRY_EMPTY(DomainErrorType.BAD_REQUEST),
     PROVIDER_CODE_DUPLICATE(DomainErrorType.CONFLICT),
     PROVIDER_DISPLAY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
-    HANDLER_NOT_FOUND(DomainErrorType.NOT_FOUND),
-
-    /* Валюты: */
-    CURRENCY_ALREADY_EXISTS(DomainErrorType.CONFLICT),
-    CURRENCY_NAME_DUPLICATE(DomainErrorType.CONFLICT),
-    CURRENCY_NOT_FOUND(DomainErrorType.NOT_FOUND),
-    CURRENCY_IN_USE(DomainErrorType.CONFLICT);
-
+    HANDLER_NOT_FOUND(DomainErrorType.NOT_FOUND);
 
     /* Тип ошибки доменной логики. */
     private final DomainErrorType type;
