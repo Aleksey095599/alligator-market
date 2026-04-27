@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller;
 
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.delete.DeleteFxSpotService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,6 @@ public class DeleteFxSpotController {
     @DeleteMapping("/{instrumentCode}")
     public ResponseEntity<Void> delete(@PathVariable String instrumentCode) {
         deleteFxSpotService.delete(InstrumentCode.of(instrumentCode));
-        return ResponseEntityFactory.noContent();
+        return ResponseEntity.noContent().build();
     }
 }

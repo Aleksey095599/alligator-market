@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListItemResponse;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper.FxSpotListItemResponseMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.list.ListFxSpotsService;
@@ -26,11 +24,11 @@ public class ListFxSpotsController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FxSpotListItemResponse>>> getAll() {
+    public ResponseEntity<List<FxSpotListItemResponse>> getAll() {
         List<FxSpotListItemResponse> list = listFxSpotsService.findAll().stream()
                 .map(FxSpotListItemResponseMapper::toResponse)
                 .toList();
 
-        return ResponseEntityFactory.ok(list);
+        return ResponseEntity.ok(list);
     }
 }

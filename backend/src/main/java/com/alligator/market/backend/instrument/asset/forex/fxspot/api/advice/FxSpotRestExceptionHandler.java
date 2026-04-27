@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.advice;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.controller.CreateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller.UpdateFxSpotController;
@@ -19,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -37,33 +35,58 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class FxSpotRestExceptionHandler {
 
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
+    public ProblemDetail fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
         log.warn("FX Spot already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_ALREADY_EXISTS.code(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "FX Spot already exists",
+                ex.getMessage(),
+                FxSpotApiErrorCode.FX_SPOT_ALREADY_EXISTS.name()
+        );
     }
 
     @ExceptionHandler(FxSpotNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
+    public ProblemDetail fxSpotNotFound(FxSpotNotFoundException ex) {
         log.warn("FX Spot not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.FX_SPOT_NOT_FOUND.code(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.NOT_FOUND,
+                "FX Spot not found",
+                ex.getMessage(),
+                FxSpotApiErrorCode.FX_SPOT_NOT_FOUND.name()
+        );
     }
 
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
+    public ProblemDetail fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
         log.warn("FX Spot same currencies: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(FxSpotApiErrorCode.FX_SPOT_SAME_CURRENCIES.code(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "FX Spot same currencies",
+                ex.getMessage(),
+                FxSpotApiErrorCode.FX_SPOT_SAME_CURRENCIES.name()
+        );
     }
 
     @ExceptionHandler(FxSpotInUseException.class)
-    public ResponseEntity<ApiResponse<Void>> fxSpotInUse(FxSpotInUseException ex) {
+    public ProblemDetail fxSpotInUse(FxSpotInUseException ex) {
         log.warn("FX Spot is in use: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_IN_USE.code(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "FX Spot is in use",
+                ex.getMessage(),
+                FxSpotApiErrorCode.FX_SPOT_IN_USE.name()
+        );
     }
 
     @ExceptionHandler(CurrencyNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
+    public ProblemDetail currencyNotFound(CurrencyNotFoundException ex) {
         log.warn("Currency not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.CURRENCY_NOT_FOUND.code(), ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.NOT_FOUND,
+                "Currency not found",
+                ex.getMessage(),
+                FxSpotApiErrorCode.CURRENCY_NOT_FOUND.name()
+        );
     }
 
     @ExceptionHandler({
@@ -71,20 +94,52 @@ public class FxSpotRestExceptionHandler {
             FxSpotUpdateException.class,
             FxSpotDeleteException.class
     })
-    public ResponseEntity<ApiResponse<Void>> domainTechnicalError(RuntimeException ex) {
-        log.error("Domain operation failed: {}", ex.getMessage(), ex);
-        String errorCode = resolveTechnicalErrorCode(ex);
-        return ResponseEntityFactory.error(HttpStatus.INTERNAL_SERVER_ERROR, errorCode, ex.getMessage());
+    public ProblemDetail fxSpotTechnicalError(RuntimeException ex) {
+        log.error("FX Spot operation failed: {}", ex.getMessage(), ex);
+
+        FxSpotApiErrorCode errorCode = resolveTechnicalErrorCode(ex);
+        String title = resolveTechnicalErrorTitle(ex);
+
+        return buildProblemDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                title,
+                ex.getMessage(),
+                errorCode.name()
+        );
     }
 
     /* Подбираем код ошибки для технических application-исключений FX_SPOT. */
-    private String resolveTechnicalErrorCode(RuntimeException ex) {
+    private FxSpotApiErrorCode resolveTechnicalErrorCode(RuntimeException ex) {
         if (ex instanceof FxSpotCreateException) {
-            return FxSpotApiErrorCode.FX_SPOT_CREATE_FAILED.code();
+            return FxSpotApiErrorCode.FX_SPOT_CREATE_FAILED;
         }
         if (ex instanceof FxSpotUpdateException) {
-            return FxSpotApiErrorCode.FX_SPOT_UPDATE_FAILED.code();
+            return FxSpotApiErrorCode.FX_SPOT_UPDATE_FAILED;
         }
-        return FxSpotApiErrorCode.FX_SPOT_DELETE_FAILED.code();
+        return FxSpotApiErrorCode.FX_SPOT_DELETE_FAILED;
+    }
+
+    /* Подбираем title для технических application-исключений FX_SPOT. */
+    private String resolveTechnicalErrorTitle(RuntimeException ex) {
+        if (ex instanceof FxSpotCreateException) {
+            return "FX Spot create failed";
+        }
+        if (ex instanceof FxSpotUpdateException) {
+            return "FX Spot update failed";
+        }
+        return "FX Spot delete failed";
+    }
+
+    /* Формируем стандартный ProblemDetail ответ с дополнительным errorCode. */
+    private ProblemDetail buildProblemDetail(
+            HttpStatus status,
+            String title,
+            String detail,
+            String errorCode
+    ) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
+        problemDetail.setTitle(title);
+        problemDetail.setProperty("errorCode", errorCode);
+        return problemDetail;
     }
 }
