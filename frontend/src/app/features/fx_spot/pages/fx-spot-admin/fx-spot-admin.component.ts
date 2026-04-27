@@ -133,7 +133,7 @@ export class FxSpotAdminComponent implements OnInit {
         this.locked = false;
       },
       error: err => {
-        const msg = err.error?.message ?? err.message ?? 'Add failed';
+        const msg = this.resolveErrorMessage(err, 'Add failed');
         const ref = this.snack.open(msg, 'Close', { duration: 0 });
         ref.afterDismissed().subscribe(() => {
           this.locked = false;
@@ -179,7 +179,7 @@ export class FxSpotAdminComponent implements OnInit {
         this.locked = false;
       },
       error: err => {
-        const msg = err.error?.message ?? err.message ?? 'Update failed';
+        const msg = this.resolveErrorMessage(err, 'Update failed');
         const ref = this.snack.open(msg, 'Close', { duration: 0 });
         ref.afterDismissed().subscribe(() => {
           this.locked = false;
@@ -213,7 +213,7 @@ export class FxSpotAdminComponent implements OnInit {
         this.refresh();
       },
       error: err => {
-        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Delete failed'), 'Close');
       }
     });
   }
@@ -228,9 +228,33 @@ export class FxSpotAdminComponent implements OnInit {
         this.dataSource.data = [...list].sort((left, right) => left.symbol.localeCompare(right.symbol));
       },
       error: err => {
-        this.snack.open(err.message ?? 'Load failed', 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load failed'), 'Close');
       }
     });
+  }
+
+  /* Утилита: извлекаем текст ошибки из стандартного ответа Spring ProblemDetail. */
+  private resolveErrorMessage(err: unknown, fallback: string): string {
+    if (!err || typeof err !== 'object') {
+      return fallback;
+    }
+
+    const body = (err as { error?: unknown }).error;
+    if (!body || typeof body !== 'object') {
+      return (err as { message?: string }).message ?? fallback;
+    }
+
+    const detail = (body as { detail?: unknown }).detail;
+    if (typeof detail === 'string' && detail.trim().length > 0) {
+      return detail;
+    }
+
+    const title = (body as { title?: unknown }).title;
+    if (typeof title === 'string' && title.trim().length > 0) {
+      return title;
+    }
+
+    return (err as { message?: string }).message ?? fallback;
   }
 
 }
