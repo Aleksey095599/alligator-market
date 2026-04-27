@@ -23,22 +23,20 @@ public class ProviderPassportProjectionWritePortJdbcAdapter implements ProviderP
             WHERE provider_code <> ALL (?)
             """;
 
-    // upsertAll(Map): вставка/обновление, version растёт только при изменении бизнес-полей.
+    // upsertAll(Map): вставка/обновление только бизнес-полей.
     private static final String SQL_UPSERT = """
             INSERT INTO provider_passport(
               provider_code,
               display_name,
               delivery_mode,
               access_method,
-              bulk_subscription,
-              version
-            ) VALUES (?, ?, ?, ?, ?, 0)
+              bulk_subscription
+            ) VALUES (?, ?, ?, ?, ?)
             ON CONFLICT (provider_code) DO UPDATE SET
               display_name = EXCLUDED.display_name,
               delivery_mode = EXCLUDED.delivery_mode,
               access_method = EXCLUDED.access_method,
-              bulk_subscription = EXCLUDED.bulk_subscription,
-              version = provider_passport.version + 1
+              bulk_subscription = EXCLUDED.bulk_subscription
             WHERE
               provider_passport.display_name IS DISTINCT FROM EXCLUDED.display_name
               OR provider_passport.delivery_mode IS DISTINCT FROM EXCLUDED.delivery_mode

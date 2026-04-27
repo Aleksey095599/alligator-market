@@ -14,9 +14,6 @@ CREATE TABLE provider_passport
     access_method     VARCHAR(20)  NOT NULL,
     bulk_subscription BOOLEAN      NOT NULL,
 
-    -- Версионирование
-    version           BIGINT       NOT NULL DEFAULT 0,
-
     -- Уникальность натурального ключа
     CONSTRAINT uq_provider_code UNIQUE (provider_code),
 
@@ -30,9 +27,5 @@ CREATE TABLE provider_passport
     CONSTRAINT chk_provider_delivery_mode_allowed
         CHECK (delivery_mode IN ('PULL', 'PUSH')),
     CONSTRAINT chk_provider_access_method_allowed
-        CHECK (access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL')),
-
-    -- Техническая защита версии
-    CONSTRAINT chk_provider_passport_version_non_negative
-        CHECK (version >= 0)
+        CHECK (access_method IN ('API_POLL', 'WEBSOCKET', 'FIX_PROTOCOL'))
 );
