@@ -1,11 +1,14 @@
 package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 
+import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
+import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.InstrumentSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.InstrumentSourcePlanRepository;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import org.jooq.DSLContext;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
@@ -16,6 +19,9 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePla
  * jOOQ-адаптер репозитория планов источников.
  */
 public final class JooqInstrumentSourcePlanRepository implements InstrumentSourcePlanRepository {
+
+    /* Имя FK-ограничения source_plan -> instrument_registry по коду инструмента. */
+    private static final String FK_SOURCE_PLAN_INSTRUMENT = "fk_instr_source_plan_instrument";
 
     /* DSLContext для выполнения SQL через jOOQ. */
     private final DSLContext dsl;
@@ -94,25 +100,33 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     public boolean createIfAbsent(InstrumentSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        return dsl.transactionResult(configuration -> {
-            DSLContext tx = configuration.dsl();
+        try {
+            return dsl.transactionResult(configuration -> {
+                DSLContext tx = configuration.dsl();
 
-            int insertedPlans = tx.insertInto(SOURCE_PLAN)
-                    .set(SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
-                    .onConflict(SOURCE_PLAN.INSTRUMENT_CODE)
-                    .doNothing()
-                    .execute();
+                int insertedPlans = tx.insertInto(SOURCE_PLAN)
+                        .set(SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
+                        .onConflict(SOURCE_PLAN.INSTRUMENT_CODE)
+                        .doNothing()
+                        .execute();
 
-            if (insertedPlans == 0) {
-                return false;
+                if (insertedPlans == 0) {
+                    return false;
+                }
+
+                for (MarketDataSource source : plan.sources()) {
+                    insertSource(tx, plan.instrumentCode(), source);
+                }
+
+                return true;
+            });
+        } catch (DataIntegrityViolationException ex) {
+            if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_INSTRUMENT)) {
+                throw new InstrumentCodeNotFoundException(plan.instrumentCode());
             }
 
-            for (MarketDataSource source : plan.sources()) {
-                insertSource(tx, plan.instrumentCode(), source);
-            }
-
-            return true;
-        });
+            throw ex;
+        }
     }
 
 
