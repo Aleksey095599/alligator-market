@@ -2,6 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.c
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.dto.CreateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotCommand;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 
@@ -18,8 +19,8 @@ public final class CreateFxSpotRequestMapper {
         Objects.requireNonNull(request, "request must not be null");
 
         return new CreateFxSpotCommand(
-                request.baseCurrency(),
-                request.quoteCurrency(),
+                CurrencyCode.of(request.baseCurrency()),
+                CurrencyCode.of(request.quoteCurrency()),
                 request.tenor(),
                 request.defaultQuoteFractionDigits()
         );
