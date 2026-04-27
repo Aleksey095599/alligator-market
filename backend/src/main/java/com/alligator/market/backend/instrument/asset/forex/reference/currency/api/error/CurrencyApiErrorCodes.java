@@ -1,6 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error;
 
-/* Локальные API-коды ошибок currency feature. */
+/**
+ * Локальные API-коды ошибок currency feature.
+ */
 public final class CurrencyApiErrorCodes {
 
     public static final String CURRENCY_ALREADY_EXISTS = "CURRENCY_ALREADY_EXISTS";
