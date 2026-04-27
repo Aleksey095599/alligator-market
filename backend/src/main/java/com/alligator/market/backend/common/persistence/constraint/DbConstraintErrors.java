@@ -1,4 +1,4 @@
-package com.alligator.market.backend.common.persistence.jpa.constraint;
+package com.alligator.market.backend.common.persistence.constraint;
 
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -8,7 +8,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Утилита для распознавания нарушения конкретного ограничения БД по имени этого ограничения.
+ * Утилита для распознавания нарушения именованного ограничения БД.
+ *
+ * <p>Используется на persistence-границе для перевода низкоуровневых DB errors
+ * в application/domain-specific exceptions.</p>
  *
  * <p>Пример: Предположим, что в БД есть таблица, в которой задано ограничение (UNIQUE) на уникальность
  * значений в одной из колонок. В данном приложении, согласно лучшим практикам, каждому ограничению назначается
@@ -23,12 +26,12 @@ import java.util.Set;
  *
  * <p>Ограничения: Метод опирается на наличие осмысленно заданного уникального имени ограничения.</p>
  */
-public final class DbErrors {
+public final class DbConstraintErrors {
 
     /**
      * Приватный конструктор: запрещаем создание экземпляров, так как класс является утилитой.
      */
-    private DbErrors() {
+    private DbConstraintErrors() {
         throw new UnsupportedOperationException("Utility class instantiation is not allowed");
     }
 

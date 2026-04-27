@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.persistence.jooq.repository;
 
-import com.alligator.market.backend.common.persistence.jpa.constraint.DbErrors;
+import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
@@ -56,7 +56,7 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
             }
             return toDomain(createdRecord);
         } catch (DataIntegrityViolationException ex) {
-            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
+            if (DbConstraintErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(currency.name());
             }
             throw ex;
@@ -83,7 +83,7 @@ public final class JooqCurrencyRepositoryAdapter implements CurrencyRepository {
             return updatedCurrency
                     .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
         } catch (DataIntegrityViolationException ex) {
-            if (DbErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
+            if (DbConstraintErrors.isViolationOf(ex, UQ_CURRENCY_NAME)) {
                 throw new CurrencyNameDuplicateException(currency.name());
             }
             throw ex;
