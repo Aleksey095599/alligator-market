@@ -1,6 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller;
 
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.dto.UpdateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.mapper.UpdateFxSpotRequestMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.update.UpdateFxSpotService;
@@ -27,6 +26,6 @@ public class UpdateFxSpotController {
     public ResponseEntity<Void> update(@PathVariable String instrumentCode,
                                        @Valid @RequestBody UpdateFxSpotRequest request) {
         updateFxSpotService.update(UpdateFxSpotRequestMapper.toCommand(instrumentCode, request));
-        return ResponseEntityFactory.noContent();
+        return ResponseEntity.noContent().build();
     }
 }

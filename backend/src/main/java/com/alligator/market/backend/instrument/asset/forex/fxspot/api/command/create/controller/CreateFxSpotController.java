@@ -1,7 +1,5 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.controller;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.dto.CreateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.mapper.CreateFxSpotRequestMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotService;
@@ -28,7 +26,7 @@ public class CreateFxSpotController {
     private final CreateFxSpotService createFxSpotService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> create(@Valid @RequestBody CreateFxSpotRequest request) {
+    public ResponseEntity<String> create(@Valid @RequestBody CreateFxSpotRequest request) {
         FxSpot created = createFxSpotService.create(
                 CreateFxSpotRequestMapper.toCommand(request)
         );
@@ -39,6 +37,6 @@ public class CreateFxSpotController {
                 .buildAndExpand(created.instrumentCode().value())
                 .toUri();
 
-        return ResponseEntityFactory.created(location, created.instrumentCode().value());
+        return ResponseEntity.created(location).body(created.instrumentCode().value());
     }
 }
