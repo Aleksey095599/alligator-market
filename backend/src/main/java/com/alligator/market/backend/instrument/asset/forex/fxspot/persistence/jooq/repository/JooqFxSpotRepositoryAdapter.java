@@ -1,8 +1,10 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.persistence.jooq.repository;
 
+import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotDeleteException;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotInUseException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotNotFoundException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotUpdateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
@@ -29,6 +31,9 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.Instrumen
  * jOOQ-адаптер доменного репозитория инструментов FOREX_SPOT.
  */
 public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
+
+    /* Имя FK-ограничения, блокирующего удаление используемого FX_SPOT инструмента. */
+    private static final String FK_SOURCE_PLAN_INSTRUMENT = "fk_instr_source_plan_instrument";
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
@@ -91,9 +96,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
     public FxSpot update(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        ensureCurrencyExists(fxSpot.base().code());
-        ensureCurrencyExists(fxSpot.quote().code());
-
         try {
             int updatedRows = dsl.update(INSTRUMENT_FX_SPOT)
                     .set(INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS, fxSpot.defaultQuoteFractionDigits())
@@ -136,6 +138,9 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 }
             });
         } catch (DataAccessException ex) {
+            if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_INSTRUMENT)) {
+                throw new FxSpotInUseException(instrumentCode);
+            }
             throw new FxSpotDeleteException(instrumentCode, ex);
         }
     }
