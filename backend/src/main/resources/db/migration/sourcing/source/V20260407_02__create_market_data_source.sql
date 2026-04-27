@@ -17,8 +17,8 @@ CREATE TABLE market_data_source
             ON DELETE CASCADE,
 
     -- Ограничения уникальности
-    CONSTRAINT uk_market_data_source_instr_provider UNIQUE (instrument_code, provider_code),
-    CONSTRAINT uk_market_data_source_instr_priority UNIQUE (instrument_code, priority),
+    CONSTRAINT uq_market_data_source_instr_provider UNIQUE (instrument_code, provider_code),
+    CONSTRAINT uq_market_data_source_instr_priority UNIQUE (instrument_code, priority),
 
     -- Ограничения доменной валидности
     CONSTRAINT chk_market_data_source_priority CHECK (priority >= 0)
