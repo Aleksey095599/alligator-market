@@ -32,8 +32,8 @@ public final class CreateFxSpotService {
     public FxSpot create(CreateFxSpotCommand command) {
         Objects.requireNonNull(command, "command must not be null");
 
-        CurrencyCode baseCode = CurrencyCode.of(command.baseCurrency());
-        CurrencyCode quoteCode = CurrencyCode.of(command.quoteCurrency());
+        CurrencyCode baseCode = command.baseCurrencyCode();
+        CurrencyCode quoteCode = command.quoteCurrencyCode();
 
         Currency base = currencyRepository.findByCode(baseCode)
                 .orElseThrow(() -> new CurrencyNotFoundException(baseCode));
