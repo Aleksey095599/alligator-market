@@ -10,8 +10,8 @@ import java.util.Set;
 /**
  * Утилита для распознавания нарушения именованного ограничения БД.
  *
- * <p>Используется на persistence-границе для перевода низкоуровневых DB errors
- * в application/domain-specific exceptions.</p>
+ * <p>Используется на persistence-границе для перевода низкоуровневых DB errors в
+ * application/domain-specific exceptions.</p>
  *
  * <p>Пример: Предположим, что в БД есть таблица, в которой задано ограничение (UNIQUE) на уникальность
  * значений в одной из колонок. В данном приложении, согласно лучшим практикам, каждому ограничению назначается
@@ -54,7 +54,7 @@ public final class DbConstraintErrors {
             throw new IllegalArgumentException("constraintName must not be blank");
         }
 
-        // Флаг реализации варианта "фолбэк"
+        // Флаг реализации варианта "fallback"
         boolean matchedByMessage = false;
 
         // Защита от потенциально циклической cause-цепочки (маловероятно, на крайний случай)
@@ -73,14 +73,14 @@ public final class DbConstraintErrors {
                 }
             }
 
-            // 3.2) "Фолбэк" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
+            // 3.2) "Fallback" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
             //      в getConstraintName(), но включают его в текст сообщения. Тогда ищем needle в сообщениях причин.
             if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
-                matchedByMessage = true; // <-- Фиксируем, что вариант "фолбэк" сработал.
+                matchedByMessage = true; // <-- Фиксируем, что вариант "fallback" сработал.
                 // Не выходим, даём шанс сработать "идеальному" варианту глубже по цепочке
             }
         }
-        // 4) Если идеальный вариант не сработал, возвращаем результат фолбэка
+        // 4) Если идеальный вариант не сработал, возвращаем результат fallback
         return matchedByMessage;
     }
 
