@@ -8,7 +8,7 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error.CurrencyApiErrorCodes;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error.CurrencyApiErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -40,7 +40,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency already exists",
                 ex.getMessage(),
-                CurrencyApiErrorCodes.CURRENCY_ALREADY_EXISTS
+                CurrencyApiErrorCode.CURRENCY_ALREADY_EXISTS.code()
         );
     }
 
@@ -54,7 +54,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency name duplicate",
                 ex.getMessage(),
-                CurrencyApiErrorCodes.CURRENCY_NAME_DUPLICATE
+                CurrencyApiErrorCode.CURRENCY_NAME_DUPLICATE.code()
         );
     }
 
@@ -68,7 +68,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Currency is in use",
                 ex.getMessage(),
-                CurrencyApiErrorCodes.CURRENCY_IN_USE
+                CurrencyApiErrorCode.CURRENCY_IN_USE.code()
         );
     }
 
@@ -82,7 +82,7 @@ public class CurrencyRestExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 "Currency not found",
                 ex.getMessage(),
-                CurrencyApiErrorCodes.CURRENCY_NOT_FOUND
+                CurrencyApiErrorCode.CURRENCY_NOT_FOUND.code()
         );
     }
 

@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.cr
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller.UpdateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.ListFxSpotsController;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.error.FxSpotApiErrorCode;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotDeleteException;
@@ -38,31 +39,31 @@ public class FxSpotRestExceptionHandler {
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
         log.warn("FX Spot already exists: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_ALREADY_EXISTS.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_ALREADY_EXISTS.code(), ex.getMessage());
     }
 
     @ExceptionHandler(FxSpotNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotNotFound(FxSpotNotFoundException ex) {
         log.warn("FX Spot not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.FX_SPOT_NOT_FOUND.name(), ex.getMessage());
+        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.FX_SPOT_NOT_FOUND.code(), ex.getMessage());
     }
 
     @ExceptionHandler(FxSpotSameCurrenciesException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotSameCurrencies(FxSpotSameCurrenciesException ex) {
         log.warn("FX Spot same currencies: {}", ex.getMessage());
-        return ResponseEntityFactory.badRequest(FxSpotApiErrorCode.FX_SPOT_SAME_CURRENCIES.name(), ex.getMessage());
+        return ResponseEntityFactory.badRequest(FxSpotApiErrorCode.FX_SPOT_SAME_CURRENCIES.code(), ex.getMessage());
     }
 
     @ExceptionHandler(FxSpotInUseException.class)
     public ResponseEntity<ApiResponse<Void>> fxSpotInUse(FxSpotInUseException ex) {
         log.warn("FX Spot is in use: {}", ex.getMessage());
-        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_IN_USE.name(), ex.getMessage());
+        return ResponseEntityFactory.conflict(FxSpotApiErrorCode.FX_SPOT_IN_USE.code(), ex.getMessage());
     }
 
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> currencyNotFound(CurrencyNotFoundException ex) {
         log.warn("Currency not found: {}", ex.getMessage());
-        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.CURRENCY_NOT_FOUND.name(), ex.getMessage());
+        return ResponseEntityFactory.notFound(FxSpotApiErrorCode.CURRENCY_NOT_FOUND.code(), ex.getMessage());
     }
 
     @ExceptionHandler({
@@ -79,11 +80,11 @@ public class FxSpotRestExceptionHandler {
     /* Подбираем код ошибки для технических application-исключений FX_SPOT. */
     private String resolveTechnicalErrorCode(RuntimeException ex) {
         if (ex instanceof FxSpotCreateException) {
-            return FxSpotApiErrorCode.FX_SPOT_CREATE_FAILED.name();
+            return FxSpotApiErrorCode.FX_SPOT_CREATE_FAILED.code();
         }
         if (ex instanceof FxSpotUpdateException) {
-            return FxSpotApiErrorCode.FX_SPOT_UPDATE_FAILED.name();
+            return FxSpotApiErrorCode.FX_SPOT_UPDATE_FAILED.code();
         }
-        return FxSpotApiErrorCode.FX_SPOT_DELETE_FAILED.name();
+        return FxSpotApiErrorCode.FX_SPOT_DELETE_FAILED.code();
     }
 }

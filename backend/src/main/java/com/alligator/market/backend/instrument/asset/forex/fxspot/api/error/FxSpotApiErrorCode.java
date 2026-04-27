@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.api.advice;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.api.error;
 
 /**
  * API-коды ошибок FOREX_SPOT slice.
@@ -15,5 +15,9 @@ public enum FxSpotApiErrorCode {
 
     FX_SPOT_CREATE_FAILED,
     FX_SPOT_UPDATE_FAILED,
-    FX_SPOT_DELETE_FAILED
+    FX_SPOT_DELETE_FAILED;
+
+    public String code() {
+        return name();
+    }
 }

@@ -6,6 +6,7 @@ import com.alligator.market.backend.sourcing.plan.api.command.replace.controller
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.ListInstrumentSourcePlansController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;
+import com.alligator.market.backend.sourcing.plan.api.error.InstrumentSourcePlanApiErrorCode;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
@@ -33,11 +34,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 })
 public class InstrumentSourcePlanRestExceptionHandler {
 
-    /* Единые коды ошибок sourcing feature. */
-    private static final String INSTRUMENT_CODE_NOT_FOUND = "INSTRUMENT_CODE_NOT_FOUND";
-    private static final String PROVIDER_CODES_NOT_FOUND = "PROVIDER_CODES_NOT_FOUND";
-    private static final String INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS = "INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS";
-    private static final String INSTRUMENT_SOURCE_PLAN_NOT_FOUND = "INSTRUMENT_SOURCE_PLAN_NOT_FOUND";
 
     /**
      * Код инструмента отсутствует в registry --> 400.
@@ -49,7 +45,7 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Instrument code not found",
                 ex.getMessage(),
-                INSTRUMENT_CODE_NOT_FOUND
+                InstrumentSourcePlanApiErrorCode.INSTRUMENT_CODE_NOT_FOUND.code()
         );
     }
 
@@ -63,7 +59,7 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Provider codes not found",
                 ex.getMessage(),
-                PROVIDER_CODES_NOT_FOUND
+                InstrumentSourcePlanApiErrorCode.PROVIDER_CODES_NOT_FOUND.code()
         );
     }
 
@@ -79,7 +75,7 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 HttpStatus.CONFLICT,
                 "Instrument source plan already exists",
                 ex.getMessage(),
-                INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS
+                InstrumentSourcePlanApiErrorCode.INSTRUMENT_SOURCE_PLAN_ALREADY_EXISTS.code()
         );
     }
 
@@ -93,7 +89,7 @@ public class InstrumentSourcePlanRestExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 "Instrument source plan not found",
                 ex.getMessage(),
-                INSTRUMENT_SOURCE_PLAN_NOT_FOUND
+                InstrumentSourcePlanApiErrorCode.INSTRUMENT_SOURCE_PLAN_NOT_FOUND.code()
         );
     }
 
