@@ -18,7 +18,7 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePla
 /**
  * jOOQ-реализация репозитория планов источников.
  */
-public final class JooqInstrumentSourcePlanRepository implements InstrumentSourcePlanRepository {
+public final class JooqInstrumentSourcePlanRepositoryAdapter implements InstrumentSourcePlanRepository {
 
     /* Имя FK-ограничения source_plan -> instrument_registry по коду инструмента. */
     private static final String FK_SOURCE_PLAN_INSTRUMENT = "fk_instr_source_plan_instrument";
@@ -26,7 +26,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     /* DSLContext для выполнения SQL через jOOQ. */
     private final DSLContext dsl;
 
-    public JooqInstrumentSourcePlanRepository(DSLContext dsl) {
+    public JooqInstrumentSourcePlanRepositoryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
