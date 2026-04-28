@@ -1,10 +1,10 @@
-package com.alligator.market.backend.provider.passport.web;
+package com.alligator.market.backend.provider.api.passport.controller;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.provider.passport.service.PassportCatalogService;
-import com.alligator.market.backend.provider.passport.web.dto.out.PassportResponseDto;
-import com.alligator.market.backend.provider.passport.web.dto.mapper.PassportDtoMapper;
+import com.alligator.market.backend.provider.api.passport.dto.PassportResponseDto;
+import com.alligator.market.backend.provider.api.passport.mapper.PassportDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

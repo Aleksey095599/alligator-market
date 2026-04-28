@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.passport.web.dto.mapper;
+package com.alligator.market.backend.provider.api.passport.mapper;
 
-import com.alligator.market.backend.provider.passport.web.dto.out.PassportResponseDto;
+import com.alligator.market.backend.provider.api.passport.dto.PassportResponseDto;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 

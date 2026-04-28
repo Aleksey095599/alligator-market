@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.passport.web.dto.out;
+package com.alligator.market.backend.provider.api.passport.dto;
 
 /**
  * DTO для передачи паспорта провайдера (out).
