@@ -1,9 +1,11 @@
 package com.alligator.market.backend;
 
+import com.alligator.market.backend.provider.config.ProviderFeatureWiringConfig;
+import com.alligator.market.backend.sourcing.config.SourcingFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.ZoneOffset;
@@ -15,6 +17,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableScheduling
 @ConfigurationPropertiesScan("com.alligator.market.backend")
+@Import({ProviderFeatureWiringConfig.class, SourcingFeatureWiringConfig.class})
 public class BackendApplication {
 
     private static final TimeZone TECHNICAL_TIME_ZONE = TimeZone.getTimeZone(ZoneOffset.UTC);
