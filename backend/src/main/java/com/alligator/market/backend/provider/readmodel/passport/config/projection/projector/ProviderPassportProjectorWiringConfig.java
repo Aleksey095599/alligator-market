@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.readmodel.passport.config.projection.projector;
 
-import com.alligator.market.backend.provider.readmodel.passport.config.projection.jdbc.ProviderPassportProjectionWritePortWiringConfig;
+import com.alligator.market.backend.provider.readmodel.passport.config.projection.jooq.ProviderPassportProjectionWritePortWiringConfig;
 import com.alligator.market.backend.provider.registry.config.ProviderRegistryWiringConfig;
 import com.alligator.market.domain.provider.readmodel.passport.projection.projector.ProviderPassportProjector;
 import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
