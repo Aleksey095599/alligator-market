@@ -1,5 +1,4 @@
 -- provider_passport: materialized view (read model) паспортов провайдеров.
--- Источник истины: ProviderRegistry. Обновление выполняет projection-процесс (JDBC/DAO).
 CREATE TABLE provider_passport
 (
     -- Суррогатный PK
