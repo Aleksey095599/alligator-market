@@ -5,10 +5,7 @@ import com.alligator.market.domain.provider.readmodel.passport.projection.port.P
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Query;
-import org.jooq.TableField;
-import org.jooq.impl.DSL;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -72,17 +69,12 @@ public class ProviderPassportProjectionWritePortJooqAdapter implements ProviderP
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
-                    .set(PROVIDER_PASSPORT.VERSION, numericLiteral(PROVIDER_PASSPORT.VERSION, 0))
                     .onConflict(PROVIDER_PASSPORT.PROVIDER_CODE)
                     .doUpdate()
                     .set(PROVIDER_PASSPORT.DISPLAY_NAME, excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, excluded(PROVIDER_PASSPORT.DELIVERY_MODE))
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, excluded(PROVIDER_PASSPORT.ACCESS_METHOD))
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION))
-                    .set(
-                            PROVIDER_PASSPORT.VERSION,
-                            PROVIDER_PASSPORT.VERSION.plus(numericLiteral(PROVIDER_PASSPORT.VERSION, 1))
-                    )
                     .where(businessFieldsChanged);
 
             queries.add(query);
@@ -129,10 +121,5 @@ public class ProviderPassportProjectionWritePortJooqAdapter implements ProviderP
             entries.add(entry);
         }
         return entries;
-    }
-
-    /* Типобезопасный numeric literal под тип VERSION-поля таблицы. */
-    private static <N extends Number> Field<N> numericLiteral(TableField<?, N> field, Number value) {
-        return DSL.val(value).cast(field.getDataType());
     }
 }
