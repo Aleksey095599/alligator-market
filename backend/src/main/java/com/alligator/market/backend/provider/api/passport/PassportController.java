@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.api.passport.controller;
+package com.alligator.market.backend.provider.api.passport;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
