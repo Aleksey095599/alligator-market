@@ -1,6 +1,9 @@
 package com.alligator.market.backend;
 
+import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
 import com.alligator.market.backend.provider.config.ProviderFeatureWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.SourcingPlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -16,7 +19,12 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableScheduling
 @ConfigurationPropertiesScan("com.alligator.market.backend")
-@Import(ProviderFeatureWiringConfig.class)
+@Import({
+        ProviderFeatureWiringConfig.class,
+        SourcingPlanFeatureWiringConfig.class,
+        FxSpotFeatureWiringConfig.class,
+        CurrencyFeatureWiringConfig.class
+})
 public class BackendApplication {
 
     private static final TimeZone TECHNICAL_TIME_ZONE = TimeZone.getTimeZone(ZoneOffset.UTC);
