@@ -17,7 +17,6 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePla
 
 /**
  * jOOQ-реализация репозитория планов источников.
- * Суффикс Adapter не добавлен намеренно: роль адаптера уже явно видна из пакета persistence/jooq.
  */
 public final class JooqInstrumentSourcePlanRepository implements InstrumentSourcePlanRepository {
 
@@ -35,7 +34,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
     public Optional<InstrumentSourcePlan> findByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // 1) Читаем все источники инструмента из БД в порядке приоритета.
+        // Читаем все источники инструмента из БД в порядке приоритета.
         List<MarketDataSource> sources = dsl
                 .select(
                         MARKET_DATA_SOURCE.PROVIDER_CODE,
@@ -51,18 +50,18 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                         record.get(MARKET_DATA_SOURCE.PRIORITY)
                 ));
 
-        // 2) Если источников нет — плана тоже нет.
+        // Если источников нет — плана тоже нет.
         if (sources.isEmpty()) {
             return Optional.empty();
         }
 
-        // 3) Собираем доменный план и возвращаем его.
+        // Собираем доменный план и возвращаем его.
         return Optional.of(new InstrumentSourcePlan(instrumentCode, sources));
     }
 
     @Override
     public List<InstrumentSourcePlan> findAll() {
-        // 1) Группируем источники по коду инструмента.
+        // Группируем источники по коду инструмента.
         Map<InstrumentCode, List<MarketDataSource>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
@@ -92,14 +91,14 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                             .add(source);
                 });
 
-        // 2) Преобразуем каждую группу в доменный план.
+        // Преобразуем каждую группу в доменный план.
         List<InstrumentSourcePlan> plans = new ArrayList<>(groupedSources.size());
 
         for (Map.Entry<InstrumentCode, List<MarketDataSource>> entry : groupedSources.entrySet()) {
             plans.add(new InstrumentSourcePlan(entry.getKey(), entry.getValue()));
         }
 
-        // 3) Возвращаем неизменяемый список.
+        // Возвращаем неизменяемый список.
         return List.copyOf(plans);
     }
 
@@ -108,7 +107,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         Objects.requireNonNull(plan, "plan must not be null");
 
         try {
-            // 1) В транзакции пробуем создать запись плана.
+            // В транзакции пробуем создать запись плана.
             return dsl.transactionResult(configuration -> {
                 DSLContext tx = configuration.dsl();
 
@@ -123,12 +122,12 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                     return false;
                 }
 
-                // 2) План создан — добавляем его источники.
+                // План создан — добавляем его источники.
                 for (MarketDataSource source : plan.sources()) {
                     insertSource(tx, plan.instrumentCode(), source);
                 }
 
-                // 3) Успешное создание.
+                // Успешное создание.
                 return true;
             });
         } catch (DataIntegrityViolationException ex) {
@@ -149,7 +148,7 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
 
-            // 1) Проверяем, что план есть, и блокируем его до конца транзакции.
+            // Проверяем, что план есть, и блокируем его до конца транзакции.
             boolean planExists = tx.selectOne()
                     .from(SOURCE_PLAN)
                     .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
@@ -161,12 +160,12 @@ public final class JooqInstrumentSourcePlanRepository implements InstrumentSourc
                 return false;
             }
 
-            // 2) Удаляем старые источники.
+            // Удаляем старые источники.
             tx.deleteFrom(MARKET_DATA_SOURCE)
                     .where(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .execute();
 
-            // 3) Вставляем новый набор источников.
+            // Вставляем новый набор источников.
             for (MarketDataSource source : plan.sources()) {
                 insertSource(tx, plan.instrumentCode(), source);
             }
