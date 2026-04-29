@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.query.port.adapter.jooq;
+package com.alligator.market.backend.provider.infrastructure.persistence.passport.readmodel.jooq;
 
 import com.alligator.market.domain.provider.passport.AccessMethod;
 import com.alligator.market.domain.provider.passport.DeliveryMode;
