@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.readmodel.passport.projection.service;
 
-import com.alligator.market.domain.provider.readmodel.passport.projection.projector.ProviderPassportProjector;
+import com.alligator.market.backend.provider.application.passport.projection.ProviderPassportProjector;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Objects;
