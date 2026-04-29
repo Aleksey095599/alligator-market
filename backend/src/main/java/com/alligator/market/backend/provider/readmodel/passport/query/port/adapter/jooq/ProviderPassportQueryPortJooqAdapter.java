@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.readmodel.passport.query.port.adap
 import com.alligator.market.domain.provider.passport.AccessMethod;
 import com.alligator.market.domain.provider.passport.DeliveryMode;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
+import com.alligator.market.backend.provider.application.passport.catalog.port.out.ProviderPassportQueryPort;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.DSLContext;
 import org.jooq.Record5;
