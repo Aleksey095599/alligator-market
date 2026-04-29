@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.config.readmodel.passport.query;
 
 import com.alligator.market.backend.provider.readmodel.passport.query.port.adapter.jooq.ProviderPassportQueryPortJooqAdapter;
-import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
+import com.alligator.market.backend.provider.application.passport.catalog.port.out.ProviderPassportQueryPort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

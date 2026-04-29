@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.readmodel.passport.query.port;
+package com.alligator.market.backend.provider.application.passport.catalog.port.out;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;

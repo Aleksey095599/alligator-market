@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.config.application.passport.catalo
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogServiceImpl;
 import com.alligator.market.backend.provider.config.readmodel.passport.query.ProviderPassportQueryPortWiringConfig;
-import com.alligator.market.domain.provider.readmodel.passport.query.port.ProviderPassportQueryPort;
+import com.alligator.market.backend.provider.application.passport.catalog.port.out.ProviderPassportQueryPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
