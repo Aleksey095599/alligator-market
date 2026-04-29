@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.config.readmodel.passport.projection.jooq;
 
 import com.alligator.market.backend.provider.readmodel.passport.projection.port.adapter.jooq.ProviderPassportProjectionWritePortJooqAdapter;
-import com.alligator.market.domain.provider.readmodel.passport.projection.port.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
