@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.config;
 
 import com.alligator.market.backend.provider.config.adapter.moex.iss.MoexIssProviderConfig;
-import com.alligator.market.backend.provider.config.passport.service.PassportCatalogServiceWiringConfig;
+import com.alligator.market.backend.provider.config.application.passport.catalog.PassportCatalogServiceWiringConfig;
 import com.alligator.market.backend.provider.config.readmodel.passport.projection.startup.ProviderPassportProjectionStartupRunnerWiringConfig;
 import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
 import org.springframework.context.annotation.Configuration;
