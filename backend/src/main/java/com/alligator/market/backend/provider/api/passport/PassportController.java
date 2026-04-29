@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.api.passport;
 
 import com.alligator.market.backend.common.web.response.ApiResponse;
 import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
-import com.alligator.market.backend.provider.passport.service.PassportCatalogService;
+import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
 import com.alligator.market.backend.provider.api.passport.dto.PassportResponseDto;
 import com.alligator.market.backend.provider.api.passport.mapper.PassportDtoMapper;
 import lombok.RequiredArgsConstructor;
