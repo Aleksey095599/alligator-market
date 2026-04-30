@@ -1,7 +1,5 @@
 package com.alligator.market.backend.provider.api.passport;
 
-import com.alligator.market.backend.common.web.response.ApiResponse;
-import com.alligator.market.backend.common.web.response.ResponseEntityFactory;
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
 import com.alligator.market.backend.provider.api.passport.dto.PassportResponseDto;
 import com.alligator.market.backend.provider.api.passport.mapper.PassportDtoMapper;
@@ -27,12 +25,12 @@ public class PassportController {
      * Вернуть все паспорта провайдеров.
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PassportResponseDto>>> getAll() {
+    public ResponseEntity<List<PassportResponseDto>> getAll() {
         var passports = service.findAll();
 
         List<PassportResponseDto> list = passports.entrySet().stream()
                 .map(entry -> PassportDtoMapper.toProviderPassportResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
-        return ResponseEntityFactory.ok(list);
+        return ResponseEntity.ok(list);
     }
 }
