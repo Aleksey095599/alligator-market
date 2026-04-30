@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { ApiResponse } from '../../../shared/api/api-response.model';
 import { ProviderDto } from '../models/provider-dto.model';
 
 /* Сервис для чтения паспортов провайдеров. */
@@ -18,8 +17,6 @@ export class ProviderPassportService {
 
   /* Получить все паспорта провайдеров. */
   list(): Observable<ProviderDto[]> {
-    return this.http
-      .get<ApiResponse<ProviderDto[]>>(this.baseUrl)
-      .pipe(map(res => res.data ?? []));
+    return this.http.get<ProviderDto[]>(this.baseUrl);
   }
 }
