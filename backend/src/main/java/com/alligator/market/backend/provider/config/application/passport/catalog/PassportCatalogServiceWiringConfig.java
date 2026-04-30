@@ -2,8 +2,8 @@ package com.alligator.market.backend.provider.config.application.passport.catalo
 
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogServiceImpl;
-import com.alligator.market.backend.provider.config.readmodel.passport.query.ProviderPassportQueryPortWiringConfig;
-import com.alligator.market.backend.provider.application.passport.catalog.port.out.ProviderPassportQueryPort;
+import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
+import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        ProviderPassportQueryPortWiringConfig.class
+        ProviderRegistryWiringConfig.class
 })
 public class PassportCatalogServiceWiringConfig {
 
@@ -25,9 +25,9 @@ public class PassportCatalogServiceWiringConfig {
      */
     @Bean(BEAN_PASSPORT_CATALOG_SERVICE)
     public PassportCatalogService passportCatalogService(
-            @Qualifier(ProviderPassportQueryPortWiringConfig.BEAN_PROVIDER_PASSPORT_QUERY_PORT)
-            ProviderPassportQueryPort queryPort
+            @Qualifier(ProviderRegistryWiringConfig.BEAN_PROVIDER_REGISTRY)
+            ProviderRegistry providerRegistry
     ) {
-        return new PassportCatalogServiceImpl(queryPort);
+        return new PassportCatalogServiceImpl(providerRegistry);
     }
 }
