@@ -1,8 +1,5 @@
 package com.alligator.market.domain.provider.registry;
 
-import com.alligator.market.domain.provider.registry.exception.ProviderCodeDuplicateException;
-import com.alligator.market.domain.provider.registry.exception.ProviderRegistryEmptyException;
-import com.alligator.market.domain.provider.registry.exception.ProviderDisplayNameDuplicateException;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
@@ -29,15 +26,13 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
      * <p>Собирает неизменяемые карты и валидирует инварианты заданные для {@link ProviderRegistry}.</p>
      *
      * @param providers список провайдеров
-     * @throws ProviderRegistryEmptyException если список провайдеров пуст
-     * @throws ProviderCodeDuplicateException если код провайдера дублируется
-     * @throws ProviderDisplayNameDuplicateException если название провайдера дублируется
+     * @throws IllegalArgumentException если список провайдеров пуст или содержит дублирующиеся данные
      */
     public SnapshotProviderRegistry(List<? extends MarketDataProvider> providers) {
         Objects.requireNonNull(providers, "providers must not be null");
 
         if (providers.isEmpty()) {
-            throw new ProviderRegistryEmptyException();
+            throw new IllegalArgumentException("Provider registry must contain at least one provider");
         }
 
         Map<ProviderCode, MarketDataProvider> providersMap = new LinkedHashMap<>();
@@ -59,7 +54,9 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
             // Уникальность кода провайдера
             MarketDataProvider prev = providersMap.put(code, provider);
             if (prev != null) {
-                throw new ProviderCodeDuplicateException(code);
+                throw new IllegalArgumentException(
+                        "Duplicate provider code detected (code=" + code.value() + ")"
+                );
             }
 
             String displayName = Objects.requireNonNull(passport.displayName(),
@@ -68,7 +65,9 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
             // Уникальность displayName без учёта регистра
             String displayNameLower = displayName.toLowerCase(Locale.ROOT);
             if (!displayNamesLower.add(displayNameLower)) {
-                throw new ProviderDisplayNameDuplicateException(displayName);
+                throw new IllegalArgumentException(
+                        "Duplicate provider display name detected (displayName=" + displayName + ")"
+                );
             }
 
             passportsMap.put(code, passport);

@@ -2,7 +2,6 @@ package com.alligator.market.backend.provider.application.passport.projection;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
-import com.alligator.market.domain.provider.registry.exception.ProviderRegistryEmptyException;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 
@@ -45,7 +44,7 @@ public class ProviderPassportProjector {
 
         // Инвариант доменной модели: реестр активных провайдеров не бывает пустым.
         if (registryPassports.isEmpty()) {
-            throw new ProviderRegistryEmptyException();
+            throw new IllegalStateException("Provider registry returned no provider passports");
         }
 
         Set<ProviderCode> activeCodes = Set.copyOf(registryPassports.keySet());
