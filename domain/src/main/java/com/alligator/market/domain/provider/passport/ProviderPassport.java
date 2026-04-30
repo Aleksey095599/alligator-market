@@ -21,7 +21,6 @@ public record ProviderPassport(
         AccessMethod accessMethod,
         boolean bulkSubscription
 ) {
-    /* Максимальная длина отображаемого имени провайдера. */
     private static final int MAX_DISPLAY_NAME_LENGTH = 50;
 
     public ProviderPassport {
