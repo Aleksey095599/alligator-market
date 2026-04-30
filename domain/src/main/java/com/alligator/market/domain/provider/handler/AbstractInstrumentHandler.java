@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
-    /* Код обработчика. */
     private final HandlerCode handlerCode;
 
     /* Сводный профиль поддерживаемых инструментов. */

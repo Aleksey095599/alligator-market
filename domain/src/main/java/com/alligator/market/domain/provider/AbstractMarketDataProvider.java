@@ -19,13 +19,8 @@ import java.util.*;
 public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         implements MarketDataProvider {
 
-    /* Код провайдера. */
     protected final ProviderCode providerCode;
-
-    /* Паспорт провайдера. */
     protected final ProviderPassport passport;
-
-    /* Политика провайдера. */
     protected final ProviderPolicy policy;
 
     /* Карта "код инструмента → обработчик инструмента". */

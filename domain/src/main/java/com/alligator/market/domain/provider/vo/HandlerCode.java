@@ -16,13 +16,8 @@ public record HandlerCode(
         String value
 ) {
 
-    /* Шаблон допустимых символов для кода обработчика. */
     public static final String PATTERN = "^[A-Z0-9_]+$";
-
-    /* Максимальная длина кода обработчика. */
     private static final int MAX_LENGTH = 50;
-
-    /* Шаблон для валидации кода обработчика. */
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
     /**
