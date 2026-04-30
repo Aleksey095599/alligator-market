@@ -9,6 +9,7 @@ import com.alligator.market.domain.provider.passport.DeliveryMode;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 
+import java.time.Duration;
 import java.util.Set;
 
 /**
@@ -28,7 +29,10 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
             false
     );
 
-    private static final ProviderPolicy POLICY = ProviderPolicy.ofSeconds(1);
+    private static final ProviderPolicy POLICY = new ProviderPolicy(
+            Duration.ofSeconds(1),
+            100
+    );
 
     /**
      * Конструктор адаптера MOEX ISS.

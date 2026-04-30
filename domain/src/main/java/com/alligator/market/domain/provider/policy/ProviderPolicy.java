@@ -7,13 +7,17 @@ import java.util.Objects;
  * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
  *
  * @param minUpdateInterval Минимальный интервал обновления/запроса котировок
+ * @param maxBatchSize      Максимальный размер батча на один запрос (параметр для дальнейшего масштабирования)
  */
 public record ProviderPolicy(
-        Duration minUpdateInterval
-        // TODO: добавить еще один параметр и уйти от поведения когда ProviderPolicy подразумевает только minUpdateInterval
+        Duration minUpdateInterval,
+        int maxBatchSize
 ) {
     /* Минимально допустимый интервал (ограничение). */
     private static final Duration MIN_ALLOWED = Duration.ofSeconds(1);
+
+    /* Минимально допустимый размер батча (ограничение). */
+    private static final int MIN_BATCH_SIZE = 1;
 
     public ProviderPolicy {
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
@@ -22,10 +26,10 @@ public record ProviderPolicy(
         if (minUpdateInterval.compareTo(MIN_ALLOWED) < 0) {
             throw new IllegalArgumentException("minUpdateInterval must be >= PT1S");
         }
-    }
 
-    /* Удобная фабрика, если значения приходят в секундах. */
-    public static ProviderPolicy ofSeconds(long seconds) {
-        return new ProviderPolicy(Duration.ofSeconds(seconds));
+        // Размер батча должен быть положительным
+        if (maxBatchSize < MIN_BATCH_SIZE) {
+            throw new IllegalArgumentException("maxBatchSize must be >= 1");
+        }
     }
 }
