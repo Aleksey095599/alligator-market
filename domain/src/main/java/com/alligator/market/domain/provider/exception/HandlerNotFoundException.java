@@ -1,7 +1,5 @@
 package com.alligator.market.domain.provider.exception;
 
-import com.alligator.market.domain.common.exception.BaseDomainException;
-import com.alligator.market.domain.common.exception.DomainErrorCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 
@@ -10,7 +8,7 @@ import java.util.Objects;
 /**
  * Обработчик для инструмента не найден.
  */
-public final class HandlerNotFoundException extends BaseDomainException {
+public final class HandlerNotFoundException extends RuntimeException {
 
     private final InstrumentCode instrumentCode;
     private final ProviderCode providerCode;
@@ -22,7 +20,7 @@ public final class HandlerNotFoundException extends BaseDomainException {
      * @param providerCode   код провайдера
      */
     public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode) {
-        super(DomainErrorCode.HANDLER_NOT_FOUND, msg(instrumentCode, providerCode));
+        super(msg(instrumentCode, providerCode));
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
@@ -36,7 +34,7 @@ public final class HandlerNotFoundException extends BaseDomainException {
      */
     @SuppressWarnings("unused")
     public HandlerNotFoundException(InstrumentCode instrumentCode, ProviderCode providerCode, Throwable cause) {
-        super(DomainErrorCode.HANDLER_NOT_FOUND, msg(instrumentCode, providerCode), cause);
+        super(msg(instrumentCode, providerCode), cause);
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         this.providerCode = Objects.requireNonNull(providerCode, "providerCode must not be null");
     }
