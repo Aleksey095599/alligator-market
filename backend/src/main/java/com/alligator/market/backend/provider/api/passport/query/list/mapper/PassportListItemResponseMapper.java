@@ -7,20 +7,14 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 import java.util.Objects;
 
 /**
- * Маппер DTO для паспорта провайдера.
+ * Маппер паспорта провайдера и {@link PassportListItemResponse}.
  */
 public final class PassportListItemResponseMapper {
 
-    /**
-     * Приватный конструктор (запрещает создание экземпляров).
-     */
     private PassportListItemResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /**
-     * Модель --> DTO ответа.
-     */
     public static PassportListItemResponse toResponse(ProviderCode providerCode,
                                                                          ProviderPassport providerPassport) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");

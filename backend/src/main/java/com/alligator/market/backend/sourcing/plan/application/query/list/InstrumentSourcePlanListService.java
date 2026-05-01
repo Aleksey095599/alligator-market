@@ -9,12 +9,12 @@ import java.util.Objects;
 /**
  * Сервис чтения всех планов источников рыночных данных.
  */
-public final class ListInstrumentSourcePlansService {
+public final class InstrumentSourcePlanListService {
 
     /* Репозиторий планов источников. */
     private final InstrumentSourcePlanRepository instrumentSourcePlanRepository;
 
-    public ListInstrumentSourcePlansService(InstrumentSourcePlanRepository instrumentSourcePlanRepository) {
+    public InstrumentSourcePlanListService(InstrumentSourcePlanRepository instrumentSourcePlanRepository) {
         this.instrumentSourcePlanRepository = Objects.requireNonNull(
                 instrumentSourcePlanRepository,
                 "instrumentSourcePlanRepository must not be null"
