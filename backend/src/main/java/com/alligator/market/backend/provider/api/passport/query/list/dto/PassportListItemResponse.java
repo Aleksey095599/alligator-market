@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.api.passport.query.dto;
+package com.alligator.market.backend.provider.api.passport.query.list.dto;
 
 /**
  * DTO для передачи паспорта провайдера (out).
