@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.application.passport.projection.runner;
 
-import com.alligator.market.backend.provider.readmodel.passport.projection.service.ProviderPassportProjectionService;
+import com.alligator.market.backend.provider.application.passport.projection.ProviderPassportProjectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

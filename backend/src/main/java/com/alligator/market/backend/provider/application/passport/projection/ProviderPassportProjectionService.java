@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.readmodel.passport.projection.service;
+package com.alligator.market.backend.provider.application.passport.projection;
 
 import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
