@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.api.passport.query.list.controller;
 
-import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
+import com.alligator.market.backend.provider.application.passport.query.list.PassportListService;
 import com.alligator.market.backend.provider.api.passport.query.list.dto.PassportListItemResponse;
 import com.alligator.market.backend.provider.api.passport.query.list.mapper.PassportListItemResponseMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PassportListController {
 
-    private final PassportCatalogService service;
+    private final PassportListService service;
 
     /**
      * Вернуть все паспорта провайдеров.

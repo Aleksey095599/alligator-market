@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.api.error;
 
-import com.alligator.market.backend.provider.api.passport.query.controller.PassportListController;
+import com.alligator.market.backend.provider.api.passport.query.list.controller.PassportListController;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
