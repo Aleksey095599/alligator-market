@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(assignableTypes = PassportListController.class)
 public class ProviderApiExceptionHandler {
+    private static final HttpStatus HANDLER_NOT_FOUND_STATUS = HttpStatus.NOT_FOUND;
+    private static final String HANDLER_NOT_FOUND_TITLE = "Provider handler not found";
 
     /**
      * Хендлер для инструмента не найден --> 404.
@@ -25,17 +27,15 @@ public class ProviderApiExceptionHandler {
     public ProblemDetail handleHandlerNotFound(HandlerNotFoundException ex) {
         log.warn("Provider handler not found: {}", ex.getMessage());
         return buildProblemDetail(
-                HttpStatus.NOT_FOUND,
-                "Provider handler not found",
                 ex.getMessage(),
                 ProviderApiErrorCode.PROVIDER_HANDLER_NOT_FOUND.code()
         );
     }
 
     /* Общий builder ProblemDetail для единообразного контракта ошибок provider feature. */
-    private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String errorCode) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
-        problemDetail.setTitle(title);
+    private ProblemDetail buildProblemDetail(String detail, String errorCode) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HANDLER_NOT_FOUND_STATUS, detail);
+        problemDetail.setTitle(HANDLER_NOT_FOUND_TITLE);
         problemDetail.setProperty("errorCode", errorCode);
         return problemDetail;
     }
