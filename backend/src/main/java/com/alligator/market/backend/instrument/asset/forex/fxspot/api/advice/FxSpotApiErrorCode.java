@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.api.error;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.api.advice;
 
 /**
  * API-коды ошибок FOREX_SPOT slice.

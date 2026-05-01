@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.api.error;
+package com.alligator.market.backend.provider.api.advice;
 
 import com.alligator.market.backend.provider.api.passport.query.list.controller.PassportListController;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Feature-specific обработчик ошибок API provider.
+ * Feature-specific обработчик ошибок API для provider.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)

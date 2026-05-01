@@ -4,7 +4,6 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.cr
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller.UpdateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.FxSpotListController;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.api.error.FxSpotApiErrorCode;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotDeleteException;

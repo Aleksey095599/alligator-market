@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.api.error;
+package com.alligator.market.backend.provider.api.advice;
 
 /**
  * Локальные API-коды ошибок provider feature.
