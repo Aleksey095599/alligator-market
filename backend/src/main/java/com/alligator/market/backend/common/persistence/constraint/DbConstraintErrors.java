@@ -1,6 +1,7 @@
 package com.alligator.market.backend.common.persistence.constraint;
 
-import org.hibernate.exception.ConstraintViolationException;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.ServerErrorMessage;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -63,17 +64,18 @@ public final class DbConstraintErrors {
         // 2) Обходим cause-цепочку исключения
         for (Throwable t = ex; t != null && visited.add(t); t = t.getCause()) {
 
-            // 3.1) "Идеальный" вариант – Hibernate смог поймать и обернуть исключение в ConstraintViolationException.
-            //      Тогда извлекаем имя ConstraintViolationException и сравниваем с needle.
-            if (t instanceof ConstraintViolationException cve) {
-                final String name = cve.getConstraintName();
+            // 3.1) Предпочтительный вариант для PostgreSQL+jOOQ:
+            //      драйвер пробрасывает PSQLException, где имя ограничения доступно структурно.
+            if (t instanceof PSQLException psqlEx) {
+                final ServerErrorMessage serverErrorMessage = psqlEx.getServerErrorMessage();
+                final String name = serverErrorMessage == null ? null : serverErrorMessage.getConstraint();
                 if (name != null && name.strip().equalsIgnoreCase(needle)) {
                     return true;
-                    // Сразу же выходим, так как это "идеальный" вариант
+                    // Сразу же выходим, так как это приоритетный структурный вариант
                 }
             }
 
-            // 3.2) "Fallback" вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
+            // 3.2) Fallback-вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
             //      в getConstraintName(), но включают его в текст сообщения. Тогда ищем needle в сообщениях причин.
             if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
                 matchedByMessage = true; // <-- Фиксируем, что вариант "fallback" сработал.

@@ -1,10 +1,9 @@
 package com.alligator.market.backend.common.persistence.constraint;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import java.sql.SQLException;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.ServerErrorMessage;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,16 +18,16 @@ class DbConstraintErrorsTest {
 
     /**
      * Должен вернуть true так как это “идеальный” вариант алгоритма:
-     * в cause-цепочке есть Hibernate {@link ConstraintViolationException},
-     * и имя ограничения доступно через {@link ConstraintViolationException#getConstraintName()}.
+     * в cause-цепочке есть PostgreSQL {@link PSQLException},
+     * и имя ограничения доступно через {@link ServerErrorMessage#getConstraint()}.
      */
     @Test
-    void shouldDetectByHibernateConstraintName() {
-        SQLException sqlEx = new SQLException("duplicate key");
-        ConstraintViolationException cve =
-                new ConstraintViolationException("violated", sqlEx, "uq_some_column");
-
-        RuntimeException ex = new RuntimeException("wrap", cve);
+    void shouldDetectByPostgresConstraintName() {
+        PSQLException psqlEx = new PSQLException(
+                new ServerErrorMessage("ERROR: duplicate key value violates unique constraint \"uq_some_column\""),
+                true
+        );
+        RuntimeException ex = new RuntimeException("wrap", psqlEx);
 
         assertTrue(DbConstraintErrors.isViolationOf(ex, "UQ_SOME_COLUMN")); // <-- Заглавными буквами для проверки, что регистр не влияет
     }
@@ -46,7 +45,7 @@ class DbConstraintErrorsTest {
     }
 
     /**
-     * Должен вернуть false так как имя ограничения не встречается ни в {@link ConstraintViolationException#getConstraintName()},
+     * Должен вернуть false так как имя ограничения не встречается ни в {@link ServerErrorMessage#getConstraint()},
      * ни в сообщениях исключений в cause-цепочке.
      */
     @Test
