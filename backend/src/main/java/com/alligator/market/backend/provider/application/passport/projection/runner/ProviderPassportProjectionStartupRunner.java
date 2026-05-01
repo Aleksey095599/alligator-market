@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.application.passport.projection.runner;
 
 import com.alligator.market.backend.provider.application.passport.projection.ProviderPassportProjectionService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -20,7 +21,7 @@ public final class ProviderPassportProjectionStartupRunner implements Applicatio
     }
 
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(@NonNull ApplicationArguments args) {
         log.info("Provider passport projection started");
 
         try {
