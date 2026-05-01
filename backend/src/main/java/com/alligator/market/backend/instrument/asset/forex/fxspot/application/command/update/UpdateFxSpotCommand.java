@@ -12,10 +12,7 @@ public record UpdateFxSpotCommand(
         Integer defaultQuoteFractionDigits
 ) {
     public UpdateFxSpotCommand {
-        instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        defaultQuoteFractionDigits = Objects.requireNonNull(
-                defaultQuoteFractionDigits,
-                "defaultQuoteFractionDigits must not be null"
-        );
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+        Objects.requireNonNull(defaultQuoteFractionDigits, "defaultQuoteFractionDigits must not be null");
     }
 }

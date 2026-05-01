@@ -15,12 +15,9 @@ public record CreateFxSpotCommand(
         Integer defaultQuoteFractionDigits
 ) {
     public CreateFxSpotCommand {
-        baseCurrencyCode = Objects.requireNonNull(baseCurrencyCode, "baseCurrencyCode must not be null");
-        quoteCurrencyCode = Objects.requireNonNull(quoteCurrencyCode, "quoteCurrencyCode must not be null");
-        tenor = Objects.requireNonNull(tenor, "tenor must not be null");
-        defaultQuoteFractionDigits = Objects.requireNonNull(
-                defaultQuoteFractionDigits,
-                "defaultQuoteFractionDigits must not be null"
-        );
+        Objects.requireNonNull(baseCurrencyCode, "baseCurrencyCode must not be null");
+        Objects.requireNonNull(quoteCurrencyCode, "quoteCurrencyCode must not be null");
+        Objects.requireNonNull(tenor, "tenor must not be null");
+        Objects.requireNonNull(defaultQuoteFractionDigits, "defaultQuoteFractionDigits must not be null");
     }
 }
