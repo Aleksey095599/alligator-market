@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.controller.CreateCurrencyController;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.delete.controller.DeleteCurrencyController;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.controller.UpdateCurrencyController;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.controller.ListCurrenciesController;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.controller.CurrencyListController;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         CreateCurrencyController.class,
         UpdateCurrencyController.class,
         DeleteCurrencyController.class,
-        ListCurrenciesController.class
+        CurrencyListController.class
 })
 public class CurrencyRestExceptionHandler {
 

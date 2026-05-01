@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.reference.currency.a
 /**
  * Элемент списка валют для list query.
  */
-public record CurrencyListResponse(
+public record CurrencyListItemResponse(
         String code,
         String name,
         String country,

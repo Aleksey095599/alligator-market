@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.advice;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.controller.CreateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.update.controller.UpdateFxSpotController;
-import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.ListFxSpotsController;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.FxSpotListController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.error.FxSpotApiErrorCode;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateException;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         CreateFxSpotController.class,
         UpdateFxSpotController.class,
         DeleteFxSpotController.class,
-        ListFxSpotsController.class
+        FxSpotListController.class
 })
 public class FxSpotRestExceptionHandler {
 

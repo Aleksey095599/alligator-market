@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.api.error;
 
-import com.alligator.market.backend.provider.api.passport.PassportController;
+import com.alligator.market.backend.provider.api.passport.query.controller.PassportListController;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@RestControllerAdvice(assignableTypes = PassportController.class)
+@RestControllerAdvice(assignableTypes = PassportListController.class)
 public class ProviderApiExceptionHandler {
 
     /**

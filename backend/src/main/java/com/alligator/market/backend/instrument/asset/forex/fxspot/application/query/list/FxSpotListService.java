@@ -11,11 +11,11 @@ import java.util.Objects;
  * Use-case сервис списка инструментов FOREX_SPOT.
  */
 @Slf4j
-public final class ListFxSpotsService {
+public final class FxSpotListService {
 
     private final FxSpotRepository fxSpotRepository;
 
-    public ListFxSpotsService(FxSpotRepository fxSpotRepository) {
+    public FxSpotListService(FxSpotRepository fxSpotRepository) {
         this.fxSpotRepository = Objects.requireNonNull(fxSpotRepository,
                 "fxSpotRepository must not be null");
     }

@@ -11,11 +11,11 @@ import java.util.Objects;
  * Use-case сервис получения списка валют.
  */
 @Slf4j
-public final class ListCurrenciesService {
+public final class CurrencyListService {
 
     private final CurrencyRepository currencyRepository;
 
-    public ListCurrenciesService(CurrencyRepository currencyRepository) {
+    public CurrencyListService(CurrencyRepository currencyRepository) {
         this.currencyRepository = Objects.requireNonNull(currencyRepository,
                 "currencyRepository must not be null");
     }

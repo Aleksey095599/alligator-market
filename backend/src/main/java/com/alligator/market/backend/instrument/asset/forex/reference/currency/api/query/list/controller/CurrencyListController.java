@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.controller;
 
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.dto.CurrencyListResponse;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.mapper.CurrencyListResponseMapper;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.query.list.ListCurrenciesService;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.dto.CurrencyListItemResponse;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.query.list.mapper.CurrencyListItemResponseMapper;
+import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.query.list.CurrencyListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +17,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/currencies")
 @RequiredArgsConstructor
-public class ListCurrenciesController {
+public class CurrencyListController {
 
-    private final ListCurrenciesService listCurrenciesService;
+    private final CurrencyListService currencyListService;
 
     /**
      * Вернуть все валюты.
      */
     @GetMapping
-    public ResponseEntity<List<CurrencyListResponse>> getAll() {
+    public ResponseEntity<List<CurrencyListItemResponse>> getAll() {
 
-        List<CurrencyListResponse> currencies = listCurrenciesService.findAll()
+        List<CurrencyListItemResponse> currencies = currencyListService.findAll()
                 .stream()
-                .map(CurrencyListResponseMapper::toResponse)
+                .map(CurrencyListItemResponseMapper::toResponse)
                 .toList();
 
         return ResponseEntity.ok(currencies);

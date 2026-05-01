@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.api.passport;
+package com.alligator.market.backend.provider.api.passport.query.controller;
 
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
-import com.alligator.market.backend.provider.api.passport.dto.PassportResponseDto;
-import com.alligator.market.backend.provider.api.passport.mapper.PassportDtoMapper;
+import com.alligator.market.backend.provider.api.passport.query.dto.PassportListItemResponse;
+import com.alligator.market.backend.provider.api.passport.query.mapper.PassportListItemResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/providers")
 @RequiredArgsConstructor
-public class PassportController {
+public class PassportListController {
 
     private final PassportCatalogService service;
 
@@ -25,11 +25,11 @@ public class PassportController {
      * Вернуть все паспорта провайдеров.
      */
     @GetMapping
-    public ResponseEntity<List<PassportResponseDto>> getAll() {
+    public ResponseEntity<List<PassportListItemResponse>> getAll() {
         var passports = service.findAll();
 
-        List<PassportResponseDto> list = passports.entrySet().stream()
-                .map(entry -> PassportDtoMapper.toProviderPassportResponseDto(entry.getKey(), entry.getValue()))
+        List<PassportListItemResponse> list = passports.entrySet().stream()
+                .map(entry -> PassportListItemResponseMapper.toProviderPassportResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
         return ResponseEntity.ok(list);
     }

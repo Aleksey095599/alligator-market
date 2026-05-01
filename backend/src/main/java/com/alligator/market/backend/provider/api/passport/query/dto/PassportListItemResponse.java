@@ -1,9 +1,9 @@
-package com.alligator.market.backend.provider.api.passport.dto;
+package com.alligator.market.backend.provider.api.passport.query.dto;
 
 /**
  * DTO для передачи паспорта провайдера (out).
  */
-public record PassportResponseDto(
+public record PassportListItemResponse(
         String providerCode,
         String displayName,
         String deliveryMode,
