@@ -1,8 +1,11 @@
 package com.alligator.market.backend.provider.config.readmodel.passport.projection.service;
 
-import com.alligator.market.backend.provider.config.readmodel.passport.projection.projector.ProviderPassportProjectorWiringConfig;
+import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.config.readmodel.passport.projection.jooq.ProviderPassportProjectionWritePortWiringConfig;
+import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
 import com.alligator.market.backend.provider.readmodel.passport.projection.service.ProviderPassportProjectionService;
-import com.alligator.market.backend.provider.application.passport.projection.ProviderPassportProjector;
+import com.alligator.market.domain.provider.registry.ProviderRegistry;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -14,7 +17,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        ProviderPassportProjectorWiringConfig.class
+        ProviderRegistryWiringConfig.class,
+        ProviderPassportProjectionWritePortWiringConfig.class
 })
 public class ProviderPassportProjectionServiceWiringConfig {
 
@@ -24,9 +28,16 @@ public class ProviderPassportProjectionServiceWiringConfig {
     /* Use case сервис проекции паспортов провайдеров. */
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTION_SERVICE)
     public ProviderPassportProjectionService providerPassportProjectionService(
-            ProviderPassportProjector projector,
+            @Qualifier(ProviderRegistryWiringConfig.BEAN_PROVIDER_REGISTRY)
+            ProviderRegistry providerRegistry,
+            @Qualifier(ProviderPassportProjectionWritePortWiringConfig.BEAN_PROVIDER_PASSPORT_PROJECTION_WRITE_PORT)
+            ProviderPassportProjectionWritePort writePort,
             PlatformTransactionManager txManager
     ) {
-        return new ProviderPassportProjectionService(projector, new TransactionTemplate(txManager));
+        return new ProviderPassportProjectionService(
+                providerRegistry,
+                writePort,
+                new TransactionTemplate(txManager)
+        );
     }
 }
