@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Write-порт проекции паспортов провайдеров.
  *
- * <p>Назначение: поддерживать materialized view (read model) паспортов провайдеров в согласованном состоянии
+ * <p>Назначение: поддерживать materialized view паспортов провайдеров в согласованном состоянии
  * относительно реестра провайдеров {@link ProviderRegistry}.</p>
  *
  * <p>Типовой сценарий синхронизации: {@link #deleteAllExcept(Set)} и затем {@link #upsertAll(Map)}.</p>
