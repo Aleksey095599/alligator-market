@@ -28,12 +28,6 @@
             <artifactId>market-domain</artifactId>
         </dependency>
 
-        <!-- JPA и работа с БД -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- Runtime-интеграция jOOQ со Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
