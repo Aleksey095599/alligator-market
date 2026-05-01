@@ -28,7 +28,7 @@ public class ProviderApiExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 "Provider handler not found",
                 ex.getMessage(),
-                ProviderApiErrorCodes.PROVIDER_HANDLER_NOT_FOUND.code()
+                ProviderApiErrorCode.PROVIDER_HANDLER_NOT_FOUND.code()
         );
     }
 

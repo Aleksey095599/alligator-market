@@ -6,7 +6,6 @@ import com.alligator.market.backend.sourcing.plan.api.command.replace.controller
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetInstrumentSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.InstrumentSourcePlanListController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.InstrumentSourcePlanOptionsQueryController;
-import com.alligator.market.backend.sourcing.plan.api.error.InstrumentSourcePlanApiErrorCode;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentSourcePlanNotFoundException;
@@ -32,7 +31,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         InstrumentSourcePlanListController.class,
         InstrumentSourcePlanOptionsQueryController.class
 })
-public class InstrumentSourcePlanRestExceptionHandler {
+public class InstrumentSourcePlanApiExceptionHandler {
 
 
     /**

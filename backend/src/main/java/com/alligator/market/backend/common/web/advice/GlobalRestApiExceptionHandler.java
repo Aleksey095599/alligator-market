@@ -17,11 +17,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Глобальный обработчик технических исключений REST-слоя.
+ * Глобальный обработчик технических исключений REST API слоя.
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalRestExceptionHandler {
+public class GlobalRestApiExceptionHandler {
 
     /* Типы ошибок в формате ProblemDetail type (RFC 7807). */
     private static final String PROBLEM_TYPE_PREFIX = "urn:alligator:problem:";

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.error;
+package com.alligator.market.backend.sourcing.plan.api.advice;
 
 /**
  * Локальные API-коды ошибок sourcing/plan feature.

@@ -8,7 +8,6 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyInUseException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error.CurrencyApiErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         DeleteCurrencyController.class,
         CurrencyListController.class
 })
-public class CurrencyRestExceptionHandler {
+public class CurrencyApiExceptionHandler {
 
     /**
      * Валюта с таким кодом уже существует --> 409.

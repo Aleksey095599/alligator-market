@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.error;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.advice;
 
 /**
  * Локальные API-коды ошибок currency feature.

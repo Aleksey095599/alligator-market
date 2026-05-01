@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         DeleteFxSpotController.class,
         FxSpotListController.class
 })
-public class FxSpotRestExceptionHandler {
+public class FxSpotApiExceptionHandler {
 
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ProblemDetail fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {

@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.api.advice;
 /**
  * Локальные API-коды ошибок provider feature.
  */
-public enum ProviderApiErrorCodes {
+public enum ProviderApiErrorCode {
 
     PROVIDER_HANDLER_NOT_FOUND;
 
