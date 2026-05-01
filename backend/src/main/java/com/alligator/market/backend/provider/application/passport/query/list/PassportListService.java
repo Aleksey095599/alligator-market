@@ -1,34 +1,31 @@
-package com.alligator.market.backend.provider.application.passport.catalog;
+package com.alligator.market.backend.provider.application.passport.query.list;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Реализация сервиса {@link PassportCatalogService}.
- *
- * <p>Чтение выполняется напрямую из доменного реестра провайдеров.</p>
+ * Use-case сервис получения списка паспортов провайдеров.
  */
-public final class PassportCatalogServiceImpl implements PassportCatalogService {
-
-    private static final Logger log = LoggerFactory.getLogger(PassportCatalogServiceImpl.class);
+@Slf4j
+public final class PassportListService {
 
     /* Доменный реестр провайдеров — источник истины по активным паспортам. */
     private final ProviderRegistry providerRegistry;
 
-    public PassportCatalogServiceImpl(ProviderRegistry providerRegistry) {
+    public PassportListService(ProviderRegistry providerRegistry) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
     }
 
-    @Override
+    /**
+     * Возвращает все паспорта провайдеров.
+     */
     public Map<ProviderCode, ProviderPassport> findAll() {
         Map<ProviderCode, ProviderPassport> passports = providerRegistry.passportsByCode();
-
         log.debug("Found {} provider passports", passports.size());
         return passports;
     }
