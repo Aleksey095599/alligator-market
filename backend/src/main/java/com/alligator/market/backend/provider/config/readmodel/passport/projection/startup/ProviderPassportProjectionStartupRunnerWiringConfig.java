@@ -2,7 +2,7 @@ package com.alligator.market.backend.provider.config.readmodel.passport.projecti
 
 import com.alligator.market.backend.provider.config.readmodel.passport.projection.service.ProviderPassportProjectionServiceWiringConfig;
 import com.alligator.market.backend.provider.readmodel.passport.projection.service.ProviderPassportProjectionService;
-import com.alligator.market.backend.provider.infrastructure.startup.passport.projection.ProviderPassportProjectionStartupRunner;
+import com.alligator.market.backend.provider.application.passport.projection.runner.ProviderPassportProjectionStartupRunner;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

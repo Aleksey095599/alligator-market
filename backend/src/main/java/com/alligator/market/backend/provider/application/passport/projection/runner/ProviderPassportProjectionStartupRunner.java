@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.infrastructure.startup.passport.projection;
+package com.alligator.market.backend.provider.application.passport.projection.runner;
 
 import com.alligator.market.backend.provider.readmodel.passport.projection.service.ProviderPassportProjectionService;
 import lombok.extern.slf4j.Slf4j;

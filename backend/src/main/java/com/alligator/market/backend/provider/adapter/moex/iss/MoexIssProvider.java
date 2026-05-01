@@ -4,8 +4,8 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.AbstractMarketDataProvider;
 import com.alligator.market.domain.provider.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.provider.passport.AccessMethod;
-import com.alligator.market.domain.provider.passport.DeliveryMode;
+import com.alligator.market.domain.provider.passport.classification.AccessMethod;
+import com.alligator.market.domain.provider.passport.classification.DeliveryMode;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 

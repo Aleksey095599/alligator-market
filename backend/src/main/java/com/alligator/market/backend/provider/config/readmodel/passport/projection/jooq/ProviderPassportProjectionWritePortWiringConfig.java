@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.config.readmodel.passport.projection.jooq;
 
-import com.alligator.market.backend.provider.infrastructure.persistence.passport.readmodel.jooq.ProviderPassportProjectionWritePortJooqAdapter;
-import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.application.passport.projection.port.adapter.JooqProviderPassportProjectionWritePortAdapter;
+import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,6 @@ public class ProviderPassportProjectionWritePortWiringConfig {
      */
     @Bean(BEAN_PROVIDER_PASSPORT_PROJECTION_WRITE_PORT)
     public ProviderPassportProjectionWritePort providerPassportProjectionWritePort(DSLContext dsl) {
-        return new ProviderPassportProjectionWritePortJooqAdapter(dsl);
+        return new JooqProviderPassportProjectionWritePortAdapter(dsl);
     }
 }

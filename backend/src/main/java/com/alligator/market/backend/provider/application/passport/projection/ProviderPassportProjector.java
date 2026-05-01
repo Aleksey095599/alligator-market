@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.application.passport.projection;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 

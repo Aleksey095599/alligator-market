@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.config.readmodel.passport.projecti
 import com.alligator.market.backend.provider.config.readmodel.passport.projection.jooq.ProviderPassportProjectionWritePortWiringConfig;
 import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
 import com.alligator.market.backend.provider.application.passport.projection.ProviderPassportProjector;
-import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

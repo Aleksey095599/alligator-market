@@ -1,7 +1,7 @@
-package com.alligator.market.backend.provider.infrastructure.persistence.passport.readmodel.jooq;
+package com.alligator.market.backend.provider.application.passport.projection.port.adapter;
 
 import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.backend.provider.application.passport.projection.port.out.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -20,12 +20,12 @@ import static org.jooq.impl.DSL.excluded;
 /**
  * jOOQ-реализация write-порта {@link ProviderPassportProjectionWritePort}.
  */
-public class ProviderPassportProjectionWritePortJooqAdapter implements ProviderPassportProjectionWritePort {
+public class JooqProviderPassportProjectionWritePortAdapter implements ProviderPassportProjectionWritePort {
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
-    public ProviderPassportProjectionWritePortJooqAdapter(DSLContext dsl) {
+    public JooqProviderPassportProjectionWritePortAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
@@ -83,7 +83,7 @@ public class ProviderPassportProjectionWritePortJooqAdapter implements ProviderP
         dsl.batch(queries).execute();
     }
 
-    /* Контракт deleteAllExcept: set не null/не пустой/без null-элементов. */
+    /* Контракт deleteAllExcept: set не null/непустой/без null-элементов. */
     private static void validateActiveCodes(Set<ProviderCode> activeCodes) {
         if (activeCodes == null) {
             throw new IllegalArgumentException("activeCodes must not be null");
