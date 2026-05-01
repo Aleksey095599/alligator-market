@@ -218,7 +218,6 @@ export class CurrencyAdminComponent implements OnInit {
   }
 
 
-
   /* Утилита: извлекаем текст ошибки из стандартного ответа Spring ProblemDetail. */
   private resolveErrorMessage(err: unknown, fallback: string): string {
     if (!err || typeof err !== 'object') {
