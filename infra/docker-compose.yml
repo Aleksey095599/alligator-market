@@ -20,9 +20,9 @@ services:
   #=====================================
   # 2. Kafka 3.7 (образ Confluent Local)
   #=====================================
-  kafka:
+  Kafka:
     image: confluentinc/confluent-local:7.6.0
-    container_name: kafka
+    container_name: Kafka
     restart: unless-stopped
 
     environment:
@@ -51,7 +51,7 @@ services:
     image: confluentinc/cp-schema-registry:7.6.0
     container_name: schema-registry
     depends_on:
-      - kafka
+      - Kafka
     restart: unless-stopped
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry

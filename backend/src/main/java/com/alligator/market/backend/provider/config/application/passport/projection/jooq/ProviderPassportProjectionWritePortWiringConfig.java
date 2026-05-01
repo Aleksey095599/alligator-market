@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.config.application.passport.projection.jooq;
 
-import com.alligator.market.backend.provider.application.passport.projection.port.adapter.JooqProviderPassportProjectionWritePortAdapter;
+import com.alligator.market.backend.provider.persistence.passport.projection.port.adapter.JooqProviderPassportProjectionWritePortAdapter;
 import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;

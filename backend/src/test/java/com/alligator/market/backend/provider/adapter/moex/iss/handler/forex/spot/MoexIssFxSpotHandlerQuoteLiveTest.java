@@ -52,7 +52,7 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         StepVerifier.create(result)
                 .assertNext(tick -> {
                     // ВРЕМЕННЫЙ вывод для наглядности
-                    System.out.println("=== LIVE QUOTETICK FROM MOEX ISS ===");
+                    System.out.println("=== LIVE QUOTE TICK FROM MOEX ISS ===");
                     System.out.println(tick); // для record будет нормальный toString()
                     System.out.println("====================================");
 

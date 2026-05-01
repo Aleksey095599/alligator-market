@@ -55,7 +55,7 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
   displayed: string[] = ['instrumentCode', 'sourceCount', 'firstProvider', 'actions'];
   dataSource = new MatTableDataSource<InstrumentSourcePlanResponseDto>([]);
 
-  /* Опции для селектов формы. */
+  /* Опции для option формы. */
   instruments: InstrumentOptionDto[] = [];
   providers: ProviderOptionDto[] = [];
 
@@ -135,7 +135,7 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
     });
   }
 
-  /* Загрузить опции для селектов editor-а. */
+  /* Загрузить опции для option editor-а. */
   loadOptions(): void {
     this.service.getOptions().subscribe({
       next: options => {
