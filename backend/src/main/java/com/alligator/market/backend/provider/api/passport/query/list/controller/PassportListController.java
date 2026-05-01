@@ -1,8 +1,8 @@
-package com.alligator.market.backend.provider.api.passport.query.controller;
+package com.alligator.market.backend.provider.api.passport.query.list.controller;
 
 import com.alligator.market.backend.provider.application.passport.catalog.PassportCatalogService;
-import com.alligator.market.backend.provider.api.passport.query.dto.PassportListItemResponse;
-import com.alligator.market.backend.provider.api.passport.query.mapper.PassportListItemResponseMapper;
+import com.alligator.market.backend.provider.api.passport.query.list.dto.PassportListItemResponse;
+import com.alligator.market.backend.provider.api.passport.query.list.mapper.PassportListItemResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class PassportListController {
         var passports = service.findAll();
 
         List<PassportListItemResponse> list = passports.entrySet().stream()
-                .map(entry -> PassportListItemResponseMapper.toProviderPassportResponseDto(entry.getKey(), entry.getValue()))
+                .map(entry -> PassportListItemResponseMapper.toResponse(entry.getKey(), entry.getValue()))
                 .toList();
         return ResponseEntity.ok(list);
     }

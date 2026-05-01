@@ -1,6 +1,6 @@
-package com.alligator.market.backend.provider.api.passport.query.mapper;
+package com.alligator.market.backend.provider.api.passport.query.list.mapper;
 
-import com.alligator.market.backend.provider.api.passport.query.dto.PassportListItemResponse;
+import com.alligator.market.backend.provider.api.passport.query.list.dto.PassportListItemResponse;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 
@@ -21,7 +21,7 @@ public final class PassportListItemResponseMapper {
     /**
      * Модель --> DTO ответа.
      */
-    public static PassportListItemResponse toProviderPassportResponseDto(ProviderCode providerCode,
+    public static PassportListItemResponse toResponse(ProviderCode providerCode,
                                                                          ProviderPassport providerPassport) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(providerPassport, "providerPassport must not be null");
