@@ -129,8 +129,8 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
       next: plans => {
         this.dataSource.data = plans;
       },
-      error: () => {
-        this.snack.open('Load source plans failed', 'Close');
+      error: err => {
+        this.snack.open(this.resolveErrorMessage(err, 'Load source plans failed'), 'Close');
       }
     });
   }
@@ -142,8 +142,8 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
         this.instruments = options.instruments;
         this.providers = options.providers;
       },
-      error: () => {
-        this.snack.open('Load options failed', 'Close');
+      error: err => {
+        this.snack.open(this.resolveErrorMessage(err, 'Load options failed'), 'Close');
       }
     });
   }
@@ -184,7 +184,7 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
         }
       },
       error: err => {
-        this.snack.open(err.error?.message ?? err.message ?? 'Load plan failed', 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load plan failed'), 'Close');
       }
     });
   }
@@ -208,11 +208,7 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
         this.locked = false;
       },
       error: err => {
-        const msg = err.error?.message ?? err.message ?? 'Create failed';
-        const ref = this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => {
-          this.locked = false;
-        });
+        this.unlockAfterError(err, 'Create failed');
       }
     });
   }
@@ -234,11 +230,7 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
         this.locked = false;
       },
       error: err => {
-        const msg = err.error?.message ?? err.message ?? 'Replace failed';
-        const ref = this.snack.open(msg, 'Close', { duration: 0 });
-        ref.afterDismissed().subscribe(() => {
-          this.locked = false;
-        });
+        this.unlockAfterError(err, 'Replace failed');
       }
     });
   }
@@ -309,8 +301,48 @@ export class InstrumentSourcePlanAdminComponent implements OnInit {
         }
       },
       error: err => {
-        this.snack.open(err.error?.message ?? err.message ?? 'Delete failed', 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Delete failed'), 'Close');
       }
     });
+  }
+
+  /* Единая обработка ошибки с разблокировкой действий после закрытия уведомления. */
+  private unlockAfterError(err: unknown, fallback: string): void {
+    const ref = this.snack.open(this.resolveErrorMessage(err, fallback), 'Close', { duration: 0 });
+    ref.afterDismissed().subscribe(() => {
+      this.locked = false;
+    });
+  }
+
+  /* Единая утилита извлечения текста ошибки из ProblemDetail и стандартного HttpErrorResponse. */
+  private resolveErrorMessage(err: unknown, fallback: string): string {
+    if (!err || typeof err !== 'object') {
+      return fallback;
+    }
+
+    const body = (err as { error?: unknown }).error;
+    if (body && typeof body === 'object') {
+      const detail = (body as { detail?: unknown }).detail;
+      if (typeof detail === 'string' && detail.trim().length > 0) {
+        return detail;
+      }
+
+      const title = (body as { title?: unknown }).title;
+      if (typeof title === 'string' && title.trim().length > 0) {
+        return title;
+      }
+
+      const message = (body as { message?: unknown }).message;
+      if (typeof message === 'string' && message.trim().length > 0) {
+        return message;
+      }
+    }
+
+    const message = (err as { message?: unknown }).message;
+    if (typeof message === 'string' && message.trim().length > 0) {
+      return message;
+    }
+
+    return fallback;
   }
 }
