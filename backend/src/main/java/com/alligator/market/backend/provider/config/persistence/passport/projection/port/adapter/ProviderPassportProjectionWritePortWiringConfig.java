@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.config.application.passport.projection.jooq;
+package com.alligator.market.backend.provider.config.persistence.passport.projection.port.adapter;
 
 import com.alligator.market.backend.provider.persistence.passport.projection.port.adapter.JooqProviderPassportProjectionWritePortAdapter;
 import com.alligator.market.backend.provider.application.passport.projection.port.ProviderPassportProjectionWritePort;
