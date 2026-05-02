@@ -29,9 +29,10 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
             false
     );
 
+    private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);
+
     private static final ProviderPolicy POLICY = new ProviderPolicy(
-            Duration.ofSeconds(1),
-            100
+            MIN_UPDATE_INTERVAL
     );
 
     /**
