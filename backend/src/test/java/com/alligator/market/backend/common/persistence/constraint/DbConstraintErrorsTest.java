@@ -24,7 +24,13 @@ class DbConstraintErrorsTest {
     @Test
     void shouldDetectByPostgresConstraintName() {
         PSQLException psqlEx = new PSQLException(
-                new ServerErrorMessage("ERROR: duplicate key value violates unique constraint \"uq_some_column\""),
+                new ServerErrorMessage(
+                        "SERROR\0"
+                                + "C23505\0"
+                                + "Mduplicate key value violates unique constraint \"uq_some_column\"\0"
+                                + "nuq_some_column\0"
+                                + "\0"
+                ),
                 true
         );
         RuntimeException ex = new RuntimeException("wrap", psqlEx);
