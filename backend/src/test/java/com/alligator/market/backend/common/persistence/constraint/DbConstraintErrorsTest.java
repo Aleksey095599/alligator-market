@@ -64,6 +64,16 @@ class DbConstraintErrorsTest {
         assertTrue(DbConstraintErrors.isViolationOf(ex, "uq_some_column"));
     }
 
+    /**
+     * Не должен считать совпадением имя ограничения, которое является только частью другого SQL-идентификатора.
+     */
+    @Test
+    void shouldNotMatchConstraintNameAsPartOfAnotherIdentifier() {
+        RuntimeException ex = new RuntimeException("violates constraint \"uq_currency_name_old\"");
+
+        assertFalse(DbConstraintErrors.isViolationOf(ex, "uq_currency_name"));
+    }
+
     @Test
     void shouldThrowWhenExceptionIsNull() {
         assertThrows(NullPointerException.class, () -> DbConstraintErrors.isViolationOf(null, "uq_some_column"));

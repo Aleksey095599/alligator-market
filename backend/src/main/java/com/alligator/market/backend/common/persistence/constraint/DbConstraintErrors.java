@@ -78,7 +78,7 @@ public final class DbConstraintErrors {
 
             // 3.2) Fallback-вариант – некоторые драйверы/диалекты/обёртки не пробрасывают имя ограничения
             //      в getConstraintName(), но включают его в текст сообщения. Тогда ищем needle в сообщениях причин.
-            if (!matchedByMessage && containsIgnoreCase(t.getMessage(), needle)) {
+            if (!matchedByMessage && containsConstraintName(t.getMessage(), needle)) {
                 matchedByMessage = true; // <-- Фиксируем, что вариант "fallback" сработал.
                 // Не выходим, даём шанс сработать "идеальному" варианту глубже по цепочке
             }
@@ -88,13 +88,16 @@ public final class DbConstraintErrors {
     }
 
     /**
-     * Проверяет, содержит ли строка {@code haystack} подстроку {@code needle} без учёта регистра.
+     * Проверяет, содержит ли строка {@code haystack} имя ограничения {@code constraintName}
+     * без учёта регистра и с границами SQL-идентификатора.
      */
-    private static boolean containsIgnoreCase(String haystack, String needle) {
-        // needle (null/blank) считаем ошибкой — это эквивалент невалидного имени ограничения.
-        Objects.requireNonNull(needle, "needle must not be null");
-        if (needle.isBlank()) {
-            throw new IllegalArgumentException("needle must not be blank");
+    private static boolean containsConstraintName(String haystack, String constraintName) {
+        // constraintName (null/blank) считаем ошибкой — это эквивалент невалидного имени ограничения.
+        Objects.requireNonNull(constraintName, "constraintName must not be null");
+
+        final String needle = constraintName.strip();
+        if (needle.isEmpty()) {
+            throw new IllegalArgumentException("constraintName must not be blank");
         }
 
         // haystack может быть null (Throwable#getMessage() иногда возвращает null) — это не ошибка,
@@ -103,16 +106,36 @@ public final class DbConstraintErrors {
             return false;
         }
 
-        final int hLen = haystack.length();
         final int nLen = needle.length();
-        if (nLen > hLen) {
-            return false;
-        }
-        for (int i = 0; i <= hLen - nLen; i++) {
-            if (haystack.regionMatches(true, i, needle, 0, nLen)) {
+        for (int i = indexOfIgnoreCase(haystack, needle, 0); i >= 0; i = indexOfIgnoreCase(haystack, needle, i + 1)) {
+            if (isIdentifierBoundary(haystack, i - 1) && isIdentifierBoundary(haystack, i + nLen)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static int indexOfIgnoreCase(String haystack, String needle, int fromIndex) {
+        final int hLen = haystack.length();
+        final int nLen = needle.length();
+        if (nLen > hLen) {
+            return -1;
+        }
+
+        for (int i = Math.max(0, fromIndex); i <= hLen - nLen; i++) {
+            if (haystack.regionMatches(true, i, needle, 0, nLen)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean isIdentifierBoundary(String text, int index) {
+        if (index < 0 || index >= text.length()) {
+            return true;
+        }
+
+        char ch = text.charAt(index);
+        return !Character.isLetterOrDigit(ch) && ch != '_' && ch != '$';
     }
 }
