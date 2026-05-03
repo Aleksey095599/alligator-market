@@ -36,12 +36,15 @@ public class ReplaceMarketDataSourcePlanController {
     /**
      * Полностью заменяет план источников для заданного инструмента.
      */
-    @PutMapping("/{instrumentCode}")
+    @PutMapping("/{collectionProcessCode}/{instrumentCode}")
     public ResponseEntity<Void> replace(
+            @PathVariable String collectionProcessCode,
             @PathVariable String instrumentCode,
             @Valid @RequestBody ReplaceMarketDataSourcePlanRequest request
     ) {
-        replaceMarketDataSourcePlanService.replace(replaceMarketDataSourcePlanMapper.toPlan(instrumentCode, request));
+        replaceMarketDataSourcePlanService.replace(
+                replaceMarketDataSourcePlanMapper.toPlan(collectionProcessCode, instrumentCode, request)
+        );
         return ResponseEntity.noContent().build();
     }
 }

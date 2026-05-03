@@ -25,6 +25,10 @@ public class MarketDataSourcePlanResponseMapper {
                 .map(marketDataSourceResponseMapper::toSourceResponse)
                 .toList();
 
-        return new MarketDataSourcePlanResponse(plan.instrumentCode().value(), sources);
+        return new MarketDataSourcePlanResponse(
+                plan.collectionProcessCode().value(),
+                plan.instrumentCode().value(),
+                sources
+        );
     }
 }

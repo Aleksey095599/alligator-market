@@ -3,6 +3,7 @@ package com.alligator.market.backend.sourcing.plan.api.command.replace.mapper;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceMarketDataSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -28,7 +29,12 @@ public class ReplaceMarketDataSourcePlanMapper {
     /**
      * Преобразует запрос {@link ReplaceMarketDataSourcePlanRequest} в доменную модель {@link MarketDataSourcePlan}.
      */
-    public MarketDataSourcePlan toPlan(String instrumentCode, ReplaceMarketDataSourcePlanRequest request) {
+    public MarketDataSourcePlan toPlan(
+            String collectionProcessCode,
+            String instrumentCode,
+            ReplaceMarketDataSourcePlanRequest request
+    ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         List<MarketDataSource> sources = request.sources().stream()
@@ -36,6 +42,7 @@ public class ReplaceMarketDataSourcePlanMapper {
                 .toList();
 
         return new MarketDataSourcePlan(
+                new MarketDataCollectionProcessCode(collectionProcessCode),
                 new InstrumentCode(instrumentCode),
                 sources
         );

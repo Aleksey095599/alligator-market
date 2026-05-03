@@ -2,6 +2,7 @@ package com.alligator.market.backend.sourcing.plan.application.command.delete;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,16 +29,29 @@ public final class DeleteMarketDataSourcePlanService {
     /**
      * Удаляет существующий план источников для инструмента.
      */
-    public void delete(InstrumentCode instrumentCode) {
+    public void delete(
+            MarketDataCollectionProcessCode collectionProcessCode,
+            InstrumentCode instrumentCode
+    ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Условно удаляем root-plan и сигнализируем, если его не было
-        boolean deleted = marketDataSourcePlanRepository.deleteIfExistsByInstrumentCode(instrumentCode);
+        boolean deleted = marketDataSourcePlanRepository
+                .deleteIfExistsByCollectionProcessCodeAndInstrumentCode(collectionProcessCode, instrumentCode);
         if (!deleted) {
-            log.warn("Market data source plan was not found and was not deleted: instrumentCode={}", instrumentCode.value());
-            throw new MarketDataSourcePlanNotFoundException(instrumentCode);
+            log.warn(
+                    "Market data source plan was not found and was not deleted: collectionProcessCode={}, instrumentCode={}",
+                    collectionProcessCode.value(),
+                    instrumentCode.value()
+            );
+            throw new MarketDataSourcePlanNotFoundException(collectionProcessCode, instrumentCode);
         }
 
-        log.info("Market data source plan deleted: instrumentCode={}", instrumentCode.value());
+        log.info(
+                "Market data source plan deleted: collectionProcessCode={}, instrumentCode={}",
+                collectionProcessCode.value(),
+                instrumentCode.value()
+        );
     }
 }

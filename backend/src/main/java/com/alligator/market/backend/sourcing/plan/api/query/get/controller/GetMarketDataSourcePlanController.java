@@ -4,6 +4,7 @@ import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDat
 import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.MarketDataSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetMarketDataSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,11 +38,18 @@ public class GetMarketDataSourcePlanController {
     /**
      * Возвращает план источников для заданного инструмента.
      */
-    @GetMapping("/{instrumentCode}")
-    public ResponseEntity<MarketDataSourcePlanResponse> get(@PathVariable String instrumentCode) {
+    @GetMapping("/{collectionProcessCode}/{instrumentCode}")
+    public ResponseEntity<MarketDataSourcePlanResponse> get(
+            @PathVariable String collectionProcessCode,
+            @PathVariable String instrumentCode
+    ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        MarketDataSourcePlan plan = getMarketDataSourcePlanService.get(new InstrumentCode(instrumentCode));
+        MarketDataSourcePlan plan = getMarketDataSourcePlanService.get(
+                new MarketDataCollectionProcessCode(collectionProcessCode),
+                new InstrumentCode(instrumentCode)
+        );
         return ResponseEntity.ok(responseMapper.toPlanResponse(plan));
     }
 }

@@ -3,6 +3,7 @@ package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
@@ -31,7 +32,11 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public Optional<MarketDataSourcePlan> findByInstrumentCode(InstrumentCode instrumentCode) {
+    public Optional<MarketDataSourcePlan> findByCollectionProcessCodeAndInstrumentCode(
+            MarketDataCollectionProcessCode collectionProcessCode,
+            InstrumentCode instrumentCode
+    ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Читаем все источники инструмента из БД в порядке приоритета.
@@ -42,7 +47,8 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                         MARKET_DATA_SOURCE.PRIORITY
                 )
                 .from(MARKET_DATA_SOURCE)
-                .where(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .where(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE.eq(collectionProcessCode.value()))
+                .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
                 .fetch(record -> toSource(
                         record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
@@ -56,15 +62,16 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         }
 
         // Собираем доменный план и возвращаем его.
-        return Optional.of(new MarketDataSourcePlan(instrumentCode, sources));
+        return Optional.of(new MarketDataSourcePlan(collectionProcessCode, instrumentCode, sources));
     }
 
     @Override
     public List<MarketDataSourcePlan> findAll() {
-        // Группируем источники по коду инструмента.
-        Map<InstrumentCode, List<MarketDataSource>> groupedSources = new LinkedHashMap<>();
+        // Группируем источники по идентичности плана.
+        Map<PlanKey, List<MarketDataSource>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
+                        MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE,
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE,
                         MARKET_DATA_SOURCE.PROVIDER_CODE,
                         MARKET_DATA_SOURCE.ACTIVE,
@@ -72,13 +79,16 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 )
                 .from(MARKET_DATA_SOURCE)
                 .orderBy(
+                        MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE.asc(),
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
                         MARKET_DATA_SOURCE.PRIORITY.asc()
                 )
                 .fetch()
                 .forEach(record -> {
-                    InstrumentCode instrumentCode =
-                            new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE));
+                    PlanKey planKey = new PlanKey(
+                            new MarketDataCollectionProcessCode(record.get(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE)),
+                            new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE))
+                    );
 
                     MarketDataSource source = toSource(
                             record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
@@ -87,15 +97,20 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                     );
 
                     groupedSources
-                            .computeIfAbsent(instrumentCode, ignored -> new ArrayList<>())
+                            .computeIfAbsent(planKey, ignored -> new ArrayList<>())
                             .add(source);
                 });
 
         // Преобразуем каждую группу в доменный план.
         List<MarketDataSourcePlan> plans = new ArrayList<>(groupedSources.size());
 
-        for (Map.Entry<InstrumentCode, List<MarketDataSource>> entry : groupedSources.entrySet()) {
-            plans.add(new MarketDataSourcePlan(entry.getKey(), entry.getValue()));
+        for (Map.Entry<PlanKey, List<MarketDataSource>> entry : groupedSources.entrySet()) {
+            PlanKey planKey = entry.getKey();
+            plans.add(new MarketDataSourcePlan(
+                    planKey.collectionProcessCode(),
+                    planKey.instrumentCode(),
+                    entry.getValue()
+            ));
         }
 
         // Возвращаем неизменяемый список.
@@ -112,8 +127,9 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 DSLContext tx = configuration.dsl();
 
                 int insertedPlans = tx.insertInto(SOURCE_PLAN)
+                        .set(SOURCE_PLAN.COLLECTION_PROCESS_CODE, plan.collectionProcessCode().value())
                         .set(SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
-                        .onConflict(SOURCE_PLAN.INSTRUMENT_CODE)
+                        .onConflict(SOURCE_PLAN.COLLECTION_PROCESS_CODE, SOURCE_PLAN.INSTRUMENT_CODE)
                         .doNothing()
                         .execute();
 
@@ -124,7 +140,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
                 // План создан — добавляем его источники.
                 for (MarketDataSource source : plan.sources()) {
-                    insertSource(tx, plan.instrumentCode(), source);
+                    insertSource(tx, plan.collectionProcessCode(), plan.instrumentCode(), source);
                 }
 
                 // Успешное создание.
@@ -151,7 +167,8 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             // Проверяем, что план есть, и блокируем его до конца транзакции.
             boolean planExists = tx.selectOne()
                     .from(SOURCE_PLAN)
-                    .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .where(SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(plan.collectionProcessCode().value()))
+                    .and(SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .forUpdate()
                     .fetchOptional()
                     .isPresent();
@@ -162,12 +179,13 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
             // Удаляем старые источники.
             tx.deleteFrom(MARKET_DATA_SOURCE)
-                    .where(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .where(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE.eq(plan.collectionProcessCode().value()))
+                    .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .execute();
 
             // Вставляем новый набор источников.
             for (MarketDataSource source : plan.sources()) {
-                insertSource(tx, plan.instrumentCode(), source);
+                insertSource(tx, plan.collectionProcessCode(), plan.instrumentCode(), source);
             }
 
             return true;
@@ -175,12 +193,17 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public boolean deleteIfExistsByInstrumentCode(InstrumentCode instrumentCode) {
+    public boolean deleteIfExistsByCollectionProcessCodeAndInstrumentCode(
+            MarketDataCollectionProcessCode collectionProcessCode,
+            InstrumentCode instrumentCode
+    ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Удаляем план; связанные источники удаляются по каскаду в БД.
         int deletedRows = dsl.deleteFrom(SOURCE_PLAN)
-                .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .where(SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(collectionProcessCode.value()))
+                .and(SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
 
         return deletedRows > 0;
@@ -189,13 +212,16 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Вставляет один источник инструмента. */
     private void insertSource(
             DSLContext dsl,
+            MarketDataCollectionProcessCode collectionProcessCode,
             InstrumentCode instrumentCode,
             MarketDataSource source
     ) {
+        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(source, "source must not be null");
 
         dsl.insertInto(MARKET_DATA_SOURCE)
+                .set(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE, collectionProcessCode.value())
                 .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
                 .set(MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
                 .set(MARKET_DATA_SOURCE.ACTIVE, source.active())
@@ -218,5 +244,11 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 active,
                 priority
         );
+    }
+
+    private record PlanKey(
+            MarketDataCollectionProcessCode collectionProcessCode,
+            InstrumentCode instrumentCode
+    ) {
     }
 }
