@@ -1,6 +1,7 @@
 package com.alligator.market.domain.sourcing.plan;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -14,6 +15,9 @@ import java.util.*;
 @SuppressWarnings("ClassCanBeRecord")
 public final class MarketDataSourcePlan {
 
+    /* Код процесса сбора рыночных данных. */
+    private final MarketDataCollectionProcessCode collectionProcessCode;
+
     /* Код инструмента. */
     private final InstrumentCode instrumentCode;
 
@@ -21,9 +25,14 @@ public final class MarketDataSourcePlan {
     private final List<MarketDataSource> sources;
 
     public MarketDataSourcePlan(
+            MarketDataCollectionProcessCode collectionProcessCode,
             InstrumentCode instrumentCode,
             List<MarketDataSource> sources
     ) {
+        this.collectionProcessCode = Objects.requireNonNull(
+                collectionProcessCode,
+                "collectionProcessCode must not be null"
+        );
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
 
@@ -65,6 +74,10 @@ public final class MarketDataSourcePlan {
         sourceCopy.sort(Comparator.comparingInt(MarketDataSource::priority));
 
         this.sources = List.copyOf(sourceCopy);
+    }
+
+    public MarketDataCollectionProcessCode collectionProcessCode() {
+        return collectionProcessCode;
     }
 
     public InstrumentCode instrumentCode() {
