@@ -1,4 +1,4 @@
--- provider_passport: materialized view паспортов провайдеров.
+-- provider_passport: materialized view паспортов провайдеров
 CREATE TABLE provider_passport
 (
     -- Суррогатный PK

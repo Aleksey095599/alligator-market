@@ -1,4 +1,4 @@
--- instrument_registry: единый реестр кодов инструментов.
+-- instrument_registry: единый реестр кодов инструментов
 CREATE TABLE instrument_registry
 (
     -- Глобальная идентичность инструмента

@@ -1,4 +1,4 @@
--- market_data_source: источники рыночных данных для конкретного инструмента.
+-- market_data_source: источники рыночных данных для конкретного инструмента
 CREATE TABLE market_data_source
 (
     -- Суррогатный PK

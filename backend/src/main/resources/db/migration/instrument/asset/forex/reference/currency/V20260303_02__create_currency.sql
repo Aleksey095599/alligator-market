@@ -1,4 +1,4 @@
--- currency: справочник валют.
+-- currency: справочник валют
 CREATE TABLE currency
 (
     -- Суррогатный PK

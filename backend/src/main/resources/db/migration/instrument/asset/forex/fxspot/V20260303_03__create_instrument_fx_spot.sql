@@ -1,4 +1,4 @@
--- instrument_fx_spot: таблица агрегата FOREX_SPOT.
+-- instrument_fx_spot: таблица агрегата FOREX_SPOT
 CREATE TABLE instrument_fx_spot
 (
     -- Код инструмента одновременно PK и FK в instrument_registry
