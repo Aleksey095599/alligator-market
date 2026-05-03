@@ -1,11 +1,20 @@
-package com.alligator.market.domain.marketdata.tick.source;
+package com.alligator.market.domain.marketdata.tick.level.source.type;
 
-import com.alligator.market.domain.marketdata.tick.source.vo.SourceInstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * Source-level рыночный тик типа "Top-of-book Quote" с лучшими ценами bid/ask на время предоставления тика.
+ *
+ * @param sourceInstrumentCode идентификатор инструмента в системе источника
+ * @param bidPrice             лучшая цена bid
+ * @param askPrice             лучшая цена ask
+ * @param sourceTimestamp      время предоставления цен источником
+ */
 public record SourceTopOfBookQuoteTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal bidPrice,

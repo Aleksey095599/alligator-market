@@ -1,11 +1,19 @@
-package com.alligator.market.domain.marketdata.tick.source;
+package com.alligator.market.domain.marketdata.tick.level.source.type;
 
-import com.alligator.market.domain.marketdata.tick.source.vo.SourceInstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * Source-level рыночный тик типа "Last Price".
+ *
+ * @param sourceInstrumentCode идентификатор инструмента в системе источника
+ * @param lastPrice            последняя цена сделки
+ * @param sourceTimestamp      время сделки в источнике
+ */
 public record SourceLastPriceTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal lastPrice,
