@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.tick.level.source.type;
+package com.alligator.market.domain.marketdata.tick.level.source.classification;
 
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
@@ -39,5 +39,10 @@ public record SourceTopOfBookQuoteTick(
         if (bidPrice.compareTo(askPrice) > 0) {
             throw new IllegalArgumentException("bidPrice must not be greater than askPrice");
         }
+    }
+
+    @Override
+    public SourceMarketDataTickType sourceTickType() {
+        return SourceMarketDataTickType.TOP_OF_BOOK_QUOTE;
     }
 }

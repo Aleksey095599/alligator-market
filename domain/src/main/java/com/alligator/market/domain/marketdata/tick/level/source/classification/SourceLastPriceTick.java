@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.tick.level.source.type;
+package com.alligator.market.domain.marketdata.tick.level.source.classification;
 
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
@@ -28,5 +28,10 @@ public record SourceLastPriceTick(
         if (lastPrice.signum() <= 0) {
             throw new IllegalArgumentException("lastPrice must be positive");
         }
+    }
+
+    @Override
+    public SourceMarketDataTickType sourceTickType() {
+        return SourceMarketDataTickType.LAST_PRICE;
     }
 }

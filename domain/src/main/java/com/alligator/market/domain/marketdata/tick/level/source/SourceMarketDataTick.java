@@ -1,5 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.level.source;
 
+import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.time.Instant;
@@ -8,6 +9,11 @@ import java.time.Instant;
  * Source-level рыночный тик от источника рыночных данных.
  */
 public interface SourceMarketDataTick {
+
+    /**
+     * Тип source-level рыночного тика.
+     */
+    SourceMarketDataTickType sourceTickType();
 
     /**
      * Идентификатор инструмента в системе источника рыночных данных.

@@ -5,7 +5,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.s
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
