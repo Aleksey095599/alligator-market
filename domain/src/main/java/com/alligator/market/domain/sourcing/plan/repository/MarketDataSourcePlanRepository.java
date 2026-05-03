@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Порт доступа к планам источников рыночных данных для инструментов.
+ * Порт доступа к планам источников рыночных данных {@link MarketDataSourcePlan}.
  */
 public interface MarketDataSourcePlanRepository {
 
     /**
-     * Возвращает план источников для заданного инструмента.
+     * Возвращает план источников по коду процесса и коду инструмента.
      */
     Optional<MarketDataSourcePlan> findByCollectionProcessCodeAndInstrumentCode(
             MarketDataCollectionProcessCode collectionProcessCode,
@@ -21,7 +21,7 @@ public interface MarketDataSourcePlanRepository {
     );
 
     /**
-     * Возвращает планы источников для всех инструментов.
+     * Возвращает все планы источников.
      */
     List<MarketDataSourcePlan> findAll();
 
@@ -41,7 +41,7 @@ public interface MarketDataSourcePlanRepository {
     boolean replaceIfExists(MarketDataSourcePlan plan);
 
     /**
-     * Удаляет существующий план инструмента.
+     * Удаляет существующий план инструмента по коду процесса и коду инструмента.
      *
      * @return true, если план существовал и был удалён; false, если плана не было
      */
