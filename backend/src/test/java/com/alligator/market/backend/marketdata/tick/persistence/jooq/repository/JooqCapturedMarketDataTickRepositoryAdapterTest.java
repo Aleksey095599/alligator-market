@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -109,14 +108,8 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                 assertEquals(SourceMarketDataTickType.LAST_PRICE.name(), record.get(SOURCE_TICK_TYPE));
                 assertEquals("CNYRUB_TOM", record.get(SOURCE_INSTRUMENT_CODE));
 
-                assertEquals(
-                        OffsetDateTime.ofInstant(sourceTimestamp, ZoneOffset.UTC),
-                        record.get(SOURCE_TIMESTAMP)
-                );
-                assertEquals(
-                        OffsetDateTime.ofInstant(receivedTimestamp, ZoneOffset.UTC),
-                        record.get(RECEIVED_TIMESTAMP)
-                );
+                assertEquals(sourceTimestamp, record.get(SOURCE_TIMESTAMP).toInstant());
+                assertEquals(receivedTimestamp, record.get(RECEIVED_TIMESTAMP).toInstant());
 
                 assertEquals(0, new BigDecimal("10.9500").compareTo(record.get(LAST_PRICE)));
                 assertNull(record.get(BID_PRICE));
