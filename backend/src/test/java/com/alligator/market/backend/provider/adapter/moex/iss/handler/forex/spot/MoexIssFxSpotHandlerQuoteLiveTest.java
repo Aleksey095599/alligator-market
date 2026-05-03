@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceLastPriceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
