@@ -5,7 +5,7 @@ CREATE TABLE captured_market_data_tick
     id                     BIGSERIAL PRIMARY KEY,
 
     -- Контекст приложения
-    collection_stream_code VARCHAR(128)  NOT NULL,
+    collection_process_code VARCHAR(128) NOT NULL,
     instrument_code        VARCHAR(128)  NOT NULL,
     provider_code          VARCHAR(64)   NOT NULL,
 
