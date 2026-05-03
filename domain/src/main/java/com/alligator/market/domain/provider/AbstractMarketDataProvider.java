@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.passport.ProviderPassport;

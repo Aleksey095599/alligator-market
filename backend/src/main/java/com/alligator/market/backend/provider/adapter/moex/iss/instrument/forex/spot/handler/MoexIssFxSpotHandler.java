@@ -8,7 +8,7 @@ import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
 import com.alligator.market.domain.provider.vo.HandlerCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;

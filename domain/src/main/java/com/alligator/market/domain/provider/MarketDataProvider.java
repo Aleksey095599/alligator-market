@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import org.reactivestreams.Publisher;
 
 /**

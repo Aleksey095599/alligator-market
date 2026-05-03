@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.Cur
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
-import com.alligator.market.domain.marketdata.tick.model.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
