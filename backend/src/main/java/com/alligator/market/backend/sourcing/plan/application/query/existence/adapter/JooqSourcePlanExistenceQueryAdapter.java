@@ -6,10 +6,10 @@ import org.jooq.DSLContext;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePlan.SOURCE_PLAN;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePlan.MARKET_DATA_SOURCE_PLAN;
 
 /**
- * jOOQ-адаптер existence-проверки source plan.
+ * jOOQ-адаптер existence-проверки MarketDataSourcePlan.
  */
 public final class JooqSourcePlanExistenceQueryAdapter implements SourcePlanExistenceQueryPort {
 
@@ -25,8 +25,8 @@ public final class JooqSourcePlanExistenceQueryAdapter implements SourcePlanExis
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return dsl.fetchExists(
-                dsl.selectFrom(SOURCE_PLAN)
-                        .where(SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                dsl.selectFrom(MARKET_DATA_SOURCE_PLAN)
+                        .where(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
         );
     }
 }

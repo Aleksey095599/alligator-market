@@ -1,10 +1,10 @@
--- market_data_source: источник рыночных данных
+-- market_data_source: элемент плана источников рыночных данных
 CREATE TABLE market_data_source
 (
     -- Суррогатный PK
     id                      BIGSERIAL PRIMARY KEY,
 
-    -- Идентичность источника рыночных данных
+    -- Идентичность плана и провайдера-элемента внутри плана
     collection_process_code VARCHAR(128) NOT NULL,
     instrument_code         VARCHAR(50)  NOT NULL,
     provider_code           VARCHAR(50)  NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE market_data_source
     -- Ограничения ссылочной целостности
     CONSTRAINT fk_market_data_source_plan
         FOREIGN KEY (collection_process_code, instrument_code)
-            REFERENCES source_plan (collection_process_code, instrument_code)
+            REFERENCES market_data_source_plan (collection_process_code, instrument_code)
             ON DELETE CASCADE,
 
     -- Ограничения уникальности

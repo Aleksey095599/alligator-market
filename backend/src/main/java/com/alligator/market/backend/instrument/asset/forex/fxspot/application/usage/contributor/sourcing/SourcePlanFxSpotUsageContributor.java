@@ -7,7 +7,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.Objects;
 
 /**
- * Проверка использования FX_SPOT инструмента для contributor: sourcing/source_plan.
+ * Проверка использования FX_SPOT инструмента для contributor: sourcing/market_data_source_plan.
  */
 public final class SourcePlanFxSpotUsageContributor implements FxSpotUsageContributor {
 

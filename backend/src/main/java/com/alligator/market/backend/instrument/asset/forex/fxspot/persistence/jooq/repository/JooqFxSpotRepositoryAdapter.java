@@ -33,7 +33,8 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.Instrumen
 public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
 
     /* Имя FK-ограничения, блокирующего удаление используемого FX_SPOT инструмента. */
-    private static final String FK_SOURCE_PLAN_INSTRUMENT = "fk_instr_source_plan_instrument";
+    private static final String FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT =
+            "fk_market_data_source_plan_instrument";
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
@@ -148,7 +149,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 }
             });
         } catch (DataAccessException ex) {
-            if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_INSTRUMENT)) {
+            if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT)) {
                 throw new FxSpotInUseException(instrumentCode);
             }
             throw new FxSpotDeleteException(instrumentCode, ex);

@@ -14,15 +14,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.util.*;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
-import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePlan.SOURCE_PLAN;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePlan.MARKET_DATA_SOURCE_PLAN;
 
 /**
  * jOOQ-реализация репозитория планов источников.
  */
 public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDataSourcePlanRepository {
 
-    /* Имя FK-ограничения source_plan -> instrument_registry по коду инструмента. */
-    private static final String FK_SOURCE_PLAN_INSTRUMENT = "fk_instr_source_plan_instrument";
+    /* Имя FK-ограничения market_data_source_plan -> instrument_registry по коду инструмента. */
+    private static final String FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT =
+            "fk_market_data_source_plan_instrument";
 
     /* DSLContext для выполнения SQL через jOOQ. */
     private final DSLContext dsl;
@@ -126,10 +127,13 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             return dsl.transactionResult(configuration -> {
                 DSLContext tx = configuration.dsl();
 
-                int insertedPlans = tx.insertInto(SOURCE_PLAN)
-                        .set(SOURCE_PLAN.COLLECTION_PROCESS_CODE, plan.collectionProcessCode().value())
-                        .set(SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
-                        .onConflict(SOURCE_PLAN.COLLECTION_PROCESS_CODE, SOURCE_PLAN.INSTRUMENT_CODE)
+                int insertedPlans = tx.insertInto(MARKET_DATA_SOURCE_PLAN)
+                        .set(MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE, plan.collectionProcessCode().value())
+                        .set(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
+                        .onConflict(
+                                MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE,
+                                MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE
+                        )
                         .doNothing()
                         .execute();
 
@@ -148,7 +152,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             });
         } catch (DataIntegrityViolationException ex) {
             // FK-ошибка => такого инструмента нет в реестре.
-            if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_INSTRUMENT)) {
+            if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT)) {
                 throw new InstrumentCodeNotFoundException(plan.instrumentCode());
             }
 
@@ -166,9 +170,9 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
             // Проверяем, что план есть, и блокируем его до конца транзакции.
             boolean planExists = tx.selectOne()
-                    .from(SOURCE_PLAN)
-                    .where(SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(plan.collectionProcessCode().value()))
-                    .and(SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .from(MARKET_DATA_SOURCE_PLAN)
+                    .where(MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(plan.collectionProcessCode().value()))
+                    .and(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .forUpdate()
                     .fetchOptional()
                     .isPresent();
@@ -201,9 +205,9 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Удаляем план; связанные источники удаляются по каскаду в БД.
-        int deletedRows = dsl.deleteFrom(SOURCE_PLAN)
-                .where(SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(collectionProcessCode.value()))
-                .and(SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
+        int deletedRows = dsl.deleteFrom(MARKET_DATA_SOURCE_PLAN)
+                .where(MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE.eq(collectionProcessCode.value()))
+                .and(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
 
         return deletedRows > 0;
