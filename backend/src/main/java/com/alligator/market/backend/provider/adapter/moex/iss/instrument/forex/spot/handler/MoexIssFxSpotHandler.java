@@ -103,8 +103,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * <p>Примечания:
      * <ul>
      *     <li>Под таблицей {@code marketdata} подразумевается формат передачи рыночных, описанный в документации
-     *     провайдера MOEX ISS.</li>
-     *     <li>3-й и 4-й пункты вынесены в отдельный метод {@link #mapMarketdataToSourceTick(String, JsonNode)}.</li>
+     *     провайдера MOEX ISS;</li>
+     *     <li>3-й и 4-й пункты вынесены в отдельный метод.</li>
      * </ul>
      */
     private Mono<SourceMarketDataTick> fetchQuoteOnce(FxSpot instrument) {
@@ -112,7 +112,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
 
         // 1) Код инструмента --> SECID MOEX ISS
         InstrumentCode domainCode = instrument.instrumentCode();
-        String secid = MoexIssFxSpotSupportCatalog.moexSecidOf(domainCode);
+        SourceInstrumentCode secid = MoexIssFxSpotSupportCatalog.moexSecidOf(domainCode);
 
         // 2) Запрос к MOEX ISS для получения таблицы marketdata для полученного secid
         return webClient
@@ -122,19 +122,19 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
                         .queryParam("iss.meta", "off")
                         .queryParam("iss.only", "marketdata")
                         .queryParam("marketdata.columns", "SYSTIME,LAST")
-                        .build(secid)
+                        .build(secid.value())
                 )
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response ->
                         response.bodyToMono(String.class).map(body ->
                                 new IllegalStateException("MOEX ISS HTTP error " + response.statusCode()
-                                        + " for secid=" + secid + ", body=" + body)
+                                        + " for secid=" + secid.value() + ", body=" + body)
                         )
                 )
                 .bodyToMono(JsonNode.class) // <-- Парсим JSON в дерево JsonNode
                 .doOnSubscribe(sub -> log.debug(
                         "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
-                        domainCode.value(), secid))
+                        domainCode.value(), secid.value()))
                 .map(body -> {
                     // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
                     // 4) Построение source-level тика
@@ -150,7 +150,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * <p>Примечание: SYSTIME приходит без временной зоны. Мы предполагаем что это время {@link #MOEX_ZONE}
      * и переводим в {@link Instant}.</p>
      */
-    private SourceMarketDataTick mapMarketdataToSourceTick(String secid, JsonNode root) {
+    private SourceMarketDataTick mapMarketdataToSourceTick(SourceInstrumentCode secid, JsonNode root) {
         /*
          * Ожидаемый JSON-ответ (упрощённо):
          *
@@ -196,7 +196,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка в "marketdata" для этого инструмента)
         if (data.size() != 1) {
             throw new IllegalStateException(
-                    "Array 'data' must contain exactly one row for source instrument " + secid +
+                    "Array 'data' must contain exactly one row for source instrument " + secid.value() +
                             ", but was: " + data.size()
             );
         }
@@ -239,7 +239,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
 
         // 9) Собираем source-level last price тик
         return new SourceLastPriceTick(
-                SourceInstrumentCode.of(secid),
+                secid,
                 last,
                 sourceTimestamp
         );

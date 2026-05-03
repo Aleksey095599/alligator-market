@@ -1,10 +1,11 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support;
 
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class MoexIssFxSpotSupportCatalog {
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
     /* Карта соответствий: код инструмента ↔ SECID. */
-    private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_SECID;
+    private static final Map<InstrumentCode, SourceInstrumentCode> DOMAIN_CODE_TO_SECID;
 
     /* Набор поддерживаемых доменных инструментов. */
     public static final Set<FxSpot> SUPPORTED_INSTRUMENTS;
@@ -37,10 +38,10 @@ public class MoexIssFxSpotSupportCatalog {
         );
 
         // Строим карту соответствий доменных кодов и SECID
-        Map<InstrumentCode, String> map = new LinkedHashMap<>();
+        Map<InstrumentCode, SourceInstrumentCode> map = new LinkedHashMap<>();
 
-        map.put(USD_RUB.instrumentCode(), "USD000UTSTOM");
-        map.put(CNY_RUB.instrumentCode(), "CNYRUB_TOM");
+        map.put(USD_RUB.instrumentCode(), SourceInstrumentCode.of("USD000UTSTOM"));
+        map.put(CNY_RUB.instrumentCode(), SourceInstrumentCode.of("CNYRUB_TOM"));
 
         DOMAIN_CODE_TO_SECID = Collections.unmodifiableMap(map);
     }
@@ -56,13 +57,13 @@ public class MoexIssFxSpotSupportCatalog {
      * <p>Конвертер опирается на карту соответствий доменных кодов и SECID MOEX ISS {@link #DOMAIN_CODE_TO_SECID}.</p>
      *
      * @param instrumentCode доменный код инструмента
-     * @return SECID MOEX ISS
+     * @return SECID MOEX ISS как код инструмента в системе источника
      */
-    public static String moexSecidOf(InstrumentCode instrumentCode) {
+    public static SourceInstrumentCode moexSecidOf(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Ищем значение из карты соответствий
-        String secid = DOMAIN_CODE_TO_SECID.get(instrumentCode);
+        SourceInstrumentCode secid = DOMAIN_CODE_TO_SECID.get(instrumentCode);
         if (secid == null) {
             throw new IllegalStateException(
                     "Missing MOEX ISS SECID mapping for supported instrumentCode: " + instrumentCode.value()
