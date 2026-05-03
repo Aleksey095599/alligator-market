@@ -18,10 +18,10 @@ export const routes: Routes = [
         .then(m => m.ProviderPassportModule)
   },
   {
-    path: 'instrument-source-plans',
+    path: 'market-data-source-plans',
     loadChildren: () =>
-      import('./features/source_plan/instrument-source-plan.module')
-        .then(m => m.InstrumentSourcePlanModule)
+      import('./features/source_plan/market-data-source-plan.module')
+        .then(m => m.MarketDataSourcePlanModule)
   },
   {
     path: '',

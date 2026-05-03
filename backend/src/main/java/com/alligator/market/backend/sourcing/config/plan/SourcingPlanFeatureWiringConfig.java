@@ -1,13 +1,13 @@
 package com.alligator.market.backend.sourcing.config.plan;
 
-import com.alligator.market.backend.sourcing.config.plan.api.mapper.InstrumentSourcePlanApiMapperWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.command.create.CreateInstrumentSourcePlanServiceWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.command.delete.DeleteInstrumentSourcePlanServiceWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.command.replace.ReplaceInstrumentSourcePlanServiceWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.api.mapper.MarketDataSourcePlanApiMapperWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.command.create.CreateMarketDataSourcePlanServiceWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.command.delete.DeleteMarketDataSourcePlanServiceWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.command.replace.ReplaceMarketDataSourcePlanServiceWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.query.existence.SourcePlanExistenceQueryWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.query.get.GetInstrumentSourcePlanServiceWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.query.list.ListInstrumentSourcePlansServiceWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.query.options.adapter.InstrumentSourcePlanOptionsQueryWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.query.get.GetMarketDataSourcePlanServiceWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.query.list.ListMarketDataSourcePlansServiceWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.query.options.adapter.MarketDataSourcePlanOptionsQueryWiringConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        CreateInstrumentSourcePlanServiceWiringConfig.class,
-        DeleteInstrumentSourcePlanServiceWiringConfig.class,
-        ReplaceInstrumentSourcePlanServiceWiringConfig.class,
-        GetInstrumentSourcePlanServiceWiringConfig.class,
-        ListInstrumentSourcePlansServiceWiringConfig.class,
+        CreateMarketDataSourcePlanServiceWiringConfig.class,
+        DeleteMarketDataSourcePlanServiceWiringConfig.class,
+        ReplaceMarketDataSourcePlanServiceWiringConfig.class,
+        GetMarketDataSourcePlanServiceWiringConfig.class,
+        ListMarketDataSourcePlansServiceWiringConfig.class,
         SourcePlanExistenceQueryWiringConfig.class,
-        InstrumentSourcePlanOptionsQueryWiringConfig.class,
-        InstrumentSourcePlanApiMapperWiringConfig.class
+        MarketDataSourcePlanOptionsQueryWiringConfig.class,
+        MarketDataSourcePlanApiMapperWiringConfig.class
 })
 public class SourcingPlanFeatureWiringConfig {
 }

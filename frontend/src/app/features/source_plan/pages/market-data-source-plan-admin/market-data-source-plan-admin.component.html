@@ -1,0 +1,159 @@
+<div class="center-box">
+
+  <h1 class="mat-headline-4">Market Data Source Plans Administration</h1>
+
+  <!-- Верхняя карточка: whole-plan editor и toolbar действий -->
+  <mat-card class="toolbar-card">
+    <mat-card-header>
+      <mat-card-title>Source Plan Toolbar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" class="editor-form">
+
+        <section class="form-section">
+          <div class="section-label">Select instrument</div>
+          <mat-form-field appearance="outline" class="instrument-field">
+            <mat-select formControlName="instrumentCode">
+              <mat-option *ngFor="let instrument of instruments" [value]="instrument.code">
+                {{ instrument.code }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['instrumentCode'].hasError('required')">
+              Is required
+            </mat-error>
+          </mat-form-field>
+        </section>
+
+        <section class="form-section form-section--sources">
+          <div class="sources-header-row">
+            <div class="section-label">Sources</div>
+            <button mat-stroked-button type="button" (click)="onAddSourceRow()">
+              Add source
+            </button>
+          </div>
+
+          <div formArrayName="sources" class="sources-grid">
+            <div
+              class="source-row"
+              *ngFor="let control of sourceControls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field appearance="outline">
+                <mat-label>Provider</mat-label>
+                <mat-select formControlName="providerCode">
+                  <mat-option *ngFor="let provider of providers" [value]="provider.code">
+                    {{ provider.code }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="control.get('providerCode')?.hasError('required')">
+                  Is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-checkbox formControlName="active">Active</mat-checkbox>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Priority</mat-label>
+                <input matInput type="number" formControlName="priority" />
+                <mat-error *ngIf="control.get('priority')?.hasError('required')">
+                  Is required
+                </mat-error>
+                <mat-error *ngIf="control.get('priority')?.hasError('min')">
+                  Must be >= 0
+                </mat-error>
+              </mat-form-field>
+
+              <button
+                mat-icon-button
+                color="warn"
+                type="button"
+                (click)="onRemoveSourceRow(i)"
+                [disabled]="sources.length <= 1"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="validation-row" *ngIf="hasDuplicateProviders || hasDuplicatePriorities">
+            <span *ngIf="hasDuplicateProviders">Duplicate providerCode is not allowed.</span>
+            <span *ngIf="hasDuplicatePriorities">Duplicate priority is not allowed.</span>
+          </div>
+        </section>
+
+        <section class="form-section form-section--actions">
+          <div class="action-row" *ngIf="!editing; else editModeButtons">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="onCreate()"
+              [disabled]="hasPlanValidationError || locked"
+            >
+              Create plan
+            </button>
+            <button mat-raised-button type="button" (click)="onReset()">Reset</button>
+          </div>
+
+          <ng-template #editModeButtons>
+            <div class="action-row">
+              <button
+                mat-raised-button
+                color="primary"
+                type="button"
+                (click)="onSave()"
+                [disabled]="hasPlanValidationError || locked"
+              >
+                Save changes
+              </button>
+              <button mat-raised-button type="button" (click)="cancelEdit()">Cancel edit</button>
+              <button mat-raised-button color="warn" type="button" (click)="onDeleteSelected()">
+                Delete plan
+              </button>
+            </div>
+          </ng-template>
+        </section>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Нижняя карточка: обзор существующих plans -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Source Plans</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="table-content">
+      <table mat-table [dataSource]="dataSource" class="plans-table mat-elevation-z2">
+
+        <ng-container matColumnDef="instrumentCode">
+          <th mat-header-cell *matHeaderCellDef>Instrument</th>
+          <td mat-cell *matCellDef="let plan">{{ plan.instrumentCode }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="sourceCount">
+          <th mat-header-cell *matHeaderCellDef>Sources</th>
+          <td mat-cell *matCellDef="let plan">{{ plan.sources.length }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstProvider">
+          <th mat-header-cell *matHeaderCellDef>First Provider</th>
+          <td mat-cell *matCellDef="let plan">{{ firstProvider(plan) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let plan" class="actions-cell">
+            <button mat-stroked-button color="primary" (click)="onLoadPlan(plan)">Load</button>
+            <button mat-stroked-button color="warn" (click)="onDeleteFromList(plan.instrumentCode)">
+              Delete
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+</div>
