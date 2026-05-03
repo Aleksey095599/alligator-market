@@ -51,6 +51,9 @@ public final class MarketDataSourcePlan {
         return sources;
     }
 
+    /**
+     * Создает копию списка источников и выполняет валидацию.
+     */
     private static List<MarketDataSource> copyAndValidateSources(List<MarketDataSource> sources) {
         if (sources.isEmpty()) {
             throw new IllegalArgumentException("sources must not be empty");
