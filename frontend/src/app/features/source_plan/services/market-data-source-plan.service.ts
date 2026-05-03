@@ -28,9 +28,14 @@ export class MarketDataSourcePlanService {
       .pipe(map(res => res.plans ?? []));
   }
 
-  /* Получить whole-plan по instrumentCode. */
-  get(instrumentCode: string): Observable<MarketDataSourcePlanResponseDto> {
-    return this.http.get<MarketDataSourcePlanResponseDto>(`${this.baseUrl}/${instrumentCode}`);
+  /* Получить whole-plan по collectionProcessCode и instrumentCode. */
+  get(
+    collectionProcessCode: string,
+    instrumentCode: string
+  ): Observable<MarketDataSourcePlanResponseDto> {
+    return this.http.get<MarketDataSourcePlanResponseDto>(
+      `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`
+    );
   }
 
   /* Получить опции инструментов и провайдеров для формы. */
@@ -45,17 +50,30 @@ export class MarketDataSourcePlanService {
       .pipe(map(() => undefined));
   }
 
-  /* Полностью заменить whole-plan по instrumentCode. */
-  replace(instrumentCode: string, dto: ReplaceMarketDataSourcePlanDto): Observable<void> {
+  /* Полностью заменить whole-plan по collectionProcessCode и instrumentCode. */
+  replace(
+    collectionProcessCode: string,
+    instrumentCode: string,
+    dto: ReplaceMarketDataSourcePlanDto
+  ): Observable<void> {
     return this.http
-      .put<void>(`${this.baseUrl}/${instrumentCode}`, dto)
+      .put<void>(
+        `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`,
+        dto
+      )
       .pipe(map(() => undefined));
   }
 
-  /* Удалить whole-plan по instrumentCode. */
-  delete(instrumentCode: string): Observable<void> {
+  /* Удалить whole-plan по collectionProcessCode и instrumentCode. */
+  delete(collectionProcessCode: string, instrumentCode: string): Observable<void> {
     return this.http
-      .delete<void>(`${this.baseUrl}/${instrumentCode}`)
+      .delete<void>(
+        `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`
+      )
       .pipe(map(() => undefined));
+  }
+
+  private pathSegment(value: string): string {
+    return encodeURIComponent(value);
   }
 }

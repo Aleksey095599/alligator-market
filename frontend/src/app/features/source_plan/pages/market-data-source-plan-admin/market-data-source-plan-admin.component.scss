@@ -44,10 +44,12 @@
   background: #fff;
 }
 
-/* Поле выбора инструмента с ограничением читаемой ширины. */
-.instrument-field {
-  max-width: 360px;
-  width: 100%;
+/* Поля идентичности плана с компактной адаптивной сеткой. */
+.identity-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(220px, 1fr);
+  gap: 12px;
+  max-width: 760px;
 }
 
 /* Унифицированный заголовок секции. */
@@ -159,6 +161,10 @@
 
   .form-section {
     padding: 12px;
+  }
+
+  .identity-grid {
+    grid-template-columns: 1fr;
   }
 
   .action-row {

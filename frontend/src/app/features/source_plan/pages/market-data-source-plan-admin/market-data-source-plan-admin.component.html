@@ -11,17 +11,31 @@
       <form [formGroup]="form" class="editor-form">
 
         <section class="form-section">
-          <div class="section-label">Select instrument</div>
-          <mat-form-field appearance="outline" class="instrument-field">
-            <mat-select formControlName="instrumentCode">
-              <mat-option *ngFor="let instrument of instruments" [value]="instrument.code">
-                {{ instrument.code }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.controls['instrumentCode'].hasError('required')">
-              Is required
-            </mat-error>
-          </mat-form-field>
+          <div class="section-label">Plan identity</div>
+          <div class="identity-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Collection process</mat-label>
+              <input matInput formControlName="collectionProcessCode" />
+              <mat-error *ngIf="
+                form.controls['collectionProcessCode'].hasError('required')
+                || form.controls['collectionProcessCode'].hasError('blank')
+              ">
+                Is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Instrument</mat-label>
+              <mat-select formControlName="instrumentCode">
+                <mat-option *ngFor="let instrument of instruments" [value]="instrument.code">
+                  {{ instrument.code }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['instrumentCode'].hasError('required')">
+                Is required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </section>
 
         <section class="form-section form-section--sources">
@@ -125,6 +139,11 @@
     <mat-card-content class="table-content">
       <table mat-table [dataSource]="dataSource" class="plans-table mat-elevation-z2">
 
+        <ng-container matColumnDef="collectionProcessCode">
+          <th mat-header-cell *matHeaderCellDef>Collection Process</th>
+          <td mat-cell *matCellDef="let plan">{{ plan.collectionProcessCode }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="instrumentCode">
           <th mat-header-cell *matHeaderCellDef>Instrument</th>
           <td mat-cell *matCellDef="let plan">{{ plan.instrumentCode }}</td>
@@ -144,7 +163,7 @@
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let plan" class="actions-cell">
             <button mat-stroked-button color="primary" (click)="onLoadPlan(plan)">Load</button>
-            <button mat-stroked-button color="warn" (click)="onDeleteFromList(plan.instrumentCode)">
+            <button mat-stroked-button color="warn" (click)="onDeleteFromList(plan)">
               Delete
             </button>
           </td>

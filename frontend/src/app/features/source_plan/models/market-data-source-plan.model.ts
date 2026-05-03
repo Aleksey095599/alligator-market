@@ -5,6 +5,7 @@ export interface MarketDataSourceResponseDto {
 }
 
 export interface MarketDataSourcePlanResponseDto {
+  collectionProcessCode: string;
   instrumentCode: string;
   sources: MarketDataSourceResponseDto[];
 }
