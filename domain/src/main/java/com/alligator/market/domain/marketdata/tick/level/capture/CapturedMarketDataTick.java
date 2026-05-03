@@ -9,7 +9,8 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Captured-level рыночный тик, зафиксированный приложением и обогащенный соответствующими метаданными захвата.
+ * Captured-level рыночный тик, полученный с помощью добавления к {@link SourceMarketDataTick} полей,
+ * содержащих метаданные приложения на момент "захвата" тика.
  *
  * @param collectionStreamCode код потока сбора котировок
  * @param instrumentCode       внутренний код инструмента приложения

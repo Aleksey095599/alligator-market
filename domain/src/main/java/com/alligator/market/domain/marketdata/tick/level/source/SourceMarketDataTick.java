@@ -5,8 +5,7 @@ import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrum
 import java.time.Instant;
 
 /**
- * Source-level рыночный тик, передаваемый источником рыночных данных, до обогащения метаданными захвата
- * на уровне приложения.
+ * Source-level рыночный тик от источника рыночных данных.
  */
 public interface SourceMarketDataTick {
 

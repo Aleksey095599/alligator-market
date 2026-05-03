@@ -125,6 +125,7 @@
                                             | source_plan
                                             | market_data_source
                                             | provider_passport
+                                            | captured_market_data_tick
                                             | currency
                                         )
                                     </includes>
