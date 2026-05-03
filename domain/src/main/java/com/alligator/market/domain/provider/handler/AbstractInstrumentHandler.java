@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider.handler;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.provider.vo.HandlerCode;
@@ -69,7 +69,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     @Override
-    public final Publisher<QuoteTick> quote(I instrument) {
+    public final Publisher<SourceMarketDataTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         requireAttachedProvider();
@@ -84,7 +84,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
      * Точка расширения метода {@link #quote(Instrument)}:
      * Чистая логика получения потока котировок для переданного инструмента.
      */
-    protected abstract Publisher<QuoteTick> doQuote(I instrument);
+    protected abstract Publisher<SourceMarketDataTick> doQuote(I instrument);
 
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.

@@ -1,10 +1,10 @@
 package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import org.reactivestreams.Publisher;
 
 /**
@@ -30,5 +30,5 @@ public interface MarketDataProvider {
     /**
      * Поток котировок для заданного инструмента.
      */
-    <I extends Instrument> Publisher<QuoteTick> quote(I instrument);
+    <I extends Instrument> Publisher<SourceMarketDataTick> quote(I instrument);
 }

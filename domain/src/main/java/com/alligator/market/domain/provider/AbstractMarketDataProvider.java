@@ -2,7 +2,7 @@ package com.alligator.market.domain.provider;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;
 import com.alligator.market.domain.provider.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
@@ -90,7 +90,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      * С помощью карты находит обработчик для заданного инструмента и делегирует ему вызов.
      */
     @Override
-    public final <I extends Instrument> Publisher<QuoteTick> quote(I instrument) {
+    public final <I extends Instrument> Publisher<SourceMarketDataTick> quote(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // Находим обработчик (или бросаем исключение)

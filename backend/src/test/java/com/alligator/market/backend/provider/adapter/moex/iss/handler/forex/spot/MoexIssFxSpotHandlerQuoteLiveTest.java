@@ -6,7 +6,8 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.Cur
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -46,9 +47,9 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Запускаем запрос к реальному MOEX ISS
-        Mono<QuoteTick> result = Mono.from(provider.quote(cnyRubTom));
+        Mono<SourceMarketDataTick> result = Mono.from(provider.quote(cnyRubTom));
 
-        // 5) Проверяем минимальные инварианты QuoteTick, не завязываясь на конкретную цену
+        // 5) Проверяем минимальные инварианты source-level тика, не завязываясь на конкретную цену
         StepVerifier.create(result)
                 .assertNext(tick -> {
                     // ВРЕМЕННЫЙ вывод для наглядности
@@ -56,17 +57,15 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
                     System.out.println(tick); // для record будет нормальный toString()
                     System.out.println("====================================");
 
-                    assertNotNull(tick, "QuoteTick must not be null");
-                    assertEquals(cnyRubTom.instrumentCode(), tick.instrumentCode(), "Instrument code must match");
-                    assertEquals("MOEX_ISS", tick.providerCode().value(), "Provider code must be MOEX_ISS");
+                    assertNotNull(tick, "SourceMarketDataTick must not be null");
+                    SourceLastPriceTick lastPriceTick = assertInstanceOf(SourceLastPriceTick.class, tick);
 
-                    assertNotNull(tick.last(), "LAST price must not be null");
-                    assertTrue(tick.last().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");
+                    assertEquals("CNYRUB_TOM", lastPriceTick.sourceInstrumentCode().value(), "Source instrument code must match");
 
-                    assertNotNull(tick.exchangeTimestamp(), "Exchange timestamp must not be null");
-                    assertNotNull(tick.receivedTimestamp(), "Received timestamp must not be null");
-                    assertFalse(tick.receivedTimestamp().isBefore(tick.exchangeTimestamp()),
-                            "receivedTimestamp must not be before exchangeTimestamp");
+                    assertNotNull(lastPriceTick.lastPrice(), "LAST price must not be null");
+                    assertTrue(lastPriceTick.lastPrice().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");
+
+                    assertNotNull(lastPriceTick.sourceTimestamp(), "Source timestamp must not be null");
                 })
                 .verifyComplete();
     }

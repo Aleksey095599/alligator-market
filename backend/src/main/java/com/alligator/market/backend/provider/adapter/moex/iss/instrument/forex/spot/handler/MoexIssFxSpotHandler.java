@@ -4,18 +4,19 @@ import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.provider.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
 import com.alligator.market.domain.provider.vo.HandlerCode;
-import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -67,7 +68,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
      */
     @Override
-    protected Publisher<QuoteTick> doQuote(FxSpot instrument) {
+    protected Publisher<SourceMarketDataTick> doQuote(FxSpot instrument) {
         // 1) Получаем минимальный интервал обновления из "политики" провайдера
         Duration pollInterval = provider().policy().minUpdateInterval();
 
@@ -94,14 +95,19 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      * <p>Алгоритм:
      * <ul>
      *   <li>Код инструмента конвертируем в SECID, который ожидает MOEX ISS;</li>
-     *   <li>Запрашиваем у MOEX ISS таблицу {@code marketdata} для кода инструмента SECID (примечание: запрос на board CETS);</li>
-     *   <li>Строго проверяем структуру JSON и извлекаем {@code SYSTIME} и {@code LAST};</li>
-     *   <li>Строим доменную модель {@link QuoteTick}.</li>
+     *   <li>Запрашиваем у MOEX ISS таблицу {@code marketdata} с рыночными данными для SECID;</li>
+     *   <li>Строго проверяем полученную JSON-структуру и извлекаем {@code SYSTIME} и {@code LAST};</li>
+     *   <li>Строим source-level рыночный тик {@link SourceMarketDataTick}.</li>
      * </ul></p>
      *
-     * <p>Примечание: пункты 3) и 4) вынесены в отдельный метод {@link #mapMarketdataToQuoteTick(InstrumentCode, JsonNode)}.</p>
+     * <p>Примечания:
+     * <ul>
+     *     <li>Под таблицей {@code marketdata} подразумевается формат передачи рыночных, описанный в документации
+     *     провайдера MOEX ISS.</li>
+     *     <li>3-й и 4-й пункты вынесены в отдельный метод {@link #mapMarketdataToSourceTick(String, JsonNode)}.</li>
+     * </ul>
      */
-    private Mono<QuoteTick> fetchQuoteOnce(FxSpot instrument) {
+    private Mono<SourceMarketDataTick> fetchQuoteOnce(FxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
         // 1) Код инструмента --> SECID MOEX ISS
@@ -131,20 +137,20 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
                         domainCode.value(), secid))
                 .map(body -> {
                     // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST
-                    // 4) Построение доменной модели QuoteTick
-                    QuoteTick tick = mapMarketdataToQuoteTick(domainCode, body); // <-- Реализация 3) и 4) внутри mapMarketdataToQuoteTick
-                    log.debug("Received FX_SPOT QuoteTick from MOEX ISS: {}", tick);
+                    // 4) Построение source-level тика
+                    SourceMarketDataTick tick = mapMarketdataToSourceTick(secid, body);
+                    log.debug("Received FX_SPOT SourceMarketDataTick from MOEX ISS: {}", tick);
                     return tick;
                 });
     }
 
     /**
-     * Строгий маппер блока "marketdata" (JsonNode) в доменную модель QuoteTick.
+     * Строгий маппер блока "marketdata" (JsonNode) в source-level рыночный тик.
      *
      * <p>Примечание: SYSTIME приходит без временной зоны. Мы предполагаем что это время {@link #MOEX_ZONE}
      * и переводим в {@link Instant}.</p>
      */
-    private QuoteTick mapMarketdataToQuoteTick(InstrumentCode instrumentCode, JsonNode root) {
+    private SourceMarketDataTick mapMarketdataToSourceTick(String secid, JsonNode root) {
         /*
          * Ожидаемый JSON-ответ (упрощённо):
          *
@@ -190,7 +196,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         // 4) Проверяем, что в массиве "data" ровно одна строка (одна строка в "marketdata" для этого инструмента)
         if (data.size() != 1) {
             throw new IllegalStateException(
-                    "Array 'data' must contain exactly one row for instrument " + instrumentCode.value() +
+                    "Array 'data' must contain exactly one row for source instrument " + secid +
                             ", but was: " + data.size()
             );
         }
@@ -220,10 +226,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         // 7) Парсим "SYSTIME" (строка вида "yyyy-MM-dd HH:mm:ss")
         String systimeStr = systimeNode.stringValue();
 
-        Instant exchangeTs;
+        Instant sourceTimestamp;
         try {
             LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME); // <-- Парсим во временную зону MOEX
-            exchangeTs = ldt.atZone(MOEX_ZONE).toInstant(); // <-- Конвертируем в Instant (UTC)
+            sourceTimestamp = ldt.atZone(MOEX_ZONE).toInstant(); // <-- Конвертируем в Instant (UTC)
         } catch (DateTimeParseException ex) {
             throw new IllegalStateException("Failed to parse MOEX SYSTIME: '" + systimeStr + "'", ex);
         }
@@ -231,19 +237,11 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
         // 8) Парсим "LAST" в BigDecimal
         BigDecimal last = lastNode.decimalValue();
 
-        // 9) Фиксируем время получения тика в нашей системе
-        Instant receivedTs = Instant.now();
-
-        // 10) Берём код провайдера из прикреплённого адаптера
-        ProviderCode providerCode = provider().providerCode();
-
-        // 11) Собираем итоговый QuoteTick
-        return QuoteTick.lastTrade(
-                instrumentCode,
+        // 9) Собираем source-level last price тик
+        return new SourceLastPriceTick(
+                SourceInstrumentCode.of(secid),
                 last,
-                exchangeTs,
-                receivedTs,
-                providerCode
+                sourceTimestamp
         );
     }
 

@@ -2,9 +2,9 @@ package com.alligator.market.domain.provider.handler;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.vo.HandlerCode;
-import com.alligator.market.domain.marketdata.tick.old.QuoteTick;
 import org.reactivestreams.Publisher;
 
 import java.util.Set;
@@ -35,5 +35,5 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     /**
      * Поток котировок для заданного инструмента.
      */
-    Publisher<QuoteTick> quote(I instrument);
+    Publisher<SourceMarketDataTick> quote(I instrument);
 }
