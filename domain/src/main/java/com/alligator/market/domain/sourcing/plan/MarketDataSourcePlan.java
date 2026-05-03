@@ -36,22 +36,32 @@ public final class MarketDataSourcePlan {
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
 
+        this.sources = copyAndValidateSources(sources);
+    }
+
+    public MarketDataCollectionProcessCode collectionProcessCode() {
+        return collectionProcessCode;
+    }
+
+    public InstrumentCode instrumentCode() {
+        return instrumentCode;
+    }
+
+    public List<MarketDataSource> sources() {
+        return sources;
+    }
+
+    private static List<MarketDataSource> copyAndValidateSources(List<MarketDataSource> sources) {
         if (sources.isEmpty()) {
             throw new IllegalArgumentException("sources must not be empty");
         }
 
-        // Безопасная копия источников
         List<MarketDataSource> sourceCopy = new ArrayList<>(sources.size());
-
-        // Набор кодов провайдеров для проверки дубликатов
         Set<ProviderCode> providerCodes = new HashSet<>();
-
-        // Набор приоритетов для проверки дубликатов
         Set<Integer> priorities = new HashSet<>();
 
         for (MarketDataSource source : sources) {
-            MarketDataSource sourceToCheck = Objects.requireNonNull(source,
-                    "source must not be null");
+            MarketDataSource sourceToCheck = Objects.requireNonNull(source, "source must not be null");
 
             if (!providerCodes.add(sourceToCheck.providerCode())) {
                 throw new IllegalArgumentException(
@@ -72,19 +82,6 @@ public final class MarketDataSourcePlan {
 
         // Сортируем порядок источников по приоритету (чем выше приоритет источника, тем ниже значение priority)
         sourceCopy.sort(Comparator.comparingInt(MarketDataSource::priority));
-
-        this.sources = List.copyOf(sourceCopy);
-    }
-
-    public MarketDataCollectionProcessCode collectionProcessCode() {
-        return collectionProcessCode;
-    }
-
-    public InstrumentCode instrumentCode() {
-        return instrumentCode;
-    }
-
-    public List<MarketDataSource> sources() {
-        return sources;
+        return List.copyOf(sourceCopy);
     }
 }
