@@ -7,7 +7,7 @@ CREATE TABLE provider_passport
     -- Натуральный ключ: код провайдера
     provider_code     VARCHAR(50)  NOT NULL,
 
-    -- Паспорт провайдера
+    -- Поля паспорта провайдера
     display_name      VARCHAR(50)  NOT NULL,
     delivery_mode     VARCHAR(10)  NOT NULL,
     access_method     VARCHAR(20)  NOT NULL,
