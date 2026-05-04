@@ -1,6 +1,5 @@
 package com.alligator.market.domain.marketdata.capture.process.registry;
 
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.MarketDataCaptureProcess;
 import com.alligator.market.domain.marketdata.capture.process.passport.CaptureProcessPassport;
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
@@ -49,8 +48,6 @@ public final class SnapshotCaptureProcessRegistry implements CaptureProcessRegis
             Objects.requireNonNull(process.policy(),
                     "process.policy must not be null");
 
-            validateSupportedInstrumentCodes(process.supportedInstrumentCodes());
-
             MarketDataCaptureProcess previous = processesMap.put(code, process);
             if (previous != null) {
                 throw new IllegalArgumentException(
@@ -84,17 +81,5 @@ public final class SnapshotCaptureProcessRegistry implements CaptureProcessRegis
     @Override
     public Map<CaptureProcessCode, CaptureProcessPassport> passportsByCode() {
         return passportsByCode;
-    }
-
-    private static void validateSupportedInstrumentCodes(Set<InstrumentCode> supportedInstrumentCodes) {
-        Objects.requireNonNull(supportedInstrumentCodes, "process.supportedInstrumentCodes must not be null");
-
-        if (supportedInstrumentCodes.isEmpty()) {
-            throw new IllegalArgumentException("process.supportedInstrumentCodes must not be empty");
-        }
-
-        for (InstrumentCode instrumentCode : supportedInstrumentCodes) {
-            Objects.requireNonNull(instrumentCode, "process.supportedInstrumentCodes must not contain null");
-        }
     }
 }
