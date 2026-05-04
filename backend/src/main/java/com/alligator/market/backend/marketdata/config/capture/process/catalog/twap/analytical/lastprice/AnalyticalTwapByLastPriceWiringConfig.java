@@ -1,7 +1,7 @@
 package com.alligator.market.backend.marketdata.config.capture.process.catalog.twap.analytical.lastprice;
 
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.catalog.twap.analytical.lastprice.AnalyticalTwapByLastPrice;
 import org.springframework.context.annotation.Bean;

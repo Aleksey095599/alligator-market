@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.query.list;
 
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

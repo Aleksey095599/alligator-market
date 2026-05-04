@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.mapper;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.update.dto.UpdateCurrencyRequest;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 

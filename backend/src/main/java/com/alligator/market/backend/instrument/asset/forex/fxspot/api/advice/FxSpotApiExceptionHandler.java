@@ -11,7 +11,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.application.ex
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotNotFoundException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotUpdateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.exception.FxSpotSameCurrenciesException;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpotSameCurrenciesException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

@@ -4,9 +4,9 @@ import com.alligator.market.backend.common.persistence.constraint.DbConstraintEr
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNameDuplicateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.reference.currency.adapter;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.query.reference.currency.port.FxSpotCurrencyReferenceQueryPort;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import org.jooq.DSLContext;
 
 import java.util.Objects;

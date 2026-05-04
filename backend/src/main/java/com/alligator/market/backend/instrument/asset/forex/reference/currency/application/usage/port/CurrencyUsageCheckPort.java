@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port;
 
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 /**
  * Порт проверки использования валюты в приложении.

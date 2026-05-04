@@ -3,8 +3,8 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.config.applic
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotService;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.persistence.repository.adapter.CurrencyRepositoryWiringConfig;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

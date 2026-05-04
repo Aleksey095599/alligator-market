@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.c
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.dto.CreateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotCommand;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;
 

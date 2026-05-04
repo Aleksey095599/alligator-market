@@ -3,7 +3,7 @@ package com.alligator.market.backend.marketdata.config.capture.application.port;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
 import com.alligator.market.backend.marketdata.capture.application.port.MarketDataCaptureInstrumentResolver;
 import com.alligator.market.backend.marketdata.capture.application.port.adapter.FxSpotMarketDataCaptureInstrumentResolverAdapter;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

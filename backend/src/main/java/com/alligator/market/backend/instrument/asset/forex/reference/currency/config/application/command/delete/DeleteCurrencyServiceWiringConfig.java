@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.ap
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.usage.port.CurrencyUsageCheckPort;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.application.usage.port.CurrencyUsageCheckPortWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.persistence.repository.adapter.CurrencyRepositoryWiringConfig;
-import com.alligator.market.domain.instrument.catalog.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

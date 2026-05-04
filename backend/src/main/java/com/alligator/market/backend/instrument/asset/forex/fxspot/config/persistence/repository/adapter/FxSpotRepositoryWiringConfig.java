@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.persistence.jooq.repository.JooqFxSpotRepositoryAdapter;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

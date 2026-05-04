@@ -5,7 +5,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.application.us
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.application.usage.contributor.FxSpotUsageContributorWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.application.usage.port.FxSpotUsageCheckPortWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

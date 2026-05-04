@@ -3,7 +3,7 @@ package com.alligator.market.backend.marketdata.capture.application.port.adapter
 import com.alligator.market.backend.marketdata.capture.application.exception.CaptureInstrumentNotFoundException;
 import com.alligator.market.backend.marketdata.capture.application.port.MarketDataCaptureInstrumentResolver;
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;

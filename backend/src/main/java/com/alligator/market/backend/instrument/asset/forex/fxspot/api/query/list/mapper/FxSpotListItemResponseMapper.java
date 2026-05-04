@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.mapper;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto.FxSpotListItemResponse;
-import com.alligator.market.domain.instrument.catalog.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
 import java.util.Objects;
 
