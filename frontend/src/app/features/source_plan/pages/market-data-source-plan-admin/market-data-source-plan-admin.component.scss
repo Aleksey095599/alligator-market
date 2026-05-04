@@ -32,6 +32,14 @@
   background: #fafafa;
 }
 
+/* Заголовок секции с короткой подсказкой. */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
 /* Секция источников имеет более плотный ритм для повторяющихся строк. */
 .form-section--sources {
   display: flex;
@@ -58,6 +66,12 @@
   font-weight: 600;
   letter-spacing: 0.2px;
   color: rgba(0, 0, 0, 0.72);
+}
+
+/* Короткое пояснение для пользователя без перегруза формы. */
+.section-hint {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.56);
 }
 
 /* Заголовок секции sources с action-кнопкой. */

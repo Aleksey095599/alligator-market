@@ -11,10 +11,13 @@
       <form [formGroup]="form" class="editor-form">
 
         <section class="form-section">
-          <div class="section-label">Plan identity</div>
+          <div class="section-header">
+            <div class="section-label">Source Plan Identity</div>
+            <div class="section-hint">Choose the capture process and instrument for this source plan.</div>
+          </div>
           <div class="identity-grid">
             <mat-form-field appearance="outline">
-              <mat-label>Capture Process Name</mat-label>
+              <mat-label>Capture Process</mat-label>
               <mat-select formControlName="captureProcessCode">
                 <mat-option *ngFor="let process of captureProcesses" [value]="process.code">
                   {{ process.displayName }}
