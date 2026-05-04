@@ -1,5 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create;
 
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateSameCurrenciesException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
@@ -34,6 +35,10 @@ public final class CreateFxSpotService {
 
         CurrencyCode baseCode = command.baseCurrencyCode();
         CurrencyCode quoteCode = command.quoteCurrencyCode();
+
+        if (baseCode.equals(quoteCode)) {
+            throw new FxSpotCreateSameCurrenciesException(baseCode);
+        }
 
         Currency base = currencyRepository.findByCode(baseCode)
                 .orElseThrow(() -> new CurrencyNotFoundException(baseCode));

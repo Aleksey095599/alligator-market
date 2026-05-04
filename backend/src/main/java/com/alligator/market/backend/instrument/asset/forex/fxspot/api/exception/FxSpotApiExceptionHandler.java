@@ -6,6 +6,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.up
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.controller.FxSpotListController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotAlreadyExistsException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateException;
+import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotCreateSameCurrenciesException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotDeleteException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotInUseException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotNotFoundException;
@@ -40,6 +41,17 @@ public class FxSpotApiExceptionHandler {
                 "FX Spot already exists",
                 ex.getMessage(),
                 FxSpotApiErrorCode.FX_SPOT_ALREADY_EXISTS.name()
+        );
+    }
+
+    @ExceptionHandler(FxSpotCreateSameCurrenciesException.class)
+    public ProblemDetail fxSpotCreateSameCurrencies(FxSpotCreateSameCurrenciesException ex) {
+        log.warn("FX Spot create same currencies: {}", ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "FX Spot create same currencies",
+                ex.getMessage(),
+                FxSpotApiErrorCode.FX_SPOT_CREATE_SAME_CURRENCIES.name()
         );
     }
 

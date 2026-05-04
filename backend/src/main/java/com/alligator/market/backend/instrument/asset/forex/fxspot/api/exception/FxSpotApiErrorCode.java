@@ -6,6 +6,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.exception
 public enum FxSpotApiErrorCode {
 
     FX_SPOT_ALREADY_EXISTS,
+    FX_SPOT_CREATE_SAME_CURRENCIES,
     FX_SPOT_NOT_FOUND,
     FX_SPOT_IN_USE,
 
