@@ -13,7 +13,7 @@
         <section class="form-section">
           <div class="section-header">
             <div class="section-label">Source Plan Identity</div>
-            <div class="section-hint">Choose the capture process and instrument for this source plan.</div>
+            <div class="section-hint">Choose the capture process and instrument code.</div>
           </div>
           <div class="identity-grid">
             <mat-form-field appearance="outline">
@@ -47,7 +47,12 @@
 
         <section class="form-section form-section--sources">
           <div class="sources-header-row">
-            <div class="section-label">Sources</div>
+            <div class="section-header section-header--compact">
+              <div class="section-label">Market Data Sources</div>
+              <div class="section-hint">
+                Choose market data providers and set their priority. Lower numbers mean higher priority.
+              </div>
+            </div>
             <button mat-stroked-button type="button" (click)="onAddSourceRow()">
               Add source
             </button>

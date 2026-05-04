@@ -40,6 +40,11 @@
   margin-bottom: 12px;
 }
 
+/* Вариант заголовка секции, когда рядом стоит action-кнопка. */
+.section-header--compact {
+  margin-bottom: 0;
+}
+
 /* Секция источников имеет более плотный ритм для повторяющихся строк. */
 .form-section--sources {
   display: flex;
