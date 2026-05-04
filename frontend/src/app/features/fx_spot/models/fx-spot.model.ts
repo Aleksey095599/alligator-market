@@ -2,8 +2,8 @@ import { FxSpotTenor } from './fx-spot-tenor.model';
 
 /** Основной DTO инструмента FX_SPOT аналогичный backend. */
 export interface FxSpotDto {
-  /* Класс актива */
-  assetClass: string;
+  /* Актив */
+  asset: string;
   /* Продукт инструмента */
   product: string;
   /* Код базовой валюты */
@@ -22,8 +22,8 @@ export interface FxSpotListItemDto {
   instrumentCode: string;
   /* Символ инструмента (например, EURUSD_TOD) */
   symbol: string;
-  /* Класс актива */
-  assetClass: string;
+  /* Актив */
+  asset: string;
   /* Продукт инструмента */
   product: string;
   /* Код базовой валюты */

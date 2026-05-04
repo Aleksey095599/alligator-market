@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FxSpotListItemDto } from '../../models/fx-spot.model';
 import { FxSpotCreateDto } from '../../models/fx-spot-create.model';
 import { FxSpotService } from '../../services/fx-spot.service';
@@ -30,7 +31,8 @@ import { FxSpotTenor } from '../../models/fx-spot-tenor.model';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
   templateUrl: './fx-spot-admin.component.html',
   styleUrl: './fx-spot-admin.component.scss'
@@ -40,7 +42,7 @@ export class FxSpotAdminComponent implements OnInit {
   //=================
   // Табличные данные
   //=================
-  displayed: string[] = ['instrumentCode', 'symbol', 'assetClass', 'product', 'baseCurrency', 'quoteCurrency', 'tenor', 'defaultQuoteFractionDigits', 'actions'];
+  displayed: string[] = ['instrumentCode', 'symbol', 'asset', 'product', 'baseCurrency', 'quoteCurrency', 'tenor', 'defaultQuoteFractionDigits', 'actions'];
   dataSource = new MatTableDataSource<FxSpotListItemDto>([]);
 
   //=========================================

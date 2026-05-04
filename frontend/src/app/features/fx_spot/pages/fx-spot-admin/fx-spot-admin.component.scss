@@ -24,3 +24,30 @@
   background: #fff;
 }
 
+.quote-digits-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.quote-digits-info {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  line-height: 24px;
+  --mdc-icon-button-state-layer-size: 24px;
+}
+
+.quote-digits-info mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.mat-column-defaultQuoteFractionDigits,
+.quote-digits-cell {
+  text-align: center;
+}
+
