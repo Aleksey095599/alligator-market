@@ -1,4 +1,4 @@
-package com.alligator.market.backend.sourcing.plan.api.advice;
+package com.alligator.market.backend.sourcing.plan.api.exception;
 
 import com.alligator.market.backend.sourcing.plan.api.command.create.controller.CreateMarketDataSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.command.delete.controller.DeleteMarketDataSourcePlanController;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.fxspot.api.advice;
+package com.alligator.market.backend.instrument.asset.forex.fxspot.api.exception;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.controller.CreateFxSpotController;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.delete.controller.DeleteFxSpotController;

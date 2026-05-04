@@ -1,4 +1,4 @@
-package com.alligator.market.backend.provider.api.advice;
+package com.alligator.market.backend.provider.api.exception;
 
 import com.alligator.market.backend.provider.passport.api.query.list.controller.PassportListController;
 import com.alligator.market.domain.provider.exception.HandlerNotFoundException;

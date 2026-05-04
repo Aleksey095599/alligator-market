@@ -1,4 +1,4 @@
-package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.advice;
+package com.alligator.market.backend.instrument.asset.forex.reference.currency.api.exception;
 
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.create.controller.CreateCurrencyController;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.api.command.delete.controller.DeleteCurrencyController;
