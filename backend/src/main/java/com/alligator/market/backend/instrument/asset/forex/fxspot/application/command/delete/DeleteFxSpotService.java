@@ -2,7 +2,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.application.c
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotInUseException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.port.FxSpotUsageCheckPort;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import lombok.extern.slf4j.Slf4j;
 

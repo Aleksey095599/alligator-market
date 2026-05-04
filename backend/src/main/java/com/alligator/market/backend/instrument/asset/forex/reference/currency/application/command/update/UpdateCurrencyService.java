@@ -1,8 +1,8 @@
 package com.alligator.market.backend.instrument.asset.forex.reference.currency.application.command.update;
 
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.repository.CurrencyRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;

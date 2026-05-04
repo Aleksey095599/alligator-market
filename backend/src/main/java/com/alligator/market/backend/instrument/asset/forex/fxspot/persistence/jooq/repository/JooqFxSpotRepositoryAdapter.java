@@ -8,11 +8,11 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.application.ex
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotNotFoundException;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.exception.FxSpotUpdateException;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.application.exception.CurrencyNotFoundException;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 import org.jooq.Record;

@@ -3,7 +3,7 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.c
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.dto.CreateFxSpotRequest;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.api.command.create.mapper.CreateFxSpotRequestMapper;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create.CreateFxSpotService;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.FxSpot;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

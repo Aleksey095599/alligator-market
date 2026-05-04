@@ -2,10 +2,10 @@ package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spo
 
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
-import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.Currency;
+import com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.FxSpot;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.classification.FxSpotTenor;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import org.junit.jupiter.api.Tag;

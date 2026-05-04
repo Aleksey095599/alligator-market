@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.api.query.list.dto;
 
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.catalog.forex.fxspot.classification.FxSpotTenor;
 
 /**
  * API-ответ для списка инструментов FOREX_SPOT.

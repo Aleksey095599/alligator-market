@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.reference.currency.vo;
+package com.alligator.market.domain.instrument.catalog.forex.reference.currency.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
