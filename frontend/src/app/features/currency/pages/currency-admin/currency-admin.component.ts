@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CreateCurrencyDto, CurrencyResponseDto } from '../../models/currency.model';
 import { UpdateCurrencyDto } from '../../models/currency-update.model';
@@ -30,7 +31,8 @@ import { CurrencyService } from '../../services/currency.service';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
   templateUrl: './currency-admin.component.html',
   styleUrl: './currency-admin.component.scss'
