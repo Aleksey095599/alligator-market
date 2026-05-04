@@ -20,6 +20,18 @@ public final class StringValueNormalizer {
     public static String normalize(String raw, String fieldName, Options options) {
         Objects.requireNonNull(fieldName, "fieldName must not be null");
         Objects.requireNonNull(options, "options must not be null");
+
+        String normalized = requireNonBlank(raw, fieldName);
+        normalized = applyCasePolicy(normalized, options);
+
+        validateLength(normalized, fieldName, options);
+        validateControlCharacters(normalized, fieldName, options);
+        validatePattern(normalized, fieldName, options);
+
+        return normalized;
+    }
+
+    private static String requireNonBlank(String raw, String fieldName) {
         Objects.requireNonNull(raw, fieldName + " must not be null");
 
         String normalized = raw.strip();
@@ -27,32 +39,42 @@ public final class StringValueNormalizer {
             throw new IllegalArgumentException(fieldName + " must not be blank");
         }
 
+        return normalized;
+    }
+
+    private static String applyCasePolicy(String value, Options options) {
         if (options.uppercase()) {
-            normalized = normalized.toUpperCase(Locale.ROOT);
+            return value.toUpperCase(Locale.ROOT);
         }
 
+        return value;
+    }
+
+    private static void validateLength(String value, String fieldName, Options options) {
         Integer exactLength = options.exactLength();
-        if (exactLength != null && normalized.length() != exactLength) {
+        if (exactLength != null && value.length() != exactLength) {
             throw new IllegalArgumentException(fieldName + " length must be " + exactLength);
         }
 
         Integer maxLength = options.maxLength();
-        if (maxLength != null && normalized.length() > maxLength) {
+        if (maxLength != null && value.length() > maxLength) {
             throw new IllegalArgumentException(fieldName + " length must be <= " + maxLength);
         }
+    }
 
-        if (options.rejectControlCharacters() && containsControlCharacter(normalized)) {
+    private static void validateControlCharacters(String value, String fieldName, Options options) {
+        if (options.rejectControlCharacters() && containsControlCharacter(value)) {
             throw new IllegalArgumentException(fieldName + " must not contain control characters");
         }
+    }
 
+    private static void validatePattern(String value, String fieldName, Options options) {
         Pattern pattern = options.pattern();
-        if (pattern != null && !pattern.matcher(normalized).matches()) {
+        if (pattern != null && !pattern.matcher(value).matches()) {
             throw new IllegalArgumentException(
-                    fieldName + " must match pattern " + options.patternDescription() + ": '" + normalized + "'"
+                    fieldName + " must match pattern " + options.patternDescription() + ": '" + value + "'"
             );
         }
-
-        return normalized;
     }
 
     private static boolean containsControlCharacter(String value) {
