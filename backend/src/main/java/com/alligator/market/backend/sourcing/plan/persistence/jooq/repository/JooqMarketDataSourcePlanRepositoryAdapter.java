@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
@@ -34,7 +34,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
     @Override
     public Optional<MarketDataSourcePlan> findByCollectionProcessCodeAndInstrumentCode(
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
@@ -87,7 +87,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            new MarketDataCollectionProcessCode(record.get(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE)),
+                            new CaptureProcessCode(record.get(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE)),
                             new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE))
                     );
 
@@ -198,7 +198,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
     @Override
     public boolean deleteIfExistsByCollectionProcessCodeAndInstrumentCode(
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
@@ -216,7 +216,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Вставляет один источник инструмента. */
     private void insertSource(
             DSLContext dsl,
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode,
             MarketDataSource source
     ) {
@@ -251,7 +251,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     private record PlanKey(
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode
     ) {
     }

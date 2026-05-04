@@ -1,7 +1,7 @@
 package com.alligator.market.domain.sourcing.plan.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface MarketDataSourcePlanRepository {
      * Возвращает план источников по коду процесса и коду инструмента.
      */
     Optional<MarketDataSourcePlan> findByCollectionProcessCodeAndInstrumentCode(
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode
     );
 
@@ -46,7 +46,7 @@ public interface MarketDataSourcePlanRepository {
      * @return true, если план существовал и был удалён; false, если плана не было
      */
     boolean deleteIfExistsByCollectionProcessCodeAndInstrumentCode(
-            MarketDataCollectionProcessCode collectionProcessCode,
+            CaptureProcessCode collectionProcessCode,
             InstrumentCode instrumentCode
     );
 }

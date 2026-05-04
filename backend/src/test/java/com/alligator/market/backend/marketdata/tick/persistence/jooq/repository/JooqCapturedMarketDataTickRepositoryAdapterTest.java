@@ -2,7 +2,7 @@ package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
@@ -69,7 +69,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                 Instant receivedTimestamp = Instant.parse("2026-05-03T10:15:31Z");
 
                 CapturedMarketDataTick tick = new CapturedMarketDataTick(
-                        MarketDataCollectionProcessCode.of(processCode),
+                        CaptureProcessCode.of(processCode),
                         InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM"),
                         ProviderCode.of("MOEX_ISS"),
                         new SourceLastPriceTick(
