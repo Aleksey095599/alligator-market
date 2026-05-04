@@ -9,32 +9,32 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Доменное описание процесса фиксации рыночных данных.
+ * Процесс фиксации рыночных данных.
  */
 public interface MarketDataCaptureProcess {
 
     /**
-     * Уникальный код процесса фиксации рыночных данных.
+     * Уникальный код процесса.
      */
     CaptureProcessCode processCode();
 
     /**
-     * Паспорт процесса фиксации рыночных данных.
+     * Паспорт процесса.
      */
     CaptureProcessPassport passport();
 
     /**
-     * Политика процесса фиксации рыночных данных.
+     * Политика процесса.
      */
     CaptureProcessPolicy policy();
 
     /**
-     * Внутренние инструменты приложения, которые может обслуживать этот процесс.
+     * Коды инструментов, поддерживаемых процессом.
      */
     Set<InstrumentCode> supportedInstrumentCodes();
 
     /**
-     * Проверяет, поддерживается ли инструмент этим процессом фиксации.
+     * Проверяет, поддерживается ли инструмент по коду.
      */
     default boolean supportsInstrument(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
