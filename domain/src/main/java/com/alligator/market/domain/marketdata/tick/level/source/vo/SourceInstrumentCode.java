@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.level.source.vo;
 
-import java.util.Objects;
+import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
  * Идентификатор инструмента в том виде, в котором он приходит из внешнего
@@ -14,35 +14,16 @@ public record SourceInstrumentCode(
 ) {
 
     private static final int MAX_LENGTH = 128;
+    private static final StringValueNormalizer.Options NORMALIZATION_OPTIONS = StringValueNormalizer.options()
+            .maxLength(MAX_LENGTH)
+            .rejectControlCharacters()
+            .build();
 
     public SourceInstrumentCode {
-        value = normalize(value);
+        value = StringValueNormalizer.normalize(value, "sourceInstrumentCode", NORMALIZATION_OPTIONS);
     }
 
     public static SourceInstrumentCode of(String raw) {
         return new SourceInstrumentCode(raw);
-    }
-
-    private static String normalize(String raw) {
-        Objects.requireNonNull(raw, "sourceInstrumentCode must not be null");
-
-        String normalized = raw.strip();
-        if (normalized.isEmpty()) {
-            throw new IllegalArgumentException("sourceInstrumentCode must not be blank");
-        }
-
-        if (normalized.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException("sourceInstrumentCode length must be <= " + MAX_LENGTH);
-        }
-
-        if (containsControlCharacter(normalized)) {
-            throw new IllegalArgumentException("sourceInstrumentCode must not contain control characters");
-        }
-
-        return normalized;
-    }
-
-    private static boolean containsControlCharacter(String value) {
-        return value.chars().anyMatch(Character::isISOControl);
     }
 }
