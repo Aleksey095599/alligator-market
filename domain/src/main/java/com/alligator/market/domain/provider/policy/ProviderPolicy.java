@@ -6,12 +6,12 @@ import java.util.Objects;
 /**
  * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
  *
- * @param minUpdateInterval Минимальный интервал обновления/запроса котировок
+ * @param minUpdateInterval Минимальный интервал обновления/запроса котировок для заданного провайдера
  */
 public record ProviderPolicy(
         Duration minUpdateInterval
 ) {
-    /* Ограничение для минимального интервала обновления/запроса котировок. */
+    /* Ограничение снизу для {@code minUpdateInterval}. */
     private static final Duration MIN_UPDATE_INTERVAL_ALLOWED = Duration.ofSeconds(1);
 
     public ProviderPolicy {
