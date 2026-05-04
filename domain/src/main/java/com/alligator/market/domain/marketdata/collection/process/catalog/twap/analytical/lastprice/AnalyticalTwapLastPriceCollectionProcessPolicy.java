@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.collection.process.twap.analytical.lastprice.policy;
+package com.alligator.market.domain.marketdata.collection.process.catalog.twap.analytical.lastprice;
 
 import com.alligator.market.domain.marketdata.collection.process.policy.CollectionProcessPolicy;
 

@@ -1,10 +1,9 @@
-package com.alligator.market.domain.marketdata.collection.process.twap.analytical.lastprice;
+package com.alligator.market.domain.marketdata.collection.process.catalog.twap.analytical.lastprice;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.collection.process.MarketDataCollectionProcess;
 import com.alligator.market.domain.marketdata.collection.process.passport.CollectionProcessPassport;
 import com.alligator.market.domain.marketdata.collection.process.policy.CollectionProcessPolicy;
-import com.alligator.market.domain.marketdata.collection.process.twap.analytical.lastprice.policy.AnalyticalTwapLastPriceCollectionProcessPolicy;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessDisplayName;
 
