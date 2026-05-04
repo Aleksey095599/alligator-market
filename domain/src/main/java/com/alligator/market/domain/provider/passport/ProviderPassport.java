@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.passport;
 
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
 import com.alligator.market.domain.provider.passport.classification.DeliveryMode;
+import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
 
 import java.util.Objects;
 
@@ -13,36 +14,21 @@ import java.util.Objects;
  * <p>Важный момент: паспорт не определяет бизнес-логику поведения провайдера или связанных процессов;
  * ошибки в паспорте рассматриваются как ошибки метаданных и исправляются без изменения бизнес-логики.</p>
  *
- * @param displayName      Отображаемое имя провайдера (user friendly)
+ * @param displayName      Отображаемое имя провайдера
  * @param deliveryMode     Режим доставки рыночных данных
  * @param accessMethod     Метод доступа к рыночным данным
  * @param bulkSubscription Поддержка массовой подписки одним запросом
  */
 public record ProviderPassport(
-        String displayName,
+        ProviderDisplayName displayName,
         DeliveryMode deliveryMode,
         AccessMethod accessMethod,
         boolean bulkSubscription
 ) {
-    private static final int MAX_DISPLAY_NAME_LENGTH = 50;
 
     public ProviderPassport {
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(deliveryMode, "deliveryMode must not be null");
         Objects.requireNonNull(accessMethod, "accessMethod must not be null");
-
-        String normalizedDisplayName = displayName.strip();
-
-        if (normalizedDisplayName.isEmpty()) {
-            throw new IllegalArgumentException("displayName must not be blank");
-        }
-
-        if (normalizedDisplayName.length() > MAX_DISPLAY_NAME_LENGTH) {
-            throw new IllegalArgumentException(
-                    "displayName length must be <= " + MAX_DISPLAY_NAME_LENGTH + ": " + normalizedDisplayName.length()
-            );
-        }
-
-        displayName = normalizedDisplayName;
     }
 }

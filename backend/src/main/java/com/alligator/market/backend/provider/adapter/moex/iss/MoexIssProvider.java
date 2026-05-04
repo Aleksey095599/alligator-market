@@ -7,6 +7,7 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
 import com.alligator.market.domain.provider.passport.classification.DeliveryMode;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
+import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
 import com.alligator.market.domain.provider.policy.ProviderPolicy;
 
 import java.time.Duration;
@@ -23,7 +24,7 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";
 
     private static final ProviderPassport PASSPORT = new ProviderPassport(
-            DISPLAY_NAME,
+            ProviderDisplayName.of(DISPLAY_NAME),
             DeliveryMode.PULL,
             AccessMethod.API_POLL,
             false

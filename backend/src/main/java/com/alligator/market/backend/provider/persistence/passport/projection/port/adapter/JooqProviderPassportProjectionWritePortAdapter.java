@@ -65,7 +65,7 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
 
             Query query = dsl.insertInto(PROVIDER_PASSPORT)
                     .set(PROVIDER_PASSPORT.PROVIDER_CODE, code.value())
-                    .set(PROVIDER_PASSPORT.DISPLAY_NAME, passport.displayName())
+                    .set(PROVIDER_PASSPORT.DISPLAY_NAME, passport.displayName().value())
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())

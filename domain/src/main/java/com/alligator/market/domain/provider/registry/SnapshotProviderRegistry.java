@@ -2,6 +2,7 @@ package com.alligator.market.domain.provider.registry;
 
 import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
+import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 
 import java.util.*;
@@ -59,14 +60,15 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
                 );
             }
 
-            String displayName = Objects.requireNonNull(passport.displayName(),
+            ProviderDisplayName displayName = Objects.requireNonNull(passport.displayName(),
                     "provider.passport.displayName must not be null");
 
             // Уникальность displayName без учёта регистра
-            String displayNameLower = displayName.toLowerCase(Locale.ROOT);
+            String displayNameValue = displayName.value();
+            String displayNameLower = displayNameValue.toLowerCase(Locale.ROOT);
             if (!displayNamesLower.add(displayNameLower)) {
                 throw new IllegalArgumentException(
-                        "Duplicate provider display name detected (displayName=" + displayName + ")"
+                        "Duplicate provider display name detected (displayName=" + displayNameValue + ")"
                 );
             }
 
