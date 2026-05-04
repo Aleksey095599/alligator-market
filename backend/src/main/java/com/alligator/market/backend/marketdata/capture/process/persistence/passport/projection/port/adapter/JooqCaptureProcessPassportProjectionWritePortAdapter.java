@@ -5,32 +5,23 @@ import com.alligator.market.domain.marketdata.capture.process.passport.CapturePr
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Query;
-import org.jooq.Table;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
+import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
-import static org.jooq.impl.DSL.table;
 
 /**
  * jOOQ-реализация write-порта {@link CaptureProcessPassportProjectionWritePort}.
  */
 public class JooqCaptureProcessPassportProjectionWritePortAdapter
         implements CaptureProcessPassportProjectionWritePort {
-
-    private static final Table<?> CAPTURE_PROCESS_PASSPORT = table(name("capture_process_passport"));
-    private static final Field<String> CAPTURE_PROCESS_CODE =
-            field(name("capture_process_code"), String.class);
-    private static final Field<String> DISPLAY_NAME = field(name("display_name"), String.class);
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
@@ -50,7 +41,7 @@ public class JooqCaptureProcessPassportProjectionWritePortAdapter
         }
 
         dsl.deleteFrom(CAPTURE_PROCESS_PASSPORT)
-                .where(CAPTURE_PROCESS_CODE.notIn(activeValues))
+                .where(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE.notIn(activeValues))
                 .execute();
     }
 
@@ -68,14 +59,15 @@ public class JooqCaptureProcessPassportProjectionWritePortAdapter
             CaptureProcessCode code = entry.getKey();
             CaptureProcessPassport passport = entry.getValue();
 
-            Condition businessFieldsChanged = DISPLAY_NAME.isDistinctFrom(excluded(DISPLAY_NAME));
+            Condition businessFieldsChanged = CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME
+                    .isDistinctFrom(excluded(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME));
 
             Query query = dsl.insertInto(CAPTURE_PROCESS_PASSPORT)
-                    .set(CAPTURE_PROCESS_CODE, code.value())
-                    .set(DISPLAY_NAME, passport.displayName().value())
-                    .onConflict(CAPTURE_PROCESS_CODE)
+                    .set(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE, code.value())
+                    .set(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME, passport.displayName().value())
+                    .onConflict(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE)
                     .doUpdate()
-                    .set(DISPLAY_NAME, excluded(DISPLAY_NAME))
+                    .set(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME, excluded(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME))
                     .where(businessFieldsChanged);
 
             queries.add(query);
