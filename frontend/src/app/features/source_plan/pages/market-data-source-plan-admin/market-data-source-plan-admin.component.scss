@@ -1,22 +1,3 @@
-/* Контейнер страницы с ограничением ширины и единым вертикальным ритмом. */
-.center-box {
-  max-width: 1200px;
-  margin: 24px auto 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 0 20px;
-}
-
-/* Верхняя панель всегда остается доступной при прокрутке таблицы. */
-.toolbar-card {
-  position: sticky;
-  top: 12px;
-  z-index: 10;
-  background: #fff;
-  border-radius: 14px;
-}
-
 /* Основная форма редактирования плана. */
 .editor-form {
   display: flex;
@@ -27,9 +8,9 @@
 /* Логически обособленные секции формы. */
 .form-section {
   padding: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--app-border);
   border-radius: 12px;
-  background: #fafafa;
+  background: var(--app-panel-bg);
 }
 
 /* Заголовок секции с короткой подсказкой. */
@@ -54,7 +35,7 @@
 
 /* Блок с действиями отделяем от контента и выравниваем по правому краю. */
 .form-section--actions {
-  background: #fff;
+  background: var(--app-panel-bg);
 }
 
 /* Поля идентичности плана с компактной адаптивной сеткой. */
@@ -76,7 +57,7 @@
 /* Короткое пояснение для пользователя без перегруза формы. */
 .section-hint {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.56);
+  color: var(--app-text-muted);
 }
 
 /* Заголовок секции sources с action-кнопкой. */
@@ -101,10 +82,15 @@
   grid-template-columns: minmax(220px, 1fr) 120px 140px 56px;
   gap: 12px;
   align-items: center;
-  padding: 12px;
-  border-radius: 10px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.source-row + .source-row {
+  padding-top: 12px;
+  border-top: 1px solid var(--app-border);
 }
 
 /* Ошибки валидации плана. */
@@ -140,18 +126,6 @@
   align-items: center;
 }
 
-/* Контент карточки таблицы без лишних внутренних отступов. */
-.table-content {
-  padding-top: 8px;
-}
-
-/* Таблица планов с аккуратным скроллом на узких экранах. */
-.plans-table {
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
 /* Адаптив для планшетов и мобильных экранов. */
 @media (max-width: 960px) {
   .source-row {
@@ -181,11 +155,6 @@
 }
 
 @media (max-width: 600px) {
-  .center-box {
-    margin-top: 16px;
-    padding: 0 12px;
-  }
-
   .form-section {
     padding: 12px;
   }

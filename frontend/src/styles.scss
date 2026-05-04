@@ -1,17 +1,182 @@
-/* Глобальные стили */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-/* Запрещаем перенос строк в ячейках Angular Material */
-.mat-header-cell,
-.mat-cell {
-  white-space: nowrap;
+:root {
+  --app-page-bg: #f3f5f8;
+  --app-card-bg: #ffffff;
+  --app-panel-bg: #f7f8fa;
+  --app-border: rgba(22, 34, 51, 0.1);
+  --app-border-strong: rgba(22, 34, 51, 0.16);
+  --app-text-muted: rgba(0, 0, 0, 0.58);
+  --app-primary-soft: rgba(0, 86, 179, 0.08);
+  --app-danger-soft: rgba(179, 38, 30, 0.08);
+  --app-shadow: 0 1px 2px rgba(22, 34, 51, 0.08), 0 8px 24px rgba(22, 34, 51, 0.06);
 }
 
-/* Разрешаем прокрутку таблиц по горизонтали */
-.mat-table {
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.87);
+  background: var(--app-page-bg);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-toolbar.mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(22, 34, 51, 0.18);
+}
+
+mat-toolbar .mat-mdc-button {
+  border-radius: 8px;
+}
+
+.center-box {
+  width: min(1180px, calc(100% - 40px));
+  margin: 24px auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.center-box > h1 {
+  margin: 4px 0 0;
+}
+
+.toolbar-card {
+  position: sticky;
+  top: 76px;
+  z-index: 10;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.toolbar .mat-mdc-form-field {
+  flex: 1 1 180px;
+}
+
+.mat-mdc-card {
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-border);
+  border-radius: 14px !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+.mat-mdc-card-header {
+  padding: 18px 20px 0 !important;
+}
+
+.mat-mdc-card-title {
+  font-size: 20px !important;
+  line-height: 1.25 !important;
+}
+
+.mat-mdc-card-content {
+  padding: 16px 20px 20px !important;
   overflow-x: auto;
-  display: block;
 }
 
+.mat-mdc-form-field .mdc-text-field--outlined {
+  background: #fff;
+  border-radius: 8px;
+}
+
+.mat-mdc-form-field {
+  --mat-form-field-container-height: 56px;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  display: table;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  box-shadow: none !important;
+}
+
+.mat-mdc-header-row {
+  background: var(--app-panel-bg);
+}
+
+.mat-mdc-row:hover {
+  background: rgba(0, 0, 0, 0.018);
+}
+
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  white-space: nowrap;
+  border-bottom-color: var(--app-border) !important;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button {
+  border-radius: 999px !important;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.mat-mdc-icon-button {
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.mat-mdc-outlined-button {
+  border-color: var(--app-border-strong) !important;
+  background: #fff !important;
+}
+
+@media (hover: hover) {
+  .mat-mdc-raised-button:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 34, 51, 0.18) !important;
+  }
+
+  .mat-mdc-outlined-button:not(:disabled):hover,
+  .mat-mdc-button:not(:disabled):hover {
+    background: var(--app-primary-soft) !important;
+  }
+
+  .mat-mdc-icon-button:not(:disabled):hover {
+    background: var(--app-primary-soft);
+  }
+
+  .mat-mdc-icon-button[color="warn"]:not(:disabled):hover,
+  .mat-mdc-outlined-button[color="warn"]:not(:disabled):hover,
+  .mat-mdc-button[color="warn"]:not(:disabled):hover {
+    background: var(--app-danger-soft) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .center-box {
+    width: calc(100% - 24px);
+    margin-top: 16px;
+  }
+
+  .toolbar-card {
+    top: 64px;
+  }
+
+  .mat-mdc-card-content {
+    padding: 14px 16px 16px !important;
+  }
+}
