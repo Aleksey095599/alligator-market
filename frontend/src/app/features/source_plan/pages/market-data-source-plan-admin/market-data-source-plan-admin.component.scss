@@ -127,9 +127,17 @@
 
 /* Ячейка с action-кнопками в таблице. */
 .actions-cell {
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Внутренняя строка кнопок не ломает геометрию table-cell. */
+.actions-row {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+  align-items: center;
 }
 
 /* Контент карточки таблицы без лишних внутренних отступов. */
