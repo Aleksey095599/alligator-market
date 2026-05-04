@@ -5,9 +5,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Объект-значение (value object) кода провайдера рыночных данных.
+ * Объект-значение кода провайдера рыночных данных.
  *
- * @param value строковое значение кода провайдера
+ * @param value нормализованный код провайдера
  */
 public record ProviderCode(
         String value
@@ -17,23 +17,14 @@ public record ProviderCode(
     private static final int MAX_LENGTH = 50;
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
-    /**
-     * Конструктор.
-     */
     public ProviderCode {
         value = normalize(value);
     }
 
-    /**
-     * Фабрика для создания объекта из строкового кода.
-     */
     public static ProviderCode of(String raw) {
         return new ProviderCode(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего значения кода провайдера.
-     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "providerCode must not be null");
 

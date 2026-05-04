@@ -7,22 +7,18 @@ import java.util.Objects;
  *
  * @param value непустое имя процесса для интерфейса и диагностики
  */
-public record MarketDataCollectionProcessDisplayName(String value) {
+public record MarketDataCollectionProcessDisplayName(
+        String value
+) {
 
     private static final int MAX_LENGTH = 160;
 
-    /**
-     * Конструктор.
-     */
     public MarketDataCollectionProcessDisplayName {
         value = normalize(value);
     }
 
-    /**
-     * Фабрика для создания объекта из строкового имени.
-     */
-    public static MarketDataCollectionProcessDisplayName of(String value) {
-        return new MarketDataCollectionProcessDisplayName(value);
+    public static MarketDataCollectionProcessDisplayName of(String raw) {
+        return new MarketDataCollectionProcessDisplayName(raw);
     }
 
     private static String normalize(String raw) {

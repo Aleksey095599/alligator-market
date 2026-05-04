@@ -9,23 +9,40 @@ import java.util.Objects;
  *
  * @param value код инструмента в системе источника рыночных данных
  */
-public record SourceInstrumentCode(String value) {
+public record SourceInstrumentCode(
+        String value
+) {
+
+    private static final int MAX_LENGTH = 128;
 
     public SourceInstrumentCode {
-        Objects.requireNonNull(value, "value must not be null");
-
-        if (value.isBlank()) {
-            throw new IllegalArgumentException("value must not be blank");
-        }
+        value = normalize(value);
     }
 
-    /**
-     * Создает код инструмента источника из его строкового значения.
-     *
-     * @param value непустой исходный код инструмента из системы источника
-     * @return код инструмента источника
-     */
-    public static SourceInstrumentCode of(String value) {
-        return new SourceInstrumentCode(value);
+    public static SourceInstrumentCode of(String raw) {
+        return new SourceInstrumentCode(raw);
+    }
+
+    private static String normalize(String raw) {
+        Objects.requireNonNull(raw, "sourceInstrumentCode must not be null");
+
+        String normalized = raw.strip();
+        if (normalized.isEmpty()) {
+            throw new IllegalArgumentException("sourceInstrumentCode must not be blank");
+        }
+
+        if (normalized.length() > MAX_LENGTH) {
+            throw new IllegalArgumentException("sourceInstrumentCode length must be <= " + MAX_LENGTH);
+        }
+
+        if (containsControlCharacter(normalized)) {
+            throw new IllegalArgumentException("sourceInstrumentCode must not contain control characters");
+        }
+
+        return normalized;
+    }
+
+    private static boolean containsControlCharacter(String value) {
+        return value.chars().anyMatch(Character::isISOControl);
     }
 }

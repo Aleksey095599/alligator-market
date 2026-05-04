@@ -5,9 +5,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Объект-значение (value object) кода обработчика.
+ * Объект-значение кода обработчика провайдера.
  *
- * @param value строковое значение кода обработчика
+ * @param value нормализованный код обработчика
  */
 public record HandlerCode(
         String value
@@ -17,23 +17,14 @@ public record HandlerCode(
     private static final int MAX_LENGTH = 50;
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
-    /**
-     * Конструктор.
-     */
     public HandlerCode {
         value = normalize(value);
     }
 
-    /**
-     * Фабрика для создания объекта из строкового кода.
-     */
     public static HandlerCode of(String raw) {
         return new HandlerCode(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего значения кода обработчика.
-     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "handlerCode must not be null");
 

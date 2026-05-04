@@ -5,42 +5,26 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Объект-значение (value object) символа инструмента.
+ * Объект-значение торгового символа инструмента.
  *
- * <p>Причина создания: гарантировать единый формат символа без единообразных проверок.</p>
- *
- * @param value строковое значение символа инструмента
+ * @param value нормализованный символ инструмента
  */
 public record InstrumentSymbol(
         String value
 ) {
 
-    /* Шаблон допустимых символов для "символа инструмента". */
-    public static final String PATTERN = "^[A-Z0-9_]+$";
-
-    /* Максимальная длина символа инструмента. */
+    private static final String PATTERN = "^[A-Z0-9_]+$";
     private static final int MAX_LENGTH = 50;
-
-    /* Шаблон для валидации символа инструмента. */
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
-    /**
-     * Конструктор.
-     */
     public InstrumentSymbol {
         value = normalize(value);
     }
 
-    /**
-     * Фабрика для создания объекта из строкового символа.
-     */
     public static InstrumentSymbol of(String raw) {
         return new InstrumentSymbol(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего строкового значения символа инструмента.
-     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "instrumentSymbol must not be null");
 

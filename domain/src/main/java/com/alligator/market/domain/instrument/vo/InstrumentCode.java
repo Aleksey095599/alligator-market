@@ -5,43 +5,26 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Объект-значение (value object) уникального кода инструмента.
+ * Объект-значение уникального внутреннего кода инструмента.
  *
- * <p>Причина создания: код инструмента используется многократно в разных слоях приложения,
- * поэтому важно гарантировать единый формат кода без многократных единообразных проверок.</p>
- *
- * @param value строковое значение кода инструмента
+ * @param value нормализованный код инструмента
  */
 public record InstrumentCode(
         String value
 ) {
 
-    /* Шаблон допустимых символов для кода инструмента. */
-    public static final String PATTERN = "^[A-Z0-9_]+$";
-
-    /* Максимальная длина кода инструмента. */
+    private static final String PATTERN = "^[A-Z0-9_]+$";
     private static final int MAX_LENGTH = 50;
-
-    /* Шаблон для валидации кода инструмента. */
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
-    /**
-     * Конструктор.
-     */
     public InstrumentCode {
         value = normalize(value);
     }
 
-    /**
-     * Фабрика для создания объекта из строкового кода.
-     */
     public static InstrumentCode of(String raw) {
         return new InstrumentCode(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего строкового значения кода инструмента.
-     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "instrumentCode must not be null");
 
