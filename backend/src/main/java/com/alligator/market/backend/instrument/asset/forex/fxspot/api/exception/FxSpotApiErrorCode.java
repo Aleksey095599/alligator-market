@@ -7,7 +7,6 @@ public enum FxSpotApiErrorCode {
 
     FX_SPOT_ALREADY_EXISTS,
     FX_SPOT_NOT_FOUND,
-    FX_SPOT_SAME_CURRENCIES,
     FX_SPOT_IN_USE,
 
     // Ошибка reference lookup при создании FOREX_SPOT.
