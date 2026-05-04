@@ -10,21 +10,23 @@ import java.util.*;
 /**
  * План источников рыночных данных для конкретного процесса сбора рыночных данных и конкретного инструмента.
  *
- * <p>Назначение: Позволяет по коду процесса и коду инструмента получить список
- * источников рыночных данных {@link MarketDataSource}, отсортированных по приоритету.</p>
+ * <p>Назначение: Позволяет по коду процесса и коду инструмента получить список источников
+ * рыночных данных {@link MarketDataSource}.</p>
  */
 @SuppressWarnings("ClassCanBeRecord")
 public final class MarketDataSourcePlan {
 
-    /* Код процесса сбора рыночных данных. */
     private final MarketDataCollectionProcessCode collectionProcessCode;
-
-    /* Код инструмента. */
     private final InstrumentCode instrumentCode;
-
-    /* Список источников рыночных данных, отсортированный по приоритету. */
     private final List<MarketDataSource> sources;
 
+    /**
+     * Конструктор для создания плана источников рыночных данных.
+     *
+     * @param collectionProcessCode Код процесса сбора рыночных данных
+     * @param instrumentCode        Код инструмента
+     * @param sources               Список источников рыночных данных
+     */
     public MarketDataSourcePlan(
             MarketDataCollectionProcessCode collectionProcessCode,
             InstrumentCode instrumentCode,
@@ -52,15 +54,13 @@ public final class MarketDataSourcePlan {
         return sources;
     }
 
-    /**
-     * Создает копию списка источников и выполняет валидацию.
-     */
+    /* Создает копию списка источников и выполняет валидацию. */
     private static List<MarketDataSource> copyAndValidateSources(List<MarketDataSource> sources) {
         if (sources.isEmpty()) {
             throw new IllegalArgumentException("sources must not be empty");
         }
 
-        List<MarketDataSource> sourceCopy = new ArrayList<>(sources.size());
+        List<MarketDataSource> sourcesValidated = new ArrayList<>(sources.size());
         Set<ProviderCode> providerCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
@@ -81,11 +81,9 @@ public final class MarketDataSourcePlan {
                 );
             }
 
-            sourceCopy.add(sourceToCheck);
+            sourcesValidated.add(sourceToCheck);
         }
 
-        // Сортируем порядок источников по приоритету (чем выше приоритет источника, тем ниже значение priority)
-        sourceCopy.sort(Comparator.comparingInt(MarketDataSource::priority));
-        return List.copyOf(sourceCopy);
+        return List.copyOf(sourcesValidated);
     }
 }
