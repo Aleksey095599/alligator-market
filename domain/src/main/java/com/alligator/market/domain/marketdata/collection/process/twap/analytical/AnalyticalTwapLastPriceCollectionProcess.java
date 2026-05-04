@@ -7,6 +7,8 @@ import com.alligator.market.domain.marketdata.collection.process.policy.Collecti
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessDisplayName;
 
+import java.time.Duration;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,10 +25,13 @@ public final class AnalyticalTwapLastPriceCollectionProcess implements MarketDat
     public static final CollectionProcessPassport PASSPORT =
             new CollectionProcessPassport(DISPLAY_NAME);
 
-    private final CollectionProcessPolicy policy;
+    public static final CollectionProcessPolicy POLICY =
+            new CollectionProcessPolicy(Duration.ofSeconds(1));
+
+    private final Set<InstrumentCode> supportedInstrumentCodes;
 
     public AnalyticalTwapLastPriceCollectionProcess(Set<InstrumentCode> supportedInstrumentCodes) {
-        this.policy = new CollectionProcessPolicy(supportedInstrumentCodes);
+        this.supportedInstrumentCodes = copySupportedInstrumentCodes(supportedInstrumentCodes);
     }
 
     @Override
@@ -41,6 +46,25 @@ public final class AnalyticalTwapLastPriceCollectionProcess implements MarketDat
 
     @Override
     public CollectionProcessPolicy policy() {
-        return policy;
+        return POLICY;
+    }
+
+    @Override
+    public Set<InstrumentCode> supportedInstrumentCodes() {
+        return supportedInstrumentCodes;
+    }
+
+    private static Set<InstrumentCode> copySupportedInstrumentCodes(Set<InstrumentCode> raw) {
+        Objects.requireNonNull(raw, "supportedInstrumentCodes must not be null");
+
+        if (raw.isEmpty()) {
+            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
+        }
+
+        for (InstrumentCode instrumentCode : raw) {
+            Objects.requireNonNull(instrumentCode, "supportedInstrumentCodes must not contain null");
+        }
+
+        return Set.copyOf(raw);
     }
 }

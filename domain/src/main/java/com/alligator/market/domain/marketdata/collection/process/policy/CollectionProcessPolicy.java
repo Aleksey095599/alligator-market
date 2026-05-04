@@ -1,34 +1,24 @@
 package com.alligator.market.domain.marketdata.collection.process.policy;
 
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
-
+import java.time.Duration;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Политика процесса сбора рыночных данных: иммутабельные параметры для бизнес-логики.
  *
- * @param supportedInstrumentCodes внутренние инструменты приложения, которые может обслуживать процесс
+ * @param captureInterval интервал между запросами котировок в рамках процесса сбора
  */
 public record CollectionProcessPolicy(
-        Set<InstrumentCode> supportedInstrumentCodes
+        Duration captureInterval
 ) {
 
+    private static final Duration MIN_CAPTURE_INTERVAL = Duration.ofSeconds(1);
+
     public CollectionProcessPolicy {
-        supportedInstrumentCodes = copySupportedInstrumentCodes(supportedInstrumentCodes);
-    }
+        Objects.requireNonNull(captureInterval, "captureInterval must not be null");
 
-    private static Set<InstrumentCode> copySupportedInstrumentCodes(Set<InstrumentCode> raw) {
-        Objects.requireNonNull(raw, "supportedInstrumentCodes must not be null");
-
-        if (raw.isEmpty()) {
-            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
+        if (captureInterval.compareTo(MIN_CAPTURE_INTERVAL) < 0) {
+            throw new IllegalArgumentException("captureInterval must be >= PT1S");
         }
-
-        for (InstrumentCode instrumentCode : raw) {
-            Objects.requireNonNull(instrumentCode, "supportedInstrumentCodes must not contain null");
-        }
-
-        return Set.copyOf(raw);
     }
 }
