@@ -30,11 +30,11 @@ public class ReplaceMarketDataSourcePlanMapper {
      * Преобразует запрос {@link ReplaceMarketDataSourcePlanRequest} в доменную модель {@link MarketDataSourcePlan}.
      */
     public MarketDataSourcePlan toPlan(
-            String collectionProcessCode,
+            String captureProcessCode,
             String instrumentCode,
             ReplaceMarketDataSourcePlanRequest request
     ) {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         List<MarketDataSource> sources = request.sources().stream()
@@ -42,7 +42,7 @@ public class ReplaceMarketDataSourcePlanMapper {
                 .toList();
 
         return new MarketDataSourcePlan(
-                new CaptureProcessCode(collectionProcessCode),
+                new CaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode),
                 sources
         );

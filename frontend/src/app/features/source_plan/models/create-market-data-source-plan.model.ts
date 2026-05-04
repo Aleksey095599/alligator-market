@@ -5,7 +5,7 @@ export interface MarketDataSourceRequestDto {
 }
 
 export interface CreateMarketDataSourcePlanDto {
-  collectionProcessCode: string;
+  captureProcessCode: string;
   instrumentCode: string;
   sources: MarketDataSourceRequestDto[];
 }

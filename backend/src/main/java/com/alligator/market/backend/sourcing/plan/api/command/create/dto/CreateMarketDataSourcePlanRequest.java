@@ -12,9 +12,9 @@ import java.util.List;
  */
 public record CreateMarketDataSourcePlanRequest(
 
-        /* Код процесса сбора рыночных данных, для которого создаётся новый план источников. */
-        @NotBlank(message = "collectionProcessCode must not be blank")
-        String collectionProcessCode,
+        /* Код процесса фиксации рыночных данных, для которого создаётся новый план источников. */
+        @NotBlank(message = "captureProcessCode must not be blank")
+        String captureProcessCode,
 
         /* Код инструмента, для которого создаётся новый план источников. */
         @NotBlank(message = "instrumentCode must not be blank")

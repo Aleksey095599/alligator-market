@@ -18,6 +18,12 @@ export const routes: Routes = [
         .then(m => m.ProviderPassportModule)
   },
   {
+    path: 'market-data-capture-processes',
+    loadChildren: () =>
+      import('./features/capture_process_passport/capture-process-passport.module')
+        .then(m => m.CaptureProcessPassportModule)
+  },
+  {
     path: 'market-data-source-plans',
     loadChildren: () =>
       import('./features/source_plan/market-data-source-plan.module')

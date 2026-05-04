@@ -11,11 +11,11 @@ import java.util.Objects;
 public final class MarketDataSourcePlanNotFoundException extends IllegalStateException {
 
     public MarketDataSourcePlanNotFoundException(
-            CaptureProcessCode collectionProcessCode,
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
-        super("Market data source plan for collection process '" +
-                Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null").value() +
+        super("Market data source plan for capture process '" +
+                Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null").value() +
                 "' and instrument '" +
                 Objects.requireNonNull(instrumentCode, "instrumentCode must not be null").value() +
                 "' does not exist");

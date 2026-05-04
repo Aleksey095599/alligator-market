@@ -29,16 +29,16 @@ public class DeleteMarketDataSourcePlanController {
     /**
      * Удаляет план источников для заданного инструмента.
      */
-    @DeleteMapping("/{collectionProcessCode}/{instrumentCode}")
+    @DeleteMapping("/{captureProcessCode}/{instrumentCode}")
     public ResponseEntity<Void> delete(
-            @PathVariable String collectionProcessCode,
+            @PathVariable String captureProcessCode,
             @PathVariable String instrumentCode
     ) {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         deleteMarketDataSourcePlanService.delete(
-                new CaptureProcessCode(collectionProcessCode),
+                new CaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode)
         );
         return ResponseEntity.noContent().build();

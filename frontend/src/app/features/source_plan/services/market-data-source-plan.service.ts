@@ -28,13 +28,13 @@ export class MarketDataSourcePlanService {
       .pipe(map(res => res.plans ?? []));
   }
 
-  /* Получить whole-plan по collectionProcessCode и instrumentCode. */
+  /* Получить whole-plan по captureProcessCode и instrumentCode. */
   get(
-    collectionProcessCode: string,
+    captureProcessCode: string,
     instrumentCode: string
   ): Observable<MarketDataSourcePlanResponseDto> {
     return this.http.get<MarketDataSourcePlanResponseDto>(
-      `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`
+      `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`
     );
   }
 
@@ -50,25 +50,25 @@ export class MarketDataSourcePlanService {
       .pipe(map(() => undefined));
   }
 
-  /* Полностью заменить whole-plan по collectionProcessCode и instrumentCode. */
+  /* Полностью заменить whole-plan по captureProcessCode и instrumentCode. */
   replace(
-    collectionProcessCode: string,
+    captureProcessCode: string,
     instrumentCode: string,
     dto: ReplaceMarketDataSourcePlanDto
   ): Observable<void> {
     return this.http
       .put<void>(
-        `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`,
+        `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`,
         dto
       )
       .pipe(map(() => undefined));
   }
 
-  /* Удалить whole-plan по collectionProcessCode и instrumentCode. */
-  delete(collectionProcessCode: string, instrumentCode: string): Observable<void> {
+  /* Удалить whole-plan по captureProcessCode и instrumentCode. */
+  delete(captureProcessCode: string, instrumentCode: string): Observable<void> {
     return this.http
       .delete<void>(
-        `${this.baseUrl}/${this.pathSegment(collectionProcessCode)}/${this.pathSegment(instrumentCode)}`
+        `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`
       )
       .pipe(map(() => undefined));
   }

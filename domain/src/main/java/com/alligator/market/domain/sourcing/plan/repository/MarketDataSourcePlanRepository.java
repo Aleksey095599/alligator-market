@@ -15,8 +15,8 @@ public interface MarketDataSourcePlanRepository {
     /**
      * Возвращает план источников по коду процесса и коду инструмента.
      */
-    Optional<MarketDataSourcePlan> findByCollectionProcessCodeAndInstrumentCode(
-            CaptureProcessCode collectionProcessCode,
+    Optional<MarketDataSourcePlan> findByCaptureProcessCodeAndInstrumentCode(
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     );
 
@@ -45,8 +45,8 @@ public interface MarketDataSourcePlanRepository {
      *
      * @return true, если план существовал и был удалён; false, если плана не было
      */
-    boolean deleteIfExistsByCollectionProcessCodeAndInstrumentCode(
-            CaptureProcessCode collectionProcessCode,
+    boolean deleteIfExistsByCaptureProcessCodeAndInstrumentCode(
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     );
 }

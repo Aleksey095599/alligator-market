@@ -50,16 +50,16 @@ public final class ReplaceMarketDataSourcePlanService {
         boolean replaced = marketDataSourcePlanRepository.replaceIfExists(plan);
         if (!replaced) {
             log.warn(
-                    "Market data source plan was not found and was not replaced: collectionProcessCode={}, instrumentCode={}",
-                    plan.collectionProcessCode().value(),
+                    "Market data source plan was not found and was not replaced: captureProcessCode={}, instrumentCode={}",
+                    plan.captureProcessCode().value(),
                     plan.instrumentCode().value()
             );
-            throw new MarketDataSourcePlanNotFoundException(plan.collectionProcessCode(), plan.instrumentCode());
+            throw new MarketDataSourcePlanNotFoundException(plan.captureProcessCode(), plan.instrumentCode());
         }
 
         log.info(
-                "Market data source plan replaced: collectionProcessCode={}, instrumentCode={}, sourceCount={}",
-                plan.collectionProcessCode().value(),
+                "Market data source plan replaced: captureProcessCode={}, instrumentCode={}, sourceCount={}",
+                plan.captureProcessCode().value(),
                 plan.instrumentCode().value(),
                 plan.sources().size()
         );

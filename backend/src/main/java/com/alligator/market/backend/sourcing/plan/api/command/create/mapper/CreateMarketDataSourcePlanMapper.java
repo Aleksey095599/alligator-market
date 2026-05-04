@@ -35,7 +35,7 @@ public class CreateMarketDataSourcePlanMapper {
                 .toList();
 
         return new MarketDataSourcePlan(
-                new CaptureProcessCode(request.collectionProcessCode()),
+                new CaptureProcessCode(request.captureProcessCode()),
                 new InstrumentCode(request.instrumentCode()),
                 sources
         );

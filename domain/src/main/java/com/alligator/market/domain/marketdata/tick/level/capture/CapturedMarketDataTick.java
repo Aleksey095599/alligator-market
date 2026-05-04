@@ -12,21 +12,21 @@ import java.util.Objects;
  * Captured-level рыночный тик, полученный с помощью добавления к {@link SourceMarketDataTick} полей,
  * содержащих метаданные приложения на момент фиксации тика.
  *
- * @param collectionProcessCode код процесса сбора рыночных данных
+ * @param captureProcessCode код процесса фиксации рыночных данных
  * @param instrumentCode        внутренний код инструмента приложения
  * @param providerCode          код провайдера рыночных данных
  * @param sourceTick            source-level тик, полученный от источника
  * @param receivedTimestamp     момент получения или фиксации тика приложением
  */
 public record CapturedMarketDataTick(
-        CaptureProcessCode collectionProcessCode,
+        CaptureProcessCode captureProcessCode,
         InstrumentCode instrumentCode,
         ProviderCode providerCode,
         SourceMarketDataTick sourceTick,
         Instant receivedTimestamp
 ) {
     public CapturedMarketDataTick {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(providerCode, "providerCode must not be null");
         Objects.requireNonNull(sourceTick, "sourceTick must not be null");

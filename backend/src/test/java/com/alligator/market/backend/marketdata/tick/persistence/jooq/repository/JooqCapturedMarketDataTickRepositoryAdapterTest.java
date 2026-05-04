@@ -37,7 +37,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
     private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
 
     private static final Field<Long> ID = field(name("id"), Long.class);
-    private static final Field<String> COLLECTION_PROCESS_CODE = field(name("collection_process_code"), String.class);
+    private static final Field<String> CAPTURE_PROCESS_CODE = field(name("collection_process_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
     private static final Field<String> PROVIDER_CODE = field(name("provider_code"), String.class);
     private static final Field<String> SOURCE_TICK_TYPE = field(name("source_tick_type"), String.class);
@@ -84,7 +84,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
 
                 Record record = dsl.select(
                                 ID,
-                                COLLECTION_PROCESS_CODE,
+                                CAPTURE_PROCESS_CODE,
                                 INSTRUMENT_CODE,
                                 PROVIDER_CODE,
                                 SOURCE_TICK_TYPE,
@@ -96,13 +96,13 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                                 ASK_PRICE
                         )
                         .from(CAPTURED_MARKET_DATA_TICK)
-                        .where(COLLECTION_PROCESS_CODE.eq(processCode))
+                        .where(CAPTURE_PROCESS_CODE.eq(processCode))
                         .fetchOne();
 
                 assertNotNull(record);
                 assertNotNull(record.get(ID));
 
-                assertEquals(processCode, record.get(COLLECTION_PROCESS_CODE));
+                assertEquals(processCode, record.get(CAPTURE_PROCESS_CODE));
                 assertEquals("FOREX_SPOT_CNYRUB_TOM", record.get(INSTRUMENT_CODE));
                 assertEquals("MOEX_ISS", record.get(PROVIDER_CODE));
                 assertEquals(SourceMarketDataTickType.LAST_PRICE.name(), record.get(SOURCE_TICK_TYPE));

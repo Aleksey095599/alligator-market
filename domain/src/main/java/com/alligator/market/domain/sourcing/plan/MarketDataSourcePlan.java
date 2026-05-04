@@ -8,7 +8,7 @@ import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import java.util.*;
 
 /**
- * План источников рыночных данных для конкретного процесса сбора рыночных данных и конкретного инструмента.
+ * План источников рыночных данных для конкретного процесса фиксации рыночных данных и конкретного инструмента.
  *
  * <p>Назначение: Позволяет по коду процесса и коду инструмента получить список источников
  * рыночных данных {@link MarketDataSource}.</p>
@@ -16,25 +16,25 @@ import java.util.*;
 @SuppressWarnings("ClassCanBeRecord")
 public final class MarketDataSourcePlan {
 
-    private final CaptureProcessCode collectionProcessCode;
+    private final CaptureProcessCode captureProcessCode;
     private final InstrumentCode instrumentCode;
     private final List<MarketDataSource> sources;
 
     /**
      * Конструктор для создания плана источников рыночных данных.
      *
-     * @param collectionProcessCode Код процесса сбора рыночных данных
+     * @param captureProcessCode Код процесса фиксации рыночных данных
      * @param instrumentCode        Код инструмента
      * @param sources               Список источников рыночных данных
      */
     public MarketDataSourcePlan(
-            CaptureProcessCode collectionProcessCode,
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode,
             List<MarketDataSource> sources
     ) {
-        this.collectionProcessCode = Objects.requireNonNull(
-                collectionProcessCode,
-                "collectionProcessCode must not be null"
+        this.captureProcessCode = Objects.requireNonNull(
+                captureProcessCode,
+                "captureProcessCode must not be null"
         );
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
@@ -42,8 +42,8 @@ public final class MarketDataSourcePlan {
         this.sources = copyAndValidateSources(sources);
     }
 
-    public CaptureProcessCode collectionProcessCode() {
-        return collectionProcessCode;
+    public CaptureProcessCode captureProcessCode() {
+        return captureProcessCode;
     }
 
     public InstrumentCode instrumentCode() {

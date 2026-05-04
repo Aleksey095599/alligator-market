@@ -27,14 +27,14 @@ public final class GetMarketDataSourcePlanService {
      * Возвращает план источников для инструмента.
      */
     public MarketDataSourcePlan get(
-            CaptureProcessCode collectionProcessCode,
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return marketDataSourcePlanRepository
-                .findByCollectionProcessCodeAndInstrumentCode(collectionProcessCode, instrumentCode)
-                .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(collectionProcessCode, instrumentCode));
+                .findByCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode)
+                .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode));
     }
 }

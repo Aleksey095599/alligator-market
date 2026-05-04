@@ -30,27 +30,27 @@ public final class DeleteMarketDataSourcePlanService {
      * Удаляет существующий план источников для инструмента.
      */
     public void delete(
-            CaptureProcessCode collectionProcessCode,
+            CaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Условно удаляем root-plan и сигнализируем, если его не было
         boolean deleted = marketDataSourcePlanRepository
-                .deleteIfExistsByCollectionProcessCodeAndInstrumentCode(collectionProcessCode, instrumentCode);
+                .deleteIfExistsByCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode);
         if (!deleted) {
             log.warn(
-                    "Market data source plan was not found and was not deleted: collectionProcessCode={}, instrumentCode={}",
-                    collectionProcessCode.value(),
+                    "Market data source plan was not found and was not deleted: captureProcessCode={}, instrumentCode={}",
+                    captureProcessCode.value(),
                     instrumentCode.value()
             );
-            throw new MarketDataSourcePlanNotFoundException(collectionProcessCode, instrumentCode);
+            throw new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode);
         }
 
         log.info(
-                "Market data source plan deleted: collectionProcessCode={}, instrumentCode={}",
-                collectionProcessCode.value(),
+                "Market data source plan deleted: captureProcessCode={}, instrumentCode={}",
+                captureProcessCode.value(),
                 instrumentCode.value()
         );
     }

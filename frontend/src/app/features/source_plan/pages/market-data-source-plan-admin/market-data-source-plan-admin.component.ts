@@ -63,7 +63,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   };
 
   /* Колонки таблицы с существующими планами. */
-  displayed: string[] = ['collectionProcessCode', 'instrumentCode', 'sourceCount', 'firstProvider', 'actions'];
+  displayed: string[] = ['captureProcessCode', 'instrumentCode', 'sourceCount', 'firstProvider', 'actions'];
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
@@ -75,7 +75,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Режим редактора: create/edit. */
   editing = false;
   /* Текущий выбранный план в режиме редактирования. */
-  selectedCollectionProcessCode: string | null = null;
+  selectedCaptureProcessCode: string | null = null;
   selectedInstrumentCode: string | null = null;
 
   /* Главная форма whole-plan редактора. */
@@ -87,7 +87,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     private readonly snack: MatSnackBar
   ) {
     this.form = this.fb.group({
-      collectionProcessCode: ['', [Validators.required, MarketDataSourcePlanAdminComponent.notBlank]],
+      captureProcessCode: ['', [Validators.required, MarketDataSourcePlanAdminComponent.notBlank]],
       instrumentCode: ['', [Validators.required]],
       sources: this.fb.array([])
     });
@@ -181,14 +181,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
   /* Загрузить план в editor и перейти в edit mode. */
   onLoadPlan(plan: MarketDataSourcePlanResponseDto): void {
-    this.service.get(plan.collectionProcessCode, plan.instrumentCode).subscribe({
+    this.service.get(plan.captureProcessCode, plan.instrumentCode).subscribe({
       next: fullPlan => {
         this.editing = true;
-        this.selectedCollectionProcessCode = fullPlan.collectionProcessCode;
+        this.selectedCaptureProcessCode = fullPlan.captureProcessCode;
         this.selectedInstrumentCode = fullPlan.instrumentCode;
 
-        this.form.controls['collectionProcessCode'].setValue(fullPlan.collectionProcessCode);
-        this.form.controls['collectionProcessCode'].disable();
+        this.form.controls['captureProcessCode'].setValue(fullPlan.captureProcessCode);
+        this.form.controls['captureProcessCode'].disable();
         this.form.controls['instrumentCode'].setValue(fullPlan.instrumentCode);
         this.form.controls['instrumentCode'].disable();
 
@@ -213,14 +213,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
     this.locked = true;
 
-    const collectionProcessCode = this.form.controls['collectionProcessCode'].value;
+    const captureProcessCode = this.form.controls['captureProcessCode'].value;
     const instrumentCode = this.form.controls['instrumentCode'].value;
     const sources = this.collectSortedSources();
 
-    this.service.create({ collectionProcessCode, instrumentCode, sources }).subscribe({
+    this.service.create({ captureProcessCode, instrumentCode, sources }).subscribe({
       next: () => {
         this.snack.open(
-          `Plan '${collectionProcessCode}' for '${instrumentCode}' created`,
+          `Plan '${captureProcessCode}' for '${instrumentCode}' created`,
           'OK',
           { duration: 2500 }
         );
@@ -239,21 +239,21 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     if (
       this.hasPlanValidationError
       || this.locked
-      || !this.selectedCollectionProcessCode
+      || !this.selectedCaptureProcessCode
       || !this.selectedInstrumentCode
     ) {
       return;
     }
 
     this.locked = true;
-    const collectionProcessCode = this.selectedCollectionProcessCode;
+    const captureProcessCode = this.selectedCaptureProcessCode;
     const instrumentCode = this.selectedInstrumentCode;
     const sources = this.collectSortedSources();
 
-    this.service.replace(collectionProcessCode, instrumentCode, { sources }).subscribe({
+    this.service.replace(captureProcessCode, instrumentCode, { sources }).subscribe({
       next: () => {
         this.snack.open(
-          `Plan '${collectionProcessCode}' for '${instrumentCode}' replaced`,
+          `Plan '${captureProcessCode}' for '${instrumentCode}' replaced`,
           'OK',
           { duration: 2500 }
         );
@@ -268,29 +268,29 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
   /* Удалить выбранный план из editor-а. */
   onDeleteSelected(): void {
-    if (!this.selectedCollectionProcessCode || !this.selectedInstrumentCode || this.locked) {
+    if (!this.selectedCaptureProcessCode || !this.selectedInstrumentCode || this.locked) {
       return;
     }
 
-    this.deletePlan(this.selectedCollectionProcessCode, this.selectedInstrumentCode, true);
+    this.deletePlan(this.selectedCaptureProcessCode, this.selectedInstrumentCode, true);
   }
 
   /* Удалить план из нижнего списка. */
   onDeleteFromList(plan: MarketDataSourcePlanResponseDto): void {
-    const isCurrentPlan = this.selectedCollectionProcessCode === plan.collectionProcessCode
+    const isCurrentPlan = this.selectedCaptureProcessCode === plan.captureProcessCode
       && this.selectedInstrumentCode === plan.instrumentCode;
-    this.deletePlan(plan.collectionProcessCode, plan.instrumentCode, isCurrentPlan);
+    this.deletePlan(plan.captureProcessCode, plan.instrumentCode, isCurrentPlan);
   }
 
   /* Сбросить форму и вернуться в create mode. */
   onReset(): void {
     this.editing = false;
-    this.selectedCollectionProcessCode = null;
+    this.selectedCaptureProcessCode = null;
     this.selectedInstrumentCode = null;
     this.locked = false;
 
-    this.form.reset({ collectionProcessCode: '', instrumentCode: '' });
-    this.form.controls['collectionProcessCode'].enable();
+    this.form.reset({ captureProcessCode: '', instrumentCode: '' });
+    this.form.controls['captureProcessCode'].enable();
     this.form.controls['instrumentCode'].enable();
 
     this.sources.clear();
@@ -325,14 +325,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
   /* Унифицированное удаление плана (из editor или из списка). */
   private deletePlan(
-    collectionProcessCode: string,
+    captureProcessCode: string,
     instrumentCode: string,
     resetEditor: boolean
   ): void {
-    this.service.delete(collectionProcessCode, instrumentCode).subscribe({
+    this.service.delete(captureProcessCode, instrumentCode).subscribe({
       next: () => {
         this.snack.open(
-          `Plan '${collectionProcessCode}' for '${instrumentCode}' deleted`,
+          `Plan '${captureProcessCode}' for '${instrumentCode}' deleted`,
           'OK',
           { duration: 2500 }
         );

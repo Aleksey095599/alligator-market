@@ -52,16 +52,16 @@ public final class CreateMarketDataSourcePlanService {
         // Атомарно создаём план, если он ещё не существует
         if (!marketDataSourcePlanRepository.createIfAbsent(plan)) {
             log.warn(
-                    "Market data source plan already exists and was not created: collectionProcessCode={}, instrumentCode={}",
-                    plan.collectionProcessCode().value(),
+                    "Market data source plan already exists and was not created: captureProcessCode={}, instrumentCode={}",
+                    plan.captureProcessCode().value(),
                     plan.instrumentCode().value()
             );
-            throw new MarketDataSourcePlanAlreadyExistsException(plan.collectionProcessCode(), plan.instrumentCode());
+            throw new MarketDataSourcePlanAlreadyExistsException(plan.captureProcessCode(), plan.instrumentCode());
         }
 
         log.info(
-                "Market data source plan created: collectionProcessCode={}, instrumentCode={}, sourceCount={}",
-                plan.collectionProcessCode().value(),
+                "Market data source plan created: captureProcessCode={}, instrumentCode={}, sourceCount={}",
+                plan.captureProcessCode().value(),
                 plan.instrumentCode().value(),
                 plan.sources().size()
         );

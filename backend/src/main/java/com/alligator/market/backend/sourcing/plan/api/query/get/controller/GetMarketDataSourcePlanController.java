@@ -38,16 +38,16 @@ public class GetMarketDataSourcePlanController {
     /**
      * Возвращает план источников для заданного инструмента.
      */
-    @GetMapping("/{collectionProcessCode}/{instrumentCode}")
+    @GetMapping("/{captureProcessCode}/{instrumentCode}")
     public ResponseEntity<MarketDataSourcePlanResponse> get(
-            @PathVariable String collectionProcessCode,
+            @PathVariable String captureProcessCode,
             @PathVariable String instrumentCode
     ) {
-        Objects.requireNonNull(collectionProcessCode, "collectionProcessCode must not be null");
+        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         MarketDataSourcePlan plan = getMarketDataSourcePlanService.get(
-                new CaptureProcessCode(collectionProcessCode),
+                new CaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode)
         );
         return ResponseEntity.ok(responseMapper.toPlanResponse(plan));
