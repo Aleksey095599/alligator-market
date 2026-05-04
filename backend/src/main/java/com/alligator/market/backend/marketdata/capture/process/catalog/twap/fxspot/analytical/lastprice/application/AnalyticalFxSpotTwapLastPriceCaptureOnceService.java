@@ -1,14 +1,14 @@
-package com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application;
+package com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application;
 
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application.exception.AnalyticalTwapLastPriceActiveSourceNotFoundException;
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application.exception.AnalyticalTwapLastPriceFxSpotInstrumentNotFoundException;
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application.exception.AnalyticalTwapLastPriceProviderNotFoundException;
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application.exception.AnalyticalTwapLastPriceSourcePlanNotFoundException;
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.analytical.lastprice.application.exception.AnalyticalTwapLastPriceSourceTickNotReceivedException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceActiveSourceNotFoundException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceInstrumentNotFoundException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceProviderNotFoundException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.catalog.twap.analytical.lastprice.AnalyticalTwapLastPrice;
+import com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPrice;
 import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
@@ -26,21 +26,21 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * Use case одного шага фиксации тика для процесса {@code ANALYTICAL_TWAP_LAST_PRICE}.
+ * Use case одного шага фиксации тика для процесса {@code ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE}.
  */
-public final class AnalyticalTwapLastPriceCaptureOnceService {
+public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
 
     private static final Duration SOURCE_TICK_WAIT_TIMEOUT = Duration.ofSeconds(30);
 
-    private final AnalyticalTwapLastPrice process;
+    private final AnalyticalFxSpotTwapLastPrice process;
     private final MarketDataSourcePlanRepository sourcePlanRepository;
     private final ProviderRegistry providerRegistry;
     private final FxSpotRepository fxSpotRepository;
     private final CapturedMarketDataTickRepository capturedTickRepository;
     private final Clock clock;
 
-    public AnalyticalTwapLastPriceCaptureOnceService(
-            AnalyticalTwapLastPrice process,
+    public AnalyticalFxSpotTwapLastPriceCaptureOnceService(
+            AnalyticalFxSpotTwapLastPrice process,
             MarketDataSourcePlanRepository sourcePlanRepository,
             ProviderRegistry providerRegistry,
             FxSpotRepository fxSpotRepository,
@@ -65,7 +65,7 @@ public final class AnalyticalTwapLastPriceCaptureOnceService {
 
         MarketDataSourcePlan sourcePlan = sourcePlanRepository
                 .findByCaptureProcessCodeAndInstrumentCode(process.processCode(), instrumentCode)
-                .orElseThrow(() -> new AnalyticalTwapLastPriceSourcePlanNotFoundException(
+                .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException(
                         process.processCode(),
                         instrumentCode
                 ));
@@ -92,7 +92,7 @@ public final class AnalyticalTwapLastPriceCaptureOnceService {
                 .stream()
                 .filter(MarketDataSource::active)
                 .min(Comparator.comparingInt(MarketDataSource::priority))
-                .orElseThrow(() -> new AnalyticalTwapLastPriceActiveSourceNotFoundException(
+                .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceActiveSourceNotFoundException(
                         sourcePlan.captureProcessCode(),
                         sourcePlan.instrumentCode()
                 ));
@@ -102,7 +102,7 @@ public final class AnalyticalTwapLastPriceCaptureOnceService {
         MarketDataProvider provider = providerRegistry.providersByCode().get(providerCode);
 
         if (provider == null) {
-            throw new AnalyticalTwapLastPriceProviderNotFoundException(providerCode);
+            throw new AnalyticalFxSpotTwapLastPriceProviderNotFoundException(providerCode);
         }
 
         return provider;
@@ -110,7 +110,7 @@ public final class AnalyticalTwapLastPriceCaptureOnceService {
 
     private FxSpot fxSpot(InstrumentCode instrumentCode) {
         return fxSpotRepository.findByCode(instrumentCode)
-                .orElseThrow(() -> new AnalyticalTwapLastPriceFxSpotInstrumentNotFoundException(instrumentCode));
+                .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceInstrumentNotFoundException(instrumentCode));
     }
 
     private SourceMarketDataTick sourceTick(MarketDataProvider provider, FxSpot instrument) {
@@ -118,7 +118,7 @@ public final class AnalyticalTwapLastPriceCaptureOnceService {
                 .block(SOURCE_TICK_WAIT_TIMEOUT);
 
         if (sourceTick == null) {
-            throw new AnalyticalTwapLastPriceSourceTickNotReceivedException(
+            throw new AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException(
                     instrument.instrumentCode(),
                     provider.providerCode()
             );
