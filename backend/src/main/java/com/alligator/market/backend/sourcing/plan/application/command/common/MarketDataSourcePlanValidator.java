@@ -1,7 +1,9 @@
 package com.alligator.market.backend.sourcing.plan.application.command.common;
 
+import com.alligator.market.backend.sourcing.plan.application.exception.CaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.port.CaptureProcessCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
@@ -16,6 +18,9 @@ import java.util.Set;
  */
 public final class MarketDataSourcePlanValidator {
 
+    /* Порт проверки существования процесса фиксации по коду. */
+    private final CaptureProcessCodeExistencePort captureProcessCodeExistencePort;
+
     /* Порт проверки существования инструмента по коду. */
     private final InstrumentCodeExistencePort instrumentCodeExistencePort;
 
@@ -23,9 +28,14 @@ public final class MarketDataSourcePlanValidator {
     private final ProviderCodeExistencePort providerCodeExistencePort;
 
     public MarketDataSourcePlanValidator(
+            CaptureProcessCodeExistencePort captureProcessCodeExistencePort,
             InstrumentCodeExistencePort instrumentCodeExistencePort,
             ProviderCodeExistencePort providerCodeExistencePort
     ) {
+        this.captureProcessCodeExistencePort = Objects.requireNonNull(
+                captureProcessCodeExistencePort,
+                "captureProcessCodeExistencePort must not be null"
+        );
         this.instrumentCodeExistencePort = Objects.requireNonNull(
                 instrumentCodeExistencePort,
                 "instrumentCodeExistencePort must not be null"
@@ -34,6 +44,15 @@ public final class MarketDataSourcePlanValidator {
                 providerCodeExistencePort,
                 "providerCodeExistencePort must not be null"
         );
+    }
+
+    /**
+     * Проверяет существование процесса фиксации.
+     */
+    public void ensureCaptureProcessExists(MarketDataSourcePlan plan) {
+        if (!captureProcessCodeExistencePort.existsByCode(plan.captureProcessCode())) {
+            throw new CaptureProcessCodeNotFoundException(plan.captureProcessCode());
+        }
     }
 
     /**

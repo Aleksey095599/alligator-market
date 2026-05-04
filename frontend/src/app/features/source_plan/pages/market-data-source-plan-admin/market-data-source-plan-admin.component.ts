@@ -24,6 +24,7 @@ import {
   MarketDataSourceResponseDto
 } from '../../models/market-data-source-plan.model';
 import {
+  CaptureProcessOptionDto,
   InstrumentOptionDto,
   ProviderOptionDto
 } from '../../models/market-data-source-plan-options.model';
@@ -67,6 +68,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
+  captureProcesses: CaptureProcessOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
   providers: ProviderOptionDto[] = [];
 
@@ -152,6 +154,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   loadOptions(): void {
     this.service.getOptions().subscribe({
       next: options => {
+        this.captureProcesses = options.captureProcesses;
         this.instruments = options.instruments;
         this.providers = options.providers;
       },

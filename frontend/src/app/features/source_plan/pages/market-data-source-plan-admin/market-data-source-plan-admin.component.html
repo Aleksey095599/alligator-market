@@ -14,8 +14,12 @@
           <div class="section-label">Plan identity</div>
           <div class="identity-grid">
             <mat-form-field appearance="outline">
-              <mat-label>Collection process</mat-label>
-              <input matInput formControlName="captureProcessCode" />
+              <mat-label>Capture Process Code</mat-label>
+              <mat-select formControlName="captureProcessCode">
+                <mat-option *ngFor="let process of captureProcesses" [value]="process.code">
+                  {{ process.code }} - {{ process.displayName }}
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="
                 form.controls['captureProcessCode'].hasError('required')
                 || form.controls['captureProcessCode'].hasError('blank')
@@ -140,7 +144,7 @@
       <table mat-table [dataSource]="dataSource" class="plans-table mat-elevation-z2">
 
         <ng-container matColumnDef="captureProcessCode">
-          <th mat-header-cell *matHeaderCellDef>Capture Process</th>
+          <th mat-header-cell *matHeaderCellDef>Capture Process Code</th>
           <td mat-cell *matCellDef="let plan">{{ plan.captureProcessCode }}</td>
         </ng-container>
 

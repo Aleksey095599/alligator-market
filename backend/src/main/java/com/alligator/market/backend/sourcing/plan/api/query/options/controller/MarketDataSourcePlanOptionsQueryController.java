@@ -1,8 +1,10 @@
 package com.alligator.market.backend.sourcing.plan.api.query.options.controller;
 
+import com.alligator.market.backend.sourcing.plan.api.query.options.dto.CaptureProcessOptionDto;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.InstrumentOptionDto;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.MarketDataSourcePlanOptionsResponse;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.ProviderOptionDto;
+import com.alligator.market.backend.sourcing.plan.application.query.options.port.CaptureProcessOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,19 @@ import java.util.Objects;
 @RestController
 public class MarketDataSourcePlanOptionsQueryController {
 
+    private final CaptureProcessOptionsQueryPort captureProcessOptionsQueryPort;
     private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
     private final ProviderOptionsQueryPort providerOptionsQueryPort;
 
     public MarketDataSourcePlanOptionsQueryController(
+            CaptureProcessOptionsQueryPort captureProcessOptionsQueryPort,
             InstrumentOptionsQueryPort instrumentOptionsQueryPort,
             ProviderOptionsQueryPort providerOptionsQueryPort
     ) {
+        this.captureProcessOptionsQueryPort = Objects.requireNonNull(
+                captureProcessOptionsQueryPort,
+                "captureProcessOptionsQueryPort must not be null"
+        );
         this.instrumentOptionsQueryPort = Objects.requireNonNull(
                 instrumentOptionsQueryPort,
                 "instrumentOptionsQueryPort must not be null"
@@ -40,6 +48,12 @@ public class MarketDataSourcePlanOptionsQueryController {
     @GetMapping("/api/v1/market-data-source-plans/options")
     public ResponseEntity<MarketDataSourcePlanOptionsResponse> getOptions() {
         MarketDataSourcePlanOptionsResponse response = new MarketDataSourcePlanOptionsResponse(
+                captureProcessOptionsQueryPort.findAllCaptureProcesses().stream()
+                        .map(option -> new CaptureProcessOptionDto(
+                                option.code().value(),
+                                option.displayName().value()
+                        ))
+                        .toList(),
                 instrumentOptionsQueryPort.findAllInstrumentCodes().stream()
                         .map(code -> new InstrumentOptionDto(code.value()))
                         .toList(),

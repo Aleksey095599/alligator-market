@@ -1,6 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
+import com.alligator.market.backend.sourcing.plan.application.exception.CaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
@@ -25,6 +26,9 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Имя FK-ограничения market_data_source_plan -> instrument_registry по коду инструмента. */
     private static final String FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT =
             "fk_market_data_source_plan_instrument";
+    /* Имя FK-ограничения market_data_source_plan -> capture_process_passport по коду процесса фиксации. */
+    private static final String FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS =
+            "fk_market_data_source_plan_capture_process";
     private static final Field<String> MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE =
             MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE;
     private static final Field<String> MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE =
@@ -156,6 +160,11 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 return true;
             });
         } catch (DataIntegrityViolationException ex) {
+            // FK-ошибка => такого процесса фиксации нет в passport projection.
+            if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS)) {
+                throw new CaptureProcessCodeNotFoundException(plan.captureProcessCode());
+            }
+
             // FK-ошибка => такого инструмента нет в реестре.
             if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT)) {
                 throw new InstrumentCodeNotFoundException(plan.instrumentCode());

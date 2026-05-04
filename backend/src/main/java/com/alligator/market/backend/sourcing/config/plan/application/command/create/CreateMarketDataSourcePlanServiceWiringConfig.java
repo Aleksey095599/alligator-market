@@ -1,10 +1,12 @@
 package com.alligator.market.backend.sourcing.config.plan.application.command.create;
 
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.CaptureProcessCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.command.common.MarketDataSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateMarketDataSourcePlanService;
+import com.alligator.market.backend.sourcing.plan.application.port.CaptureProcessCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourcePlanRepositoryWiringConfig.class,
+        CaptureProcessCodeExistencePortWiringConfig.class,
         InstrumentCodeExistencePortWiringConfig.class,
         ProviderCodeExistencePortWiringConfig.class
 })
@@ -30,6 +33,8 @@ public class CreateMarketDataSourcePlanServiceWiringConfig {
     public CreateMarketDataSourcePlanService createMarketDataSourcePlanService(
             @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
             MarketDataSourcePlanRepository marketDataSourcePlanRepository,
+            @Qualifier(CaptureProcessCodeExistencePortWiringConfig.BEAN_CAPTURE_PROCESS_CODE_EXISTENCE_PORT)
+            CaptureProcessCodeExistencePort captureProcessCodeExistencePort,
             @Qualifier(InstrumentCodeExistencePortWiringConfig.BEAN_INSTRUMENT_CODE_EXISTENCE_PORT)
             InstrumentCodeExistencePort instrumentCodeExistencePort,
             @Qualifier(ProviderCodeExistencePortWiringConfig.BEAN_PROVIDER_CODE_EXISTENCE_PORT)
@@ -38,6 +43,7 @@ public class CreateMarketDataSourcePlanServiceWiringConfig {
         return new CreateMarketDataSourcePlanService(
                 marketDataSourcePlanRepository,
                 new MarketDataSourcePlanValidator(
+                        captureProcessCodeExistencePort,
                         instrumentCodeExistencePort,
                         providerCodeExistencePort
                 )

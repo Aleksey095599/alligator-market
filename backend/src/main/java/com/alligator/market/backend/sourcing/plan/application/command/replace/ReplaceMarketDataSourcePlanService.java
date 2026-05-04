@@ -17,7 +17,7 @@ public final class ReplaceMarketDataSourcePlanService {
     /* Репозиторий планов источников. */
     private final MarketDataSourcePlanRepository marketDataSourcePlanRepository;
 
-    /* Валидатор существования инструмента и провайдеров из плана. */
+    /* Валидатор существования процесса фиксации, инструмента и провайдеров из плана. */
     private final MarketDataSourcePlanValidator existenceValidator;
 
     public ReplaceMarketDataSourcePlanService(
@@ -39,6 +39,9 @@ public final class ReplaceMarketDataSourcePlanService {
      */
     public void replace(MarketDataSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
+
+        // Проверяем, что процесс фиксации реально существует
+        existenceValidator.ensureCaptureProcessExists(plan);
 
         // Проверяем, что инструмент реально существует
         existenceValidator.ensureInstrumentExists(plan);
