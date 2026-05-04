@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot;
+package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.cbr;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.MarketDataCaptureProcess;
@@ -15,7 +15,7 @@ import java.util.Set;
  * Процесс фиксации рыночных данных для аналитического TWAP на основе тиков последней цены.
  */
 @SuppressWarnings("ClassCanBeRecord")
-public final class AnalyticalTwapByLastPrice implements MarketDataCaptureProcess {
+public final class AnalyticalFxCbrTwapByLastPrice implements MarketDataCaptureProcess {
 
     public static final CaptureProcessCode PROCESS_CODE =
             CaptureProcessCode.of("ANALYTICAL_TWAP_LAST_PRICE");
@@ -31,7 +31,7 @@ public final class AnalyticalTwapByLastPrice implements MarketDataCaptureProcess
 
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
-    public AnalyticalTwapByLastPrice(Set<InstrumentCode> supportedInstrumentCodes) {
+    public AnalyticalFxCbrTwapByLastPrice(Set<InstrumentCode> supportedInstrumentCodes) {
         this.supportedInstrumentCodes = copySupportedInstrumentCodes(supportedInstrumentCodes);
     }
 

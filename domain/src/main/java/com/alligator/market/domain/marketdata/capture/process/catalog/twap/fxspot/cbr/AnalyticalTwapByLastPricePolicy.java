@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot;
+package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.cbr;
 
 import com.alligator.market.domain.marketdata.capture.process.policy.CaptureProcessPolicy;
 
