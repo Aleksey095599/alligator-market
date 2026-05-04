@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.cbr;
+package com.alligator.market.domain.marketdata.capture.process.catalog.twap.analytical.lastprice;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.MarketDataCaptureProcess;
@@ -12,10 +12,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Процесс фиксации рыночных данных для аналитического TWAP на основе тиков последней цены.
+ * Процесс фиксации рыночных данных для аналитического TWAP по последней цене.
  */
 @SuppressWarnings("ClassCanBeRecord")
-public final class AnalyticalFxCbrTwapByLastPrice implements MarketDataCaptureProcess {
+public final class AnalyticalTwapLastPrice implements MarketDataCaptureProcess {
 
     public static final CaptureProcessCode PROCESS_CODE =
             CaptureProcessCode.of("ANALYTICAL_TWAP_LAST_PRICE");
@@ -26,12 +26,12 @@ public final class AnalyticalFxCbrTwapByLastPrice implements MarketDataCapturePr
     public static final CaptureProcessPassport PASSPORT =
             new CaptureProcessPassport(DISPLAY_NAME);
 
-    public static final AnalyticalTwapByLastPricePolicy POLICY =
-            new AnalyticalTwapByLastPricePolicy(Duration.ofSeconds(1));
+    public static final Policy POLICY =
+            new Policy(Duration.ofSeconds(1));
 
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
-    public AnalyticalFxCbrTwapByLastPrice(Set<InstrumentCode> supportedInstrumentCodes) {
+    public AnalyticalTwapLastPrice(Set<InstrumentCode> supportedInstrumentCodes) {
         this.supportedInstrumentCodes = copySupportedInstrumentCodes(supportedInstrumentCodes);
     }
 
@@ -46,7 +46,7 @@ public final class AnalyticalFxCbrTwapByLastPrice implements MarketDataCapturePr
     }
 
     @Override
-    public CaptureProcessPolicy policy() {
+    public Policy policy() {
         return POLICY;
     }
 
@@ -67,5 +67,23 @@ public final class AnalyticalFxCbrTwapByLastPrice implements MarketDataCapturePr
         }
 
         return Set.copyOf(raw);
+    }
+
+    /**
+     * Политика аналитического TWAP-процесса по последней цене.
+     *
+     * @param captureInterval фактический интервал фиксации тиков
+     */
+    public record Policy(
+            Duration captureInterval
+    ) implements CaptureProcessPolicy {
+
+        public Policy {
+            Objects.requireNonNull(captureInterval, "captureInterval must not be null");
+
+            if (captureInterval.isZero() || captureInterval.isNegative()) {
+                throw new IllegalArgumentException("captureInterval must be positive");
+            }
+        }
     }
 }
