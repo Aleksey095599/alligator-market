@@ -31,7 +31,9 @@ public record HandlerCode(
         return new HandlerCode(raw);
     }
 
-    /* Метод проверки и нормализации входящего значения кода обработчика. */
+    /**
+     * Метод проверки и нормализации входящего значения кода обработчика.
+     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "handlerCode must not be null");
 

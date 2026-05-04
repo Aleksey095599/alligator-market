@@ -4,7 +4,7 @@ import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDat
 import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.MarketDataSourcePlanResponseMapper;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetMarketDataSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
+import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

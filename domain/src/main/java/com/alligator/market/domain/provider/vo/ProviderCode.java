@@ -31,7 +31,9 @@ public record ProviderCode(
         return new ProviderCode(raw);
     }
 
-    /* Метод проверки и нормализации входящего значения кода провайдера. */
+    /**
+     * Метод проверки и нормализации входящего значения кода провайдера.
+     */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "providerCode must not be null");
 

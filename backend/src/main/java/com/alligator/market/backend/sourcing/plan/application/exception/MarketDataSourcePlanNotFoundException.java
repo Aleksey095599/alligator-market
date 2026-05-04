@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.capture.vo.MarketDataCollectionProcessCode;
+import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 
 import java.util.Objects;
 
