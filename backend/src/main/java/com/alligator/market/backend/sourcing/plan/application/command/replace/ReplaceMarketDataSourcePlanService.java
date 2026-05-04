@@ -4,8 +4,11 @@ import com.alligator.market.backend.sourcing.plan.application.command.common.Mar
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,6 +52,22 @@ public final class ReplaceMarketDataSourcePlanService {
         // Проверяем, что все коды провайдеров из плана существуют
         existenceValidator.ensureProvidersExist(plan);
 
+        MarketDataSourcePlan currentPlan = marketDataSourcePlanRepository
+                .findByCaptureProcessCodeAndInstrumentCode(plan.captureProcessCode(), plan.instrumentCode())
+                .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(
+                        plan.captureProcessCode(),
+                        plan.instrumentCode()
+                ));
+
+        if (hasSameSources(currentPlan, plan)) {
+            log.info(
+                    "Market data source plan replace skipped: no changes detected, captureProcessCode={}, instrumentCode={}",
+                    plan.captureProcessCode().value(),
+                    plan.instrumentCode().value()
+            );
+            return;
+        }
+
         // Условно заменяем содержимое root-plan и сигнализируем, если плана не было
         boolean replaced = marketDataSourcePlanRepository.replaceIfExists(plan);
         if (!replaced) {
@@ -66,5 +85,17 @@ public final class ReplaceMarketDataSourcePlanService {
                 plan.instrumentCode().value(),
                 plan.sources().size()
         );
+    }
+
+    private static boolean hasSameSources(MarketDataSourcePlan currentPlan, MarketDataSourcePlan newPlan) {
+        return normalizeSources(currentPlan).equals(normalizeSources(newPlan));
+    }
+
+    private static List<MarketDataSource> normalizeSources(MarketDataSourcePlan plan) {
+        return plan.sources().stream()
+                .sorted(Comparator
+                        .comparingInt(MarketDataSource::priority)
+                        .thenComparing(source -> source.providerCode().value()))
+                .toList();
     }
 }

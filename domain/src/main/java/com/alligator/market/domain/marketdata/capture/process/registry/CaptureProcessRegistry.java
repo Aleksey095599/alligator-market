@@ -31,8 +31,7 @@ public interface CaptureProcessRegistry {
     default Map<CaptureProcessCode, CaptureProcessPassport> passportsByCode() {
         Map<CaptureProcessCode, CaptureProcessPassport> map = new LinkedHashMap<>();
 
-        for (Map.Entry<CaptureProcessCode, MarketDataCaptureProcess> entry
-                : processesByCode().entrySet()) {
+        for (Map.Entry<CaptureProcessCode, MarketDataCaptureProcess> entry : processesByCode().entrySet()) {
             CaptureProcessCode code = entry.getKey();
             MarketDataCaptureProcess process = entry.getValue();
 

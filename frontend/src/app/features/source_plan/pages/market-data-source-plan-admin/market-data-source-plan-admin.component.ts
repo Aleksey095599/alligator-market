@@ -79,6 +79,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Текущий выбранный план в режиме редактирования. */
   selectedCaptureProcessCode: string | null = null;
   selectedInstrumentCode: string | null = null;
+  private loadedSourcesFingerprint: string | null = null;
 
   /* Главная форма whole-plan редактора. */
   form: FormGroup;
@@ -138,6 +139,15 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
       || this.hasDuplicatePriorities;
   }
 
+  /* Есть ли реальные изменения источников в режиме редактирования. */
+  get hasPlanChanges(): boolean {
+    if (!this.editing || this.loadedSourcesFingerprint === null) {
+      return true;
+    }
+
+    return this.sourcesFingerprint(this.collectSortedSources()) !== this.loadedSourcesFingerprint;
+  }
+
   /* Перезагрузить список существующих plans. */
   refreshList(): void {
     this.service.list().subscribe({
@@ -182,8 +192,8 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.sources.removeAt(index);
   }
 
-  /* Загрузить план в editor и перейти в edit mode. */
-  onLoadPlan(plan: MarketDataSourcePlanResponseDto): void {
+  /* Открыть план в editor и перейти в edit mode. */
+  onEditPlan(plan: MarketDataSourcePlanResponseDto): void {
     this.service.get(plan.captureProcessCode, plan.instrumentCode).subscribe({
       next: fullPlan => {
         this.editing = true;
@@ -201,9 +211,11 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
         if (this.sources.length === 0) {
           this.onAddSourceRow();
         }
+
+        this.loadedSourcesFingerprint = this.sourcesFingerprint(fullPlan.sources);
       },
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load plan failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Edit plan failed'), 'Close');
       }
     });
   }
@@ -244,6 +256,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
       || this.locked
       || !this.selectedCaptureProcessCode
       || !this.selectedInstrumentCode
+      || !this.hasPlanChanges
     ) {
       return;
     }
@@ -261,6 +274,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
           { duration: 2500 }
         );
         this.refreshList();
+        this.loadedSourcesFingerprint = this.sourcesFingerprint(sources);
         this.locked = false;
       },
       error: err => {
@@ -290,6 +304,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.editing = false;
     this.selectedCaptureProcessCode = null;
     this.selectedInstrumentCode = null;
+    this.loadedSourcesFingerprint = null;
     this.locked = false;
 
     this.form.reset({ captureProcessCode: '', instrumentCode: '' });
@@ -324,6 +339,28 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
         priority: Number(row.priority)
       }))
       .sort((a, b) => a.priority - b.priority);
+  }
+
+  private sourcesFingerprint(
+    sources: Array<{ providerCode: string; active: boolean; priority: number }>
+  ): string {
+    return [...sources]
+      .map(source => ({
+        providerCode: source.providerCode,
+        active: source.active,
+        priority: Number(source.priority)
+      }))
+      .sort((left, right) => {
+        const priorityCompare = left.priority - right.priority;
+
+        if (priorityCompare !== 0) {
+          return priorityCompare;
+        }
+
+        return left.providerCode.localeCompare(right.providerCode);
+      })
+      .map(source => `${source.priority}:${source.providerCode}:${source.active}`)
+      .join('|');
   }
 
   /* Унифицированное удаление плана (из editor или из списка). */
