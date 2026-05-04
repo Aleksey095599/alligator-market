@@ -139,12 +139,6 @@ public final class StringValueNormalizer {
                 return this;
             }
 
-            public Builder pattern(Pattern value, String description) {
-                this.pattern = value;
-                this.patternDescription = description;
-                return this;
-            }
-
             public Builder pattern(String regex, String description) {
                 Objects.requireNonNull(regex, "regex must not be null");
                 this.pattern = Pattern.compile(regex);
