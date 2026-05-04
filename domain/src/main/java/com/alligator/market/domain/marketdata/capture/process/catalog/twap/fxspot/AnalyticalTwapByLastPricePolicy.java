@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.capture.process.catalog.twap.analytical.lastprice;
+package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot;
 
 import com.alligator.market.domain.marketdata.capture.process.policy.CaptureProcessPolicy;
 
