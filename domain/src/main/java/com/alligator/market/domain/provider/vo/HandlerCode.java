@@ -13,7 +13,7 @@ public record HandlerCode(
         String value
 ) {
 
-    public static final String PATTERN = "^[A-Z0-9_]+$";
+    private static final String PATTERN = "^[A-Z0-9_]+$";
     private static final int MAX_LENGTH = 50;
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 

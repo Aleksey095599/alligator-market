@@ -7,13 +7,11 @@ import java.util.regex.Pattern;
 /**
  * Объект-значение кода процесса сбора рыночных данных.
  *
- * <p>Примеры: TWAP_FOREX_SPOT_CNYRUB_TOM_1M, PRICE_MONITOR_CNYRUB_TOM_5S.</p>
- *
- * @param value нормализованный код процесса сбора
+ * @param value нормализованный код процесса сбора рыночных данных
  */
 public record MarketDataCollectionProcessCode(String value) {
 
-    public static final String PATTERN = "^[A-Z0-9_.-]+$";
+    private static final String PATTERN = "^[A-Z0-9_.-]+$";
     private static final int MAX_LENGTH = 128;
     private static final Pattern VALIDATION_PATTERN = Pattern.compile(PATTERN);
 
