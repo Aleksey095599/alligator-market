@@ -14,10 +14,10 @@
           <div class="section-label">Plan identity</div>
           <div class="identity-grid">
             <mat-form-field appearance="outline">
-              <mat-label>Capture Process Code</mat-label>
+              <mat-label>Capture Process Name</mat-label>
               <mat-select formControlName="captureProcessCode">
                 <mat-option *ngFor="let process of captureProcesses" [value]="process.code">
-                  {{ process.code }} - {{ process.displayName }}
+                  {{ process.displayName }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="
