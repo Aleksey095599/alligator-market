@@ -2,10 +2,11 @@ package com.alligator.market.domain.marketdata.collection.process.twap.analytica
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.collection.process.MarketDataCollectionProcess;
+import com.alligator.market.domain.marketdata.collection.process.passport.CollectionProcessPassport;
+import com.alligator.market.domain.marketdata.collection.process.policy.CollectionProcessPolicy;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessDisplayName;
 
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -19,16 +20,13 @@ public final class AnalyticalTwapLastPriceCollectionProcess implements MarketDat
     public static final MarketDataCollectionProcessDisplayName DISPLAY_NAME =
             MarketDataCollectionProcessDisplayName.of("Analytical TWAP by last price");
 
-    private final Set<InstrumentCode> supportedInstrumentCodes;
+    public static final CollectionProcessPassport PASSPORT =
+            new CollectionProcessPassport(DISPLAY_NAME);
+
+    private final CollectionProcessPolicy policy;
 
     public AnalyticalTwapLastPriceCollectionProcess(Set<InstrumentCode> supportedInstrumentCodes) {
-        Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
-
-        if (supportedInstrumentCodes.isEmpty()) {
-            throw new IllegalArgumentException("supportedInstrumentCodes must not be empty");
-        }
-
-        this.supportedInstrumentCodes = Set.copyOf(supportedInstrumentCodes);
+        this.policy = new CollectionProcessPolicy(supportedInstrumentCodes);
     }
 
     @Override
@@ -37,12 +35,12 @@ public final class AnalyticalTwapLastPriceCollectionProcess implements MarketDat
     }
 
     @Override
-    public MarketDataCollectionProcessDisplayName displayName() {
-        return DISPLAY_NAME;
+    public CollectionProcessPassport passport() {
+        return PASSPORT;
     }
 
     @Override
-    public Set<InstrumentCode> supportedInstrumentCodes() {
-        return supportedInstrumentCodes;
+    public CollectionProcessPolicy policy() {
+        return policy;
     }
 }

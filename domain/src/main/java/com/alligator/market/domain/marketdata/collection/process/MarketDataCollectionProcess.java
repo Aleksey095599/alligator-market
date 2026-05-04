@@ -1,6 +1,8 @@
 package com.alligator.market.domain.marketdata.collection.process;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.collection.process.passport.CollectionProcessPassport;
+import com.alligator.market.domain.marketdata.collection.process.policy.CollectionProcessPolicy;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessCode;
 import com.alligator.market.domain.marketdata.collection.process.vo.MarketDataCollectionProcessDisplayName;
 
@@ -18,14 +20,28 @@ public interface MarketDataCollectionProcess {
     MarketDataCollectionProcessCode processCode();
 
     /**
+     * Паспорт процесса сбора рыночных данных.
+     */
+    CollectionProcessPassport passport();
+
+    /**
+     * Политика процесса сбора рыночных данных.
+     */
+    CollectionProcessPolicy policy();
+
+    /**
      * Человекочитаемое имя процесса для администрирования и диагностики.
      */
-    MarketDataCollectionProcessDisplayName displayName();
+    default MarketDataCollectionProcessDisplayName displayName() {
+        return passport().displayName();
+    }
 
     /**
      * Внутренние инструменты приложения, которые может обслуживать этот процесс.
      */
-    Set<InstrumentCode> supportedInstrumentCodes();
+    default Set<InstrumentCode> supportedInstrumentCodes() {
+        return policy().supportedInstrumentCodes();
+    }
 
     /**
      * Проверяет, поддерживается ли инструмент этим процессом сбора.
