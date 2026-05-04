@@ -25,8 +25,8 @@ public final class AnalyticalTwapLastPriceCollectionProcess implements MarketDat
     public static final CollectionProcessPassport PASSPORT =
             new CollectionProcessPassport(DISPLAY_NAME);
 
-    public static final CollectionProcessPolicy POLICY =
-            new CollectionProcessPolicy(Duration.ofSeconds(1));
+    public static final AnalyticalTwapLastPriceCollectionProcessPolicy POLICY =
+            new AnalyticalTwapLastPriceCollectionProcessPolicy(Duration.ofSeconds(1));
 
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
