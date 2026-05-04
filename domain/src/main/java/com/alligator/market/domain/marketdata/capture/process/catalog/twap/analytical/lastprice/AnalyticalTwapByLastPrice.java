@@ -14,7 +14,8 @@ import java.util.Set;
 /**
  * Процесс фиксации рыночных данных для аналитического TWAP на основе тиков последней цены.
  */
-public final class AnalyticalTwapLastPriceCaptureProcess implements MarketDataCaptureProcess {
+@SuppressWarnings("ClassCanBeRecord")
+public final class AnalyticalTwapByLastPrice implements MarketDataCaptureProcess {
 
     public static final CaptureProcessCode PROCESS_CODE =
             CaptureProcessCode.of("ANALYTICAL_TWAP_LAST_PRICE");
@@ -25,12 +26,12 @@ public final class AnalyticalTwapLastPriceCaptureProcess implements MarketDataCa
     public static final CaptureProcessPassport PASSPORT =
             new CaptureProcessPassport(DISPLAY_NAME);
 
-    public static final AnalyticalTwapLastPriceCaptureProcessPolicy POLICY =
-            new AnalyticalTwapLastPriceCaptureProcessPolicy(Duration.ofSeconds(1));
+    public static final AnalyticalTwapByLastPricePolicy POLICY =
+            new AnalyticalTwapByLastPricePolicy(Duration.ofSeconds(1));
 
     private final Set<InstrumentCode> supportedInstrumentCodes;
 
-    public AnalyticalTwapLastPriceCaptureProcess(Set<InstrumentCode> supportedInstrumentCodes) {
+    public AnalyticalTwapByLastPrice(Set<InstrumentCode> supportedInstrumentCodes) {
         this.supportedInstrumentCodes = copySupportedInstrumentCodes(supportedInstrumentCodes);
     }
 

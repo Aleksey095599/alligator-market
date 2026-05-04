@@ -10,11 +10,11 @@ import java.util.Objects;
  *
  * @param captureInterval фактический интервал фиксации тиков
  */
-public record AnalyticalTwapLastPriceCaptureProcessPolicy(
+public record AnalyticalTwapByLastPricePolicy(
         Duration captureInterval
 ) implements CaptureProcessPolicy {
 
-    public AnalyticalTwapLastPriceCaptureProcessPolicy {
+    public AnalyticalTwapByLastPricePolicy {
         Objects.requireNonNull(captureInterval, "captureInterval must not be null");
 
         if (captureInterval.isZero() || captureInterval.isNegative()) {
