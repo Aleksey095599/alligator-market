@@ -82,7 +82,9 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
         return providersByCode;
     }
 
-    /* Замена дефолтной реализации: возвращается карта, созданная в конструкторе (более эффективно). */
+    /**
+     * Замена дефолтной реализации: возвращается карта, созданная в конструкторе (более эффективно).
+     */
     @Override
     public Map<ProviderCode, ProviderPassport> passportsByCode() {
         return passportsByCode;

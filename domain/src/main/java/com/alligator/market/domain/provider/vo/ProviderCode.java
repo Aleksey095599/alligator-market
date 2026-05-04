@@ -7,9 +7,6 @@ import java.util.regex.Pattern;
 /**
  * Объект-значение (value object) кода провайдера рыночных данных.
  *
- * <p>Причина создания: код провайдера используется многократно в разных слоях приложения,
- * поэтому важно гарантировать единый формат кода без многократных единообразных проверок.</p>
- *
  * @param value строковое значение кода провайдера
  */
 public record ProviderCode(
@@ -34,12 +31,7 @@ public record ProviderCode(
         return new ProviderCode(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего значения кода провайдера.
-     *
-     * @param raw исходное строковое значение кода провайдера
-     * @return нормализованное значение кода провайдера
-     */
+    /* Метод проверки и нормализации входящего значения кода провайдера. */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "providerCode must not be null");
 

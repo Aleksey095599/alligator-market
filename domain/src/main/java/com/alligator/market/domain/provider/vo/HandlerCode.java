@@ -7,9 +7,6 @@ import java.util.regex.Pattern;
 /**
  * Объект-значение (value object) кода обработчика.
  *
- * <p>Причина создания: код обработчика используется многократно в разных слоях приложения,
- * поэтому важно гарантировать единый формат кода без многократных единообразных проверок.</p>
- *
  * @param value строковое значение кода обработчика
  */
 public record HandlerCode(
@@ -34,12 +31,7 @@ public record HandlerCode(
         return new HandlerCode(raw);
     }
 
-    /**
-     * Метод проверки и нормализации входящего значения кода обработчика.
-     *
-     * @param raw исходное строковое значение кода обработчика
-     * @return нормализованное значение кода обработчика
-     */
+    /* Метод проверки и нормализации входящего значения кода обработчика. */
     private static String normalize(String raw) {
         Objects.requireNonNull(raw, "handlerCode must not be null");
 
