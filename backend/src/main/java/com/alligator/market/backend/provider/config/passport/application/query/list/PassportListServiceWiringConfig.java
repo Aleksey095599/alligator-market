@@ -1,32 +1,28 @@
 package com.alligator.market.backend.provider.config.passport.application.query.list;
 
 import com.alligator.market.backend.provider.passport.application.query.list.PassportListService;
-import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
+import com.alligator.market.backend.provider.passport.application.query.list.port.ProviderPassportListQueryPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Wiring-конфигурация {@link PassportListService}.
+ * Wiring configuration for {@link PassportListService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        ProviderRegistryWiringConfig.class
+        ProviderPassportListQueryPortWiringConfig.class
 })
 public class PassportListServiceWiringConfig {
 
     public static final String BEAN_PASSPORT_LIST_SERVICE = "passportListService";
 
-    /**
-     * Сервис списка паспортов провайдеров.
-     */
     @Bean(BEAN_PASSPORT_LIST_SERVICE)
     public PassportListService passportListService(
-            @Qualifier(ProviderRegistryWiringConfig.BEAN_PROVIDER_REGISTRY)
-            ProviderRegistry providerRegistry
+            @Qualifier(ProviderPassportListQueryPortWiringConfig.BEAN_PROVIDER_PASSPORT_LIST_QUERY_PORT)
+            ProviderPassportListQueryPort queryPort
     ) {
-        return new PassportListService(providerRegistry);
+        return new PassportListService(queryPort);
     }
 }

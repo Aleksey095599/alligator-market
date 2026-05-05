@@ -28,8 +28,8 @@ public class MarketDataCaptureProcessPassportListController {
     public ResponseEntity<List<MarketDataCaptureProcessPassportListItemResponse>> getAll() {
         var passports = service.findAll();
 
-        List<MarketDataCaptureProcessPassportListItemResponse> list = passports.entrySet().stream()
-                .map(entry -> MarketDataCaptureProcessPassportListItemResponseMapper.toResponse(entry.getKey(), entry.getValue()))
+        List<MarketDataCaptureProcessPassportListItemResponse> list = passports.stream()
+                .map(MarketDataCaptureProcessPassportListItemResponseMapper::toResponse)
                 .toList();
         return ResponseEntity.ok(list);
     }

@@ -18,7 +18,8 @@ export class MarketDataCaptureProcessPassportListComponent implements OnInit {
   /* Список колонок таблицы. */
   displayed: string[] = [
     'captureProcessCode',
-    'displayName'
+    'displayName',
+    'lifecycleStatus'
   ];
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<MarketDataCaptureProcessPassportDto>([]);

@@ -28,8 +28,8 @@ public class PassportListController {
     public ResponseEntity<List<PassportListItemResponse>> getAll() {
         var passports = service.findAll();
 
-        List<PassportListItemResponse> list = passports.entrySet().stream()
-                .map(entry -> PassportListItemResponseMapper.toResponse(entry.getKey(), entry.getValue()))
+        List<PassportListItemResponse> list = passports.stream()
+                .map(PassportListItemResponseMapper::toResponse)
                 .toList();
         return ResponseEntity.ok(list);
     }

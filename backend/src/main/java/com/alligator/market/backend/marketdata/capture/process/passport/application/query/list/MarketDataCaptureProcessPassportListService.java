@@ -1,32 +1,32 @@
 package com.alligator.market.backend.marketdata.capture.process.passport.application.query.list;
 
-import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
-import com.alligator.market.domain.marketdata.capture.process.registry.MarketDataCaptureProcessRegistry;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.backend.marketdata.capture.process.passport.application.query.list.model.MarketDataCaptureProcessPassportListItem;
+import com.alligator.market.backend.marketdata.capture.process.passport.application.query.list.port.MarketDataCaptureProcessPassportListQueryPort;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Use-case сервис получения списка паспортов процессов захвата рыночных данных.
+ * Use-case service for reading market data capture process passport projection rows.
  */
 @Slf4j
 public final class MarketDataCaptureProcessPassportListService {
 
-    /* Доменный реестр процессов захвата — источник истины по активным паспортам. */
-    private final MarketDataCaptureProcessRegistry registry;
+    private final MarketDataCaptureProcessPassportListQueryPort queryPort;
 
-    public MarketDataCaptureProcessPassportListService(MarketDataCaptureProcessRegistry registry) {
-        this.registry = Objects.requireNonNull(registry, "registry must not be null");
+    public MarketDataCaptureProcessPassportListService(
+            MarketDataCaptureProcessPassportListQueryPort queryPort
+    ) {
+        this.queryPort = Objects.requireNonNull(queryPort, "queryPort must not be null");
     }
 
     /**
-     * Возвращает все паспорта процессов захвата.
+     * Returns all capture process passport projection rows.
      */
-    public Map<MarketDataCaptureProcessCode, MarketDataCaptureProcessPassport> findAll() {
-        Map<MarketDataCaptureProcessCode, MarketDataCaptureProcessPassport> passports = registry.passportsByCode();
-        log.debug("Found {} capture process passports", passports.size());
+    public List<MarketDataCaptureProcessPassportListItem> findAll() {
+        List<MarketDataCaptureProcessPassportListItem> passports = queryPort.findAll();
+        log.debug("Found {} capture process passport projection rows", passports.size());
         return passports;
     }
 }

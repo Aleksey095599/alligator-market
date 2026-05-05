@@ -1,32 +1,30 @@
 package com.alligator.market.backend.provider.passport.application.query.list;
 
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.backend.provider.passport.application.query.list.model.ProviderPassportListItem;
+import com.alligator.market.backend.provider.passport.application.query.list.port.ProviderPassportListQueryPort;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Use-case сервис получения списка паспортов провайдеров.
+ * Use-case service for reading provider passport projection rows.
  */
 @Slf4j
 public final class PassportListService {
 
-    /* Доменный реестр провайдеров — источник истины по активным паспортам. */
-    private final ProviderRegistry providerRegistry;
+    private final ProviderPassportListQueryPort queryPort;
 
-    public PassportListService(ProviderRegistry providerRegistry) {
-        this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
+    public PassportListService(ProviderPassportListQueryPort queryPort) {
+        this.queryPort = Objects.requireNonNull(queryPort, "queryPort must not be null");
     }
 
     /**
-     * Возвращает все паспорта провайдеров.
+     * Returns all provider passport projection rows.
      */
-    public Map<ProviderCode, ProviderPassport> findAll() {
-        Map<ProviderCode, ProviderPassport> passports = providerRegistry.passportsByCode();
-        log.debug("Found {} provider passports", passports.size());
+    public List<ProviderPassportListItem> findAll() {
+        List<ProviderPassportListItem> passports = queryPort.findAll();
+        log.debug("Found {} provider passport projection rows", passports.size());
         return passports;
     }
 }

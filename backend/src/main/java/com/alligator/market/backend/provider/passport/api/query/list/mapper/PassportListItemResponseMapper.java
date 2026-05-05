@@ -1,13 +1,12 @@
 package com.alligator.market.backend.provider.passport.api.query.list.mapper;
 
 import com.alligator.market.backend.provider.passport.api.query.list.dto.PassportListItemResponse;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.backend.provider.passport.application.query.list.model.ProviderPassportListItem;
 
 import java.util.Objects;
 
 /**
- * Маппер паспорта провайдера и {@link PassportListItemResponse}.
+ * Mapper between provider passport list read model and API response.
  */
 public final class PassportListItemResponseMapper {
 
@@ -15,19 +14,16 @@ public final class PassportListItemResponseMapper {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    public static PassportListItemResponse toResponse(
-            ProviderCode providerCode,
-            ProviderPassport providerPassport
-    ) {
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
-        Objects.requireNonNull(providerPassport, "providerPassport must not be null");
+    public static PassportListItemResponse toResponse(ProviderPassportListItem item) {
+        Objects.requireNonNull(item, "item must not be null");
 
         return new PassportListItemResponse(
-                providerCode.value(),
-                providerPassport.displayName().value(),
-                providerPassport.deliveryMode().name(),
-                providerPassport.accessMethod().name(),
-                providerPassport.bulkSubscription()
+                item.providerCode(),
+                item.displayName(),
+                item.deliveryMode(),
+                item.accessMethod(),
+                item.bulkSubscription(),
+                item.lifecycleStatus()
         );
     }
 }

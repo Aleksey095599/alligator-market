@@ -5,6 +5,7 @@ package com.alligator.market.backend.marketdata.capture.process.passport.api.que
  */
 public record MarketDataCaptureProcessPassportListItemResponse(
         String captureProcessCode,
-        String displayName
+        String displayName,
+        String lifecycleStatus
 ) {
 }

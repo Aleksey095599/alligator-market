@@ -1,13 +1,12 @@
 package com.alligator.market.backend.marketdata.capture.process.passport.api.query.list.mapper;
 
 import com.alligator.market.backend.marketdata.capture.process.passport.api.query.list.dto.MarketDataCaptureProcessPassportListItemResponse;
-import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.backend.marketdata.capture.process.passport.application.query.list.model.MarketDataCaptureProcessPassportListItem;
 
 import java.util.Objects;
 
 /**
- * Маппер паспорта процесса захвата и {@link MarketDataCaptureProcessPassportListItemResponse}.
+ * Mapper between capture process passport list read model and API response.
  */
 public final class MarketDataCaptureProcessPassportListItemResponseMapper {
 
@@ -16,15 +15,14 @@ public final class MarketDataCaptureProcessPassportListItemResponseMapper {
     }
 
     public static MarketDataCaptureProcessPassportListItemResponse toResponse(
-            MarketDataCaptureProcessCode captureProcessCode,
-            MarketDataCaptureProcessPassport passport
+            MarketDataCaptureProcessPassportListItem item
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
-        Objects.requireNonNull(passport, "passport must not be null");
+        Objects.requireNonNull(item, "item must not be null");
 
         return new MarketDataCaptureProcessPassportListItemResponse(
-                captureProcessCode.value(),
-                passport.displayName().value()
+                item.captureProcessCode(),
+                item.displayName(),
+                item.lifecycleStatus()
         );
     }
 }

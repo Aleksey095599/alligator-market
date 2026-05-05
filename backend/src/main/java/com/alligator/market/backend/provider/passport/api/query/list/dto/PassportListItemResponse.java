@@ -8,6 +8,7 @@ public record PassportListItemResponse(
         String displayName,
         String deliveryMode,
         String accessMethod,
-        boolean bulkSubscription
+        boolean bulkSubscription,
+        String lifecycleStatus
 ) {
 }

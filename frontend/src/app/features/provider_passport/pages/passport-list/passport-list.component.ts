@@ -21,7 +21,8 @@ export class PassportListComponent implements OnInit {
     'displayName',
     'deliveryMode',
     'accessMethod',
-    'bulkSubscription'
+    'bulkSubscription',
+    'lifecycleStatus'
   ];
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<ProviderDto>([]);
