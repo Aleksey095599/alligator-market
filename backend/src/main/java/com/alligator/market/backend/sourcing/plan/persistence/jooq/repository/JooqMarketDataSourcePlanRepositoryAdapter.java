@@ -53,7 +53,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         List<MarketDataSource> sources = dsl
                 .select(
                         MARKET_DATA_SOURCE.PROVIDER_CODE,
-                        MARKET_DATA_SOURCE.ACTIVE,
                         MARKET_DATA_SOURCE.PRIORITY
                 )
                 .from(MARKET_DATA_SOURCE)
@@ -62,7 +61,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
                 .fetch(record -> toSource(
                         record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
-                        record.get(MARKET_DATA_SOURCE.ACTIVE),
                         record.get(MARKET_DATA_SOURCE.PRIORITY)
                 ));
 
@@ -84,7 +82,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                         MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE,
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE,
                         MARKET_DATA_SOURCE.PROVIDER_CODE,
-                        MARKET_DATA_SOURCE.ACTIVE,
                         MARKET_DATA_SOURCE.PRIORITY
                 )
                 .from(MARKET_DATA_SOURCE)
@@ -102,7 +99,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
                     MarketDataSource source = toSource(
                             record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
-                            record.get(MARKET_DATA_SOURCE.ACTIVE),
                             record.get(MARKET_DATA_SOURCE.PRIORITY)
                     );
 
@@ -242,7 +238,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 .set(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE, captureProcessCode.value())
                 .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
                 .set(MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
-                .set(MARKET_DATA_SOURCE.ACTIVE, source.active())
                 .set(MARKET_DATA_SOURCE.PRIORITY, source.priority())
                 .execute();
     }
@@ -250,16 +245,13 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Маппинг строки БД в доменный источник. */
     private MarketDataSource toSource(
             String providerCode,
-            Boolean active,
             Integer priority
     ) {
         Objects.requireNonNull(providerCode, "providerCode must not be null");
-        Objects.requireNonNull(active, "active must not be null");
         Objects.requireNonNull(priority, "priority must not be null");
 
         return new MarketDataSource(
                 new ProviderCode(providerCode),
-                active,
                 priority
         );
     }

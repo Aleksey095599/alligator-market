@@ -14,7 +14,6 @@ public class MarketDataSourceResponseMapper {
     public MarketDataSourceResponse toSourceResponse(MarketDataSource source) {
         return new MarketDataSourceResponse(
                 source.providerCode().value(),
-                source.active(),
                 source.priority()
         );
     }

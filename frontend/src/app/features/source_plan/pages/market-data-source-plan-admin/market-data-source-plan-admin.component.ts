@@ -13,7 +13,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -42,7 +41,6 @@ import { MarketDataSourcePlanService } from '../../services/market-data-source-p
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule,
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
@@ -178,7 +176,6 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   onAddSourceRow(source?: MarketDataSourceResponseDto): void {
     this.sources.push(this.fb.group({
       providerCode: [source?.providerCode ?? '', [Validators.required]],
-      active: [source?.active ?? true],
       priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]]
     }));
   }
@@ -333,21 +330,19 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */
   private collectSortedSources(): MarketDataSourceRequestDto[] {
     return this.sources.getRawValue()
-      .map((row: { providerCode: string; active: boolean; priority: number }) => ({
+      .map((row: { providerCode: string; priority: number }) => ({
         providerCode: row.providerCode,
-        active: row.active,
         priority: Number(row.priority)
       }))
       .sort((a, b) => a.priority - b.priority);
   }
 
   private sourcesFingerprint(
-    sources: Array<{ providerCode: string; active: boolean; priority: number }>
+    sources: Array<{ providerCode: string; priority: number }>
   ): string {
     return [...sources]
       .map(source => ({
         providerCode: source.providerCode,
-        active: source.active,
         priority: Number(source.priority)
       }))
       .sort((left, right) => {
@@ -359,7 +354,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
         return left.providerCode.localeCompare(right.providerCode);
       })
-      .map(source => `${source.priority}:${source.providerCode}:${source.active}`)
+      .map(source => `${source.priority}:${source.providerCode}`)
       .join('|');
   }
 

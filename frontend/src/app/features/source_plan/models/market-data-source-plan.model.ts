@@ -1,6 +1,5 @@
 export interface MarketDataSourceResponseDto {
   providerCode: string;
-  active: boolean;
   priority: number;
 }
 

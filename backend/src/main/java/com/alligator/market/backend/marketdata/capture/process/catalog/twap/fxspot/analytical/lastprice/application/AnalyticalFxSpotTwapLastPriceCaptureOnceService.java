@@ -1,6 +1,6 @@
 package com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application;
 
-import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceActiveSourceNotFoundException;
+import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceSourceNotFoundException;
 import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceInstrumentNotFoundException;
 import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceProviderNotFoundException;
 import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception.AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException;
@@ -70,8 +70,8 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
                         instrumentCode
                 ));
 
-        MarketDataSource activeSource = firstActiveSource(sourcePlan);
-        MarketDataProvider provider = provider(activeSource.providerCode());
+        MarketDataSource source = firstSource(sourcePlan);
+        MarketDataProvider provider = provider(source.providerCode());
         FxSpot instrument = fxSpot(instrumentCode);
         SourceMarketDataTick sourceTick = sourceTick(provider, instrument);
 
@@ -87,12 +87,11 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         return capturedTick;
     }
 
-    private MarketDataSource firstActiveSource(MarketDataSourcePlan sourcePlan) {
+    private MarketDataSource firstSource(MarketDataSourcePlan sourcePlan) {
         return sourcePlan.sources()
                 .stream()
-                .filter(MarketDataSource::active)
                 .min(Comparator.comparingInt(MarketDataSource::priority))
-                .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceActiveSourceNotFoundException(
+                .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourceNotFoundException(
                         sourcePlan.captureProcessCode(),
                         sourcePlan.instrumentCode()
                 ));

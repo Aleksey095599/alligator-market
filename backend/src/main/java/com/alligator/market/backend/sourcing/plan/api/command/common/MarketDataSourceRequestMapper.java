@@ -14,7 +14,6 @@ public class MarketDataSourceRequestMapper {
     public MarketDataSource toDomain(MarketDataSourceRequest request) {
         return new MarketDataSource(
                 new ProviderCode(request.providerCode()),
-                request.active(),
                 request.priority()
         );
     }

@@ -79,7 +79,7 @@
 /* Одна строка источника в виде карты. */
 .source-row {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 120px 140px 56px;
+  grid-template-columns: minmax(220px, 1fr) 140px 56px;
   gap: 12px;
   align-items: center;
   padding: 0;
@@ -129,19 +129,15 @@
 /* Адаптив для планшетов и мобильных экранов. */
 @media (max-width: 960px) {
   .source-row {
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr auto;
     grid-template-areas:
-      'provider provider remove'
-      'active priority remove';
+      'provider remove'
+      'priority remove';
     row-gap: 8px;
   }
 
   .source-row mat-form-field:first-child {
     grid-area: provider;
-  }
-
-  .source-row mat-checkbox {
-    grid-area: active;
   }
 
   .source-row mat-form-field:nth-of-type(2) {
