@@ -24,8 +24,8 @@ public final class MarketDataSourcePlan {
      * Конструктор для создания плана источников рыночных данных.
      *
      * @param captureProcessCode Код процесса захвата рыночных данных
-     * @param instrumentCode        Код инструмента
-     * @param sources               Список источников рыночных данных
+     * @param instrumentCode     Код инструмента
+     * @param sources            Список источников рыночных данных
      */
     public MarketDataSourcePlan(
             MDCaptureProcessCode captureProcessCode,
@@ -40,18 +40,6 @@ public final class MarketDataSourcePlan {
         Objects.requireNonNull(sources, "sources must not be null");
 
         this.sources = copyAndValidateSources(sources);
-    }
-
-    public MDCaptureProcessCode captureProcessCode() {
-        return captureProcessCode;
-    }
-
-    public InstrumentCode instrumentCode() {
-        return instrumentCode;
-    }
-
-    public List<MarketDataSource> sources() {
-        return sources;
     }
 
     /* Создает копию списка источников и выполняет валидацию. */
@@ -85,5 +73,17 @@ public final class MarketDataSourcePlan {
         }
 
         return List.copyOf(sourcesValidated);
+    }
+
+    public MDCaptureProcessCode captureProcessCode() {
+        return captureProcessCode;
+    }
+
+    public InstrumentCode instrumentCode() {
+        return instrumentCode;
+    }
+
+    public List<MarketDataSource> sources() {
+        return sources;
     }
 }

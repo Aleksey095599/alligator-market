@@ -5,10 +5,10 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 import java.util.Objects;
 
 /**
- * Market data source selected in a source plan.
+ * Источник рыночных данных.
  *
- * @param providerCode provider that supplies market data
- * @param priority source priority; lower value means higher priority
+ * @param providerCode код провайдера рыночных данных
+ * @param priority     приоритет источника (0 наивысший приоритет)
  */
 public record MarketDataSource(
         ProviderCode providerCode,
