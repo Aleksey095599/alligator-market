@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Процесс фиксации рыночных данных FX Spot для аналитического TWAP по последней цене.
+ * Процесс захвата рыночных данных FX Spot для аналитического TWAP по последней цене.
  */
 public final class AnalyticalFxSpotTwapLastPrice implements MDCaptureProcess {
 
@@ -44,7 +44,7 @@ public final class AnalyticalFxSpotTwapLastPrice implements MDCaptureProcess {
     /**
      * Политика аналитического FX Spot TWAP-процесса по последней цене.
      *
-     * @param captureInterval фактический интервал фиксации тиков
+     * @param captureInterval фактический интервал захвата тиков
      */
     public record Policy(
             Duration captureInterval

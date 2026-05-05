@@ -10,13 +10,13 @@ import java.util.Objects;
 
 /**
  * Captured-level рыночный тик, полученный с помощью добавления к {@link SourceMarketDataTick} полей,
- * содержащих метаданные приложения на момент фиксации тика.
+ * содержащих метаданные приложения на момент захвата тика.
  *
- * @param captureProcessCode код процесса фиксации рыночных данных
+ * @param captureProcessCode код процесса захвата рыночных данных
  * @param instrumentCode        внутренний код инструмента приложения
  * @param providerCode          код провайдера рыночных данных
  * @param sourceTick            source-level тик, полученный от источника
- * @param receivedTimestamp     момент получения или фиксации тика приложением
+ * @param receivedTimestamp     момент получения или захвата тика приложением
  */
 public record CapturedMarketDataTick(
         MDCaptureProcessCode captureProcessCode,

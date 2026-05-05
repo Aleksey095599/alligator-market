@@ -20,7 +20,7 @@ public class MDCaptureProcessRegistryWiringConfig {
     public static final String BEAN_CAPTURE_PROCESS_REGISTRY = "captureProcessRegistry";
 
     /**
-     * Доменный snapshot-реестр процессов фиксации.
+     * Доменный snapshot-реестр процессов захвата.
      */
     @Bean(BEAN_CAPTURE_PROCESS_REGISTRY)
     public MDCaptureProcessRegistry captureProcessRegistry(List<MDCaptureProcess> processes) {

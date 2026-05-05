@@ -14,7 +14,7 @@ public class AnalyticalFxSpotTwapLastPriceWiringConfig {
             "analyticalFxSpotTwapLastPriceMDCaptureProcess";
 
     /**
-     * Доменный процесс фиксации FX Spot тиков последней цены для аналитического TWAP.
+     * Доменный процесс захвата FX Spot тиков последней цены для аналитического TWAP.
      */
     @Bean(BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_PROCESS)
     public AnalyticalFxSpotTwapLastPrice analyticalFxSpotTwapLastPriceMDCaptureProcess() {

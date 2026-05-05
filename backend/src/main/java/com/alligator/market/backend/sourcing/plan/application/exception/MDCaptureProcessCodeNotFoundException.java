@@ -5,7 +5,7 @@ import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProces
 import java.util.Objects;
 
 /**
- * Ошибка application-слоя: процесс фиксации с указанным кодом не найден.
+ * Ошибка application-слоя: процесс захвата с указанным кодом не найден.
  */
 public final class MDCaptureProcessCodeNotFoundException extends IllegalArgumentException {
 

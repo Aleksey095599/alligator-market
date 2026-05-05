@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Use-case сервис получения списка паспортов процессов фиксации рыночных данных.
+ * Use-case сервис получения списка паспортов процессов захвата рыночных данных.
  */
 @Slf4j
 public final class MDCaptureProcessPassportListService {
 
-    /* Доменный реестр процессов фиксации — источник истины по активным паспортам. */
+    /* Доменный реестр процессов захвата — источник истины по активным паспортам. */
     private final MDCaptureProcessRegistry registry;
 
     public MDCaptureProcessPassportListService(MDCaptureProcessRegistry registry) {
@@ -22,7 +22,7 @@ public final class MDCaptureProcessPassportListService {
     }
 
     /**
-     * Возвращает все паспорта процессов фиксации.
+     * Возвращает все паспорта процессов захвата.
      */
     public Map<MDCaptureProcessCode, MDCaptureProcessPassport> findAll() {
         Map<MDCaptureProcessCode, MDCaptureProcessPassport> passports = registry.passportsByCode();

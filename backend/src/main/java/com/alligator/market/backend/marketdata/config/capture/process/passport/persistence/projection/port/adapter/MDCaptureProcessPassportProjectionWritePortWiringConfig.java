@@ -16,7 +16,7 @@ public class MDCaptureProcessPassportProjectionWritePortWiringConfig {
             "captureProcessPassportProjectionWritePort";
 
     /**
-     * Write-порт проекции паспортов процессов фиксации.
+     * Write-порт проекции паспортов процессов захвата.
      */
     @Bean(BEAN_CAPTURE_PROCESS_PASSPORT_PROJECTION_WRITE_PORT)
     public MDCaptureProcessPassportProjectionWritePort captureProcessPassportProjectionWritePort(DSLContext dsl) {

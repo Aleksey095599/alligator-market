@@ -3,7 +3,7 @@ package com.alligator.market.domain.marketdata.capture.process.vo;
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
- * Объект-значение отображаемого имени процесса фиксации рыночных данных.
+ * Объект-значение отображаемого имени процесса захвата рыночных данных.
  *
  * @param value непустое имя процесса для интерфейса и диагностики
  */

@@ -5,12 +5,12 @@ import com.alligator.market.backend.sourcing.plan.application.query.options.mode
 import java.util.List;
 
 /**
- * Порт получения доступных процессов фиксации для UI.
+ * Порт получения доступных процессов захвата для UI.
  */
 public interface MDCaptureProcessOptionsQueryPort {
 
     /**
-     * Возвращает все доступные процессы фиксации.
+     * Возвращает все доступные процессы захвата.
      */
     List<MDCaptureProcessOption> findAllMDCaptureProcesses();
 }

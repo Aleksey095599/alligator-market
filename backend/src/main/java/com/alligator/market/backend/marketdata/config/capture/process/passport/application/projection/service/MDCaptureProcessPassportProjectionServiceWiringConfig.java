@@ -25,7 +25,7 @@ public class MDCaptureProcessPassportProjectionServiceWiringConfig {
     public static final String BEAN_CAPTURE_PROCESS_PASSPORT_PROJECTION_SERVICE =
             "captureProcessPassportProjectionService";
 
-    /* Use case сервис проекции паспортов процессов фиксации. */
+    /* Use case сервис проекции паспортов процессов захвата. */
     @Bean(BEAN_CAPTURE_PROCESS_PASSPORT_PROJECTION_SERVICE)
     public MDCaptureProcessPassportProjectionService captureProcessPassportProjectionService(
             @Qualifier(MDCaptureProcessRegistryWiringConfig.BEAN_CAPTURE_PROCESS_REGISTRY)

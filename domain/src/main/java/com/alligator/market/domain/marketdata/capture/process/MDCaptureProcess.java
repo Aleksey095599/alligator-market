@@ -5,7 +5,7 @@ import com.alligator.market.domain.marketdata.capture.process.policy.MDCapturePr
 import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
 
 /**
- * Процесс фиксации рыночных данных.
+ * Процесс захвата рыночных данных.
  */
 public interface MDCaptureProcess {
 

@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Use case сервис: построить/обновить проекцию паспортов процессов фиксации рыночных данных.
+ * Use case сервис: построить/обновить проекцию паспортов процессов захвата рыночных данных.
  *
  * <p>Здесь задаётся граница транзакции и выполняется синхронизация с доменным реестром.</p>
  */
@@ -32,7 +32,7 @@ public final class MDCaptureProcessPassportProjectionService {
     }
 
     /**
-     * Синхронизировать БД-проекцию паспортов процессов фиксации с доменным реестром.
+     * Синхронизировать БД-проекцию паспортов процессов захвата с доменным реестром.
      */
     public void project() {
         tx.executeWithoutResult(status -> projectInTransaction());
@@ -46,7 +46,7 @@ public final class MDCaptureProcessPassportProjectionService {
                 Objects.requireNonNull(registry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        // Инвариант доменной модели: реестр активных процессов фиксации не бывает пустым.
+        // Инвариант доменной модели: реестр активных процессов захвата не бывает пустым.
         if (registryPassports.isEmpty()) {
             throw new IllegalStateException("Capture process registry returned no capture process passports");
         }

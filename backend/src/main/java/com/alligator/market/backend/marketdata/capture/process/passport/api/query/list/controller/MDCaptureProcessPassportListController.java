@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер каталога паспортов процессов фиксации рыночных данных.
+ * REST-контроллер каталога паспортов процессов захвата рыночных данных.
  */
 @RestController
 @RequestMapping("/api/v1/market-data-capture-processes")
@@ -22,7 +22,7 @@ public class MDCaptureProcessPassportListController {
     private final MDCaptureProcessPassportListService service;
 
     /**
-     * Вернуть все паспорта процессов фиксации.
+     * Вернуть все паспорта процессов захвата.
      */
     @GetMapping
     public ResponseEntity<List<MDCaptureProcessPassportListItemResponse>> getAll() {

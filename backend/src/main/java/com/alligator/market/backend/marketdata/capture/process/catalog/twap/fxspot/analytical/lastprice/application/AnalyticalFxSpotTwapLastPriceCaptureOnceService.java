@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * Use case одного шага фиксации тика для процесса {@code ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE}.
+ * Use case одного шага захвата тика для процесса {@code ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE}.
  */
 public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
 

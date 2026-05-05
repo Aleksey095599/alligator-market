@@ -21,7 +21,7 @@ public class MDCaptureProcessPassportListServiceWiringConfig {
             "captureProcessPassportListService";
 
     /**
-     * Сервис списка паспортов процессов фиксации.
+     * Сервис списка паспортов процессов захвата.
      */
     @Bean(BEAN_CAPTURE_PROCESS_PASSPORT_LIST_SERVICE)
     public MDCaptureProcessPassportListService captureProcessPassportListService(

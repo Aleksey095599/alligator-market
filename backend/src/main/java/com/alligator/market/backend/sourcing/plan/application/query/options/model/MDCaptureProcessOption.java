@@ -6,7 +6,7 @@ import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProces
 import java.util.Objects;
 
 /**
- * Option процесса фиксации рыночных данных для UI.
+ * Option процесса захвата рыночных данных для UI.
  */
 public record MDCaptureProcessOption(
         MDCaptureProcessCode code,

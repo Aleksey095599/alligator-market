@@ -5,11 +5,11 @@ import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProces
 import java.util.Objects;
 
 /**
- * Паспорт процесса фиксации рыночных данных: иммутабельные метаданные для витрины.
+ * Паспорт процесса захвата рыночных данных: иммутабельные метаданные для витрины.
  *
  * <p>Назначение: отображение в каталоге, UI/API, логах и диагностике.</p>
  *
- * @param displayName отображаемое имя процесса фиксации
+ * @param displayName отображаемое имя процесса
  */
 public record MDCaptureProcessPassport(
         MDCaptureProcessDisplayName displayName

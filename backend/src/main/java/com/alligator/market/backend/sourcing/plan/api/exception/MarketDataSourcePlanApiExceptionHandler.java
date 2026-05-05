@@ -36,7 +36,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
 
 
     /**
-     * Код процесса фиксации отсутствует в passport projection --> 400.
+     * Код процесса захвата отсутствует в passport projection --> 400.
      */
     @ExceptionHandler(MDCaptureProcessCodeNotFoundException.class)
     public ProblemDetail handleMDCaptureProcessCodeNotFound(MDCaptureProcessCodeNotFoundException ex) {

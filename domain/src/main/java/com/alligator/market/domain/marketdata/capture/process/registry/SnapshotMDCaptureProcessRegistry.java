@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Реализация {@link MDCaptureProcessRegistry} в виде неизменяемого snapshot набора процессов фиксации.
+ * Реализация {@link MDCaptureProcessRegistry} в виде неизменяемого snapshot набора процессов захвата рыночных данных.
  *
  * <p>Инварианты, заданные в {@link MDCaptureProcessRegistry}, валидируются в конструкторе
  * и далее гарантируются на протяжении жизни экземпляра.</p>

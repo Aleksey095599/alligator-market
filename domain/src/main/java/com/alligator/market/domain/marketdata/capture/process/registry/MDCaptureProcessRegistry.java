@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Реестр процессов фиксации рыночных данных, зарегистрированных в приложении.
+ * Реестр процессов захвата рыночных данных, зарегистрированных в приложении.
  *
  * <p>Назначение: единый источник истины о доступных {@link MDCaptureProcess}
  * и точка валидации их консистентности.</p>
@@ -21,12 +21,12 @@ import java.util.Objects;
 public interface MDCaptureProcessRegistry {
 
     /**
-     * Неизменяемая карта "код процесса фиксации → процесс фиксации".
+     * Неизменяемая карта "код процесса захвата → процесс захвата".
      */
     Map<MDCaptureProcessCode, MDCaptureProcess> processesByCode();
 
     /**
-     * Производная проекция: неизменяемая карта "код процесса фиксации → паспорт процесса фиксации".
+     * Производная проекция: неизменяемая карта "код процесса захвата → паспорт процесса захвата".
      */
     default Map<MDCaptureProcessCode, MDCaptureProcessPassport> passportsByCode() {
         Map<MDCaptureProcessCode, MDCaptureProcessPassport> map = new LinkedHashMap<>();

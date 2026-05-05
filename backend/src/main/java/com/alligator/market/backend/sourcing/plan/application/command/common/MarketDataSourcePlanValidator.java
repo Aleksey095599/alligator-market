@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public final class MarketDataSourcePlanValidator {
 
-    /* Порт проверки существования процесса фиксации по коду. */
+    /* Порт проверки существования процесса захвата по коду. */
     private final MDCaptureProcessCodeExistencePort captureProcessCodeExistencePort;
 
     /* Порт проверки существования инструмента по коду. */
@@ -47,7 +47,7 @@ public final class MarketDataSourcePlanValidator {
     }
 
     /**
-     * Проверяет существование процесса фиксации.
+     * Проверяет существование процесса захвата.
      */
     public void ensureMDCaptureProcessExists(MarketDataSourcePlan plan) {
         if (!captureProcessCodeExistencePort.existsByCode(plan.captureProcessCode())) {

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.api.query.options.dto;
 
 /**
- * DTO доступного процесса фиксации для dropdown.
+ * DTO доступного процесса захвата для dropdown.
  */
 public record MDCaptureProcessOptionDto(
         String code,

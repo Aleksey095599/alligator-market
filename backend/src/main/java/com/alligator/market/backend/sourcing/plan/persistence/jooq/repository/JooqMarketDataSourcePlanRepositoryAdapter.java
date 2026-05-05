@@ -26,7 +26,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Имя FK-ограничения market_data_source_plan -> instrument_registry по коду инструмента. */
     private static final String FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT =
             "fk_market_data_source_plan_instrument";
-    /* Имя FK-ограничения market_data_source_plan -> capture_process_passport по коду процесса фиксации. */
+    /* Имя FK-ограничения market_data_source_plan -> capture_process_passport по коду процесса захвата. */
     private static final String FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS =
             "fk_market_data_source_plan_capture_process";
     private static final Field<String> MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE =
@@ -156,7 +156,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 return true;
             });
         } catch (DataIntegrityViolationException ex) {
-            // FK-ошибка => такого процесса фиксации нет в passport projection.
+            // FK-ошибка => такого процесса захвата нет в passport projection.
             if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS)) {
                 throw new MDCaptureProcessCodeNotFoundException(plan.captureProcessCode());
             }

@@ -7,7 +7,7 @@ import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProces
 import java.util.Objects;
 
 /**
- * Маппер паспорта процесса фиксации и {@link MDCaptureProcessPassportListItemResponse}.
+ * Маппер паспорта процесса захвата и {@link MDCaptureProcessPassportListItemResponse}.
  */
 public final class MDCaptureProcessPassportListItemResponseMapper {
 

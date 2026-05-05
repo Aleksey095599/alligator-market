@@ -13,7 +13,7 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
 
 /**
- * jOOQ-адаптер порта получения доступных процессов фиксации.
+ * jOOQ-адаптер порта получения доступных процессов захвата.
  */
 public final class JooqMDCaptureProcessOptionsQueryAdapter implements MDCaptureProcessOptionsQueryPort {
 

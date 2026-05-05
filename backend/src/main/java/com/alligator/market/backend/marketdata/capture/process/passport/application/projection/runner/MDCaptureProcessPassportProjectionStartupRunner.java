@@ -9,7 +9,7 @@ import org.springframework.boot.ApplicationRunner;
 import java.util.Objects;
 
 /**
- * Запуск проекции паспортов процессов фиксации рыночных данных при старте приложения.
+ * Запуск проекции паспортов процессов захвата рыночных данных при старте приложения.
  */
 @Slf4j
 public final class MDCaptureProcessPassportProjectionStartupRunner implements ApplicationRunner {
