@@ -5,7 +5,6 @@ import com.alligator.market.domain.marketdata.capture.process.passport.CapturePr
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Query;
 
 import java.util.ArrayList;
@@ -19,16 +18,12 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
 
 /**
  * jOOQ implementation of {@link CaptureProcessPassportProjectionWritePort}.
  */
 public class JooqCaptureProcessPassportProjectionWritePortAdapter
         implements CaptureProcessPassportProjectionWritePort {
-
-    private static final Field<String> LIFECYCLE_STATUS = field(name("lifecycle_status"), String.class);
 
     private final DSLContext dsl;
 
@@ -46,9 +41,9 @@ public class JooqCaptureProcessPassportProjectionWritePortAdapter
         }
 
         dsl.update(CAPTURE_PROCESS_PASSPORT)
-                .set(LIFECYCLE_STATUS, RETIRED.name())
+                .set(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
                 .where(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE.notIn(currentValues))
-                .and(LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
+                .and(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -68,16 +63,16 @@ public class JooqCaptureProcessPassportProjectionWritePortAdapter
 
             Condition businessFieldsChanged = CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME))
-                    .or(LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
+                    .or(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
 
             Query query = dsl.insertInto(CAPTURE_PROCESS_PASSPORT)
                     .set(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE, code.value())
                     .set(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(LIFECYCLE_STATUS, ACTIVE.name())
+                    .set(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
                     .onConflict(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE)
                     .doUpdate()
                     .set(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME, excluded(CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME))
-                    .set(LIFECYCLE_STATUS, ACTIVE.name())
+                    .set(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
                     .where(businessFieldsChanged);
 
             queries.add(query);

@@ -9,11 +9,10 @@ import java.util.Objects;
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
 /**
- * jOOQ-адаптер порта проверки существования инструмента.
+ * jOOQ-адаптер {@link InstrumentCodeExistencePort}.
  */
 public final class JooqInstrumentCodeExistenceAdapter implements InstrumentCodeExistencePort {
 
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqInstrumentCodeExistenceAdapter(DSLContext dsl) {

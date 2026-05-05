@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.application.port;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 /**
- * Порт проверки существования инструмента по его коду.
+ * Порт проверки существования финансового инструмента по его коду.
  */
 public interface InstrumentCodeExistencePort {
 

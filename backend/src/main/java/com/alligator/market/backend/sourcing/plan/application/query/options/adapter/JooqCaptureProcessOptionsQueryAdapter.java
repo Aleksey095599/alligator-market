@@ -5,22 +5,17 @@ import com.alligator.market.backend.sourcing.plan.application.query.options.port
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessDisplayName;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 
 import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
 
 /**
  * jOOQ-адаптер порта получения доступных процессов фиксации.
  */
 public final class JooqCaptureProcessOptionsQueryAdapter implements CaptureProcessOptionsQueryPort {
-
-    private static final Field<String> LIFECYCLE_STATUS = field(name("lifecycle_status"), String.class);
 
     /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
@@ -36,7 +31,7 @@ public final class JooqCaptureProcessOptionsQueryAdapter implements CaptureProce
                         CAPTURE_PROCESS_PASSPORT.DISPLAY_NAME
                 )
                 .from(CAPTURE_PROCESS_PASSPORT)
-                .where(LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .where(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
                 .orderBy(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE.asc())
                 .fetch(record -> new CaptureProcessOption(
                         new CaptureProcessCode(record.get(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE)),

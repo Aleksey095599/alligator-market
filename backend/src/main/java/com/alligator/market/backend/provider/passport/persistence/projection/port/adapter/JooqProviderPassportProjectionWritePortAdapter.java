@@ -5,7 +5,6 @@ import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Query;
 
 import java.util.ArrayList;
@@ -19,15 +18,11 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
 
 /**
  * jOOQ implementation of {@link ProviderPassportProjectionWritePort}.
  */
 public class JooqProviderPassportProjectionWritePortAdapter implements ProviderPassportProjectionWritePort {
-
-    private static final Field<String> LIFECYCLE_STATUS = field(name("lifecycle_status"), String.class);
 
     private final DSLContext dsl;
 
@@ -45,9 +40,9 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
         }
 
         dsl.update(PROVIDER_PASSPORT)
-                .set(LIFECYCLE_STATUS, RETIRED.name())
+                .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
                 .where(PROVIDER_PASSPORT.PROVIDER_CODE.notIn(currentValues))
-                .and(LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
+                .and(PROVIDER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -70,7 +65,7 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
                     .or(PROVIDER_PASSPORT.DELIVERY_MODE.isDistinctFrom(excluded(PROVIDER_PASSPORT.DELIVERY_MODE)))
                     .or(PROVIDER_PASSPORT.ACCESS_METHOD.isDistinctFrom(excluded(PROVIDER_PASSPORT.ACCESS_METHOD)))
                     .or(PROVIDER_PASSPORT.BULK_SUBSCRIPTION.isDistinctFrom(excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION)))
-                    .or(LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
+                    .or(PROVIDER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
 
             Query query = dsl.insertInto(PROVIDER_PASSPORT)
                     .set(PROVIDER_PASSPORT.PROVIDER_CODE, code.value())
@@ -78,14 +73,14 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
-                    .set(LIFECYCLE_STATUS, ACTIVE.name())
+                    .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
                     .onConflict(PROVIDER_PASSPORT.PROVIDER_CODE)
                     .doUpdate()
                     .set(PROVIDER_PASSPORT.DISPLAY_NAME, excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, excluded(PROVIDER_PASSPORT.DELIVERY_MODE))
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, excluded(PROVIDER_PASSPORT.ACCESS_METHOD))
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION))
-                    .set(LIFECYCLE_STATUS, ACTIVE.name())
+                    .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
                     .where(businessFieldsChanged);
 
             queries.add(query);
