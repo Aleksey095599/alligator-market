@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
-import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 
@@ -9,13 +9,13 @@ import java.util.Objects;
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
 /**
- * jOOQ-адаптер {@link InstrumentCodeExistencePort}.
+ * jOOQ-адаптер {@link InstrumentExistencePort}.
  */
-public final class JooqInstrumentCodeExistenceAdapter implements InstrumentCodeExistencePort {
+public final class JooqInstrumentExistenceAdapter implements InstrumentExistencePort {
 
     private final DSLContext dsl;
 
-    public JooqInstrumentCodeExistenceAdapter(DSLContext dsl) {
+    public JooqInstrumentExistenceAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 

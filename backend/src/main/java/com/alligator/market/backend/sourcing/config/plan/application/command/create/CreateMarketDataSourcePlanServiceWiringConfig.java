@@ -1,14 +1,14 @@
 package com.alligator.market.backend.sourcing.config.plan.application.command.create;
 
-import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataCaptureProcessCodeExistencePortWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentCodeExistencePortWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderCodeExistencePortWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataCaptureProcessExistencePortWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentExistencePortWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.command.common.MarketDataSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.command.create.CreateMarketDataSourcePlanService;
-import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +21,9 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourcePlanRepositoryWiringConfig.class,
-        MarketDataCaptureProcessCodeExistencePortWiringConfig.class,
-        InstrumentCodeExistencePortWiringConfig.class,
-        ProviderCodeExistencePortWiringConfig.class
+        MarketDataCaptureProcessExistencePortWiringConfig.class,
+        InstrumentExistencePortWiringConfig.class,
+        ProviderExistencePortWiringConfig.class
 })
 public class CreateMarketDataSourcePlanServiceWiringConfig {
 
@@ -33,19 +33,19 @@ public class CreateMarketDataSourcePlanServiceWiringConfig {
     public CreateMarketDataSourcePlanService createMarketDataSourcePlanService(
             @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
             MarketDataSourcePlanRepository marketDataSourcePlanRepository,
-            @Qualifier(MarketDataCaptureProcessCodeExistencePortWiringConfig.BEAN_CAPTURE_PROCESS_CODE_EXISTENCE_PORT)
-            MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
-            @Qualifier(InstrumentCodeExistencePortWiringConfig.BEAN_INSTRUMENT_CODE_EXISTENCE_PORT)
-            InstrumentCodeExistencePort instrumentCodeExistencePort,
-            @Qualifier(ProviderCodeExistencePortWiringConfig.BEAN_PROVIDER_CODE_EXISTENCE_PORT)
-            ProviderCodeExistencePort providerCodeExistencePort
+            @Qualifier(MarketDataCaptureProcessExistencePortWiringConfig.BEAN_CAPTURE_PROCESS_EXISTENCE_PORT)
+            MarketDataCaptureProcessExistencePort captureProcessExistencePort,
+            @Qualifier(InstrumentExistencePortWiringConfig.BEAN_INSTRUMENT_EXISTENCE_PORT)
+            InstrumentExistencePort instrumentExistencePort,
+            @Qualifier(ProviderExistencePortWiringConfig.BEAN_PROVIDER_EXISTENCE_PORT)
+            ProviderExistencePort providerExistencePort
     ) {
         return new CreateMarketDataSourcePlanService(
                 marketDataSourcePlanRepository,
                 new MarketDataSourcePlanValidator(
-                        captureProcessCodeExistencePort,
-                        instrumentCodeExistencePort,
-                        providerCodeExistencePort
+                        captureProcessExistencePort,
+                        instrumentExistencePort,
+                        providerExistencePort
                 )
         );
     }

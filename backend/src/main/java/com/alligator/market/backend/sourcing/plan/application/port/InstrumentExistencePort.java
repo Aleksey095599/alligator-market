@@ -5,7 +5,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 /**
  * Порт проверки существования зарегистрированного финансового инструмента по его коду.
  */
-public interface InstrumentCodeExistencePort {
+public interface InstrumentExistencePort {
 
     /**
      * Проверяет, есть ли зарегистрированный финансовый инструмент с указанным кодом.

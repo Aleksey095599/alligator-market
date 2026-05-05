@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
-import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessExistencePort;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import org.jooq.DSLContext;
 
@@ -10,13 +10,13 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
 
 /**
- * jOOQ-адаптер {@link MarketDataCaptureProcessCodeExistencePort}.
+ * jOOQ-адаптер {@link MarketDataCaptureProcessExistencePort}.
  */
-public final class JooqMarketDataCaptureProcessCodeExistenceAdapter implements MarketDataCaptureProcessCodeExistencePort {
+public final class JooqMarketDataCaptureProcessExistenceAdapter implements MarketDataCaptureProcessExistencePort {
 
     private final DSLContext dsl;
 
-    public JooqMarketDataCaptureProcessCodeExistenceAdapter(DSLContext dsl) {
+    public JooqMarketDataCaptureProcessExistenceAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 

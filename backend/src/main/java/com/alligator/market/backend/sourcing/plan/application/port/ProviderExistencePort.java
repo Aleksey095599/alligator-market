@@ -5,7 +5,7 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 /**
  * Порт проверки существования зарегистрированного провайдера рыночных данных по его коду.
  */
-public interface ProviderCodeExistencePort {
+public interface ProviderExistencePort {
 
     /**
      * Проверяет, есть ли зарегистрированный провайдер рыночных данных с указанным кодом.

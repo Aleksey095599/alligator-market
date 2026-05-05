@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.port.adapter;
 
-import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.DSLContext;
 
@@ -10,13 +10,13 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
 
 /**
- * jOOQ-адаптер {@link ProviderCodeExistencePort}.
+ * jOOQ-адаптер {@link ProviderExistencePort}.
  */
-public final class JooqProviderCodeExistenceAdapter implements ProviderCodeExistencePort {
+public final class JooqProviderExistenceAdapter implements ProviderExistencePort {
 
     private final DSLContext dsl;
 
-    public JooqProviderCodeExistenceAdapter(DSLContext dsl) {
+    public JooqProviderExistenceAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 

@@ -3,9 +3,9 @@ package com.alligator.market.backend.sourcing.plan.application.command.common;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
-import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
-import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -19,30 +19,30 @@ import java.util.Set;
 public final class MarketDataSourcePlanValidator {
 
     /* Порт проверки существования процесса захвата по коду. */
-    private final MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort;
+    private final MarketDataCaptureProcessExistencePort captureProcessExistencePort;
 
     /* Порт проверки существования инструмента по коду. */
-    private final InstrumentCodeExistencePort instrumentCodeExistencePort;
+    private final InstrumentExistencePort instrumentExistencePort;
 
     /* Порт проверки существования провайдера по коду. */
-    private final ProviderCodeExistencePort providerCodeExistencePort;
+    private final ProviderExistencePort providerExistencePort;
 
     public MarketDataSourcePlanValidator(
-            MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
-            InstrumentCodeExistencePort instrumentCodeExistencePort,
-            ProviderCodeExistencePort providerCodeExistencePort
+            MarketDataCaptureProcessExistencePort captureProcessExistencePort,
+            InstrumentExistencePort instrumentExistencePort,
+            ProviderExistencePort providerExistencePort
     ) {
-        this.captureProcessCodeExistencePort = Objects.requireNonNull(
-                captureProcessCodeExistencePort,
-                "captureProcessCodeExistencePort must not be null"
+        this.captureProcessExistencePort = Objects.requireNonNull(
+                captureProcessExistencePort,
+                "captureProcessExistencePort must not be null"
         );
-        this.instrumentCodeExistencePort = Objects.requireNonNull(
-                instrumentCodeExistencePort,
-                "instrumentCodeExistencePort must not be null"
+        this.instrumentExistencePort = Objects.requireNonNull(
+                instrumentExistencePort,
+                "instrumentExistencePort must not be null"
         );
-        this.providerCodeExistencePort = Objects.requireNonNull(
-                providerCodeExistencePort,
-                "providerCodeExistencePort must not be null"
+        this.providerExistencePort = Objects.requireNonNull(
+                providerExistencePort,
+                "providerExistencePort must not be null"
         );
     }
 
@@ -50,7 +50,7 @@ public final class MarketDataSourcePlanValidator {
      * Проверяет существование процесса захвата.
      */
     public void ensureMarketDataCaptureProcessExists(MarketDataSourcePlan plan) {
-        if (!captureProcessCodeExistencePort.existsByCode(plan.captureProcessCode())) {
+        if (!captureProcessExistencePort.existsByCode(plan.captureProcessCode())) {
             throw new MarketDataCaptureProcessCodeNotFoundException(plan.captureProcessCode());
         }
     }
@@ -59,7 +59,7 @@ public final class MarketDataSourcePlanValidator {
      * Проверяет существование инструмента.
      */
     public void ensureInstrumentExists(MarketDataSourcePlan plan) {
-        if (!instrumentCodeExistencePort.existsByCode(plan.instrumentCode())) {
+        if (!instrumentExistencePort.existsByCode(plan.instrumentCode())) {
             throw new InstrumentCodeNotFoundException(plan.instrumentCode());
         }
     }
@@ -71,7 +71,7 @@ public final class MarketDataSourcePlanValidator {
         Set<String> missingProviderCodes = new LinkedHashSet<>();
 
         for (MarketDataSource source : plan.sources()) {
-            if (!providerCodeExistencePort.existsByCode(source.providerCode())) {
+            if (!providerExistencePort.existsByCode(source.providerCode())) {
                 missingProviderCodes.add(source.providerCode().value());
             }
         }
