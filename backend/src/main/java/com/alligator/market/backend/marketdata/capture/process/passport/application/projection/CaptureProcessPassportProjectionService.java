@@ -51,10 +51,10 @@ public final class CaptureProcessPassportProjectionService {
             throw new IllegalStateException("Capture process registry returned no capture process passports");
         }
 
-        Set<CaptureProcessCode> activeCodes = Set.copyOf(registryPassports.keySet());
+        Set<CaptureProcessCode> currentCodes = Set.copyOf(registryPassports.keySet());
 
         // Синхронизация состава и значений проекции с реестром.
-        writePort.deleteAllExcept(activeCodes);
+        writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
     }
 }

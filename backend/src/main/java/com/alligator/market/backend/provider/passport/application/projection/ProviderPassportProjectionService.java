@@ -51,10 +51,10 @@ public final class ProviderPassportProjectionService {
             throw new IllegalStateException("Provider registry returned no provider passports");
         }
 
-        Set<ProviderCode> activeCodes = Set.copyOf(registryPassports.keySet());
+        Set<ProviderCode> currentCodes = Set.copyOf(registryPassports.keySet());
 
         // Синхронизация состава и значений проекции с реестром.
-        writePort.deleteAllExcept(activeCodes);
+        writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
     }
 }

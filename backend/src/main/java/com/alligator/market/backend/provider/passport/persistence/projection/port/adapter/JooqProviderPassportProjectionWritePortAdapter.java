@@ -1,10 +1,11 @@
 package com.alligator.market.backend.provider.passport.persistence.projection.port.adapter;
 
-import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.backend.provider.passport.application.projection.port.ProviderPassportProjectionWritePort;
+import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Query;
 
 import java.util.ArrayList;
@@ -14,15 +15,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.name;
 
 /**
- * jOOQ-реализация write-порта {@link ProviderPassportProjectionWritePort}.
+ * jOOQ implementation of {@link ProviderPassportProjectionWritePort}.
  */
 public class JooqProviderPassportProjectionWritePortAdapter implements ProviderPassportProjectionWritePort {
 
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
+    private static final Field<String> LIFECYCLE_STATUS = field(name("lifecycle_status"), String.class);
+
     private final DSLContext dsl;
 
     public JooqProviderPassportProjectionWritePortAdapter(DSLContext dsl) {
@@ -30,17 +36,18 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
     }
 
     @Override
-    public void deleteAllExcept(Set<ProviderCode> activeCodes) {
-        validateActiveCodes(activeCodes);
+    public void retireAllExcept(Set<ProviderCode> currentCodes) {
+        validateCurrentCodes(currentCodes);
 
-        // Преобразуем VO в набор строковых кодов для SQL-предиката NOT IN.
-        Set<String> activeValues = new LinkedHashSet<>(activeCodes.size());
-        for (ProviderCode code : activeCodes) {
-            activeValues.add(code.value());
+        Set<String> currentValues = new LinkedHashSet<>(currentCodes.size());
+        for (ProviderCode code : currentCodes) {
+            currentValues.add(code.value());
         }
 
-        dsl.deleteFrom(PROVIDER_PASSPORT)
-                .where(PROVIDER_PASSPORT.PROVIDER_CODE.notIn(activeValues))
+        dsl.update(PROVIDER_PASSPORT)
+                .set(LIFECYCLE_STATUS, RETIRED.name())
+                .where(PROVIDER_PASSPORT.PROVIDER_CODE.notIn(currentValues))
+                .and(LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -48,7 +55,7 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
     public void upsertAll(Map<ProviderCode, ProviderPassport> passports) {
         validatePassportsMap(passports);
         if (passports.isEmpty()) {
-            return; // Контракт: пустая карта = no-op.
+            return;
         }
 
         List<Map.Entry<ProviderCode, ProviderPassport>> entries = toValidatedEntries(passports);
@@ -58,10 +65,12 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
             ProviderCode code = entry.getKey();
             ProviderPassport passport = entry.getValue();
 
-            Condition businessFieldsChanged = PROVIDER_PASSPORT.DISPLAY_NAME.isDistinctFrom(excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
+            Condition businessFieldsChanged = PROVIDER_PASSPORT.DISPLAY_NAME
+                    .isDistinctFrom(excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
                     .or(PROVIDER_PASSPORT.DELIVERY_MODE.isDistinctFrom(excluded(PROVIDER_PASSPORT.DELIVERY_MODE)))
                     .or(PROVIDER_PASSPORT.ACCESS_METHOD.isDistinctFrom(excluded(PROVIDER_PASSPORT.ACCESS_METHOD)))
-                    .or(PROVIDER_PASSPORT.BULK_SUBSCRIPTION.isDistinctFrom(excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION)));
+                    .or(PROVIDER_PASSPORT.BULK_SUBSCRIPTION.isDistinctFrom(excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION)))
+                    .or(LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
 
             Query query = dsl.insertInto(PROVIDER_PASSPORT)
                     .set(PROVIDER_PASSPORT.PROVIDER_CODE, code.value())
@@ -69,12 +78,14 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
+                    .set(LIFECYCLE_STATUS, ACTIVE.name())
                     .onConflict(PROVIDER_PASSPORT.PROVIDER_CODE)
                     .doUpdate()
                     .set(PROVIDER_PASSPORT.DISPLAY_NAME, excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
                     .set(PROVIDER_PASSPORT.DELIVERY_MODE, excluded(PROVIDER_PASSPORT.DELIVERY_MODE))
                     .set(PROVIDER_PASSPORT.ACCESS_METHOD, excluded(PROVIDER_PASSPORT.ACCESS_METHOD))
                     .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION))
+                    .set(LIFECYCLE_STATUS, ACTIVE.name())
                     .where(businessFieldsChanged);
 
             queries.add(query);
@@ -83,30 +94,27 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
         dsl.batch(queries).execute();
     }
 
-    /* Контракт deleteAllExcept: set не null/непустой/без null-элементов. */
-    private static void validateActiveCodes(Set<ProviderCode> activeCodes) {
-        if (activeCodes == null) {
-            throw new IllegalArgumentException("activeCodes must not be null");
+    private static void validateCurrentCodes(Set<ProviderCode> currentCodes) {
+        if (currentCodes == null) {
+            throw new IllegalArgumentException("currentCodes must not be null");
         }
-        if (activeCodes.isEmpty()) {
-            throw new IllegalArgumentException("activeCodes must not be empty");
+        if (currentCodes.isEmpty()) {
+            throw new IllegalArgumentException("currentCodes must not be empty");
         }
 
-        for (ProviderCode code : activeCodes) {
+        for (ProviderCode code : currentCodes) {
             if (code == null) {
-                throw new IllegalArgumentException("activeCodes must not contain null");
+                throw new IllegalArgumentException("currentCodes must not contain null");
             }
         }
     }
 
-    /* Контракт upsertAll: map не null. */
     private static void validatePassportsMap(Map<ProviderCode, ProviderPassport> passports) {
         if (passports == null) {
             throw new IllegalArgumentException("passports must not be null");
         }
     }
 
-    /* Контракт upsertAll: map без null-ключей и null-значений. */
     private static List<Map.Entry<ProviderCode, ProviderPassport>> toValidatedEntries(
             Map<ProviderCode, ProviderPassport> passports
     ) {

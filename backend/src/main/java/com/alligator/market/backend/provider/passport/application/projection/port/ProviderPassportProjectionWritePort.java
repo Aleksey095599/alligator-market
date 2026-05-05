@@ -16,11 +16,11 @@ import java.util.Set;
 public interface ProviderPassportProjectionWritePort {
 
     /**
-     * Удалить все записи проекции, кроме указанных кодов провайдеров.
+     * Пометить устаревшими все записи проекции, кроме указанных кодов провайдеров.
      *
-     * @param activeCodes коды активных провайдеров
+     * @param currentCodes коды провайдеров из текущего реестра
      */
-    void deleteAllExcept(Set<ProviderCode> activeCodes);
+    void retireAllExcept(Set<ProviderCode> currentCodes);
 
     /**
      * Вставить или обновить паспорта провайдеров в проекции.

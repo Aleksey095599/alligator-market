@@ -16,11 +16,11 @@ import java.util.Set;
 public interface CaptureProcessPassportProjectionWritePort {
 
     /**
-     * Удалить все записи проекции, кроме указанных кодов процессов фиксации.
+     * Пометить устаревшими все записи проекции, кроме указанных кодов процессов фиксации.
      *
-     * @param activeCodes коды активных процессов фиксации
+     * @param currentCodes коды процессов фиксации из текущего реестра
      */
-    void deleteAllExcept(Set<CaptureProcessCode> activeCodes);
+    void retireAllExcept(Set<CaptureProcessCode> currentCodes);
 
     /**
      * Вставить или обновить паспорта процессов фиксации в проекции.
