@@ -18,8 +18,6 @@ import java.util.*;
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePlan.MARKET_DATA_SOURCE_PLAN;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
 
 /**
  * jOOQ-реализация репозитория планов источников.
@@ -36,8 +34,6 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE;
     private static final Field<String> MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE =
             MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE;
-    private static final Field<String> MARKET_DATA_SOURCE_LIFECYCLE_STATUS =
-            field(name("lifecycle_status"), String.class);
 
     /* DSLContext для выполнения SQL через jOOQ. */
     private final DSLContext dsl;
@@ -244,7 +240,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
                 .set(MARKET_DATA_SOURCE.PROVIDER_CODE, source.providerCode().value())
                 .set(MARKET_DATA_SOURCE.PRIORITY, source.priority())
-                .set(MARKET_DATA_SOURCE_LIFECYCLE_STATUS, ACTIVE.name())
+                .set(MARKET_DATA_SOURCE.LIFECYCLE_STATUS, ACTIVE.name())
                 .execute();
     }
 

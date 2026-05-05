@@ -1,6 +1,7 @@
 package com.alligator.market.backend.marketdata.capture.process.passport.application.projection;
 
 import com.alligator.market.backend.marketdata.capture.process.passport.application.projection.port.MarketDataCaptureProcessPassportProjectionWritePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
 import com.alligator.market.domain.marketdata.capture.process.registry.MarketDataCaptureProcessRegistry;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
@@ -19,15 +20,21 @@ public final class MarketDataCaptureProcessPassportProjectionService {
 
     private final MarketDataCaptureProcessRegistry registry;
     private final MarketDataCaptureProcessPassportProjectionWritePort writePort;
+    private final MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort;
     private final TransactionTemplate tx;
 
     public MarketDataCaptureProcessPassportProjectionService(
             MarketDataCaptureProcessRegistry registry,
             MarketDataCaptureProcessPassportProjectionWritePort writePort,
+            MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
             TransactionTemplate tx
     ) {
         this.registry = Objects.requireNonNull(registry, "registry must not be null");
         this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
+        this.sourceLifecycleStatusSyncPort = Objects.requireNonNull(
+                sourceLifecycleStatusSyncPort,
+                "sourceLifecycleStatusSyncPort must not be null"
+        );
         this.tx = Objects.requireNonNull(tx, "tx must not be null");
     }
 
@@ -56,5 +63,6 @@ public final class MarketDataCaptureProcessPassportProjectionService {
         // Синхронизация состава и значений проекции с реестром.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
+        sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveCaptureProcessPassports();
     }
 }

@@ -1,6 +1,7 @@
 package com.alligator.market.backend.provider.passport.application.projection;
 
 import com.alligator.market.backend.provider.passport.application.projection.port.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.vo.ProviderCode;
@@ -19,15 +20,21 @@ public final class ProviderPassportProjectionService {
 
     private final ProviderRegistry providerRegistry;
     private final ProviderPassportProjectionWritePort writePort;
+    private final MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort;
     private final TransactionTemplate tx;
 
     public ProviderPassportProjectionService(
             ProviderRegistry providerRegistry,
             ProviderPassportProjectionWritePort writePort,
+            MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
             TransactionTemplate tx
     ) {
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
         this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
+        this.sourceLifecycleStatusSyncPort = Objects.requireNonNull(
+                sourceLifecycleStatusSyncPort,
+                "sourceLifecycleStatusSyncPort must not be null"
+        );
         this.tx = Objects.requireNonNull(tx, "tx must not be null");
     }
 
@@ -56,5 +63,6 @@ public final class ProviderPassportProjectionService {
         // Синхронизация состава и значений проекции с реестром.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
+        sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveProviderPassports();
     }
 }

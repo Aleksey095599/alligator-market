@@ -4,6 +4,8 @@ import com.alligator.market.backend.provider.passport.application.projection.por
 import com.alligator.market.backend.provider.config.passport.persistence.projection.port.adapter.ProviderPassportProjectionWritePortWiringConfig;
 import com.alligator.market.backend.provider.config.registry.ProviderRegistryWiringConfig;
 import com.alligator.market.backend.provider.passport.application.projection.ProviderPassportProjectionService;
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Configuration(proxyBeanMethods = false)
 @Import({
         ProviderRegistryWiringConfig.class,
-        ProviderPassportProjectionWritePortWiringConfig.class
+        ProviderPassportProjectionWritePortWiringConfig.class,
+        MarketDataSourceLifecycleStatusSyncPortWiringConfig.class
 })
 public class ProviderPassportProjectionServiceWiringConfig {
 
@@ -32,11 +35,15 @@ public class ProviderPassportProjectionServiceWiringConfig {
             ProviderRegistry providerRegistry,
             @Qualifier(ProviderPassportProjectionWritePortWiringConfig.BEAN_PROVIDER_PASSPORT_PROJECTION_WRITE_PORT)
             ProviderPassportProjectionWritePort writePort,
+            @Qualifier(MarketDataSourceLifecycleStatusSyncPortWiringConfig
+                    .BEAN_MARKET_DATA_SOURCE_LIFECYCLE_STATUS_SYNC_PORT)
+            MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
             PlatformTransactionManager txManager
     ) {
         return new ProviderPassportProjectionService(
                 providerRegistry,
                 writePort,
+                sourceLifecycleStatusSyncPort,
                 new TransactionTemplate(txManager)
         );
     }
