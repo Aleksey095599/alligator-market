@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.api.command.create.mapper;
 import com.alligator.market.backend.sourcing.plan.api.command.create.dto.CreateMarketDataSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -35,7 +35,7 @@ public class CreateMarketDataSourcePlanMapper {
                 .toList();
 
         return new MarketDataSourcePlan(
-                new CaptureProcessCode(request.captureProcessCode()),
+                new MDCaptureProcessCode(request.captureProcessCode()),
                 new InstrumentCode(request.instrumentCode()),
                 sources
         );

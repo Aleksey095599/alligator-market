@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 public class AnalyticalFxSpotTwapLastPriceWiringConfig {
 
     public static final String BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_PROCESS =
-            "analyticalFxSpotTwapLastPriceCaptureProcess";
+            "analyticalFxSpotTwapLastPriceMDCaptureProcess";
 
     /**
      * Доменный процесс фиксации FX Spot тиков последней цены для аналитического TWAP.
      */
     @Bean(BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_PROCESS)
-    public AnalyticalFxSpotTwapLastPrice analyticalFxSpotTwapLastPriceCaptureProcess() {
+    public AnalyticalFxSpotTwapLastPrice analyticalFxSpotTwapLastPriceMDCaptureProcess() {
         return new AnalyticalFxSpotTwapLastPrice();
     }
 }

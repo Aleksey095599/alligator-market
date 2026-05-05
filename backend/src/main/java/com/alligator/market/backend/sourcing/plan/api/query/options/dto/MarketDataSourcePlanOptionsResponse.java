@@ -6,7 +6,7 @@ import java.util.List;
  * Ответ с options для экрана управления планами источников.
  */
 public record MarketDataSourcePlanOptionsResponse(
-        List<CaptureProcessOptionDto> captureProcesses,
+        List<MDCaptureProcessOptionDto> captureProcesses,
         List<InstrumentOptionDto> instruments,
         List<ProviderOptionDto> providers
 ) {

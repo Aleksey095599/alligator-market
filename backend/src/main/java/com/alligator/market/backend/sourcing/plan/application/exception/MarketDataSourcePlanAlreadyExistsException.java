@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 public final class MarketDataSourcePlanAlreadyExistsException extends IllegalStateException {
 
     public MarketDataSourcePlanAlreadyExistsException(
-            CaptureProcessCode captureProcessCode,
+            MDCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         super("Market data source plan for capture process '" +

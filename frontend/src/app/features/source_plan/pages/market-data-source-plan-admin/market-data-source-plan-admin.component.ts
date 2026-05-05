@@ -23,7 +23,7 @@ import {
   MarketDataSourceResponseDto
 } from '../../models/market-data-source-plan.model';
 import {
-  CaptureProcessOptionDto,
+  MDCaptureProcessOptionDto,
   InstrumentOptionDto,
   ProviderOptionDto
 } from '../../models/market-data-source-plan-options.model';
@@ -66,7 +66,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
-  captureProcesses: CaptureProcessOptionDto[] = [];
+  captureProcesses: MDCaptureProcessOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
   providers: ProviderOptionDto[] = [];
 
@@ -75,7 +75,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Режим редактора: create/edit. */
   editing = false;
   /* Текущий выбранный план в режиме редактирования. */
-  selectedCaptureProcessCode: string | null = null;
+  selectedMDCaptureProcessCode: string | null = null;
   selectedInstrumentCode: string | null = null;
   private loadedSourcesFingerprint: string | null = null;
 
@@ -194,7 +194,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.service.get(plan.captureProcessCode, plan.instrumentCode).subscribe({
       next: fullPlan => {
         this.editing = true;
-        this.selectedCaptureProcessCode = fullPlan.captureProcessCode;
+        this.selectedMDCaptureProcessCode = fullPlan.captureProcessCode;
         this.selectedInstrumentCode = fullPlan.instrumentCode;
 
         this.form.controls['captureProcessCode'].setValue(fullPlan.captureProcessCode);
@@ -251,7 +251,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     if (
       this.hasPlanValidationError
       || this.locked
-      || !this.selectedCaptureProcessCode
+      || !this.selectedMDCaptureProcessCode
       || !this.selectedInstrumentCode
       || !this.hasPlanChanges
     ) {
@@ -259,7 +259,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     }
 
     this.locked = true;
-    const captureProcessCode = this.selectedCaptureProcessCode;
+    const captureProcessCode = this.selectedMDCaptureProcessCode;
     const instrumentCode = this.selectedInstrumentCode;
     const sources = this.collectSortedSources();
 
@@ -282,16 +282,16 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
 
   /* Удалить выбранный план из editor-а. */
   onDeleteSelected(): void {
-    if (!this.selectedCaptureProcessCode || !this.selectedInstrumentCode || this.locked) {
+    if (!this.selectedMDCaptureProcessCode || !this.selectedInstrumentCode || this.locked) {
       return;
     }
 
-    this.deletePlan(this.selectedCaptureProcessCode, this.selectedInstrumentCode, true);
+    this.deletePlan(this.selectedMDCaptureProcessCode, this.selectedInstrumentCode, true);
   }
 
   /* Удалить план из нижнего списка. */
   onDeleteFromList(plan: MarketDataSourcePlanResponseDto): void {
-    const isCurrentPlan = this.selectedCaptureProcessCode === plan.captureProcessCode
+    const isCurrentPlan = this.selectedMDCaptureProcessCode === plan.captureProcessCode
       && this.selectedInstrumentCode === plan.instrumentCode;
     this.deletePlan(plan.captureProcessCode, plan.instrumentCode, isCurrentPlan);
   }
@@ -299,7 +299,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Сбросить форму и вернуться в create mode. */
   onReset(): void {
     this.editing = false;
-    this.selectedCaptureProcessCode = null;
+    this.selectedMDCaptureProcessCode = null;
     this.selectedInstrumentCode = null;
     this.loadedSourcesFingerprint = null;
     this.locked = false;

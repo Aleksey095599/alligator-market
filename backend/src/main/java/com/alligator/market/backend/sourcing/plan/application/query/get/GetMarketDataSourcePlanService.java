@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.plan.application.query.get;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.CaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 
@@ -27,14 +27,14 @@ public final class GetMarketDataSourcePlanService {
      * Возвращает план источников для инструмента.
      */
     public MarketDataSourcePlan get(
-            CaptureProcessCode captureProcessCode,
+            MDCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return marketDataSourcePlanRepository
-                .findByCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode)
+                .findByMDCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode)
                 .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode));
     }
 }

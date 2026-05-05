@@ -6,7 +6,7 @@ import com.alligator.market.backend.sourcing.plan.api.command.replace.controller
 import com.alligator.market.backend.sourcing.plan.api.query.get.controller.GetMarketDataSourcePlanController;
 import com.alligator.market.backend.sourcing.plan.api.query.list.controller.MarketDataSourcePlanListController;
 import com.alligator.market.backend.sourcing.plan.api.query.options.controller.MarketDataSourcePlanOptionsQueryController;
-import com.alligator.market.backend.sourcing.plan.application.exception.CaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.exception.MDCaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
@@ -38,8 +38,8 @@ public class MarketDataSourcePlanApiExceptionHandler {
     /**
      * Код процесса фиксации отсутствует в passport projection --> 400.
      */
-    @ExceptionHandler(CaptureProcessCodeNotFoundException.class)
-    public ProblemDetail handleCaptureProcessCodeNotFound(CaptureProcessCodeNotFoundException ex) {
+    @ExceptionHandler(MDCaptureProcessCodeNotFoundException.class)
+    public ProblemDetail handleMDCaptureProcessCodeNotFound(MDCaptureProcessCodeNotFoundException ex) {
         log.warn("Capture process code does not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,

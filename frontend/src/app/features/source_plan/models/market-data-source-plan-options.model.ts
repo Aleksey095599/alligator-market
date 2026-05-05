@@ -1,4 +1,4 @@
-export interface CaptureProcessOptionDto {
+export interface MDCaptureProcessOptionDto {
   code: string;
   displayName: string;
 }
@@ -12,7 +12,7 @@ export interface ProviderOptionDto {
 }
 
 export interface MarketDataSourcePlanOptionsResponseDto {
-  captureProcesses: CaptureProcessOptionDto[];
+  captureProcesses: MDCaptureProcessOptionDto[];
   instruments: InstrumentOptionDto[];
   providers: ProviderOptionDto[];
 }
