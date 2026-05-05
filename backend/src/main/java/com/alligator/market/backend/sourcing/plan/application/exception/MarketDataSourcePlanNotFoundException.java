@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 public final class MarketDataSourcePlanNotFoundException extends IllegalStateException {
 
     public MarketDataSourcePlanNotFoundException(
-            MDCaptureProcessCode captureProcessCode,
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         super("Market data source plan for capture process '" +

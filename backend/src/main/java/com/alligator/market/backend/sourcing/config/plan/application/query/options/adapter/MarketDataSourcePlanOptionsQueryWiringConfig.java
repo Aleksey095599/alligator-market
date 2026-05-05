@@ -1,9 +1,9 @@
 package com.alligator.market.backend.sourcing.config.plan.application.query.options.adapter;
 
-import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqMDCaptureProcessOptionsQueryAdapter;
+import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqMarketDataCaptureProcessOptionsQueryAdapter;
 import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqInstrumentOptionsQueryAdapter;
 import com.alligator.market.backend.sourcing.plan.application.query.options.adapter.JooqProviderOptionsQueryAdapter;
-import com.alligator.market.backend.sourcing.plan.application.query.options.port.MDCaptureProcessOptionsQueryPort;
+import com.alligator.market.backend.sourcing.plan.application.query.options.port.MarketDataCaptureProcessOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
 import org.jooq.DSLContext;
@@ -21,8 +21,8 @@ public class MarketDataSourcePlanOptionsQueryWiringConfig {
     public static final String BEAN_PROVIDER_OPTIONS_QUERY_PORT = "providerOptionsQueryPort";
 
     @Bean(BEAN_CAPTURE_PROCESS_OPTIONS_QUERY_PORT)
-    public MDCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort(DSLContext dsl) {
-        return new JooqMDCaptureProcessOptionsQueryAdapter(dsl);
+    public MarketDataCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort(DSLContext dsl) {
+        return new JooqMarketDataCaptureProcessOptionsQueryAdapter(dsl);
     }
 
     @Bean(BEAN_INSTRUMENT_OPTIONS_QUERY_PORT)

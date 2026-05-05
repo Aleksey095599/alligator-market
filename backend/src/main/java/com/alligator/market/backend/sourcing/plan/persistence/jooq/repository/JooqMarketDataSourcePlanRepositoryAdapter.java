@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourcing.plan.persistence.jooq.repository;
 
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
-import com.alligator.market.backend.sourcing.plan.application.exception.MDCaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
@@ -42,8 +42,8 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public Optional<MarketDataSourcePlan> findByMDCaptureProcessCodeAndInstrumentCode(
-            MDCaptureProcessCode captureProcessCode,
+    public Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
@@ -93,7 +93,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            new MDCaptureProcessCode(record.get(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE)),
+                            new MarketDataCaptureProcessCode(record.get(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE)),
                             new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE))
                     );
 
@@ -158,7 +158,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         } catch (DataIntegrityViolationException ex) {
             // FK-ошибка => такого процесса захвата нет в passport projection.
             if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS)) {
-                throw new MDCaptureProcessCodeNotFoundException(plan.captureProcessCode());
+                throw new MarketDataCaptureProcessCodeNotFoundException(plan.captureProcessCode());
             }
 
             // FK-ошибка => такого инструмента нет в реестре.
@@ -207,8 +207,8 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public boolean deleteIfExistsByMDCaptureProcessCodeAndInstrumentCode(
-            MDCaptureProcessCode captureProcessCode,
+    public boolean deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
@@ -226,7 +226,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Вставляет один источник инструмента. */
     private void insertSource(
             DSLContext dsl,
-            MDCaptureProcessCode captureProcessCode,
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode,
             MarketDataSource source
     ) {
@@ -257,7 +257,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     private record PlanKey(
-            MDCaptureProcessCode captureProcessCode,
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
     }

@@ -1,10 +1,10 @@
 package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice;
 
-import com.alligator.market.domain.marketdata.capture.process.MDCaptureProcess;
-import com.alligator.market.domain.marketdata.capture.process.passport.MDCaptureProcessPassport;
-import com.alligator.market.domain.marketdata.capture.process.policy.MDCaptureProcessPolicy;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessDisplayName;
+import com.alligator.market.domain.marketdata.capture.process.MarketDataCaptureProcess;
+import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
+import com.alligator.market.domain.marketdata.capture.process.policy.MarketDataCaptureProcessPolicy;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessDisplayName;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -12,27 +12,27 @@ import java.util.Objects;
 /**
  * Процесс захвата рыночных данных FX Spot для аналитического TWAP по последней цене.
  */
-public final class AnalyticalFxSpotTwapLastPrice implements MDCaptureProcess {
+public final class AnalyticalFxSpotTwapLastPrice implements MarketDataCaptureProcess {
 
-    public static final MDCaptureProcessCode PROCESS_CODE =
-            MDCaptureProcessCode.of("ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE");
+    public static final MarketDataCaptureProcessCode PROCESS_CODE =
+            MarketDataCaptureProcessCode.of("ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE");
 
-    public static final MDCaptureProcessDisplayName DISPLAY_NAME =
-            MDCaptureProcessDisplayName.of("Analytical FX Spot TWAP by last price");
+    public static final MarketDataCaptureProcessDisplayName DISPLAY_NAME =
+            MarketDataCaptureProcessDisplayName.of("Analytical FX Spot TWAP by last price");
 
-    public static final MDCaptureProcessPassport PASSPORT =
-            new MDCaptureProcessPassport(DISPLAY_NAME);
+    public static final MarketDataCaptureProcessPassport PASSPORT =
+            new MarketDataCaptureProcessPassport(DISPLAY_NAME);
 
     public static final Policy POLICY =
             new Policy(Duration.ofSeconds(1));
 
     @Override
-    public MDCaptureProcessCode processCode() {
+    public MarketDataCaptureProcessCode processCode() {
         return PROCESS_CODE;
     }
 
     @Override
-    public MDCaptureProcessPassport passport() {
+    public MarketDataCaptureProcessPassport passport() {
         return PASSPORT;
     }
 
@@ -48,7 +48,7 @@ public final class AnalyticalFxSpotTwapLastPrice implements MDCaptureProcess {
      */
     public record Policy(
             Duration captureInterval
-    ) implements MDCaptureProcessPolicy {
+    ) implements MarketDataCaptureProcessPolicy {
 
         public Policy {
             Objects.requireNonNull(captureInterval, "captureInterval must not be null");

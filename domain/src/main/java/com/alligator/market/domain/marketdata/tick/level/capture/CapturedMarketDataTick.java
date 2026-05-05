@@ -1,7 +1,7 @@
 package com.alligator.market.domain.marketdata.tick.level.capture;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 
@@ -19,7 +19,7 @@ import java.util.Objects;
  * @param receivedTimestamp     момент получения или захвата тика приложением
  */
 public record CapturedMarketDataTick(
-        MDCaptureProcessCode captureProcessCode,
+        MarketDataCaptureProcessCode captureProcessCode,
         InstrumentCode instrumentCode,
         ProviderCode providerCode,
         SourceMarketDataTick sourceTick,

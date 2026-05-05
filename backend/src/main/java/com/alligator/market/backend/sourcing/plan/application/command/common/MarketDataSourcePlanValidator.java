@@ -1,9 +1,9 @@
 package com.alligator.market.backend.sourcing.plan.application.command.common;
 
-import com.alligator.market.backend.sourcing.plan.application.exception.MDCaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourcing.plan.application.exception.ProviderCodesNotFoundException;
-import com.alligator.market.backend.sourcing.plan.application.port.MDCaptureProcessCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
@@ -19,7 +19,7 @@ import java.util.Set;
 public final class MarketDataSourcePlanValidator {
 
     /* Порт проверки существования процесса захвата по коду. */
-    private final MDCaptureProcessCodeExistencePort captureProcessCodeExistencePort;
+    private final MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort;
 
     /* Порт проверки существования инструмента по коду. */
     private final InstrumentCodeExistencePort instrumentCodeExistencePort;
@@ -28,7 +28,7 @@ public final class MarketDataSourcePlanValidator {
     private final ProviderCodeExistencePort providerCodeExistencePort;
 
     public MarketDataSourcePlanValidator(
-            MDCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
+            MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
             InstrumentCodeExistencePort instrumentCodeExistencePort,
             ProviderCodeExistencePort providerCodeExistencePort
     ) {
@@ -49,9 +49,9 @@ public final class MarketDataSourcePlanValidator {
     /**
      * Проверяет существование процесса захвата.
      */
-    public void ensureMDCaptureProcessExists(MarketDataSourcePlan plan) {
+    public void ensureMarketDataCaptureProcessExists(MarketDataSourcePlan plan) {
         if (!captureProcessCodeExistencePort.existsByCode(plan.captureProcessCode())) {
-            throw new MDCaptureProcessCodeNotFoundException(plan.captureProcessCode());
+            throw new MarketDataCaptureProcessCodeNotFoundException(plan.captureProcessCode());
         }
     }
 

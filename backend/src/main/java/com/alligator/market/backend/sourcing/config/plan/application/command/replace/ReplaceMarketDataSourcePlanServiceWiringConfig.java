@@ -1,11 +1,11 @@
 package com.alligator.market.backend.sourcing.config.plan.application.command.replace;
 
-import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MDCaptureProcessCodeExistencePortWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataCaptureProcessCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.InstrumentCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.ProviderCodeExistencePortWiringConfig;
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.command.common.MarketDataSourcePlanValidator;
-import com.alligator.market.backend.sourcing.plan.application.port.MDCaptureProcessCodeExistencePort;
+import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderCodeExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.command.replace.ReplaceMarketDataSourcePlanService;
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourcePlanRepositoryWiringConfig.class,
-        MDCaptureProcessCodeExistencePortWiringConfig.class,
+        MarketDataCaptureProcessCodeExistencePortWiringConfig.class,
         InstrumentCodeExistencePortWiringConfig.class,
         ProviderCodeExistencePortWiringConfig.class
 })
@@ -33,8 +33,8 @@ public class ReplaceMarketDataSourcePlanServiceWiringConfig {
     public ReplaceMarketDataSourcePlanService replaceMarketDataSourcePlanService(
             @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
             MarketDataSourcePlanRepository marketDataSourcePlanRepository,
-            @Qualifier(MDCaptureProcessCodeExistencePortWiringConfig.BEAN_CAPTURE_PROCESS_CODE_EXISTENCE_PORT)
-            MDCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
+            @Qualifier(MarketDataCaptureProcessCodeExistencePortWiringConfig.BEAN_CAPTURE_PROCESS_CODE_EXISTENCE_PORT)
+            MarketDataCaptureProcessCodeExistencePort captureProcessCodeExistencePort,
             @Qualifier(InstrumentCodeExistencePortWiringConfig.BEAN_INSTRUMENT_CODE_EXISTENCE_PORT)
             InstrumentCodeExistencePort instrumentCodeExistencePort,
             @Qualifier(ProviderCodeExistencePortWiringConfig.BEAN_PROVIDER_CODE_EXISTENCE_PORT)

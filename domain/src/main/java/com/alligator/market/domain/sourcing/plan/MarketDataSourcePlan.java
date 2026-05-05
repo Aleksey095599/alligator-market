@@ -1,7 +1,7 @@
 package com.alligator.market.domain.sourcing.plan;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -16,7 +16,7 @@ import java.util.*;
 @SuppressWarnings("ClassCanBeRecord")
 public final class MarketDataSourcePlan {
 
-    private final MDCaptureProcessCode captureProcessCode;
+    private final MarketDataCaptureProcessCode captureProcessCode;
     private final InstrumentCode instrumentCode;
     private final List<MarketDataSource> sources;
 
@@ -28,7 +28,7 @@ public final class MarketDataSourcePlan {
      * @param sources            Список источников рыночных данных
      */
     public MarketDataSourcePlan(
-            MDCaptureProcessCode captureProcessCode,
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode,
             List<MarketDataSource> sources
     ) {
@@ -75,7 +75,7 @@ public final class MarketDataSourcePlan {
         return List.copyOf(sourcesValidated);
     }
 
-    public MDCaptureProcessCode captureProcessCode() {
+    public MarketDataCaptureProcessCode captureProcessCode() {
         return captureProcessCode;
     }
 

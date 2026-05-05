@@ -44,7 +44,7 @@ public final class ReplaceMarketDataSourcePlanService {
         Objects.requireNonNull(plan, "plan must not be null");
 
         // Проверяем, что процесс захвата реально существует
-        existenceValidator.ensureMDCaptureProcessExists(plan);
+        existenceValidator.ensureMarketDataCaptureProcessExists(plan);
 
         // Проверяем, что инструмент реально существует
         existenceValidator.ensureInstrumentExists(plan);
@@ -53,7 +53,7 @@ public final class ReplaceMarketDataSourcePlanService {
         existenceValidator.ensureProvidersExist(plan);
 
         MarketDataSourcePlan currentPlan = marketDataSourcePlanRepository
-                .findByMDCaptureProcessCodeAndInstrumentCode(plan.captureProcessCode(), plan.instrumentCode())
+                .findByMarketDataCaptureProcessCodeAndInstrumentCode(plan.captureProcessCode(), plan.instrumentCode())
                 .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(
                         plan.captureProcessCode(),
                         plan.instrumentCode()

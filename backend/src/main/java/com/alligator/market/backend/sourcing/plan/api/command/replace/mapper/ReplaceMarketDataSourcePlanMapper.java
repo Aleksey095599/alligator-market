@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.api.command.replace.mapper;
 import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.ReplaceMarketDataSourcePlanRequest;
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
@@ -42,7 +42,7 @@ public class ReplaceMarketDataSourcePlanMapper {
                 .toList();
 
         return new MarketDataSourcePlan(
-                new MDCaptureProcessCode(captureProcessCode),
+                new MarketDataCaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode),
                 sources
         );

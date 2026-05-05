@@ -44,7 +44,7 @@ public final class CreateMarketDataSourcePlanService {
         Objects.requireNonNull(plan, "plan must not be null");
 
         // Проверяем, что процесс захвата реально существует
-        existenceValidator.ensureMDCaptureProcessExists(plan);
+        existenceValidator.ensureMarketDataCaptureProcessExists(plan);
 
         // Проверяем, что инструмент реально существует
         existenceValidator.ensureInstrumentExists(plan);

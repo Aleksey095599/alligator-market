@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.plan.application.command.delete;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MDCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public final class DeleteMarketDataSourcePlanService {
      * Удаляет существующий план источников для инструмента.
      */
     public void delete(
-            MDCaptureProcessCode captureProcessCode,
+            MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
@@ -38,7 +38,7 @@ public final class DeleteMarketDataSourcePlanService {
 
         // Условно удаляем root-plan и сигнализируем, если его не было
         boolean deleted = marketDataSourcePlanRepository
-                .deleteIfExistsByMDCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode);
+                .deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode);
         if (!deleted) {
             log.warn(
                     "Market data source plan was not found and was not deleted: captureProcessCode={}, instrumentCode={}",

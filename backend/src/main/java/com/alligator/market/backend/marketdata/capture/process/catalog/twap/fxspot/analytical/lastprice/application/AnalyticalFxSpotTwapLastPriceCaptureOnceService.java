@@ -64,7 +64,7 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         MarketDataSourcePlan sourcePlan = sourcePlanRepository
-                .findByMDCaptureProcessCodeAndInstrumentCode(process.processCode(), instrumentCode)
+                .findByMarketDataCaptureProcessCodeAndInstrumentCode(process.processCode(), instrumentCode)
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException(
                         process.processCode(),
                         instrumentCode

@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourcing.plan.api.query.options.controller;
 
-import com.alligator.market.backend.sourcing.plan.api.query.options.dto.MDCaptureProcessOptionDto;
+import com.alligator.market.backend.sourcing.plan.api.query.options.dto.MarketDataCaptureProcessOptionDto;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.InstrumentOptionDto;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.MarketDataSourcePlanOptionsResponse;
 import com.alligator.market.backend.sourcing.plan.api.query.options.dto.ProviderOptionDto;
-import com.alligator.market.backend.sourcing.plan.application.query.options.port.MDCaptureProcessOptionsQueryPort;
+import com.alligator.market.backend.sourcing.plan.application.query.options.port.MarketDataCaptureProcessOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ import java.util.Objects;
 @RestController
 public class MarketDataSourcePlanOptionsQueryController {
 
-    private final MDCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort;
+    private final MarketDataCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort;
     private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
     private final ProviderOptionsQueryPort providerOptionsQueryPort;
 
     public MarketDataSourcePlanOptionsQueryController(
-            MDCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort,
+            MarketDataCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort,
             InstrumentOptionsQueryPort instrumentOptionsQueryPort,
             ProviderOptionsQueryPort providerOptionsQueryPort
     ) {
@@ -48,8 +48,8 @@ public class MarketDataSourcePlanOptionsQueryController {
     @GetMapping("/api/v1/market-data-source-plans/options")
     public ResponseEntity<MarketDataSourcePlanOptionsResponse> getOptions() {
         MarketDataSourcePlanOptionsResponse response = new MarketDataSourcePlanOptionsResponse(
-                captureProcessOptionsQueryPort.findAllMDCaptureProcesses().stream()
-                        .map(option -> new MDCaptureProcessOptionDto(
+                captureProcessOptionsQueryPort.findAllMarketDataCaptureProcesses().stream()
+                        .map(option -> new MarketDataCaptureProcessOptionDto(
                                 option.code().value(),
                                 option.displayName().value()
                         ))
