@@ -16,6 +16,10 @@ import static org.jooq.impl.DSL.selectOne;
 
 /**
  * jOOQ implementation of {@link MarketDataSourceLifecycleStatusSyncPort}.
+ *
+ * <p>Синхронизация монотонная: переводит только ACTIVE source rows в RETIRED и никогда
+ * не возвращает RETIRED строки обратно в ACTIVE. Если источник снова нужен, строку плана
+ * лучше удалить и добавить заново.</p>
  */
 public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
         implements MarketDataSourceLifecycleStatusSyncPort {
@@ -52,6 +56,7 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     }
 
     private void retireActiveSources(Condition invalidReference) {
+        // RETIRED остается терминальным состоянием; здесь меняются только еще активные строки.
         dsl.update(MARKET_DATA_SOURCE)
                 .set(MARKET_DATA_SOURCE.LIFECYCLE_STATUS, RETIRED.name())
                 .where(MARKET_DATA_SOURCE.LIFECYCLE_STATUS.eq(ACTIVE.name()))

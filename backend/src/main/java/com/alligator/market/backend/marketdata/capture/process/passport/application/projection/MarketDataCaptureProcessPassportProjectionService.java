@@ -63,6 +63,7 @@ public final class MarketDataCaptureProcessPassportProjectionService {
         // Синхронизация состава и значений проекции с реестром.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
+        // Изменения lifecycle паспортов процессов захвата могут сделать строки source plan устаревшими.
         sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveCaptureProcessPassports();
     }
 }

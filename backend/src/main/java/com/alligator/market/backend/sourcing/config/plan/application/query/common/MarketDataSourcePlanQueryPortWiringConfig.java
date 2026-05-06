@@ -6,6 +6,9 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Конфигурация read-side запросов source plan для административного API.
+ */
 @Configuration(proxyBeanMethods = false)
 public class MarketDataSourcePlanQueryPortWiringConfig {
 

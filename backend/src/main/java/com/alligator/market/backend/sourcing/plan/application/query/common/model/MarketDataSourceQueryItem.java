@@ -2,6 +2,11 @@ package com.alligator.market.backend.sourcing.plan.application.query.common.mode
 
 import java.util.Objects;
 
+/**
+ * Read-модель одной строки source внутри source plan.
+ *
+ * <p>{@code lifecycleStatus} — технический статус пригодности, а не ручной enable/disable flag.</p>
+ */
 public record MarketDataSourceQueryItem(
         String providerCode,
         int priority,

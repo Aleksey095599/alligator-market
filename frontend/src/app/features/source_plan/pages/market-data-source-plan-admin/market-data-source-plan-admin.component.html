@@ -19,8 +19,13 @@
             <mat-form-field appearance="outline">
               <mat-label>Capture Process</mat-label>
               <mat-select formControlName="captureProcessCode">
-                <mat-option *ngFor="let process of captureProcesses" [value]="process.code">
+                <mat-option
+                  *ngFor="let process of captureProcessOptions"
+                  [value]="process.code"
+                  [disabled]="!isCaptureProcessActive(process.code)"
+                >
                   {{ process.displayName }}
+                  <span *ngIf="!isCaptureProcessActive(process.code)"> (not active)</span>
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="
@@ -69,11 +74,12 @@
                 <mat-label>Provider</mat-label>
                 <mat-select formControlName="providerCode">
                   <mat-option
-                    *ngFor="let provider of providerOptionsFor(control.value.providerCode)"
+                    *ngFor="let provider of providerOptions"
                     [value]="provider.code"
+                    [disabled]="!isProviderActive(provider.code)"
                   >
                     {{ provider.code }}
-                    <span *ngIf="!hasProviderOption(provider.code)"> (not active)</span>
+                    <span *ngIf="!isProviderActive(provider.code)"> (not active)</span>
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="control.get('providerCode')?.hasError('required')">
@@ -111,9 +117,13 @@
             </div>
           </div>
 
-          <div class="validation-row" *ngIf="hasDuplicateProviders || hasDuplicatePriorities">
+          <div
+            class="validation-row"
+            *ngIf="hasDuplicateProviders || hasDuplicatePriorities || hasRetiredSourceRows"
+          >
             <span *ngIf="hasDuplicateProviders">Duplicate providerCode is not allowed.</span>
             <span *ngIf="hasDuplicatePriorities">Duplicate priority is not allowed.</span>
+            <span *ngIf="hasRetiredSourceRows">Remove retired sources before saving.</span>
           </div>
         </section>
 

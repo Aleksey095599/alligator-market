@@ -18,6 +18,13 @@ import java.util.Optional;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
 
+/**
+ * Read-side адаптер для административного отображения source plan.
+ *
+ * <p>Намеренно возвращает и ACTIVE, и RETIRED строки источников: администратор должен видеть
+ * устаревшие строки, чтобы удалить или заменить их. Runtime-выбор источника должен идти через
+ * доменный репозиторий с фильтрацией по ACTIVE lifecycle status.</p>
+ */
 public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSourcePlanQueryPort {
 
     private static final Field<String> MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE =
@@ -40,6 +47,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         Condition condition = MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value())
                 .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()));
 
+        // Без lifecycle-фильтра: edit-форма должна загрузить retired строки, чтобы их можно было удалить.
         List<MarketDataSourceQueryItem> sources = dsl.select(
                         MARKET_DATA_SOURCE.PROVIDER_CODE,
                         MARKET_DATA_SOURCE.PRIORITY,
@@ -67,6 +75,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
 
     @Override
     public List<MarketDataSourcePlanQueryItem> findAll() {
+        // Таблица хранит строки источников, а API возвращает агрегированный план.
         Map<PlanKey, List<MarketDataSourceQueryItem>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(

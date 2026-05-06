@@ -63,6 +63,7 @@ public final class ProviderPassportProjectionService {
         // Синхронизация состава и значений проекции с реестром.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
+        // Изменения lifecycle паспортов провайдеров могут сделать строки source plan устаревшими.
         sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveProviderPassports();
     }
 }

@@ -73,9 +73,13 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
-  captureProcesses: MarketDataCaptureProcessOptionDto[] = [];
+  private activeCaptureProcessOptions: MarketDataCaptureProcessOptionDto[] = [];
+  private activeCaptureProcessCodes = new Set<string>();
+  captureProcessOptions: MarketDataCaptureProcessOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
-  providers: ProviderOptionDto[] = [];
+  private activeProviderOptions: ProviderOptionDto[] = [];
+  private activeProviderCodes = new Set<string>();
+  providerOptions: ProviderOptionDto[] = [];
 
   /* Флаг блокировки кнопок при запросе. */
   locked = false;
@@ -140,6 +144,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   get hasPlanValidationError(): boolean {
     return this.form.invalid
       || this.sources.length === 0
+      || this.hasRetiredSourceRows
       || this.hasDuplicateProviders
       || this.hasDuplicatePriorities;
   }
@@ -169,9 +174,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   loadOptions(): void {
     this.service.getOptions().subscribe({
       next: options => {
-        this.captureProcesses = options.captureProcesses;
+        this.activeCaptureProcessOptions = options.captureProcesses;
+        this.activeCaptureProcessCodes = new Set(options.captureProcesses.map(process => process.code));
+        this.syncCaptureProcessOptionsForCurrentMode();
+
         this.instruments = options.instruments;
-        this.providers = options.providers;
+        this.activeProviderOptions = options.providers;
+        this.activeProviderCodes = new Set(options.providers.map(provider => provider.code));
+        this.syncProviderOptionsForCurrentMode();
       },
       error: err => {
         this.snack.open(this.resolveErrorMessage(err, 'Load options failed'), 'Close');
@@ -195,6 +205,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     }
 
     this.sources.removeAt(index);
+    this.syncProviderOptionsForCurrentMode();
   }
 
   /* Открыть план в editor и перейти в edit mode. */
@@ -205,12 +216,16 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
         this.selectedMarketDataCaptureProcessCode = fullPlan.captureProcessCode;
         this.selectedInstrumentCode = fullPlan.instrumentCode;
 
+        this.syncCaptureProcessOptionsForCurrentMode();
         this.form.controls['captureProcessCode'].setValue(fullPlan.captureProcessCode);
         this.form.controls['captureProcessCode'].disable();
         this.form.controls['instrumentCode'].setValue(fullPlan.instrumentCode);
         this.form.controls['instrumentCode'].disable();
 
         this.sources.clear();
+        this.providerOptions = this.providerOptionsWithHistoricalCodes(
+          fullPlan.sources.map(source => source.providerCode)
+        );
         fullPlan.sources.forEach(source => this.onAddSourceRow(source));
 
         if (this.sources.length === 0) {
@@ -311,12 +326,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.selectedInstrumentCode = null;
     this.loadedSourcesFingerprint = null;
     this.locked = false;
+    this.captureProcessOptions = this.activeCaptureProcessOptions;
 
     this.form.reset({ captureProcessCode: '', instrumentCode: '' });
     this.form.controls['captureProcessCode'].enable();
     this.form.controls['instrumentCode'].enable();
 
     this.sources.clear();
+    this.providerOptions = this.activeProviderOptions;
     this.onAddSourceRow();
   }
 
@@ -346,16 +363,16 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     return this.isRetiredSource(source) ? 'Retired' : 'Active';
   }
 
-  providerOptionsFor(providerCode: string | null | undefined): ProviderOptionDto[] {
-    if (!providerCode || this.hasProviderOption(providerCode)) {
-      return this.providers;
-    }
-
-    return [{ code: providerCode }, ...this.providers];
+  get hasRetiredSourceRows(): boolean {
+    return this.sourceControls.some(control => this.isRetiredSource(control.value));
   }
 
-  hasProviderOption(providerCode: string): boolean {
-    return this.providers.some(provider => provider.code === providerCode);
+  isProviderActive(providerCode: string): boolean {
+    return this.activeProviderCodes.has(providerCode);
+  }
+
+  isCaptureProcessActive(captureProcessCode: string): boolean {
+    return this.activeCaptureProcessCodes.has(captureProcessCode);
   }
 
   hasRetiredSources(plan: MarketDataSourcePlanResponseDto): boolean {
@@ -367,6 +384,56 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   }
 
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */
+  private syncCaptureProcessOptionsForCurrentMode(): void {
+    if (!this.editing || !this.selectedMarketDataCaptureProcessCode) {
+      this.captureProcessOptions = this.activeCaptureProcessOptions;
+      return;
+    }
+
+    this.captureProcessOptions = this.captureProcessOptionsWithHistoricalCode(
+      this.selectedMarketDataCaptureProcessCode
+    );
+  }
+
+  /* Retired capture process code добавляется только для отображения уже загруженного плана. */
+  private captureProcessOptionsWithHistoricalCode(
+    captureProcessCode: string
+  ): MarketDataCaptureProcessOptionDto[] {
+    if (this.activeCaptureProcessCodes.has(captureProcessCode)) {
+      return this.activeCaptureProcessOptions;
+    }
+
+    return [
+      {
+        code: captureProcessCode,
+        displayName: captureProcessCode
+      },
+      ...this.activeCaptureProcessOptions
+    ];
+  }
+
+  private syncProviderOptionsForCurrentMode(): void {
+    if (!this.editing) {
+      this.providerOptions = this.activeProviderOptions;
+      return;
+    }
+
+    const providerCodes = this.sources.getRawValue()
+      .map((row: { providerCode?: string }) => row.providerCode)
+      .filter((providerCode: string | undefined): providerCode is string => !!providerCode);
+
+    this.providerOptions = this.providerOptionsWithHistoricalCodes(providerCodes);
+  }
+
+  /* Retired provider codes добавляются только для отображения уже загруженных строк в edit mode. */
+  private providerOptionsWithHistoricalCodes(providerCodes: string[]): ProviderOptionDto[] {
+    const historicalCodes = Array.from(new Set(providerCodes))
+      .filter(providerCode => !this.activeProviderCodes.has(providerCode))
+      .map(code => ({ code }));
+
+    return [...historicalCodes, ...this.activeProviderOptions];
+  }
+
   private collectSortedSources(): MarketDataSourceRequestDto[] {
     return this.sources.getRawValue()
       .map((row: { providerCode: string; priority: number }) => ({
