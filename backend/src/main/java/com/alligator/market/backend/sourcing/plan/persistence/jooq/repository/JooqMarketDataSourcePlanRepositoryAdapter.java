@@ -9,6 +9,7 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -47,8 +48,31 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
+        return findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode, false);
+    }
+
+    @Override
+    public Optional<MarketDataSourcePlan> findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(
+            MarketDataCaptureProcessCode captureProcessCode,
+            InstrumentCode instrumentCode
+    ) {
+        return findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode, true);
+    }
+
+    private Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
+            MarketDataCaptureProcessCode captureProcessCode,
+            InstrumentCode instrumentCode,
+            boolean activeOnly
+    ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        Condition condition = MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value())
+                .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()));
+
+        if (activeOnly) {
+            condition = condition.and(MARKET_DATA_SOURCE.LIFECYCLE_STATUS.eq(ACTIVE.name()));
+        }
 
         // Читаем все источники инструмента из БД в порядке приоритета.
         List<MarketDataSource> sources = dsl
@@ -57,8 +81,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                         MARKET_DATA_SOURCE.PRIORITY
                 )
                 .from(MARKET_DATA_SOURCE)
-                .where(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value()))
-                .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .where(condition)
                 .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
                 .fetch(record -> toSource(
                         record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),

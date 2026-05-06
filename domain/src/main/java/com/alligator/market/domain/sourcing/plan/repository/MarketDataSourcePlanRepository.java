@@ -21,6 +21,14 @@ public interface MarketDataSourcePlanRepository {
     );
 
     /**
+     * Возвращает план источников с источниками, пригодными для захвата.
+     */
+    Optional<MarketDataSourcePlan> findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(
+            MarketDataCaptureProcessCode captureProcessCode,
+            InstrumentCode instrumentCode
+    );
+
+    /**
      * Возвращает все планы источников.
      */
     List<MarketDataSourcePlan> findAll();
