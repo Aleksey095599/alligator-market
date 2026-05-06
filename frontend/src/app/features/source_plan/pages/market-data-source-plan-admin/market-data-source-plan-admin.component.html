@@ -61,14 +61,19 @@
           <div formArrayName="sources" class="sources-grid">
             <div
               class="source-row"
+              [class.source-row--retired]="isRetiredSource(control.value)"
               *ngFor="let control of sourceControls; let i = index"
               [formGroupName]="i"
             >
               <mat-form-field appearance="outline">
                 <mat-label>Provider</mat-label>
                 <mat-select formControlName="providerCode">
-                  <mat-option *ngFor="let provider of providers" [value]="provider.code">
+                  <mat-option
+                    *ngFor="let provider of providerOptionsFor(control.value.providerCode)"
+                    [value]="provider.code"
+                  >
                     {{ provider.code }}
+                    <span *ngIf="!hasProviderOption(provider.code)"> (not active)</span>
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="control.get('providerCode')?.hasError('required')">
@@ -91,7 +96,7 @@
                 class="source-status"
                 [class.source-status--retired]="isRetiredSource(control.value)"
               >
-                {{ control.value.lifecycleStatus }}
+                {{ sourceStatusLabel(control.value) }}
               </div>
 
               <button

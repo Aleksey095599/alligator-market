@@ -342,6 +342,22 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     return source.lifecycleStatus === 'RETIRED';
   }
 
+  sourceStatusLabel(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): string {
+    return this.isRetiredSource(source) ? 'Retired' : 'Active';
+  }
+
+  providerOptionsFor(providerCode: string | null | undefined): ProviderOptionDto[] {
+    if (!providerCode || this.hasProviderOption(providerCode)) {
+      return this.providers;
+    }
+
+    return [{ code: providerCode }, ...this.providers];
+  }
+
+  hasProviderOption(providerCode: string): boolean {
+    return this.providers.some(provider => provider.code === providerCode);
+  }
+
   hasRetiredSources(plan: MarketDataSourcePlanResponseDto): boolean {
     return this.retiredCount(plan) > 0;
   }

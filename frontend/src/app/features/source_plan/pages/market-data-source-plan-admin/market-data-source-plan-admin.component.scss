@@ -93,6 +93,10 @@
   border-top: 1px solid var(--app-border);
 }
 
+.source-row--retired {
+  background: #fffaf0;
+}
+
 /* Ошибки валидации плана. */
 .validation-row {
   color: #b3261e;
