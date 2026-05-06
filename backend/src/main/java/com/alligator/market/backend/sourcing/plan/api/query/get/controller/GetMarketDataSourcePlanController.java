@@ -2,10 +2,10 @@ package com.alligator.market.backend.sourcing.plan.api.query.get.controller;
 
 import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDataSourcePlanResponse;
 import com.alligator.market.backend.sourcing.plan.api.query.common.mapper.MarketDataSourcePlanResponseMapper;
+import com.alligator.market.backend.sourcing.plan.application.query.common.model.MarketDataSourcePlanQueryItem;
 import com.alligator.market.backend.sourcing.plan.application.query.get.GetMarketDataSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +46,7 @@ public class GetMarketDataSourcePlanController {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        MarketDataSourcePlan plan = getMarketDataSourcePlanService.get(
+        MarketDataSourcePlanQueryItem plan = getMarketDataSourcePlanService.get(
                 new MarketDataCaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode)
         );

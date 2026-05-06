@@ -62,7 +62,14 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   };
 
   /* Колонки таблицы с существующими планами. */
-  displayed: string[] = ['captureProcessCode', 'instrumentCode', 'sourceCount', 'firstProvider', 'actions'];
+  displayed: string[] = [
+    'captureProcessCode',
+    'instrumentCode',
+    'sourceCount',
+    'retiredCount',
+    'firstActiveProvider',
+    'actions'
+  ];
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
@@ -176,7 +183,8 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   onAddSourceRow(source?: MarketDataSourceResponseDto): void {
     this.sources.push(this.fb.group({
       providerCode: [source?.providerCode ?? '', [Validators.required]],
-      priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]]
+      priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]],
+      lifecycleStatus: [source?.lifecycleStatus ?? 'ACTIVE']
     }));
   }
 
@@ -318,13 +326,28 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   }
 
   /* Получить first provider для обзорной таблицы. */
-  firstProvider(plan: MarketDataSourcePlanResponseDto): string {
-    if (!plan.sources.length) {
-      return '—';
-    }
+  retiredCount(plan: MarketDataSourcePlanResponseDto): number {
+    return plan.sources.filter(source => this.isRetiredSource(source)).length;
+  }
 
-    const sorted = [...plan.sources].sort((a, b) => a.priority - b.priority);
-    return sorted[0].providerCode;
+  firstActiveProvider(plan: MarketDataSourcePlanResponseDto): string {
+    const sorted = plan.sources
+      .filter(source => !this.isRetiredSource(source))
+      .sort((a, b) => a.priority - b.priority);
+
+    return sorted[0]?.providerCode ?? '-';
+  }
+
+  isRetiredSource(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): boolean {
+    return source.lifecycleStatus === 'RETIRED';
+  }
+
+  hasRetiredSources(plan: MarketDataSourcePlanResponseDto): boolean {
+    return this.retiredCount(plan) > 0;
+  }
+
+  hasOnlyRetiredSources(plan: MarketDataSourcePlanResponseDto): boolean {
+    return plan.sources.length > 0 && this.retiredCount(plan) === plan.sources.length;
   }
 
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */

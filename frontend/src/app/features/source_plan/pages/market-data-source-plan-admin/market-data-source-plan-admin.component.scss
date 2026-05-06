@@ -79,7 +79,7 @@
 /* Одна строка источника в виде карты. */
 .source-row {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 140px 56px;
+  grid-template-columns: minmax(220px, 1fr) 140px 96px 56px;
   gap: 12px;
   align-items: center;
   padding: 0;
@@ -100,6 +100,42 @@
   flex-direction: column;
   gap: 4px;
   margin-top: 4px;
+}
+
+.source-status,
+.retired-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--app-border);
+  color: var(--app-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.source-status--retired,
+.retired-badge--warning {
+  border-color: #c77700;
+  background: #fff7e6;
+  color: #7a4b00;
+}
+
+.retired-badge--blocked {
+  border-color: #b3261e;
+  background: #fceeee;
+  color: #8c1d18;
+}
+
+.plan-row--warning {
+  background: #fffaf0;
+}
+
+.plan-row--blocked {
+  background: #fff4f4;
 }
 
 /* Ряд с действиями формы. */
@@ -132,7 +168,8 @@
     grid-template-columns: 1fr auto;
     grid-template-areas:
       'provider remove'
-      'priority remove';
+      'priority remove'
+      'status remove';
     row-gap: 8px;
   }
 
@@ -142,6 +179,11 @@
 
   .source-row mat-form-field:nth-of-type(2) {
     grid-area: priority;
+  }
+
+  .source-status {
+    grid-area: status;
+    justify-self: start;
   }
 
   .source-row button {

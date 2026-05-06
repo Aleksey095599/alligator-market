@@ -5,6 +5,7 @@ package com.alligator.market.backend.sourcing.plan.api.query.common.dto;
  */
 public record MarketDataSourceResponse(
         String providerCode,
-        int priority
+        int priority,
+        String lifecycleStatus
 ) {
 }

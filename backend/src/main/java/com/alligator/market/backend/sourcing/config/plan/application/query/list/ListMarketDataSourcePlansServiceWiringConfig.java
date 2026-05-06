@@ -1,19 +1,16 @@
 package com.alligator.market.backend.sourcing.config.plan.application.query.list;
 
-import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
+import com.alligator.market.backend.sourcing.config.plan.application.query.common.MarketDataSourcePlanQueryPortWiringConfig;
+import com.alligator.market.backend.sourcing.plan.application.query.common.port.MarketDataSourcePlanQueryPort;
 import com.alligator.market.backend.sourcing.plan.application.query.list.MarketDataSourcePlanListService;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link MarketDataSourcePlanListService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        MarketDataSourcePlanRepositoryWiringConfig.class
+        MarketDataSourcePlanQueryPortWiringConfig.class
 })
 public class ListMarketDataSourcePlansServiceWiringConfig {
 
@@ -21,9 +18,9 @@ public class ListMarketDataSourcePlansServiceWiringConfig {
 
     @Bean(BEAN_LIST_MARKET_DATA_SOURCE_PLANS_SERVICE)
     public MarketDataSourcePlanListService listMarketDataSourcePlansService(
-            @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
-            MarketDataSourcePlanRepository marketDataSourcePlanRepository
+            @Qualifier(MarketDataSourcePlanQueryPortWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_QUERY_PORT)
+            MarketDataSourcePlanQueryPort marketDataSourcePlanQueryPort
     ) {
-        return new MarketDataSourcePlanListService(marketDataSourcePlanRepository);
+        return new MarketDataSourcePlanListService(marketDataSourcePlanQueryPort);
     }
 }

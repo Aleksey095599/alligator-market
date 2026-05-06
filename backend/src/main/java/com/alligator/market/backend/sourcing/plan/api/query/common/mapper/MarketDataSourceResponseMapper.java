@@ -1,20 +1,15 @@
 package com.alligator.market.backend.sourcing.plan.api.query.common.mapper;
 
 import com.alligator.market.backend.sourcing.plan.api.query.common.dto.MarketDataSourceResponse;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import com.alligator.market.backend.sourcing.plan.application.query.common.model.MarketDataSourceQueryItem;
 
-/**
- * Маппер доменной модели {@link MarketDataSource} в DTO read-side ответов.
- */
 public class MarketDataSourceResponseMapper {
 
-    /**
-     * Конвертирует доменный {@link MarketDataSource} в DTO ответа {@link MarketDataSourceResponse}.
-     */
-    public MarketDataSourceResponse toSourceResponse(MarketDataSource source) {
+    public MarketDataSourceResponse toSourceResponse(MarketDataSourceQueryItem source) {
         return new MarketDataSourceResponse(
-                source.providerCode().value(),
-                source.priority()
+                source.providerCode(),
+                source.priority(),
+                source.lifecycleStatus()
         );
     }
 }

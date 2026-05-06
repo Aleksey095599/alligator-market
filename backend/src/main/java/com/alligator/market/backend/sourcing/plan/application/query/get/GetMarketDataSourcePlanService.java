@@ -1,39 +1,32 @@
 package com.alligator.market.backend.sourcing.plan.application.query.get;
 
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
+import com.alligator.market.backend.sourcing.plan.application.query.common.model.MarketDataSourcePlanQueryItem;
+import com.alligator.market.backend.sourcing.plan.application.query.common.port.MarketDataSourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
 
 import java.util.Objects;
 
-/**
- * Сервис чтения плана источников рыночных данных для инструмента.
- */
 public final class GetMarketDataSourcePlanService {
 
-    /* Репозиторий планов источников. */
-    private final MarketDataSourcePlanRepository marketDataSourcePlanRepository;
+    private final MarketDataSourcePlanQueryPort marketDataSourcePlanQueryPort;
 
-    public GetMarketDataSourcePlanService(MarketDataSourcePlanRepository marketDataSourcePlanRepository) {
-        this.marketDataSourcePlanRepository = Objects.requireNonNull(
-                marketDataSourcePlanRepository,
-                "marketDataSourcePlanRepository must not be null"
+    public GetMarketDataSourcePlanService(MarketDataSourcePlanQueryPort marketDataSourcePlanQueryPort) {
+        this.marketDataSourcePlanQueryPort = Objects.requireNonNull(
+                marketDataSourcePlanQueryPort,
+                "marketDataSourcePlanQueryPort must not be null"
         );
     }
 
-    /**
-     * Возвращает план источников для инструмента.
-     */
-    public MarketDataSourcePlan get(
+    public MarketDataSourcePlanQueryItem get(
             MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        return marketDataSourcePlanRepository
+        return marketDataSourcePlanQueryPort
                 .findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode)
                 .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode));
     }
