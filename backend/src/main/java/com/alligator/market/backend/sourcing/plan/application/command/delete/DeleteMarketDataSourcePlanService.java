@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourcing.plan.application.command.delete;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;

@@ -2,9 +2,9 @@ package com.alligator.market.backend.sourcing.plan.application.command.replace;
 
 import com.alligator.market.backend.sourcing.plan.application.command.common.MarketDataSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
+import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;

@@ -9,7 +9,7 @@ import com.alligator.market.backend.sourcing.plan.application.command.create.Cre
 import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -6,8 +6,8 @@ import com.alligator.market.backend.sourcing.plan.application.exception.Provider
 import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCaptureProcessExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;

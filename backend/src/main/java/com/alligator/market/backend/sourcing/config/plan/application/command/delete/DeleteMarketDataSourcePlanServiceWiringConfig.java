@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourcing.config.plan.application.command.de
 
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.command.delete.DeleteMarketDataSourcePlanService;
-import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

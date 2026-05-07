@@ -1,8 +1,8 @@
-package com.alligator.market.domain.sourcing.plan.repository;
+package com.alligator.market.domain.sourceplan.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 
 import java.util.List;
 import java.util.Optional;

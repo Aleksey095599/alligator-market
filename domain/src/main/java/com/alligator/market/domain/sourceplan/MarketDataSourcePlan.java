@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourcing.plan;
+package com.alligator.market.domain.sourceplan;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;

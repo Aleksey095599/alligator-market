@@ -4,8 +4,8 @@ import com.alligator.market.backend.sourcing.plan.api.command.replace.dto.Replac
 import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataSourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 
 import java.util.List;
 import java.util.Objects;
