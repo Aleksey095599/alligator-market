@@ -7,7 +7,7 @@ public class MarketDataSourceResponseMapper {
 
     public MarketDataSourceResponse toSourceResponse(MarketDataSourceQueryItem source) {
         return new MarketDataSourceResponse(
-                source.providerCode(),
+                source.sourceCode(),
                 source.priority(),
                 source.lifecycleStatus()
         );

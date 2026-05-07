@@ -8,13 +8,13 @@ import java.util.Objects;
  * <p>{@code lifecycleStatus} — технический статус пригодности, а не ручной enable/disable flag.</p>
  */
 public record MarketDataSourceQueryItem(
-        String providerCode,
+        String sourceCode,
         int priority,
         String lifecycleStatus
 ) {
 
     public MarketDataSourceQueryItem {
-        Objects.requireNonNull(providerCode, "providerCode must not be null");
+        Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(lifecycleStatus, "lifecycleStatus must not be null");
 
         if (priority < 0) {

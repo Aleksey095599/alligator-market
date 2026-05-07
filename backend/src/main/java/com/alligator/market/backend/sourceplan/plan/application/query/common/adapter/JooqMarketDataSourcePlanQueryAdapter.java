@@ -49,7 +49,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
 
         // Без lifecycle-фильтра: edit-форма должна загрузить retired строки, чтобы их можно было удалить.
         List<MarketDataSourceQueryItem> sources = dsl.select(
-                        MARKET_DATA_SOURCE.PROVIDER_CODE,
+                        MARKET_DATA_SOURCE.SOURCE_CODE,
                         MARKET_DATA_SOURCE.PRIORITY,
                         MARKET_DATA_SOURCE.LIFECYCLE_STATUS
                 )
@@ -57,7 +57,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
                 .where(condition)
                 .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
                 .fetch(record -> toSource(
-                        record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
+                        record.get(MARKET_DATA_SOURCE.SOURCE_CODE),
                         record.get(MARKET_DATA_SOURCE.PRIORITY),
                         record.get(MARKET_DATA_SOURCE.LIFECYCLE_STATUS)
                 ));
@@ -81,7 +81,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         dsl.select(
                         MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE,
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE,
-                        MARKET_DATA_SOURCE.PROVIDER_CODE,
+                        MARKET_DATA_SOURCE.SOURCE_CODE,
                         MARKET_DATA_SOURCE.PRIORITY,
                         MARKET_DATA_SOURCE.LIFECYCLE_STATUS
                 )
@@ -99,7 +99,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
                     );
 
                     MarketDataSourceQueryItem source = toSource(
-                            record.get(MARKET_DATA_SOURCE.PROVIDER_CODE),
+                            record.get(MARKET_DATA_SOURCE.SOURCE_CODE),
                             record.get(MARKET_DATA_SOURCE.PRIORITY),
                             record.get(MARKET_DATA_SOURCE.LIFECYCLE_STATUS)
                     );
@@ -122,13 +122,13 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
     }
 
     private static MarketDataSourceQueryItem toSource(
-            String providerCode,
+            String sourceCode,
             Integer priority,
             String lifecycleStatus
     ) {
         Objects.requireNonNull(priority, "priority must not be null");
 
-        return new MarketDataSourceQueryItem(providerCode, priority, lifecycleStatus);
+        return new MarketDataSourceQueryItem(sourceCode, priority, lifecycleStatus);
     }
 
     private record PlanKey(

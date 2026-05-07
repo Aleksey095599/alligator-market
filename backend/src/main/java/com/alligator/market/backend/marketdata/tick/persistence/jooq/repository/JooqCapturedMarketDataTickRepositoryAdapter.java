@@ -28,7 +28,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
 
     private static final Field<String> CAPTURE_PROCESS_CODE = field(name("collection_process_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
-    private static final Field<String> PROVIDER_CODE = field(name("provider_code"), String.class);
+    private static final Field<String> SOURCE_CODE = field(name("source_code"), String.class);
     private static final Field<String> SOURCE_TICK_TYPE = field(name("source_tick_type"), String.class);
     private static final Field<String> SOURCE_INSTRUMENT_CODE = field(name("source_instrument_code"), String.class);
     private static final Field<OffsetDateTime> SOURCE_TIMESTAMP = field(name("source_timestamp"), OffsetDateTime.class);
@@ -53,7 +53,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
         dsl.insertInto(CAPTURED_MARKET_DATA_TICK)
                 .set(CAPTURE_PROCESS_CODE, tick.captureProcessCode().value())
                 .set(INSTRUMENT_CODE, tick.instrumentCode().value())
-                .set(PROVIDER_CODE, tick.sourceCode().value())
+                .set(SOURCE_CODE, tick.sourceCode().value())
                 .set(SOURCE_TICK_TYPE, sourceTick.sourceTickType().name())
                 .set(SOURCE_INSTRUMENT_CODE, sourceTick.sourceInstrumentCode().value())
                 .set(SOURCE_TIMESTAMP, toOffsetDateTime(sourceTick.sourceTimestamp()))

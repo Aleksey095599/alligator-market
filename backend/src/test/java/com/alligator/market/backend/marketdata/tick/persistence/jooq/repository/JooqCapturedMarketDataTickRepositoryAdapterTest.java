@@ -39,7 +39,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
     private static final Field<Long> ID = field(name("id"), Long.class);
     private static final Field<String> CAPTURE_PROCESS_CODE = field(name("collection_process_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
-    private static final Field<String> PROVIDER_CODE = field(name("provider_code"), String.class);
+    private static final Field<String> SOURCE_CODE = field(name("source_code"), String.class);
     private static final Field<String> SOURCE_TICK_TYPE = field(name("source_tick_type"), String.class);
     private static final Field<String> SOURCE_INSTRUMENT_CODE = field(name("source_instrument_code"), String.class);
     private static final Field<OffsetDateTime> SOURCE_TIMESTAMP = field(name("source_timestamp"), OffsetDateTime.class);
@@ -86,7 +86,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                                 ID,
                                 CAPTURE_PROCESS_CODE,
                                 INSTRUMENT_CODE,
-                                PROVIDER_CODE,
+                                SOURCE_CODE,
                                 SOURCE_TICK_TYPE,
                                 SOURCE_INSTRUMENT_CODE,
                                 SOURCE_TIMESTAMP,
@@ -104,7 +104,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
 
                 assertEquals(processCode, record.get(CAPTURE_PROCESS_CODE));
                 assertEquals("FOREX_SPOT_CNYRUB_TOM", record.get(INSTRUMENT_CODE));
-                assertEquals("MOEX_ISS", record.get(PROVIDER_CODE));
+                assertEquals("MOEX_ISS", record.get(SOURCE_CODE));
                 assertEquals(SourceMarketDataTickType.LAST_PRICE.name(), record.get(SOURCE_TICK_TYPE));
                 assertEquals("CNYRUB_TOM", record.get(SOURCE_INSTRUMENT_CODE));
 

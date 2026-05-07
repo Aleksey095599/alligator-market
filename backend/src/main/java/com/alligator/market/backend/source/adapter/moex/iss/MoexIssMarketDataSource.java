@@ -18,9 +18,9 @@ import java.util.Set;
  */
 public final class MoexIssMarketDataSource extends AbstractMarketDataSource<MoexIssMarketDataSource> {
 
-    public static final String PROVIDER_CODE_VALUE = "MOEX_ISS";
+    public static final String SOURCE_CODE_VALUE = "MOEX_ISS";
     public static final MarketDataSourceCode MARKET_DATA_SOURCE_CODE =
-            MarketDataSourceCode.of(PROVIDER_CODE_VALUE);
+            MarketDataSourceCode.of(SOURCE_CODE_VALUE);
 
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";
 

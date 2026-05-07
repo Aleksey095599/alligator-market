@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.util.Objects;
 
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
-import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
 /**
  * jOOQ adapter for checking active market data source passports.
@@ -25,9 +25,9 @@ public final class JooqMarketDataSourceExistenceAdapter implements MarketDataSou
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
 
         return dsl.fetchExists(
-                dsl.selectFrom(PROVIDER_PASSPORT)
-                        .where(PROVIDER_PASSPORT.PROVIDER_CODE.eq(sourceCode.value()))
-                        .and(PROVIDER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                dsl.selectFrom(MARKET_DATA_SOURCE_PASSPORT)
+                        .where(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.eq(sourceCode.value()))
+                        .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
         );
     }
 }

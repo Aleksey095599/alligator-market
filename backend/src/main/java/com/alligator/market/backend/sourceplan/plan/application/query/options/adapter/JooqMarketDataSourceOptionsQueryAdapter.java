@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
-import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
 /**
  * jOOQ-адаптер порта получения доступных кодов провайдеров.
@@ -24,11 +24,11 @@ public final class JooqMarketDataSourceOptionsQueryAdapter implements MarketData
 
     @Override
     public List<MarketDataSourceCode> findAllSourceCodes() {
-        return dsl.select(PROVIDER_PASSPORT.PROVIDER_CODE)
-                .from(PROVIDER_PASSPORT)
-                .where(PROVIDER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
-                .orderBy(PROVIDER_PASSPORT.PROVIDER_CODE.asc())
-                .fetch(PROVIDER_PASSPORT.PROVIDER_CODE)
+        return dsl.select(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE)
+                .from(MARKET_DATA_SOURCE_PASSPORT)
+                .where(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .orderBy(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.asc())
+                .fetch(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE)
                 .stream()
                 .map(MarketDataSourceCode::new)
                 .toList();

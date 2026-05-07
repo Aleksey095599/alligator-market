@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
 /**
  * jOOQ implementation of {@link MarketDataSourcePassportListQueryPort}.
@@ -23,22 +23,22 @@ public final class JooqMarketDataSourcePassportListQueryAdapter implements Marke
     @Override
     public List<MarketDataSourcePassportListItem> findAll() {
         return dsl.select(
-                        PROVIDER_PASSPORT.PROVIDER_CODE,
-                        PROVIDER_PASSPORT.DISPLAY_NAME,
-                        PROVIDER_PASSPORT.DELIVERY_MODE,
-                        PROVIDER_PASSPORT.ACCESS_METHOD,
-                        PROVIDER_PASSPORT.BULK_SUBSCRIPTION,
-                        PROVIDER_PASSPORT.LIFECYCLE_STATUS
+                        MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE,
+                        MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME,
+                        MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE,
+                        MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD,
+                        MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION,
+                        MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS
                 )
-                .from(PROVIDER_PASSPORT)
-                .orderBy(PROVIDER_PASSPORT.PROVIDER_CODE.asc())
+                .from(MARKET_DATA_SOURCE_PASSPORT)
+                .orderBy(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.asc())
                 .fetch(record -> new MarketDataSourcePassportListItem(
-                        record.get(PROVIDER_PASSPORT.PROVIDER_CODE),
-                        record.get(PROVIDER_PASSPORT.DISPLAY_NAME),
-                        record.get(PROVIDER_PASSPORT.DELIVERY_MODE),
-                        record.get(PROVIDER_PASSPORT.ACCESS_METHOD),
-                        record.get(PROVIDER_PASSPORT.BULK_SUBSCRIPTION),
-                        record.get(PROVIDER_PASSPORT.LIFECYCLE_STATUS)
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE),
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME),
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE),
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD),
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION),
+                        record.get(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS)
                 ));
     }
 }

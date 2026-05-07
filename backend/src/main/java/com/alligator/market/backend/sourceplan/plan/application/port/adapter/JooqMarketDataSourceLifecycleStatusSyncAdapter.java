@@ -10,16 +10,16 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
-import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectOne;
 
 /**
  * jOOQ implementation of {@link MarketDataSourceLifecycleStatusSyncPort}.
  *
- * <p>Синхронизация монотонная: переводит только ACTIVE source rows в RETIRED и никогда
- * не возвращает RETIRED строки обратно в ACTIVE. Если источник снова нужен, строку плана
- * лучше удалить и добавить заново.</p>
+ * <p>The synchronization is monotonic: it only moves ACTIVE source rows to RETIRED and never
+ * promotes RETIRED rows back to ACTIVE. If a source is needed again, the plan entry should be
+ * deleted and added again.</p>
  */
 public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
         implements MarketDataSourceLifecycleStatusSyncPort {
@@ -34,9 +34,9 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     public void retireSourcesWithoutActiveSourcePassports() {
         Condition sourcePassportIsNotActive = notExists(
                 selectOne()
-                        .from(PROVIDER_PASSPORT)
-                        .where(PROVIDER_PASSPORT.PROVIDER_CODE.eq(MARKET_DATA_SOURCE.PROVIDER_CODE))
-                        .and(PROVIDER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                        .from(MARKET_DATA_SOURCE_PASSPORT)
+                        .where(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.eq(MARKET_DATA_SOURCE.SOURCE_CODE))
+                        .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
         );
 
         retireActiveSources(sourcePassportIsNotActive);
@@ -56,7 +56,7 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     }
 
     private void retireActiveSources(Condition invalidReference) {
-        // RETIRED остается терминальным состоянием; здесь меняются только еще активные строки.
+        // RETIRED is terminal here; only still-active rows are changed.
         dsl.update(MARKET_DATA_SOURCE)
                 .set(MARKET_DATA_SOURCE.LIFECYCLE_STATUS, RETIRED.name())
                 .where(MARKET_DATA_SOURCE.LIFECYCLE_STATUS.eq(ACTIVE.name()))

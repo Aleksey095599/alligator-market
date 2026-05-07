@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Единая внешняя точка входа в wiring фичи provider.
+ * Единая внешняя точка входа в wiring фичи market data source.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({

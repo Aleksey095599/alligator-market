@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
-import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderPassport.PROVIDER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
 
 /**
@@ -39,10 +39,10 @@ public class JooqMarketDataSourcePassportProjectionWritePortAdapter implements M
             currentValues.add(code.value());
         }
 
-        dsl.update(PROVIDER_PASSPORT)
-                .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
-                .where(PROVIDER_PASSPORT.PROVIDER_CODE.notIn(currentValues))
-                .and(PROVIDER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
+        dsl.update(MARKET_DATA_SOURCE_PASSPORT)
+                .set(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
+                .where(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.notIn(currentValues))
+                .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -60,27 +60,34 @@ public class JooqMarketDataSourcePassportProjectionWritePortAdapter implements M
             MarketDataSourceCode code = entry.getKey();
             MarketDataSourcePassport passport = entry.getValue();
 
-            Condition businessFieldsChanged = PROVIDER_PASSPORT.DISPLAY_NAME
-                    .isDistinctFrom(excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
-                    .or(PROVIDER_PASSPORT.DELIVERY_MODE.isDistinctFrom(excluded(PROVIDER_PASSPORT.DELIVERY_MODE)))
-                    .or(PROVIDER_PASSPORT.ACCESS_METHOD.isDistinctFrom(excluded(PROVIDER_PASSPORT.ACCESS_METHOD)))
-                    .or(PROVIDER_PASSPORT.BULK_SUBSCRIPTION.isDistinctFrom(excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION)))
-                    .or(PROVIDER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
+            Condition businessFieldsChanged = MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME
+                    .isDistinctFrom(excluded(MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME))
+                    .or(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE
+                            .isDistinctFrom(excluded(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE)))
+                    .or(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD
+                            .isDistinctFrom(excluded(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD)))
+                    .or(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION
+                            .isDistinctFrom(excluded(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION)))
+                    .or(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(ACTIVE.name()));
 
-            Query query = dsl.insertInto(PROVIDER_PASSPORT)
-                    .set(PROVIDER_PASSPORT.PROVIDER_CODE, code.value())
-                    .set(PROVIDER_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(PROVIDER_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
-                    .set(PROVIDER_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
-                    .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
-                    .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
-                    .onConflict(PROVIDER_PASSPORT.PROVIDER_CODE)
+            Query query = dsl.insertInto(MARKET_DATA_SOURCE_PASSPORT)
+                    .set(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE, code.value())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
+                    .onConflict(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
-                    .set(PROVIDER_PASSPORT.DISPLAY_NAME, excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
-                    .set(PROVIDER_PASSPORT.DELIVERY_MODE, excluded(PROVIDER_PASSPORT.DELIVERY_MODE))
-                    .set(PROVIDER_PASSPORT.ACCESS_METHOD, excluded(PROVIDER_PASSPORT.ACCESS_METHOD))
-                    .set(PROVIDER_PASSPORT.BULK_SUBSCRIPTION, excluded(PROVIDER_PASSPORT.BULK_SUBSCRIPTION))
-                    .set(PROVIDER_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
+                    .set(MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME,
+                            excluded(MARKET_DATA_SOURCE_PASSPORT.DISPLAY_NAME))
+                    .set(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE,
+                            excluded(MARKET_DATA_SOURCE_PASSPORT.DELIVERY_MODE))
+                    .set(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD,
+                            excluded(MARKET_DATA_SOURCE_PASSPORT.ACCESS_METHOD))
+                    .set(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION,
+                            excluded(MARKET_DATA_SOURCE_PASSPORT.BULK_SUBSCRIPTION))
+                    .set(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS, ACTIVE.name())
                     .where(businessFieldsChanged);
 
             queries.add(query);
