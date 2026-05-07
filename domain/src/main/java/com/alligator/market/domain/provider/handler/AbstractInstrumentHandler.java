@@ -69,7 +69,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
     }
 
     @Override
-    public final Publisher<SourceMarketDataTick> quote(I instrument) {
+    public final Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         requireAttachedProvider();
@@ -77,14 +77,16 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I 
         InstrumentCode instrumentCode = requireInstrumentCode(instrument);
         requireInstrumentMatchesSupportedProfile(instrument, instrumentCode);
 
-        return Objects.requireNonNull(doQuote(instrument), "quote publisher must not be null");
+        return Objects.requireNonNull(
+                doStreamSourceTicks(instrument),
+                "source tick publisher must not be null"
+        );
     }
 
     /**
-     * Точка расширения метода {@link #quote(Instrument)}:
-     * Чистая логика получения потока котировок для переданного инструмента.
+     * Extension point for {@link #streamSourceTicks(Instrument)}.
      */
-    protected abstract Publisher<SourceMarketDataTick> doQuote(I instrument);
+    protected abstract Publisher<SourceMarketDataTick> doStreamSourceTicks(I instrument);
 
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.

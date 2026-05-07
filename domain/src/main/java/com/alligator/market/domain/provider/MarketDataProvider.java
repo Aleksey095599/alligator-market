@@ -28,7 +28,7 @@ public interface MarketDataProvider {
     ProviderPolicy policy();
 
     /**
-     * Поток котировок для заданного инструмента.
+     * Streams source-level market data ticks for the given instrument.
      */
-    <I extends Instrument> Publisher<SourceMarketDataTick> quote(I instrument);
+    <I extends Instrument> Publisher<SourceMarketDataTick> streamSourceTicks(I instrument);
 }

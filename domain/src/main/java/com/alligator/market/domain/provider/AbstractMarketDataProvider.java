@@ -86,18 +86,18 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     }
 
     /**
-     * Шаблонная реализация получения потока котировок:
-     * С помощью карты находит обработчик для заданного инструмента и делегирует ему вызов.
+     * Template implementation for streaming source-level ticks:
+     * finds the handler for the given instrument and delegates the call to it.
      */
     @Override
-    public final <I extends Instrument> Publisher<SourceMarketDataTick> quote(I instrument) {
+    public final <I extends Instrument> Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         // Находим обработчик (или бросаем исключение)
         InstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
 
-        // Делегируем запрос котировки обработчику
-        return handler.quote(instrument);
+        // Делегируем запрос source ticks обработчику
+        return handler.streamSourceTicks(instrument);
     }
 
     /**

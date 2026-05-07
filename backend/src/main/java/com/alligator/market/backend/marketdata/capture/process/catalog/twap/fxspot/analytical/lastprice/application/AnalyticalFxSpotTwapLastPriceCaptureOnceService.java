@@ -111,7 +111,7 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
     }
 
     private SourceMarketDataTick sourceTick(MarketDataProvider provider, FxSpot instrument) {
-        SourceMarketDataTick sourceTick = Mono.from(provider.quote(instrument))
+        SourceMarketDataTick sourceTick = Mono.from(provider.streamSourceTicks(instrument))
                 .block(SOURCE_TICK_WAIT_TIMEOUT);
 
         if (sourceTick == null) {

@@ -33,7 +33,7 @@ public interface InstrumentHandler<P extends MarketDataProvider, I extends Instr
     void attachTo(P provider);
 
     /**
-     * Поток котировок для заданного инструмента.
+     * Streams source-level market data ticks for the given instrument.
      */
-    Publisher<SourceMarketDataTick> quote(I instrument);
+    Publisher<SourceMarketDataTick> streamSourceTicks(I instrument);
 }

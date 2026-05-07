@@ -62,24 +62,24 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     }
 
     /**
-     * Чистая логика получения потока котировок для переданного инструмента FOREX_SPOT.
+     * Streams source-level ticks for the given FOREX_SPOT instrument.
      *
-     * <p>Примечание: Реализован метод доступа API_POLL {@link AccessMethod#API_POLL}:
-     * один запрос --> один тик --> пауза согласно "политике" провайдера --> повтор.</p>
+     * <p>Implements the {@link AccessMethod#API_POLL} access method:
+     * one request --> one tick --> provider policy delay --> repeat.</p>
      */
     @Override
-    protected Publisher<SourceMarketDataTick> doQuote(FxSpot instrument) {
+    protected Publisher<SourceMarketDataTick> doStreamSourceTicks(FxSpot instrument) {
         // 1) Получаем минимальный интервал обновления из "политики" провайдера
         Duration pollInterval = provider().policy().minUpdateInterval();
 
         // Далее в виде цепочки:
-        // 2) Запрашиваем котировку (один раз)
+        // 2) Запрашиваем один source tick
         // 3) Ошибки не “убивают” поток: логируем и пропускаем тик
         // 4) Повторяем с задержкой согласно "политике" провайдера
-        return fetchQuoteOnce(instrument)
+        return fetchSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
                     log.warn(
-                            "Failed to fetch FX_SPOT quote from MOEX ISS: instrumentCode={}, reason={}",
+                            "Failed to fetch FX_SPOT source tick from MOEX ISS: instrumentCode={}, reason={}",
                             instrument.instrumentCode().value(),
                             ex.getMessage(),
                             ex
@@ -90,7 +90,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
     }
 
     /**
-     * Один запрос к MOEX ISS --> одна котировка инструмента FOREX_SPOT.
+     * Один запрос к MOEX ISS --> один source tick инструмента FOREX_SPOT.
      *
      * <p>Алгоритм:
      * <ul>
@@ -107,7 +107,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
      *     <li>3-й и 4-й пункты вынесены в отдельный метод.</li>
      * </ul>
      */
-    private Mono<SourceMarketDataTick> fetchQuoteOnce(FxSpot instrument) {
+    private Mono<SourceMarketDataTick> fetchSourceTickOnce(FxSpot instrument) {
         // Примечание: проверка выполняется в AbstractInstrumentHandler, поэтому здесь не требуется
 
         // 1) Код инструмента --> SECID MOEX ISS
@@ -133,7 +133,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvi
                 )
                 .bodyToMono(JsonNode.class) // <-- Парсим JSON в дерево JsonNode
                 .doOnSubscribe(sub -> log.debug(
-                        "Requesting FX_SPOT quote from MOEX ISS: instrumentCode={}, secid={}",
+                        "Requesting FX_SPOT source tick from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode.value(), secid.value()))
                 .map(body -> {
                     // 3) Строгая проверка структуры JSON + извлечение SYSTIME/LAST

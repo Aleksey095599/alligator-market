@@ -20,15 +20,15 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом котировки.
+ * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом source tick.
  */
 @Tag("dev")
-class MoexIssFxSpotHandlerQuoteLiveTest {
+class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
 
     @Test
     @Tag("external")
     @Tag("slow")
-    void liveQuoteForCnyRubTom() {
+    void liveSourceTicksForCnyRubTom() {
         // 1) Собираем WebClient с реальным baseUrl
         String baseUrl = "https://iss.moex.com/iss";
 
@@ -47,20 +47,24 @@ class MoexIssFxSpotHandlerQuoteLiveTest {
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Запускаем запрос к реальному MOEX ISS
-        Mono<SourceMarketDataTick> result = Mono.from(provider.quote(cnyRubTom));
+        Mono<SourceMarketDataTick> result = Mono.from(provider.streamSourceTicks(cnyRubTom));
 
         // 5) Проверяем минимальные инварианты source-level тика, не завязываясь на конкретную цену
         StepVerifier.create(result)
                 .assertNext(tick -> {
                     // ВРЕМЕННЫЙ вывод для наглядности
-                    System.out.println("=== LIVE QUOTE TICK FROM MOEX ISS ===");
+                    System.out.println("=== LIVE SOURCE TICK FROM MOEX ISS ===");
                     System.out.println(tick); // для record будет нормальный toString()
-                    System.out.println("====================================");
+                    System.out.println("======================================");
 
                     assertNotNull(tick, "SourceMarketDataTick must not be null");
                     SourceLastPriceTick lastPriceTick = assertInstanceOf(SourceLastPriceTick.class, tick);
 
-                    assertEquals("CNYRUB_TOM", lastPriceTick.sourceInstrumentCode().value(), "Source instrument code must match");
+                    assertEquals(
+                            "CNYRUB_TOM",
+                            lastPriceTick.sourceInstrumentCode().value(),
+                            "Source instrument code must match"
+                    );
 
                     assertNotNull(lastPriceTick.lastPrice(), "LAST price must not be null");
                     assertTrue(lastPriceTick.lastPrice().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");
