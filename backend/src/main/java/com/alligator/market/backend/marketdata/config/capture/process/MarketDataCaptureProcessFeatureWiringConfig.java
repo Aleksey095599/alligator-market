@@ -1,6 +1,6 @@
 package com.alligator.market.backend.marketdata.config.capture.process;
 
-import com.alligator.market.backend.marketdata.config.capture.process.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPriceWiringConfig;
+import com.alligator.market.backend.marketdata.config.capture.process.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPriceCaptureProcessWiringConfig;
 import com.alligator.market.backend.marketdata.config.capture.process.catalog.twap.fxspot.analytical.lastprice.application.AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig;
 import com.alligator.market.backend.marketdata.config.capture.process.passport.application.projection.startup.MarketDataCaptureProcessPassportProjectionStartupRunnerWiringConfig;
 import com.alligator.market.backend.marketdata.config.capture.process.passport.application.query.list.MarketDataCaptureProcessPassportListServiceWiringConfig;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        AnalyticalFxSpotTwapLastPriceWiringConfig.class,
+        AnalyticalFxSpotTwapLastPriceCaptureProcessWiringConfig.class,
         AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig.class,
         MarketDataCaptureProcessRegistryWiringConfig.class,
         MarketDataCaptureProcessPassportListServiceWiringConfig.class,

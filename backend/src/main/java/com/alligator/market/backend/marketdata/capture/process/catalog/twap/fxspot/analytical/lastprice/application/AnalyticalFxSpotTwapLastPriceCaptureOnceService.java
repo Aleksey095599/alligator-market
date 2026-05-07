@@ -8,7 +8,6 @@ import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxsp
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPrice;
 import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
@@ -25,6 +24,8 @@ import java.time.Duration;
 import java.util.Comparator;
 import java.util.Objects;
 
+import static com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPriceCaptureProcess.PROCESS_CODE;
+
 /**
  * Use case одного шага захвата тика для процесса {@code ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE}.
  */
@@ -32,7 +33,6 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
 
     private static final Duration SOURCE_TICK_WAIT_TIMEOUT = Duration.ofSeconds(30);
 
-    private final AnalyticalFxSpotTwapLastPrice process;
     private final MarketDataSourcePlanRepository sourcePlanRepository;
     private final ProviderRegistry providerRegistry;
     private final FxSpotRepository fxSpotRepository;
@@ -40,14 +40,12 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
     private final Clock clock;
 
     public AnalyticalFxSpotTwapLastPriceCaptureOnceService(
-            AnalyticalFxSpotTwapLastPrice process,
             MarketDataSourcePlanRepository sourcePlanRepository,
             ProviderRegistry providerRegistry,
             FxSpotRepository fxSpotRepository,
             CapturedMarketDataTickRepository capturedTickRepository,
             Clock clock
     ) {
-        this.process = Objects.requireNonNull(process, "process must not be null");
         this.sourcePlanRepository = Objects.requireNonNull(sourcePlanRepository,
                 "sourcePlanRepository must not be null");
         this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
@@ -64,9 +62,9 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         MarketDataSourcePlan sourcePlan = sourcePlanRepository
-                .findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(process.processCode(), instrumentCode)
+                .findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(PROCESS_CODE, instrumentCode)
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException(
-                        process.processCode(),
+                        PROCESS_CODE,
                         instrumentCode
                 ));
 
@@ -76,7 +74,7 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         SourceMarketDataTick sourceTick = sourceTick(provider, instrument);
 
         CapturedMarketDataTick capturedTick = new CapturedMarketDataTick(
-                process.processCode(),
+                PROCESS_CODE,
                 instrument.instrumentCode(),
                 provider.providerCode(),
                 sourceTick,

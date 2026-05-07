@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice;
+package com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice;
 
 import com.alligator.market.domain.marketdata.capture.process.MarketDataCaptureProcess;
 import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
@@ -10,9 +10,12 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Процесс захвата рыночных данных FX Spot для аналитического TWAP по последней цене.
+ * Backend-описание процесса захвата FX Spot last price для аналитического TWAP.
+ *
+ * <p>Класс регистрирует идентичность процесса и техническую capture policy. Расчетные правила,
+ * когда они появятся, должны жить в отдельных доменных классах.</p>
  */
-public final class AnalyticalFxSpotTwapLastPrice implements MarketDataCaptureProcess {
+public final class AnalyticalFxSpotTwapLastPriceCaptureProcess implements MarketDataCaptureProcess {
 
     public static final MarketDataCaptureProcessCode PROCESS_CODE =
             MarketDataCaptureProcessCode.of("ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE");
@@ -42,9 +45,9 @@ public final class AnalyticalFxSpotTwapLastPrice implements MarketDataCapturePro
     }
 
     /**
-     * Политика аналитического FX Spot TWAP-процесса по последней цене.
+     * Техническая capture policy для этого backend-процесса.
      *
-     * @param captureInterval фактический интервал захвата тиков
+     * @param captureInterval интервал между попытками захвата
      */
     public record Policy(
             Duration captureInterval
