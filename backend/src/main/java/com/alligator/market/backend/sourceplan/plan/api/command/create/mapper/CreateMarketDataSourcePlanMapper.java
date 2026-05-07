@@ -1,0 +1,43 @@
+package com.alligator.market.backend.sourceplan.plan.api.command.create.mapper;
+
+import com.alligator.market.backend.sourceplan.plan.api.command.create.dto.CreateMarketDataSourcePlanRequest;
+import com.alligator.market.backend.sourceplan.plan.api.command.common.MarketDataSourceRequestMapper;
+import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Маппер для {@link CreateMarketDataSourcePlanRequest}.
+ */
+public class CreateMarketDataSourcePlanMapper {
+
+    private final MarketDataSourceRequestMapper marketDataSourceRequestMapper;
+
+    public CreateMarketDataSourcePlanMapper(
+            MarketDataSourceRequestMapper marketDataSourceRequestMapper
+    ) {
+        this.marketDataSourceRequestMapper = Objects.requireNonNull(
+                marketDataSourceRequestMapper,
+                "marketDataSourceRequestMapper must not be null"
+        );
+    }
+
+    /**
+     * Преобразует запрос {@link CreateMarketDataSourcePlanRequest} в доменную модель {@link MarketDataSourcePlan}.
+     */
+    public MarketDataSourcePlan toDomain(CreateMarketDataSourcePlanRequest request) {
+        List<MarketDataSourcePlanEntry> entries = request.sources().stream()
+                .map(marketDataSourceRequestMapper::toDomain)
+                .toList();
+
+        return new MarketDataSourcePlan(
+                new MarketDataCaptureProcessCode(request.captureProcessCode()),
+                new InstrumentCode(request.instrumentCode()),
+                entries
+        );
+    }
+}

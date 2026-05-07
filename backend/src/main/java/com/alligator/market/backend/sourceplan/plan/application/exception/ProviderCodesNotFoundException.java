@@ -1,0 +1,26 @@
+package com.alligator.market.backend.sourceplan.plan.application.exception;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.StringJoiner;
+
+/**
+ * Ошибка application-слоя: один или несколько кодов провайдеров не найдены.
+ */
+public final class ProviderCodesNotFoundException extends IllegalArgumentException {
+
+    public ProviderCodesNotFoundException(Collection<String> providerCodes) {
+        super(buildMessage(providerCodes));
+    }
+
+    private static String buildMessage(Collection<String> providerCodes) {
+        Objects.requireNonNull(providerCodes, "providerCodes must not be null");
+
+        StringJoiner joiner = new StringJoiner(", ");
+        for (String providerCode : providerCodes) {
+            joiner.add(Objects.requireNonNull(providerCode, "providerCode must not be null"));
+        }
+
+        return "Provider codes do not exist: " + joiner;
+    }
+}

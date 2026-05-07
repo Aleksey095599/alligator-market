@@ -1,0 +1,21 @@
+package com.alligator.market.backend.source.config;
+
+import com.alligator.market.backend.source.config.adapter.moex.iss.MoexIssMarketDataSourceConfig;
+import com.alligator.market.backend.source.config.passport.application.query.list.PassportListServiceWiringConfig;
+import com.alligator.market.backend.source.config.passport.application.projection.startup.ProviderPassportProjectionStartupRunnerWiringConfig;
+import com.alligator.market.backend.source.config.registry.ProviderRegistryWiringConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+/**
+ * Единая внешняя точка входа в wiring фичи provider.
+ */
+@Configuration(proxyBeanMethods = false)
+@Import({
+        ProviderRegistryWiringConfig.class,
+        PassportListServiceWiringConfig.class,
+        ProviderPassportProjectionStartupRunnerWiringConfig.class,
+        MoexIssMarketDataSourceConfig.class
+})
+public class ProviderFeatureWiringConfig {
+}

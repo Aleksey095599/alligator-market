@@ -4,8 +4,8 @@ import com.alligator.market.backend.marketdata.capture.process.passport.applicat
 import com.alligator.market.backend.marketdata.capture.process.passport.application.projection.port.MarketDataCaptureProcessPassportProjectionWritePort;
 import com.alligator.market.backend.marketdata.config.capture.process.passport.persistence.projection.port.adapter.MarketDataCaptureProcessPassportProjectionWritePortWiringConfig;
 import com.alligator.market.backend.marketdata.config.capture.process.registry.MarketDataCaptureProcessRegistryWiringConfig;
-import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
-import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
+import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
+import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.marketdata.capture.process.registry.MarketDataCaptureProcessRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

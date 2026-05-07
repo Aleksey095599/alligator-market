@@ -2,8 +2,8 @@ package com.alligator.market.backend.instrument.asset.forex.fxspot.config.applic
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.FxSpotUsageContributor;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.application.usage.contributor.sourcing.SourcePlanFxSpotUsageContributor;
-import com.alligator.market.backend.sourcing.config.plan.application.query.existence.SourcePlanExistenceQueryWiringConfig;
-import com.alligator.market.backend.sourcing.plan.application.query.existence.port.SourcePlanExistenceQueryPort;
+import com.alligator.market.backend.sourceplan.config.plan.application.query.existence.SourcePlanExistenceQueryWiringConfig;
+import com.alligator.market.backend.sourceplan.plan.application.query.existence.port.SourcePlanExistenceQueryPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

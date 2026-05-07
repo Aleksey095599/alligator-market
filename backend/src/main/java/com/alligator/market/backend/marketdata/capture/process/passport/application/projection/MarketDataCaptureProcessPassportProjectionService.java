@@ -1,7 +1,7 @@
 package com.alligator.market.backend.marketdata.capture.process.passport.application.projection;
 
 import com.alligator.market.backend.marketdata.capture.process.passport.application.projection.port.MarketDataCaptureProcessPassportProjectionWritePort;
-import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
+import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.marketdata.capture.process.passport.MarketDataCaptureProcessPassport;
 import com.alligator.market.domain.marketdata.capture.process.registry.MarketDataCaptureProcessRegistry;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
