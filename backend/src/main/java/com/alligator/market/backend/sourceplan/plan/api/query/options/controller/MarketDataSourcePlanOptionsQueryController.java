@@ -3,10 +3,10 @@ package com.alligator.market.backend.sourceplan.plan.api.query.options.controlle
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataCaptureProcessOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.InstrumentOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataSourcePlanOptionsResponse;
-import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.ProviderOptionDto;
+import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataSourceOptionDto;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataCaptureProcessOptionsQueryPort;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.InstrumentOptionsQueryPort;
-import com.alligator.market.backend.sourceplan.plan.application.query.options.port.ProviderOptionsQueryPort;
+import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataSourceOptionsQueryPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +21,12 @@ public class MarketDataSourcePlanOptionsQueryController {
 
     private final MarketDataCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort;
     private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
-    private final ProviderOptionsQueryPort providerOptionsQueryPort;
+    private final MarketDataSourceOptionsQueryPort sourceOptionsQueryPort;
 
     public MarketDataSourcePlanOptionsQueryController(
             MarketDataCaptureProcessOptionsQueryPort captureProcessOptionsQueryPort,
             InstrumentOptionsQueryPort instrumentOptionsQueryPort,
-            ProviderOptionsQueryPort providerOptionsQueryPort
+            MarketDataSourceOptionsQueryPort sourceOptionsQueryPort
     ) {
         this.captureProcessOptionsQueryPort = Objects.requireNonNull(
                 captureProcessOptionsQueryPort,
@@ -36,9 +36,9 @@ public class MarketDataSourcePlanOptionsQueryController {
                 instrumentOptionsQueryPort,
                 "instrumentOptionsQueryPort must not be null"
         );
-        this.providerOptionsQueryPort = Objects.requireNonNull(
-                providerOptionsQueryPort,
-                "providerOptionsQueryPort must not be null"
+        this.sourceOptionsQueryPort = Objects.requireNonNull(
+                sourceOptionsQueryPort,
+                "sourceOptionsQueryPort must not be null"
         );
     }
 
@@ -57,8 +57,8 @@ public class MarketDataSourcePlanOptionsQueryController {
                 instrumentOptionsQueryPort.findAllInstrumentCodes().stream()
                         .map(code -> new InstrumentOptionDto(code.value()))
                         .toList(),
-                providerOptionsQueryPort.findAllProviderCodes().stream()
-                        .map(code -> new ProviderOptionDto(code.value()))
+                sourceOptionsQueryPort.findAllSourceCodes().stream()
+                        .map(code -> new MarketDataSourceOptionDto(code.value()))
                         .toList()
         );
 

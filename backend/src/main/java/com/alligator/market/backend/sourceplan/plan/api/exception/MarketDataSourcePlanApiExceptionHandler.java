@@ -10,7 +10,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Market
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourcePlanNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.exception.ProviderCodesNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -66,14 +66,14 @@ public class MarketDataSourcePlanApiExceptionHandler {
     /**
      * Один или несколько кодов провайдера отсутствуют в registry --> 400.
      */
-    @ExceptionHandler(ProviderCodesNotFoundException.class)
-    public ProblemDetail handleProviderCodesNotFound(ProviderCodesNotFoundException ex) {
-        log.warn("Provider codes do not exist: {}", ex.getMessage());
+    @ExceptionHandler(MarketDataSourceCodesNotFoundException.class)
+    public ProblemDetail handleMarketDataSourceCodesNotFound(MarketDataSourceCodesNotFoundException ex) {
+        log.warn("Market data source codes do not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
-                "Provider codes not found",
+                "Market data source codes not found",
                 ex.getMessage(),
-                MarketDataSourcePlanApiErrorCode.PROVIDER_CODES_NOT_FOUND.code()
+                MarketDataSourcePlanApiErrorCode.MARKET_DATA_SOURCE_CODES_NOT_FOUND.code()
         );
     }
 

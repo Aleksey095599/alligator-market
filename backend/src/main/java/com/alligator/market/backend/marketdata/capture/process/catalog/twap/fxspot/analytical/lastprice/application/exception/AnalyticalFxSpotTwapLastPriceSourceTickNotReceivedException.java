@@ -1,7 +1,7 @@
 package com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.Objects;
 
@@ -12,12 +12,12 @@ public final class AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException e
 
     public AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException(
             InstrumentCode instrumentCode,
-            ProviderCode providerCode
+            MarketDataSourceCode sourceCode
     ) {
         super("Source tick was not received for analytical FX_SPOT TWAP last price capture "
-                + "(instrumentCode=%s, providerCode=%s)".formatted(
+                + "(instrumentCode=%s, sourceCode=%s)".formatted(
                 Objects.requireNonNull(instrumentCode, "instrumentCode must not be null").value(),
-                Objects.requireNonNull(providerCode, "providerCode must not be null").value()
+                Objects.requireNonNull(sourceCode, "sourceCode must not be null").value()
         ));
     }
 }

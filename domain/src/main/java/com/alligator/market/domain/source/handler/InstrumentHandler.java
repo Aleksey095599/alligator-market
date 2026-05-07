@@ -30,7 +30,7 @@ public interface InstrumentHandler<P extends MarketDataSource, I extends Instrum
     /**
      * Прикрепляет обработчик к провайдеру.
      */
-    void attachTo(P provider);
+    void attachTo(P source);
 
     /**
      * Streams source-level market data ticks for the given instrument.

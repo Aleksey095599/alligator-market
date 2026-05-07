@@ -10,6 +10,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>Параметры автоматически считываются из файла настроек приложения.</p>
  */
 @Validated
-@ConfigurationProperties("provider.connection-properties.moex.iss.fx-spot")
+@ConfigurationProperties("market-data-source.connection-properties.moex.iss.fx-spot")
 public record MoexIssFxSpotConnectionProperties(@NotBlank String baseUrl) {
 }

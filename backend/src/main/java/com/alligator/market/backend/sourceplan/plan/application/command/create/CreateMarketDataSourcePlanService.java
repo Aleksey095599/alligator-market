@@ -50,7 +50,7 @@ public final class CreateMarketDataSourcePlanService {
         existenceValidator.ensureInstrumentExists(plan);
 
         // Проверяем, что все коды провайдеров из плана существуют
-        existenceValidator.ensureProvidersExist(plan);
+        existenceValidator.ensureSourcesExist(plan);
 
         // Атомарно создаём план, если он ещё не существует
         if (!marketDataSourcePlanRepository.createIfAbsent(plan)) {

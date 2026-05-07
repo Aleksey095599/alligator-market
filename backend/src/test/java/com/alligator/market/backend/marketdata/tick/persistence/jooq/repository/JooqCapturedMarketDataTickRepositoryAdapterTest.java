@@ -6,7 +6,7 @@ import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptu
 import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -71,7 +71,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                 CapturedMarketDataTick tick = new CapturedMarketDataTick(
                         MarketDataCaptureProcessCode.of(processCode),
                         InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM"),
-                        ProviderCode.of("MOEX_ISS"),
+                        MarketDataSourceCode.of("MOEX_ISS"),
                         new SourceLastPriceTick(
                                 SourceInstrumentCode.of("CNYRUB_TOM"),
                                 new BigDecimal("10.9500"),

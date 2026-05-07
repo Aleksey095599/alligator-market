@@ -8,6 +8,6 @@ import java.util.List;
 public record MarketDataSourcePlanOptionsResponse(
         List<MarketDataCaptureProcessOptionDto> captureProcesses,
         List<InstrumentOptionDto> instruments,
-        List<ProviderOptionDto> providers
+        List<MarketDataSourceOptionDto> providers
 ) {
 }

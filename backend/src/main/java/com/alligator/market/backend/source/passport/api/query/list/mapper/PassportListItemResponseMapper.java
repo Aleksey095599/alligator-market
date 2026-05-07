@@ -1,12 +1,12 @@
 package com.alligator.market.backend.source.passport.api.query.list.mapper;
 
 import com.alligator.market.backend.source.passport.api.query.list.dto.PassportListItemResponse;
-import com.alligator.market.backend.source.passport.application.query.list.model.ProviderPassportListItem;
+import com.alligator.market.backend.source.passport.application.query.list.model.MarketDataSourcePassportListItem;
 
 import java.util.Objects;
 
 /**
- * Mapper between provider passport list read model and API response.
+ * Mapper between source passport list read model and API response.
  */
 public final class PassportListItemResponseMapper {
 
@@ -14,11 +14,11 @@ public final class PassportListItemResponseMapper {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    public static PassportListItemResponse toResponse(ProviderPassportListItem item) {
+    public static PassportListItemResponse toResponse(MarketDataSourcePassportListItem item) {
         Objects.requireNonNull(item, "item must not be null");
 
         return new PassportListItemResponse(
-                item.providerCode(),
+                item.sourceCode(),
                 item.displayName(),
                 item.deliveryMode(),
                 item.accessMethod(),

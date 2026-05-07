@@ -4,11 +4,11 @@ import com.alligator.market.backend.infra.time.config.TimeWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
 import com.alligator.market.backend.marketdata.capture.process.catalog.twap.fxspot.analytical.lastprice.application.AnalyticalFxSpotTwapLastPriceCaptureOnceService;
 import com.alligator.market.backend.marketdata.config.tick.persistence.jooq.repository.CapturedMarketDataTickRepositoryWiringConfig;
-import com.alligator.market.backend.source.config.registry.ProviderRegistryWiringConfig;
+import com.alligator.market.backend.source.config.registry.MarketDataSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
-import com.alligator.market.domain.source.registry.ProviderRegistry;
+import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
 import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ import java.time.Clock;
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourcePlanRepositoryWiringConfig.class,
-        ProviderRegistryWiringConfig.class,
+        MarketDataSourceRegistryWiringConfig.class,
         FxSpotRepositoryWiringConfig.class,
         CapturedMarketDataTickRepositoryWiringConfig.class,
         TimeWiringConfig.class
@@ -37,8 +37,8 @@ public class AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig {
     public AnalyticalFxSpotTwapLastPriceCaptureOnceService analyticalFxSpotTwapLastPriceCaptureOnceService(
             @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
             MarketDataSourcePlanRepository sourcePlanRepository,
-            @Qualifier(ProviderRegistryWiringConfig.BEAN_PROVIDER_REGISTRY)
-            ProviderRegistry providerRegistry,
+            @Qualifier(MarketDataSourceRegistryWiringConfig.BEAN_MARKET_DATA_SOURCE_REGISTRY)
+            MarketDataSourceRegistry sourceRegistry,
             @Qualifier(FxSpotRepositoryWiringConfig.BEAN_FX_SPOT_REPOSITORY)
             FxSpotRepository fxSpotRepository,
             @Qualifier(CapturedMarketDataTickRepositoryWiringConfig.BEAN_CAPTURED_MARKET_DATA_TICK_REPOSITORY)
@@ -47,7 +47,7 @@ public class AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig {
     ) {
         return new AnalyticalFxSpotTwapLastPriceCaptureOnceService(
                 sourcePlanRepository,
-                providerRegistry,
+                sourceRegistry,
                 fxSpotRepository,
                 capturedTickRepository,
                 clock

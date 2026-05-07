@@ -4,17 +4,17 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Политика провайдера: иммутабельные параметры, которые использует бизнес-логика.
+ * Runtime policy of a market data source.
  *
- * @param minUpdateInterval Минимальный интервал обновления/запроса котировок для заданного провайдера
+ * @param minUpdateInterval the minimum interval between market data update requests
  */
-public record ProviderPolicy(
+public record MarketDataSourcePolicy(
         Duration minUpdateInterval
 ) {
-    /* Ограничение снизу для {@code minUpdateInterval}. */
+    /* Lower bound for {@code minUpdateInterval}. */
     private static final Duration MIN_UPDATE_INTERVAL_ALLOWED = Duration.ofSeconds(1);
 
-    public ProviderPolicy {
+    public MarketDataSourcePolicy {
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
 
         if (minUpdateInterval.compareTo(MIN_UPDATE_INTERVAL_ALLOWED) < 0) {

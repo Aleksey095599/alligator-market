@@ -2,8 +2,8 @@ package com.alligator.market.backend.source.config;
 
 import com.alligator.market.backend.source.config.adapter.moex.iss.MoexIssMarketDataSourceConfig;
 import com.alligator.market.backend.source.config.passport.application.query.list.PassportListServiceWiringConfig;
-import com.alligator.market.backend.source.config.passport.application.projection.startup.ProviderPassportProjectionStartupRunnerWiringConfig;
-import com.alligator.market.backend.source.config.registry.ProviderRegistryWiringConfig;
+import com.alligator.market.backend.source.config.passport.application.projection.startup.MarketDataSourcePassportProjectionStartupRunnerWiringConfig;
+import com.alligator.market.backend.source.config.registry.MarketDataSourceRegistryWiringConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        ProviderRegistryWiringConfig.class,
+        MarketDataSourceRegistryWiringConfig.class,
         PassportListServiceWiringConfig.class,
-        ProviderPassportProjectionStartupRunnerWiringConfig.class,
+        MarketDataSourcePassportProjectionStartupRunnerWiringConfig.class,
         MoexIssMarketDataSourceConfig.class
 })
-public class ProviderFeatureWiringConfig {
+public class MarketDataSourceFeatureWiringConfig {
 }

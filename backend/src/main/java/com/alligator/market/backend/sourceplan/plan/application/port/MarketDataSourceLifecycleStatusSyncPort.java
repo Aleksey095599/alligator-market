@@ -6,9 +6,9 @@ package com.alligator.market.backend.sourceplan.plan.application.port;
 public interface MarketDataSourceLifecycleStatusSyncPort {
 
     /**
-     * Retire source rows whose provider passport is not active anymore.
+     * Retire source plan rows whose source passport is not active anymore.
      */
-    void retireSourcesWithoutActiveProviderPassports();
+    void retireSourcesWithoutActiveSourcePassports();
 
     /**
      * Retire source rows whose capture process passport is not active anymore.

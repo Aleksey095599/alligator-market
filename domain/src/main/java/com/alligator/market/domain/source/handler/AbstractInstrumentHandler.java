@@ -24,7 +24,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     private final SupportedInstrumentsProfile supportedInstrumentsProfile;
 
     /* Ссылка на провайдера (однократная потокобезопасная привязка). */
-    private final AtomicReference<P> providerRef = new AtomicReference<>();
+    private final AtomicReference<P> sourceRef = new AtomicReference<>();
 
     /**
      * Конструктор: обработчик сам выводит свой профиль из набора поддерживаемых инструментов.
@@ -58,12 +58,12 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     }
 
     @Override
-    public final void attachTo(P provider) {
-        Objects.requireNonNull(provider, "provider must not be null");
+    public final void attachTo(P source) {
+        Objects.requireNonNull(source, "source must not be null");
 
-        if (!providerRef.compareAndSet(null, provider)) {
+        if (!sourceRef.compareAndSet(null, source)) {
             throw new IllegalStateException(
-                    "Provider is already attached to handler '%s'".formatted(handlerCode.value())
+                    "Market data source is already attached to handler '%s'".formatted(handlerCode.value())
             );
         }
     }
@@ -72,7 +72,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     public final Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        requireAttachedProvider();
+        requireAttachedSource();
 
         InstrumentCode instrumentCode = requireInstrumentCode(instrument);
         requireInstrumentMatchesSupportedProfile(instrument, instrumentCode);
@@ -91,8 +91,8 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     /**
      * Возвращает провайдера, к которому прикреплен обработчик.
      */
-    protected final P provider() {
-        return requireAttachedProvider();
+    protected final P source() {
+        return requireAttachedSource();
     }
 
     /*
@@ -146,14 +146,14 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     /*
      * Проверка, что обработчик прикреплён к провайдеру.
      */
-    private P requireAttachedProvider() {
-        P provider = providerRef.get();
-        if (provider == null) {
+    private P requireAttachedSource() {
+        P source = sourceRef.get();
+        if (source == null) {
             throw new IllegalStateException(
-                    "Provider is not attached to handler '%s'".formatted(handlerCode.value())
+                    "Market data source is not attached to handler '%s'".formatted(handlerCode.value())
             );
         }
-        return provider;
+        return source;
     }
 
     /*

@@ -50,7 +50,7 @@ public final class ReplaceMarketDataSourcePlanService {
         existenceValidator.ensureInstrumentExists(plan);
 
         // Проверяем, что все коды провайдеров из плана существуют
-        existenceValidator.ensureProvidersExist(plan);
+        existenceValidator.ensureSourcesExist(plan);
 
         MarketDataSourcePlan currentPlan = marketDataSourcePlanRepository
                 .findByMarketDataCaptureProcessCodeAndInstrumentCode(plan.captureProcessCode(), plan.instrumentCode())
@@ -95,7 +95,7 @@ public final class ReplaceMarketDataSourcePlanService {
         return plan.entries().stream()
                 .sorted(Comparator
                         .comparingInt(MarketDataSourcePlanEntry::priority)
-                        .thenComparing(entry -> entry.providerCode().value()))
+                        .thenComparing(entry -> entry.sourceCode().value()))
                 .toList();
     }
 }

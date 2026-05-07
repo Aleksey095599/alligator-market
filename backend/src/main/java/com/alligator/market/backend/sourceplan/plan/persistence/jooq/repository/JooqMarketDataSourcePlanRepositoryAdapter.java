@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Market
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
@@ -261,7 +261,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         dsl.insertInto(MARKET_DATA_SOURCE)
                 .set(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE, captureProcessCode.value())
                 .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
-                .set(MARKET_DATA_SOURCE.PROVIDER_CODE, entry.providerCode().value())
+                .set(MARKET_DATA_SOURCE.PROVIDER_CODE, entry.sourceCode().value())
                 .set(MARKET_DATA_SOURCE.PRIORITY, entry.priority())
                 .set(MARKET_DATA_SOURCE.LIFECYCLE_STATUS, ACTIVE.name())
                 .execute();
@@ -276,7 +276,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         Objects.requireNonNull(priority, "priority must not be null");
 
         return new MarketDataSourcePlanEntry(
-                new ProviderCode(providerCode),
+                new MarketDataSourceCode(providerCode),
                 priority
         );
     }

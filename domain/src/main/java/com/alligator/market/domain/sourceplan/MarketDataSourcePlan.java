@@ -2,7 +2,7 @@ package com.alligator.market.domain.sourceplan;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.*;
 
@@ -49,16 +49,16 @@ public final class MarketDataSourcePlan {
         }
 
         List<MarketDataSourcePlanEntry> entriesValidated = new ArrayList<>(entries.size());
-        Set<ProviderCode> providerCodes = new HashSet<>();
+        Set<MarketDataSourceCode> sourceCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
         for (MarketDataSourcePlanEntry entry : entries) {
             MarketDataSourcePlanEntry entryToCheck = Objects.requireNonNull(entry, "entry must not be null");
 
-            if (!providerCodes.add(entryToCheck.providerCode())) {
+            if (!sourceCodes.add(entryToCheck.sourceCode())) {
                 throw new IllegalArgumentException(
-                        "Market data source plan contains duplicate provider code '" +
-                                entryToCheck.providerCode().value() + "'"
+                        "Market data source plan contains duplicate source code '" +
+                                entryToCheck.sourceCode().value() + "'"
                 );
             }
 

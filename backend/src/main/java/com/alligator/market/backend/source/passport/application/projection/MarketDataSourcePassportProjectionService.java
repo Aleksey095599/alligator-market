@@ -1,10 +1,10 @@
 package com.alligator.market.backend.source.passport.application.projection;
 
-import com.alligator.market.backend.source.passport.application.projection.port.ProviderPassportProjectionWritePort;
+import com.alligator.market.backend.source.passport.application.projection.port.MarketDataSourcePassportProjectionWritePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
-import com.alligator.market.domain.source.passport.ProviderPassport;
-import com.alligator.market.domain.source.registry.ProviderRegistry;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.MarketDataSourcePassport;
+import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Map;
@@ -12,24 +12,24 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Use case сервис: построить/обновить проекцию паспортов провайдеров.
+ * Use case service for synchronizing source passport projection rows.
  *
  * <p>Здесь задаётся граница транзакции и выполняется синхронизация с доменным реестром.</p>
  */
-public final class ProviderPassportProjectionService {
+public final class MarketDataSourcePassportProjectionService {
 
-    private final ProviderRegistry providerRegistry;
-    private final ProviderPassportProjectionWritePort writePort;
+    private final MarketDataSourceRegistry sourceRegistry;
+    private final MarketDataSourcePassportProjectionWritePort writePort;
     private final MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort;
     private final TransactionTemplate tx;
 
-    public ProviderPassportProjectionService(
-            ProviderRegistry providerRegistry,
-            ProviderPassportProjectionWritePort writePort,
+    public MarketDataSourcePassportProjectionService(
+            MarketDataSourceRegistry sourceRegistry,
+            MarketDataSourcePassportProjectionWritePort writePort,
             MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
             TransactionTemplate tx
     ) {
-        this.providerRegistry = Objects.requireNonNull(providerRegistry, "providerRegistry must not be null");
+        this.sourceRegistry = Objects.requireNonNull(sourceRegistry, "sourceRegistry must not be null");
         this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
         this.sourceLifecycleStatusSyncPort = Objects.requireNonNull(
                 sourceLifecycleStatusSyncPort,
@@ -49,21 +49,21 @@ public final class ProviderPassportProjectionService {
      * Выполнить синхронизацию проекции в границах активной транзакции.
      */
     private void projectInTransaction() {
-        Map<ProviderCode, ProviderPassport> registryPassports = Map.copyOf(
-                Objects.requireNonNull(providerRegistry.passportsByCode(), "passportsByCode must not be null")
+        Map<MarketDataSourceCode, MarketDataSourcePassport> registryPassports = Map.copyOf(
+                Objects.requireNonNull(sourceRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
         // Инвариант доменной модели: реестр активных провайдеров не бывает пустым.
         if (registryPassports.isEmpty()) {
-            throw new IllegalStateException("Provider registry returned no provider passports");
+            throw new IllegalStateException("Market data source registry returned no source passports");
         }
 
-        Set<ProviderCode> currentCodes = Set.copyOf(registryPassports.keySet());
+        Set<MarketDataSourceCode> currentCodes = Set.copyOf(registryPassports.keySet());
 
         // Синхронизация состава и значений проекции с реестром.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
         // Изменения lifecycle паспортов провайдеров могут сделать строки source plan устаревшими.
-        sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveProviderPassports();
+        sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveSourcePassports();
     }
 }

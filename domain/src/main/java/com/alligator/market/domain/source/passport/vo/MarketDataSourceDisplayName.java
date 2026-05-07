@@ -3,11 +3,11 @@ package com.alligator.market.domain.source.passport.vo;
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
- * Объект-значение отображаемого имени провайдера рыночных данных.
+ * Display name of a market data source.
  *
- * @param value непустое имя провайдера для интерфейса и диагностики
+ * @param value the non-empty source name used in UI and diagnostics
  */
-public record ProviderDisplayName(
+public record MarketDataSourceDisplayName(
         String value
 ) {
 
@@ -17,11 +17,11 @@ public record ProviderDisplayName(
             .rejectControlCharacters()
             .build();
 
-    public ProviderDisplayName {
+    public MarketDataSourceDisplayName {
         value = StringValueNormalizer.normalize(value, "displayName", NORMALIZATION_OPTIONS);
     }
 
-    public static ProviderDisplayName of(String raw) {
-        return new ProviderDisplayName(raw);
+    public static MarketDataSourceDisplayName of(String raw) {
+        return new MarketDataSourceDisplayName(raw);
     }
 }

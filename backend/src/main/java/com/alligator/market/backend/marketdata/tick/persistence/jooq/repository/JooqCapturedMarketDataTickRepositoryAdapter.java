@@ -53,7 +53,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
         dsl.insertInto(CAPTURED_MARKET_DATA_TICK)
                 .set(CAPTURE_PROCESS_CODE, tick.captureProcessCode().value())
                 .set(INSTRUMENT_CODE, tick.instrumentCode().value())
-                .set(PROVIDER_CODE, tick.providerCode().value())
+                .set(PROVIDER_CODE, tick.sourceCode().value())
                 .set(SOURCE_TICK_TYPE, sourceTick.sourceTickType().name())
                 .set(SOURCE_INSTRUMENT_CODE, sourceTick.sourceInstrumentCode().value())
                 .set(SOURCE_TIMESTAMP, toOffsetDateTime(sourceTick.sourceTimestamp()))

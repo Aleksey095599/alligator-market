@@ -2,9 +2,9 @@ package com.alligator.market.domain.source;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.source.passport.ProviderPassport;
-import com.alligator.market.domain.source.policy.ProviderPolicy;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.MarketDataSourcePassport;
+import com.alligator.market.domain.source.policy.MarketDataSourcePolicy;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.reactivestreams.Publisher;
 
 /**
@@ -15,17 +15,17 @@ public interface MarketDataSource {
     /**
      * Unique source code.
      */
-    ProviderCode providerCode();
+    MarketDataSourceCode sourceCode();
 
     /**
      * Source passport.
      */
-    ProviderPassport passport();
+    MarketDataSourcePassport passport();
 
     /**
      * Source policy.
      */
-    ProviderPolicy policy();
+    MarketDataSourcePolicy policy();
 
     /**
      * Streams source-level market data ticks for the given instrument.

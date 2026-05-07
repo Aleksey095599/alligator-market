@@ -65,12 +65,12 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarke
      * Streams source-level ticks for the given FOREX_SPOT instrument.
      *
      * <p>Implements the {@link AccessMethod#API_POLL} access method:
-     * one request --> one tick --> provider policy delay --> repeat.</p>
+     * one request --> one tick --> source policy delay --> repeat.</p>
      */
     @Override
     protected Publisher<SourceMarketDataTick> doStreamSourceTicks(FxSpot instrument) {
         // 1) Получаем минимальный интервал обновления из "политики" провайдера
-        Duration pollInterval = provider().policy().minUpdateInterval();
+        Duration pollInterval = source().policy().minUpdateInterval();
 
         // Далее в виде цепочки:
         // 2) Запрашиваем один source tick

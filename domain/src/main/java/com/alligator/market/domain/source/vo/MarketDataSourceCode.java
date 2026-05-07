@@ -3,11 +3,11 @@ package com.alligator.market.domain.source.vo;
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
- * Объект-значение кода провайдера рыночных данных.
+ * Code of a market data source.
  *
- * @param value нормализованный код провайдера
+ * @param value the normalized source code
  */
-public record ProviderCode(
+public record MarketDataSourceCode(
         String value
 ) {
 
@@ -19,11 +19,11 @@ public record ProviderCode(
             .pattern(PATTERN, "[A-Z0-9_.-]+")
             .build();
 
-    public ProviderCode {
-        value = StringValueNormalizer.normalize(value, "providerCode", NORMALIZATION_OPTIONS);
+    public MarketDataSourceCode {
+        value = StringValueNormalizer.normalize(value, "sourceCode", NORMALIZATION_OPTIONS);
     }
 
-    public static ProviderCode of(String raw) {
-        return new ProviderCode(raw);
+    public static MarketDataSourceCode of(String raw) {
+        return new MarketDataSourceCode(raw);
     }
 }

@@ -1,8 +1,8 @@
 package com.alligator.market.backend.source.passport.persistence.projection.port.adapter;
 
-import com.alligator.market.backend.source.passport.application.projection.port.ProviderPassportProjectionWritePort;
-import com.alligator.market.domain.source.passport.ProviderPassport;
-import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.backend.source.passport.application.projection.port.MarketDataSourcePassportProjectionWritePort;
+import com.alligator.market.domain.source.passport.MarketDataSourcePassport;
+import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Query;
@@ -20,22 +20,22 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.ProviderP
 import static org.jooq.impl.DSL.excluded;
 
 /**
- * jOOQ implementation of {@link ProviderPassportProjectionWritePort}.
+ * jOOQ implementation of {@link MarketDataSourcePassportProjectionWritePort}.
  */
-public class JooqProviderPassportProjectionWritePortAdapter implements ProviderPassportProjectionWritePort {
+public class JooqMarketDataSourcePassportProjectionWritePortAdapter implements MarketDataSourcePassportProjectionWritePort {
 
     private final DSLContext dsl;
 
-    public JooqProviderPassportProjectionWritePortAdapter(DSLContext dsl) {
+    public JooqMarketDataSourcePassportProjectionWritePortAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
     @Override
-    public void retireAllExcept(Set<ProviderCode> currentCodes) {
+    public void retireAllExcept(Set<MarketDataSourceCode> currentCodes) {
         validateCurrentCodes(currentCodes);
 
         Set<String> currentValues = new LinkedHashSet<>(currentCodes.size());
-        for (ProviderCode code : currentCodes) {
+        for (MarketDataSourceCode code : currentCodes) {
             currentValues.add(code.value());
         }
 
@@ -47,18 +47,18 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
     }
 
     @Override
-    public void upsertAll(Map<ProviderCode, ProviderPassport> passports) {
+    public void upsertAll(Map<MarketDataSourceCode, MarketDataSourcePassport> passports) {
         validatePassportsMap(passports);
         if (passports.isEmpty()) {
             return;
         }
 
-        List<Map.Entry<ProviderCode, ProviderPassport>> entries = toValidatedEntries(passports);
+        List<Map.Entry<MarketDataSourceCode, MarketDataSourcePassport>> entries = toValidatedEntries(passports);
         List<Query> queries = new ArrayList<>(entries.size());
 
-        for (Map.Entry<ProviderCode, ProviderPassport> entry : entries) {
-            ProviderCode code = entry.getKey();
-            ProviderPassport passport = entry.getValue();
+        for (Map.Entry<MarketDataSourceCode, MarketDataSourcePassport> entry : entries) {
+            MarketDataSourceCode code = entry.getKey();
+            MarketDataSourcePassport passport = entry.getValue();
 
             Condition businessFieldsChanged = PROVIDER_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(PROVIDER_PASSPORT.DISPLAY_NAME))
@@ -89,7 +89,7 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
         dsl.batch(queries).execute();
     }
 
-    private static void validateCurrentCodes(Set<ProviderCode> currentCodes) {
+    private static void validateCurrentCodes(Set<MarketDataSourceCode> currentCodes) {
         if (currentCodes == null) {
             throw new IllegalArgumentException("currentCodes must not be null");
         }
@@ -97,24 +97,24 @@ public class JooqProviderPassportProjectionWritePortAdapter implements ProviderP
             throw new IllegalArgumentException("currentCodes must not be empty");
         }
 
-        for (ProviderCode code : currentCodes) {
+        for (MarketDataSourceCode code : currentCodes) {
             if (code == null) {
                 throw new IllegalArgumentException("currentCodes must not contain null");
             }
         }
     }
 
-    private static void validatePassportsMap(Map<ProviderCode, ProviderPassport> passports) {
+    private static void validatePassportsMap(Map<MarketDataSourceCode, MarketDataSourcePassport> passports) {
         if (passports == null) {
             throw new IllegalArgumentException("passports must not be null");
         }
     }
 
-    private static List<Map.Entry<ProviderCode, ProviderPassport>> toValidatedEntries(
-            Map<ProviderCode, ProviderPassport> passports
+    private static List<Map.Entry<MarketDataSourceCode, MarketDataSourcePassport>> toValidatedEntries(
+            Map<MarketDataSourceCode, MarketDataSourcePassport> passports
     ) {
-        List<Map.Entry<ProviderCode, ProviderPassport>> entries = new ArrayList<>(passports.size());
-        for (Map.Entry<ProviderCode, ProviderPassport> entry : passports.entrySet()) {
+        List<Map.Entry<MarketDataSourceCode, MarketDataSourcePassport>> entries = new ArrayList<>(passports.size());
+        for (Map.Entry<MarketDataSourceCode, MarketDataSourcePassport> entry : passports.entrySet()) {
             if (entry.getKey() == null) {
                 throw new IllegalArgumentException("passports must not contain null keys");
             }

@@ -2,10 +2,10 @@ package com.alligator.market.backend.sourceplan.plan.application.command.common;
 
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.exception.ProviderCodesNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCaptureProcessExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.InstrumentExistencePort;
-import com.alligator.market.backend.sourceplan.plan.application.port.ProviderExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceExistencePort;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 
@@ -25,12 +25,12 @@ public final class MarketDataSourcePlanValidator {
     private final InstrumentExistencePort instrumentExistencePort;
 
     /* Порт проверки существования провайдера по коду. */
-    private final ProviderExistencePort providerExistencePort;
+    private final MarketDataSourceExistencePort sourceExistencePort;
 
     public MarketDataSourcePlanValidator(
             MarketDataCaptureProcessExistencePort captureProcessExistencePort,
             InstrumentExistencePort instrumentExistencePort,
-            ProviderExistencePort providerExistencePort
+            MarketDataSourceExistencePort sourceExistencePort
     ) {
         this.captureProcessExistencePort = Objects.requireNonNull(
                 captureProcessExistencePort,
@@ -40,9 +40,9 @@ public final class MarketDataSourcePlanValidator {
                 instrumentExistencePort,
                 "instrumentExistencePort must not be null"
         );
-        this.providerExistencePort = Objects.requireNonNull(
-                providerExistencePort,
-                "providerExistencePort must not be null"
+        this.sourceExistencePort = Objects.requireNonNull(
+                sourceExistencePort,
+                "sourceExistencePort must not be null"
         );
     }
 
@@ -67,17 +67,17 @@ public final class MarketDataSourcePlanValidator {
     /**
      * Проверяет существование всех провайдеров, указанных в плане.
      */
-    public void ensureProvidersExist(MarketDataSourcePlan plan) {
-        Set<String> missingProviderCodes = new LinkedHashSet<>();
+    public void ensureSourcesExist(MarketDataSourcePlan plan) {
+        Set<String> missingSourceCodes = new LinkedHashSet<>();
 
         for (MarketDataSourcePlanEntry entry : plan.entries()) {
-            if (!providerExistencePort.existsByCode(entry.providerCode())) {
-                missingProviderCodes.add(entry.providerCode().value());
+            if (!sourceExistencePort.existsByCode(entry.sourceCode())) {
+                missingSourceCodes.add(entry.sourceCode().value());
             }
         }
 
-        if (!missingProviderCodes.isEmpty()) {
-            throw new ProviderCodesNotFoundException(missingProviderCodes);
+        if (!missingSourceCodes.isEmpty()) {
+            throw new MarketDataSourceCodesNotFoundException(missingSourceCodes);
         }
     }
 }

@@ -31,15 +31,15 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     }
 
     @Override
-    public void retireSourcesWithoutActiveProviderPassports() {
-        Condition providerIsNotActive = notExists(
+    public void retireSourcesWithoutActiveSourcePassports() {
+        Condition sourcePassportIsNotActive = notExists(
                 selectOne()
                         .from(PROVIDER_PASSPORT)
                         .where(PROVIDER_PASSPORT.PROVIDER_CODE.eq(MARKET_DATA_SOURCE.PROVIDER_CODE))
                         .and(PROVIDER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
         );
 
-        retireActiveSources(providerIsNotActive);
+        retireActiveSources(sourcePassportIsNotActive);
     }
 
     @Override
