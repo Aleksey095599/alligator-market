@@ -66,7 +66,7 @@ public final class CreateMarketDataSourcePlanService {
                 "Market data source plan created: captureProcessCode={}, instrumentCode={}, sourceCount={}",
                 plan.captureProcessCode().value(),
                 plan.instrumentCode().value(),
-                plan.sources().size()
+                plan.entries().size()
         );
     }
 }

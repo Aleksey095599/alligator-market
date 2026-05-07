@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourcing.plan.api.command.common.MarketDataS
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,14 +37,14 @@ public class ReplaceMarketDataSourcePlanMapper {
         Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        List<MarketDataSource> sources = request.sources().stream()
+        List<MarketDataSourcePlanEntry> entries = request.sources().stream()
                 .map(marketDataSourceRequestMapper::toDomain)
                 .toList();
 
         return new MarketDataSourcePlan(
                 new MarketDataCaptureProcessCode(captureProcessCode),
                 new InstrumentCode(instrumentCode),
-                sources
+                entries
         );
     }
 }

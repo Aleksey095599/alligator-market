@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.api.command.common;
 
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
 
 /**
  * Маппер для {@link MarketDataSourceRequest}.
@@ -9,10 +9,10 @@ import com.alligator.market.domain.sourcing.source.MarketDataSource;
 public class MarketDataSourceRequestMapper {
 
     /**
-     * Преобразует {@link MarketDataSourceRequest} в доменную модель {@link MarketDataSource}.
+     * Преобразует {@link MarketDataSourceRequest} в доменную модель {@link MarketDataSourcePlanEntry}.
      */
-    public MarketDataSource toDomain(MarketDataSourceRequest request) {
-        return new MarketDataSource(
+    public MarketDataSourcePlanEntry toDomain(MarketDataSourceRequest request) {
+        return new MarketDataSourcePlanEntry(
                 new ProviderCode(request.providerCode()),
                 request.priority()
         );

@@ -3,8 +3,8 @@ package com.alligator.market.backend.sourcing.plan.application.command.replace;
 import com.alligator.market.backend.sourcing.plan.application.command.common.MarketDataSourcePlanValidator;
 import com.alligator.market.backend.sourcing.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Comparator;
@@ -83,19 +83,19 @@ public final class ReplaceMarketDataSourcePlanService {
                 "Market data source plan replaced: captureProcessCode={}, instrumentCode={}, sourceCount={}",
                 plan.captureProcessCode().value(),
                 plan.instrumentCode().value(),
-                plan.sources().size()
+                plan.entries().size()
         );
     }
 
     private static boolean hasSameSources(MarketDataSourcePlan currentPlan, MarketDataSourcePlan newPlan) {
-        return normalizeSources(currentPlan).equals(normalizeSources(newPlan));
+        return normalizeEntries(currentPlan).equals(normalizeEntries(newPlan));
     }
 
-    private static List<MarketDataSource> normalizeSources(MarketDataSourcePlan plan) {
-        return plan.sources().stream()
+    private static List<MarketDataSourcePlanEntry> normalizeEntries(MarketDataSourcePlan plan) {
+        return plan.entries().stream()
                 .sorted(Comparator
-                        .comparingInt(MarketDataSource::priority)
-                        .thenComparing(source -> source.providerCode().value()))
+                        .comparingInt(MarketDataSourcePlanEntry::priority)
+                        .thenComparing(entry -> entry.providerCode().value()))
                 .toList();
     }
 }

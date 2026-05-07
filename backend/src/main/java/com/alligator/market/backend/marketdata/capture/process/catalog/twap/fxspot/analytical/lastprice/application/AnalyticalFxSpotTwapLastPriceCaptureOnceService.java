@@ -15,8 +15,8 @@ import com.alligator.market.domain.provider.MarketDataProvider;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
+import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
 import com.alligator.market.domain.sourcing.plan.repository.MarketDataSourcePlanRepository;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;
@@ -68,8 +68,8 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
                         instrumentCode
                 ));
 
-        MarketDataSource source = firstSource(sourcePlan);
-        MarketDataProvider provider = provider(source.providerCode());
+        MarketDataSourcePlanEntry entry = firstEntry(sourcePlan);
+        MarketDataProvider provider = provider(entry.providerCode());
         FxSpot instrument = fxSpot(instrumentCode);
         SourceMarketDataTick sourceTick = sourceTick(provider, instrument);
 
@@ -85,10 +85,10 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         return capturedTick;
     }
 
-    private MarketDataSource firstSource(MarketDataSourcePlan sourcePlan) {
-        return sourcePlan.sources()
+    private MarketDataSourcePlanEntry firstEntry(MarketDataSourcePlan sourcePlan) {
+        return sourcePlan.entries()
                 .stream()
-                .min(Comparator.comparingInt(MarketDataSource::priority))
+                .min(Comparator.comparingInt(MarketDataSourcePlanEntry::priority))
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourceNotFoundException(
                         sourcePlan.captureProcessCode(),
                         sourcePlan.instrumentCode()

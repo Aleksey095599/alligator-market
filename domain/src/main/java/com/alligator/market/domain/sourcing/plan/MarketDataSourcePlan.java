@@ -3,76 +3,76 @@ package com.alligator.market.domain.sourcing.plan;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
 import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
 
 import java.util.*;
 
 /**
- * План источников рыночных данных для конкретного процесса захвата рыночных данных и конкретного инструмента.
- *
- * <p>Назначение: Позволяет по коду процесса и коду инструмента получить список источников
- * рыночных данных {@link MarketDataSource}.</p>
+ * A market data source plan for an instrument in a special capture process.
  */
 @SuppressWarnings("ClassCanBeRecord")
 public final class MarketDataSourcePlan {
 
     private final MarketDataCaptureProcessCode captureProcessCode;
     private final InstrumentCode instrumentCode;
-    private final List<MarketDataSource> sources;
+    private final List<MarketDataSourcePlanEntry> entries;
 
     /**
-     * Конструктор для создания плана источников рыночных данных.
+     * Creates a market data source plan.
      *
-     * @param captureProcessCode Код процесса захвата рыночных данных
-     * @param instrumentCode     Код инструмента
-     * @param sources            Список источников рыночных данных
+     * @param captureProcessCode the market data capture process code
+     * @param instrumentCode     the instrument code
+     * @param entries            the source plan entries
      */
     public MarketDataSourcePlan(
             MarketDataCaptureProcessCode captureProcessCode,
             InstrumentCode instrumentCode,
-            List<MarketDataSource> sources
+            List<MarketDataSourcePlanEntry> entries
     ) {
         this.captureProcessCode = Objects.requireNonNull(
                 captureProcessCode,
                 "captureProcessCode must not be null"
         );
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        Objects.requireNonNull(sources, "sources must not be null");
+        Objects.requireNonNull(entries, "entries must not be null");
 
-        this.sources = copyAndValidateSources(sources);
+        this.entries = copyAndValidateEntries(entries);
     }
 
-    /* Создает копию списка источников и выполняет валидацию. */
-    private static List<MarketDataSource> copyAndValidateSources(List<MarketDataSource> sources) {
-        if (sources.isEmpty()) {
-            throw new IllegalArgumentException("sources must not be empty");
+    /**
+     * Validate entries and create a safe copy.
+     */
+    private static List<MarketDataSourcePlanEntry> copyAndValidateEntries(
+            List<MarketDataSourcePlanEntry> entries
+    ) {
+        if (entries.isEmpty()) {
+            throw new IllegalArgumentException("entries must not be empty");
         }
 
-        List<MarketDataSource> sourcesValidated = new ArrayList<>(sources.size());
+        List<MarketDataSourcePlanEntry> entriesValidated = new ArrayList<>(entries.size());
         Set<ProviderCode> providerCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
-        for (MarketDataSource source : sources) {
-            MarketDataSource sourceToCheck = Objects.requireNonNull(source, "source must not be null");
+        for (MarketDataSourcePlanEntry entry : entries) {
+            MarketDataSourcePlanEntry entryToCheck = Objects.requireNonNull(entry, "entry must not be null");
 
-            if (!providerCodes.add(sourceToCheck.providerCode())) {
+            if (!providerCodes.add(entryToCheck.providerCode())) {
                 throw new IllegalArgumentException(
                         "Market data source plan contains duplicate provider code '" +
-                                sourceToCheck.providerCode().value() + "'"
+                                entryToCheck.providerCode().value() + "'"
                 );
             }
 
-            if (!priorities.add(sourceToCheck.priority())) {
+            if (!priorities.add(entryToCheck.priority())) {
                 throw new IllegalArgumentException(
                         "Market data source plan contains duplicate priority '" +
-                                sourceToCheck.priority() + "'"
+                                entryToCheck.priority() + "'"
                 );
             }
 
-            sourcesValidated.add(sourceToCheck);
+            entriesValidated.add(entryToCheck);
         }
 
-        return List.copyOf(sourcesValidated);
+        return List.copyOf(entriesValidated);
     }
 
     public MarketDataCaptureProcessCode captureProcessCode() {
@@ -83,7 +83,7 @@ public final class MarketDataSourcePlan {
         return instrumentCode;
     }
 
-    public List<MarketDataSource> sources() {
-        return sources;
+    public List<MarketDataSourcePlanEntry> entries() {
+        return entries;
     }
 }

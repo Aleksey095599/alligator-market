@@ -7,7 +7,7 @@ import com.alligator.market.backend.sourcing.plan.application.port.MarketDataCap
 import com.alligator.market.backend.sourcing.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.backend.sourcing.plan.application.port.ProviderExistencePort;
 import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourcing.source.MarketDataSource;
+import com.alligator.market.domain.sourcing.plan.MarketDataSourcePlanEntry;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -70,9 +70,9 @@ public final class MarketDataSourcePlanValidator {
     public void ensureProvidersExist(MarketDataSourcePlan plan) {
         Set<String> missingProviderCodes = new LinkedHashSet<>();
 
-        for (MarketDataSource source : plan.sources()) {
-            if (!providerExistencePort.existsByCode(source.providerCode())) {
-                missingProviderCodes.add(source.providerCode().value());
+        for (MarketDataSourcePlanEntry entry : plan.entries()) {
+            if (!providerExistencePort.existsByCode(entry.providerCode())) {
+                missingProviderCodes.add(entry.providerCode().value());
             }
         }
 
