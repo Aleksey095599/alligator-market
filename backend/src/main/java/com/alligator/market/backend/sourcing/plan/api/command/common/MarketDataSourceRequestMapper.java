@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.api.command.common;
 
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 
 /**

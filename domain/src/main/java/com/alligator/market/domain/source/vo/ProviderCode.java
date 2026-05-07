@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.vo;
+package com.alligator.market.domain.source.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 

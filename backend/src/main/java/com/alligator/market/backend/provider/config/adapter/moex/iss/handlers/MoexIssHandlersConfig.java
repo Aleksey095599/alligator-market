@@ -4,7 +4,7 @@ import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssMarketDataS
 import com.alligator.market.backend.provider.config.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerConfig;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.handler.InstrumentHandler;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

@@ -6,7 +6,7 @@ import com.alligator.market.backend.provider.config.registry.ProviderRegistryWir
 import com.alligator.market.backend.provider.passport.application.projection.ProviderPassportProjectionService;
 import com.alligator.market.backend.sourcing.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
 import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
+import com.alligator.market.domain.source.registry.ProviderRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

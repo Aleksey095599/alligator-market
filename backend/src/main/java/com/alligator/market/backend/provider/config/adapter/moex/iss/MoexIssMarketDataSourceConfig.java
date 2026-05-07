@@ -3,7 +3,7 @@ package com.alligator.market.backend.provider.config.adapter.moex.iss;
 import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.provider.config.adapter.moex.iss.handlers.MoexIssHandlersConfig;
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.handler.InstrumentHandler;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

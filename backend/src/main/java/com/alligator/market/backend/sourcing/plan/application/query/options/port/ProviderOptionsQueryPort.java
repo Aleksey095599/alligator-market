@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourcing.plan.application.query.options.port;
 
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.ProviderCode;
 
 import java.util.List;
 

@@ -2,9 +2,9 @@ package com.alligator.market.backend.provider.passport.application.projection;
 
 import com.alligator.market.backend.provider.passport.application.projection.port.ProviderPassportProjectionWritePort;
 import com.alligator.market.backend.sourcing.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.ProviderPassport;
+import com.alligator.market.domain.source.registry.ProviderRegistry;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Map;

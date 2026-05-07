@@ -1,14 +1,14 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.AbstractMarketDataSource;
-import com.alligator.market.domain.provider.handler.InstrumentHandler;
-import com.alligator.market.domain.provider.vo.ProviderCode;
-import com.alligator.market.domain.provider.passport.classification.AccessMethod;
-import com.alligator.market.domain.provider.passport.classification.DeliveryMode;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
-import com.alligator.market.domain.provider.policy.ProviderPolicy;
+import com.alligator.market.domain.source.AbstractMarketDataSource;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
+import com.alligator.market.domain.source.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.classification.AccessMethod;
+import com.alligator.market.domain.source.passport.classification.DeliveryMode;
+import com.alligator.market.domain.source.passport.ProviderPassport;
+import com.alligator.market.domain.source.passport.vo.ProviderDisplayName;
+import com.alligator.market.domain.source.policy.ProviderPolicy;
 
 import java.time.Duration;
 import java.util.Set;

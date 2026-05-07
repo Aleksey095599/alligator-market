@@ -1,11 +1,11 @@
-package com.alligator.market.domain.provider.handler;
+package com.alligator.market.domain.source.handler;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.provider.MarketDataSource;
-import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentsProfile;
-import com.alligator.market.domain.provider.vo.HandlerCode;
+import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.handler.instrument.SupportedInstrumentsProfile;
+import com.alligator.market.domain.source.vo.HandlerCode;
 import org.reactivestreams.Publisher;
 
 import java.util.Objects;

@@ -1,10 +1,10 @@
-package com.alligator.market.domain.provider;
+package com.alligator.market.domain.source;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.policy.ProviderPolicy;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.ProviderPassport;
+import com.alligator.market.domain.source.policy.ProviderPolicy;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import org.reactivestreams.Publisher;
 
 /**

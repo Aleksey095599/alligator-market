@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourcing.plan.application.exception.MarketDa
 import com.alligator.market.backend.sourcing.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;

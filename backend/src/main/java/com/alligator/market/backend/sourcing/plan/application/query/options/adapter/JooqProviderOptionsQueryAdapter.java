@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourcing.plan.application.query.options.adapter;
 
 import com.alligator.market.backend.sourcing.plan.application.query.options.port.ProviderOptionsQueryPort;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import org.jooq.DSLContext;
 
 import java.util.List;

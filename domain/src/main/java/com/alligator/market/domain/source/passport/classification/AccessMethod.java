@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.passport.classification;
+package com.alligator.market.domain.source.passport.classification;
 
 /**
  * Методы доступа провайдеров к рыночным данным.

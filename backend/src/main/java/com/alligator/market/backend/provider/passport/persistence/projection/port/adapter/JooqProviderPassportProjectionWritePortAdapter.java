@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.passport.persistence.projection.port.adapter;
 
 import com.alligator.market.backend.provider.passport.application.projection.port.ProviderPassportProjectionWritePort;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.passport.ProviderPassport;
+import com.alligator.market.domain.source.vo.ProviderCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Query;

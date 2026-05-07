@@ -1,8 +1,8 @@
 package com.alligator.market.backend.provider.config.registry;
 
-import com.alligator.market.domain.provider.MarketDataSource;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
-import com.alligator.market.domain.provider.registry.SnapshotProviderRegistry;
+import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.registry.ProviderRegistry;
+import com.alligator.market.domain.source.registry.SnapshotProviderRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

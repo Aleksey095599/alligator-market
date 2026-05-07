@@ -1,9 +1,9 @@
-package com.alligator.market.domain.provider.registry;
+package com.alligator.market.domain.source.registry;
 
-import com.alligator.market.domain.provider.MarketDataSource;
-import com.alligator.market.domain.provider.passport.ProviderPassport;
-import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.passport.ProviderPassport;
+import com.alligator.market.domain.source.passport.vo.ProviderDisplayName;
+import com.alligator.market.domain.source.vo.ProviderCode;
 
 import java.util.*;
 

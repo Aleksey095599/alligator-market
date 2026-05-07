@@ -1,7 +1,7 @@
-package com.alligator.market.domain.provider.exception;
+package com.alligator.market.domain.source.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.provider.vo.ProviderCode;
+import com.alligator.market.domain.source.vo.ProviderCode;
 
 import java.util.Objects;
 

@@ -8,7 +8,7 @@ import com.alligator.market.backend.provider.config.registry.ProviderRegistryWir
 import com.alligator.market.backend.sourcing.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
-import com.alligator.market.domain.provider.registry.ProviderRegistry;
+import com.alligator.market.domain.source.registry.ProviderRegistry;
 import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

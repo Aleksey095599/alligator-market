@@ -1,4 +1,4 @@
-package com.alligator.market.domain.provider.passport.vo;
+package com.alligator.market.domain.source.passport.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
