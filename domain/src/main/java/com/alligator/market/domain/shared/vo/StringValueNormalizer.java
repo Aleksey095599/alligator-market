@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Общий нормализатор строковых value objects доменного слоя.
+ * Common normalizer for domain string value objects.
  */
 public final class StringValueNormalizer {
 
