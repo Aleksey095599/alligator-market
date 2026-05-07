@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -29,10 +29,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Обработчик инструментов FOREX_SPOT провайдера MOEX ISS {@link MoexIssProvider}.
+ * Обработчик инструментов FOREX_SPOT source MOEX ISS {@link MoexIssMarketDataSource}.
  */
 @Slf4j
-public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssProvider, FxSpot> {
+public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarketDataSource, FxSpot> {
 
     /* Код обработчика. */
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");

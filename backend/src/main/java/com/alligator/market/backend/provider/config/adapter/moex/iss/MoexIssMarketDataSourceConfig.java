@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.config.adapter.moex.iss;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.provider.config.adapter.moex.iss.handlers.MoexIssHandlersConfig;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.provider.handler.InstrumentHandler;
@@ -12,24 +12,24 @@ import org.springframework.context.annotation.Import;
 import java.util.Set;
 
 /**
- * Wiring-конфигурация {@link MoexIssProvider}.
+ * Wiring-конфигурация {@link MoexIssMarketDataSource}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssHandlersConfig.class)
-public class MoexIssProviderConfig {
+public class MoexIssMarketDataSourceConfig {
 
-    public static final String BEAN_NAME = "moexIssProvider";
+    public static final String BEAN_NAME = "moexIssMarketDataSource";
 
     /**
-     * Бин {@link MoexIssProvider}.
+     * Бин {@link MoexIssMarketDataSource}.
      *
-     * @param handlers набор обработчиков инструментов провайдера MOEX ISS
+     * @param handlers набор обработчиков инструментов source MOEX ISS
      */
     @Bean(BEAN_NAME)
-    public MoexIssProvider moexIssProvider(
+    public MoexIssMarketDataSource moexIssMarketDataSource(
             @Qualifier(MoexIssHandlersConfig.BEAN_NAME)
-            Set<InstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
+            Set<InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> handlers
     ) {
-        return new MoexIssProvider(handlers);
+        return new MoexIssMarketDataSource(handlers);
     }
 }

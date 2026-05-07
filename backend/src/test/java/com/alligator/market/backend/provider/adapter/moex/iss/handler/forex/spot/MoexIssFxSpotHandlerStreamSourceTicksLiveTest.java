@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssProvider;
+import com.alligator.market.backend.provider.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.provider.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
@@ -39,7 +39,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
 
         // 2) Собираем реальный обработчик и провайдер
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(webClient);
-        MoexIssProvider provider = new MoexIssProvider(Set.of(handler));
+        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
 
         // 3) Инструмент для теста
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
@@ -47,7 +47,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Запускаем запрос к реальному MOEX ISS
-        Mono<SourceMarketDataTick> result = Mono.from(provider.streamSourceTicks(cnyRubTom));
+        Mono<SourceMarketDataTick> result = Mono.from(source.streamSourceTicks(cnyRubTom));
 
         // 5) Проверяем минимальные инварианты source-level тика, не завязываясь на конкретную цену
         StepVerifier.create(result)

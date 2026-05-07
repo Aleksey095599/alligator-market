@@ -14,10 +14,10 @@ import org.reactivestreams.Publisher;
 import java.util.*;
 
 /**
- * Абстрактный провайдер рыночных данных.
+ * Base implementation of a runtime market data source.
  */
-public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
-        implements MarketDataProvider {
+public abstract class AbstractMarketDataSource<P extends MarketDataSource>
+        implements MarketDataSource {
 
     protected final ProviderCode providerCode;
     protected final ProviderPassport passport;
@@ -27,9 +27,9 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /**
-     * F-bounded полиморфизм: возвращает текущий экземпляр провайдера в его конкретном дженерик-типе {@code P}.
+     * F-bounded полиморфизм: возвращает текущий экземпляр source в его конкретном дженерик-типе {@code P}.
      *
-     * <p>Назначение: Используется для прикрепления обработчиков к провайдеру.</p>
+     * <p>Назначение: Используется для прикрепления обработчиков к source.</p>
      */
     protected abstract P self();
 
@@ -39,10 +39,10 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      *     <li>Выполняет базовые проверки параметров;</li>
      *     <li>Собирает неизменяемую карту "код инструмента → обработчик инструмента";</li>
      *     <li>Валидирует инварианты: уникальность кодов обработчиков, один код инструмента → один обработчик;</li>
-     *     <li>Прикрепляет переданные обработчики к провайдеру.</li>
+     *     <li>Прикрепляет переданные обработчики к source.</li>
      * </ul>
      */
-    protected AbstractMarketDataProvider(
+    protected AbstractMarketDataSource(
             ProviderCode providerCode,
             ProviderPassport passport,
             ProviderPolicy policy,
@@ -64,7 +64,7 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
         // Собираем неизменяемую однозначную карту "код инструмента → обработчик инструмента"
         this.instrumentHandlerMap = buildInstrumentHandlerMap(providerCode, handlers);
 
-        // Прикрепляем обработчики к провайдеру
+        // Прикрепляем обработчики к source
         for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
             h.attachTo(self());
         }
@@ -107,11 +107,11 @@ public abstract class AbstractMarketDataProvider<P extends MarketDataProvider>
      *     <li>Один код инструмента → один обработчик (однозначность).</li>
      * </ul>
      *
-     * @param providerCode код провайдера, к которому прикреплены обработчики
+     * @param providerCode код source, к которому прикреплены обработчики
      * @param handlers     набор обработчиков
      * @return неизменяемую карту
      */
-    private static <P extends MarketDataProvider> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
+    private static <P extends MarketDataSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             ProviderCode providerCode,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers

@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.registry;
 
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataSource;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Реестр провайдеров рыночных данных, зарегистрированных в приложении.
  *
- * <p>Назначение: единый источник истины о доступных {@link MarketDataProvider} в рамках приложения
+ * <p>Назначение: единый источник истины о доступных {@link MarketDataSource} в рамках приложения
  * и точка валидации их консистентности.</p>
  *
  * <p>Типичный жизненный цикл: реестр формируется при старте приложения и далее используется
@@ -23,7 +23,7 @@ public interface ProviderRegistry {
     /**
      * Неизменяемая карта "код провайдера → провайдер".
      */
-    Map<ProviderCode, MarketDataProvider> providersByCode();
+    Map<ProviderCode, MarketDataSource> providersByCode();
 
     /**
      * Производная проекция: неизменяемая карта "код провайдера → паспорт провайдера".
@@ -31,12 +31,12 @@ public interface ProviderRegistry {
     default Map<ProviderCode, ProviderPassport> passportsByCode() {
         Map<ProviderCode, ProviderPassport> map = new LinkedHashMap<>();
 
-        for (Map.Entry<ProviderCode, MarketDataProvider> entry : providersByCode().entrySet()) {
+        for (Map.Entry<ProviderCode, MarketDataSource> entry : providersByCode().entrySet()) {
             ProviderCode code = entry.getKey();
-            MarketDataProvider provider = entry.getValue();
+            MarketDataSource source = entry.getValue();
 
-            ProviderPassport passport = Objects.requireNonNull(provider.passport(),
-                    "provider.passport must not be null");
+            ProviderPassport passport = Objects.requireNonNull(source.passport(),
+                    "source.passport must not be null");
 
             map.put(code, passport);
         }

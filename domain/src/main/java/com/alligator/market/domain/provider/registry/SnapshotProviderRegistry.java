@@ -1,6 +1,6 @@
 package com.alligator.market.domain.provider.registry;
 
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataSource;
 import com.alligator.market.domain.provider.passport.ProviderPassport;
 import com.alligator.market.domain.provider.passport.vo.ProviderDisplayName;
 import com.alligator.market.domain.provider.vo.ProviderCode;
@@ -16,7 +16,7 @@ import java.util.*;
 public final class SnapshotProviderRegistry implements ProviderRegistry {
 
     /* Неизменяемая карта "код провайдера → провайдер". */
-    private final Map<ProviderCode, MarketDataProvider> providersByCode;
+    private final Map<ProviderCode, MarketDataSource> providersByCode;
 
     /* Неизменяемая карта "код провайдера → паспорт провайдера". */
     private final Map<ProviderCode, ProviderPassport> passportsByCode;
@@ -29,31 +29,31 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
      * @param providers список провайдеров
      * @throws IllegalArgumentException если список провайдеров пуст или содержит дублирующиеся данные
      */
-    public SnapshotProviderRegistry(List<? extends MarketDataProvider> providers) {
+    public SnapshotProviderRegistry(List<? extends MarketDataSource> providers) {
         Objects.requireNonNull(providers, "providers must not be null");
 
         if (providers.isEmpty()) {
             throw new IllegalArgumentException("Provider registry must contain at least one provider");
         }
 
-        Map<ProviderCode, MarketDataProvider> providersMap = new LinkedHashMap<>();
+        Map<ProviderCode, MarketDataSource> providersMap = new LinkedHashMap<>();
         Map<ProviderCode, ProviderPassport> passportsMap = new LinkedHashMap<>();
         Set<String> displayNamesLower = new HashSet<>();
 
-        for (MarketDataProvider provider : providers) {
-            Objects.requireNonNull(provider, "provider must not be null");
+        for (MarketDataSource source : providers) {
+            Objects.requireNonNull(source, "source must not be null");
 
-            ProviderCode code = Objects.requireNonNull(provider.providerCode(),
-                    "provider.providerCode must not be null");
+            ProviderCode code = Objects.requireNonNull(source.providerCode(),
+                    "source.providerCode must not be null");
 
-            ProviderPassport passport = Objects.requireNonNull(provider.passport(),
-                    "provider.passport must not be null");
+            ProviderPassport passport = Objects.requireNonNull(source.passport(),
+                    "source.passport must not be null");
 
-            Objects.requireNonNull(provider.policy(),
-                    "provider.policy must not be null");
+            Objects.requireNonNull(source.policy(),
+                    "source.policy must not be null");
 
             // Уникальность кода провайдера
-            MarketDataProvider prev = providersMap.put(code, provider);
+            MarketDataSource prev = providersMap.put(code, source);
             if (prev != null) {
                 throw new IllegalArgumentException(
                         "Duplicate provider code detected (code=" + code.value() + ")"
@@ -80,7 +80,7 @@ public final class SnapshotProviderRegistry implements ProviderRegistry {
     }
 
     @Override
-    public Map<ProviderCode, MarketDataProvider> providersByCode() {
+    public Map<ProviderCode, MarketDataSource> providersByCode() {
         return providersByCode;
     }
 

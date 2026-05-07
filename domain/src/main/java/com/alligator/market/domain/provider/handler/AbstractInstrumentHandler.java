@@ -3,7 +3,7 @@ package com.alligator.market.domain.provider.handler;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataSource;
 import com.alligator.market.domain.provider.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.provider.vo.HandlerCode;
 import org.reactivestreams.Publisher;
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Базовая реализация обработчика {@link InstrumentHandler}.
  */
-public abstract class AbstractInstrumentHandler<P extends MarketDataProvider, I extends Instrument>
+public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
     private final HandlerCode handlerCode;

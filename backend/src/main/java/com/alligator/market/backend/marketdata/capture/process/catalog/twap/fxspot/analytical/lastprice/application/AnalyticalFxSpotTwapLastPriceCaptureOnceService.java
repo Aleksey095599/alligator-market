@@ -11,7 +11,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataSource;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
@@ -69,14 +69,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
                 ));
 
         MarketDataSourcePlanEntry entry = firstEntry(sourcePlan);
-        MarketDataProvider provider = provider(entry.providerCode());
+        MarketDataSource source = source(entry.providerCode());
         FxSpot instrument = fxSpot(instrumentCode);
-        SourceMarketDataTick sourceTick = sourceTick(provider, instrument);
+        SourceMarketDataTick sourceTick = sourceTick(source, instrument);
 
         CapturedMarketDataTick capturedTick = new CapturedMarketDataTick(
                 PROCESS_CODE,
                 instrument.instrumentCode(),
-                provider.providerCode(),
+                source.providerCode(),
                 sourceTick,
                 clock.instant()
         );
@@ -95,14 +95,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
                 ));
     }
 
-    private MarketDataProvider provider(ProviderCode providerCode) {
-        MarketDataProvider provider = providerRegistry.providersByCode().get(providerCode);
+    private MarketDataSource source(ProviderCode providerCode) {
+        MarketDataSource source = providerRegistry.providersByCode().get(providerCode);
 
-        if (provider == null) {
+        if (source == null) {
             throw new AnalyticalFxSpotTwapLastPriceProviderNotFoundException(providerCode);
         }
 
-        return provider;
+        return source;
     }
 
     private FxSpot fxSpot(InstrumentCode instrumentCode) {
@@ -110,14 +110,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceInstrumentNotFoundException(instrumentCode));
     }
 
-    private SourceMarketDataTick sourceTick(MarketDataProvider provider, FxSpot instrument) {
-        SourceMarketDataTick sourceTick = Mono.from(provider.streamSourceTicks(instrument))
+    private SourceMarketDataTick sourceTick(MarketDataSource source, FxSpot instrument) {
+        SourceMarketDataTick sourceTick = Mono.from(source.streamSourceTicks(instrument))
                 .block(SOURCE_TICK_WAIT_TIMEOUT);
 
         if (sourceTick == null) {
             throw new AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException(
                     instrument.instrumentCode(),
-                    provider.providerCode()
+                    source.providerCode()
             );
         }
 

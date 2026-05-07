@@ -1,7 +1,7 @@
 package com.alligator.market.backend.provider.adapter.moex.iss;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.provider.AbstractMarketDataProvider;
+import com.alligator.market.domain.provider.AbstractMarketDataSource;
 import com.alligator.market.domain.provider.handler.InstrumentHandler;
 import com.alligator.market.domain.provider.vo.ProviderCode;
 import com.alligator.market.domain.provider.passport.classification.AccessMethod;
@@ -14,9 +14,9 @@ import java.time.Duration;
 import java.util.Set;
 
 /**
- * Адаптер провайдера рыночных данных MOEX ISS.
+ * MOEX ISS runtime market data source adapter.
  */
-public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssProvider> {
+public final class MoexIssMarketDataSource extends AbstractMarketDataSource<MoexIssMarketDataSource> {
 
     public static final String PROVIDER_CODE_VALUE = "MOEX_ISS";
     public static final ProviderCode PROVIDER_CODE = ProviderCode.of(PROVIDER_CODE_VALUE);
@@ -39,17 +39,17 @@ public final class MoexIssProvider extends AbstractMarketDataProvider<MoexIssPro
     /**
      * Конструктор адаптера MOEX ISS.
      *
-     * <p>Примечание: Spring автоматически инжектит все бины InstrumentHandler, совместимые с MoexIssProvider
-     * для любых Instrument и объединяет их в единый Set.<p/>
+     * <p>Примечание: Spring автоматически инжектит все бины InstrumentHandler, совместимые с
+     * MoexIssMarketDataSource для любых Instrument и объединяет их в единый Set.<p/>
      */
-    public MoexIssProvider(
-            Set<? extends InstrumentHandler<MoexIssProvider, ? extends Instrument>> handlers
+    public MoexIssMarketDataSource(
+            Set<? extends InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> handlers
     ) {
         super(PROVIDER_CODE, PASSPORT, POLICY, handlers);
     }
 
     @Override
-    protected MoexIssProvider self() {
+    protected MoexIssMarketDataSource self() {
         return this;
     }
 }

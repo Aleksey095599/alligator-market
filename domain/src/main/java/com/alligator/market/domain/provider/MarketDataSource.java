@@ -8,22 +8,22 @@ import com.alligator.market.domain.provider.vo.ProviderCode;
 import org.reactivestreams.Publisher;
 
 /**
- * Доменный контракт провайдера рыночных данных.
+ * Domain contract of a runtime market data source.
  */
-public interface MarketDataProvider {
+public interface MarketDataSource {
 
     /**
-     * Уникальный код провайдера (идентификатор).
+     * Unique source code.
      */
     ProviderCode providerCode();
 
     /**
-     * Паспорт провайдера.
+     * Source passport.
      */
     ProviderPassport passport();
 
     /**
-     * Политика провайдера.
+     * Source policy.
      */
     ProviderPolicy policy();
 

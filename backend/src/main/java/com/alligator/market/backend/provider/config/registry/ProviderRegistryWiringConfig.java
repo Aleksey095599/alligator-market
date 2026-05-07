@@ -1,6 +1,6 @@
 package com.alligator.market.backend.provider.config.registry;
 
-import com.alligator.market.domain.provider.MarketDataProvider;
+import com.alligator.market.domain.provider.MarketDataSource;
 import com.alligator.market.domain.provider.registry.ProviderRegistry;
 import com.alligator.market.domain.provider.registry.SnapshotProviderRegistry;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * Wiring-конфигурация {@link ProviderRegistry}.
  *
- * <p>Spring внедряет {@code List<MarketDataProvider>} как список всех бинов типа {@link MarketDataProvider}.</p>
+ * <p>Spring внедряет {@code List<MarketDataSource>} как список всех runtime source-бинов типа
+ * {@link MarketDataSource}.</p>
  */
 @Configuration(proxyBeanMethods = false)
 public class ProviderRegistryWiringConfig {
@@ -22,7 +23,7 @@ public class ProviderRegistryWiringConfig {
      * Доменный snapshot-реестр провайдеров.
      */
     @Bean(BEAN_PROVIDER_REGISTRY)
-    public ProviderRegistry providerRegistry(List<MarketDataProvider> providers) {
+    public ProviderRegistry providerRegistry(List<MarketDataSource> providers) {
         return new SnapshotProviderRegistry(providers);
     }
 }
