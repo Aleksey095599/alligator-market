@@ -42,23 +42,23 @@ public final class ReplaceMarketDataSourcePlanService {
     public void replace(MarketDataSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        existenceValidator.ensureMarketDataCaptureProcessExists(plan);
+        existenceValidator.ensureMarketDataCapturerExists(plan);
 
         existenceValidator.ensureInstrumentExists(plan);
 
         existenceValidator.ensureSourcesExist(plan);
 
         MarketDataSourcePlan currentPlan = marketDataSourcePlanRepository
-                .findByMarketDataCaptureProcessCodeAndInstrumentCode(plan.captureProcessCode(), plan.instrumentCode())
+                .findByMarketDataCapturerCodeAndInstrumentCode(plan.capturerCode(), plan.instrumentCode())
                 .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(
-                        plan.captureProcessCode(),
+                        plan.capturerCode(),
                         plan.instrumentCode()
                 ));
 
         if (hasSameSources(currentPlan, plan)) {
             log.info(
-                    "Market data source plan replace skipped: no changes detected, captureProcessCode={}, instrumentCode={}",
-                    plan.captureProcessCode().value(),
+                    "Market data source plan replace skipped: no changes detected, capturerCode={}, instrumentCode={}",
+                    plan.capturerCode().value(),
                     plan.instrumentCode().value()
             );
             return;
@@ -67,16 +67,16 @@ public final class ReplaceMarketDataSourcePlanService {
         boolean replaced = marketDataSourcePlanRepository.replaceIfExists(plan);
         if (!replaced) {
             log.warn(
-                    "Market data source plan was not found and was not replaced: captureProcessCode={}, instrumentCode={}",
-                    plan.captureProcessCode().value(),
+                    "Market data source plan was not found and was not replaced: capturerCode={}, instrumentCode={}",
+                    plan.capturerCode().value(),
                     plan.instrumentCode().value()
             );
-            throw new MarketDataSourcePlanNotFoundException(plan.captureProcessCode(), plan.instrumentCode());
+            throw new MarketDataSourcePlanNotFoundException(plan.capturerCode(), plan.instrumentCode());
         }
 
         log.info(
-                "Market data source plan replaced: captureProcessCode={}, instrumentCode={}, sourceCount={}",
-                plan.captureProcessCode().value(),
+                "Market data source plan replaced: capturerCode={}, instrumentCode={}, sourceCount={}",
+                plan.capturerCode().value(),
                 plan.instrumentCode().value(),
                 plan.entries().size()
         );

@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.application.query.common.po
 
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.MarketDataSourcePlanQueryItem;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +14,8 @@ import java.util.Optional;
  */
 public interface MarketDataSourcePlanQueryPort {
 
-    Optional<MarketDataSourcePlanQueryItem> findByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    Optional<MarketDataSourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     );
 

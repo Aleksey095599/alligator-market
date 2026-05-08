@@ -1,9 +1,9 @@
 package com.alligator.market.backend.sourceplan.plan.application.command.common;
 
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCaptureProcessExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceExistencePort;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
@@ -18,8 +18,8 @@ import java.util.Set;
  */
 public final class MarketDataSourcePlanValidator {
 
-    /* Capture process existence check. */
-    private final MarketDataCaptureProcessExistencePort captureProcessExistencePort;
+    /* Capturer existence check. */
+    private final MarketDataCapturerExistencePort capturerExistencePort;
 
     /* Instrument existence check. */
     private final InstrumentExistencePort instrumentExistencePort;
@@ -28,13 +28,13 @@ public final class MarketDataSourcePlanValidator {
     private final MarketDataSourceExistencePort sourceExistencePort;
 
     public MarketDataSourcePlanValidator(
-            MarketDataCaptureProcessExistencePort captureProcessExistencePort,
+            MarketDataCapturerExistencePort capturerExistencePort,
             InstrumentExistencePort instrumentExistencePort,
             MarketDataSourceExistencePort sourceExistencePort
     ) {
-        this.captureProcessExistencePort = Objects.requireNonNull(
-                captureProcessExistencePort,
-                "captureProcessExistencePort must not be null"
+        this.capturerExistencePort = Objects.requireNonNull(
+                capturerExistencePort,
+                "capturerExistencePort must not be null"
         );
         this.instrumentExistencePort = Objects.requireNonNull(
                 instrumentExistencePort,
@@ -47,11 +47,11 @@ public final class MarketDataSourcePlanValidator {
     }
 
     /**
-     * Ensures that the capture process referenced by the plan exists.
+     * Ensures that the capturer referenced by the plan exists.
      */
-    public void ensureMarketDataCaptureProcessExists(MarketDataSourcePlan plan) {
-        if (!captureProcessExistencePort.existsByCode(plan.captureProcessCode())) {
-            throw new MarketDataCaptureProcessCodeNotFoundException(plan.captureProcessCode());
+    public void ensureMarketDataCapturerExists(MarketDataSourcePlan plan) {
+        if (!capturerExistencePort.existsByCode(plan.capturerCode())) {
+            throw new MarketDataCapturerCodeNotFoundException(plan.capturerCode());
         }
     }
 

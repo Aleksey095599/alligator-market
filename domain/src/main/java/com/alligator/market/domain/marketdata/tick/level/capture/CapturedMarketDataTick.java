@@ -1,7 +1,7 @@
 package com.alligator.market.domain.marketdata.tick.level.capture;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
@@ -9,24 +9,23 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Captured-level рыночный тик, полученный с помощью добавления к {@link SourceMarketDataTick} полей,
- * содержащих метаданные приложения на момент захвата тика.
+ * Captured-level market data tick built from a source-level tick plus application capture metadata.
  *
- * @param captureProcessCode код процесса захвата рыночных данных
- * @param instrumentCode        внутренний код инструмента приложения
- * @param sourceCode            код источника рыночных данных
- * @param sourceTick            source-level тик, полученный от источника
- * @param receivedTimestamp     момент получения или захвата тика приложением
+ * @param capturerCode      code of the capturer that produced the tick
+ * @param instrumentCode    instrument code
+ * @param sourceCode        market data source code
+ * @param sourceTick        source-level tick received from the source
+ * @param receivedTimestamp time when the tick was received by the application
  */
 public record CapturedMarketDataTick(
-        MarketDataCaptureProcessCode captureProcessCode,
+        MarketDataCapturerCode capturerCode,
         InstrumentCode instrumentCode,
         MarketDataSourceCode sourceCode,
         SourceMarketDataTick sourceTick,
         Instant receivedTimestamp
 ) {
     public CapturedMarketDataTick {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(sourceTick, "sourceTick must not be null");

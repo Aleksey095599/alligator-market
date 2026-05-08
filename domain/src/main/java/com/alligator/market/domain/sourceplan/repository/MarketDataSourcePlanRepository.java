@@ -1,7 +1,7 @@
 package com.alligator.market.domain.sourceplan.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 
 import java.util.List;
@@ -13,19 +13,19 @@ import java.util.Optional;
 public interface MarketDataSourcePlanRepository {
 
     /**
-     * Finds a source plan by {@code captureProcessCode} and {@code instrumentCode}.
+     * Finds a source plan by {@code capturerCode} and {@code instrumentCode}.
      */
-    Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    Optional<MarketDataSourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     );
 
     /**
-     * Finds a source plan by {@code captureProcessCode} and {@code instrumentCode},
+     * Finds a source plan by {@code capturerCode} and {@code instrumentCode},
      * including only sources that are currently available for capture.
      */
-    Optional<MarketDataSourcePlan> findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    Optional<MarketDataSourcePlan> findActiveByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     );
 
@@ -50,12 +50,12 @@ public interface MarketDataSourcePlanRepository {
     boolean replaceIfExists(MarketDataSourcePlan plan);
 
     /**
-     * Deletes a source plan by {@code captureProcessCode} and {@code instrumentCode}.
+     * Deletes a source plan by {@code capturerCode} and {@code instrumentCode}.
      *
      * @return true when the plan existed and was deleted; false when no matching plan exists
      */
-    boolean deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    boolean deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     );
 }

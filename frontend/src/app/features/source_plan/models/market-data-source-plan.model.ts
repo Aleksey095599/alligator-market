@@ -7,7 +7,7 @@ export interface MarketDataSourceResponseDto {
 }
 
 export interface MarketDataSourcePlanResponseDto {
-  captureProcessCode: string;
+  capturerCode: string;
   instrumentCode: string;
   sources: MarketDataSourceResponseDto[];
 }

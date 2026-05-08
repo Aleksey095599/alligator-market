@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
-import static com.alligator.market.backend.infra.jooq.generated.tables.CaptureProcessPassport.CAPTURE_PROCESS_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.notExists;
@@ -43,16 +43,16 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     }
 
     @Override
-    public void retireSourcesWithoutActiveCaptureProcessPassports() {
-        Condition captureProcessIsNotActive = notExists(
+    public void retireSourcesWithoutActiveMarketDataCapturerPassports() {
+        Condition capturerIsNotActive = notExists(
                 selectOne()
-                        .from(CAPTURE_PROCESS_PASSPORT)
-                        .where(CAPTURE_PROCESS_PASSPORT.CAPTURE_PROCESS_CODE
-                                .eq(MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE))
-                        .and(CAPTURE_PROCESS_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                        .from(MARKET_DATA_CAPTURER_PASSPORT)
+                        .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE
+                                .eq(MARKET_DATA_SOURCE.CAPTURER_CODE))
+                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
         );
 
-        retireActiveSources(captureProcessIsNotActive);
+        retireActiveSources(capturerIsNotActive);
     }
 
     private void retireActiveSources(Condition invalidReference) {

@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourceplan.plan.persistence.jooq.repository;
 
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
@@ -28,13 +28,13 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     /* Foreign key from market_data_source_plan to instrument_registry by instrument code. */
     private static final String FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT =
             "fk_market_data_source_plan_instrument";
-    /* Foreign key from market_data_source_plan to capture_process_passport by capture process code. */
-    private static final String FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS =
-            "fk_market_data_source_plan_capture_process";
-    private static final Field<String> MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE =
-            MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE;
-    private static final Field<String> MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE =
-            MARKET_DATA_SOURCE_PLAN.COLLECTION_PROCESS_CODE;
+    /* Foreign key from market_data_source_plan to market_data_capturer_passport by capturer code. */
+    private static final String FK_MARKET_DATA_SOURCE_PLAN_CAPTURER =
+            "fk_market_data_source_plan_capturer";
+    private static final Field<String> MARKET_DATA_SOURCE_CAPTURER_CODE =
+            MARKET_DATA_SOURCE.CAPTURER_CODE;
+    private static final Field<String> MARKET_DATA_SOURCE_PLAN_CAPTURER_CODE =
+            MARKET_DATA_SOURCE_PLAN.CAPTURER_CODE;
 
     private final DSLContext dsl;
 
@@ -43,30 +43,30 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    public Optional<MarketDataSourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        return findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode, false);
+        return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, false);
     }
 
     @Override
-    public Optional<MarketDataSourcePlan> findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    public Optional<MarketDataSourcePlan> findActiveByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        return findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode, true);
+        return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, true);
     }
 
-    private Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    private Optional<MarketDataSourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
             boolean activeOnly
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        Condition condition = MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value())
+        Condition condition = MARKET_DATA_SOURCE_CAPTURER_CODE.eq(capturerCode.value())
                 .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()));
 
         if (activeOnly) {
@@ -92,7 +92,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             return Optional.empty();
         }
 
-        return Optional.of(new MarketDataSourcePlan(captureProcessCode, instrumentCode, entries));
+        return Optional.of(new MarketDataSourcePlan(capturerCode, instrumentCode, entries));
     }
 
     @Override
@@ -101,21 +101,21 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         Map<PlanKey, List<MarketDataSourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
 
         dsl.select(
-                        MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE,
+                        MARKET_DATA_SOURCE_CAPTURER_CODE,
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE,
                         MARKET_DATA_SOURCE.SOURCE_CODE,
                         MARKET_DATA_SOURCE.PRIORITY
                 )
                 .from(MARKET_DATA_SOURCE)
                 .orderBy(
-                        MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.asc(),
+                        MARKET_DATA_SOURCE_CAPTURER_CODE.asc(),
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
                         MARKET_DATA_SOURCE.PRIORITY.asc()
                 )
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            new MarketDataCaptureProcessCode(record.get(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE)),
+                            new MarketDataCapturerCode(record.get(MARKET_DATA_SOURCE_CAPTURER_CODE)),
                             new InstrumentCode(record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE))
                     );
 
@@ -134,7 +134,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
         for (Map.Entry<PlanKey, List<MarketDataSourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
             PlanKey planKey = groupedEntry.getKey();
             plans.add(new MarketDataSourcePlan(
-                    planKey.captureProcessCode(),
+                    planKey.capturerCode(),
                     planKey.instrumentCode(),
                     groupedEntry.getValue()
             ));
@@ -152,10 +152,10 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 DSLContext tx = configuration.dsl();
 
                 int insertedPlans = tx.insertInto(MARKET_DATA_SOURCE_PLAN)
-                        .set(MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE, plan.captureProcessCode().value())
+                        .set(MARKET_DATA_SOURCE_PLAN_CAPTURER_CODE, plan.capturerCode().value())
                         .set(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE, plan.instrumentCode().value())
                         .onConflict(
-                                MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE,
+                                MARKET_DATA_SOURCE_PLAN_CAPTURER_CODE,
                                 MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE
                         )
                         .doNothing()
@@ -166,14 +166,14 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
                 }
 
                 for (MarketDataSourcePlanEntry entry : plan.entries()) {
-                    insertEntry(tx, plan.captureProcessCode(), plan.instrumentCode(), entry);
+                    insertEntry(tx, plan.capturerCode(), plan.instrumentCode(), entry);
                 }
 
                 return true;
             });
         } catch (DataIntegrityViolationException ex) {
-            if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS)) {
-                throw new MarketDataCaptureProcessCodeNotFoundException(plan.captureProcessCode());
+            if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_CAPTURER)) {
+                throw new MarketDataCapturerCodeNotFoundException(plan.capturerCode());
             }
 
             if (DbConstraintErrors.isViolationOf(ex, FK_MARKET_DATA_SOURCE_PLAN_INSTRUMENT)) {
@@ -195,7 +195,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             // Lock the plan row so the replacement is atomic for this plan identity.
             boolean planExists = tx.selectOne()
                     .from(MARKET_DATA_SOURCE_PLAN)
-                    .where(MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE.eq(plan.captureProcessCode().value()))
+                    .where(MARKET_DATA_SOURCE_PLAN_CAPTURER_CODE.eq(plan.capturerCode().value()))
                     .and(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .forUpdate()
                     .fetchOptional()
@@ -206,12 +206,12 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
             }
 
             tx.deleteFrom(MARKET_DATA_SOURCE)
-                    .where(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(plan.captureProcessCode().value()))
+                    .where(MARKET_DATA_SOURCE_CAPTURER_CODE.eq(plan.capturerCode().value()))
                     .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
                     .execute();
 
             for (MarketDataSourcePlanEntry entry : plan.entries()) {
-                insertEntry(tx, plan.captureProcessCode(), plan.instrumentCode(), entry);
+                insertEntry(tx, plan.capturerCode(), plan.instrumentCode(), entry);
             }
 
             return true;
@@ -219,16 +219,16 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     @Override
-    public boolean deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    public boolean deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Source entries are removed by the database cascade.
         int deletedRows = dsl.deleteFrom(MARKET_DATA_SOURCE_PLAN)
-                .where(MARKET_DATA_SOURCE_PLAN_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value()))
+                .where(MARKET_DATA_SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
                 .and(MARKET_DATA_SOURCE_PLAN.INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
 
@@ -237,16 +237,16 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
 
     private void insertEntry(
             DSLContext dsl,
-            MarketDataCaptureProcessCode captureProcessCode,
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
             MarketDataSourcePlanEntry entry
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(entry, "entry must not be null");
 
         dsl.insertInto(MARKET_DATA_SOURCE)
-                .set(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE, captureProcessCode.value())
+                .set(MARKET_DATA_SOURCE_CAPTURER_CODE, capturerCode.value())
                 .set(MARKET_DATA_SOURCE.INSTRUMENT_CODE, instrumentCode.value())
                 .set(MARKET_DATA_SOURCE.SOURCE_CODE, entry.sourceCode().value())
                 .set(MARKET_DATA_SOURCE.PRIORITY, entry.priority())
@@ -268,7 +268,7 @@ public final class JooqMarketDataSourcePlanRepositoryAdapter implements MarketDa
     }
 
     private record PlanKey(
-            MarketDataCaptureProcessCode captureProcessCode,
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
     }

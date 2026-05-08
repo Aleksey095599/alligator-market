@@ -4,7 +4,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Market
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.MarketDataSourcePlanQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.MarketDataSourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 
 import java.util.Objects;
 
@@ -20,14 +20,14 @@ public final class GetMarketDataSourcePlanService {
     }
 
     public MarketDataSourcePlanQueryItem get(
-            MarketDataCaptureProcessCode captureProcessCode,
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return marketDataSourcePlanQueryPort
-                .findByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode)
-                .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode));
+                .findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode)
+                .orElseThrow(() -> new MarketDataSourcePlanNotFoundException(capturerCode, instrumentCode));
     }
 }

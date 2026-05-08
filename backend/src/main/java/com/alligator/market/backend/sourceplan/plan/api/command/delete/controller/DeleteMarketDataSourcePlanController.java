@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.api.command.delete.controll
 
 import com.alligator.market.backend.sourceplan.plan.application.command.delete.DeleteMarketDataSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +29,16 @@ public class DeleteMarketDataSourcePlanController {
     /**
      * Удаляет план источников для заданного инструмента.
      */
-    @DeleteMapping("/{captureProcessCode}/{instrumentCode}")
+    @DeleteMapping("/{capturerCode}/{instrumentCode}")
     public ResponseEntity<Void> delete(
-            @PathVariable String captureProcessCode,
+            @PathVariable String capturerCode,
             @PathVariable String instrumentCode
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         deleteMarketDataSourcePlanService.delete(
-                new MarketDataCaptureProcessCode(captureProcessCode),
+                new MarketDataCapturerCode(capturerCode),
                 new InstrumentCode(instrumentCode)
         );
         return ResponseEntity.noContent().build();

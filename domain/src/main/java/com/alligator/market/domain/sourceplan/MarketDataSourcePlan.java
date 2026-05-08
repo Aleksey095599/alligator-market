@@ -1,34 +1,34 @@
 package com.alligator.market.domain.sourceplan;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.*;
 
 /**
- * A market data source plan for an instrument in a special capture process.
+ * A source plan for one market data capturer and one instrument.
  */
-@SuppressWarnings("ClassCanBeRecord")
+@SuppressWarnings("ClassCanBeRecord") // Domain model, not a DTO-style data carrier.
 public final class MarketDataSourcePlan {
 
-    private final MarketDataCaptureProcessCode captureProcessCode;
+    private final MarketDataCapturerCode capturerCode;
     private final InstrumentCode instrumentCode;
     private final List<MarketDataSourcePlanEntry> entries;
 
     /**
      * Creates a market data source plan.
      *
-     * @param captureProcessCode the market data capture process code
-     * @param instrumentCode     the instrument code
-     * @param entries            the source plan entries
+     * @param capturerCode   the market data capturer code
+     * @param instrumentCode the instrument code
+     * @param entries        the source plan entries
      */
     public MarketDataSourcePlan(
-            MarketDataCaptureProcessCode captureProcessCode,
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
             List<MarketDataSourcePlanEntry> entries
     ) {
-        this.captureProcessCode = Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        this.capturerCode = Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         this.entries = copyAndValidateEntries(Objects.requireNonNull(entries, "entries must not be null"));
     }
@@ -70,8 +70,8 @@ public final class MarketDataSourcePlan {
         return List.copyOf(entriesValidated);
     }
 
-    public MarketDataCaptureProcessCode captureProcessCode() {
-        return captureProcessCode;
+    public MarketDataCapturerCode capturerCode() {
+        return capturerCode;
     }
 
     public InstrumentCode instrumentCode() {

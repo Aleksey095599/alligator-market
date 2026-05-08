@@ -28,13 +28,13 @@ export class MarketDataSourcePlanService {
       .pipe(map(res => res.plans ?? []));
   }
 
-  /* Получить whole-plan по captureProcessCode и instrumentCode. */
+  /* Получить whole-plan по capturerCode и instrumentCode. */
   get(
-    captureProcessCode: string,
+    capturerCode: string,
     instrumentCode: string
   ): Observable<MarketDataSourcePlanResponseDto> {
     return this.http.get<MarketDataSourcePlanResponseDto>(
-      `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`
+      `${this.baseUrl}/${this.pathSegment(capturerCode)}/${this.pathSegment(instrumentCode)}`
     );
   }
 
@@ -50,25 +50,25 @@ export class MarketDataSourcePlanService {
       .pipe(map(() => undefined));
   }
 
-  /* Полностью заменить whole-plan по captureProcessCode и instrumentCode. */
+  /* Полностью заменить whole-plan по capturerCode и instrumentCode. */
   replace(
-    captureProcessCode: string,
+    capturerCode: string,
     instrumentCode: string,
     dto: ReplaceMarketDataSourcePlanDto
   ): Observable<void> {
     return this.http
       .put<void>(
-        `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`,
+        `${this.baseUrl}/${this.pathSegment(capturerCode)}/${this.pathSegment(instrumentCode)}`,
         dto
       )
       .pipe(map(() => undefined));
   }
 
-  /* Удалить whole-plan по captureProcessCode и instrumentCode. */
-  delete(captureProcessCode: string, instrumentCode: string): Observable<void> {
+  /* Удалить whole-plan по capturerCode и instrumentCode. */
+  delete(capturerCode: string, instrumentCode: string): Observable<void> {
     return this.http
       .delete<void>(
-        `${this.baseUrl}/${this.pathSegment(captureProcessCode)}/${this.pathSegment(instrumentCode)}`
+        `${this.baseUrl}/${this.pathSegment(capturerCode)}/${this.pathSegment(instrumentCode)}`
       )
       .pipe(map(() => undefined));
   }

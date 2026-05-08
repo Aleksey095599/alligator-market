@@ -4,7 +4,7 @@ import com.alligator.market.backend.sourceplan.plan.application.query.common.mod
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.MarketDataSourceQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.MarketDataSourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -27,8 +27,8 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDat
  */
 public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSourcePlanQueryPort {
 
-    private static final Field<String> MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE =
-            MARKET_DATA_SOURCE.COLLECTION_PROCESS_CODE;
+    private static final Field<String> MARKET_DATA_SOURCE_CAPTURER_CODE =
+            MARKET_DATA_SOURCE.CAPTURER_CODE;
 
     private final DSLContext dsl;
 
@@ -37,14 +37,14 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
     }
 
     @Override
-    public Optional<MarketDataSourcePlanQueryItem> findByMarketDataCaptureProcessCodeAndInstrumentCode(
-            MarketDataCaptureProcessCode captureProcessCode,
+    public Optional<MarketDataSourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        Condition condition = MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.eq(captureProcessCode.value())
+        Condition condition = MARKET_DATA_SOURCE_CAPTURER_CODE.eq(capturerCode.value())
                 .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()));
 
         // Без lifecycle-фильтра: edit-форма должна загрузить retired строки, чтобы их можно было удалить.
@@ -67,7 +67,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         }
 
         return Optional.of(new MarketDataSourcePlanQueryItem(
-                captureProcessCode.value(),
+                capturerCode.value(),
                 instrumentCode.value(),
                 sources
         ));
@@ -79,7 +79,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         Map<PlanKey, List<MarketDataSourceQueryItem>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
-                        MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE,
+                        MARKET_DATA_SOURCE_CAPTURER_CODE,
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE,
                         MARKET_DATA_SOURCE.SOURCE_CODE,
                         MARKET_DATA_SOURCE.PRIORITY,
@@ -87,14 +87,14 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
                 )
                 .from(MARKET_DATA_SOURCE)
                 .orderBy(
-                        MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE.asc(),
+                        MARKET_DATA_SOURCE_CAPTURER_CODE.asc(),
                         MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
                         MARKET_DATA_SOURCE.PRIORITY.asc()
                 )
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            record.get(MARKET_DATA_SOURCE_CAPTURE_PROCESS_CODE),
+                            record.get(MARKET_DATA_SOURCE_CAPTURER_CODE),
                             record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE)
                     );
 
@@ -112,7 +112,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         for (Map.Entry<PlanKey, List<MarketDataSourceQueryItem>> entry : groupedSources.entrySet()) {
             PlanKey planKey = entry.getKey();
             plans.add(new MarketDataSourcePlanQueryItem(
-                    planKey.captureProcessCode(),
+                    planKey.capturerCode(),
                     planKey.instrumentCode(),
                     entry.getValue()
             ));
@@ -132,7 +132,7 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
     }
 
     private record PlanKey(
-            String captureProcessCode,
+            String capturerCode,
             String instrumentCode
     ) {
     }

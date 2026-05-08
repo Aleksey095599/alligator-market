@@ -6,7 +6,7 @@ import com.alligator.market.backend.sourceplan.plan.api.command.replace.controll
 import com.alligator.market.backend.sourceplan.plan.api.query.get.controller.GetMarketDataSourcePlanController;
 import com.alligator.market.backend.sourceplan.plan.api.query.list.controller.MarketDataSourcePlanListController;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.controller.MarketDataSourcePlanOptionsQueryController;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCaptureProcessCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourcePlanNotFoundException;
@@ -36,16 +36,16 @@ public class MarketDataSourcePlanApiExceptionHandler {
 
 
     /**
-     * Capture process code is missing in the passport projection --> 400.
+     * Capturer code is missing in the passport projection --> 400.
      */
-    @ExceptionHandler(MarketDataCaptureProcessCodeNotFoundException.class)
-    public ProblemDetail handleMarketDataCaptureProcessCodeNotFound(MarketDataCaptureProcessCodeNotFoundException ex) {
-        log.warn("Capture process code does not exist: {}", ex.getMessage());
+    @ExceptionHandler(MarketDataCapturerCodeNotFoundException.class)
+    public ProblemDetail handleMarketDataCapturerCodeNotFound(MarketDataCapturerCodeNotFoundException ex) {
+        log.warn("Capturer code does not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
-                "Capture process code not found",
+                "Capturer code not found",
                 ex.getMessage(),
-                MarketDataSourcePlanApiErrorCode.CAPTURE_PROCESS_CODE_NOT_FOUND.code()
+                MarketDataSourcePlanApiErrorCode.CAPTURER_CODE_NOT_FOUND.code()
         );
     }
 

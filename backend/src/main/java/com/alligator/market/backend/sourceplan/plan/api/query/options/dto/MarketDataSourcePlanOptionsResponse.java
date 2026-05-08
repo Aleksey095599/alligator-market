@@ -6,7 +6,7 @@ import java.util.List;
  * Options response for the market data source plan editor.
  */
 public record MarketDataSourcePlanOptionsResponse(
-        List<MarketDataCaptureProcessOptionDto> captureProcesses,
+        List<MarketDataCapturerOptionDto> capturers,
         List<InstrumentOptionDto> instruments,
         List<MarketDataSourceOptionDto> sources
 ) {

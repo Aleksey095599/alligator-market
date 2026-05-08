@@ -9,13 +9,13 @@ import java.util.Objects;
  * <p>Список sources полный и может включать retired строки.</p>
  */
 public record MarketDataSourcePlanQueryItem(
-        String captureProcessCode,
+        String capturerCode,
         String instrumentCode,
         List<MarketDataSourceQueryItem> sources
 ) {
 
     public MarketDataSourcePlanQueryItem {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");
         sources = List.copyOf(sources);

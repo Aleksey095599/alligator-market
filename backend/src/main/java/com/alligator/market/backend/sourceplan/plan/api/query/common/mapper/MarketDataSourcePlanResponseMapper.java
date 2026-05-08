@@ -20,7 +20,7 @@ public class MarketDataSourcePlanResponseMapper {
                 .toList();
 
         return new MarketDataSourcePlanResponse(
-                plan.captureProcessCode(),
+                plan.capturerCode(),
                 plan.instrumentCode(),
                 sources
         );

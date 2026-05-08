@@ -26,7 +26,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
 
     private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
 
-    private static final Field<String> CAPTURE_PROCESS_CODE = field(name("collection_process_code"), String.class);
+    private static final Field<String> CAPTURER_CODE = field(name("capturer_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
     private static final Field<String> SOURCE_CODE = field(name("source_code"), String.class);
     private static final Field<String> SOURCE_TICK_TYPE = field(name("source_tick_type"), String.class);
@@ -51,7 +51,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
         TickPrices prices = pricesOf(sourceTick);
 
         dsl.insertInto(CAPTURED_MARKET_DATA_TICK)
-                .set(CAPTURE_PROCESS_CODE, tick.captureProcessCode().value())
+                .set(CAPTURER_CODE, tick.capturerCode().value())
                 .set(INSTRUMENT_CODE, tick.instrumentCode().value())
                 .set(SOURCE_CODE, tick.sourceCode().value())
                 .set(SOURCE_TICK_TYPE, sourceTick.sourceTickType().name())

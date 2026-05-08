@@ -41,7 +41,7 @@ public final class CreateMarketDataSourcePlanService {
     public void create(MarketDataSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        existenceValidator.ensureMarketDataCaptureProcessExists(plan);
+        existenceValidator.ensureMarketDataCapturerExists(plan);
 
         existenceValidator.ensureInstrumentExists(plan);
 
@@ -49,16 +49,16 @@ public final class CreateMarketDataSourcePlanService {
 
         if (!marketDataSourcePlanRepository.createIfAbsent(plan)) {
             log.warn(
-                    "Market data source plan already exists and was not created: captureProcessCode={}, instrumentCode={}",
-                    plan.captureProcessCode().value(),
+                    "Market data source plan already exists and was not created: capturerCode={}, instrumentCode={}",
+                    plan.capturerCode().value(),
                     plan.instrumentCode().value()
             );
-            throw new MarketDataSourcePlanAlreadyExistsException(plan.captureProcessCode(), plan.instrumentCode());
+            throw new MarketDataSourcePlanAlreadyExistsException(plan.capturerCode(), plan.instrumentCode());
         }
 
         log.info(
-                "Market data source plan created: captureProcessCode={}, instrumentCode={}, sourceCount={}",
-                plan.captureProcessCode().value(),
+                "Market data source plan created: capturerCode={}, instrumentCode={}, sourceCount={}",
+                plan.capturerCode().value(),
                 plan.instrumentCode().value(),
                 plan.entries().size()
         );

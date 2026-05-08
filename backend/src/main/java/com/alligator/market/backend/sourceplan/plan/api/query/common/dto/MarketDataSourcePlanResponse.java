@@ -6,7 +6,7 @@ import java.util.List;
  * DTO ответа с планом источников для инструмента.
  */
 public record MarketDataSourcePlanResponse(
-        String captureProcessCode,
+        String capturerCode,
         String instrumentCode,
         List<MarketDataSourceResponse> sources
 ) {

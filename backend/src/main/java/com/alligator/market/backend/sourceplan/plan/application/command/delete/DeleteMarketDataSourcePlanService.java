@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.delete;
 
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,27 +30,27 @@ public final class DeleteMarketDataSourcePlanService {
      * Удаляет существующий план источников для инструмента.
      */
     public void delete(
-            MarketDataCaptureProcessCode captureProcessCode,
+            MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         // Условно удаляем root-plan и сигнализируем, если его не было
         boolean deleted = marketDataSourcePlanRepository
-                .deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(captureProcessCode, instrumentCode);
+                .deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode);
         if (!deleted) {
             log.warn(
-                    "Market data source plan was not found and was not deleted: captureProcessCode={}, instrumentCode={}",
-                    captureProcessCode.value(),
+                    "Market data source plan was not found and was not deleted: capturerCode={}, instrumentCode={}",
+                    capturerCode.value(),
                     instrumentCode.value()
             );
-            throw new MarketDataSourcePlanNotFoundException(captureProcessCode, instrumentCode);
+            throw new MarketDataSourcePlanNotFoundException(capturerCode, instrumentCode);
         }
 
         log.info(
-                "Market data source plan deleted: captureProcessCode={}, instrumentCode={}",
-                captureProcessCode.value(),
+                "Market data source plan deleted: capturerCode={}, instrumentCode={}",
+                capturerCode.value(),
                 instrumentCode.value()
         );
     }

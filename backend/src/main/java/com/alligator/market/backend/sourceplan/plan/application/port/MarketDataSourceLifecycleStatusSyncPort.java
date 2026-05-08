@@ -11,7 +11,7 @@ public interface MarketDataSourceLifecycleStatusSyncPort {
     void retireSourcesWithoutActiveSourcePassports();
 
     /**
-     * Retire source rows whose capture process passport is not active anymore.
+     * Retire source rows whose capturer passport is not active anymore.
      */
-    void retireSourcesWithoutActiveCaptureProcessPassports();
+    void retireSourcesWithoutActiveMarketDataCapturerPassports();
 }

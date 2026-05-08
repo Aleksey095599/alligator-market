@@ -1,22 +1,22 @@
 -- captured_market_data_tick: captured-level market data ticks
 CREATE TABLE captured_market_data_tick
 (
-    id                      BIGSERIAL PRIMARY KEY,
+    id                     BIGSERIAL PRIMARY KEY,
 
-    collection_process_code VARCHAR(128) NOT NULL,
-    instrument_code         VARCHAR(128) NOT NULL,
-    source_code             VARCHAR(50)  NOT NULL,
+    capturer_code          VARCHAR(128) NOT NULL,
+    instrument_code        VARCHAR(128) NOT NULL,
+    source_code            VARCHAR(50)  NOT NULL,
 
-    source_tick_type        VARCHAR(32)  NOT NULL,
-    source_instrument_code  VARCHAR(128) NOT NULL,
-    source_timestamp        TIMESTAMPTZ  NOT NULL,
+    source_tick_type       VARCHAR(32)  NOT NULL,
+    source_instrument_code VARCHAR(128) NOT NULL,
+    source_timestamp       TIMESTAMPTZ  NOT NULL,
 
-    received_timestamp      TIMESTAMPTZ  NOT NULL,
-    stored_timestamp        TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    received_timestamp     TIMESTAMPTZ  NOT NULL,
+    stored_timestamp       TIMESTAMPTZ  NOT NULL DEFAULT now(),
 
-    last_price              NUMERIC(38, 18),
-    bid_price               NUMERIC(38, 18),
-    ask_price               NUMERIC(38, 18),
+    last_price             NUMERIC(38, 18),
+    bid_price              NUMERIC(38, 18),
+    ask_price              NUMERIC(38, 18),
 
     CONSTRAINT chk_captured_market_data_tick_type
         CHECK (

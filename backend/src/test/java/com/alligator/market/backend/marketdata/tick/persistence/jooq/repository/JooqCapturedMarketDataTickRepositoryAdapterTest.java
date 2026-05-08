@@ -2,7 +2,7 @@ package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.capture.process.vo.MarketDataCaptureProcessCode;
+import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
@@ -37,7 +37,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
     private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
 
     private static final Field<Long> ID = field(name("id"), Long.class);
-    private static final Field<String> CAPTURE_PROCESS_CODE = field(name("collection_process_code"), String.class);
+    private static final Field<String> CAPTURER_CODE = field(name("capturer_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
     private static final Field<String> SOURCE_CODE = field(name("source_code"), String.class);
     private static final Field<String> SOURCE_TICK_TYPE = field(name("source_tick_type"), String.class);
@@ -69,7 +69,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                 Instant receivedTimestamp = Instant.parse("2026-05-03T10:15:31Z");
 
                 CapturedMarketDataTick tick = new CapturedMarketDataTick(
-                        MarketDataCaptureProcessCode.of(processCode),
+                        MarketDataCapturerCode.of(processCode),
                         InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM"),
                         MarketDataSourceCode.of("MOEX_ISS"),
                         new SourceLastPriceTick(
@@ -84,7 +84,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
 
                 Record record = dsl.select(
                                 ID,
-                                CAPTURE_PROCESS_CODE,
+                                CAPTURER_CODE,
                                 INSTRUMENT_CODE,
                                 SOURCE_CODE,
                                 SOURCE_TICK_TYPE,
@@ -96,13 +96,13 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                                 ASK_PRICE
                         )
                         .from(CAPTURED_MARKET_DATA_TICK)
-                        .where(CAPTURE_PROCESS_CODE.eq(processCode))
+                        .where(CAPTURER_CODE.eq(processCode))
                         .fetchOne();
 
                 assertNotNull(record);
                 assertNotNull(record.get(ID));
 
-                assertEquals(processCode, record.get(CAPTURE_PROCESS_CODE));
+                assertEquals(processCode, record.get(CAPTURER_CODE));
                 assertEquals("FOREX_SPOT_CNYRUB_TOM", record.get(INSTRUMENT_CODE));
                 assertEquals("MOEX_ISS", record.get(SOURCE_CODE));
                 assertEquals(SourceMarketDataTickType.LAST_PRICE.name(), record.get(SOURCE_TICK_TYPE));
