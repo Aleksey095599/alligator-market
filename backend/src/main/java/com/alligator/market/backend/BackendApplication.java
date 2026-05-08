@@ -4,7 +4,7 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotF
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
 import com.alligator.market.backend.capturer.config.MarketDataCapturerFeatureWiringConfig;
 import com.alligator.market.backend.source.config.MarketDataSourceFeatureWiringConfig;
-import com.alligator.market.backend.sourceplan.config.plan.SourcingPlanFeatureWiringConfig;
+import com.alligator.market.backend.sourceplan.config.plan.SourcePlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -23,7 +23,7 @@ import java.util.TimeZone;
 @Import({
         MarketDataSourceFeatureWiringConfig.class,
         MarketDataCapturerFeatureWiringConfig.class,
-        SourcingPlanFeatureWiringConfig.class,
+        SourcePlanFeatureWiringConfig.class,
         FxSpotFeatureWiringConfig.class,
         CurrencyFeatureWiringConfig.class
 })

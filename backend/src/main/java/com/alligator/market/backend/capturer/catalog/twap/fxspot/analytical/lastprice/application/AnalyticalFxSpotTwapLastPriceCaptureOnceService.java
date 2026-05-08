@@ -13,9 +13,9 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketData
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
-import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
-import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
-import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.SourcePlan;
+import com.alligator.market.domain.sourceplan.SourcePlanEntry;
+import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;
@@ -32,14 +32,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
 
     private static final Duration SOURCE_TICK_WAIT_TIMEOUT = Duration.ofSeconds(30);
 
-    private final MarketDataSourcePlanRepository sourcePlanRepository;
+    private final SourcePlanRepository sourcePlanRepository;
     private final MarketDataSourceRegistry sourceRegistry;
     private final FxSpotRepository fxSpotRepository;
     private final CapturedMarketDataTickRepository capturedTickRepository;
     private final Clock clock;
 
     public AnalyticalFxSpotTwapLastPriceCaptureOnceService(
-            MarketDataSourcePlanRepository sourcePlanRepository,
+            SourcePlanRepository sourcePlanRepository,
             MarketDataSourceRegistry sourceRegistry,
             FxSpotRepository fxSpotRepository,
             CapturedMarketDataTickRepository capturedTickRepository,
@@ -60,14 +60,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
     public CapturedMarketDataTick captureOnce(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        MarketDataSourcePlan sourcePlan = sourcePlanRepository
+        SourcePlan sourcePlan = sourcePlanRepository
                 .findActiveByMarketDataCapturerCodeAndInstrumentCode(CAPTURER_CODE, instrumentCode)
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException(
                         CAPTURER_CODE,
                         instrumentCode
                 ));
 
-        MarketDataSourcePlanEntry entry = firstEntry(sourcePlan);
+        SourcePlanEntry entry = firstEntry(sourcePlan);
         MarketDataSource source = source(entry.sourceCode());
         FxSpot instrument = fxSpot(instrumentCode);
         SourceMarketDataTick sourceTick = sourceTick(source, instrument);
@@ -84,10 +84,10 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
         return capturedTick;
     }
 
-    private MarketDataSourcePlanEntry firstEntry(MarketDataSourcePlan sourcePlan) {
+    private SourcePlanEntry firstEntry(SourcePlan sourcePlan) {
         return sourcePlan.entries()
                 .stream()
-                .min(Comparator.comparingInt(MarketDataSourcePlanEntry::priority))
+                .min(Comparator.comparingInt(SourcePlanEntry::priority))
                 .orElseThrow(() -> new AnalyticalFxSpotTwapLastPriceSourceNotFoundException(
                         sourcePlan.capturerCode(),
                         sourcePlan.instrumentCode()

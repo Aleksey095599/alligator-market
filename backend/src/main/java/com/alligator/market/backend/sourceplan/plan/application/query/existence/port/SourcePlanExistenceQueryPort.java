@@ -3,12 +3,12 @@ package com.alligator.market.backend.sourceplan.plan.application.query.existence
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 /**
- * Порт проверки существования MarketDataSourcePlan по коду инструмента.
+ * Порт проверки существования SourcePlan по коду инструмента.
  */
 public interface SourcePlanExistenceQueryPort {
 
     /**
-     * Возвращает {@code true}, если MarketDataSourcePlan существует.
+     * Возвращает {@code true}, если SourcePlan существует.
      */
     boolean existsByInstrumentCode(InstrumentCode instrumentCode);
 }

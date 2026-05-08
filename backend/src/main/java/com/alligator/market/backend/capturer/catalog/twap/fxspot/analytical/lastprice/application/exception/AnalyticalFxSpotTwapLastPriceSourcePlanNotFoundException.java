@@ -14,7 +14,7 @@ public final class AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException exte
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
-        super("Market data source plan not found for analytical FX_SPOT TWAP last price capture "
+        super("Source plan not found for analytical FX_SPOT TWAP last price capture "
                 + "(capturerCode=%s, instrumentCode=%s)".formatted(
                 Objects.requireNonNull(capturerCode, "capturerCode must not be null").value(),
                 Objects.requireNonNull(instrumentCode, "instrumentCode must not be null").value()

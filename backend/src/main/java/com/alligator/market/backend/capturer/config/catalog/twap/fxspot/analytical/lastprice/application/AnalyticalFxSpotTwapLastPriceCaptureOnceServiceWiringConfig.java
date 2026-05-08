@@ -5,11 +5,11 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persist
 import com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.application.AnalyticalFxSpotTwapLastPriceCaptureOnceService;
 import com.alligator.market.backend.marketdata.config.tick.persistence.jooq.repository.CapturedMarketDataTickRepositoryWiringConfig;
 import com.alligator.market.backend.source.config.registry.MarketDataSourceRegistryWiringConfig;
-import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.MarketDataSourcePlanRepositoryWiringConfig;
+import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.SourcePlanRepositoryWiringConfig;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.marketdata.tick.level.captured.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
-import com.alligator.market.domain.sourceplan.repository.MarketDataSourcePlanRepository;
+import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import java.time.Clock;
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
-        MarketDataSourcePlanRepositoryWiringConfig.class,
+        SourcePlanRepositoryWiringConfig.class,
         MarketDataSourceRegistryWiringConfig.class,
         FxSpotRepositoryWiringConfig.class,
         CapturedMarketDataTickRepositoryWiringConfig.class,
@@ -35,8 +35,8 @@ public class AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig {
 
     @Bean(BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_ONCE_SERVICE)
     public AnalyticalFxSpotTwapLastPriceCaptureOnceService analyticalFxSpotTwapLastPriceCaptureOnceService(
-            @Qualifier(MarketDataSourcePlanRepositoryWiringConfig.BEAN_MARKET_DATA_SOURCE_PLAN_REPOSITORY)
-            MarketDataSourcePlanRepository sourcePlanRepository,
+            @Qualifier(SourcePlanRepositoryWiringConfig.BEAN_SOURCE_PLAN_REPOSITORY)
+            SourcePlanRepository sourcePlanRepository,
             @Qualifier(MarketDataSourceRegistryWiringConfig.BEAN_MARKET_DATA_SOURCE_REGISTRY)
             MarketDataSourceRegistry sourceRegistry,
             @Qualifier(FxSpotRepositoryWiringConfig.BEAN_FX_SPOT_REPOSITORY)

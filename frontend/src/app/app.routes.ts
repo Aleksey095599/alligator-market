@@ -24,10 +24,10 @@ export const routes: Routes = [
         .then(m => m.MarketDataCapturerPassportModule)
   },
   {
-    path: 'market-data-source-plans',
+    path: 'source-plans',
     loadChildren: () =>
-      import('./features/source_plan/market-data-source-plan.module')
-        .then(m => m.MarketDataSourcePlanModule)
+      import('./features/source_plan/source-plan.module')
+        .then(m => m.SourcePlanModule)
   },
   {
     path: '',
