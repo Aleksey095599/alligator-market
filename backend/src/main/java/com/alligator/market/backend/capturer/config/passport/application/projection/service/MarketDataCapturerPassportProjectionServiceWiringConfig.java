@@ -1,9 +1,9 @@
-package com.alligator.market.backend.config.capturer.passport.application.projection.service;
+package com.alligator.market.backend.capturer.config.passport.application.projection.service;
 
 import com.alligator.market.backend.capturer.passport.application.projection.MarketDataCapturerPassportProjectionService;
 import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
-import com.alligator.market.backend.config.capturer.passport.persistence.projection.port.adapter.MarketDataCapturerPassportProjectionWritePortWiringConfig;
-import com.alligator.market.backend.config.capturer.registry.MarketDataCapturerRegistryWiringConfig;
+import com.alligator.market.backend.capturer.config.passport.persistence.projection.port.adapter.MarketDataCapturerPassportProjectionWritePortWiringConfig;
+import com.alligator.market.backend.capturer.config.registry.MarketDataCapturerRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.domain.capturer.registry.MarketDataCapturerRegistry;

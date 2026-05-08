@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.capturer.catalog.twap.fxspot.analytical.lastprice.application;
+package com.alligator.market.backend.capturer.config.catalog.twap.fxspot.analytical.lastprice.application;
 
 import com.alligator.market.backend.infra.time.config.TimeWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;

@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.capturer.registry;
+package com.alligator.market.backend.capturer.config.registry;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.registry.MarketDataCapturerRegistry;

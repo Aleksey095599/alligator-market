@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.capturer.passport.application.query.list;
+package com.alligator.market.backend.capturer.config.passport.application.query.list;
 
 import com.alligator.market.backend.capturer.passport.application.query.list.MarketDataCapturerPassportListService;
 import com.alligator.market.backend.capturer.passport.application.query.list.port.MarketDataCapturerPassportListQueryPort;

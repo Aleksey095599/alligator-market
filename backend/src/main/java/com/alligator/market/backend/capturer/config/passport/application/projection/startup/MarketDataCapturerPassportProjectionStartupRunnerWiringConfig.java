@@ -1,8 +1,8 @@
-package com.alligator.market.backend.config.capturer.passport.application.projection.startup;
+package com.alligator.market.backend.capturer.config.passport.application.projection.startup;
 
 import com.alligator.market.backend.capturer.passport.application.projection.MarketDataCapturerPassportProjectionService;
 import com.alligator.market.backend.capturer.passport.application.projection.runner.MarketDataCapturerPassportProjectionStartupRunner;
-import com.alligator.market.backend.config.capturer.passport.application.projection.service.MarketDataCapturerPassportProjectionServiceWiringConfig;
+import com.alligator.market.backend.capturer.config.passport.application.projection.service.MarketDataCapturerPassportProjectionServiceWiringConfig;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

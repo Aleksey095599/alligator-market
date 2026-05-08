@@ -1,4 +1,4 @@
-package com.alligator.market.backend.config.capturer.catalog.twap.fxspot.analytical.lastprice;
+package com.alligator.market.backend.capturer.config.catalog.twap.fxspot.analytical.lastprice;
 
 import com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.AnalyticalFxSpotTwapLastPriceCapturer;
 import org.springframework.context.annotation.Bean;
