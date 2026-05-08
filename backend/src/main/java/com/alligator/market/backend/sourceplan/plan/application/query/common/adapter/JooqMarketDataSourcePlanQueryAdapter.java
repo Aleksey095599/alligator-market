@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSource.MARKET_DATA_SOURCE;
+import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePlanEntry.MARKET_DATA_SOURCE_PLAN_ENTRY;
 
 /**
  * Read-side адаптер для административного отображения source plan.
@@ -27,8 +27,8 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDat
  */
 public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSourcePlanQueryPort {
 
-    private static final Field<String> MARKET_DATA_SOURCE_CAPTURER_CODE =
-            MARKET_DATA_SOURCE.CAPTURER_CODE;
+    private static final Field<String> MARKET_DATA_SOURCE_PLAN_ENTRY_CAPTURER_CODE =
+            MARKET_DATA_SOURCE_PLAN_ENTRY.CAPTURER_CODE;
 
     private final DSLContext dsl;
 
@@ -44,22 +44,22 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        Condition condition = MARKET_DATA_SOURCE_CAPTURER_CODE.eq(capturerCode.value())
-                .and(MARKET_DATA_SOURCE.INSTRUMENT_CODE.eq(instrumentCode.value()));
+        Condition condition = MARKET_DATA_SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value())
+                .and(MARKET_DATA_SOURCE_PLAN_ENTRY.INSTRUMENT_CODE.eq(instrumentCode.value()));
 
         // Без lifecycle-фильтра: edit-форма должна загрузить retired строки, чтобы их можно было удалить.
         List<MarketDataSourceQueryItem> sources = dsl.select(
-                        MARKET_DATA_SOURCE.SOURCE_CODE,
-                        MARKET_DATA_SOURCE.PRIORITY,
-                        MARKET_DATA_SOURCE.LIFECYCLE_STATUS
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.SOURCE_CODE,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.LIFECYCLE_STATUS
                 )
-                .from(MARKET_DATA_SOURCE)
+                .from(MARKET_DATA_SOURCE_PLAN_ENTRY)
                 .where(condition)
-                .orderBy(MARKET_DATA_SOURCE.PRIORITY.asc())
+                .orderBy(MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY.asc())
                 .fetch(record -> toSource(
-                        record.get(MARKET_DATA_SOURCE.SOURCE_CODE),
-                        record.get(MARKET_DATA_SOURCE.PRIORITY),
-                        record.get(MARKET_DATA_SOURCE.LIFECYCLE_STATUS)
+                        record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.SOURCE_CODE),
+                        record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY),
+                        record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.LIFECYCLE_STATUS)
                 ));
 
         if (sources.isEmpty()) {
@@ -79,29 +79,29 @@ public final class JooqMarketDataSourcePlanQueryAdapter implements MarketDataSou
         Map<PlanKey, List<MarketDataSourceQueryItem>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
-                        MARKET_DATA_SOURCE_CAPTURER_CODE,
-                        MARKET_DATA_SOURCE.INSTRUMENT_CODE,
-                        MARKET_DATA_SOURCE.SOURCE_CODE,
-                        MARKET_DATA_SOURCE.PRIORITY,
-                        MARKET_DATA_SOURCE.LIFECYCLE_STATUS
+                        MARKET_DATA_SOURCE_PLAN_ENTRY_CAPTURER_CODE,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.INSTRUMENT_CODE,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.SOURCE_CODE,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY,
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.LIFECYCLE_STATUS
                 )
-                .from(MARKET_DATA_SOURCE)
+                .from(MARKET_DATA_SOURCE_PLAN_ENTRY)
                 .orderBy(
-                        MARKET_DATA_SOURCE_CAPTURER_CODE.asc(),
-                        MARKET_DATA_SOURCE.INSTRUMENT_CODE.asc(),
-                        MARKET_DATA_SOURCE.PRIORITY.asc()
+                        MARKET_DATA_SOURCE_PLAN_ENTRY_CAPTURER_CODE.asc(),
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.INSTRUMENT_CODE.asc(),
+                        MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY.asc()
                 )
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            record.get(MARKET_DATA_SOURCE_CAPTURER_CODE),
-                            record.get(MARKET_DATA_SOURCE.INSTRUMENT_CODE)
+                            record.get(MARKET_DATA_SOURCE_PLAN_ENTRY_CAPTURER_CODE),
+                            record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.INSTRUMENT_CODE)
                     );
 
                     MarketDataSourceQueryItem source = toSource(
-                            record.get(MARKET_DATA_SOURCE.SOURCE_CODE),
-                            record.get(MARKET_DATA_SOURCE.PRIORITY),
-                            record.get(MARKET_DATA_SOURCE.LIFECYCLE_STATUS)
+                            record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.SOURCE_CODE),
+                            record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.PRIORITY),
+                            record.get(MARKET_DATA_SOURCE_PLAN_ENTRY.LIFECYCLE_STATUS)
                     );
 
                     groupedSources.computeIfAbsent(planKey, ignored -> new ArrayList<>()).add(source);
