@@ -17,12 +17,12 @@ import java.util.Set;
 public interface InstrumentHandler<P extends MarketDataSource, I extends Instrument> {
 
     /**
-     * Уникальный код обработчика.
+     * Unique handler code.
      */
     HandlerCode handlerCode();
 
     /**
-     * Коды поддерживаемых инструментов.
+     * Supported instrument codes.
      */
     Set<InstrumentCode> supportedInstrumentCodes();
 

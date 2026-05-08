@@ -18,12 +18,12 @@ public interface MarketDataSource {
     MarketDataSourceCode sourceCode();
 
     /**
-     * Source passport.
+     * Stable source metadata.
      */
     MarketDataSourcePassport passport();
 
     /**
-     * Source policy.
+     * Source-specific policy.
      */
     MarketDataSourcePolicy policy();
 

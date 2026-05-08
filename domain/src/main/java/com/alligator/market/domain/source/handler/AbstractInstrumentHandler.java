@@ -24,6 +24,13 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
 
     private final AtomicReference<P> sourceRef = new AtomicReference<>();
 
+    /**
+     * Creates an instrument handler.
+     *
+     * @param handlerCode          the handler code
+     * @param instrumentClass      the instrument class
+     * @param supportedInstruments the supported instruments
+     */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
             Class<I> instrumentClass,
@@ -75,7 +82,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     }
 
     /**
-     * Extension point for {@link #streamSourceTicks(Instrument)}.
+     * Extension point for pure logic of getting
      */
     protected abstract Publisher<SourceMarketDataTick> doStreamSourceTicks(I instrument);
 
