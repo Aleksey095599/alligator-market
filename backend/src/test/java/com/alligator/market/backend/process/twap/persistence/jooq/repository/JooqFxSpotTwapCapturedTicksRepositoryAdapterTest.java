@@ -1,10 +1,10 @@
-package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository;
+package com.alligator.market.backend.process.twap.persistence.jooq.repository;
 
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.marketdata.tick.level.source.type.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.jooq.DSLContext;
@@ -32,9 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Tag("dev")
-class JooqCapturedMarketDataTickRepositoryAdapterTest {
+class JooqFxSpotTwapCapturedTicksRepositoryAdapterTest {
 
-    private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
+    private static final Table<?> FX_SPOT_TWAP_CAPTURED_TICKS = table(name("fx_spot_twap_captured_ticks"));
 
     private static final Field<Long> ID = field(name("id"), Long.class);
     private static final Field<String> CAPTURER_CODE = field(name("capturer_code"), String.class);
@@ -59,8 +59,8 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
 
             try {
                 DSLContext dsl = using(connection, SQLDialect.POSTGRES);
-                JooqCapturedMarketDataTickRepositoryAdapter repository =
-                        new JooqCapturedMarketDataTickRepositoryAdapter(dsl);
+                JooqFxSpotTwapCapturedTicksRepositoryAdapter repository =
+                        new JooqFxSpotTwapCapturedTicksRepositoryAdapter(dsl);
 
                 String processCode = "TEST_TWAP_CNYRUB_" +
                         UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ROOT);
@@ -95,7 +95,7 @@ class JooqCapturedMarketDataTickRepositoryAdapterTest {
                                 BID_PRICE,
                                 ASK_PRICE
                         )
-                        .from(CAPTURED_MARKET_DATA_TICK)
+                        .from(FX_SPOT_TWAP_CAPTURED_TICKS)
                         .where(CAPTURER_CODE.eq(processCode))
                         .fetchOne();
 
