@@ -14,13 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-/**
- * REST-адаптер чтения одного плана источников инструмента.
- */
 @RestController
 @RequestMapping("/api/v1/source-plans")
 public class GetSourcePlanController {
-
     private final GetSourcePlanService getSourcePlanService;
     private final SourcePlanResponseMapper responseMapper;
 
@@ -35,9 +31,6 @@ public class GetSourcePlanController {
         this.responseMapper = Objects.requireNonNull(responseMapper, "responseMapper must not be null");
     }
 
-    /**
-     * Возвращает план источников для заданного инструмента.
-     */
     @GetMapping("/{capturerCode}/{instrumentCode}")
     public ResponseEntity<SourcePlanResponse> get(
             @PathVariable String capturerCode,

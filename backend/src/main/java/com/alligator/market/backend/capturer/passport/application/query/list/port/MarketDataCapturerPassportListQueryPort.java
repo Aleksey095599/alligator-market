@@ -4,13 +4,6 @@ import com.alligator.market.backend.capturer.passport.application.query.list.mod
 
 import java.util.List;
 
-/**
- * Port for reading market data capturer passport projection rows.
- */
 public interface MarketDataCapturerPassportListQueryPort {
-
-    /**
-     * Returns all capturer passport projection rows, including retired rows.
-     */
     List<MarketDataCapturerPassportListItem> findAll();
 }

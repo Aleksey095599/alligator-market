@@ -11,15 +11,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Service for replacing source plans.
- */
 @Slf4j
 public final class ReplaceSourcePlanService {
-
     private final SourcePlanRepository sourcePlanRepository;
 
-    /* Validates entities referenced by the plan. */
     private final SourcePlanValidator existenceValidator;
 
     public ReplaceSourcePlanService(
@@ -36,9 +31,6 @@ public final class ReplaceSourcePlanService {
         );
     }
 
-    /**
-     * Replaces the contents of an existing source plan.
-     */
     public void replace(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 

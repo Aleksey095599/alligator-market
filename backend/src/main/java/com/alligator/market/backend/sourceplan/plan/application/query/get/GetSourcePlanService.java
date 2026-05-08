@@ -9,7 +9,6 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import java.util.Objects;
 
 public final class GetSourcePlanService {
-
     private final SourcePlanQueryPort sourcePlanQueryPort;
 
     public GetSourcePlanService(SourcePlanQueryPort sourcePlanQueryPort) {

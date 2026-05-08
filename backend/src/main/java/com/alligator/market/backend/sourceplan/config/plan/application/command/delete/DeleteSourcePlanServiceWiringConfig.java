@@ -8,15 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link DeleteSourcePlanService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         SourcePlanRepositoryWiringConfig.class
 })
 public class DeleteSourcePlanServiceWiringConfig {
-
     public static final String BEAN_DELETE_SOURCE_PLAN_SERVICE = "deleteSourcePlanService";
 
     @Bean(BEAN_DELETE_SOURCE_PLAN_SERVICE)

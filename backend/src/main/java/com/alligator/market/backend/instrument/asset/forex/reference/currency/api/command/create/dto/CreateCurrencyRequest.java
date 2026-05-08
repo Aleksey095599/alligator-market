@@ -5,9 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-/**
- * Request DTO use case создания валюты.
- */
 public record CreateCurrencyRequest(
         @NotBlank(message = "code must not be blank")
         String code,

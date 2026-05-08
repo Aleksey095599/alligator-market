@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * REST API-адаптер use case чтения списка инструментов FOREX_SPOT.
- */
 @RestController
 @RequestMapping("/api/v1/fx-spot")
 public class FxSpotListController {
-
     private final FxSpotListService fxSpotListService;
 
     public FxSpotListController(FxSpotListService fxSpotListService) {

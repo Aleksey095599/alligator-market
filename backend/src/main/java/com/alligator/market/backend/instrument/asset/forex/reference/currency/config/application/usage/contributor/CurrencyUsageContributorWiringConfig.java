@@ -9,13 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link CurrencyUsageContributor}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(FxSpotCurrencyReferenceQueryWiringConfig.class)
 public class CurrencyUsageContributorWiringConfig {
-
     public static final String BEAN_FX_SPOT_CURRENCY_USAGE_CONTRIBUTOR = "fxSpotCurrencyUsageContributor";
 
     @Bean(BEAN_FX_SPOT_CURRENCY_USAGE_CONTRIBUTOR)

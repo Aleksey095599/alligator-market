@@ -4,9 +4,6 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Команда use case обновления инструмента FOREX_SPOT.
- */
 public record UpdateFxSpotCommand(
         InstrumentCode instrumentCode,
         Integer defaultQuoteFractionDigits

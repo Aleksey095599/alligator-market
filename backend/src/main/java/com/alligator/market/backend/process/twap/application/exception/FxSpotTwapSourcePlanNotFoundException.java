@@ -5,11 +5,7 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: план источников для capture процесса не найден.
- */
 public final class FxSpotTwapSourcePlanNotFoundException extends IllegalStateException {
-
     public FxSpotTwapSourcePlanNotFoundException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode

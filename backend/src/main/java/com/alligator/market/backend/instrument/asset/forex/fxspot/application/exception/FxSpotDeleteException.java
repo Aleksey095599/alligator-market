@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: сбой при удалении FX_SPOT инструмента.
- */
 public final class FxSpotDeleteException extends IllegalStateException {
-
     private final InstrumentCode instrumentCode;
 
     public FxSpotDeleteException(InstrumentCode instrumentCode, Throwable cause) {

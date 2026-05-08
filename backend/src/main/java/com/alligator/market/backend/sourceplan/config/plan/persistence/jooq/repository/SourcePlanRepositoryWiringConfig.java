@@ -6,12 +6,8 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Spring wiring for the {@link SourcePlanRepository} persistence adapter.
- */
 @Configuration(proxyBeanMethods = false)
 public class SourcePlanRepositoryWiringConfig {
-
     public static final String BEAN_SOURCE_PLAN_REPOSITORY = "sourcePlanRepository";
 
     @Bean(BEAN_SOURCE_PLAN_REPOSITORY)

@@ -7,15 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring configuration for {@link PassportListService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourcePassportListQueryPortWiringConfig.class
 })
 public class PassportListServiceWiringConfig {
-
     public static final String BEAN_PASSPORT_LIST_SERVICE = "passportListService";
 
     @Bean(BEAN_PASSPORT_LIST_SERVICE)

@@ -5,11 +5,7 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: план источников для инструмента не найден.
- */
 public final class SourcePlanNotFoundException extends IllegalStateException {
-
     public SourcePlanNotFoundException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode

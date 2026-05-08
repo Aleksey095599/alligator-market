@@ -5,11 +5,7 @@ import com.alligator.market.backend.capturer.passport.application.query.list.mod
 
 import java.util.Objects;
 
-/**
- * Mapper between capturer passport list read model and API response.
- */
 public final class MarketDataCapturerPassportListItemResponseMapper {
-
     private MarketDataCapturerPassportListItemResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }

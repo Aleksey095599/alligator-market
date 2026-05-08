@@ -13,11 +13,7 @@ import com.alligator.market.domain.source.policy.MarketDataSourcePolicy;
 import java.time.Duration;
 import java.util.Set;
 
-/**
- * MOEX ISS runtime market data source adapter.
- */
 public final class MoexIssMarketDataSource extends AbstractMarketDataSource<MoexIssMarketDataSource> {
-
     public static final String SOURCE_CODE_VALUE = "MOEX_ISS";
     public static final MarketDataSourceCode MARKET_DATA_SOURCE_CODE =
             MarketDataSourceCode.of(SOURCE_CODE_VALUE);
@@ -37,12 +33,6 @@ public final class MoexIssMarketDataSource extends AbstractMarketDataSource<Moex
             MIN_UPDATE_INTERVAL
     );
 
-    /**
-     * Конструктор адаптера MOEX ISS.
-     *
-     * <p>Примечание: Spring автоматически инжектит все бины InstrumentHandler, совместимые с
-     * MoexIssMarketDataSource для любых Instrument и объединяет их в единый Set.<p/>
-     */
     public MoexIssMarketDataSource(
             Set<? extends InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> handlers
     ) {

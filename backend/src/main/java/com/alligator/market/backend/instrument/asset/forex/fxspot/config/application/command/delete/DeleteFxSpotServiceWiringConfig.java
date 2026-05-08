@@ -11,9 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link DeleteFxSpotService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         FxSpotRepositoryWiringConfig.class,
@@ -21,7 +18,6 @@ import org.springframework.context.annotation.Import;
         FxSpotUsageContributorWiringConfig.class
 })
 public class DeleteFxSpotServiceWiringConfig {
-
     public static final String BEAN_DELETE_FX_SPOT_SERVICE = "deleteFxSpotService";
 
     @Bean(BEAN_DELETE_FX_SPOT_SERVICE)

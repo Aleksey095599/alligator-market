@@ -9,12 +9,8 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 
-/**
- * jOOQ implementation of {@link MarketDataCapturerPassportListQueryPort}.
- */
 public final class JooqMarketDataCapturerPassportListQueryAdapter
         implements MarketDataCapturerPassportListQueryPort {
-
     private final DSLContext dsl;
 
     public JooqMarketDataCapturerPassportListQueryAdapter(DSLContext dsl) {

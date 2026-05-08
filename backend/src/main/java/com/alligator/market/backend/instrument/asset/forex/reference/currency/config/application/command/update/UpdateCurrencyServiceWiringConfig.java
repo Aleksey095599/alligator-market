@@ -8,13 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link UpdateCurrencyService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(CurrencyRepositoryWiringConfig.class)
 public class UpdateCurrencyServiceWiringConfig {
-
     public static final String BEAN_UPDATE_CURRENCY_SERVICE = "updateCurrencyService";
 
     @Bean(BEAN_UPDATE_CURRENCY_SERVICE)

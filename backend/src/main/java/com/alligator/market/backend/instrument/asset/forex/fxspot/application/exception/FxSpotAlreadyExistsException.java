@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: FX_SPOT инструмент с таким кодом уже существует.
- */
 public final class FxSpotAlreadyExistsException extends IllegalStateException {
-
     private final InstrumentCode instrumentCode;
 
     public FxSpotAlreadyExistsException(InstrumentCode instrumentCode) {

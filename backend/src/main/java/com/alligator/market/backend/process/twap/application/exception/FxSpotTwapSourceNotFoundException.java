@@ -6,11 +6,7 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.Objects;
 
-/**
- * Application-layer error: the selected market data source is not available.
- */
 public final class FxSpotTwapSourceNotFoundException extends IllegalStateException {
-
     public FxSpotTwapSourceNotFoundException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode

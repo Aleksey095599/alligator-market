@@ -10,16 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link CreateFxSpotService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         FxSpotRepositoryWiringConfig.class,
         CurrencyRepositoryWiringConfig.class
 })
 public class CreateFxSpotServiceWiringConfig {
-
     public static final String BEAN_CREATE_FX_SPOT_SERVICE = "createFxSpotService";
 
     @Bean(BEAN_CREATE_FX_SPOT_SERVICE)

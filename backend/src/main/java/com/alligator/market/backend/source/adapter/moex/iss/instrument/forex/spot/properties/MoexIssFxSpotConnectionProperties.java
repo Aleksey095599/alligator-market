@@ -4,9 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * Connection properties for the MOEX ISS FOREX_SPOT market data source.
- */
 @Validated
 @ConfigurationProperties("market-data-source.connection-properties.moex.iss.fx-spot")
 public record MoexIssFxSpotConnectionProperties(@NotBlank String baseUrl) {

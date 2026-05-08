@@ -15,13 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Catalog of FOREX_SPOT instruments supported by the MOEX ISS source.
- *
- * <p>Contains instruments and mappings between application instrument codes and MOEX ISS SECIDs.</p>
- */
 public class MoexIssFxSpotSupportCatalog {
-
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
     private static final Currency RUB = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
@@ -50,12 +44,6 @@ public class MoexIssFxSpotSupportCatalog {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /**
-     * Converts an application instrument code to the corresponding MOEX ISS SECID.
-     *
-     * @param instrumentCode application instrument code
-     * @return MOEX ISS SECID as a source instrument code
-     */
     public static SourceInstrumentCode moexSecidOf(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 

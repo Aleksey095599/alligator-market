@@ -10,11 +10,7 @@ import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Маппер для {@link ReplaceSourcePlanRequest}.
- */
 public class ReplaceSourcePlanMapper {
-
     private final MarketDataSourceRequestMapper marketDataSourceRequestMapper;
 
     public ReplaceSourcePlanMapper(
@@ -26,9 +22,6 @@ public class ReplaceSourcePlanMapper {
         );
     }
 
-    /**
-     * Преобразует запрос {@link ReplaceSourcePlanRequest} в доменную модель {@link SourcePlan}.
-     */
     public SourcePlan toPlan(
             String capturerCode,
             String instrumentCode,

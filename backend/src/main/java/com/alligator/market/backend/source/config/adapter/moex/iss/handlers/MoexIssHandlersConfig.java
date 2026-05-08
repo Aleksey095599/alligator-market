@@ -11,25 +11,18 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Set;
 
-/**
- * Wiring configuration for all MOEX ISS source handlers.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         MoexIssFxSpotHandlerConfig.class
-        // + other *HandlerConfig classes as they are added
+
 })
 public class MoexIssHandlersConfig {
-
     public static final String BEAN_NAME = "moexIssHandlers";
 
-    /**
-     * Bean containing all MOEX ISS handlers.
-     */
     @Bean(BEAN_NAME)
     public Set<InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> moexIssHandlers(
             MoexIssFxSpotHandler fxSpotHandler
-            // + other *Handler beans as they are added
+
     ) {
         return Set.of(fxSpotHandler);
     }

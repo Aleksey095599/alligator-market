@@ -8,12 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-/**
- * Wiring-конфигурация {@link FxSpotUsageCheckPort}.
- */
 @Configuration(proxyBeanMethods = false)
 public class FxSpotUsageCheckPortWiringConfig {
-
     public static final String BEAN_FX_SPOT_USAGE_CHECK_PORT = "fxSpotUsageCheckPort";
 
     @Bean(BEAN_FX_SPOT_USAGE_CHECK_PORT)

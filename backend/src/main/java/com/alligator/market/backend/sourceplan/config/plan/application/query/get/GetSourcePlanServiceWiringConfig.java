@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Import;
         SourcePlanQueryPortWiringConfig.class
 })
 public class GetSourcePlanServiceWiringConfig {
-
     public static final String BEAN_GET_SOURCE_PLAN_SERVICE = "getSourcePlanService";
 
     @Bean(BEAN_GET_SOURCE_PLAN_SERVICE)

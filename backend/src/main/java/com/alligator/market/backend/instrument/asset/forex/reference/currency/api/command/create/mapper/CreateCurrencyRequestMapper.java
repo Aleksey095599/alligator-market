@@ -6,18 +6,11 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Маппер {@link CreateCurrencyRequest} и доменной модели валюты.
- */
 public final class CreateCurrencyRequestMapper {
-
     private CreateCurrencyRequestMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    /**
-     * {@link CreateCurrencyRequest} --> доменная модель.
-     */
     public static Currency toDomain(CreateCurrencyRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 

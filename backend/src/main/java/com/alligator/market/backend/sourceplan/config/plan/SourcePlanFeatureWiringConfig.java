@@ -11,9 +11,6 @@ import com.alligator.market.backend.sourceplan.config.plan.application.query.opt
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Единая внешняя точка входа в wiring фичи sourcing.plan.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         CreateSourcePlanServiceWiringConfig.class,

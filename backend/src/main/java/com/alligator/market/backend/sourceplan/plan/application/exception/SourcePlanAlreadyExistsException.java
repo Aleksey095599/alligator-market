@@ -5,11 +5,7 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: план источников для инструмента уже существует.
- */
 public final class SourcePlanAlreadyExistsException extends IllegalStateException {
-
     public SourcePlanAlreadyExistsException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode

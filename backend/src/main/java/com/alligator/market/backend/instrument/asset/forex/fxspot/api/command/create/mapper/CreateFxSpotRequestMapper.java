@@ -6,11 +6,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Маппер API-запроса создания в команду приложения.
- */
 public final class CreateFxSpotRequestMapper {
-
     private CreateFxSpotRequestMapper() {
         throw new UnsupportedOperationException("Utility class");
     }

@@ -19,9 +19,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * Feature-specific API exception handler.
- */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(assignableTypes = {
@@ -33,11 +30,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         SourcePlanOptionsQueryController.class
 })
 public class SourcePlanApiExceptionHandler {
-
-
-    /**
-     * Capturer code is missing in the passport projection --> 400.
-     */
     @ExceptionHandler(MarketDataCapturerCodeNotFoundException.class)
     public ProblemDetail handleMarketDataCapturerCodeNotFound(MarketDataCapturerCodeNotFoundException ex) {
         log.warn("Capturer code does not exist: {}", ex.getMessage());
@@ -49,9 +41,6 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    /**
-     * Instrument code is missing in the registry --> 400.
-     */
     @ExceptionHandler(InstrumentCodeNotFoundException.class)
     public ProblemDetail handleInstrumentCodeNotFound(InstrumentCodeNotFoundException ex) {
         log.warn("Instrument code does not exist: {}", ex.getMessage());
@@ -63,9 +52,6 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    /**
-     * One or more source codes are missing in the registry --> 400.
-     */
     @ExceptionHandler(MarketDataSourceCodesNotFoundException.class)
     public ProblemDetail handleMarketDataSourceCodesNotFound(MarketDataSourceCodesNotFoundException ex) {
         log.warn("Market data source codes do not exist: {}", ex.getMessage());
@@ -77,9 +63,6 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    /**
-     * Source plan already exists --> 409.
-     */
     @ExceptionHandler(SourcePlanAlreadyExistsException.class)
     public ProblemDetail handleSourcePlanAlreadyExists(
             SourcePlanAlreadyExistsException ex
@@ -93,9 +76,6 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    /**
-     * Source plan was not found --> 404.
-     */
     @ExceptionHandler(SourcePlanNotFoundException.class)
     public ProblemDetail handleSourcePlanNotFound(SourcePlanNotFoundException ex) {
         log.warn("Source plan not found: {}", ex.getMessage());
@@ -107,7 +87,6 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    /* Shared ProblemDetail builder for this feature's error contract. */
     private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String errorCode) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(title);

@@ -21,15 +21,7 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
-/**
- * Read-side адаптер для административного отображения source plan.
- *
- * <p>Намеренно возвращает и ACTIVE, и RETIRED строки источников: администратор должен видеть
- * устаревшие строки, чтобы удалить или заменить их. Runtime-выбор источника должен идти через
- * доменный репозиторий с фильтрацией по ACTIVE lifecycle status.</p>
- */
 public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
-
     private static final Table<?> SOURCE_PLAN_ENTRY = table(name("source_plan_entry"));
     private static final Field<String> SOURCE_PLAN_ENTRY_CAPTURER_CODE =
             field(name("source_plan_entry", "capturer_code"), String.class);
@@ -59,7 +51,6 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         Condition condition = SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value())
                 .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(instrumentCode.value()));
 
-        // Без lifecycle-фильтра: edit-форма должна загрузить retired строки, чтобы их можно было удалить.
         List<MarketDataSourceQueryItem> sources = dsl.select(
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY,
@@ -87,7 +78,6 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     @Override
     public List<SourcePlanQueryItem> findAll() {
-        // Таблица хранит строки источников, а API возвращает агрегированный план.
         Map<PlanKey, List<MarketDataSourceQueryItem>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(

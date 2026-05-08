@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-/**
- * Wiring configuration for {@link MarketDataSourcePassportProjectionService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataSourceRegistryWiringConfig.class,
@@ -24,7 +21,6 @@ import org.springframework.transaction.support.TransactionTemplate;
         MarketDataSourceLifecycleStatusSyncPortWiringConfig.class
 })
 public class MarketDataSourcePassportProjectionServiceWiringConfig {
-
     public static final String BEAN_MARKET_DATA_SOURCE_PASSPORT_PROJECTION_SERVICE =
             "marketDataSourcePassportProjectionService";
 

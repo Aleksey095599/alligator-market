@@ -11,12 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Use-case сервис создания инструмента FOREX_SPOT.
- */
 @Slf4j
 public final class CreateFxSpotService {
-
     private final FxSpotRepository fxSpotRepository;
     private final CurrencyRepository currencyRepository;
 

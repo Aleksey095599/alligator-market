@@ -20,9 +20,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * Feature-specific обработчик ошибок API для FOREX_SPOT.
- */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(assignableTypes = {
@@ -32,7 +29,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         FxSpotListController.class
 })
 public class FxSpotApiExceptionHandler {
-
     @ExceptionHandler(FxSpotAlreadyExistsException.class)
     public ProblemDetail fxSpotAlreadyExists(FxSpotAlreadyExistsException ex) {
         log.warn("FX Spot already exists: {}", ex.getMessage());
@@ -107,7 +103,6 @@ public class FxSpotApiExceptionHandler {
         );
     }
 
-    /* Подбираем код ошибки для технических application-исключений FX_SPOT. */
     private FxSpotApiErrorCode resolveTechnicalErrorCode(RuntimeException ex) {
         if (ex instanceof FxSpotCreateException) {
             return FxSpotApiErrorCode.FX_SPOT_CREATE_FAILED;
@@ -118,7 +113,6 @@ public class FxSpotApiExceptionHandler {
         return FxSpotApiErrorCode.FX_SPOT_DELETE_FAILED;
     }
 
-    /* Подбираем title для технических application-исключений FX_SPOT. */
     private String resolveTechnicalErrorTitle(RuntimeException ex) {
         if (ex instanceof FxSpotCreateException) {
             return "FX Spot create failed";
@@ -129,7 +123,6 @@ public class FxSpotApiExceptionHandler {
         return "FX Spot delete failed";
     }
 
-    /* Формируем стандартный ProblemDetail ответ с дополнительным errorCode. */
     private ProblemDetail buildProblemDetail(
             HttpStatus status,
             String title,

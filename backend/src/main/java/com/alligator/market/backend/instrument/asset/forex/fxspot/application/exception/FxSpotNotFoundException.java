@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: FX_SPOT инструмент не найден.
- */
 public final class FxSpotNotFoundException extends IllegalStateException {
-
     private final InstrumentCode instrumentCode;
 
     public FxSpotNotFoundException(InstrumentCode instrumentCode) {

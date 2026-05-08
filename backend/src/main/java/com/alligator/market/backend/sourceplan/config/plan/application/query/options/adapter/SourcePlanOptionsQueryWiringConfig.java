@@ -10,12 +10,8 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Wiring-конфигурация query-портов options для планов источников.
- */
 @Configuration(proxyBeanMethods = false)
 public class SourcePlanOptionsQueryWiringConfig {
-
     public static final String BEAN_CAPTURER_OPTIONS_QUERY_PORT = "capturerOptionsQueryPort";
     public static final String BEAN_INSTRUMENT_OPTIONS_QUERY_PORT = "instrumentOptionsQueryPort";
     public static final String BEAN_MARKET_DATA_SOURCE_OPTIONS_QUERY_PORT = "marketDataSourceOptionsQueryPort";

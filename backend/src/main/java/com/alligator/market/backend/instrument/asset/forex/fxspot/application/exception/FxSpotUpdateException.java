@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: сбой при обновлении FX_SPOT инструмента.
- */
 public final class FxSpotUpdateException extends IllegalStateException {
-
     private final InstrumentCode instrumentCode;
 
     public FxSpotUpdateException(InstrumentCode instrumentCode, Throwable cause) {

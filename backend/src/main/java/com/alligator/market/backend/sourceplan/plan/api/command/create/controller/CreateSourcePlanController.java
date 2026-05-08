@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-/**
- * REST-адаптер создания плана источников инструмента.
- */
 @RestController
 @RequestMapping("/api/v1/source-plans")
 public class CreateSourcePlanController {
-
     private final CreateSourcePlanService createSourcePlanService;
     private final CreateSourcePlanMapper createSourcePlanMapper;
 
@@ -34,9 +30,6 @@ public class CreateSourcePlanController {
         );
     }
 
-    /**
-     * Создаёт новый план источников для инструмента.
-     */
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody CreateSourcePlanRequest request) {
         createSourcePlanService.create(createSourcePlanMapper.toDomain(request));

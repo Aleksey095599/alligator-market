@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-/**
- * REST-адаптер чтения options для экрана управления планами источников.
- */
 @RestController
 public class SourcePlanOptionsQueryController {
-
     private final MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort;
     private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
     private final MarketDataSourceOptionsQueryPort sourceOptionsQueryPort;
@@ -42,9 +38,6 @@ public class SourcePlanOptionsQueryController {
         );
     }
 
-    /**
-     * Возвращает данные для dropdown экрана управления планами источников.
-     */
     @GetMapping("/api/v1/source-plans/options")
     public ResponseEntity<SourcePlanOptionsResponse> getOptions() {
         SourcePlanOptionsResponse response = new SourcePlanOptionsResponse(

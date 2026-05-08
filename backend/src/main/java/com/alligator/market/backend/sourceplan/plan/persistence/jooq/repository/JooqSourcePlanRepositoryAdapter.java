@@ -22,17 +22,14 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
-/**
- * jOOQ adapter for source plan persistence.
- */
 public final class JooqSourcePlanRepositoryAdapter implements SourcePlanRepository {
-
     private static final Table<?> SOURCE_PLAN = table(name("source_plan"));
     private static final Table<?> SOURCE_PLAN_ENTRY = table(name("source_plan_entry"));
-    /* Foreign key from source_plan to instrument_registry by instrument code. */
+
+    // Keep these names aligned with the database constraint names used in migrations.
     private static final String FK_SOURCE_PLAN_INSTRUMENT =
             "fk_source_plan_instrument";
-    /* Foreign key from source_plan to market_data_capturer_passport by capturer code. */
+
     private static final String FK_SOURCE_PLAN_CAPTURER =
             "fk_source_plan_capturer";
     private static final Field<String> SOURCE_PLAN_ENTRY_CAPTURER_CODE =
@@ -87,7 +84,6 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             condition = condition.and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
         }
 
-        // Read plan entries in their capture priority order.
         List<SourcePlanEntry> entries = dsl
                 .select(
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
@@ -101,7 +97,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                         record.get(SOURCE_PLAN_ENTRY_PRIORITY)
                 ));
 
-        // A plan without source entries is treated as absent.
+        // A plan with no source entries is not usable for capture, so it is treated as absent.
         if (entries.isEmpty()) {
             return Optional.empty();
         }
@@ -111,7 +107,6 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public List<SourcePlan> findAll() {
-        // Group source_plan_entry rows by source plan identity.
         Map<PlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
 
         dsl.select(
@@ -200,7 +195,6 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         }
     }
 
-
     @Override
     public boolean replaceIfExists(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
@@ -208,7 +202,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
 
-            // Lock the plan row so the replacement is atomic for this plan identity.
+            // The row lock makes delete-and-reinsert replacement atomic for this plan identity.
             boolean planExists = tx.selectOne()
                     .from(SOURCE_PLAN)
                     .where(SOURCE_PLAN_CAPTURER_CODE.eq(plan.capturerCode().value()))
@@ -242,7 +236,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Plan entries are removed by the database cascade.
+        // Entries are removed by the database cascade from source_plan.
         int deletedRows = dsl.deleteFrom(SOURCE_PLAN)
                 .where(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
                 .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(instrumentCode.value()))

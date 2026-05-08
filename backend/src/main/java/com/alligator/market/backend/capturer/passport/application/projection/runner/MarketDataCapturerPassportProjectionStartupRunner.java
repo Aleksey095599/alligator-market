@@ -8,12 +8,8 @@ import org.springframework.boot.ApplicationRunner;
 
 import java.util.Objects;
 
-/**
- * Запуск проекции паспортов процессов захвата рыночных данных при старте приложения.
- */
 @Slf4j
 public final class MarketDataCapturerPassportProjectionStartupRunner implements ApplicationRunner {
-
     private final MarketDataCapturerPassportProjectionService service;
 
     public MarketDataCapturerPassportProjectionStartupRunner(MarketDataCapturerPassportProjectionService service) {
@@ -29,7 +25,7 @@ public final class MarketDataCapturerPassportProjectionStartupRunner implements 
             log.info("Capturer passport projection finished");
         } catch (RuntimeException ex) {
             log.error("Capturer passport projection failed", ex);
-            throw ex; // fail-fast: срываем старт приложения
+            throw ex;
         }
     }
 }

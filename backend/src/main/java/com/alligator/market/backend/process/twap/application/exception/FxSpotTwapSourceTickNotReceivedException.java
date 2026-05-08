@@ -5,11 +5,7 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.Objects;
 
-/**
- * Application error: the source did not return a source tick for one capture step.
- */
 public final class FxSpotTwapSourceTickNotReceivedException extends IllegalStateException {
-
     public FxSpotTwapSourceTickNotReceivedException(
             InstrumentCode instrumentCode,
             MarketDataSourceCode sourceCode

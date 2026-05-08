@@ -6,11 +6,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Маппер API-запроса обновления в команду приложения.
- */
 public final class UpdateFxSpotRequestMapper {
-
     private UpdateFxSpotRequestMapper() {
         throw new UnsupportedOperationException("Utility class");
     }

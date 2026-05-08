@@ -8,9 +8,6 @@ import com.alligator.market.backend.instrument.asset.forex.reference.currency.co
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Единая внешняя точка входа в wiring фичи currency.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         CreateCurrencyServiceWiringConfig.class,

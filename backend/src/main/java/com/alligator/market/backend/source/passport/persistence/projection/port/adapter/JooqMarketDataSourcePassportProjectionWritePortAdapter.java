@@ -19,11 +19,7 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
 
-/**
- * jOOQ implementation of {@link MarketDataSourcePassportProjectionWritePort}.
- */
 public class JooqMarketDataSourcePassportProjectionWritePortAdapter implements MarketDataSourcePassportProjectionWritePort {
-
     private final DSLContext dsl;
 
     public JooqMarketDataSourcePassportProjectionWritePortAdapter(DSLContext dsl) {

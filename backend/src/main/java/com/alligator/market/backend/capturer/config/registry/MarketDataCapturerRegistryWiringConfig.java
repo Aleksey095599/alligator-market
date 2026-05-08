@@ -8,20 +8,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-/**
- * Wiring-конфигурация {@link MarketDataCapturerRegistry}.
- *
- * <p>Spring внедряет {@code List<MarketDataCapturer>} как список всех бинов типа
- * {@link MarketDataCapturer}.</p>
- */
 @Configuration(proxyBeanMethods = false)
 public class MarketDataCapturerRegistryWiringConfig {
-
     public static final String BEAN_CAPTURER_REGISTRY = "capturerRegistry";
 
-    /**
-     * Доменный snapshot-реестр процессов захвата.
-     */
     @Bean(BEAN_CAPTURER_REGISTRY)
     public MarketDataCapturerRegistry capturerRegistry(List<MarketDataCapturer> capturers) {
         return new SnapshotMarketDataCapturerRegistry(capturers);

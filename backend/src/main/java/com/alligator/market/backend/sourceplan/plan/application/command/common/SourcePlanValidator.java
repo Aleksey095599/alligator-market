@@ -13,18 +13,11 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Validates that entities referenced by a source plan exist.
- */
 public final class SourcePlanValidator {
-
-    /* Capturer existence check. */
     private final MarketDataCapturerExistencePort capturerExistencePort;
 
-    /* Instrument existence check. */
     private final InstrumentExistencePort instrumentExistencePort;
 
-    /* Market data source existence check. */
     private final MarketDataSourceExistencePort sourceExistencePort;
 
     public SourcePlanValidator(
@@ -46,27 +39,18 @@ public final class SourcePlanValidator {
         );
     }
 
-    /**
-     * Ensures that the capturer referenced by the plan exists.
-     */
     public void ensureMarketDataCapturerExists(SourcePlan plan) {
         if (!capturerExistencePort.existsByCode(plan.capturerCode())) {
             throw new MarketDataCapturerCodeNotFoundException(plan.capturerCode());
         }
     }
 
-    /**
-     * Ensures that the instrument referenced by the plan exists.
-     */
     public void ensureInstrumentExists(SourcePlan plan) {
         if (!instrumentExistencePort.existsByCode(plan.instrumentCode())) {
             throw new InstrumentCodeNotFoundException(plan.instrumentCode());
         }
     }
 
-    /**
-     * Ensures that all sources referenced by the plan exist.
-     */
     public void ensureSourcesExist(SourcePlan plan) {
         Set<String> missingSourceCodes = new LinkedHashSet<>();
 

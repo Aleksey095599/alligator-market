@@ -8,11 +8,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
-/**
- * jOOQ-адаптер {@link InstrumentExistencePort}.
- */
 public final class JooqInstrumentExistenceAdapter implements InstrumentExistencePort {
-
     private final DSLContext dsl;
 
     public JooqInstrumentExistenceAdapter(DSLContext dsl) {

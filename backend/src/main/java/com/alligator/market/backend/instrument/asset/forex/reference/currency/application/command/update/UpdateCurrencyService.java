@@ -7,12 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Use-case сервис обновления валюты.
- */
 @Slf4j
 public final class UpdateCurrencyService {
-
     private final CurrencyRepository currencyRepository;
 
     public UpdateCurrencyService(CurrencyRepository currencyRepository) {
@@ -26,7 +22,6 @@ public final class UpdateCurrencyService {
         Currency current = currencyRepository.findByCode(currency.code())
                 .orElseThrow(() -> new CurrencyNotFoundException(currency.code()));
 
-        // Если изменений нет -> пропускаем обновление без записи в хранилище.
         if (current.equals(currency)) {
             log.debug("Currency {} update skipped: nothing to change", currency.code().value());
             return;

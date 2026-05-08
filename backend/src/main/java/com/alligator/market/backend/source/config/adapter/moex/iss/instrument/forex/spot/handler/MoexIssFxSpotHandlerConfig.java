@@ -8,20 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
-/**
- * Wiring configuration for {@link MoexIssFxSpotHandler}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssFxSpotWebClientConfig.class)
 public class MoexIssFxSpotHandlerConfig {
-
     public static final String BEAN_NAME = "moexIssFxSpotHandler";
 
-    /**
-     * Bean for {@link MoexIssFxSpotHandler}.
-     *
-     * @param webClient WebClient for the MOEX ISS FOREX_SPOT handler
-     */
     @Bean(BEAN_NAME)
     public MoexIssFxSpotHandler moexIssFxSpotHandler(
             @Qualifier(MoexIssFxSpotWebClientConfig.BEAN_NAME) WebClient webClient

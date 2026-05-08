@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-/**
- * Wiring-конфигурация {@link MarketDataCapturerPassportProjectionService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         MarketDataCapturerRegistryWiringConfig.class,
@@ -24,11 +21,9 @@ import org.springframework.transaction.support.TransactionTemplate;
         MarketDataSourceLifecycleStatusSyncPortWiringConfig.class
 })
 public class MarketDataCapturerPassportProjectionServiceWiringConfig {
-
     public static final String BEAN_CAPTURER_PASSPORT_PROJECTION_SERVICE =
             "capturerPassportProjectionService";
 
-    /* Use case сервис проекции паспортов процессов захвата. */
     @Bean(BEAN_CAPTURER_PASSPORT_PROJECTION_SERVICE)
     public MarketDataCapturerPassportProjectionService capturerPassportProjectionService(
             @Qualifier(MarketDataCapturerRegistryWiringConfig.BEAN_CAPTURER_REGISTRY)

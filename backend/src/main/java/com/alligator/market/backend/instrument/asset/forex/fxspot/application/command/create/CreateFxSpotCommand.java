@@ -5,9 +5,6 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Команда use case создания инструмента FOREX_SPOT.
- */
 public record CreateFxSpotCommand(
         CurrencyCode baseCurrencyCode,
         CurrencyCode quoteCurrencyCode,

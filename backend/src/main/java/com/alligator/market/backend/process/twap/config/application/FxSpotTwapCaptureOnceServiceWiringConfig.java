@@ -17,9 +17,6 @@ import org.springframework.context.annotation.Import;
 
 import java.time.Clock;
 
-/**
- * Wiring-конфигурация {@link FxSpotTwapCaptureOnceService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         SourcePlanRepositoryWiringConfig.class,
@@ -29,7 +26,6 @@ import java.time.Clock;
         TimeWiringConfig.class
 })
 public class FxSpotTwapCaptureOnceServiceWiringConfig {
-
     public static final String BEAN_FX_SPOT_TWAP_CAPTURE_ONCE_SERVICE =
             "fxSpotTwapCaptureOnceService";
 

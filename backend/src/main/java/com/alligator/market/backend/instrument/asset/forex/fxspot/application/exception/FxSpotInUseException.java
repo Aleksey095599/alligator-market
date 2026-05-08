@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: FX_SPOT инструмент используется в связанных сценариях.
- */
 public final class FxSpotInUseException extends IllegalStateException {
-
     private final InstrumentCode instrumentCode;
 
     public FxSpotInUseException(InstrumentCode instrumentCode) {

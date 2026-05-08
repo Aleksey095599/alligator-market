@@ -8,17 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Service for creating source plans.
- *
- * <p>Runs external existence checks before delegating persistence to the domain repository.</p>
- */
 @Slf4j
 public final class CreateSourcePlanService {
-
     private final SourcePlanRepository sourcePlanRepository;
 
-    /* Validates entities referenced by the plan. */
     private final SourcePlanValidator existenceValidator;
 
     public CreateSourcePlanService(
@@ -35,9 +28,6 @@ public final class CreateSourcePlanService {
         );
     }
 
-    /**
-     * Creates a new source plan.
-     */
     public void create(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 

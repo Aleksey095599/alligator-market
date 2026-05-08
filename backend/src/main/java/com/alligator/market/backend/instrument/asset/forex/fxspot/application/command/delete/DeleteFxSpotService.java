@@ -8,12 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Use-case сервис удаления инструмента FOREX_SPOT.
- */
 @Slf4j
 public final class DeleteFxSpotService {
-
     private final FxSpotRepository fxSpotRepository;
     private final FxSpotUsageCheckPort fxSpotUsageCheckPort;
 
@@ -30,7 +26,6 @@ public final class DeleteFxSpotService {
     public void delete(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Бизнес‑правило: удаление запрещено, пока инструмент используется в других фичах.
         if (fxSpotUsageCheckPort.isUsed(instrumentCode)) {
             throw new FxSpotInUseException(instrumentCode);
         }

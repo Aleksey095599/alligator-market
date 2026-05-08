@@ -4,9 +4,6 @@ import com.alligator.market.backend.sourceplan.plan.api.query.common.dto.SourceP
 
 import java.util.List;
 
-/**
- * DTO ответа со списком планов источников по инструментам.
- */
 public record SourcePlanListResponse(
         List<SourcePlanResponse> plans
 ) {

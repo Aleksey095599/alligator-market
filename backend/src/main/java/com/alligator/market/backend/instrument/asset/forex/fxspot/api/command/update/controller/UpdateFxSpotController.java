@@ -12,14 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * REST API-адаптер use case обновления инструмента FOREX_SPOT.
- */
 @RestController
 @RequestMapping("/api/v1/fx-spot")
 @RequiredArgsConstructor
 public class UpdateFxSpotController {
-
     private final UpdateFxSpotService updateFxSpotService;
 
     @PatchMapping("/{instrumentCode}")

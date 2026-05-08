@@ -8,12 +8,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentFxSpot.INSTRUMENT_FX_SPOT;
 
-/**
- * jOOQ-адаптер query-port проверки ссылок FX_SPOT на валюту.
- */
 public final class JooqFxSpotCurrencyReferenceQueryAdapter implements FxSpotCurrencyReferenceQueryPort {
-
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqFxSpotCurrencyReferenceQueryAdapter(DSLContext dsl) {

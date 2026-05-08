@@ -8,11 +8,7 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerDisplayName;
 
 import java.time.Duration;
 
-/**
- * Backend description of the FX Spot TWAP capture process.
- */
 public final class FxSpotTwapCapturer implements MarketDataCapturer {
-
     public static final MarketDataCapturerCode CAPTURER_CODE =
             MarketDataCapturerCode.of("ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE");
 

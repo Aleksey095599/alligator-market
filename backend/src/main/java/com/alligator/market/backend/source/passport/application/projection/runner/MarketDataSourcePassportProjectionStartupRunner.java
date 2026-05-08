@@ -8,12 +8,8 @@ import org.springframework.boot.ApplicationRunner;
 
 import java.util.Objects;
 
-/**
- * Starts source passport projection synchronization on application startup.
- */
 @Slf4j
 public final class MarketDataSourcePassportProjectionStartupRunner implements ApplicationRunner {
-
     private final MarketDataSourcePassportProjectionService service;
 
     public MarketDataSourcePassportProjectionStartupRunner(MarketDataSourcePassportProjectionService service) {
@@ -29,7 +25,7 @@ public final class MarketDataSourcePassportProjectionStartupRunner implements Ap
             log.info("Market data source passport projection finished");
         } catch (RuntimeException ex) {
             log.error("Market data source passport projection failed", ex);
-            throw ex; // fail-fast: срываем старт приложения
+            throw ex;
         }
     }
 }

@@ -11,19 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * REST-контроллер каталога паспортов процессов захвата рыночных данных.
- */
 @RestController
 @RequestMapping("/api/v1/market-data-capturers")
 @RequiredArgsConstructor
 public class MarketDataCapturerPassportListController {
-
     private final MarketDataCapturerPassportListService service;
 
-    /**
-     * Вернуть все паспорта процессов захвата.
-     */
     @GetMapping
     public ResponseEntity<List<MarketDataCapturerPassportListItemResponse>> getAll() {
         var passports = service.findAll();

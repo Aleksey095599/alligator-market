@@ -6,12 +6,8 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Wiring-конфигурация {@link InstrumentExistencePort}.
- */
 @Configuration(proxyBeanMethods = false)
 public class InstrumentExistencePortWiringConfig {
-
     public static final String BEAN_INSTRUMENT_EXISTENCE_PORT = "instrumentExistencePort";
 
     @Bean(BEAN_INSTRUMENT_EXISTENCE_PORT)

@@ -9,11 +9,7 @@ import java.util.Objects;
 import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
-/**
- * jOOQ adapter for checking active market data source passports.
- */
 public final class JooqMarketDataSourceExistenceAdapter implements MarketDataSourceExistencePort {
-
     private final DSLContext dsl;
 
     public JooqMarketDataSourceExistenceAdapter(DSLContext dsl) {

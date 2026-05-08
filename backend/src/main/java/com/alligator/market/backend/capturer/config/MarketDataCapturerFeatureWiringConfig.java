@@ -9,9 +9,6 @@ import com.alligator.market.backend.process.twap.config.capturer.FxSpotTwapCaptu
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Единая внешняя точка входа в wiring фичи capturer.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         FxSpotTwapCapturerWiringConfig.class,

@@ -12,16 +12,11 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
-/**
- * jOOQ-адаптер existence-проверки SourcePlan.
- */
 public final class JooqSourcePlanExistenceQueryAdapter implements SourcePlanExistenceQueryPort {
-
     private static final Table<?> SOURCE_PLAN = table(name("source_plan"));
     private static final Field<String> SOURCE_PLAN_INSTRUMENT_CODE =
             field(name("source_plan", "instrument_code"), String.class);
 
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqSourcePlanExistenceQueryAdapter(DSLContext dsl) {

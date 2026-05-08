@@ -27,16 +27,10 @@ import static com.alligator.market.backend.infra.jooq.generated.tables.Currency.
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentFxSpot.INSTRUMENT_FX_SPOT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
-/**
- * jOOQ-адаптер доменного репозитория инструментов FOREX_SPOT.
- */
 public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
-
-    /* Имя FK-ограничения, блокирующего удаление используемого FX_SPOT инструмента. */
     private static final String FK_SOURCE_PLAN_INSTRUMENT =
             "fk_source_plan_instrument";
 
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqFxSpotRepositoryAdapter(DSLContext dsl) {
@@ -47,17 +41,14 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
     public FxSpot create(FxSpot fxSpot) {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
-        // Проверяем, что обе валюты уже заведены в справочнике.
         ensureCurrencyExists(fxSpot.base().code());
         ensureCurrencyExists(fxSpot.quote().code());
 
         try {
-            // Создаём instrument и его FX_SPOT-часть в одной транзакции.
             return dsl.transactionResult(configuration -> {
                 DSLContext tx = configuration.dsl();
                 InstrumentCode instrumentCode = fxSpot.instrumentCode();
 
-                // Регистрируем код инструмента.
                 int insertedRegistryRows = tx.insertInto(INSTRUMENT_REGISTRY)
                         .set(INSTRUMENT_REGISTRY.CODE, instrumentCode.value())
                         .onConflict(INSTRUMENT_REGISTRY.CODE)
@@ -68,7 +59,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                     throw new FxSpotAlreadyExistsException(instrumentCode);
                 }
 
-                // Сохраняем параметры FX_SPOT.
                 int insertedFxSpotRows = tx.insertInto(INSTRUMENT_FX_SPOT)
                         .set(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE, instrumentCode.value())
                         .set(INSTRUMENT_FX_SPOT.BASE_CURRENCY, fxSpot.base().code().value())
@@ -87,7 +77,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                     throw new FxSpotAlreadyExistsException(instrumentCode);
                 }
 
-                // Читаем обратно сохранённую сущность.
                 return findByCode(tx, instrumentCode)
                         .orElseThrow(() -> new IllegalStateException(
                                 "Created FX_SPOT instrument was not found after insert"
@@ -103,7 +92,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         Objects.requireNonNull(fxSpot, "fxSpot must not be null");
 
         try {
-            // Обновляем только изменяемые поля FX_SPOT.
             int updatedRows = dsl.update(INSTRUMENT_FX_SPOT)
                     .set(INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS, fxSpot.defaultQuoteFractionDigits())
                     .where(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE.eq(fxSpot.instrumentCode().value()))
@@ -113,7 +101,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 throw new FxSpotNotFoundException(fxSpot.instrumentCode());
             }
 
-            // Возвращаем актуальное состояние из БД.
             return findByCode(fxSpot.instrumentCode())
                     .orElseThrow(() -> new FxSpotNotFoundException(fxSpot.instrumentCode()));
         } catch (DataAccessException ex) {
@@ -126,11 +113,9 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         try {
-            // Удаляем связанные записи в корректном порядке внутри транзакции.
             dsl.transaction(configuration -> {
                 DSLContext tx = configuration.dsl();
 
-                // Сначала удаляем запись FX_SPOT.
                 int deletedFxSpotRows = tx.deleteFrom(INSTRUMENT_FX_SPOT)
                         .where(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE.eq(instrumentCode.value()))
                         .execute();
@@ -139,7 +124,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                     throw new FxSpotNotFoundException(instrumentCode);
                 }
 
-                // Затем удаляем запись из общего реестра инструментов.
                 int deletedRegistryRows = tx.deleteFrom(INSTRUMENT_REGISTRY)
                         .where(INSTRUMENT_REGISTRY.CODE.eq(instrumentCode.value()))
                         .execute();
@@ -168,7 +152,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         var baseCurrencyRef = CURRENCY.as("base_currency_ref");
         var quoteCurrencyRef = CURRENCY.as("quote_currency_ref");
 
-        // Получаем все FX_SPOT и сразу собираем доменные объекты.
         return dsl.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
@@ -181,7 +164,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 .fetch(record -> toDomain(record, baseCurrencyRef, quoteCurrencyRef));
     }
 
-    /* Проверяет наличие валюты в reference-таблице currency. */
     private void ensureCurrencyExists(CurrencyCode currencyCode) {
         Objects.requireNonNull(currencyCode, "currencyCode must not be null");
 
@@ -196,12 +178,10 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         }
     }
 
-    /* Находит FOREX_SPOT по коду инструмента с join на instrument_registry и currency aliases. */
     private Optional<FxSpot> findByCode(DSLContext context, InstrumentCode instrumentCode) {
         var baseCurrencyRef = CURRENCY.as("base_currency_ref");
         var quoteCurrencyRef = CURRENCY.as("quote_currency_ref");
 
-        // Ищем один FX_SPOT по коду и маппим в доменную модель.
         return context.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
@@ -214,7 +194,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 .fetchOptional(record -> toDomain(record, baseCurrencyRef, quoteCurrencyRef));
     }
 
-    /* Набор полей для выборки FX_SPOT вместе с алиасами базовой и котируемой валют. */
     private SelectFieldOrAsterisk[] fxSpotSelectFields(
             com.alligator.market.backend.infra.jooq.generated.tables.Currency baseCurrencyRef,
             com.alligator.market.backend.infra.jooq.generated.tables.Currency quoteCurrencyRef
@@ -236,7 +215,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         };
     }
 
-    /* Маппинг записи jOOQ в доменную модель FxSpot. */
     private FxSpot toDomain(
             Record record,
             com.alligator.market.backend.infra.jooq.generated.tables.Currency baseCurrencyRef,
@@ -244,7 +222,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
     ) {
         Objects.requireNonNull(record, "record must not be null");
 
-        // Собираем валюты и параметры инструмента из записи.
         Currency base = toCurrency(record, baseCurrencyRef);
         Currency quote = toCurrency(record, quoteCurrencyRef);
         FxSpotTenor tenor = FxSpotTenor.valueOf(record.get(INSTRUMENT_FX_SPOT.TENOR));
@@ -253,7 +230,6 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         return new FxSpot(base, quote, tenor, quoteFractionDigits);
     }
 
-    /* Сборка доменной валюты из aliased currency-записи join-результата. */
     private Currency toCurrency(
             Record record,
             com.alligator.market.backend.infra.jooq.generated.tables.Currency currencyRef

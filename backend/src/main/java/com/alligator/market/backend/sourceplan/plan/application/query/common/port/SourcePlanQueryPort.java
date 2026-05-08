@@ -7,13 +7,7 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Read-порт административного отображения source plan.
- *
- * <p>В отличие от runtime-выбора источников, порт раскрывает retired строки для management UX.</p>
- */
 public interface SourcePlanQueryPort {
-
     Optional<SourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode

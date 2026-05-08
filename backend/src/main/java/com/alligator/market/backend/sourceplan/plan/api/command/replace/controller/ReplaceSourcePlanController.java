@@ -9,13 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-/**
- * REST-адаптер полной замены плана источников инструмента.
- */
 @RestController
 @RequestMapping("/api/v1/source-plans")
 public class ReplaceSourcePlanController {
-
     private final ReplaceSourcePlanService replaceSourcePlanService;
     private final ReplaceSourcePlanMapper replaceSourcePlanMapper;
 
@@ -33,9 +29,6 @@ public class ReplaceSourcePlanController {
         );
     }
 
-    /**
-     * Полностью заменяет план источников для заданного инструмента.
-     */
     @PutMapping("/{capturerCode}/{instrumentCode}")
     public ResponseEntity<Void> replace(
             @PathVariable String capturerCode,

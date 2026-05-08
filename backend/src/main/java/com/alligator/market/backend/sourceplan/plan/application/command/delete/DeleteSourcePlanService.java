@@ -8,13 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Сервис удаления плана источников рыночных данных для инструмента.
- */
 @Slf4j
 public final class DeleteSourcePlanService {
-
-    /* Репозиторий планов источников. */
     private final SourcePlanRepository sourcePlanRepository;
 
     public DeleteSourcePlanService(
@@ -26,9 +21,6 @@ public final class DeleteSourcePlanService {
         );
     }
 
-    /**
-     * Удаляет существующий план источников для инструмента.
-     */
     public void delete(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
@@ -36,7 +28,6 @@ public final class DeleteSourcePlanService {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Условно удаляем root-plan и сигнализируем, если его не было
         boolean deleted = sourcePlanRepository
                 .deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode);
         if (!deleted) {

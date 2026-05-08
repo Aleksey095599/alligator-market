@@ -5,11 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.Cur
 
 import java.util.Objects;
 
-/**
- * Маппер доменной валюты в response list query.
- */
 public final class CurrencyListItemResponseMapper {
-
     private CurrencyListItemResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }

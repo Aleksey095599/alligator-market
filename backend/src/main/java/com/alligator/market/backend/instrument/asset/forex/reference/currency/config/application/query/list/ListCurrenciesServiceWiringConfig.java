@@ -8,13 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link CurrencyListService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(CurrencyRepositoryWiringConfig.class)
 public class ListCurrenciesServiceWiringConfig {
-
     public static final String BEAN_LIST_CURRENCIES_SERVICE = "listCurrenciesService";
 
     @Bean(BEAN_LIST_CURRENCIES_SERVICE)

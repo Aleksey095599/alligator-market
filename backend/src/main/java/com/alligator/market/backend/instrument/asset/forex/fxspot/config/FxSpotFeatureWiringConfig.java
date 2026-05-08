@@ -9,9 +9,6 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.config.applica
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Единая внешняя точка входа в wiring фичи instrument.asset.forex.fxspot.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         CreateFxSpotServiceWiringConfig.class,

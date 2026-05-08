@@ -7,20 +7,14 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-/**
- * Request DTO use case создание плана источников для инструмента.
- */
 public record CreateSourcePlanRequest(
 
-        /* Код процесса захвата рыночных данных, для которого создаётся новый план источников. */
         @NotBlank(message = "capturerCode must not be blank")
         String capturerCode,
 
-        /* Код инструмента, для которого создаётся новый план источников. */
         @NotBlank(message = "instrumentCode must not be blank")
         String instrumentCode,
 
-        /* Список источников, формирующих создаваемый план. */
         @NotEmpty(message = "sources must not be empty")
         List<@Valid MarketDataSourceRequest> sources
 ) {

@@ -10,16 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link DeleteCurrencyService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         CurrencyRepositoryWiringConfig.class,
         CurrencyUsageCheckPortWiringConfig.class
 })
 public class DeleteCurrencyServiceWiringConfig {
-
     public static final String BEAN_DELETE_CURRENCY_SERVICE = "deleteCurrencyService";
 
     @Bean(BEAN_DELETE_CURRENCY_SERVICE)

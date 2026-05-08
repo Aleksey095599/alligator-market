@@ -7,7 +7,6 @@ import com.alligator.market.backend.sourceplan.plan.application.query.common.mod
 import java.util.List;
 
 public class SourcePlanResponseMapper {
-
     private final MarketDataSourceResponseMapper marketDataSourceResponseMapper;
 
     public SourcePlanResponseMapper(MarketDataSourceResponseMapper marketDataSourceResponseMapper) {

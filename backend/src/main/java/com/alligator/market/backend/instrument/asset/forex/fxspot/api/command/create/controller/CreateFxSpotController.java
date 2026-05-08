@@ -15,14 +15,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-/**
- * REST API-адаптер use case создания инструмента FOREX_SPOT.
- */
 @RestController
 @RequestMapping("/api/v1/fx-spot")
 @RequiredArgsConstructor
 public class CreateFxSpotController {
-
     private final CreateFxSpotService createFxSpotService;
 
     @PostMapping

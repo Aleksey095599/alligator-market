@@ -9,13 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link FxSpotUsageContributor}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(SourcePlanExistenceQueryWiringConfig.class)
 public class FxSpotUsageContributorWiringConfig {
-
     public static final String BEAN_SOURCE_PLAN_FX_SPOT_USAGE_CONTRIBUTOR = "sourcePlanFxSpotUsageContributor";
 
     @Bean(BEAN_SOURCE_PLAN_FX_SPOT_USAGE_CONTRIBUTOR)

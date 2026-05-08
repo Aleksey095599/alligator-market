@@ -8,12 +8,8 @@ import com.alligator.market.backend.sourceplan.plan.api.query.common.mapper.Mark
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Wiring-конфигурация API mapper-ов фичи sourcing.
- */
 @Configuration(proxyBeanMethods = false)
 public class SourcePlanApiMapperWiringConfig {
-
     public static final String BEAN_MARKET_DATA_SOURCE_REQUEST_MAPPER = "marketDataSourceRequestMapper";
     public static final String BEAN_CREATE_SOURCE_PLAN_MAPPER = "createSourcePlanMapper";
     public static final String BEAN_REPLACE_SOURCE_PLAN_MAPPER = "replaceSourcePlanMapper";

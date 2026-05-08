@@ -25,11 +25,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.process.twap.capturer.FxSpotTwapCapturer.CAPTURER_CODE;
 
-/**
- * Use case одного шага захвата тика для процесса {@code ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE}.
- */
 public final class FxSpotTwapCaptureOnceService {
-
     private static final Duration SOURCE_TICK_WAIT_TIMEOUT = Duration.ofSeconds(30);
 
     private final SourcePlanRepository sourcePlanRepository;
@@ -54,9 +50,6 @@ public final class FxSpotTwapCaptureOnceService {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
-    /**
-     * Выполняет один capture: выбирает источник, получает один source tick и сохраняет captured tick.
-     */
     public CapturedMarketDataTick captureOnce(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 

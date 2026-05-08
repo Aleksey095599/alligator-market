@@ -2,9 +2,6 @@ package com.alligator.market.backend.source.passport.application.query.list.mode
 
 import java.util.Objects;
 
-/**
- * Read model for one market data source passport list item.
- */
 public record MarketDataSourcePassportListItem(
         String sourceCode,
         String displayName,
@@ -13,7 +10,6 @@ public record MarketDataSourcePassportListItem(
         boolean bulkSubscription,
         String lifecycleStatus
 ) {
-
     public MarketDataSourcePassportListItem {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");

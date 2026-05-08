@@ -7,12 +7,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Адаптер проверки использования FX_SPOT инструмента по всем подключенным contributors.
- */
 public final class FxSpotUsageCheckAdapter implements FxSpotUsageCheckPort {
-
-    /* Набор contributors, участвующих в общей проверке использования FX_SPOT инструмента. */
     private final List<FxSpotUsageContributor> contributors;
 
     public FxSpotUsageCheckAdapter(List<FxSpotUsageContributor> contributors) {

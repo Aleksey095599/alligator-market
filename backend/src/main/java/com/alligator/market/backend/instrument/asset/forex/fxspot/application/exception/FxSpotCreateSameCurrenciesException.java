@@ -4,11 +4,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Ошибка application-слоя: создание FX_SPOT с одинаковыми базовой и котируемой валютами.
- */
 public final class FxSpotCreateSameCurrenciesException extends IllegalArgumentException {
-
     private final CurrencyCode currencyCode;
 
     public FxSpotCreateSameCurrenciesException(CurrencyCode currencyCode) {

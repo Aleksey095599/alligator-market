@@ -11,20 +11,11 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Set;
 
-/**
- * Wiring-конфигурация {@link MoexIssMarketDataSource}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssHandlersConfig.class)
 public class MoexIssMarketDataSourceConfig {
-
     public static final String BEAN_NAME = "moexIssMarketDataSource";
 
-    /**
-     * Бин {@link MoexIssMarketDataSource}.
-     *
-     * @param handlers набор обработчиков инструментов source MOEX ISS
-     */
     @Bean(BEAN_NAME)
     public MoexIssMarketDataSource moexIssMarketDataSource(
             @Qualifier(MoexIssHandlersConfig.BEAN_NAME)

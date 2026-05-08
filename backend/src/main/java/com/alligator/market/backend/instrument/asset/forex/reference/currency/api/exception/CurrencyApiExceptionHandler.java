@@ -16,9 +16,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * Feature-specific обработчик ошибок API.
- */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(assignableTypes = {
@@ -28,10 +25,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         CurrencyListController.class
 })
 public class CurrencyApiExceptionHandler {
-
-    /**
-     * Валюта с таким кодом уже существует --> 409.
-     */
     @ExceptionHandler(CurrencyAlreadyExistsException.class)
     public ProblemDetail currencyAlreadyExists(CurrencyAlreadyExistsException ex) {
         log.warn("Currency already exists: {}", ex.getMessage());
@@ -43,9 +36,6 @@ public class CurrencyApiExceptionHandler {
         );
     }
 
-    /**
-     * Валюта с таким именем уже существует --> 409.
-     */
     @ExceptionHandler(CurrencyNameDuplicateException.class)
     public ProblemDetail currencyNameDuplicate(CurrencyNameDuplicateException ex) {
         log.warn("Currency name duplicate: {}", ex.getMessage());
@@ -57,9 +47,6 @@ public class CurrencyApiExceptionHandler {
         );
     }
 
-    /**
-     * Валюта используется внешними фичами/агрегатами --> 409.
-     */
     @ExceptionHandler(CurrencyInUseException.class)
     public ProblemDetail currencyInUse(CurrencyInUseException ex) {
         log.warn("Currency is in use: {}", ex.getMessage());
@@ -71,9 +58,6 @@ public class CurrencyApiExceptionHandler {
         );
     }
 
-    /**
-     * Валюта не найдена --> 404.
-     */
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ProblemDetail currencyNotFound(CurrencyNotFoundException ex) {
         log.warn("Currency not found: {}", ex.getMessage());
@@ -85,7 +69,6 @@ public class CurrencyApiExceptionHandler {
         );
     }
 
-    /* Общий builder ProblemDetail для единообразного контракта ошибок currency feature. */
     private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String errorCode) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(title);

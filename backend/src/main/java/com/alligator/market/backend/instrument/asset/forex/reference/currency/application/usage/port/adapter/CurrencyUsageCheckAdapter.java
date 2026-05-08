@@ -7,12 +7,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Адаптер проверки использования валюты по всем подключенным contributors.
- */
 public final class CurrencyUsageCheckAdapter implements CurrencyUsageCheckPort {
-
-    /* Набор contributors, участвующих в общей проверке использования валюты. */
     private final List<CurrencyUsageContributor> contributors;
 
     public CurrencyUsageCheckAdapter(List<CurrencyUsageContributor> contributors) {

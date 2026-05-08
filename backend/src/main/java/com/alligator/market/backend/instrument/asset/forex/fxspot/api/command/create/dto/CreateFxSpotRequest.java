@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-/**
- * API-запрос на создание инструмента FOREX_SPOT.
- */
 public record CreateFxSpotRequest(
         @NotBlank String baseCurrency,
         @NotBlank String quoteCurrency,

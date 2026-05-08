@@ -8,12 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-/**
- * Wiring-конфигурация {@link CurrencyUsageCheckPort}.
- */
 @Configuration(proxyBeanMethods = false)
 public class CurrencyUsageCheckPortWiringConfig {
-
     public static final String BEAN_CURRENCY_USAGE_CHECK_PORT = "currencyUsageCheckPort";
 
     @Bean(BEAN_CURRENCY_USAGE_CHECK_PORT)

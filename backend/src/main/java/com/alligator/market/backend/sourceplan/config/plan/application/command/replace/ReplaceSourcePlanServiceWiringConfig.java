@@ -15,9 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Wiring-конфигурация {@link ReplaceSourcePlanService}.
- */
 @Configuration(proxyBeanMethods = false)
 @Import({
         SourcePlanRepositoryWiringConfig.class,
@@ -26,7 +23,6 @@ import org.springframework.context.annotation.Import;
         MarketDataSourceExistencePortWiringConfig.class
 })
 public class ReplaceSourcePlanServiceWiringConfig {
-
     public static final String BEAN_REPLACE_SOURCE_PLAN_SERVICE = "replaceSourcePlanService";
 
     @Bean(BEAN_REPLACE_SOURCE_PLAN_SERVICE)

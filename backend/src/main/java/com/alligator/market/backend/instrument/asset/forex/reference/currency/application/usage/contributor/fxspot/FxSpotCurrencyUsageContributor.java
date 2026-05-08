@@ -6,11 +6,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Проверка использования валюты для contributor: инструменты FOREX_SPOT.
- */
 public final class FxSpotCurrencyUsageContributor implements CurrencyUsageContributor {
-
     private final FxSpotCurrencyReferenceQueryPort fxSpotCurrencyReferenceQueryPort;
 
     public FxSpotCurrencyUsageContributor(FxSpotCurrencyReferenceQueryPort fxSpotCurrencyReferenceQueryPort) {

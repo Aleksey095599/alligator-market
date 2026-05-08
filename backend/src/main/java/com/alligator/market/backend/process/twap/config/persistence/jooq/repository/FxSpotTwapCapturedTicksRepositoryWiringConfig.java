@@ -6,12 +6,8 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Spring wiring for the FX Spot TWAP captured ticks repository port.
- */
 @Configuration(proxyBeanMethods = false)
 public class FxSpotTwapCapturedTicksRepositoryWiringConfig {
-
     public static final String BEAN_FX_SPOT_TWAP_CAPTURED_TICKS_REPOSITORY =
             "fxSpotTwapCapturedTicksRepository";
 

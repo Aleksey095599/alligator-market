@@ -7,12 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-/**
- * Use-case сервис обновления инструмента FOREX_SPOT.
- */
 @Slf4j
 public final class UpdateFxSpotService {
-
     private final FxSpotRepository fxSpotRepository;
 
     public UpdateFxSpotService(FxSpotRepository fxSpotRepository) {

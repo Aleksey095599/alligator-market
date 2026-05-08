@@ -4,11 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-/**
- * Application error: one or more market data source codes were not found.
- */
 public final class MarketDataSourceCodesNotFoundException extends IllegalArgumentException {
-
     public MarketDataSourceCodesNotFoundException(Collection<String> sourceCodes) {
         super(buildMessage(sourceCodes));
     }

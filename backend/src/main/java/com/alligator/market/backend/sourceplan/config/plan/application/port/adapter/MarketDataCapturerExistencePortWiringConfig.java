@@ -6,12 +6,8 @@ import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Wiring-конфигурация {@link MarketDataCapturerExistencePort}.
- */
 @Configuration(proxyBeanMethods = false)
 public class MarketDataCapturerExistencePortWiringConfig {
-
     public static final String BEAN_CAPTURER_EXISTENCE_PORT = "capturerExistencePort";
 
     @Bean(BEAN_CAPTURER_EXISTENCE_PORT)

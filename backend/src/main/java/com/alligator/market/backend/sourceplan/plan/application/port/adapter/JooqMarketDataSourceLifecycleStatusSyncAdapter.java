@@ -18,16 +18,8 @@ import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectOne;
 import static org.jooq.impl.DSL.table;
 
-/**
- * jOOQ implementation of {@link MarketDataSourceLifecycleStatusSyncPort}.
- *
- * <p>The synchronization is monotonic: it only moves ACTIVE source plan entries to RETIRED and
- * never promotes RETIRED entries back to ACTIVE. If a source is needed again, the plan entry should
- * be deleted and added again.</p>
- */
 public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
         implements MarketDataSourceLifecycleStatusSyncPort {
-
     private static final Table<?> SOURCE_PLAN_ENTRY = table(name("source_plan_entry"));
     private static final Field<String> SOURCE_PLAN_ENTRY_CAPTURER_CODE =
             field(name("source_plan_entry", "capturer_code"), String.class);
@@ -69,7 +61,6 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
     }
 
     private void retireActiveSources(Condition invalidReference) {
-        // RETIRED is terminal here; only still-active plan entries are changed.
         dsl.update(SOURCE_PLAN_ENTRY)
                 .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, RETIRED.name())
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()))

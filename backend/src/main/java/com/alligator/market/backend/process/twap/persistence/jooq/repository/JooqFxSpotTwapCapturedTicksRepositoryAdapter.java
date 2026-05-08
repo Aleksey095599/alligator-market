@@ -19,11 +19,7 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
-/**
- * jOOQ adapter for append-only storage of ticks captured by the FX Spot TWAP process.
- */
 public final class JooqFxSpotTwapCapturedTicksRepositoryAdapter implements FxSpotTwapCapturedTicksRepository {
-
     private static final Table<?> FX_SPOT_TWAP_CAPTURED_TICKS = table(name("fx_spot_twap_captured_ticks"));
 
     private static final Field<String> CAPTURER_CODE = field(name("capturer_code"), String.class);

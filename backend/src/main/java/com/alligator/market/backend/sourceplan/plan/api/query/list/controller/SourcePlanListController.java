@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * REST-адаптер чтения списка планов источников инструментов.
- */
 @RestController
 @RequestMapping("/api/v1/source-plans")
 public class SourcePlanListController {
-
     private final SourcePlanListService sourcePlanListService;
     private final SourcePlanResponseMapper responseMapper;
 
@@ -33,9 +29,6 @@ public class SourcePlanListController {
         this.responseMapper = Objects.requireNonNull(responseMapper, "responseMapper must not be null");
     }
 
-    /**
-     * Возвращает планы источников для всех инструментов.
-     */
     @GetMapping
     public ResponseEntity<SourcePlanListResponse> list() {
         List<SourcePlanResponse> plans = sourcePlanListService.list().stream()

@@ -9,12 +9,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
 
-/**
- * jOOQ-адаптер порта получения доступных кодов инструментов.
- */
 public final class JooqInstrumentOptionsQueryAdapter implements InstrumentOptionsQueryPort {
-
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqInstrumentOptionsQueryAdapter(DSLContext dsl) {

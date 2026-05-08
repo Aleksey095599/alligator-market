@@ -8,13 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-/**
- * REST-адаптер удаления плана источников инструмента.
- */
 @RestController
 @RequestMapping("/api/v1/source-plans")
 public class DeleteSourcePlanController {
-
     private final DeleteSourcePlanService deleteSourcePlanService;
 
     public DeleteSourcePlanController(
@@ -26,9 +22,6 @@ public class DeleteSourcePlanController {
         );
     }
 
-    /**
-     * Удаляет план источников для заданного инструмента.
-     */
     @DeleteMapping("/{capturerCode}/{instrumentCode}")
     public ResponseEntity<Void> delete(
             @PathVariable String capturerCode,

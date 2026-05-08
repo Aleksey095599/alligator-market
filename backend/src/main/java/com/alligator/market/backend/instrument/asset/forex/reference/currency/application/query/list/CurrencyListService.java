@@ -7,12 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Use-case сервис получения списка валют.
- */
 @Slf4j
 public final class CurrencyListService {
-
     private final CurrencyRepository currencyRepository;
 
     public CurrencyListService(CurrencyRepository currencyRepository) {
@@ -21,7 +17,6 @@ public final class CurrencyListService {
     }
 
     public List<Currency> findAll() {
-
         List<Currency> result = currencyRepository.findAll();
         log.debug("Found {} currencies", result.size());
 

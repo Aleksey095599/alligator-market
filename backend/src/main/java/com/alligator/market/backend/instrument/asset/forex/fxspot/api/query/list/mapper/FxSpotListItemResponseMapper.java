@@ -5,11 +5,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 
 import java.util.Objects;
 
-/**
- * Маппер доменной модели FOREX_SPOT в API-ответ элемента списка.
- */
 public final class FxSpotListItemResponseMapper {
-
     private FxSpotListItemResponseMapper() {
         throw new UnsupportedOperationException("Utility class");
     }
