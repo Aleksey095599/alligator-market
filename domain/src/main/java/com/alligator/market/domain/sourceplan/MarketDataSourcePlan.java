@@ -28,14 +28,9 @@ public final class MarketDataSourcePlan {
             InstrumentCode instrumentCode,
             List<MarketDataSourcePlanEntry> entries
     ) {
-        this.captureProcessCode = Objects.requireNonNull(
-                captureProcessCode,
-                "captureProcessCode must not be null"
-        );
+        this.captureProcessCode = Objects.requireNonNull(captureProcessCode, "captureProcessCode must not be null");
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        Objects.requireNonNull(entries, "entries must not be null");
-
-        this.entries = copyAndValidateEntries(entries);
+        this.entries = copyAndValidateEntries(Objects.requireNonNull(entries, "entries must not be null"));
     }
 
     /**

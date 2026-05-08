@@ -7,7 +7,10 @@ CREATE TABLE capture_process_passport
     display_name         VARCHAR(160) NOT NULL,
     lifecycle_status     VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
 
-    CONSTRAINT uq_capture_process_code UNIQUE (capture_process_code),
+    CONSTRAINT uq_capture_process_code
+        UNIQUE (capture_process_code),
+    CONSTRAINT uq_capture_process_display_name
+        UNIQUE (display_name),
 
     CONSTRAINT chk_capture_process_code_pattern
         CHECK (capture_process_code ~ '^[A-Z0-9_.-]+$'),
