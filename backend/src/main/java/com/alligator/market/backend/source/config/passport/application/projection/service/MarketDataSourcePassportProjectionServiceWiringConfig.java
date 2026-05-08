@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Wiring-конфигурация {@link MarketDataSourcePassportProjectionService}.
+ * Wiring configuration for {@link MarketDataSourcePassportProjectionService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
@@ -28,7 +28,6 @@ public class MarketDataSourcePassportProjectionServiceWiringConfig {
     public static final String BEAN_MARKET_DATA_SOURCE_PASSPORT_PROJECTION_SERVICE =
             "marketDataSourcePassportProjectionService";
 
-    /* Use case сервис проекции паспортов провайдеров. */
     @Bean(BEAN_MARKET_DATA_SOURCE_PASSPORT_PROJECTION_SERVICE)
     public MarketDataSourcePassportProjectionService marketDataSourcePassportProjectionService(
             @Qualifier(MarketDataSourceRegistryWiringConfig.BEAN_MARKET_DATA_SOURCE_REGISTRY)

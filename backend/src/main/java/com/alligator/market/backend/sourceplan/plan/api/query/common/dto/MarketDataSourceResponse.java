@@ -1,12 +1,11 @@
 package com.alligator.market.backend.sourceplan.plan.api.query.common.dto;
 
 /**
- * DTO источника рыночных данных для ответов.
+ * API response item for one source plan entry.
  */
 public record MarketDataSourceResponse(
-        String providerCode,
+        String sourceCode,
         int priority,
-        // Технический статус пригодности source: ACTIVE или RETIRED.
         String lifecycleStatus
 ) {
 }

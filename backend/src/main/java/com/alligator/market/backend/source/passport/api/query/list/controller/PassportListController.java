@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST-контроллер каталога паспортов провайдеров рыночных данных.
+ * REST controller for market data source passports.
  */
 @RestController
-@RequestMapping("/api/v1/providers")
+@RequestMapping("/api/v1/market-data-sources")
 @RequiredArgsConstructor
 public class PassportListController {
 
     private final PassportListService service;
 
     /**
-     * Вернуть все паспорта провайдеров.
+     * Returns all market data source passports.
      */
     @GetMapping
     public ResponseEntity<List<PassportListItemResponse>> getAll() {

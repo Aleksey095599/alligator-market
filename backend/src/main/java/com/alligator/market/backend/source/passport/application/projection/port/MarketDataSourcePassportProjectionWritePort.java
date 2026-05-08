@@ -10,25 +10,24 @@ import java.util.Set;
 /**
  * Write port for synchronizing market data source passport projection rows.
  *
- * <p>Назначение: поддерживать materialized view паспортов провайдеров в согласованном состоянии
- * относительно реестра источников {@link MarketDataSourceRegistry}.</p>
+ * <p>Keeps the materialized source passport view consistent with {@link MarketDataSourceRegistry}.</p>
  */
 public interface MarketDataSourcePassportProjectionWritePort {
 
     /**
-     * Пометить устаревшими все записи проекции, кроме указанных кодов провайдеров.
+     * Retires all projection rows except the current source codes.
      *
-     * @param currentCodes коды провайдеров из текущего реестра
+     * @param currentCodes source codes from the current registry
      */
     void retireAllExcept(Set<MarketDataSourceCode> currentCodes);
 
     /**
-     * Вставить или обновить паспорта провайдеров в проекции.
+     * Inserts or updates source passports in the projection.
      *
-     * <p>Семантика: для каждого {@link MarketDataSourceCode} из {@code passports} в проекции должна существовать
-     * ровно одна актуальная запись, содержащая значения паспорта из входных данных.</p>
+     * <p>For every {@link MarketDataSourceCode} in {@code passports}, the projection must contain exactly one
+     * current row with values from the input passport.</p>
      *
-     * @param passports карта "код провайдера → паспорт провайдера"
+     * @param passports map of source code to source passport
      */
     void upsertAll(Map<MarketDataSourceCode, MarketDataSourcePassport> passports);
 }

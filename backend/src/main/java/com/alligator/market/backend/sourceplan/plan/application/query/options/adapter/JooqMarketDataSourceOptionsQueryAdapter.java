@@ -11,11 +11,10 @@ import static com.alligator.market.backend.common.persistence.projection.Project
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
 /**
- * jOOQ-адаптер порта получения доступных кодов провайдеров.
+ * jOOQ adapter for loading available market data source codes.
  */
 public final class JooqMarketDataSourceOptionsQueryAdapter implements MarketDataSourceOptionsQueryPort {
 
-    /* DSLContext для выполнения SQL-запросов через jOOQ. */
     private final DSLContext dsl;
 
     public JooqMarketDataSourceOptionsQueryAdapter(DSLContext dsl) {

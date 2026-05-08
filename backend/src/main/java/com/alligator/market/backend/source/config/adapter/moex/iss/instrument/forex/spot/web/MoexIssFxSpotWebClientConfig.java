@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Wiring-конфигурация web-клиента обработчика финансового инструмента FOREX_SPOT провайдера MOEX ISS.
+ * Wiring configuration for the MOEX ISS FOREX_SPOT handler WebClient.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(HandlerBaseWebClientConfig.class)
@@ -20,10 +20,10 @@ public class MoexIssFxSpotWebClientConfig {
     public static final String BEAN_NAME = "moexIssFxSpotWebClient";
 
     /**
-     * Бин web-клиента обработчика финансового инструмента FOREX_SPOT провайдера MOEX ISS.
+     * WebClient bean for the MOEX ISS FOREX_SPOT handler.
      *
-     * @param globalWebClient единый для всех провайдеров web-клиент
-     * @param props параметры подключения к провайдеру MOEX ISS по инструментам типа FOREX_SPOT
+     * @param globalWebClient shared handler WebClient
+     * @param props MOEX ISS FOREX_SPOT connection properties
      */
     @Bean(BEAN_NAME)
     public WebClient moexIssFxSpotWebClient(
@@ -32,7 +32,6 @@ public class MoexIssFxSpotWebClientConfig {
     ) {
         return globalWebClient.mutate()
                 .baseUrl(props.baseUrl())
-                // + специфичные настройки обработчика
                 .build();
     }
 }

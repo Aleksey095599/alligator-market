@@ -10,10 +10,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Конфигурация базового web-клиента для всех обработчиков финансовых инструментов.
+ * Base WebClient configuration for all instrument handlers.
  *
- * <p>Примечание: конфигурация web-клиента любого обработчика конкретного провайдера выстраивается поверх базового
- * web-клиента через {@link WebClient#mutate()}.</p>
+ * <p>Specific handler WebClients are derived from this base client with {@link WebClient#mutate()}.</p>
  */
 @Configuration(proxyBeanMethods = false)
 @Import({HandlerBaseHttpClientConfig.class})
@@ -22,9 +21,9 @@ public class HandlerBaseWebClientConfig {
     public static final String BEAN_HANDLER_BASE_WEB_CLIENT = "handlerBaseWebClient";
 
     /**
-     * Бин базового web-клиента всех обработчиков.
+     * Base WebClient bean for all handlers.
      *
-     * @param handlerBaseHttpClient базовый HTTP-клиент всех обработчиков
+     * @param handlerBaseHttpClient base HTTP client for all handlers
      */
     @Bean(BEAN_HANDLER_BASE_WEB_CLIENT)
     public WebClient handlerBaseWebClient(
@@ -32,7 +31,6 @@ public class HandlerBaseWebClientConfig {
             HttpClient handlerBaseHttpClient
     ) {
         return WebClient.builder()
-                // Подключаем WebClient к базовому HTTP-клиенту
                 .clientConnector(new ReactorClientHttpConnector(handlerBaseHttpClient))
                 .build();
     }

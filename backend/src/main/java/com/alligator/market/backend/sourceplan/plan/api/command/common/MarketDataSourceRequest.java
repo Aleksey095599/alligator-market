@@ -9,8 +9,8 @@ import jakarta.validation.constraints.PositiveOrZero;
  */
 public record MarketDataSourceRequest(
 
-        @NotBlank(message = "providerCode must not be blank")
-        String providerCode,
+        @NotBlank(message = "sourceCode must not be blank")
+        String sourceCode,
 
         @NotNull(message = "priority must not be null")
         @PositiveOrZero(message = "priority must be greater than or equal to 0")

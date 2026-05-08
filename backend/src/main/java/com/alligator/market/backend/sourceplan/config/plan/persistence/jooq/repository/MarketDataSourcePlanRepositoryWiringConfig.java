@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Wiring-конфигурация {@link MarketDataSourcePlanRepository}.
+ * Spring wiring for the {@link MarketDataSourcePlanRepository} persistence adapter.
  */
 @Configuration(proxyBeanMethods = false)
 public class MarketDataSourcePlanRepositoryWiringConfig {

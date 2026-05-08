@@ -6,7 +6,7 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import java.util.Objects;
 
 /**
- * Ошибка application-слоя: провайдер не вернул source tick для одного capture шага.
+ * Application error: the source did not return a source tick for one capture step.
  */
 public final class AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException extends IllegalStateException {
 

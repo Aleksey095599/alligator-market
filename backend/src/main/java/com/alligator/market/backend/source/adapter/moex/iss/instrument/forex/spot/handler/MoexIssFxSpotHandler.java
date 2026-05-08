@@ -52,7 +52,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarke
     /**
      * Конструктор обработчика.
      *
-     * @param webClient web-клиент, настроенный для запросов провайдеру MOEX ISS по инструментам FOREX_SPOT
+     * @param webClient web client configured for MOEX ISS FOREX_SPOT requests
      */
     public MoexIssFxSpotHandler(WebClient webClient) {
         super(HANDLER_CODE, FxSpot.class, SUPPORTED_INSTRUMENTS);
@@ -69,13 +69,13 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarke
      */
     @Override
     protected Publisher<SourceMarketDataTick> doStreamSourceTicks(FxSpot instrument) {
-        // 1) Получаем минимальный интервал обновления из "политики" провайдера
+        // 1) Read the minimum update interval from the source policy.
         Duration pollInterval = source().policy().minUpdateInterval();
 
         // Далее в виде цепочки:
         // 2) Запрашиваем один source tick
         // 3) Ошибки не “убивают” поток: логируем и пропускаем тик
-        // 4) Повторяем с задержкой согласно "политике" провайдера
+        // 4) Repeat with the source policy delay.
         return fetchSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
                     log.warn(
@@ -103,7 +103,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarke
      * <p>Примечания:
      * <ul>
      *     <li>Под таблицей {@code marketdata} подразумевается формат передачи рыночных, описанный в документации
-     *     провайдера MOEX ISS;</li>
+     *     MOEX ISS documentation;</li>
      *     <li>3-й и 4-й пункты вынесены в отдельный метод.</li>
      * </ul>
      */

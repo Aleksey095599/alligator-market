@@ -1,9 +1,9 @@
 package com.alligator.market.domain.source.passport.classification;
 
 /**
- * Режимы доставки данных провайдерами рыночных данных.
+ * Market data source delivery modes.
  */
 public enum DeliveryMode {
-    PUSH,
-    PULL
+    PULL,
+    PUSH
 }

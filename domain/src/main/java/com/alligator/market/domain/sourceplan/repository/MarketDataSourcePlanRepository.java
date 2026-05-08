@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Порт доступа к планам источников рыночных данных {@link MarketDataSourcePlan}.
+ * Repository port for {@link MarketDataSourcePlan} aggregates.
  */
 public interface MarketDataSourcePlanRepository {
 
     /**
-     * Возвращает план источников по коду процесса и коду инструмента.
+     * Finds a source plan by {@code captureProcessCode} and {@code instrumentCode}.
      */
     Optional<MarketDataSourcePlan> findByMarketDataCaptureProcessCodeAndInstrumentCode(
             MarketDataCaptureProcessCode captureProcessCode,
@@ -21,7 +21,8 @@ public interface MarketDataSourcePlanRepository {
     );
 
     /**
-     * Возвращает план источников с источниками, пригодными для захвата.
+     * Finds a source plan by {@code captureProcessCode} and {@code instrumentCode},
+     * including only sources that are currently available for capture.
      */
     Optional<MarketDataSourcePlan> findActiveByMarketDataCaptureProcessCodeAndInstrumentCode(
             MarketDataCaptureProcessCode captureProcessCode,
@@ -29,29 +30,29 @@ public interface MarketDataSourcePlanRepository {
     );
 
     /**
-     * Возвращает все планы источников.
+     * Finds all source plans.
      */
     List<MarketDataSourcePlan> findAll();
 
     /**
-     * Создаёт план, если он ещё не существует.
+     * Creates the source plan when it does not already exist.
      *
-     * @return true, если план создан; false, если план уже существует
+     * @return true when the plan was created; false when it already existed
      */
     boolean createIfAbsent(MarketDataSourcePlan plan);
 
 
     /**
-     * Заменяет содержимое существующего плана.
+     * Replaces the contents of an existing source plan.
      *
-     * @return true, если план существовал и был обновлён; false, если план отсутствует
+     * @return true when the plan existed and was updated; false when no matching plan exists
      */
     boolean replaceIfExists(MarketDataSourcePlan plan);
 
     /**
-     * Удаляет существующий план инструмента по коду процесса и коду инструмента.
+     * Deletes a source plan by {@code captureProcessCode} and {@code instrumentCode}.
      *
-     * @return true, если план существовал и был удалён; false, если плана не было
+     * @return true when the plan existed and was deleted; false when no matching plan exists
      */
     boolean deleteIfExistsByMarketDataCaptureProcessCodeAndInstrumentCode(
             MarketDataCaptureProcessCode captureProcessCode,

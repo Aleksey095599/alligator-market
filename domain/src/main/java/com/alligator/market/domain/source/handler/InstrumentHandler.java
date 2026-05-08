@@ -10,10 +10,9 @@ import org.reactivestreams.Publisher;
 import java.util.Set;
 
 /**
- * Внутренний SPI обработчика финансовых инструментов заданного типа, прикрепляемый к заданному провайдеру.
+ * Internal SPI for an instrument handler attached to a market data source.
  *
- * <p>Примечание: Обработчик за счёт дженериков параметризован конкретным классом провайдера и классом финансового
- * инструмента, что отражает прикрепление к заданному провайдеру и соответствие заданному типу инструмента.</p>
+ * <p>The generic parameters bind a handler to a concrete source type and instrument type.</p>
  */
 public interface InstrumentHandler<P extends MarketDataSource, I extends Instrument> {
 
@@ -28,7 +27,7 @@ public interface InstrumentHandler<P extends MarketDataSource, I extends Instrum
     Set<InstrumentCode> supportedInstrumentCodes();
 
     /**
-     * Прикрепляет обработчик к провайдеру.
+     * Attaches the handler to a market data source.
      */
     void attachTo(P source);
 

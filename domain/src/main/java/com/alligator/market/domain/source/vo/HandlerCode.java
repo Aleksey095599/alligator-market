@@ -3,9 +3,9 @@ package com.alligator.market.domain.source.vo;
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
- * Объект-значение кода обработчика провайдера.
+ * Value object for a source handler code.
  *
- * @param value нормализованный код обработчика
+ * @param value normalized handler code
  */
 public record HandlerCode(
         String value

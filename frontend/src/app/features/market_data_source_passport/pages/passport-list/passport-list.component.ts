@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ProviderPassportService } from '../../services/provider-passport.service';
-import { ProviderDto } from '../../models/provider-dto.model';
+import { MarketDataSourcePassportService } from '../../services/market-data-source-passport.service';
+import { MarketDataSourcePassportDto } from '../../models/market-data-source-passport-dto.model';
 
 @Component({
-  selector: 'app-provider-passport-list',
+  selector: 'app-market-data-source-passport-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule, MatSnackBarModule],
   templateUrl: './passport-list.component.html',
@@ -15,43 +15,38 @@ import { ProviderDto } from '../../models/provider-dto.model';
 })
 export class PassportListComponent implements OnInit {
 
-  /* Список колонок таблицы. */
   displayed: string[] = [
-    'providerCode',
+    'sourceCode',
     'displayName',
     'deliveryMode',
     'accessMethod',
     'bulkSubscription',
     'lifecycleStatus'
   ];
-  /* Источник данных для таблицы. */
-  dataSource = new MatTableDataSource<ProviderDto>([]);
+  dataSource = new MatTableDataSource<MarketDataSourcePassportDto>([]);
 
   constructor(
-    private readonly service: ProviderPassportService,
+    private readonly service: MarketDataSourcePassportService,
     private readonly snack: MatSnackBar
   ) {}
 
-  /* Загрузка списка при открытии страницы. */
   ngOnInit(): void {
     this.refresh();
   }
 
-  /* Получить список паспортов и обновить таблицу. */
   private refresh(): void {
     this.service.list().subscribe({
       next: list => {
         this.dataSource.data = [...list].sort((left, right) =>
-          left.providerCode.localeCompare(right.providerCode, 'en', { sensitivity: 'base' })
+          left.sourceCode.localeCompare(right.sourceCode, 'en', { sensitivity: 'base' })
         );
       },
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load provider passports failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load market data source passports failed'), 'Close');
       }
     });
   }
 
-  /* Извлекаем текст ошибки из стандартного HttpErrorResponse/ProblemDetail. */
   private resolveErrorMessage(err: unknown, fallback: string): string {
     if (!err || typeof err !== 'object') {
       return fallback;

@@ -4,16 +4,16 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;
 
 /**
- * Маппер для {@link MarketDataSourceRequest}.
+ * Mapper for {@link MarketDataSourceRequest}.
  */
 public class MarketDataSourceRequestMapper {
 
     /**
-     * Преобразует {@link MarketDataSourceRequest} в доменную модель {@link MarketDataSourcePlanEntry}.
+     * Converts {@link MarketDataSourceRequest} to {@link MarketDataSourcePlanEntry}.
      */
     public MarketDataSourcePlanEntry toDomain(MarketDataSourceRequest request) {
         return new MarketDataSourcePlanEntry(
-                new MarketDataSourceCode(request.providerCode()),
+                new MarketDataSourceCode(request.sourceCode()),
                 request.priority()
         );
     }

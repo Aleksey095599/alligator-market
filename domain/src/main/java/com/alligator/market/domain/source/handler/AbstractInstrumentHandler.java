@@ -13,26 +13,17 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Базовая реализация обработчика {@link InstrumentHandler}.
+ * Base implementation of {@link InstrumentHandler}.
  */
 public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
     private final HandlerCode handlerCode;
 
-    /* Сводный профиль поддерживаемых инструментов. */
     private final SupportedInstrumentsProfile supportedInstrumentsProfile;
 
-    /* Ссылка на провайдера (однократная потокобезопасная привязка). */
     private final AtomicReference<P> sourceRef = new AtomicReference<>();
 
-    /**
-     * Конструктор: обработчик сам выводит свой профиль из набора поддерживаемых инструментов.
-     * <ul>
-     *     <li>Собирает сводный профиль инструментов, поддерживаемых обработчиком;</li>
-     *     <li>Передает валидацию и построение профиля в {@link SupportedInstrumentsProfile};</li>
-     * </ul>
-     */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
             Class<I> instrumentClass,
@@ -89,15 +80,12 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     protected abstract Publisher<SourceMarketDataTick> doStreamSourceTicks(I instrument);
 
     /**
-     * Возвращает провайдера, к которому прикреплен обработчик.
+     * Returns the source attached to this handler.
      */
     protected final P source() {
         return requireAttachedSource();
     }
 
-    /*
-     * Проверка соответствия инструмента сводному профилю поддерживаемых инструментов.
-     */
     private void requireInstrumentMatchesSupportedProfile(I instrument, InstrumentCode instrumentCode) {
         if (!supportedInstrumentsProfile.instrumentClass().isInstance(instrument)) {
             throw new IllegalArgumentException(
@@ -143,9 +131,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
         }
     }
 
-    /*
-     * Проверка, что обработчик прикреплён к провайдеру.
-     */
     private P requireAttachedSource() {
         P source = sourceRef.get();
         if (source == null) {
@@ -156,13 +141,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
         return source;
     }
 
-    /*
-     * Извлекает и валидирует код инструмента.
-     */
     private InstrumentCode requireInstrumentCode(I instrument) {
         return Objects.requireNonNull(instrument.instrumentCode(),
                 "Instrument code is missing for handler '%s'".formatted(handlerCode.value())
         );
     }
-
 }

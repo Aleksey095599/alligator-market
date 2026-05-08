@@ -1,5 +1,5 @@
-export interface ProviderDto {
-  providerCode: string;
+export interface MarketDataSourcePassportDto {
+  sourceCode: string;
   displayName: string;
   deliveryMode: string;
   accessMethod: string;

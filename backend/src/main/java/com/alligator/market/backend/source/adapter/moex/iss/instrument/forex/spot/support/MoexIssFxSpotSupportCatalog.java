@@ -7,37 +7,37 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
- * Каталог FOREX_SPOT-инструментов, поддерживаемых провайдером MOEX ISS.
+ * Catalog of FOREX_SPOT instruments supported by the MOEX ISS source.
  *
- * <p>Содержит инструменты и соответствия "код инструмента в приложении ↔ SECID MOEX ISS".</p>
+ * <p>Contains instruments and mappings between application instrument codes and MOEX ISS SECIDs.</p>
  */
 public class MoexIssFxSpotSupportCatalog {
 
-    /* Доменные валюты. */
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
     private static final Currency RUB = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
 
-    /* Доменные инструменты. */
     private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
-    /* Карта соответствий: код инструмента ↔ SECID. */
     private static final Map<InstrumentCode, SourceInstrumentCode> DOMAIN_CODE_TO_SECID;
 
-    /* Набор поддерживаемых доменных инструментов. */
     public static final Set<FxSpot> SUPPORTED_INSTRUMENTS;
 
     static {
-        // Задаем набор поддерживаемых инструментов
         SUPPORTED_INSTRUMENTS = Collections.unmodifiableSet(
                 new LinkedHashSet<>(List.of(USD_RUB, CNY_RUB))
         );
 
-        // Строим карту соответствий доменных кодов и SECID
         Map<InstrumentCode, SourceInstrumentCode> map = new LinkedHashMap<>();
 
         map.put(USD_RUB.instrumentCode(), SourceInstrumentCode.of("USD000UTSTOM"));
@@ -46,23 +46,19 @@ public class MoexIssFxSpotSupportCatalog {
         DOMAIN_CODE_TO_SECID = Collections.unmodifiableMap(map);
     }
 
-    /* Скрываем конструктор. */
     private MoexIssFxSpotSupportCatalog() {
         throw new UnsupportedOperationException("Utility class");
     }
 
     /**
-     * Конвертер доменного кода инструмента в SECID MOEX ISS.
+     * Converts an application instrument code to the corresponding MOEX ISS SECID.
      *
-     * <p>Конвертер опирается на карту соответствий доменных кодов и SECID MOEX ISS {@link #DOMAIN_CODE_TO_SECID}.</p>
-     *
-     * @param instrumentCode доменный код инструмента
-     * @return SECID MOEX ISS как код инструмента в системе источника
+     * @param instrumentCode application instrument code
+     * @return MOEX ISS SECID as a source instrument code
      */
     public static SourceInstrumentCode moexSecidOf(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        // Ищем значение из карты соответствий
         SourceInstrumentCode secid = DOMAIN_CODE_TO_SECID.get(instrumentCode);
         if (secid == null) {
             throw new IllegalStateException(

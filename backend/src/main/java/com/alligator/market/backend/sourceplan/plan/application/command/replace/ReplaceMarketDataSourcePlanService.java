@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Сервис полной замены плана источников рыночных данных для инструмента.
+ * Service for replacing market data source plans.
  */
 @Slf4j
 public final class ReplaceMarketDataSourcePlanService {
 
-    /* Репозиторий планов источников. */
     private final MarketDataSourcePlanRepository marketDataSourcePlanRepository;
 
-    /* Валидатор существования процесса захвата, инструмента и провайдеров из плана. */
+    /* Validates entities referenced by the plan. */
     private final MarketDataSourcePlanValidator existenceValidator;
 
     public ReplaceMarketDataSourcePlanService(
@@ -38,18 +37,15 @@ public final class ReplaceMarketDataSourcePlanService {
     }
 
     /**
-     * Полностью заменяет содержимое существующего плана источников.
+     * Replaces the contents of an existing source plan.
      */
     public void replace(MarketDataSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        // Проверяем, что процесс захвата реально существует
         existenceValidator.ensureMarketDataCaptureProcessExists(plan);
 
-        // Проверяем, что инструмент реально существует
         existenceValidator.ensureInstrumentExists(plan);
 
-        // Проверяем, что все коды провайдеров из плана существуют
         existenceValidator.ensureSourcesExist(plan);
 
         MarketDataSourcePlan currentPlan = marketDataSourcePlanRepository
@@ -68,7 +64,6 @@ public final class ReplaceMarketDataSourcePlanService {
             return;
         }
 
-        // Условно заменяем содержимое root-plan и сигнализируем, если плана не было
         boolean replaced = marketDataSourcePlanRepository.replaceIfExists(plan);
         if (!replaced) {
             log.warn(

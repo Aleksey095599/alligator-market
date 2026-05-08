@@ -1,7 +1,7 @@
 export type MarketDataSourceLifecycleStatus = 'ACTIVE' | 'RETIRED';
 
 export interface MarketDataSourceResponseDto {
-  providerCode: string;
+  sourceCode: string;
   priority: number;
   lifecycleStatus: MarketDataSourceLifecycleStatus;
 }

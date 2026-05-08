@@ -5,9 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Параметры подключения к провайдеру рыночных данных MOEX ISS по инструментам типа FOREX_SPOT.
- *
- * <p>Параметры автоматически считываются из файла настроек приложения.</p>
+ * Connection properties for the MOEX ISS FOREX_SPOT market data source.
  */
 @Validated
 @ConfigurationProperties("market-data-source.connection-properties.moex.iss.fx-spot")

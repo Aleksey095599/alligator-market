@@ -1,5 +1,5 @@
 export interface MarketDataSourceRequestDto {
-  providerCode: string;
+  sourceCode: string;
   priority: number;
 }
 

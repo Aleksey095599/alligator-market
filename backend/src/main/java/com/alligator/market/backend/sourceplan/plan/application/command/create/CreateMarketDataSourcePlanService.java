@@ -9,18 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 /**
- * Сервис создания плана источников рыночных данных для инструмента.
+ * Service for creating market data source plans.
  *
- * <p>Назначение сервиса — выполнить внешние логические проверки перед созданием плана,
- * а затем делегировать сохранение в доменный репозиторий.</p>
+ * <p>Runs external existence checks before delegating persistence to the domain repository.</p>
  */
 @Slf4j
 public final class CreateMarketDataSourcePlanService {
 
-    /* Репозиторий планов источников. */
     private final MarketDataSourcePlanRepository marketDataSourcePlanRepository;
 
-    /* Валидатор существования процесса захвата, инструмента и провайдеров из плана. */
+    /* Validates entities referenced by the plan. */
     private final MarketDataSourcePlanValidator existenceValidator;
 
     public CreateMarketDataSourcePlanService(
@@ -38,21 +36,17 @@ public final class CreateMarketDataSourcePlanService {
     }
 
     /**
-     * Создаёт новый план источников для инструмента.
+     * Creates a new source plan.
      */
     public void create(MarketDataSourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        // Проверяем, что процесс захвата реально существует
         existenceValidator.ensureMarketDataCaptureProcessExists(plan);
 
-        // Проверяем, что инструмент реально существует
         existenceValidator.ensureInstrumentExists(plan);
 
-        // Проверяем, что все коды провайдеров из плана существуют
         existenceValidator.ensureSourcesExist(plan);
 
-        // Атомарно создаём план, если он ещё не существует
         if (!marketDataSourcePlanRepository.createIfAbsent(plan)) {
             log.warn(
                     "Market data source plan already exists and was not created: captureProcessCode={}, instrumentCode={}",

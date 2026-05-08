@@ -1,7 +1,7 @@
 package com.alligator.market.backend.source.config.adapter.moex.iss.instrument.forex.spot.handler;
 
-import com.alligator.market.backend.source.config.adapter.moex.iss.instrument.forex.spot.web.MoexIssFxSpotWebClientConfig;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
+import com.alligator.market.backend.source.config.adapter.moex.iss.instrument.forex.spot.web.MoexIssFxSpotWebClientConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Wiring-конфигурация {@link MoexIssFxSpotHandler}.
+ * Wiring configuration for {@link MoexIssFxSpotHandler}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssFxSpotWebClientConfig.class)
@@ -18,9 +18,9 @@ public class MoexIssFxSpotHandlerConfig {
     public static final String BEAN_NAME = "moexIssFxSpotHandler";
 
     /**
-     * Бин {@link MoexIssFxSpotHandler}.
+     * Bean for {@link MoexIssFxSpotHandler}.
      *
-     * @param webClient web-клиент обработчика финансового инструмента FOREX_SPOT провайдера MOEX ISS
+     * @param webClient WebClient for the MOEX ISS FOREX_SPOT handler
      */
     @Bean(BEAN_NAME)
     public MoexIssFxSpotHandler moexIssFxSpotHandler(

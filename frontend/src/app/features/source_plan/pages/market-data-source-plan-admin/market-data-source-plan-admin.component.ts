@@ -25,7 +25,7 @@ import {
 import {
   MarketDataCaptureProcessOptionDto,
   InstrumentOptionDto,
-  ProviderOptionDto
+  MarketDataSourceOptionDto
 } from '../../models/market-data-source-plan-options.model';
 import { MarketDataSourceRequestDto } from '../../models/create-market-data-source-plan.model';
 import { MarketDataSourcePlanService } from '../../services/market-data-source-plan.service';
@@ -67,7 +67,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     'instrumentCode',
     'sourceCount',
     'retiredCount',
-    'firstActiveProvider',
+    'firstActiveSource',
     'actions'
   ];
   dataSource = new MatTableDataSource<MarketDataSourcePlanResponseDto>([]);
@@ -77,9 +77,9 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   private activeCaptureProcessCodes = new Set<string>();
   captureProcessOptions: MarketDataCaptureProcessOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
-  private activeProviderOptions: ProviderOptionDto[] = [];
-  private activeProviderCodes = new Set<string>();
-  providerOptions: ProviderOptionDto[] = [];
+  private activeSourceOptions: MarketDataSourceOptionDto[] = [];
+  private activeSourceCodes = new Set<string>();
+  sourceOptions: MarketDataSourceOptionDto[] = [];
 
   /* Флаг блокировки кнопок при запросе. */
   locked = false;
@@ -122,10 +122,10 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     return this.sources.controls;
   }
 
-  /* Есть ли дубликаты провайдеров в редакторе. */
-  get hasDuplicateProviders(): boolean {
+  /* Есть ли дубликаты источников в редакторе. */
+  get hasDuplicateSources(): boolean {
     const values = this.sourceControls
-      .map(c => c.get('providerCode')?.value)
+      .map(c => c.get('sourceCode')?.value)
       .filter(v => !!v);
 
     return new Set(values).size !== values.length;
@@ -145,7 +145,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     return this.form.invalid
       || this.sources.length === 0
       || this.hasRetiredSourceRows
-      || this.hasDuplicateProviders
+      || this.hasDuplicateSources
       || this.hasDuplicatePriorities;
   }
 
@@ -179,9 +179,9 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
         this.syncCaptureProcessOptionsForCurrentMode();
 
         this.instruments = options.instruments;
-        this.activeProviderOptions = options.providers;
-        this.activeProviderCodes = new Set(options.providers.map(provider => provider.code));
-        this.syncProviderOptionsForCurrentMode();
+        this.activeSourceOptions = options.sources;
+        this.activeSourceCodes = new Set(options.sources.map(source => source.code));
+        this.syncSourceOptionsForCurrentMode();
       },
       error: err => {
         this.snack.open(this.resolveErrorMessage(err, 'Load options failed'), 'Close');
@@ -192,7 +192,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
   /* Добавить новую строку source в FormArray. */
   onAddSourceRow(source?: MarketDataSourceResponseDto): void {
     this.sources.push(this.fb.group({
-      providerCode: [source?.providerCode ?? '', [Validators.required]],
+      sourceCode: [source?.sourceCode ?? '', [Validators.required]],
       priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]],
       lifecycleStatus: [source?.lifecycleStatus ?? 'ACTIVE']
     }));
@@ -205,7 +205,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     }
 
     this.sources.removeAt(index);
-    this.syncProviderOptionsForCurrentMode();
+    this.syncSourceOptionsForCurrentMode();
   }
 
   /* Открыть план в editor и перейти в edit mode. */
@@ -223,8 +223,8 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
         this.form.controls['instrumentCode'].disable();
 
         this.sources.clear();
-        this.providerOptions = this.providerOptionsWithHistoricalCodes(
-          fullPlan.sources.map(source => source.providerCode)
+        this.sourceOptions = this.sourceOptionsWithHistoricalCodes(
+          fullPlan.sources.map(source => source.sourceCode)
         );
         fullPlan.sources.forEach(source => this.onAddSourceRow(source));
 
@@ -333,7 +333,7 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.form.controls['instrumentCode'].enable();
 
     this.sources.clear();
-    this.providerOptions = this.activeProviderOptions;
+    this.sourceOptions = this.activeSourceOptions;
     this.onAddSourceRow();
   }
 
@@ -342,17 +342,17 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     this.onReset();
   }
 
-  /* Получить first provider для обзорной таблицы. */
+  /* Получить первый активный источник для обзорной таблицы. */
   retiredCount(plan: MarketDataSourcePlanResponseDto): number {
     return plan.sources.filter(source => this.isRetiredSource(source)).length;
   }
 
-  firstActiveProvider(plan: MarketDataSourcePlanResponseDto): string {
+  firstActiveSource(plan: MarketDataSourcePlanResponseDto): string {
     const sorted = plan.sources
       .filter(source => !this.isRetiredSource(source))
       .sort((a, b) => a.priority - b.priority);
 
-    return sorted[0]?.providerCode ?? '-';
+    return sorted[0]?.sourceCode ?? '-';
   }
 
   isRetiredSource(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): boolean {
@@ -367,8 +367,8 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     return this.sourceControls.some(control => this.isRetiredSource(control.value));
   }
 
-  isProviderActive(providerCode: string): boolean {
-    return this.activeProviderCodes.has(providerCode);
+  isSourceActive(sourceCode: string): boolean {
+    return this.activeSourceCodes.has(sourceCode);
   }
 
   isCaptureProcessActive(captureProcessCode: string): boolean {
@@ -412,43 +412,43 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
     ];
   }
 
-  private syncProviderOptionsForCurrentMode(): void {
+  private syncSourceOptionsForCurrentMode(): void {
     if (!this.editing) {
-      this.providerOptions = this.activeProviderOptions;
+      this.sourceOptions = this.activeSourceOptions;
       return;
     }
 
-    const providerCodes = this.sources.getRawValue()
-      .map((row: { providerCode?: string }) => row.providerCode)
-      .filter((providerCode: string | undefined): providerCode is string => !!providerCode);
+    const sourceCodes = this.sources.getRawValue()
+      .map((row: { sourceCode?: string }) => row.sourceCode)
+      .filter((sourceCode: string | undefined): sourceCode is string => !!sourceCode);
 
-    this.providerOptions = this.providerOptionsWithHistoricalCodes(providerCodes);
+    this.sourceOptions = this.sourceOptionsWithHistoricalCodes(sourceCodes);
   }
 
-  /* Retired provider codes добавляются только для отображения уже загруженных строк в edit mode. */
-  private providerOptionsWithHistoricalCodes(providerCodes: string[]): ProviderOptionDto[] {
-    const historicalCodes = Array.from(new Set(providerCodes))
-      .filter(providerCode => !this.activeProviderCodes.has(providerCode))
+  /* Retired source codes добавляются только для отображения уже загруженных строк в edit mode. */
+  private sourceOptionsWithHistoricalCodes(sourceCodes: string[]): MarketDataSourceOptionDto[] {
+    const historicalCodes = Array.from(new Set(sourceCodes))
+      .filter(sourceCode => !this.activeSourceCodes.has(sourceCode))
       .map(code => ({ code }));
 
-    return [...historicalCodes, ...this.activeProviderOptions];
+    return [...historicalCodes, ...this.activeSourceOptions];
   }
 
   private collectSortedSources(): MarketDataSourceRequestDto[] {
     return this.sources.getRawValue()
-      .map((row: { providerCode: string; priority: number }) => ({
-        providerCode: row.providerCode,
+      .map((row: { sourceCode: string; priority: number }) => ({
+        sourceCode: row.sourceCode,
         priority: Number(row.priority)
       }))
       .sort((a, b) => a.priority - b.priority);
   }
 
   private sourcesFingerprint(
-    sources: Array<{ providerCode: string; priority: number }>
+    sources: Array<{ sourceCode: string; priority: number }>
   ): string {
     return [...sources]
       .map(source => ({
-        providerCode: source.providerCode,
+        sourceCode: source.sourceCode,
         priority: Number(source.priority)
       }))
       .sort((left, right) => {
@@ -458,9 +458,9 @@ export class MarketDataSourcePlanAdminComponent implements OnInit {
           return priorityCompare;
         }
 
-        return left.providerCode.localeCompare(right.providerCode);
+        return left.sourceCode.localeCompare(right.sourceCode);
       })
-      .map(source => `${source.priority}:${source.providerCode}`)
+      .map(source => `${source.priority}:${source.sourceCode}`)
       .join('|');
   }
 

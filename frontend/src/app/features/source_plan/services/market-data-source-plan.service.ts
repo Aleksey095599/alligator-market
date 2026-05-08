@@ -38,7 +38,7 @@ export class MarketDataSourcePlanService {
     );
   }
 
-  /* Получить опции инструментов и провайдеров для формы. */
+  /* Получить опции инструментов и источников для формы. */
   getOptions(): Observable<MarketDataSourcePlanOptionsResponseDto> {
     return this.http.get<MarketDataSourcePlanOptionsResponseDto>(`${this.baseUrl}/options`);
   }

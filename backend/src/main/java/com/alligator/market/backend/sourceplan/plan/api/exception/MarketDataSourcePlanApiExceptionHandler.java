@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Feature-specific обработчик ошибок API.
+ * Feature-specific API exception handler.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -36,7 +36,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
 
 
     /**
-     * Код процесса захвата отсутствует в passport projection --> 400.
+     * Capture process code is missing in the passport projection --> 400.
      */
     @ExceptionHandler(MarketDataCaptureProcessCodeNotFoundException.class)
     public ProblemDetail handleMarketDataCaptureProcessCodeNotFound(MarketDataCaptureProcessCodeNotFoundException ex) {
@@ -50,7 +50,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
     }
 
     /**
-     * Код инструмента отсутствует в registry --> 400.
+     * Instrument code is missing in the registry --> 400.
      */
     @ExceptionHandler(InstrumentCodeNotFoundException.class)
     public ProblemDetail handleInstrumentCodeNotFound(InstrumentCodeNotFoundException ex) {
@@ -64,7 +64,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
     }
 
     /**
-     * Один или несколько кодов провайдера отсутствуют в registry --> 400.
+     * One or more source codes are missing in the registry --> 400.
      */
     @ExceptionHandler(MarketDataSourceCodesNotFoundException.class)
     public ProblemDetail handleMarketDataSourceCodesNotFound(MarketDataSourceCodesNotFoundException ex) {
@@ -78,7 +78,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
     }
 
     /**
-     * План источников уже существует --> 409.
+     * Source plan already exists --> 409.
      */
     @ExceptionHandler(MarketDataSourcePlanAlreadyExistsException.class)
     public ProblemDetail handleMarketDataSourcePlanAlreadyExists(
@@ -94,7 +94,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
     }
 
     /**
-     * План источников не найден --> 404.
+     * Source plan was not found --> 404.
      */
     @ExceptionHandler(MarketDataSourcePlanNotFoundException.class)
     public ProblemDetail handleMarketDataSourcePlanNotFound(MarketDataSourcePlanNotFoundException ex) {
@@ -107,7 +107,7 @@ public class MarketDataSourcePlanApiExceptionHandler {
         );
     }
 
-    /* Общий builder ProblemDetail для единообразного контракта ошибок feature. */
+    /* Shared ProblemDetail builder for this feature's error contract. */
     private ProblemDetail buildProblemDetail(HttpStatus status, String title, String detail, String errorCode) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setTitle(title);

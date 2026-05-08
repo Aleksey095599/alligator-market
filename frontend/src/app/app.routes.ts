@@ -12,10 +12,10 @@ export const routes: Routes = [
       import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
   },
   {
-    path: 'provider-passports',
+    path: 'market-data-source-passports',
     loadChildren: () =>
-      import('./features/provider_passport/provider-passport.module')
-        .then(m => m.ProviderPassportModule)
+      import('./features/market_data_source_passport/market-data-source-passport.module')
+        .then(m => m.MarketDataSourcePassportModule)
   },
   {
     path: 'market-data-capture-processes',

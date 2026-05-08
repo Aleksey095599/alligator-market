@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * Ошибка application-слоя: один или несколько кодов провайдеров не найдены.
+ * Application error: one or more market data source codes were not found.
  */
 public final class MarketDataSourceCodesNotFoundException extends IllegalArgumentException {
 

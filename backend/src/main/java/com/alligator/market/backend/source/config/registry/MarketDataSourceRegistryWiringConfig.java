@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * Wiring-конфигурация {@link MarketDataSourceRegistry}.
+ * Wiring configuration for {@link MarketDataSourceRegistry}.
  *
- * <p>Spring внедряет {@code List<MarketDataSource>} как список всех runtime source-бинов типа
- * {@link MarketDataSource}.</p>
+ * <p>Spring injects {@code List<MarketDataSource>} as all runtime source beans.</p>
  */
 @Configuration(proxyBeanMethods = false)
 public class MarketDataSourceRegistryWiringConfig {
@@ -20,7 +19,7 @@ public class MarketDataSourceRegistryWiringConfig {
     public static final String BEAN_MARKET_DATA_SOURCE_REGISTRY = "marketDataSourceRegistry";
 
     /**
-     * Доменный snapshot-реестр провайдеров.
+     * Domain snapshot registry of market data sources.
      */
     @Bean(BEAN_MARKET_DATA_SOURCE_REGISTRY)
     public MarketDataSourceRegistry marketDataSourceRegistry(List<MarketDataSource> sources) {

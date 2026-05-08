@@ -37,7 +37,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
                 .defaultHeader("User-Agent", "Alligator Market TEST")
                 .build();
 
-        // 2) Собираем реальный обработчик и провайдер
+        // 2) Build the real handler and source.
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(webClient);
         MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
 

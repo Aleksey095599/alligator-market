@@ -55,7 +55,7 @@
             <div class="section-header section-header--compact">
               <div class="section-label">Market Data Sources</div>
               <div class="section-hint">
-                Choose market data providers and set their priority. Lower numbers mean higher priority.
+                Choose market data sources and set their priority. Lower numbers mean higher priority.
               </div>
             </div>
             <button mat-stroked-button type="button" (click)="onAddSourceRow()">
@@ -71,18 +71,18 @@
               [formGroupName]="i"
             >
               <mat-form-field appearance="outline">
-                <mat-label>Provider</mat-label>
-                <mat-select formControlName="providerCode">
+                <mat-label>Source</mat-label>
+                <mat-select formControlName="sourceCode">
                   <mat-option
-                    *ngFor="let provider of providerOptions"
-                    [value]="provider.code"
-                    [disabled]="!isProviderActive(provider.code)"
+                    *ngFor="let source of sourceOptions"
+                    [value]="source.code"
+                    [disabled]="!isSourceActive(source.code)"
                   >
-                    {{ provider.code }}
-                    <span *ngIf="!isProviderActive(provider.code)"> (not active)</span>
+                    {{ source.code }}
+                    <span *ngIf="!isSourceActive(source.code)"> (not active)</span>
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="control.get('providerCode')?.hasError('required')">
+                <mat-error *ngIf="control.get('sourceCode')?.hasError('required')">
                   Is required
                 </mat-error>
               </mat-form-field>
@@ -119,9 +119,9 @@
 
           <div
             class="validation-row"
-            *ngIf="hasDuplicateProviders || hasDuplicatePriorities || hasRetiredSourceRows"
+            *ngIf="hasDuplicateSources || hasDuplicatePriorities || hasRetiredSourceRows"
           >
-            <span *ngIf="hasDuplicateProviders">Duplicate providerCode is not allowed.</span>
+            <span *ngIf="hasDuplicateSources">Duplicate sourceCode is not allowed.</span>
             <span *ngIf="hasDuplicatePriorities">Duplicate priority is not allowed.</span>
             <span *ngIf="hasRetiredSourceRows">Remove retired sources before saving.</span>
           </div>
@@ -199,9 +199,9 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="firstActiveProvider">
-          <th mat-header-cell *matHeaderCellDef>First Active Provider</th>
-          <td mat-cell *matCellDef="let plan">{{ firstActiveProvider(plan) }}</td>
+        <ng-container matColumnDef="firstActiveSource">
+          <th mat-header-cell *matHeaderCellDef>First Active Source</th>
+          <td mat-cell *matCellDef="let plan">{{ firstActiveSource(plan) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

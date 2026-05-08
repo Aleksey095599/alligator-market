@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Use case service for synchronizing source passport projection rows.
  *
- * <p>Здесь задаётся граница транзакции и выполняется синхронизация с доменным реестром.</p>
+ * <p>Defines the transaction boundary and synchronizes the DB projection with the domain registry.</p>
  */
 public final class MarketDataSourcePassportProjectionService {
 
@@ -39,31 +39,31 @@ public final class MarketDataSourcePassportProjectionService {
     }
 
     /**
-     * Синхронизировать БД-проекцию паспортов провайдеров с доменным реестром.
+     * Synchronizes market data source passport projection rows with the domain registry.
      */
     public void project() {
         tx.executeWithoutResult(status -> projectInTransaction());
     }
 
     /**
-     * Выполнить синхронизацию проекции в границах активной транзакции.
+     * Runs projection synchronization inside the active transaction.
      */
     private void projectInTransaction() {
         Map<MarketDataSourceCode, MarketDataSourcePassport> registryPassports = Map.copyOf(
                 Objects.requireNonNull(sourceRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        // Инвариант доменной модели: реестр активных провайдеров не бывает пустым.
+        // Domain invariant: the active source registry must not be empty.
         if (registryPassports.isEmpty()) {
             throw new IllegalStateException("Market data source registry returned no source passports");
         }
 
         Set<MarketDataSourceCode> currentCodes = Set.copyOf(registryPassports.keySet());
 
-        // Синхронизация состава и значений проекции с реестром.
+        // Synchronize projection membership and values with the registry.
         writePort.retireAllExcept(currentCodes);
         writePort.upsertAll(registryPassports);
-        // Изменения lifecycle паспортов провайдеров могут сделать строки source plan устаревшими.
+        // Source passport lifecycle changes can retire source plan entries.
         sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveSourcePassports();
     }
 }

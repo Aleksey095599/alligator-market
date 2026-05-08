@@ -14,17 +14,17 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Валидатор существования связанных сущностей для плана источников.
+ * Validates that entities referenced by a source plan exist.
  */
 public final class MarketDataSourcePlanValidator {
 
-    /* Порт проверки существования процесса захвата по коду. */
+    /* Capture process existence check. */
     private final MarketDataCaptureProcessExistencePort captureProcessExistencePort;
 
-    /* Порт проверки существования инструмента по коду. */
+    /* Instrument existence check. */
     private final InstrumentExistencePort instrumentExistencePort;
 
-    /* Порт проверки существования провайдера по коду. */
+    /* Market data source existence check. */
     private final MarketDataSourceExistencePort sourceExistencePort;
 
     public MarketDataSourcePlanValidator(
@@ -47,7 +47,7 @@ public final class MarketDataSourcePlanValidator {
     }
 
     /**
-     * Проверяет существование процесса захвата.
+     * Ensures that the capture process referenced by the plan exists.
      */
     public void ensureMarketDataCaptureProcessExists(MarketDataSourcePlan plan) {
         if (!captureProcessExistencePort.existsByCode(plan.captureProcessCode())) {
@@ -56,7 +56,7 @@ public final class MarketDataSourcePlanValidator {
     }
 
     /**
-     * Проверяет существование инструмента.
+     * Ensures that the instrument referenced by the plan exists.
      */
     public void ensureInstrumentExists(MarketDataSourcePlan plan) {
         if (!instrumentExistencePort.existsByCode(plan.instrumentCode())) {
@@ -65,7 +65,7 @@ public final class MarketDataSourcePlanValidator {
     }
 
     /**
-     * Проверяет существование всех провайдеров, указанных в плане.
+     * Ensures that all sources referenced by the plan exist.
      */
     public void ensureSourcesExist(MarketDataSourcePlan plan) {
         Set<String> missingSourceCodes = new LinkedHashSet<>();

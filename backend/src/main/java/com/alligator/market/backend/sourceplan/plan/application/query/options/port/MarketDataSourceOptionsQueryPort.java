@@ -5,12 +5,12 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import java.util.List;
 
 /**
- * Порт получения доступных кодов провайдеров для UI.
+ * Port for loading available market data source codes for the UI.
  */
 public interface MarketDataSourceOptionsQueryPort {
 
     /**
-     * Возвращает все доступные коды провайдеров.
+     * Returns all available market data source codes.
      */
     List<MarketDataSourceCode> findAllSourceCodes();
 }

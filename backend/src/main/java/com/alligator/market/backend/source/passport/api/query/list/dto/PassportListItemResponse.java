@@ -1,10 +1,10 @@
 package com.alligator.market.backend.source.passport.api.query.list.dto;
 
 /**
- * API-ответ для одного элемента из списка паспортов.
+ * API response item for a market data source passport.
  */
 public record PassportListItemResponse(
-        String providerCode,
+        String sourceCode,
         String displayName,
         String deliveryMode,
         String accessMethod,
