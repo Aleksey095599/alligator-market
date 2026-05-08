@@ -1,4 +1,4 @@
-package com.alligator.market.backend.process.twap.infrastructure.persistence.jooq.repository;
+package com.alligator.market.backend.process.twap.infra.persistence.jooq.repository;
 
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
@@ -24,7 +24,7 @@ import static org.jooq.impl.DSL.table;
  */
 public final class JooqFxSpotTwapCapturedTicksRepositoryAdapter implements FxSpotTwapCapturedTicksRepository {
 
-    private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
+    private static final Table<?> FX_SPOT_TWAP_CAPTURED_TICKS = table(name("fx_spot_twap_captured_ticks"));
 
     private static final Field<String> CAPTURER_CODE = field(name("capturer_code"), String.class);
     private static final Field<String> INSTRUMENT_CODE = field(name("instrument_code"), String.class);
@@ -50,7 +50,7 @@ public final class JooqFxSpotTwapCapturedTicksRepositoryAdapter implements FxSpo
         SourceMarketDataTick sourceTick = tick.sourceTick();
         TickPrices prices = pricesOf(sourceTick);
 
-        dsl.insertInto(CAPTURED_MARKET_DATA_TICK)
+        dsl.insertInto(FX_SPOT_TWAP_CAPTURED_TICKS)
                 .set(CAPTURER_CODE, tick.capturerCode().value())
                 .set(INSTRUMENT_CODE, tick.instrumentCode().value())
                 .set(SOURCE_CODE, tick.sourceCode().value())

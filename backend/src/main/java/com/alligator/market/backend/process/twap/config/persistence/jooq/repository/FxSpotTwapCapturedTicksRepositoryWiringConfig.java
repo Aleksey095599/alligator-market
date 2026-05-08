@@ -1,6 +1,6 @@
 package com.alligator.market.backend.process.twap.config.persistence.jooq.repository;
 
-import com.alligator.market.backend.process.twap.infrastructure.persistence.jooq.repository.JooqFxSpotTwapCapturedTicksRepositoryAdapter;
+import com.alligator.market.backend.process.twap.infra.persistence.jooq.repository.JooqFxSpotTwapCapturedTicksRepositoryAdapter;
 import com.alligator.market.domain.process.twap.repository.FxSpotTwapCapturedTicksRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;

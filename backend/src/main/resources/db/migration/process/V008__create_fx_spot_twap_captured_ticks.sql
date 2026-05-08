@@ -1,5 +1,5 @@
--- captured_market_data_tick: captured-level market data ticks
-CREATE TABLE captured_market_data_tick
+-- fx_spot_twap_captured_ticks: captured FX Spot ticks for the TWAP process
+CREATE TABLE fx_spot_twap_captured_ticks
 (
     id                     BIGSERIAL PRIMARY KEY,
 
@@ -18,7 +18,7 @@ CREATE TABLE captured_market_data_tick
     bid_price              NUMERIC(38, 18),
     ask_price              NUMERIC(38, 18),
 
-    CONSTRAINT chk_captured_market_data_tick_type
+    CONSTRAINT chk_fx_spot_twap_captured_ticks_type
         CHECK (
             (
                 source_tick_type = 'LAST_PRICE'
@@ -35,14 +35,14 @@ CREATE TABLE captured_market_data_tick
             )
         ),
 
-    CONSTRAINT chk_captured_market_data_tick_positive_prices
+    CONSTRAINT chk_fx_spot_twap_captured_ticks_positive_prices
         CHECK (
             (last_price IS NULL OR last_price > 0)
                 AND (bid_price IS NULL OR bid_price > 0)
                 AND (ask_price IS NULL OR ask_price > 0)
         ),
 
-    CONSTRAINT chk_captured_market_data_tick_bid_ask
+    CONSTRAINT chk_fx_spot_twap_captured_ticks_bid_ask
         CHECK (
             bid_price IS NULL
                 OR ask_price IS NULL
