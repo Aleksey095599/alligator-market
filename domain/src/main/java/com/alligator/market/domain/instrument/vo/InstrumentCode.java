@@ -2,11 +2,6 @@ package com.alligator.market.domain.instrument.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Объект-значение уникального внутреннего кода инструмента.
- *
- * @param value нормализованный код инструмента
- */
 public record InstrumentCode(
         String value
 ) {

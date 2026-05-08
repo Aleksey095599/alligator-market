@@ -2,11 +2,6 @@ package com.alligator.market.domain.instrument.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Объект-значение торгового символа инструмента.
- *
- * @param value нормализованный символ инструмента
- */
 public record InstrumentSymbol(
         String value
 ) {

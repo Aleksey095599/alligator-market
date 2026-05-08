@@ -12,9 +12,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Base implementation of {@link InstrumentHandler}.
- */
 public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
@@ -24,13 +21,6 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
 
     private final AtomicReference<P> sourceRef = new AtomicReference<>();
 
-    /**
-     * Creates an instrument handler.
-     *
-     * @param handlerCode          the handler code
-     * @param instrumentClass      the instrument class
-     * @param supportedInstruments the supported instruments
-     */
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
             Class<I> instrumentClass,
@@ -82,13 +72,10 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
     }
 
     /**
-     * Extension point for pure logic of getting
+     * Called after the handler is attached and the instrument matches the supported profile.
      */
     protected abstract Publisher<SourceMarketDataTick> doStreamSourceTicks(I instrument);
 
-    /**
-     * Returns the source attached to this handler.
-     */
     protected final P source() {
         return requireAttachedSource();
     }

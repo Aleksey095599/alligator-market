@@ -6,14 +6,6 @@ import com.alligator.market.domain.source.passport.vo.MarketDataSourceDisplayNam
 
 import java.util.Objects;
 
-/**
- * Immutable descriptive metadata of a market data source.
- *
- * @param displayName      the source display name
- * @param deliveryMode     the market data delivery mode
- * @param accessMethod     the market data access method
- * @param bulkSubscription whether the source supports bulk subscription in a single request
- */
 public record MarketDataSourcePassport(
         MarketDataSourceDisplayName displayName,
         DeliveryMode deliveryMode,

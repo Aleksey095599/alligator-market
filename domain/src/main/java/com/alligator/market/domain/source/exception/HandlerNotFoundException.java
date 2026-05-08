@@ -5,9 +5,6 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.Objects;
 
-/**
- * Обработчик для инструмента не найден.
- */
 public final class HandlerNotFoundException extends IllegalStateException {
 
     public HandlerNotFoundException(InstrumentCode instrumentCode, MarketDataSourceCode sourceCode) {

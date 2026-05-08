@@ -14,9 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Immutable snapshot implementation of {@link MarketDataCapturerRegistry}.
- */
 public final class SnapshotMarketDataCapturerRegistry implements MarketDataCapturerRegistry {
 
     private final Map<MarketDataCapturerCode, MarketDataCapturer> capturersByCode;

@@ -7,28 +7,13 @@ import com.alligator.market.domain.source.policy.MarketDataSourcePolicy;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import org.reactivestreams.Publisher;
 
-/**
- * Domain contract of a runtime market data source.
- */
 public interface MarketDataSource {
 
-    /**
-     * Unique source code.
-     */
     MarketDataSourceCode sourceCode();
 
-    /**
-     * Stable source metadata.
-     */
     MarketDataSourcePassport passport();
 
-    /**
-     * Source-specific policy.
-     */
     MarketDataSourcePolicy policy();
 
-    /**
-     * Streams source-level market data ticks for the given instrument.
-     */
     <I extends Instrument> Publisher<SourceMarketDataTick> streamSourceTicks(I instrument);
 }

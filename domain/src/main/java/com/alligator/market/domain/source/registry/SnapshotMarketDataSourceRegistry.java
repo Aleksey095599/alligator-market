@@ -7,23 +7,12 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.*;
 
-/**
- * Immutable snapshot implementation of {@link MarketDataSourceRegistry}.
- */
 public final class SnapshotMarketDataSourceRegistry implements MarketDataSourceRegistry {
 
-    /* Immutable map "source code -> source". */
     private final Map<MarketDataSourceCode, MarketDataSource> sourcesByCode;
 
-    /* Immutable map "source code -> source passport". */
     private final Map<MarketDataSourceCode, MarketDataSourcePassport> passportsByCode;
 
-    /**
-     * Creates a snapshot registry and validates source uniqueness.
-     *
-     * @param sources market data sources to register
-     * @throws IllegalArgumentException if the source list is empty or contains duplicates
-     */
     public SnapshotMarketDataSourceRegistry(List<? extends MarketDataSource> sources) {
         Objects.requireNonNull(sources, "sources must not be null");
 
@@ -77,9 +66,6 @@ public final class SnapshotMarketDataSourceRegistry implements MarketDataSourceR
         return sourcesByCode;
     }
 
-    /**
-     * Returns the precomputed passport map.
-     */
     @Override
     public Map<MarketDataSourceCode, MarketDataSourcePassport> passportsByCode() {
         return passportsByCode;

@@ -8,12 +8,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Source-level рыночный тик типа "Top-of-book Quote" с лучшими ценами bid/ask на время предоставления тика.
- *
- * @param sourceInstrumentCode идентификатор инструмента в системе источника
- * @param bidPrice             лучшая цена bid
- * @param askPrice             лучшая цена ask
- * @param sourceTimestamp      время предоставления цен источником
+ * Source-level top-of-book quote tick with best bid and ask prices.
  */
 public record SourceTopOfBookQuoteTick(
         SourceInstrumentCode sourceInstrumentCode,

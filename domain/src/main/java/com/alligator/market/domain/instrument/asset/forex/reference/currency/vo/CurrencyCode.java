@@ -3,9 +3,7 @@ package com.alligator.market.domain.instrument.asset.forex.reference.currency.vo
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 /**
- * Объект-значение кода валюты в формате ISO 4217.
- *
- * @param value нормализованный трехбуквенный код валюты
+ * ISO 4217 currency code normalized to uppercase three-letter form.
  */
 public record CurrencyCode(
         String value

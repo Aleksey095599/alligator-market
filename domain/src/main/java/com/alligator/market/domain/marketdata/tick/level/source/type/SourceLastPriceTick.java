@@ -7,13 +7,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
-/**
- * Source-level рыночный тик типа "Last Price".
- *
- * @param sourceInstrumentCode идентификатор инструмента в системе источника
- * @param lastPrice            последняя цена сделки
- * @param sourceTimestamp      время сделки в источнике
- */
 public record SourceLastPriceTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal lastPrice,

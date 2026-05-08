@@ -5,12 +5,8 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import java.util.Objects;
 
 /**
- * An entry in a source plan.
- *
- * @param sourceCode   the market data source code
- * @param priority     the entry priority; lower values have higher priority, with 0 as the highest priority
+ * Lower priority values are preferred; 0 is the highest priority.
  */
-
 public record SourcePlanEntry(
         MarketDataSourceCode sourceCode,
         int priority

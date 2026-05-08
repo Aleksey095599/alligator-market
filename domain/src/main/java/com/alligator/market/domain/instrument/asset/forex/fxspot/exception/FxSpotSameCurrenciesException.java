@@ -4,9 +4,6 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.
 
 import java.util.Objects;
 
-/**
- * Ошибка: базовая и котируемая валюты совпадают.
- */
 public final class FxSpotSameCurrenciesException extends IllegalArgumentException {
 
     public FxSpotSameCurrenciesException(CurrencyCode currencyCode) {

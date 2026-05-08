@@ -2,11 +2,6 @@ package com.alligator.market.domain.capturer.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Value object for a market data capturer display name.
- *
- * @param value non-blank capturer name for UI and diagnostics
- */
 public record MarketDataCapturerDisplayName(
         String value
 ) {

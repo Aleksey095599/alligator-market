@@ -12,16 +12,6 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.exception.FxSpo
 
 import java.util.Objects;
 
-/**
- * Финансовый инструмент FOREX_SPOT.
- *
- * <p>Примечание: FOREX_SPOT реализует доменный контракт инструмента {@link Instrument}.</p>
- *
- * @param base                       Базовая валюта
- * @param quote                      Котируемая валюта
- * @param tenor                      Тенор даты валютирования
- * @param defaultQuoteFractionDigits Количество знаков после запятой в котировке по умолчанию
- */
 public record FxSpot(
         Currency base,
         Currency quote,
@@ -30,20 +20,15 @@ public record FxSpot(
 
 ) implements Instrument {
 
-    /**
-     * Конструктор с проверками.
-     */
     public FxSpot {
         Objects.requireNonNull(base, "base must not be null");
         Objects.requireNonNull(quote, "quote must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");
 
-        // Ограничение на количество знаков после запятой в котировке согласно рыночной практике
         if (defaultQuoteFractionDigits < 0 || defaultQuoteFractionDigits > 10) {
             throw new IllegalArgumentException("defaultQuoteFractionDigits must be between 0 and 10");
         }
 
-        // Валюты не должны совпадать
         if (base.code().equals(quote.code())) {
             throw new FxSpotSameCurrenciesException(base.code());
         }

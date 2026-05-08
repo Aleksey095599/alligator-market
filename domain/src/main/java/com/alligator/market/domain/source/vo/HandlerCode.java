@@ -2,11 +2,6 @@ package com.alligator.market.domain.source.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Value object for a source handler code.
- *
- * @param value normalized handler code
- */
 public record HandlerCode(
         String value
 ) {

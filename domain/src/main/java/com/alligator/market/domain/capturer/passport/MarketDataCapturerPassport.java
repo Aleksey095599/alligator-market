@@ -4,11 +4,6 @@ import com.alligator.market.domain.capturer.vo.MarketDataCapturerDisplayName;
 
 import java.util.Objects;
 
-/**
- * Stable metadata of a market data capturer.
- *
- * @param displayName human-readable capturer name
- */
 public record MarketDataCapturerPassport(
         MarketDataCapturerDisplayName displayName
 ) {

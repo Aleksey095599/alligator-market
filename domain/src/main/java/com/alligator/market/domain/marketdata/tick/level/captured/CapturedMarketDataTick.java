@@ -9,13 +9,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Captured-level market data tick built from a source-level tick plus application capture metadata.
- *
- * @param capturerCode      code of the capturer that produced the tick
- * @param instrumentCode    instrument code
- * @param sourceCode        market data source code
- * @param sourceTick        source-level tick received from the source
- * @param receivedTimestamp time when the tick was received by the application
+ * Captured tick with source data plus application capture metadata.
  */
 public record CapturedMarketDataTick(
         MarketDataCapturerCode capturerCode,

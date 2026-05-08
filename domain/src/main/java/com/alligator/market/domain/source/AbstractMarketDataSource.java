@@ -13,9 +13,6 @@ import org.reactivestreams.Publisher;
 
 import java.util.*;
 
-/**
- * Base implementation of a runtime market data source.
- */
 public abstract class AbstractMarketDataSource<P extends MarketDataSource>
         implements MarketDataSource {
 
@@ -23,25 +20,13 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
     protected final MarketDataSourcePassport passport;
     protected final MarketDataSourcePolicy policy;
 
-    /* Карта "код инструмента → обработчик инструмента". */
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     /**
-     * F-bounded полиморфизм: возвращает текущий экземпляр source в его конкретном дженерик-типе {@code P}.
-     *
-     * <p>Назначение: Используется для прикрепления обработчиков к source.</p>
+     * Returns this source in its concrete generic type for type-safe handler attachment.
      */
     protected abstract P self();
 
-    /**
-     * Конструктор:
-     * <ul>
-     *     <li>Выполняет базовые проверки параметров;</li>
-     *     <li>Собирает неизменяемую карту "код инструмента → обработчик инструмента";</li>
-     *     <li>Валидирует инварианты: уникальность кодов обработчиков, один код инструмента → один обработчик;</li>
-     *     <li>Прикрепляет переданные обработчики к source.</li>
-     * </ul>
-     */
     protected AbstractMarketDataSource(
             MarketDataSourceCode sourceCode,
             MarketDataSourcePassport passport,
@@ -61,10 +46,8 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
         this.passport = passport;
         this.policy = policy;
 
-        // Собираем неизменяемую однозначную карту "код инструмента → обработчик инструмента"
         this.instrumentHandlerMap = buildInstrumentHandlerMap(sourceCode, handlers);
 
-        // Прикрепляем обработчики к source
         for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
             h.attachTo(self());
         }
@@ -85,31 +68,17 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
         return policy;
     }
 
-    /**
-     * Template implementation for streaming source-level ticks:
-     * finds the handler for the given instrument and delegates the call to it.
-     */
     @Override
     public final <I extends Instrument> Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
-        // Находим обработчик (или бросаем исключение)
         InstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
 
-        // Делегируем запрос source ticks обработчику
         return handler.streamSourceTicks(instrument);
     }
 
     /**
-     * Собирает неизменяемую карту и валидирует инварианты:
-     * <ul>
-     *     <li>Уникальность кодов обработчиков;</li>
-     *     <li>Один код инструмента → один обработчик (однозначность).</li>
-     * </ul>
-     *
-     * @param sourceCode код source, к которому прикреплены обработчики
-     * @param handlers     набор обработчиков
-     * @return неизменяемую карту
+     * Builds the lookup map and rejects ambiguous handler registrations.
      */
     private static <P extends MarketDataSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
@@ -150,9 +119,6 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
         return Collections.unmodifiableMap(map);
     }
 
-    /**
-     * Ищет обработчик инструмента или бросает исключение.
-     */
     @SuppressWarnings("unchecked")
     protected final <I extends Instrument> InstrumentHandler<P, I> findHandlerOrThrow(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");

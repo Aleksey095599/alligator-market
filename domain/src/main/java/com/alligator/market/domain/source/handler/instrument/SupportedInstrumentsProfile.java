@@ -12,15 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Сводный профиль инструментов, поддерживаемых обработчиком.
- *
- * <p>Назначение: Фиксирует набор кодов инструментов и параметры, которым должен соответствовать инструмент,
- * чтобы быть совместимым с обработчиком.</p>
- *
- * @param supportedInstrumentCodes Набор допустимых кодов инструментов
- * @param instrumentClass          Класс инструмента
- * @param asset                    Актив, лежащий в основе финансового инструмента
- * @param product                  Продукт (тип контракта) финансового инструмента
+ * Compatibility profile derived from the instruments supported by a handler.
  */
 public record SupportedInstrumentsProfile(
         Set<InstrumentCode> supportedInstrumentCodes,
@@ -29,9 +21,6 @@ public record SupportedInstrumentsProfile(
         Product product
 ) {
 
-    /**
-     * Строит сводный профиль из supportedInstruments с полной fail-fast валидацией.
-     */
     public static <I extends Instrument> SupportedInstrumentsProfile fromSupportedInstruments(
             HandlerCode handlerCode,
             Class<I> instrumentClass,
@@ -117,22 +106,15 @@ public record SupportedInstrumentsProfile(
         );
     }
 
-    /**
-     * Канонический конструктор с fail-fast валидацией.
-     */
     public SupportedInstrumentsProfile {
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
         Objects.requireNonNull(instrumentClass, "instrumentClass must not be null");
         Objects.requireNonNull(asset, "asset must not be null");
         Objects.requireNonNull(product, "product must not be null");
 
-        // Создаём защитную копию набора
         supportedInstrumentCodes = Set.copyOf(supportedInstrumentCodes);
     }
 
-    /*
-     * Возвращает неизменяемую защищенную копию списка поддерживаемых инструментов.
-     */
     private static Set<InstrumentCode> freezeSupportedInstrumentCodes(Set<InstrumentCode> supportedInstrumentCodes) {
         Objects.requireNonNull(supportedInstrumentCodes, "supportedInstrumentCodes must not be null");
 

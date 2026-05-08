@@ -6,9 +6,6 @@ import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 
 import java.util.*;
 
-/**
- * A source plan for one market data capturer and one instrument.
- */
 @SuppressWarnings("ClassCanBeRecord") // Domain model, not a DTO-style data carrier.
 public final class SourcePlan {
 
@@ -16,13 +13,6 @@ public final class SourcePlan {
     private final InstrumentCode instrumentCode;
     private final List<SourcePlanEntry> entries;
 
-    /**
-     * Creates a source plan.
-     *
-     * @param capturerCode   the market data capturer code
-     * @param instrumentCode the instrument code
-     * @param entries        the source plan entries
-     */
     public SourcePlan(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
@@ -33,9 +23,6 @@ public final class SourcePlan {
         this.entries = copyAndValidateEntries(Objects.requireNonNull(entries, "entries must not be null"));
     }
 
-    /**
-     * Validate entries and create a safe copy.
-     */
     private static List<SourcePlanEntry> copyAndValidateEntries(
             List<SourcePlanEntry> entries
     ) {

@@ -9,19 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Registry of runtime market data sources available in the application.
- */
 public interface MarketDataSourceRegistry {
 
-    /**
-     * Immutable map "source code -> source".
-     */
     Map<MarketDataSourceCode, MarketDataSource> sourcesByCode();
 
-    /**
-     * Derived immutable map "source code -> source passport".
-     */
     default Map<MarketDataSourceCode, MarketDataSourcePassport> passportsByCode() {
         Map<MarketDataSourceCode, MarketDataSourcePassport> map = new LinkedHashMap<>();
 

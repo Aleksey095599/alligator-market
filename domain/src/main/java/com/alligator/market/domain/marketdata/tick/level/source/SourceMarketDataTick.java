@@ -6,22 +6,13 @@ import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrum
 import java.time.Instant;
 
 /**
- * Source-level рыночный тик от источника рыночных данных.
+ * Market data tick as reported by an external source.
  */
 public interface SourceMarketDataTick {
 
-    /**
-     * Тип source-level рыночного тика.
-     */
     SourceMarketDataTickType sourceTickType();
 
-    /**
-     * Идентификатор инструмента в системе источника рыночных данных.
-     */
     SourceInstrumentCode sourceInstrumentCode();
 
-    /**
-     * Время рыночного тика в системе источника рыночных данных.
-     */
     Instant sourceTimestamp();
 }

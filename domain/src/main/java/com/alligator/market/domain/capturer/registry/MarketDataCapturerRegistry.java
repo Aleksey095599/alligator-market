@@ -9,19 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Registry of market data capturers available in the application.
- */
 public interface MarketDataCapturerRegistry {
 
-    /**
-     * Immutable map of capturer code to capturer.
-     */
     Map<MarketDataCapturerCode, MarketDataCapturer> capturersByCode();
 
-    /**
-     * Derived immutable map of capturer code to passport.
-     */
     default Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsByCode() {
         Map<MarketDataCapturerCode, MarketDataCapturerPassport> map = new LinkedHashMap<>();
 

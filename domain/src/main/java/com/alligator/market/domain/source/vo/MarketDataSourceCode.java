@@ -2,11 +2,6 @@ package com.alligator.market.domain.source.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Code of a market data source.
- *
- * @param value the normalized source code
- */
 public record MarketDataSourceCode(
         String value
 ) {

@@ -4,9 +4,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-/**
- * Common normalizer for domain string value objects.
- */
 public final class StringValueNormalizer {
 
     private StringValueNormalizer() {

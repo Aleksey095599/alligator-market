@@ -2,11 +2,6 @@ package com.alligator.market.domain.source.passport.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Display name of a market data source.
- *
- * @param value the non-empty source name used in UI and diagnostics
- */
 public record MarketDataSourceDisplayName(
         String value
 ) {
