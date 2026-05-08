@@ -1,8 +1,8 @@
-package com.alligator.market.backend.capturer.config.catalog.twap.fxspot.analytical.lastprice.application;
+package com.alligator.market.backend.process.twap.config.application;
 
 import com.alligator.market.backend.infra.time.config.TimeWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
-import com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.application.AnalyticalFxSpotTwapLastPriceCaptureOnceService;
+import com.alligator.market.backend.process.twap.application.FxSpotTwapCaptureOnceService;
 import com.alligator.market.backend.process.twap.config.persistence.jooq.repository.FxSpotTwapCapturedTicksRepositoryWiringConfig;
 import com.alligator.market.backend.source.config.registry.MarketDataSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.SourcePlanRepositoryWiringConfig;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import java.time.Clock;
 
 /**
- * Wiring-конфигурация {@link AnalyticalFxSpotTwapLastPriceCaptureOnceService}.
+ * Wiring-конфигурация {@link FxSpotTwapCaptureOnceService}.
  */
 @Configuration(proxyBeanMethods = false)
 @Import({
@@ -28,13 +28,13 @@ import java.time.Clock;
         FxSpotTwapCapturedTicksRepositoryWiringConfig.class,
         TimeWiringConfig.class
 })
-public class AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig {
+public class FxSpotTwapCaptureOnceServiceWiringConfig {
 
-    public static final String BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_ONCE_SERVICE =
-            "analyticalFxSpotTwapLastPriceCaptureOnceService";
+    public static final String BEAN_FX_SPOT_TWAP_CAPTURE_ONCE_SERVICE =
+            "fxSpotTwapCaptureOnceService";
 
-    @Bean(BEAN_ANALYTICAL_FX_SPOT_TWAP_LAST_PRICE_CAPTURE_ONCE_SERVICE)
-    public AnalyticalFxSpotTwapLastPriceCaptureOnceService analyticalFxSpotTwapLastPriceCaptureOnceService(
+    @Bean(BEAN_FX_SPOT_TWAP_CAPTURE_ONCE_SERVICE)
+    public FxSpotTwapCaptureOnceService fxSpotTwapCaptureOnceService(
             @Qualifier(SourcePlanRepositoryWiringConfig.BEAN_SOURCE_PLAN_REPOSITORY)
             SourcePlanRepository sourcePlanRepository,
             @Qualifier(MarketDataSourceRegistryWiringConfig.BEAN_MARKET_DATA_SOURCE_REGISTRY)
@@ -45,7 +45,7 @@ public class AnalyticalFxSpotTwapLastPriceCaptureOnceServiceWiringConfig {
             FxSpotTwapCapturedTicksRepository capturedTickRepository,
             Clock clock
     ) {
-        return new AnalyticalFxSpotTwapLastPriceCaptureOnceService(
+        return new FxSpotTwapCaptureOnceService(
                 sourcePlanRepository,
                 sourceRegistry,
                 fxSpotRepository,

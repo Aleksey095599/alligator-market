@@ -1,4 +1,4 @@
-package com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.application.exception;
+package com.alligator.market.backend.process.twap.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
@@ -8,9 +8,9 @@ import java.util.Objects;
 /**
  * Ошибка application-слоя: план источников для capture процесса не найден.
  */
-public final class AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException extends IllegalStateException {
+public final class FxSpotTwapSourcePlanNotFoundException extends IllegalStateException {
 
-    public AnalyticalFxSpotTwapLastPriceSourcePlanNotFoundException(
+    public FxSpotTwapSourcePlanNotFoundException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {

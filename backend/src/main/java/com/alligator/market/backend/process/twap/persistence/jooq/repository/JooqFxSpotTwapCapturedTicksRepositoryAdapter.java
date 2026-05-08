@@ -1,4 +1,4 @@
-package com.alligator.market.backend.process.twap.infra.persistence.jooq.repository;
+package com.alligator.market.backend.process.twap.persistence.jooq.repository;
 
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;

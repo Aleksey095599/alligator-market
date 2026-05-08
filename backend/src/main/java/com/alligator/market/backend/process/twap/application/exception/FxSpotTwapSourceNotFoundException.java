@@ -1,4 +1,4 @@
-package com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.application.exception;
+package com.alligator.market.backend.process.twap.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
@@ -9,9 +9,9 @@ import java.util.Objects;
 /**
  * Application-layer error: the selected market data source is not available.
  */
-public final class AnalyticalFxSpotTwapLastPriceSourceNotFoundException extends IllegalStateException {
+public final class FxSpotTwapSourceNotFoundException extends IllegalStateException {
 
-    public AnalyticalFxSpotTwapLastPriceSourceNotFoundException(
+    public FxSpotTwapSourceNotFoundException(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
@@ -22,7 +22,7 @@ public final class AnalyticalFxSpotTwapLastPriceSourceNotFoundException extends 
         ));
     }
 
-    public AnalyticalFxSpotTwapLastPriceSourceNotFoundException(MarketDataSourceCode sourceCode) {
+    public FxSpotTwapSourceNotFoundException(MarketDataSourceCode sourceCode) {
         super("Market data source not found for analytical FX_SPOT TWAP last price capture (sourceCode=%s)".formatted(
                 Objects.requireNonNull(sourceCode, "sourceCode must not be null").value()
         ));

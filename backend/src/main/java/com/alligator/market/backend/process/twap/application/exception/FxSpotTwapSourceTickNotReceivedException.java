@@ -1,4 +1,4 @@
-package com.alligator.market.backend.capturer.catalog.twap.fxspot.analytical.lastprice.application.exception;
+package com.alligator.market.backend.process.twap.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
@@ -8,9 +8,9 @@ import java.util.Objects;
 /**
  * Application error: the source did not return a source tick for one capture step.
  */
-public final class AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException extends IllegalStateException {
+public final class FxSpotTwapSourceTickNotReceivedException extends IllegalStateException {
 
-    public AnalyticalFxSpotTwapLastPriceSourceTickNotReceivedException(
+    public FxSpotTwapSourceTickNotReceivedException(
             InstrumentCode instrumentCode,
             MarketDataSourceCode sourceCode
     ) {
