@@ -1,10 +1,10 @@
-package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository;
+package com.alligator.market.backend.process.twap.infrastructure.persistence.jooq.repository;
 
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.captured.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceTopOfBookQuoteTick;
+import com.alligator.market.domain.process.twap.repository.FxSpotTwapCapturedTicksRepository;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Table;
@@ -20,9 +20,9 @@ import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
 /**
- * jOOQ-адаптер append-only сохранения captured-level рыночных тиков.
+ * jOOQ adapter for append-only storage of ticks captured by the FX Spot TWAP process.
  */
-public final class JooqCapturedMarketDataTickRepositoryAdapter implements CapturedMarketDataTickRepository {
+public final class JooqFxSpotTwapCapturedTicksRepositoryAdapter implements FxSpotTwapCapturedTicksRepository {
 
     private static final Table<?> CAPTURED_MARKET_DATA_TICK = table(name("captured_market_data_tick"));
 
@@ -39,7 +39,7 @@ public final class JooqCapturedMarketDataTickRepositoryAdapter implements Captur
 
     private final DSLContext dsl;
 
-    public JooqCapturedMarketDataTickRepositoryAdapter(DSLContext dsl) {
+    public JooqFxSpotTwapCapturedTicksRepositoryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 

@@ -8,8 +8,8 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.captured.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.process.twap.repository.FxSpotTwapCapturedTicksRepository;
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
@@ -35,14 +35,14 @@ public final class AnalyticalFxSpotTwapLastPriceCaptureOnceService {
     private final SourcePlanRepository sourcePlanRepository;
     private final MarketDataSourceRegistry sourceRegistry;
     private final FxSpotRepository fxSpotRepository;
-    private final CapturedMarketDataTickRepository capturedTickRepository;
+    private final FxSpotTwapCapturedTicksRepository capturedTickRepository;
     private final Clock clock;
 
     public AnalyticalFxSpotTwapLastPriceCaptureOnceService(
             SourcePlanRepository sourcePlanRepository,
             MarketDataSourceRegistry sourceRegistry,
             FxSpotRepository fxSpotRepository,
-            CapturedMarketDataTickRepository capturedTickRepository,
+            FxSpotTwapCapturedTicksRepository capturedTickRepository,
             Clock clock
     ) {
         this.sourcePlanRepository = Objects.requireNonNull(sourcePlanRepository,
