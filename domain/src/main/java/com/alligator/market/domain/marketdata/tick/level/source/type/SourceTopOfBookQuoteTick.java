@@ -1,7 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.level.source.type;
 
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.application.port;
 
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 
 /**
  * Порт проверки существования зарегистрированного процесса захвата рыночных данных по его коду.

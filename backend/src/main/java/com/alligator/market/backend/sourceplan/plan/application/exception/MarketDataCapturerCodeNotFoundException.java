@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.application.exception;
 
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 
 import java.util.Objects;
 

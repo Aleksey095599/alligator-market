@@ -2,7 +2,7 @@ package com.alligator.market.backend;
 
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
-import com.alligator.market.backend.marketdata.config.capturer.MarketDataCapturerFeatureWiringConfig;
+import com.alligator.market.backend.config.capturer.MarketDataCapturerFeatureWiringConfig;
 import com.alligator.market.backend.source.config.MarketDataSourceFeatureWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.SourcingPlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;

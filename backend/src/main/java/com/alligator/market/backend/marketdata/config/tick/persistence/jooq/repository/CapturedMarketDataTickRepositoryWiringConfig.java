@@ -1,7 +1,7 @@
 package com.alligator.market.backend.marketdata.config.tick.persistence.jooq.repository;
 
 import com.alligator.market.backend.marketdata.tick.persistence.jooq.repository.JooqCapturedMarketDataTickRepositoryAdapter;
-import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
+import com.alligator.market.domain.marketdata.tick.level.captured.repository.CapturedMarketDataTickRepository;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

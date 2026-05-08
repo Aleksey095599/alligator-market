@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.api.command.delete.controll
 
 import com.alligator.market.backend.sourceplan.plan.application.command.delete.DeleteMarketDataSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

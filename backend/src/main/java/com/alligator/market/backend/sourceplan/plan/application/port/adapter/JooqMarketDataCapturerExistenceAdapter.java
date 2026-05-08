@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import org.jooq.DSLContext;
 
 import java.util.Objects;

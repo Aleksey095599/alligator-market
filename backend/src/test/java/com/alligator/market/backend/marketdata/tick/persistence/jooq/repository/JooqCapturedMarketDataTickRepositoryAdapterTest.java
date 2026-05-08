@@ -1,9 +1,9 @@
 package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
+import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;

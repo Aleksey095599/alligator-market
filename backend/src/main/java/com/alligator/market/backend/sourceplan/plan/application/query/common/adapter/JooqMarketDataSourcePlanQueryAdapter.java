@@ -4,7 +4,7 @@ import com.alligator.market.backend.sourceplan.plan.application.query.common.mod
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.MarketDataSourceQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.MarketDataSourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;

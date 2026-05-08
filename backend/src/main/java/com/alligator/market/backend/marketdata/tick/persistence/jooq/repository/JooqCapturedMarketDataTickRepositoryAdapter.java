@@ -1,7 +1,7 @@
 package com.alligator.market.backend.marketdata.tick.persistence.jooq.repository;
 
-import com.alligator.market.domain.marketdata.tick.level.capture.CapturedMarketDataTick;
-import com.alligator.market.domain.marketdata.tick.level.capture.repository.CapturedMarketDataTickRepository;
+import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.captured.repository.CapturedMarketDataTickRepository;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceTopOfBookQuoteTick;

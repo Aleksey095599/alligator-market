@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.level.source;
 
-import com.alligator.market.domain.marketdata.tick.level.source.classification.SourceMarketDataTickType;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceMarketDataTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.time.Instant;

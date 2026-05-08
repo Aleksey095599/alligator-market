@@ -4,7 +4,7 @@ import com.alligator.market.backend.common.persistence.constraint.DbConstraintEr
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlanEntry;

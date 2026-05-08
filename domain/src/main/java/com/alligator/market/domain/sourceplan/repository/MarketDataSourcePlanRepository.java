@@ -1,7 +1,7 @@
 package com.alligator.market.domain.sourceplan.repository;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.sourceplan.MarketDataSourcePlan;
 
 import java.util.List;
