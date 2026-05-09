@@ -1,6 +1,9 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
+import com.alligator.market.backend.capturer.passport.persistence.projection.MarketDataCapturerProjectionLifecycleStatus;
+import com.alligator.market.backend.source.passport.persistence.projection.MarketDataSourceProjectionLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
+import com.alligator.market.backend.sourceplan.plan.persistence.SourcePlanEntryLifecycleStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -8,8 +11,6 @@ import org.jooq.Table;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
-import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.field;
@@ -41,7 +42,8 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
                         .from(MARKET_DATA_SOURCE_PASSPORT)
                         .where(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE
                                 .eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
-                        .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                        .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
+                                MarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
         );
 
         retireActiveSources(sourcePassportIsNotActive);
@@ -54,7 +56,8 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
                         .from(MARKET_DATA_CAPTURER_PASSPORT)
                         .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE
                                 .eq(SOURCE_PLAN_ENTRY_CAPTURER_CODE))
-                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
+                                MarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
         );
 
         retireActiveSources(capturerIsNotActive);
@@ -62,8 +65,8 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
 
     private void retireActiveSources(Condition invalidReference) {
         dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, RETIRED.name())
-                .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, SourcePlanEntryLifecycleStatus.RETIRED.name())
+                .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
                 .and(invalidReference)
                 .execute();
     }

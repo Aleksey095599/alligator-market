@@ -17,7 +17,7 @@ public interface SourcePlanRepository {
     /**
      * Includes only sources that are currently available for capture.
      */
-    Optional<SourcePlan> findActiveByMarketDataCapturerCodeAndInstrumentCode(
+    Optional<SourcePlan> findExecutableByMarketDataCapturerCodeAndInstrumentCode(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     );

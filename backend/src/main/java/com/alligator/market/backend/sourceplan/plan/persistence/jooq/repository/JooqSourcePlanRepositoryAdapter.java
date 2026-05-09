@@ -17,7 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
-import static com.alligator.market.backend.common.persistence.projection.ProjectionLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.sourceplan.plan.persistence.SourcePlanEntryLifecycleStatus.ACTIVE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -62,7 +62,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     }
 
     @Override
-    public Optional<SourcePlan> findActiveByMarketDataCapturerCodeAndInstrumentCode(
+    public Optional<SourcePlan> findExecutableByMarketDataCapturerCodeAndInstrumentCode(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
@@ -72,7 +72,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     private Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
-            boolean activeOnly
+            boolean executableOnly
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -80,7 +80,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         Condition condition = SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value())
                 .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(instrumentCode.value()));
 
-        if (activeOnly) {
+        if (executableOnly) {
             condition = condition.and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
         }
 

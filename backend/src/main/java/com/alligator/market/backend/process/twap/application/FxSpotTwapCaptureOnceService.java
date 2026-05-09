@@ -54,7 +54,7 @@ public final class FxSpotTwapCaptureOnceService {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         SourcePlan sourcePlan = sourcePlanRepository
-                .findActiveByMarketDataCapturerCodeAndInstrumentCode(CAPTURER_CODE, instrumentCode)
+                .findExecutableByMarketDataCapturerCodeAndInstrumentCode(CAPTURER_CODE, instrumentCode)
                 .orElseThrow(() -> new FxSpotTwapSourcePlanNotFoundException(
                         CAPTURER_CODE,
                         instrumentCode
