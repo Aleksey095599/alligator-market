@@ -22,6 +22,13 @@ public interface SourcePlanRepository {
             InstrumentCode instrumentCode
     );
 
+    /**
+     * Includes only plans and sources that are currently available for capture.
+     */
+    List<SourcePlan> findExecutableByMarketDataCapturerCode(
+            MarketDataCapturerCode capturerCode
+    );
+
     List<SourcePlan> findAll();
 
     /**

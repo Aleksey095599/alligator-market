@@ -69,6 +69,46 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, true);
     }
 
+    @Override
+    public List<SourcePlan> findExecutableByMarketDataCapturerCode(
+            MarketDataCapturerCode capturerCode
+    ) {
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
+
+        Map<PlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
+
+        dsl.select(
+                        SOURCE_PLAN_ENTRY_INSTRUMENT_CODE,
+                        SOURCE_PLAN_ENTRY_SOURCE_CODE,
+                        SOURCE_PLAN_ENTRY_PRIORITY
+                )
+                .from(SOURCE_PLAN_ENTRY)
+                .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value()))
+                .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .orderBy(
+                        SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.asc(),
+                        SOURCE_PLAN_ENTRY_PRIORITY.asc()
+                )
+                .fetch()
+                .forEach(record -> {
+                    PlanKey planKey = new PlanKey(
+                            capturerCode,
+                            new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
+                    );
+
+                    SourcePlanEntry entry = toEntry(
+                            record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
+                            record.get(SOURCE_PLAN_ENTRY_PRIORITY)
+                    );
+
+                    groupedEntries
+                            .computeIfAbsent(planKey, ignored -> new ArrayList<>())
+                            .add(entry);
+                });
+
+        return toPlans(groupedEntries);
+    }
+
     private Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
             MarketDataCapturerCode capturerCode,
             InstrumentCode instrumentCode,
@@ -140,18 +180,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                             .add(entry);
                 });
 
-        List<SourcePlan> plans = new ArrayList<>(groupedEntries.size());
-
-        for (Map.Entry<PlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
-            PlanKey planKey = groupedEntry.getKey();
-            plans.add(new SourcePlan(
-                    planKey.capturerCode(),
-                    planKey.instrumentCode(),
-                    groupedEntry.getValue()
-            ));
-        }
-
-        return List.copyOf(plans);
+        return toPlans(groupedEntries);
     }
 
     @Override
@@ -275,6 +304,21 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 new MarketDataSourceCode(sourceCode),
                 priority
         );
+    }
+
+    private static List<SourcePlan> toPlans(Map<PlanKey, List<SourcePlanEntry>> groupedEntries) {
+        List<SourcePlan> plans = new ArrayList<>(groupedEntries.size());
+
+        for (Map.Entry<PlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
+            PlanKey planKey = groupedEntry.getKey();
+            plans.add(new SourcePlan(
+                    planKey.capturerCode(),
+                    planKey.instrumentCode(),
+                    groupedEntry.getValue()
+            ));
+        }
+
+        return List.copyOf(plans);
     }
 
     private record PlanKey(
