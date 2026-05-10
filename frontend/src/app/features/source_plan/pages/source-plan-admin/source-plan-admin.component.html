@@ -37,7 +37,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Instrument</mat-label>
+              <mat-label>Instrument Code</mat-label>
               <mat-select formControlName="instrumentCode">
                 <mat-option *ngFor="let instrument of instruments" [value]="instrument.code">
                   {{ instrument.code }}
@@ -123,7 +123,7 @@
           >
             <span *ngIf="hasDuplicateSources">Duplicate sourceCode is not allowed.</span>
             <span *ngIf="hasDuplicatePriorities">Duplicate priority is not allowed.</span>
-            <span *ngIf="hasRetiredSourceRows">Remove retired sources before saving.</span>
+            <span *ngIf="hasRetiredSourceRows">Remove retired source rows before saving.</span>
           </div>
         </section>
 
@@ -171,37 +171,45 @@
     <mat-card-content class="table-content">
       <table mat-table [dataSource]="dataSource" class="plans-table mat-elevation-z2">
 
+        <ng-container matColumnDef="planStatus">
+          <th mat-header-cell *matHeaderCellDef>Plan Status</th>
+          <td mat-cell *matCellDef="let plan">
+            <span
+              class="status-badge"
+              [class.status-badge--ok]="isExecutablePlan(plan)"
+              [class.status-badge--blocked]="isBlockedPlan(plan)"
+            >
+              {{ planStatusLabel(plan) }}
+            </span>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="capturerCode">
           <th mat-header-cell *matHeaderCellDef>Capturer Code</th>
           <td mat-cell *matCellDef="let plan">{{ plan.capturerCode }}</td>
         </ng-container>
 
         <ng-container matColumnDef="instrumentCode">
-          <th mat-header-cell *matHeaderCellDef>Instrument</th>
+          <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
           <td mat-cell *matCellDef="let plan">{{ plan.instrumentCode }}</td>
         </ng-container>
 
         <ng-container matColumnDef="sourceCount">
-          <th mat-header-cell *matHeaderCellDef>Sources</th>
-          <td mat-cell *matCellDef="let plan">{{ plan.sources.length }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="retiredCount">
-          <th mat-header-cell *matHeaderCellDef>Retired</th>
+          <th mat-header-cell *matHeaderCellDef>Sources (Retired)</th>
           <td mat-cell *matCellDef="let plan">
             <span
-              class="retired-badge"
-              [class.retired-badge--warning]="hasRetiredSources(plan)"
-              [class.retired-badge--blocked]="hasOnlyRetiredSources(plan)"
+              class="count-badge"
+              [class.count-badge--warning]="hasRetiredSources(plan)"
+              [class.count-badge--blocked]="hasOnlyRetiredSources(plan)"
             >
-              {{ retiredCount(plan) }}
+              {{ plan.sources.length }} ({{ retiredCount(plan) }})
             </span>
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="firstActiveSource">
-          <th mat-header-cell *matHeaderCellDef>First Active Source</th>
-          <td mat-cell *matCellDef="let plan">{{ firstActiveSource(plan) }}</td>
+        <ng-container matColumnDef="firstExecutableSource">
+          <th mat-header-cell *matHeaderCellDef>First Executable</th>
+          <td mat-cell *matCellDef="let plan">{{ firstExecutableSource(plan) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -220,8 +228,8 @@
         <tr
           mat-row
           *matRowDef="let row; columns: displayed;"
-          [class.plan-row--warning]="hasRetiredSources(row)"
-          [class.plan-row--blocked]="hasOnlyRetiredSources(row)"
+          [class.plan-row--warning]="isExecutablePlan(row) && hasRetiredSources(row)"
+          [class.plan-row--blocked]="isBlockedPlan(row)"
         ></tr>
       </table>
     </mat-card-content>

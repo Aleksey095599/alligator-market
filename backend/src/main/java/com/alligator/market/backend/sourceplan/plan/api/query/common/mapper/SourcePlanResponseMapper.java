@@ -20,6 +20,8 @@ public class SourcePlanResponseMapper {
 
         return new SourcePlanResponse(
                 plan.capturerCode(),
+                plan.capturerLifecycleStatus(),
+                plan.planExecutionStatus().name(),
                 plan.instrumentCode(),
                 sources
         );

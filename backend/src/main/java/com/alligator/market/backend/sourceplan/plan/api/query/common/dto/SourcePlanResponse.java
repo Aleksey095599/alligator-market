@@ -4,6 +4,8 @@ import java.util.List;
 
 public record SourcePlanResponse(
         String capturerCode,
+        String capturerLifecycleStatus,
+        String planExecutionStatus,
         String instrumentCode,
         List<MarketDataSourceResponse> sources
 ) {

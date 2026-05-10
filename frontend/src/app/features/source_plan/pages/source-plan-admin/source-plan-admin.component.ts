@@ -63,11 +63,11 @@ export class SourcePlanAdminComponent implements OnInit {
 
   /* Колонки таблицы с существующими планами. */
   displayed: string[] = [
+    'planStatus',
     'capturerCode',
     'instrumentCode',
     'sourceCount',
-    'retiredCount',
-    'firstActiveSource',
+    'firstExecutableSource',
     'actions'
   ];
   dataSource = new MatTableDataSource<SourcePlanResponseDto>([]);
@@ -342,12 +342,12 @@ export class SourcePlanAdminComponent implements OnInit {
     this.onReset();
   }
 
-  /* Получить первый активный источник для обзорной таблицы. */
+  /* Counts source rows that are not executable because their source is retired. */
   retiredCount(plan: SourcePlanResponseDto): number {
     return plan.sources.filter(source => this.isRetiredSource(source)).length;
   }
 
-  firstActiveSource(plan: SourcePlanResponseDto): string {
+  firstExecutableSource(plan: SourcePlanResponseDto): string {
     const sorted = plan.sources
       .filter(source => !this.isRetiredSource(source))
       .sort((a, b) => a.priority - b.priority);
@@ -360,7 +360,26 @@ export class SourcePlanAdminComponent implements OnInit {
   }
 
   sourceStatusLabel(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): string {
-    return this.isRetiredSource(source) ? 'Retired' : 'Active';
+    return this.isRetiredSource(source) ? 'RETIRED' : 'ACTIVE';
+  }
+
+  isExecutablePlan(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): boolean {
+    return plan.planExecutionStatus === 'EXECUTABLE';
+  }
+
+  isBlockedPlan(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): boolean {
+    return !this.isExecutablePlan(plan);
+  }
+
+  planStatusLabel(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): string {
+    switch (plan.planExecutionStatus) {
+      case 'EXECUTABLE':
+        return 'EXECUTABLE';
+      case 'CAPTURER_RETIRED':
+        return 'CAPTURER RETIRED';
+      case 'NO_EXECUTABLE_SOURCES':
+        return 'NO EXECUTABLE SOURCES';
+    }
   }
 
   get hasRetiredSourceRows(): boolean {

@@ -2,8 +2,8 @@ package com.alligator.market.backend.process.twap.application.runner;
 
 import com.alligator.market.backend.process.twap.application.FxSpotTwapCaptureOnceService;
 import com.alligator.market.backend.process.twap.capturer.FxSpotTwapCapturer;
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.captured.CapturedMarketDataTick;
+import com.alligator.market.domain.sourceplan.SourcePlan;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -20,9 +20,6 @@ import java.util.Objects;
 
 @Slf4j
 public final class FxSpotTwapCaptureOnceRunner implements ApplicationRunner, DisposableBean {
-    private static final String INSTRUMENT_CODE_OPTION = "instrument-code";
-    private static final String DEFAULT_INSTRUMENT_CODE = "FOREX_SPOT_CNYRUB_TOM";
-
     private final FxSpotTwapCaptureOnceService service;
     private final FxSpotTwapCapturer capturer;
 
@@ -35,24 +32,34 @@ public final class FxSpotTwapCaptureOnceRunner implements ApplicationRunner, Dis
 
     @Override
     public void run(@NonNull ApplicationArguments args) {
-        InstrumentCode instrumentCode = new InstrumentCode(instrumentCode(args));
         Duration captureInterval = capturer.policy().captureInterval();
+        List<SourcePlan> sourcePlans = service.findExecutableSourcePlans(capturer.capturerCode());
+
+        if (sourcePlans.isEmpty()) {
+            log.warn(
+                    "FX Spot TWAP capture stream not started: capturerCode={}, reason=no executable source plans",
+                    capturer.capturerCode().value()
+            );
+            return;
+        }
 
         log.info(
-                "FX Spot TWAP capture stream started: instrumentCode={}, captureInterval={}",
-                instrumentCode.value(),
+                "FX Spot TWAP capture streams started: capturerCode={}, sourcePlanCount={}, captureInterval={}",
+                capturer.capturerCode().value(),
+                sourcePlans.size(),
                 captureInterval
         );
 
-        captureSubscription = captureStream(instrumentCode, captureInterval)
+        captureSubscription = Flux.fromIterable(sourcePlans)
+                .flatMap(sourcePlan -> captureStream(sourcePlan, captureInterval))
                 .subscribe(capturedTick -> log.info(
                         "FX Spot TWAP tick captured: instrumentCode={}, sourceCode={}, sourceTickType={}",
                         capturedTick.instrumentCode().value(),
                         capturedTick.sourceCode().value(),
                         capturedTick.sourceTick().sourceTickType()
                 ), ex -> log.error(
-                        "FX Spot TWAP capture stream stopped unexpectedly: instrumentCode={}",
-                        instrumentCode.value(),
+                        "FX Spot TWAP capture streams stopped unexpectedly: capturerCode={}",
+                        capturer.capturerCode().value(),
                         ex
                 ));
     }
@@ -65,14 +72,15 @@ public final class FxSpotTwapCaptureOnceRunner implements ApplicationRunner, Dis
     }
 
     private Flux<CapturedMarketDataTick> captureStream(
-            InstrumentCode instrumentCode,
+            SourcePlan sourcePlan,
             Duration captureInterval
     ) {
-        return Flux.defer(() -> Mono.fromCallable(() -> service.captureOnce(instrumentCode))
+        return Flux.defer(() -> Mono.fromCallable(() -> service.captureOnce(sourcePlan))
                         .subscribeOn(Schedulers.boundedElastic())
                         .doOnError(ex -> log.warn(
-                                "FX Spot TWAP capture attempt failed: instrumentCode={}, reason={}",
-                                instrumentCode.value(),
+                                "FX Spot TWAP capture attempt failed: capturerCode={}, instrumentCode={}, reason={}",
+                                sourcePlan.capturerCode().value(),
+                                sourcePlan.instrumentCode().value(),
                                 ex.getMessage(),
                                 ex
                         ))
@@ -80,21 +88,5 @@ public final class FxSpotTwapCaptureOnceRunner implements ApplicationRunner, Dis
                         .flux()
                 )
                 .repeatWhen(repeat -> repeat.delayElements(captureInterval));
-    }
-
-    private static String instrumentCode(ApplicationArguments args) {
-        List<String> values = args.getOptionValues(INSTRUMENT_CODE_OPTION);
-
-        if (values == null || values.isEmpty()) {
-            return DEFAULT_INSTRUMENT_CODE;
-        }
-
-        String value = values.getFirst();
-
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("instrument-code must not be blank");
-        }
-
-        return value;
     }
 }

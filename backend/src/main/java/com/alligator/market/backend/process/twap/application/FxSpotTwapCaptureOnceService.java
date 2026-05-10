@@ -4,6 +4,7 @@ import com.alligator.market.backend.process.twap.application.exception.FxSpotTwa
 import com.alligator.market.backend.process.twap.application.exception.FxSpotTwapSourceNotFoundException;
 import com.alligator.market.backend.process.twap.application.exception.FxSpotTwapSourcePlanNotFoundException;
 import com.alligator.market.backend.process.twap.application.exception.FxSpotTwapSourceTickNotReceivedException;
+import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.process.twap.capturer.FxSpotTwapCapturer.CAPTURER_CODE;
@@ -60,13 +62,19 @@ public final class FxSpotTwapCaptureOnceService {
                         instrumentCode
                 ));
 
+        return captureOnce(sourcePlan);
+    }
+
+    public CapturedMarketDataTick captureOnce(SourcePlan sourcePlan) {
+        Objects.requireNonNull(sourcePlan, "sourcePlan must not be null");
+
         SourcePlanEntry entry = firstEntry(sourcePlan);
         MarketDataSource source = source(entry.sourceCode());
-        FxSpot instrument = fxSpot(instrumentCode);
+        FxSpot instrument = fxSpot(sourcePlan.instrumentCode());
         SourceMarketDataTick sourceTick = sourceTick(source, instrument);
 
         CapturedMarketDataTick capturedTick = new CapturedMarketDataTick(
-                CAPTURER_CODE,
+                sourcePlan.capturerCode(),
                 instrument.instrumentCode(),
                 source.sourceCode(),
                 sourceTick,
@@ -75,6 +83,12 @@ public final class FxSpotTwapCaptureOnceService {
 
         capturedTickRepository.save(capturedTick);
         return capturedTick;
+    }
+
+    public List<SourcePlan> findExecutableSourcePlans(MarketDataCapturerCode capturerCode) {
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
+
+        return sourcePlanRepository.findExecutableByMarketDataCapturerCode(capturerCode);
     }
 
     private SourcePlanEntry firstEntry(SourcePlan sourcePlan) {

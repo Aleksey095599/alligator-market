@@ -1,8 +1,13 @@
 package com.alligator.market.backend;
 
+import com.alligator.market.backend.capturer.config.passport.application.projection.startup.MarketDataCapturerPassportProjectionStartupRunnerWiringConfig;
+import com.alligator.market.backend.capturer.config.passport.application.query.list.MarketDataCapturerPassportListServiceWiringConfig;
+import com.alligator.market.backend.capturer.config.registry.MarketDataCapturerRegistryWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
-import com.alligator.market.backend.capturer.config.MarketDataCapturerFeatureWiringConfig;
+import com.alligator.market.backend.process.twap.config.application.FxSpotTwapCaptureOnceRunnerWiringConfig;
+import com.alligator.market.backend.process.twap.config.application.FxSpotTwapCaptureOnceServiceWiringConfig;
+import com.alligator.market.backend.process.twap.config.capturer.FxSpotTwapCapturerWiringConfig;
 import com.alligator.market.backend.source.config.MarketDataSourceFeatureWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.SourcePlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +24,12 @@ import java.util.TimeZone;
 @ConfigurationPropertiesScan("com.alligator.market.backend")
 @Import({
         MarketDataSourceFeatureWiringConfig.class,
-        MarketDataCapturerFeatureWiringConfig.class,
+        MarketDataCapturerRegistryWiringConfig.class,
+        MarketDataCapturerPassportListServiceWiringConfig.class,
+        MarketDataCapturerPassportProjectionStartupRunnerWiringConfig.class,
+        FxSpotTwapCapturerWiringConfig.class,
+        FxSpotTwapCaptureOnceServiceWiringConfig.class,
+        FxSpotTwapCaptureOnceRunnerWiringConfig.class,
         SourcePlanFeatureWiringConfig.class,
         FxSpotFeatureWiringConfig.class,
         CurrencyFeatureWiringConfig.class
