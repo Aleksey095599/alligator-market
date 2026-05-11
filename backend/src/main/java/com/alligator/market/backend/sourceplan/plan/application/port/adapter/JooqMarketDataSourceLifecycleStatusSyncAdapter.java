@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
-import com.alligator.market.backend.capturer.passport.persistence.projection.MarketDataCapturerProjectionLifecycleStatus;
+import com.alligator.market.backend.capturer.passport.persistence.projection.model.MarketDataCapturerProjectionLifecycleStatus;
 import com.alligator.market.backend.source.passport.persistence.projection.model.MarketDataSourceProjectionLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.SourcePlanEntryLifecycleStatus;
