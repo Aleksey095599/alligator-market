@@ -49,6 +49,8 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             field(name("source_plan", "capturer_code"), String.class);
     private static final Field<String> SOURCE_PLAN_INSTRUMENT_CODE =
             field(name("source_plan", "instrument_code"), String.class);
+    private static final Field<String> SOURCE_PLAN_EXECUTION_STATUS =
+            field(name("source_plan", "execution_status"), String.class);
 
     private final DSLContext dsl;
     private final StoredSourcePlanMapper storedPlanMapper;
@@ -200,6 +202,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 int insertedPlans = tx.insertInto(SOURCE_PLAN)
                         .set(SOURCE_PLAN_CAPTURER_CODE, storedPlan.capturerCode().value())
                         .set(SOURCE_PLAN_INSTRUMENT_CODE, storedPlan.instrumentCode().value())
+                        .set(SOURCE_PLAN_EXECUTION_STATUS, storedPlan.executionStatus().name())
                         .onConflict(
                                 SOURCE_PLAN_CAPTURER_CODE,
                                 SOURCE_PLAN_INSTRUMENT_CODE
@@ -250,6 +253,12 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             if (!planExists) {
                 return false;
             }
+
+            tx.update(SOURCE_PLAN)
+                    .set(SOURCE_PLAN_EXECUTION_STATUS, storedPlan.executionStatus().name())
+                    .where(SOURCE_PLAN_CAPTURER_CODE.eq(storedPlan.capturerCode().value()))
+                    .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(storedPlan.instrumentCode().value()))
+                    .execute();
 
             tx.deleteFrom(SOURCE_PLAN_ENTRY)
                     .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(storedPlan.capturerCode().value()))

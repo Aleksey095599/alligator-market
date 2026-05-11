@@ -4,6 +4,7 @@ import com.alligator.market.backend.capturer.passport.persistence.projection.mod
 import com.alligator.market.backend.source.passport.persistence.projection.model.MarketDataSourceProjectionLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanEntryLifecycleStatus;
+import com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanExecutionStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
+import static org.jooq.impl.DSL.exists;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.notExists;
@@ -21,9 +23,18 @@ import static org.jooq.impl.DSL.table;
 
 public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
         implements MarketDataSourceLifecycleStatusSyncPort {
+    private static final Table<?> SOURCE_PLAN = table(name("source_plan"));
     private static final Table<?> SOURCE_PLAN_ENTRY = table(name("source_plan_entry"));
+    private static final Field<String> SOURCE_PLAN_CAPTURER_CODE =
+            field(name("source_plan", "capturer_code"), String.class);
+    private static final Field<String> SOURCE_PLAN_INSTRUMENT_CODE =
+            field(name("source_plan", "instrument_code"), String.class);
+    private static final Field<String> SOURCE_PLAN_EXECUTION_STATUS =
+            field(name("source_plan", "execution_status"), String.class);
     private static final Field<String> SOURCE_PLAN_ENTRY_CAPTURER_CODE =
             field(name("source_plan_entry", "capturer_code"), String.class);
+    private static final Field<String> SOURCE_PLAN_ENTRY_INSTRUMENT_CODE =
+            field(name("source_plan_entry", "instrument_code"), String.class);
     private static final Field<String> SOURCE_PLAN_ENTRY_SOURCE_CODE =
             field(name("source_plan_entry", "source_code"), String.class);
     private static final Field<String> SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS =
@@ -68,6 +79,47 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
                 .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, SourcePlanEntryLifecycleStatus.RETIRED.name())
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
                 .and(invalidReference)
+                .execute();
+
+        refreshPlanExecutionStatuses();
+    }
+
+    private void refreshPlanExecutionStatuses() {
+        Condition capturerIsNotActive = notExists(
+                selectOne()
+                        .from(MARKET_DATA_CAPTURER_PASSPORT)
+                        .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
+                                MarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
+        );
+
+        Condition hasActiveSources = exists(
+                selectOne()
+                        .from(SOURCE_PLAN_ENTRY)
+                        .join(MARKET_DATA_SOURCE_PASSPORT)
+                        .on(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
+                        .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                        .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
+                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
+                                MarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
+        );
+
+        dsl.update(SOURCE_PLAN)
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.CAPTURER_RETIRED.name())
+                .where(capturerIsNotActive)
+                .execute();
+
+        dsl.update(SOURCE_PLAN)
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
+                .where(capturerIsNotActive.not())
+                .and(hasActiveSources.not())
+                .execute();
+
+        dsl.update(SOURCE_PLAN)
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.EXECUTABLE.name())
+                .where(capturerIsNotActive.not())
+                .and(hasActiveSources)
                 .execute();
     }
 }

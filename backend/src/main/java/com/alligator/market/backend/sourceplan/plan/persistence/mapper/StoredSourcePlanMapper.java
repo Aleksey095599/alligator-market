@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanExecutionStatus.EXECUTABLE;
 import static com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanEntryLifecycleStatus.ACTIVE;
 
 public final class StoredSourcePlanMapper {
@@ -29,6 +30,7 @@ public final class StoredSourcePlanMapper {
         return new StoredSourcePlan(
                 plan.capturerCode(),
                 plan.instrumentCode(),
+                EXECUTABLE,
                 entries
         );
     }
