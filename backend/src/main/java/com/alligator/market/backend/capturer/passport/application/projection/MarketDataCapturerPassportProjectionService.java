@@ -37,18 +37,18 @@ public final class MarketDataCapturerPassportProjectionService {
     }
 
     private void projectInTransaction() {
-        Map<MarketDataCapturerCode, MarketDataCapturerPassport> registryPassports = Map.copyOf(
+        Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsFromRegistry = Map.copyOf(
                 Objects.requireNonNull(registry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        if (registryPassports.isEmpty()) {
+        if (passportsFromRegistry.isEmpty()) {
             throw new IllegalStateException("Capturer registry returned no capturer passports");
         }
 
-        Set<MarketDataCapturerCode> currentCodes = Set.copyOf(registryPassports.keySet());
+        Set<MarketDataCapturerCode> passportCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
 
-        writePort.retireAllExcept(currentCodes);
-        writePort.upsertAll(registryPassports);
+        writePort.retireAllExcept(passportCodesFromRegistry);
+        writePort.upsertAll(passportsFromRegistry);
 
         // Retired capturer passports also retire source-plan entries that depend on them.
         sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveMarketDataCapturerPassports();

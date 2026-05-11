@@ -28,11 +28,11 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
     }
 
     @Override
-    public void retireAllExcept(Set<MarketDataCapturerCode> currentCodes) {
-        validateCurrentCodes(currentCodes);
+    public void retireAllExcept(Set<MarketDataCapturerCode> passportCodes) {
+        validateCurrentCodes(passportCodes);
 
-        Set<String> currentValues = new LinkedHashSet<>(currentCodes.size());
-        for (MarketDataCapturerCode code : currentCodes) {
+        Set<String> currentValues = new LinkedHashSet<>(passportCodes.size());
+        for (MarketDataCapturerCode code : passportCodes) {
             currentValues.add(code.value());
         }
 

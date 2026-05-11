@@ -37,18 +37,18 @@ public final class MarketDataSourcePassportProjectionService {
     }
 
     private void projectInTransaction() {
-        Map<MarketDataSourceCode, MarketDataSourcePassport> registryPassports = Map.copyOf(
+        Map<MarketDataSourceCode, MarketDataSourcePassport> passportsFromRegistry = Map.copyOf(
                 Objects.requireNonNull(sourceRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        if (registryPassports.isEmpty()) {
+        if (passportsFromRegistry.isEmpty()) {
             throw new IllegalStateException("Market data source registry returned no source passports");
         }
 
-        Set<MarketDataSourceCode> currentCodes = Set.copyOf(registryPassports.keySet());
+        Set<MarketDataSourceCode> passportsCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
 
-        writePort.retireAllExcept(currentCodes);
-        writePort.upsertAll(registryPassports);
+        writePort.retireAllExcept(passportsCodesFromRegistry);
+        writePort.upsertAll(passportsFromRegistry);
 
         // Retired source passports also retire source-plan entries that depend on them.
         sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveSourcePassports();
