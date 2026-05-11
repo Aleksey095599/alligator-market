@@ -6,9 +6,6 @@ import com.alligator.market.backend.capturer.config.registry.MarketDataCapturerR
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.capturer.LiveQuoteMonitorCapturerWiringConfig;
-import com.alligator.market.backend.process.twap.config.application.FxSpotTwapCaptureOnceRunnerWiringConfig;
-import com.alligator.market.backend.process.twap.config.application.FxSpotTwapCaptureOnceServiceWiringConfig;
-import com.alligator.market.backend.process.twap.config.capturer.FxSpotTwapCapturerWiringConfig;
 import com.alligator.market.backend.source.config.MarketDataSourceFeatureWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.SourcePlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
@@ -29,9 +26,6 @@ import java.util.TimeZone;
         MarketDataCapturerPassportListServiceWiringConfig.class,
         MarketDataCapturerPassportProjectionStartupRunnerWiringConfig.class,
         LiveQuoteMonitorCapturerWiringConfig.class,
-        FxSpotTwapCapturerWiringConfig.class,
-        FxSpotTwapCaptureOnceServiceWiringConfig.class,
-        FxSpotTwapCaptureOnceRunnerWiringConfig.class,
         SourcePlanFeatureWiringConfig.class,
         FxSpotFeatureWiringConfig.class,
         CurrencyFeatureWiringConfig.class
