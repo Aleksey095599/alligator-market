@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
-import com.alligator.market.backend.capturer.passport.persistence.projection.model.MarketDataCapturerProjectionLifecycleStatus;
-import com.alligator.market.backend.source.passport.persistence.projection.model.MarketDataSourceProjectionLifecycleStatus;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanEntryLifecycleStatus;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanExecutionStatus;
+import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus;
+import com.alligator.market.backend.source.passport.persistence.projection.model.StoredMarketDataSourceProjectionLifecycleStatus;
+import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
+import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus;
+import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -21,8 +21,8 @@ import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectOne;
 import static org.jooq.impl.DSL.table;
 
-public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
-        implements MarketDataSourceLifecycleStatusSyncPort {
+public final class JooqSourcePlanStatusSyncAdapter
+        implements SourcePlanStatusSyncPort {
     private static final Table<?> SOURCE_PLAN = table(name("source_plan"));
     private static final Table<?> SOURCE_PLAN_ENTRY = table(name("source_plan_entry"));
     private static final Field<String> SOURCE_PLAN_CAPTURER_CODE =
@@ -42,46 +42,55 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
 
     private final DSLContext dsl;
 
-    public JooqMarketDataSourceLifecycleStatusSyncAdapter(DSLContext dsl) {
+    public JooqSourcePlanStatusSyncAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
     @Override
-    public void retireSourcesWithoutActiveSourcePassports() {
-        Condition sourcePassportIsNotActive = notExists(
+    public void syncSourcePlanStatuses() {
+        syncSourcePlanEntryLifecycleStatuses();
+        refreshPlanExecutionStatuses();
+    }
+
+    private void syncSourcePlanEntryLifecycleStatuses() {
+        Condition activeReferences = activeSourcePassportExistsForEntry()
+                .and(activeCapturerPassportExistsForEntry());
+
+        dsl.update(SOURCE_PLAN_ENTRY)
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.ACTIVE.name())
+                .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
+                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                .and(activeReferences)
+                .execute();
+
+        dsl.update(SOURCE_PLAN_ENTRY)
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.RETIRED.name())
+                .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
+                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.RETIRED.name()))
+                .and(activeReferences.not())
+                .execute();
+    }
+
+    private Condition activeSourcePassportExistsForEntry() {
+        return exists(
                 selectOne()
                         .from(MARKET_DATA_SOURCE_PASSPORT)
                         .where(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE
                                 .eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                MarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredMarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
         );
-
-        retireActiveSources(sourcePassportIsNotActive);
     }
 
-    @Override
-    public void retireSourcesWithoutActiveMarketDataCapturerPassports() {
-        Condition capturerIsNotActive = notExists(
+    private Condition activeCapturerPassportExistsForEntry() {
+        return exists(
                 selectOne()
                         .from(MARKET_DATA_CAPTURER_PASSPORT)
                         .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE
                                 .eq(SOURCE_PLAN_ENTRY_CAPTURER_CODE))
                         .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
-                                MarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
         );
-
-        retireActiveSources(capturerIsNotActive);
-    }
-
-    private void retireActiveSources(Condition invalidReference) {
-        dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, SourcePlanEntryLifecycleStatus.RETIRED.name())
-                .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
-                .and(invalidReference)
-                .execute();
-
-        refreshPlanExecutionStatuses();
     }
 
     private void refreshPlanExecutionStatuses() {
@@ -90,7 +99,7 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
                         .from(MARKET_DATA_CAPTURER_PASSPORT)
                         .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
-                                MarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
         );
 
         Condition hasActiveSources = exists(
@@ -100,24 +109,24 @@ public final class JooqMarketDataSourceLifecycleStatusSyncAdapter
                         .on(MARKET_DATA_SOURCE_PASSPORT.SOURCE_CODE.eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
                         .and(MARKET_DATA_SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                MarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredMarketDataSourceProjectionLifecycleStatus.ACTIVE.name()))
         );
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.CAPTURER_RETIRED.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.CAPTURER_RETIRED.name())
                 .where(capturerIsNotActive)
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources.not())
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.EXECUTABLE.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.EXECUTABLE.name())
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources)
                 .execute();

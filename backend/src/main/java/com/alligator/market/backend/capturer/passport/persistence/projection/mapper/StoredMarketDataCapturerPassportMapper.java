@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.alligator.market.backend.capturer.passport.persistence.projection.model.MarketDataCapturerProjectionLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE;
 
 public final class StoredMarketDataCapturerPassportMapper {
 

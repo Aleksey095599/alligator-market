@@ -9,7 +9,7 @@ import java.util.Objects;
 public record StoredSourcePlan(
         MarketDataCapturerCode capturerCode,
         InstrumentCode instrumentCode,
-        SourcePlanExecutionStatus executionStatus,
+        StoredSourcePlanExecutionStatus executionStatus,
         List<StoredSourcePlanEntry> entries
 ) {
     public StoredSourcePlan {

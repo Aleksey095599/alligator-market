@@ -6,7 +6,7 @@ import org.jooq.DSLContext;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.capturer.passport.persistence.projection.model.MarketDataCapturerProjectionLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 
 public final class JooqMarketDataCapturerExistenceAdapter implements MarketDataCapturerExistencePort {

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.alligator.market.backend.source.passport.persistence.projection.model.MarketDataSourceProjectionLifecycleStatus.RETIRED;
+import static com.alligator.market.backend.source.passport.persistence.projection.model.StoredMarketDataSourceProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
 

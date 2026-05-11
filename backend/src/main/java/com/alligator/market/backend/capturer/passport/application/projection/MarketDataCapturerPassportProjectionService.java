@@ -1,7 +1,7 @@
 package com.alligator.market.backend.capturer.passport.application.projection;
 
 import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
+import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.MarketDataCapturerPassport;
 import com.alligator.market.domain.capturer.registry.MarketDataCapturerRegistry;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
@@ -14,20 +14,20 @@ import java.util.Set;
 public final class MarketDataCapturerPassportProjectionService {
     private final MarketDataCapturerRegistry registry;
     private final MarketDataCapturerPassportProjectionWritePort writePort;
-    private final MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort;
+    private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final TransactionTemplate tx;
 
     public MarketDataCapturerPassportProjectionService(
             MarketDataCapturerRegistry registry,
             MarketDataCapturerPassportProjectionWritePort writePort,
-            MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
+            SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             TransactionTemplate tx
     ) {
         this.registry = Objects.requireNonNull(registry, "registry must not be null");
         this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
-        this.sourceLifecycleStatusSyncPort = Objects.requireNonNull(
-                sourceLifecycleStatusSyncPort,
-                "sourceLifecycleStatusSyncPort must not be null"
+        this.sourcePlanStatusSyncPort = Objects.requireNonNull(
+                sourcePlanStatusSyncPort,
+                "sourcePlanStatusSyncPort must not be null"
         );
         this.tx = Objects.requireNonNull(tx, "tx must not be null");
     }
@@ -50,7 +50,6 @@ public final class MarketDataCapturerPassportProjectionService {
         writePort.retireAllExcept(passportCodesFromRegistry);
         writePort.upsertAll(passportsFromRegistry);
 
-        // Retired capturer passports also retire source-plan entries that depend on them.
-        sourceLifecycleStatusSyncPort.retireSourcesWithoutActiveMarketDataCapturerPassports();
+        sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
 }

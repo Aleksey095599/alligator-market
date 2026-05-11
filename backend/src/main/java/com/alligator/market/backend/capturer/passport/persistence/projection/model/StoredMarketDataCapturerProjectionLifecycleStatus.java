@@ -1,6 +1,6 @@
 package com.alligator.market.backend.capturer.passport.persistence.projection.model;
 
-public enum MarketDataCapturerProjectionLifecycleStatus {
+public enum StoredMarketDataCapturerProjectionLifecycleStatus {
     ACTIVE,
     RETIRED
 }

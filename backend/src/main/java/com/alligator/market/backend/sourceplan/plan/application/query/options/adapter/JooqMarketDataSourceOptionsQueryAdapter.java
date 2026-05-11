@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.backend.source.passport.persistence.projection.model.MarketDataSourceProjectionLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.source.passport.persistence.projection.model.StoredMarketDataSourceProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataSourcePassport.MARKET_DATA_SOURCE_PASSPORT;
 
 public final class JooqMarketDataSourceOptionsQueryAdapter implements MarketDataSourceOptionsQueryPort {

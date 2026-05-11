@@ -8,7 +8,7 @@ import java.util.Objects;
 public record StoredMarketDataSourcePassport(
         MarketDataSourceCode sourceCode,
         MarketDataSourcePassport passport,
-        MarketDataSourceProjectionLifecycleStatus lifecycleStatus
+        StoredMarketDataSourceProjectionLifecycleStatus lifecycleStatus
 ) {
     public StoredMarketDataSourcePassport {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");

@@ -4,8 +4,8 @@ import com.alligator.market.backend.source.config.passport.persistence.projectio
 import com.alligator.market.backend.source.config.registry.MarketDataSourceRegistryWiringConfig;
 import com.alligator.market.backend.source.passport.application.projection.MarketDataSourcePassportProjectionService;
 import com.alligator.market.backend.source.passport.application.projection.port.MarketDataSourcePassportProjectionWritePort;
-import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataSourceLifecycleStatusSyncPortWiringConfig;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceLifecycleStatusSyncPort;
+import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourcePlanStatusSyncPortWiringConfig;
+import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.source.registry.MarketDataSourceRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Import({
         MarketDataSourceRegistryWiringConfig.class,
         MarketDataSourcePassportProjectionWritePortWiringConfig.class,
-        MarketDataSourceLifecycleStatusSyncPortWiringConfig.class
+        SourcePlanStatusSyncPortWiringConfig.class
 })
 public class MarketDataSourcePassportProjectionServiceWiringConfig {
     public static final String BEAN_MARKET_DATA_SOURCE_PASSPORT_PROJECTION_SERVICE =
@@ -31,15 +31,14 @@ public class MarketDataSourcePassportProjectionServiceWiringConfig {
             @Qualifier(MarketDataSourcePassportProjectionWritePortWiringConfig
                     .BEAN_MARKET_DATA_SOURCE_PASSPORT_PROJECTION_WRITE_PORT)
             MarketDataSourcePassportProjectionWritePort writePort,
-            @Qualifier(MarketDataSourceLifecycleStatusSyncPortWiringConfig
-                    .BEAN_MARKET_DATA_SOURCE_LIFECYCLE_STATUS_SYNC_PORT)
-            MarketDataSourceLifecycleStatusSyncPort sourceLifecycleStatusSyncPort,
+            @Qualifier(SourcePlanStatusSyncPortWiringConfig.BEAN_SOURCE_PLAN_STATUS_SYNC_PORT)
+            SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             PlatformTransactionManager txManager
     ) {
         return new MarketDataSourcePassportProjectionService(
                 sourceRegistry,
                 writePort,
-                sourceLifecycleStatusSyncPort,
+                sourcePlanStatusSyncPort,
                 new TransactionTemplate(txManager)
         );
     }

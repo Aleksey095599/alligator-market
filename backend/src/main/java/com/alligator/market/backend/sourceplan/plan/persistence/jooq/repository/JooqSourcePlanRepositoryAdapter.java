@@ -20,7 +20,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
-import static com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanEntryLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus.EXECUTABLE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -89,8 +90,12 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY
                 )
-                .from(SOURCE_PLAN_ENTRY)
-                .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value()))
+                .from(SOURCE_PLAN)
+                .join(SOURCE_PLAN_ENTRY)
+                .on(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
+                .where(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
+                .and(SOURCE_PLAN_EXECUTION_STATUS.eq(EXECUTABLE.name()))
                 .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()))
                 .orderBy(
                         SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.asc(),
@@ -124,11 +129,13 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        Condition condition = SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(capturerCode.value())
-                .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(instrumentCode.value()));
+        Condition condition = SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())
+                .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(instrumentCode.value()));
 
         if (executableOnly) {
-            condition = condition.and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
+            condition = condition
+                    .and(SOURCE_PLAN_EXECUTION_STATUS.eq(EXECUTABLE.name()))
+                    .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
         }
 
         List<SourcePlanEntry> entries = dsl
@@ -136,7 +143,10 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY
                 )
-                .from(SOURCE_PLAN_ENTRY)
+                .from(SOURCE_PLAN)
+                .join(SOURCE_PLAN_ENTRY)
+                .on(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
                 .where(condition)
                 .orderBy(SOURCE_PLAN_ENTRY_PRIORITY.asc())
                 .fetch(record -> toEntry(

@@ -10,7 +10,7 @@ public record StoredSourcePlanEntry(
         MarketDataCapturerCode capturerCode,
         InstrumentCode instrumentCode,
         SourcePlanEntry entry,
-        SourcePlanEntryLifecycleStatus lifecycleStatus
+        StoredSourcePlanEntryLifecycleStatus lifecycleStatus
 ) {
     public StoredSourcePlanEntry {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

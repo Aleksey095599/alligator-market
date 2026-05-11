@@ -8,7 +8,7 @@ import java.util.Objects;
 public record StoredMarketDataCapturerPassport(
         MarketDataCapturerCode capturerCode,
         MarketDataCapturerPassport passport,
-        MarketDataCapturerProjectionLifecycleStatus lifecycleStatus
+        StoredMarketDataCapturerProjectionLifecycleStatus lifecycleStatus
 ) {
     public StoredMarketDataCapturerPassport {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
