@@ -3,6 +3,9 @@ package com.alligator.market.backend.sourceplan.plan.persistence.jooq.repository
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.persistence.mapper.StoredSourcePlanMapper;
+import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
+import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.source.vo.MarketDataSourceCode;
@@ -17,7 +20,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
-import static com.alligator.market.backend.sourceplan.plan.persistence.SourcePlanEntryLifecycleStatus.ACTIVE;
+import static com.alligator.market.backend.sourceplan.plan.persistence.model.SourcePlanEntryLifecycleStatus.ACTIVE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -48,9 +51,11 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             field(name("source_plan", "instrument_code"), String.class);
 
     private final DSLContext dsl;
+    private final StoredSourcePlanMapper storedPlanMapper;
 
     public JooqSourcePlanRepositoryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
+        this.storedPlanMapper = new StoredSourcePlanMapper();
     }
 
     @Override
@@ -186,14 +191,15 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean createIfAbsent(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
+        StoredSourcePlan storedPlan = storedPlanMapper.toActiveStored(plan);
 
         try {
             return dsl.transactionResult(configuration -> {
                 DSLContext tx = configuration.dsl();
 
                 int insertedPlans = tx.insertInto(SOURCE_PLAN)
-                        .set(SOURCE_PLAN_CAPTURER_CODE, plan.capturerCode().value())
-                        .set(SOURCE_PLAN_INSTRUMENT_CODE, plan.instrumentCode().value())
+                        .set(SOURCE_PLAN_CAPTURER_CODE, storedPlan.capturerCode().value())
+                        .set(SOURCE_PLAN_INSTRUMENT_CODE, storedPlan.instrumentCode().value())
                         .onConflict(
                                 SOURCE_PLAN_CAPTURER_CODE,
                                 SOURCE_PLAN_INSTRUMENT_CODE
@@ -205,8 +211,8 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                     return false;
                 }
 
-                for (SourcePlanEntry entry : plan.entries()) {
-                    insertEntry(tx, plan.capturerCode(), plan.instrumentCode(), entry);
+                for (StoredSourcePlanEntry entry : storedPlan.entries()) {
+                    insertEntry(tx, entry);
                 }
 
                 return true;
@@ -227,6 +233,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean replaceIfExists(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
+        StoredSourcePlan storedPlan = storedPlanMapper.toActiveStored(plan);
 
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
@@ -234,8 +241,8 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             // The row lock makes delete-and-reinsert replacement atomic for this plan identity.
             boolean planExists = tx.selectOne()
                     .from(SOURCE_PLAN)
-                    .where(SOURCE_PLAN_CAPTURER_CODE.eq(plan.capturerCode().value()))
-                    .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .where(SOURCE_PLAN_CAPTURER_CODE.eq(storedPlan.capturerCode().value()))
+                    .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(storedPlan.instrumentCode().value()))
                     .forUpdate()
                     .fetchOptional()
                     .isPresent();
@@ -245,12 +252,12 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             }
 
             tx.deleteFrom(SOURCE_PLAN_ENTRY)
-                    .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(plan.capturerCode().value()))
-                    .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(plan.instrumentCode().value()))
+                    .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(storedPlan.capturerCode().value()))
+                    .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(storedPlan.instrumentCode().value()))
                     .execute();
 
-            for (SourcePlanEntry entry : plan.entries()) {
-                insertEntry(tx, plan.capturerCode(), plan.instrumentCode(), entry);
+            for (StoredSourcePlanEntry entry : storedPlan.entries()) {
+                insertEntry(tx, entry);
             }
 
             return true;
@@ -276,20 +283,18 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     private void insertEntry(
             DSLContext dsl,
-            MarketDataCapturerCode capturerCode,
-            InstrumentCode instrumentCode,
-            SourcePlanEntry entry
+            StoredSourcePlanEntry storedEntry
     ) {
-        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        Objects.requireNonNull(entry, "entry must not be null");
+        Objects.requireNonNull(storedEntry, "storedEntry must not be null");
+
+        SourcePlanEntry entry = storedEntry.entry();
 
         dsl.insertInto(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_CAPTURER_CODE, capturerCode.value())
-                .set(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE, instrumentCode.value())
+                .set(SOURCE_PLAN_ENTRY_CAPTURER_CODE, storedEntry.capturerCode().value())
+                .set(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE, storedEntry.instrumentCode().value())
                 .set(SOURCE_PLAN_ENTRY_SOURCE_CODE, entry.sourceCode().value())
                 .set(SOURCE_PLAN_ENTRY_PRIORITY, entry.priority())
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, ACTIVE.name())
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, storedEntry.lifecycleStatus().name())
                 .execute();
     }
 
