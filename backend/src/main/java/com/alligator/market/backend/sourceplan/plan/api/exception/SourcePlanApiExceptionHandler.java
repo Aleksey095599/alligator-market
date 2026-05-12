@@ -10,7 +10,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Market
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.SourceCodesNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -52,14 +52,14 @@ public class SourcePlanApiExceptionHandler {
         );
     }
 
-    @ExceptionHandler(MarketDataSourceCodesNotFoundException.class)
-    public ProblemDetail handleMarketDataSourceCodesNotFound(MarketDataSourceCodesNotFoundException ex) {
-        log.warn("Market data source codes do not exist: {}", ex.getMessage());
+    @ExceptionHandler(SourceCodesNotFoundException.class)
+    public ProblemDetail handleSourceCodesNotFound(SourceCodesNotFoundException ex) {
+        log.warn("Market source codes do not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
-                "Market data source codes not found",
+                "Market source codes not found",
                 ex.getMessage(),
-                SourcePlanApiErrorCode.MARKET_DATA_SOURCE_CODES_NOT_FOUND.code()
+                SourcePlanApiErrorCode.SOURCE_CODES_NOT_FOUND.code()
         );
     }
 

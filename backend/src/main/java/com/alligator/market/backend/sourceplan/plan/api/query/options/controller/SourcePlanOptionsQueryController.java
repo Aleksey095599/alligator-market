@@ -3,9 +3,9 @@ package com.alligator.market.backend.sourceplan.plan.api.query.options.controlle
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataCapturerOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.InstrumentOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.SourcePlanOptionsResponse;
-import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataSourceOptionDto;
+import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.SourceOptionDto;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataCapturerOptionsQueryPort;
-import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataSourceOptionsQueryPort;
+import com.alligator.market.backend.sourceplan.plan.application.query.options.port.SourceOptionsQueryPort;
 import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +17,12 @@ import java.util.Objects;
 public class SourcePlanOptionsQueryController {
     private final MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort;
     private final InstrumentRegistry instrumentRegistry;
-    private final MarketDataSourceOptionsQueryPort sourceOptionsQueryPort;
+    private final SourceOptionsQueryPort sourceOptionsQueryPort;
 
     public SourcePlanOptionsQueryController(
             MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort,
             InstrumentRegistry instrumentRegistry,
-            MarketDataSourceOptionsQueryPort sourceOptionsQueryPort
+            SourceOptionsQueryPort sourceOptionsQueryPort
     ) {
         this.capturerOptionsQueryPort = Objects.requireNonNull(
                 capturerOptionsQueryPort,
@@ -51,7 +51,7 @@ public class SourcePlanOptionsQueryController {
                         .map(code -> new InstrumentOptionDto(code.value()))
                         .toList(),
                 sourceOptionsQueryPort.findAllSourceCodes().stream()
-                        .map(code -> new MarketDataSourceOptionDto(code.value()))
+                        .map(code -> new SourceOptionDto(code.value()))
                         .toList()
         );
 

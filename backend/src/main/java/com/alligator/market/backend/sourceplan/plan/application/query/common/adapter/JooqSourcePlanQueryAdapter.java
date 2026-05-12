@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.application.query.common.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
-import com.alligator.market.backend.sourceplan.plan.application.query.common.model.MarketDataSourceQueryItem;
+import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourceQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -81,7 +81,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
             return Optional.empty();
         }
 
-        List<MarketDataSourceQueryItem> sources = records.map(record -> toSource(
+        List<SourceQueryItem> sources = records.map(record -> toSource(
                         record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
                         record.get(SOURCE_PLAN_ENTRY_PRIORITY),
                         record.get(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS)
@@ -98,7 +98,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     @Override
     public List<SourcePlanQueryItem> findAll() {
-        Map<PlanKey, List<MarketDataSourceQueryItem>> groupedSources = new LinkedHashMap<>();
+        Map<PlanKey, List<SourceQueryItem>> groupedSources = new LinkedHashMap<>();
 
         dsl.select(
                         SOURCE_PLAN_CAPTURER_CODE,
@@ -129,7 +129,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                             record.get(SOURCE_PLAN_INSTRUMENT_CODE)
                     );
 
-                    MarketDataSourceQueryItem source = toSource(
+                    SourceQueryItem source = toSource(
                             record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
                             record.get(SOURCE_PLAN_ENTRY_PRIORITY),
                             record.get(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS)
@@ -140,7 +140,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
         List<SourcePlanQueryItem> plans = new ArrayList<>(groupedSources.size());
 
-        for (Map.Entry<PlanKey, List<MarketDataSourceQueryItem>> entry : groupedSources.entrySet()) {
+        for (Map.Entry<PlanKey, List<SourceQueryItem>> entry : groupedSources.entrySet()) {
             PlanKey planKey = entry.getKey();
             plans.add(new SourcePlanQueryItem(
                     planKey.capturerCode(),
@@ -154,14 +154,14 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         return List.copyOf(plans);
     }
 
-    private static MarketDataSourceQueryItem toSource(
+    private static SourceQueryItem toSource(
             String sourceCode,
             Integer priority,
             String lifecycleStatus
     ) {
         Objects.requireNonNull(priority, "priority must not be null");
 
-        return new MarketDataSourceQueryItem(sourceCode, priority, lifecycleStatus);
+        return new SourceQueryItem(sourceCode, priority, lifecycleStatus);
     }
 
     private record PlanKey(

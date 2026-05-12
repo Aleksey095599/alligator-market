@@ -3,7 +3,7 @@ package com.alligator.market.domain.source.handler;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import org.reactivestreams.Publisher;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I extends Instrument>
+public abstract class AbstractInstrumentHandler<P extends MarketSource, I extends Instrument>
         implements InstrumentHandler<P, I> {
 
     private final HandlerCode handlerCode;
@@ -51,7 +51,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
 
         if (!sourceRef.compareAndSet(null, source)) {
             throw new IllegalStateException(
-                    "Market data source is already attached to handler '%s'".formatted(handlerCode.value())
+                    "Market source is already attached to handler '%s'".formatted(handlerCode.value())
             );
         }
     }
@@ -129,7 +129,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketDataSource, I ex
         P source = sourceRef.get();
         if (source == null) {
             throw new IllegalStateException(
-                    "Market data source is not attached to handler '%s'".formatted(handlerCode.value())
+                    "Market source is not attached to handler '%s'".formatted(handlerCode.value())
             );
         }
         return source;

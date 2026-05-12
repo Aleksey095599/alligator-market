@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
@@ -20,7 +20,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Интеграционный тест {@link MoexIssFxSpotHandler} с реальным запросом source tick.
+ * РРЅС‚РµРіСЂР°С†РёРѕРЅРЅС‹Р№ С‚РµСЃС‚ {@link MoexIssFxSpotHandler} СЃ СЂРµР°Р»СЊРЅС‹Рј Р·Р°РїСЂРѕСЃРѕРј source tick.
  */
 @Tag("dev")
 class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
@@ -29,7 +29,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
     @Tag("external")
     @Tag("slow")
     void liveSourceTicksForCnyRubTom() {
-        // 1) Собираем WebClient с реальным baseUrl
+        // 1) РЎРѕР±РёСЂР°РµРј WebClient СЃ СЂРµР°Р»СЊРЅС‹Рј baseUrl
         String baseUrl = "https://iss.moex.com/iss";
 
         WebClient webClient = WebClient.builder()
@@ -39,22 +39,22 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
 
         // 2) Build the real handler and source.
         MoexIssFxSpotHandler handler = new MoexIssFxSpotHandler(webClient);
-        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
+        MoexIssSource source = new MoexIssSource(Set.of(handler));
 
-        // 3) Инструмент для теста
+        // 3) РРЅСЃС‚СЂСѓРјРµРЅС‚ РґР»СЏ С‚РµСЃС‚Р°
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
-        // 4) Запускаем запрос к реальному MOEX ISS
+        // 4) Р—Р°РїСѓСЃРєР°РµРј Р·Р°РїСЂРѕСЃ Рє СЂРµР°Р»СЊРЅРѕРјСѓ MOEX ISS
         Mono<SourceMarketDataTick> result = Mono.from(source.streamSourceTicks(cnyRubTom));
 
-        // 5) Проверяем минимальные инварианты source-level тика, не завязываясь на конкретную цену
+        // 5) РџСЂРѕРІРµСЂСЏРµРј РјРёРЅРёРјР°Р»СЊРЅС‹Рµ РёРЅРІР°СЂРёР°РЅС‚С‹ source-level С‚РёРєР°, РЅРµ Р·Р°РІСЏР·С‹РІР°СЏСЃСЊ РЅР° РєРѕРЅРєСЂРµС‚РЅСѓСЋ С†РµРЅСѓ
         StepVerifier.create(result)
                 .assertNext(tick -> {
-                    // ВРЕМЕННЫЙ вывод для наглядности
+                    // Р’Р Р•РњР•РќРќР«Р™ РІС‹РІРѕРґ РґР»СЏ РЅР°РіР»СЏРґРЅРѕСЃС‚Рё
                     System.out.println("=== LIVE SOURCE TICK FROM MOEX ISS ===");
-                    System.out.println(tick); // для record будет нормальный toString()
+                    System.out.println(tick); // РґР»СЏ record Р±СѓРґРµС‚ РЅРѕСЂРјР°Р»СЊРЅС‹Р№ toString()
                     System.out.println("======================================");
 
                     assertNotNull(tick, "SourceMarketDataTick must not be null");

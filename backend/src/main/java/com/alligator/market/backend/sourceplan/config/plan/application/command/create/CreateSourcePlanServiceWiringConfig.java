@@ -2,12 +2,12 @@ package com.alligator.market.backend.sourceplan.config.plan.application.command.
 
 import com.alligator.market.backend.instrument.config.registry.InstrumentRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataCapturerExistencePortWiringConfig;
-import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataSourceExistencePortWiringConfig;
+import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourceExistencePortWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.SourcePlanRepositoryWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.command.common.SourcePlanValidator;
 import com.alligator.market.backend.sourceplan.plan.application.command.create.CreateSourcePlanService;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Import;
         SourcePlanRepositoryWiringConfig.class,
         MarketDataCapturerExistencePortWiringConfig.class,
         InstrumentRegistryWiringConfig.class,
-        MarketDataSourceExistencePortWiringConfig.class
+        SourceExistencePortWiringConfig.class
 })
 public class CreateSourcePlanServiceWiringConfig {
     public static final String BEAN_CREATE_SOURCE_PLAN_SERVICE = "createSourcePlanService";
@@ -33,8 +33,8 @@ public class CreateSourcePlanServiceWiringConfig {
             MarketDataCapturerExistencePort capturerExistencePort,
             @Qualifier(InstrumentRegistryWiringConfig.BEAN_INSTRUMENT_REGISTRY)
             InstrumentRegistry instrumentRegistry,
-            @Qualifier(MarketDataSourceExistencePortWiringConfig.BEAN_MARKET_DATA_SOURCE_EXISTENCE_PORT)
-            MarketDataSourceExistencePort sourceExistencePort
+            @Qualifier(SourceExistencePortWiringConfig.BEAN_SOURCE_EXISTENCE_PORT)
+            SourceExistencePort sourceExistencePort
     ) {
         return new CreateSourcePlanService(
                 sourcePlanRepository,

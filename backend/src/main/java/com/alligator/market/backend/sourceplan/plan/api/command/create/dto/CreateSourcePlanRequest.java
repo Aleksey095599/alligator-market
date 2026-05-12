@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.api.command.create.dto;
 
-import com.alligator.market.backend.sourceplan.plan.api.command.common.MarketDataSourceRequest;
+import com.alligator.market.backend.sourceplan.plan.api.command.common.SourceRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,6 +16,6 @@ public record CreateSourcePlanRequest(
         String instrumentCode,
 
         @NotEmpty(message = "sources must not be empty")
-        List<@Valid MarketDataSourceRequest> sources
+        List<@Valid SourceRequest> sources
 ) {
 }

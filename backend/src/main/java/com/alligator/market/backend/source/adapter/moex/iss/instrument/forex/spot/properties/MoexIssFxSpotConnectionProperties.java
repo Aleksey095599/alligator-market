@@ -5,6 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties("market-data-source.connection-properties.moex.iss.fx-spot")
+@ConfigurationProperties("market-source.connection-properties.moex.iss.fx-spot")
 public record MoexIssFxSpotConnectionProperties(@NotBlank String baseUrl) {
 }

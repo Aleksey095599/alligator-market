@@ -1,6 +1,6 @@
 package com.alligator.market.domain.sourceplan;
 
-import com.alligator.market.domain.source.vo.MarketDataSourceCode;
+import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.util.Objects;
 
@@ -8,7 +8,7 @@ import java.util.Objects;
  * Lower priority values are preferred; 0 is the highest priority.
  */
 public record SourcePlanEntry(
-        MarketDataSourceCode sourceCode,
+        SourceCode sourceCode,
         int priority
 ) {
     public SourcePlanEntry {

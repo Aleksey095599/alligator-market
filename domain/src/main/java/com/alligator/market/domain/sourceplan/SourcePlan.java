@@ -2,7 +2,7 @@ package com.alligator.market.domain.sourceplan;
 
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.source.vo.MarketDataSourceCode;
+import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public final class SourcePlan {
         }
 
         List<SourcePlanEntry> entriesValidated = new ArrayList<>(entries.size());
-        Set<MarketDataSourceCode> sourceCodes = new HashSet<>();
+        Set<SourceCode> sourceCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
         for (SourcePlanEntry entry : entries) {

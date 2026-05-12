@@ -6,7 +6,7 @@ import com.alligator.market.backend.capturer.config.registry.MarketDataCapturerR
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.QuoteMonitorFeatureWiringConfig;
-import com.alligator.market.backend.source.config.MarketDataSourceFeatureWiringConfig;
+import com.alligator.market.backend.source.config.SourceFeatureWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.SourcePlanFeatureWiringConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +21,7 @@ import java.util.TimeZone;
 @EnableScheduling
 @ConfigurationPropertiesScan("com.alligator.market.backend")
 @Import({
-        MarketDataSourceFeatureWiringConfig.class,
+        SourceFeatureWiringConfig.class,
         MarketDataCapturerRegistryWiringConfig.class,
         MarketDataCapturerPassportListServiceWiringConfig.class,
         MarketDataCapturerPassportProjectionStartupRunnerWiringConfig.class,

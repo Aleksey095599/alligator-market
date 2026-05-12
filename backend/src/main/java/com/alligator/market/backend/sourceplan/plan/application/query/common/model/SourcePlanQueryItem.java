@@ -10,7 +10,7 @@ public record SourcePlanQueryItem(
         String capturerLifecycleStatus,
         StoredSourcePlanExecutionStatus planExecutionStatus,
         String instrumentCode,
-        List<MarketDataSourceQueryItem> sources
+        List<SourceQueryItem> sources
 ) {
     public SourcePlanQueryItem {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

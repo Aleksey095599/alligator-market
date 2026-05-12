@@ -2,9 +2,9 @@ package com.alligator.market.backend.sourceplan.plan.application.command.common;
 
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.SourceCodesNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
@@ -18,12 +18,12 @@ public final class SourcePlanValidator {
 
     private final InstrumentRegistry instrumentRegistry;
 
-    private final MarketDataSourceExistencePort sourceExistencePort;
+    private final SourceExistencePort sourceExistencePort;
 
     public SourcePlanValidator(
             MarketDataCapturerExistencePort capturerExistencePort,
             InstrumentRegistry instrumentRegistry,
-            MarketDataSourceExistencePort sourceExistencePort
+            SourceExistencePort sourceExistencePort
     ) {
         this.capturerExistencePort = Objects.requireNonNull(
                 capturerExistencePort,
@@ -61,7 +61,7 @@ public final class SourcePlanValidator {
         }
 
         if (!missingSourceCodes.isEmpty()) {
-            throw new MarketDataSourceCodesNotFoundException(missingSourceCodes);
+            throw new SourceCodesNotFoundException(missingSourceCodes);
         }
     }
 }

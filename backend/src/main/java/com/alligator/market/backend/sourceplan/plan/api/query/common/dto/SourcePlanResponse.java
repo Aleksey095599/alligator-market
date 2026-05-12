@@ -7,6 +7,6 @@ public record SourcePlanResponse(
         String capturerLifecycleStatus,
         String planExecutionStatus,
         String instrumentCode,
-        List<MarketDataSourceResponse> sources
+        List<SourceResponse> sources
 ) {
 }

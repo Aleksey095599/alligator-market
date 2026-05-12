@@ -8,7 +8,7 @@ import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSour
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.source.vo.MarketDataSourceCode;
+import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
@@ -325,7 +325,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         Objects.requireNonNull(priority, "priority must not be null");
 
         return new SourcePlanEntry(
-                new MarketDataSourceCode(sourceCode),
+                new SourceCode(sourceCode),
                 priority
         );
     }

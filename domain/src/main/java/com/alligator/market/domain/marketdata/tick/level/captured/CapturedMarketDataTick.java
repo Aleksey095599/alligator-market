@@ -3,7 +3,7 @@ package com.alligator.market.domain.marketdata.tick.level.captured;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
-import com.alligator.market.domain.source.vo.MarketDataSourceCode;
+import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
 public record CapturedMarketDataTick(
         MarketDataCapturerCode capturerCode,
         InstrumentCode instrumentCode,
-        MarketDataSourceCode sourceCode,
+        SourceCode sourceCode,
         SourceMarketDataTick sourceTick,
         Instant receivedTimestamp
 ) {
