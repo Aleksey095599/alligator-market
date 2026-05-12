@@ -50,8 +50,8 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 InstrumentCode instrumentCode = fxSpot.instrumentCode();
 
                 int insertedRegistryRows = tx.insertInto(INSTRUMENT_REGISTRY)
-                        .set(INSTRUMENT_REGISTRY.CODE, instrumentCode.value())
-                        .onConflict(INSTRUMENT_REGISTRY.CODE)
+                        .set(INSTRUMENT_REGISTRY.INSTRUMENT_CODE, instrumentCode.value())
+                        .onConflict(INSTRUMENT_REGISTRY.INSTRUMENT_CODE)
                         .doNothing()
                         .execute();
 
@@ -125,7 +125,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 }
 
                 int deletedRegistryRows = tx.deleteFrom(INSTRUMENT_REGISTRY)
-                        .where(INSTRUMENT_REGISTRY.CODE.eq(instrumentCode.value()))
+                        .where(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(instrumentCode.value()))
                         .execute();
 
                 if (deletedRegistryRows == 0) {
@@ -155,7 +155,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         return dsl.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
-                .on(INSTRUMENT_REGISTRY.CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
+                .on(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
                 .join(baseCurrencyRef)
                 .on(baseCurrencyRef.CODE.eq(INSTRUMENT_FX_SPOT.BASE_CURRENCY))
                 .join(quoteCurrencyRef)
@@ -185,7 +185,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
         return context.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
                 .join(INSTRUMENT_REGISTRY)
-                .on(INSTRUMENT_REGISTRY.CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
+                .on(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
                 .join(baseCurrencyRef)
                 .on(baseCurrencyRef.CODE.eq(INSTRUMENT_FX_SPOT.BASE_CURRENCY))
                 .join(quoteCurrencyRef)

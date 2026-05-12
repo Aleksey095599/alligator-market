@@ -5,8 +5,8 @@ import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.Instru
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.SourcePlanOptionsResponse;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataSourceOptionDto;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataCapturerOptionsQueryPort;
-import com.alligator.market.backend.sourceplan.plan.application.query.options.port.InstrumentOptionsQueryPort;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataSourceOptionsQueryPort;
+import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,21 +16,21 @@ import java.util.Objects;
 @RestController
 public class SourcePlanOptionsQueryController {
     private final MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort;
-    private final InstrumentOptionsQueryPort instrumentOptionsQueryPort;
+    private final InstrumentRegistry instrumentRegistry;
     private final MarketDataSourceOptionsQueryPort sourceOptionsQueryPort;
 
     public SourcePlanOptionsQueryController(
             MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort,
-            InstrumentOptionsQueryPort instrumentOptionsQueryPort,
+            InstrumentRegistry instrumentRegistry,
             MarketDataSourceOptionsQueryPort sourceOptionsQueryPort
     ) {
         this.capturerOptionsQueryPort = Objects.requireNonNull(
                 capturerOptionsQueryPort,
                 "capturerOptionsQueryPort must not be null"
         );
-        this.instrumentOptionsQueryPort = Objects.requireNonNull(
-                instrumentOptionsQueryPort,
-                "instrumentOptionsQueryPort must not be null"
+        this.instrumentRegistry = Objects.requireNonNull(
+                instrumentRegistry,
+                "instrumentRegistry must not be null"
         );
         this.sourceOptionsQueryPort = Objects.requireNonNull(
                 sourceOptionsQueryPort,
@@ -47,7 +47,7 @@ public class SourcePlanOptionsQueryController {
                                 option.displayName().value()
                         ))
                         .toList(),
-                instrumentOptionsQueryPort.findAllInstrumentCodes().stream()
+                instrumentRegistry.registeredCodes().stream()
                         .map(code -> new InstrumentOptionDto(code.value()))
                         .toList(),
                 sourceOptionsQueryPort.findAllSourceCodes().stream()

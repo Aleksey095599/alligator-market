@@ -4,8 +4,8 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Market
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataSourceCodesNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
-import com.alligator.market.backend.sourceplan.plan.application.port.InstrumentExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataSourceExistencePort;
+import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
@@ -16,22 +16,22 @@ import java.util.Set;
 public final class SourcePlanValidator {
     private final MarketDataCapturerExistencePort capturerExistencePort;
 
-    private final InstrumentExistencePort instrumentExistencePort;
+    private final InstrumentRegistry instrumentRegistry;
 
     private final MarketDataSourceExistencePort sourceExistencePort;
 
     public SourcePlanValidator(
             MarketDataCapturerExistencePort capturerExistencePort,
-            InstrumentExistencePort instrumentExistencePort,
+            InstrumentRegistry instrumentRegistry,
             MarketDataSourceExistencePort sourceExistencePort
     ) {
         this.capturerExistencePort = Objects.requireNonNull(
                 capturerExistencePort,
                 "capturerExistencePort must not be null"
         );
-        this.instrumentExistencePort = Objects.requireNonNull(
-                instrumentExistencePort,
-                "instrumentExistencePort must not be null"
+        this.instrumentRegistry = Objects.requireNonNull(
+                instrumentRegistry,
+                "instrumentRegistry must not be null"
         );
         this.sourceExistencePort = Objects.requireNonNull(
                 sourceExistencePort,
@@ -46,7 +46,7 @@ public final class SourcePlanValidator {
     }
 
     public void ensureInstrumentExists(SourcePlan plan) {
-        if (!instrumentExistencePort.existsByCode(plan.instrumentCode())) {
+        if (!instrumentRegistry.contains(plan.instrumentCode())) {
             throw new InstrumentCodeNotFoundException(plan.instrumentCode());
         }
     }
