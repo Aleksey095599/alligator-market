@@ -12,7 +12,7 @@ CREATE TABLE source_plan
             REFERENCES market_data_capturer_passport (capturer_code),
     CONSTRAINT fk_source_plan_instrument
         FOREIGN KEY (instrument_code)
-            REFERENCES instrument_registry (code),
+            REFERENCES instrument_registry (instrument_code),
 
     CONSTRAINT chk_source_plan_execution_status
         CHECK (execution_status IN ('EXECUTABLE', 'CAPTURER_RETIRED', 'NO_EXECUTABLE_SOURCES'))

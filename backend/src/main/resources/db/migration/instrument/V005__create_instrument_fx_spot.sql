@@ -10,7 +10,7 @@ CREATE TABLE instrument_fx_spot
 
     CONSTRAINT fk_fx_spot_instrument
         FOREIGN KEY (instrument_code)
-            REFERENCES instrument_registry (code),
+            REFERENCES instrument_registry (instrument_code),
     CONSTRAINT fk_fx_spot_base
         FOREIGN KEY (base_currency)
             REFERENCES currency (code),
