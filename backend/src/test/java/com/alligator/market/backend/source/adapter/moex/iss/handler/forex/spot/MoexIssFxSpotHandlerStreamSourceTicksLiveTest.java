@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.asset.forex.reference.currency.Cur
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
         FxSpot cnyRubTom = new FxSpot(cny, rub, FxSpotTenor.TOM, 4);
 
         // 4) Р—Р°РїСѓСЃРєР°РµРј Р·Р°РїСЂРѕСЃ Рє СЂРµР°Р»СЊРЅРѕРјСѓ MOEX ISS
-        Mono<SourceMarketDataTick> result = Mono.from(source.streamSourceTicks(cnyRubTom));
+        Mono<SourceTick> result = Mono.from(source.streamSourceTicks(cnyRubTom));
 
         // 5) РџСЂРѕРІРµСЂСЏРµРј РјРёРЅРёРјР°Р»СЊРЅС‹Рµ РёРЅРІР°СЂРёР°РЅС‚С‹ source-level С‚РёРєР°, РЅРµ Р·Р°РІСЏР·С‹РІР°СЏСЃСЊ РЅР° РєРѕРЅРєСЂРµС‚РЅСѓСЋ С†РµРЅСѓ
         StepVerifier.create(result)

@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.delete;
 
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ public final class DeleteSourcePlanService {
     }
 
     public void delete(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

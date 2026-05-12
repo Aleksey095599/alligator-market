@@ -27,7 +27,7 @@ public final class SnapshotSourceRegistry implements SourceRegistry {
         for (MarketSource source : sources) {
             Objects.requireNonNull(source, "source must not be null");
 
-            SourceCode code = Objects.requireNonNull(source.sourceCode(),
+            SourceCode code = Objects.requireNonNull(source.code(),
                     "source.sourceCode must not be null");
 
             SourcePassport passport = Objects.requireNonNull(source.passport(),

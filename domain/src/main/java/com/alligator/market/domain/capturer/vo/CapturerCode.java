@@ -2,7 +2,7 @@ package com.alligator.market.domain.capturer.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-public record MarketDataCapturerCode(
+public record CapturerCode(
         String value
 ) {
 
@@ -14,11 +14,11 @@ public record MarketDataCapturerCode(
             .pattern(PATTERN, "[A-Z0-9_.-]+")
             .build();
 
-    public MarketDataCapturerCode {
+    public CapturerCode {
         value = StringValueNormalizer.normalize(value, "capturerCode", NORMALIZATION_OPTIONS);
     }
 
-    public static MarketDataCapturerCode of(String raw) {
-        return new MarketDataCapturerCode(raw);
+    public static CapturerCode of(String raw) {
+        return new CapturerCode(raw);
     }
 }

@@ -1,9 +1,9 @@
 package com.alligator.market.domain.capturer.registry;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
-import com.alligator.market.domain.capturer.passport.MarketDataCapturerPassport;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,29 +14,29 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public final class SnapshotMarketDataCapturerRegistry implements MarketDataCapturerRegistry {
+public final class SnapshotCapturerRegistry implements CapturerRegistry {
 
-    private final Map<MarketDataCapturerCode, MarketDataCapturer> capturersByCode;
-    private final Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsByCode;
+    private final Map<CapturerCode, MarketDataCapturer> capturersByCode;
+    private final Map<CapturerCode, CapturerPassport> passportsByCode;
 
-    public SnapshotMarketDataCapturerRegistry(List<? extends MarketDataCapturer> capturers) {
+    public SnapshotCapturerRegistry(List<? extends MarketDataCapturer> capturers) {
         Objects.requireNonNull(capturers, "capturers must not be null");
 
         if (capturers.isEmpty()) {
             throw new IllegalArgumentException("Market data capturer registry must contain at least one capturer");
         }
 
-        Map<MarketDataCapturerCode, MarketDataCapturer> capturersMap = new LinkedHashMap<>();
-        Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsMap = new LinkedHashMap<>();
+        Map<CapturerCode, MarketDataCapturer> capturersMap = new LinkedHashMap<>();
+        Map<CapturerCode, CapturerPassport> passportsMap = new LinkedHashMap<>();
         Set<String> displayNamesLower = new HashSet<>();
 
         for (MarketDataCapturer capturer : capturers) {
             Objects.requireNonNull(capturer, "capturer must not be null");
 
-            MarketDataCapturerCode code = Objects.requireNonNull(capturer.capturerCode(),
+            CapturerCode code = Objects.requireNonNull(capturer.capturerCode(),
                     "capturer.capturerCode must not be null");
 
-            MarketDataCapturerPassport passport = Objects.requireNonNull(capturer.passport(),
+            CapturerPassport passport = Objects.requireNonNull(capturer.passport(),
                     "capturer.passport must not be null");
 
             Objects.requireNonNull(capturer.policy(),
@@ -49,7 +49,7 @@ public final class SnapshotMarketDataCapturerRegistry implements MarketDataCaptu
                 );
             }
 
-            MarketDataCapturerDisplayName displayName = Objects.requireNonNull(passport.displayName(),
+            CapturerDisplayName displayName = Objects.requireNonNull(passport.displayName(),
                     "capturer.passport.displayName must not be null");
 
             String displayNameValue = displayName.value();
@@ -68,12 +68,12 @@ public final class SnapshotMarketDataCapturerRegistry implements MarketDataCaptu
     }
 
     @Override
-    public Map<MarketDataCapturerCode, MarketDataCapturer> capturersByCode() {
+    public Map<CapturerCode, MarketDataCapturer> capturersByCode() {
         return capturersByCode;
     }
 
     @Override
-    public Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsByCode() {
+    public Map<CapturerCode, CapturerPassport> passportsByCode() {
         return passportsByCode;
     }
 }

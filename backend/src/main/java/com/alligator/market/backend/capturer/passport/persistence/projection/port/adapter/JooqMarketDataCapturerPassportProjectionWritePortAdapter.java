@@ -3,8 +3,8 @@ package com.alligator.market.backend.capturer.passport.persistence.projection.po
 import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
 import com.alligator.market.backend.capturer.passport.persistence.projection.mapper.StoredMarketDataCapturerPassportMapper;
 import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerPassport;
-import com.alligator.market.domain.capturer.passport.MarketDataCapturerPassport;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Query;
@@ -31,11 +31,11 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
     }
 
     @Override
-    public void retireAllExcept(Set<MarketDataCapturerCode> passportCodes) {
+    public void retireAllExcept(Set<CapturerCode> passportCodes) {
         validateCurrentCodes(passportCodes);
 
         Set<String> currentValues = new LinkedHashSet<>(passportCodes.size());
-        for (MarketDataCapturerCode code : passportCodes) {
+        for (CapturerCode code : passportCodes) {
             currentValues.add(code.value());
         }
 
@@ -47,7 +47,7 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
     }
 
     @Override
-    public void upsertAll(Map<MarketDataCapturerCode, MarketDataCapturerPassport> passports) {
+    public void upsertAll(Map<CapturerCode, CapturerPassport> passports) {
         List<StoredMarketDataCapturerPassport> storedPassports = storedPassportMapper.toActiveStored(passports);
         if (storedPassports.isEmpty()) {
             return;
@@ -56,8 +56,8 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
         List<Query> queries = new ArrayList<>(storedPassports.size());
 
         for (StoredMarketDataCapturerPassport storedPassport : storedPassports) {
-            MarketDataCapturerCode code = storedPassport.capturerCode();
-            MarketDataCapturerPassport passport = storedPassport.passport();
+            CapturerCode code = storedPassport.capturerCode();
+            CapturerPassport passport = storedPassport.passport();
             String lifecycleStatus = storedPassport.lifecycleStatus().name();
 
             Condition businessFieldsChanged = MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME
@@ -80,7 +80,7 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
         dsl.batch(queries).execute();
     }
 
-    private static void validateCurrentCodes(Set<MarketDataCapturerCode> currentCodes) {
+    private static void validateCurrentCodes(Set<CapturerCode> currentCodes) {
         if (currentCodes == null) {
             throw new IllegalArgumentException("currentCodes must not be null");
         }
@@ -88,7 +88,7 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
             throw new IllegalArgumentException("currentCodes must not be empty");
         }
 
-        for (MarketDataCapturerCode code : currentCodes) {
+        for (CapturerCode code : currentCodes) {
             if (code == null) {
                 throw new IllegalArgumentException("currentCodes must not contain null");
             }

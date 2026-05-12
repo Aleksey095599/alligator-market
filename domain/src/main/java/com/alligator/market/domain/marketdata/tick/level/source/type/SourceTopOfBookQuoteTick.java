@@ -1,21 +1,18 @@
 package com.alligator.market.domain.marketdata.tick.level.source.type;
 
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
-/**
- * Source-level top-of-book quote tick with best bid and ask prices.
- */
 public record SourceTopOfBookQuoteTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal bidPrice,
         BigDecimal askPrice,
         Instant sourceTimestamp
-) implements SourceMarketDataTick {
+) implements SourceTick {
 
     public SourceTopOfBookQuoteTick {
         Objects.requireNonNull(sourceInstrumentCode, "sourceInstrumentCode must not be null");
@@ -37,7 +34,7 @@ public record SourceTopOfBookQuoteTick(
     }
 
     @Override
-    public SourceMarketDataTickType sourceTickType() {
-        return SourceMarketDataTickType.TOP_OF_BOOK_QUOTE;
+    public SourceTickType sourceTickType() {
+        return SourceTickType.TOP_OF_BOOK_QUOTE;
     }
 }

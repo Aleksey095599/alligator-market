@@ -4,11 +4,10 @@ import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.source.passport.classification.AccessMethod;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -49,7 +48,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     }
 
     @Override
-    protected Publisher<SourceMarketDataTick> doStreamSourceTicks(FxSpot instrument) {
+    protected Publisher<SourceTick> doStreamSourceTicks(FxSpot instrument) {
         Duration pollInterval = source().policy().minUpdateInterval();
 
         return fetchSourceTickOnce(instrument)
@@ -65,7 +64,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                 .repeatWhen(completed -> completed.delayElements(pollInterval));
     }
 
-    private Mono<SourceMarketDataTick> fetchSourceTickOnce(FxSpot instrument) {
+    private Mono<SourceTick> fetchSourceTickOnce(FxSpot instrument) {
         InstrumentCode domainCode = instrument.instrumentCode();
         SourceInstrumentCode secid = MoexIssFxSpotSupportCatalog.moexSecidOf(domainCode);
 
@@ -90,13 +89,13 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                         "Requesting FX_SPOT source tick from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode.value(), secid.value()))
                 .map(body -> {
-                    SourceMarketDataTick tick = mapMarketdataToSourceTick(secid, body);
+                    SourceTick tick = mapMarketdataToSourceTick(secid, body);
                     log.debug("Received FX_SPOT SourceMarketDataTick from MOEX ISS: {}", tick);
                     return tick;
                 });
     }
 
-    private SourceMarketDataTick mapMarketdataToSourceTick(SourceInstrumentCode secid, JsonNode root) {
+    private SourceTick mapMarketdataToSourceTick(SourceInstrumentCode secid, JsonNode root) {
         // MOEX ISS returns table-shaped JSON: column names define indexes into each data row.
         JsonNode marketdata = root.path("marketdata");
         if (marketdata.isMissingNode() || !marketdata.isObject()) {

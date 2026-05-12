@@ -2,9 +2,6 @@ package com.alligator.market.domain.marketdata.tick.level.source.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-/**
- * Instrument identifier as received from an external market source, before internal code mapping.
- */
 public record SourceInstrumentCode(
         String value
 ) {

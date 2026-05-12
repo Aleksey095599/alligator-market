@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.api.command.delete.controll
 
 import com.alligator.market.backend.sourceplan.plan.application.command.delete.DeleteSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +31,7 @@ public class DeleteSourcePlanController {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         deleteSourcePlanService.delete(
-                new MarketDataCapturerCode(capturerCode),
+                new CapturerCode(capturerCode),
                 new InstrumentCode(instrumentCode)
         );
         return ResponseEntity.noContent().build();

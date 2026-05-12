@@ -11,9 +11,6 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Compatibility profile derived from the instruments supported by a handler.
- */
 public record SupportedInstrumentsProfile(
         Set<InstrumentCode> supportedInstrumentCodes,
         Class<? extends Instrument> instrumentClass,

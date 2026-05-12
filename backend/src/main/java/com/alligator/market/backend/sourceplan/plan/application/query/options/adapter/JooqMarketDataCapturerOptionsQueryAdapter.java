@@ -2,8 +2,8 @@ package com.alligator.market.backend.sourceplan.plan.application.query.options.a
 
 import com.alligator.market.backend.sourceplan.plan.application.query.options.model.MarketDataCapturerOption;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataCapturerOptionsQueryPort;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerDisplayName;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDa
                 .where(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
                 .orderBy(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.asc())
                 .fetch(record -> new MarketDataCapturerOption(
-                        new MarketDataCapturerCode(record.get(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE)),
-                        new MarketDataCapturerDisplayName(record.get(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME))
+                        new CapturerCode(record.get(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE)),
+                        new CapturerDisplayName(record.get(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME))
                 ));
     }
 }

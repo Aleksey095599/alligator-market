@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.api.command.replace.mapper;
 import com.alligator.market.backend.sourceplan.plan.api.command.replace.dto.ReplaceSourcePlanRequest;
 import com.alligator.market.backend.sourceplan.plan.api.command.common.SourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
@@ -35,7 +35,7 @@ public class ReplaceSourcePlanMapper {
                 .toList();
 
         return new SourcePlan(
-                new MarketDataCapturerCode(capturerCode),
+                new CapturerCode(capturerCode),
                 new InstrumentCode(instrumentCode),
                 entries
         );

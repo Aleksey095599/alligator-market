@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourceplan.plan.api.query.common.mapper.Sour
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.get.GetSourcePlanService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +40,7 @@ public class GetSourcePlanController {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         SourcePlanQueryItem plan = getSourcePlanService.get(
-                new MarketDataCapturerCode(capturerCode),
+                new CapturerCode(capturerCode),
                 new InstrumentCode(instrumentCode)
         );
         return ResponseEntity.ok(responseMapper.toPlanResponse(plan));

@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourceplan.plan.application.query.common.mod
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -51,7 +51,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     @Override
     public Optional<SourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

@@ -6,7 +6,7 @@ import com.alligator.market.backend.capturer.config.passport.persistence.project
 import com.alligator.market.backend.capturer.config.registry.MarketDataCapturerRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourcePlanStatusSyncPortWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.capturer.registry.MarketDataCapturerRegistry;
+import com.alligator.market.domain.capturer.registry.CapturerRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class MarketDataCapturerPassportProjectionServiceWiringConfig {
     @Bean(BEAN_CAPTURER_PASSPORT_PROJECTION_SERVICE)
     public MarketDataCapturerPassportProjectionService capturerPassportProjectionService(
             @Qualifier(MarketDataCapturerRegistryWiringConfig.BEAN_CAPTURER_REGISTRY)
-            MarketDataCapturerRegistry registry,
+            CapturerRegistry registry,
             @Qualifier(MarketDataCapturerPassportProjectionWritePortWiringConfig
                     .BEAN_CAPTURER_PASSPORT_PROJECTION_WRITE_PORT)
             MarketDataCapturerPassportProjectionWritePort writePort,

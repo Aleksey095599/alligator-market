@@ -2,9 +2,9 @@ package com.alligator.market.backend.capturer.passport.application.projection;
 
 import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.capturer.passport.MarketDataCapturerPassport;
-import com.alligator.market.domain.capturer.registry.MarketDataCapturerRegistry;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.registry.CapturerRegistry;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Map;
@@ -12,13 +12,13 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class MarketDataCapturerPassportProjectionService {
-    private final MarketDataCapturerRegistry registry;
+    private final CapturerRegistry registry;
     private final MarketDataCapturerPassportProjectionWritePort writePort;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final TransactionTemplate tx;
 
     public MarketDataCapturerPassportProjectionService(
-            MarketDataCapturerRegistry registry,
+            CapturerRegistry registry,
             MarketDataCapturerPassportProjectionWritePort writePort,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             TransactionTemplate tx
@@ -37,7 +37,7 @@ public final class MarketDataCapturerPassportProjectionService {
     }
 
     private void projectInTransaction() {
-        Map<MarketDataCapturerCode, MarketDataCapturerPassport> passportsFromRegistry = Map.copyOf(
+        Map<CapturerCode, CapturerPassport> passportsFromRegistry = Map.copyOf(
                 Objects.requireNonNull(registry.passportsByCode(), "passportsByCode must not be null")
         );
 
@@ -45,7 +45,7 @@ public final class MarketDataCapturerPassportProjectionService {
             throw new IllegalStateException("Capturer registry returned no capturer passports");
         }
 
-        Set<MarketDataCapturerCode> passportCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
+        Set<CapturerCode> passportCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
 
         writePort.retireAllExcept(passportCodesFromRegistry);
         writePort.upsertAll(passportsFromRegistry);

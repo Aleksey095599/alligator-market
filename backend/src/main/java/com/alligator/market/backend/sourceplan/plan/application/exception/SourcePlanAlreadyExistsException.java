@@ -1,13 +1,13 @@
 package com.alligator.market.backend.sourceplan.plan.application.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 import java.util.Objects;
 
 public final class SourcePlanAlreadyExistsException extends IllegalStateException {
     public SourcePlanAlreadyExistsException(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         super("Source plan for capturer '" +

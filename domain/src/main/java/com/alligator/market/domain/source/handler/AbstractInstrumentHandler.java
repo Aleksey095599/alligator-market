@@ -2,7 +2,7 @@ package com.alligator.market.domain.source.handler;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.source.vo.HandlerCode;
@@ -57,7 +57,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
     }
 
     @Override
-    public final Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
+    public final Publisher<SourceTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         requireAttachedSource();
@@ -71,10 +71,7 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
         );
     }
 
-    /**
-     * Called after the handler is attached and the instrument matches the supported profile.
-     */
-    protected abstract Publisher<SourceMarketDataTick> doStreamSourceTicks(I instrument);
+    protected abstract Publisher<SourceTick> doStreamSourceTicks(I instrument);
 
     protected final P source() {
         return requireAttachedSource();

@@ -7,7 +7,7 @@ import com.alligator.market.backend.sourceplan.plan.persistence.mapper.StoredSou
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
@@ -63,7 +63,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, false);
@@ -71,7 +71,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public Optional<SourcePlan> findExecutableByMarketDataCapturerCodeAndInstrumentCode(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, true);
@@ -79,7 +79,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public List<SourcePlan> findExecutableByMarketDataCapturerCode(
-            MarketDataCapturerCode capturerCode
+            CapturerCode capturerCode
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
@@ -122,7 +122,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     }
 
     private Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode,
             boolean executableOnly
     ) {
@@ -181,7 +181,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 .fetch()
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
-                            new MarketDataCapturerCode(
+                            new CapturerCode(
                                     record.get(SOURCE_PLAN_ENTRY_CAPTURER_CODE)
                             ),
                             new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
@@ -285,7 +285,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public boolean deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
@@ -346,7 +346,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     }
 
     private record PlanKey(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
     }

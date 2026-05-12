@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.DSLContext;
 
 import java.util.Objects;
@@ -17,7 +17,7 @@ public final class JooqMarketDataCapturerExistenceAdapter implements MarketDataC
     }
 
     @Override
-    public boolean existsByCode(MarketDataCapturerCode capturerCode) {
+    public boolean existsByCode(CapturerCode capturerCode) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
         return dsl.fetchExists(

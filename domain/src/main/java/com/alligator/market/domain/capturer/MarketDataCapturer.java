@@ -1,14 +1,14 @@
 package com.alligator.market.domain.capturer;
 
-import com.alligator.market.domain.capturer.passport.MarketDataCapturerPassport;
-import com.alligator.market.domain.capturer.policy.MarketDataCapturerPolicy;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.policy.CapturerPolicy;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 public interface MarketDataCapturer {
 
-    MarketDataCapturerCode capturerCode();
+    CapturerCode capturerCode();
 
-    MarketDataCapturerPassport passport();
+    CapturerPassport passport();
 
-    MarketDataCapturerPolicy policy();
+    CapturerPolicy policy();
 }

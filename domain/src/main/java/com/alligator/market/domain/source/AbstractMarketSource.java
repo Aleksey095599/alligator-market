@@ -2,7 +2,7 @@ package com.alligator.market.domain.source;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.passport.SourcePassport;
@@ -22,9 +22,6 @@ public abstract class AbstractMarketSource<P extends MarketSource>
 
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
-    /**
-     * Returns this source in its concrete generic type for type-safe handler attachment.
-     */
     protected abstract P self();
 
     protected AbstractMarketSource(
@@ -54,7 +51,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
     }
 
     @Override
-    public SourceCode sourceCode() {
+    public SourceCode code() {
         return sourceCode;
     }
 
@@ -69,7 +66,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
     }
 
     @Override
-    public final <I extends Instrument> Publisher<SourceMarketDataTick> streamSourceTicks(I instrument) {
+    public final <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
         InstrumentHandler<P, I> handler = findHandlerOrThrow(instrument);
@@ -77,9 +74,6 @@ public abstract class AbstractMarketSource<P extends MarketSource>
         return handler.streamSourceTicks(instrument);
     }
 
-    /**
-     * Builds the lookup map and rejects ambiguous handler registrations.
-     */
     private static <P extends MarketSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             SourceCode sourceCode,

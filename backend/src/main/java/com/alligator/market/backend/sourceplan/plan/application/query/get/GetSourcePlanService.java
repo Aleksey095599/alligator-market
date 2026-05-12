@@ -4,7 +4,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Source
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ public final class GetSourcePlanService {
     }
 
     public SourcePlanQueryItem get(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

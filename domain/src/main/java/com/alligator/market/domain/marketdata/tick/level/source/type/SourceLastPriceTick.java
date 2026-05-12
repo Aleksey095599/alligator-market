@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.tick.level.source.type;
 
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ public record SourceLastPriceTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal lastPrice,
         Instant sourceTimestamp
-) implements SourceMarketDataTick {
+) implements SourceTick {
 
     public SourceLastPriceTick {
         Objects.requireNonNull(sourceInstrumentCode, "sourceInstrumentCode must not be null");
@@ -24,7 +24,7 @@ public record SourceLastPriceTick(
     }
 
     @Override
-    public SourceMarketDataTickType sourceTickType() {
-        return SourceMarketDataTickType.LAST_PRICE;
+    public SourceTickType sourceTickType() {
+        return SourceTickType.LAST_PRICE;
     }
 }

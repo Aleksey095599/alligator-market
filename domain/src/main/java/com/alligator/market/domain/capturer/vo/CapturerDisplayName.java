@@ -2,7 +2,7 @@ package com.alligator.market.domain.capturer.vo;
 
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
-public record MarketDataCapturerDisplayName(
+public record CapturerDisplayName(
         String value
 ) {
 
@@ -12,11 +12,11 @@ public record MarketDataCapturerDisplayName(
             .rejectControlCharacters()
             .build();
 
-    public MarketDataCapturerDisplayName {
+    public CapturerDisplayName {
         value = StringValueNormalizer.normalize(value, "displayName", NORMALIZATION_OPTIONS);
     }
 
-    public static MarketDataCapturerDisplayName of(String raw) {
-        return new MarketDataCapturerDisplayName(raw);
+    public static CapturerDisplayName of(String raw) {
+        return new CapturerDisplayName(raw);
     }
 }

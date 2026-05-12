@@ -1,6 +1,6 @@
 package com.alligator.market.domain.sourceplan;
 
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 
@@ -9,12 +9,12 @@ import java.util.*;
 @SuppressWarnings("ClassCanBeRecord") // Domain model, not a DTO-style data carrier.
 public final class SourcePlan {
 
-    private final MarketDataCapturerCode capturerCode;
+    private final CapturerCode capturerCode;
     private final InstrumentCode instrumentCode;
     private final List<SourcePlanEntry> entries;
 
     public SourcePlan(
-            MarketDataCapturerCode capturerCode,
+            CapturerCode capturerCode,
             InstrumentCode instrumentCode,
             List<SourcePlanEntry> entries
     ) {
@@ -57,7 +57,7 @@ public final class SourcePlan {
         return List.copyOf(entriesValidated);
     }
 
-    public MarketDataCapturerCode capturerCode() {
+    public CapturerCode capturerCode() {
         return capturerCode;
     }
 

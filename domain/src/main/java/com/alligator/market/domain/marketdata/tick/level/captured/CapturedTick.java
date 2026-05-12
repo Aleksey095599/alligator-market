@@ -1,24 +1,21 @@
 package com.alligator.market.domain.marketdata.tick.level.captured;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
-import com.alligator.market.domain.marketdata.tick.level.source.SourceMarketDataTick;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.time.Instant;
 import java.util.Objects;
 
-/**
- * Captured tick with source data plus application capture metadata.
- */
-public record CapturedMarketDataTick(
-        MarketDataCapturerCode capturerCode,
+public record CapturedTick(
+        CapturerCode capturerCode,
         InstrumentCode instrumentCode,
         SourceCode sourceCode,
-        SourceMarketDataTick sourceTick,
+        SourceTick sourceTick,
         Instant receivedTimestamp
 ) {
-    public CapturedMarketDataTick {
+    public CapturedTick {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");

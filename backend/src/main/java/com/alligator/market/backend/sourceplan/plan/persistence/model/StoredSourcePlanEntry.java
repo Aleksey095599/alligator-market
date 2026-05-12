@@ -1,13 +1,13 @@
 package com.alligator.market.backend.sourceplan.plan.persistence.model;
 
-import com.alligator.market.domain.capturer.vo.MarketDataCapturerCode;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
 import java.util.Objects;
 
 public record StoredSourcePlanEntry(
-        MarketDataCapturerCode capturerCode,
+        CapturerCode capturerCode,
         InstrumentCode instrumentCode,
         SourcePlanEntry entry,
         StoredSourcePlanEntryLifecycleStatus lifecycleStatus
