@@ -20,14 +20,14 @@ import { MatCardModule } from '@angular/material/card';
 
 import {
   SourcePlanResponseDto,
-  MarketDataSourceResponseDto
+  SourceResponseDto
 } from '../../models/source-plan.model';
 import {
   MarketDataCapturerOptionDto,
   InstrumentOptionDto,
-  MarketDataSourceOptionDto
+  SourceOptionDto
 } from '../../models/source-plan-options.model';
-import { MarketDataSourceRequestDto } from '../../models/create-source-plan.model';
+import { SourceRequestDto } from '../../models/create-source-plan.model';
 import { SourcePlanService } from '../../services/source-plan.service';
 
 /* Админ-страница управления whole-plan sourcing планами по инструментам. */
@@ -77,9 +77,9 @@ export class SourcePlanAdminComponent implements OnInit {
   private activeCapturerCodes = new Set<string>();
   capturerOptions: MarketDataCapturerOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
-  private activeSourceOptions: MarketDataSourceOptionDto[] = [];
+  private activeSourceOptions: SourceOptionDto[] = [];
   private activeSourceCodes = new Set<string>();
-  sourceOptions: MarketDataSourceOptionDto[] = [];
+  sourceOptions: SourceOptionDto[] = [];
 
   /* Флаг блокировки кнопок при запросе. */
   locked = false;
@@ -190,7 +190,7 @@ export class SourcePlanAdminComponent implements OnInit {
   }
 
   /* Добавить новую строку source в FormArray. */
-  onAddSourceRow(source?: MarketDataSourceResponseDto): void {
+  onAddSourceRow(source?: SourceResponseDto): void {
     this.sources.push(this.fb.group({
       sourceCode: [source?.sourceCode ?? '', [Validators.required]],
       priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]],
@@ -355,11 +355,11 @@ export class SourcePlanAdminComponent implements OnInit {
     return sorted[0]?.sourceCode ?? '-';
   }
 
-  isRetiredSource(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): boolean {
+  isRetiredSource(source: Pick<SourceResponseDto, 'lifecycleStatus'>): boolean {
     return source.lifecycleStatus === 'RETIRED';
   }
 
-  sourceStatusLabel(source: Pick<MarketDataSourceResponseDto, 'lifecycleStatus'>): string {
+  sourceStatusLabel(source: Pick<SourceResponseDto, 'lifecycleStatus'>): string {
     return this.isRetiredSource(source) ? 'RETIRED' : 'ACTIVE';
   }
 
@@ -445,7 +445,7 @@ export class SourcePlanAdminComponent implements OnInit {
   }
 
   /* Retired source codes добавляются только для отображения уже загруженных строк в edit mode. */
-  private sourceOptionsWithHistoricalCodes(sourceCodes: string[]): MarketDataSourceOptionDto[] {
+  private sourceOptionsWithHistoricalCodes(sourceCodes: string[]): SourceOptionDto[] {
     const historicalCodes = Array.from(new Set(sourceCodes))
       .filter(sourceCode => !this.activeSourceCodes.has(sourceCode))
       .map(code => ({ code }));
@@ -453,7 +453,7 @@ export class SourcePlanAdminComponent implements OnInit {
     return [...historicalCodes, ...this.activeSourceOptions];
   }
 
-  private collectSortedSources(): MarketDataSourceRequestDto[] {
+  private collectSortedSources(): SourceRequestDto[] {
     return this.sources.getRawValue()
       .map((row: { sourceCode: string; priority: number }) => ({
         sourceCode: row.sourceCode,

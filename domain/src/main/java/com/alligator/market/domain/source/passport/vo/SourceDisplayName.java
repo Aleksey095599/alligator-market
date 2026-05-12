@@ -6,7 +6,7 @@ public record SourceDisplayName(
         String value
 ) {
 
-    private static final int MAX_LENGTH = 50;
+    private static final int MAX_LENGTH = 100;
     private static final StringValueNormalizer.Options NORMALIZATION_OPTIONS = StringValueNormalizer.options()
             .maxLength(MAX_LENGTH)
             .rejectControlCharacters()

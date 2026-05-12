@@ -1,4 +1,4 @@
-export interface MarketDataSourceRequestDto {
+export interface SourceRequestDto {
   sourceCode: string;
   priority: number;
 }
@@ -6,5 +6,5 @@ export interface MarketDataSourceRequestDto {
 export interface CreateSourcePlanDto {
   capturerCode: string;
   instrumentCode: string;
-  sources: MarketDataSourceRequestDto[];
+  sources: SourceRequestDto[];
 }

@@ -7,12 +7,12 @@ export interface InstrumentOptionDto {
   code: string;
 }
 
-export interface MarketDataSourceOptionDto {
+export interface SourceOptionDto {
   code: string;
 }
 
 export interface SourcePlanOptionsResponseDto {
   capturers: MarketDataCapturerOptionDto[];
   instruments: InstrumentOptionDto[];
-  sources: MarketDataSourceOptionDto[];
+  sources: SourceOptionDto[];
 }

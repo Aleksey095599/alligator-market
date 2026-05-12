@@ -1,5 +1,5 @@
-import { MarketDataSourceRequestDto } from './create-source-plan.model';
+import { SourceRequestDto } from './create-source-plan.model';
 
 export interface ReplaceSourcePlanDto {
-  sources: MarketDataSourceRequestDto[];
+  sources: SourceRequestDto[];
 }

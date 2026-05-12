@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MarketDataSourcePassportService } from '../../services/market-data-source-passport.service';
-import { MarketDataSourcePassportDto } from '../../models/market-data-source-passport-dto.model';
+import { SourcePassportService } from '../../services/source-passport.service';
+import { SourcePassportDto } from '../../models/source-passport-dto.model';
 
 @Component({
-  selector: 'app-market-data-source-passport-list',
+  selector: 'app-source-passport-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule, MatSnackBarModule],
   templateUrl: './passport-list.component.html',
@@ -23,10 +23,10 @@ export class PassportListComponent implements OnInit {
     'bulkSubscription',
     'lifecycleStatus'
   ];
-  dataSource = new MatTableDataSource<MarketDataSourcePassportDto>([]);
+  dataSource = new MatTableDataSource<SourcePassportDto>([]);
 
   constructor(
-    private readonly service: MarketDataSourcePassportService,
+    private readonly service: SourcePassportService,
     private readonly snack: MatSnackBar
   ) {}
 
@@ -42,7 +42,7 @@ export class PassportListComponent implements OnInit {
         );
       },
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load market data source passports failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load sources failed'), 'Close');
       }
     });
   }

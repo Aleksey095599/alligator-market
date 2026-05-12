@@ -1,4 +1,4 @@
-export interface MarketDataSourcePassportDto {
+export interface SourcePassportDto {
   sourceCode: string;
   displayName: string;
   deliveryMode: string;
