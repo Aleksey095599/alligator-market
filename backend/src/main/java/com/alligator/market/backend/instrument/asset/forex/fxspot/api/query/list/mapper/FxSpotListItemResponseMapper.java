@@ -16,8 +16,8 @@ public final class FxSpotListItemResponseMapper {
         return new FxSpotListItemResponse(
                 fxSpot.instrumentCode().value(),
                 fxSpot.instrumentSymbol().value(),
-                fxSpot.asset().name(),
-                fxSpot.product().name(),
+                fxSpot.asset().code(),
+                fxSpot.product().code(),
                 fxSpot.base().code().value(),
                 fxSpot.quote().code().value(),
                 fxSpot.defaultQuoteFractionDigits(),
