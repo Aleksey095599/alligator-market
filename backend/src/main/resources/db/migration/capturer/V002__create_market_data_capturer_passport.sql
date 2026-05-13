@@ -4,7 +4,7 @@ CREATE TABLE market_data_capturer_passport
     id               BIGSERIAL PRIMARY KEY,
 
     capturer_code    VARCHAR(50)  NOT NULL,
-    display_name     VARCHAR(160) NOT NULL,
+    display_name     VARCHAR(100) NOT NULL,
     lifecycle_status VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT uq_market_data_capturer_code
