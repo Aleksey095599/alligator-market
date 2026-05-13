@@ -1,9 +1,9 @@
-package com.alligator.market.backend.capturer.passport.persistence.projection.port.adapter;
+package com.alligator.market.backend.capturer.passport.persistence.registry;
 
-import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
 import com.alligator.market.backend.capturer.passport.persistence.projection.mapper.StoredMarketDataCapturerPassportMapper;
 import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerPassport;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -20,22 +20,21 @@ import static com.alligator.market.backend.capturer.passport.persistence.project
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
 import static org.jooq.impl.DSL.excluded;
 
-public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
-        implements MarketDataCapturerPassportProjectionWritePort {
+public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
     private final DSLContext dsl;
     private final StoredMarketDataCapturerPassportMapper storedPassportMapper;
 
-    public JooqMarketDataCapturerPassportProjectionWritePortAdapter(DSLContext dsl) {
+    public JooqStoredCapturerPassportRegistryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
         this.storedPassportMapper = new StoredMarketDataCapturerPassportMapper();
     }
 
     @Override
-    public void retireAllExcept(Set<CapturerCode> passportCodes) {
-        validateCurrentCodes(passportCodes);
+    public void retireAllExcept(Set<CapturerCode> activeCapturerCodes) {
+        validateActiveCodes(activeCapturerCodes);
 
-        Set<String> currentValues = new LinkedHashSet<>(passportCodes.size());
-        for (CapturerCode code : passportCodes) {
+        Set<String> currentValues = new LinkedHashSet<>(activeCapturerCodes.size());
+        for (CapturerCode code : activeCapturerCodes) {
             currentValues.add(code.value());
         }
 
@@ -47,8 +46,8 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
     }
 
     @Override
-    public void upsertAll(Map<CapturerCode, CapturerPassport> passports) {
-        List<StoredMarketDataCapturerPassport> storedPassports = storedPassportMapper.toActiveStored(passports);
+    public void saveActive(Map<CapturerCode, CapturerPassport> activePassports) {
+        List<StoredMarketDataCapturerPassport> storedPassports = storedPassportMapper.toActiveStored(activePassports);
         if (storedPassports.isEmpty()) {
             return;
         }
@@ -80,17 +79,17 @@ public class JooqMarketDataCapturerPassportProjectionWritePortAdapter
         dsl.batch(queries).execute();
     }
 
-    private static void validateCurrentCodes(Set<CapturerCode> currentCodes) {
-        if (currentCodes == null) {
-            throw new IllegalArgumentException("currentCodes must not be null");
+    private static void validateActiveCodes(Set<CapturerCode> activeCapturerCodes) {
+        if (activeCapturerCodes == null) {
+            throw new IllegalArgumentException("activeCapturerCodes must not be null");
         }
-        if (currentCodes.isEmpty()) {
-            throw new IllegalArgumentException("currentCodes must not be empty");
+        if (activeCapturerCodes.isEmpty()) {
+            throw new IllegalArgumentException("activeCapturerCodes must not be empty");
         }
 
-        for (CapturerCode code : currentCodes) {
+        for (CapturerCode code : activeCapturerCodes) {
             if (code == null) {
-                throw new IllegalArgumentException("currentCodes must not contain null");
+                throw new IllegalArgumentException("activeCapturerCodes must not contain null");
             }
         }
     }

@@ -1,9 +1,9 @@
 package com.alligator.market.backend.capturer.passport.application.projection;
 
-import com.alligator.market.backend.capturer.passport.application.projection.port.MarketDataCapturerPassportProjectionWritePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.registry.CapturerRegistry;
+import com.alligator.market.domain.capturer.passport.registry.RuntimeCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -12,19 +12,25 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class MarketDataCapturerPassportProjectionService {
-    private final CapturerRegistry registry;
-    private final MarketDataCapturerPassportProjectionWritePort writePort;
+    private final RuntimeCapturerPassportRegistry runtimePassportRegistry;
+    private final StoredCapturerPassportRegistry storedPassportRegistry;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final TransactionTemplate tx;
 
     public MarketDataCapturerPassportProjectionService(
-            CapturerRegistry registry,
-            MarketDataCapturerPassportProjectionWritePort writePort,
+            RuntimeCapturerPassportRegistry runtimePassportRegistry,
+            StoredCapturerPassportRegistry storedPassportRegistry,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             TransactionTemplate tx
     ) {
-        this.registry = Objects.requireNonNull(registry, "registry must not be null");
-        this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
+        this.runtimePassportRegistry = Objects.requireNonNull(
+                runtimePassportRegistry,
+                "runtimePassportRegistry must not be null"
+        );
+        this.storedPassportRegistry = Objects.requireNonNull(
+                storedPassportRegistry,
+                "storedPassportRegistry must not be null"
+        );
         this.sourcePlanStatusSyncPort = Objects.requireNonNull(
                 sourcePlanStatusSyncPort,
                 "sourcePlanStatusSyncPort must not be null"
@@ -37,18 +43,18 @@ public final class MarketDataCapturerPassportProjectionService {
     }
 
     private void projectInTransaction() {
-        Map<CapturerCode, CapturerPassport> passportsFromRegistry = Map.copyOf(
-                Objects.requireNonNull(registry.passportsByCode(), "passportsByCode must not be null")
+        Map<CapturerCode, CapturerPassport> runtimePassports = Map.copyOf(
+                Objects.requireNonNull(runtimePassportRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        if (passportsFromRegistry.isEmpty()) {
-            throw new IllegalStateException("Capturer registry returned no capturer passports");
+        if (runtimePassports.isEmpty()) {
+            throw new IllegalStateException("Runtime capturer passport registry returned no capturer passports");
         }
 
-        Set<CapturerCode> passportCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
+        Set<CapturerCode> runtimePassportCodes = Set.copyOf(runtimePassports.keySet());
 
-        writePort.retireAllExcept(passportCodesFromRegistry);
-        writePort.upsertAll(passportsFromRegistry);
+        storedPassportRegistry.retireAllExcept(runtimePassportCodes);
+        storedPassportRegistry.saveActive(runtimePassports);
 
         sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
