@@ -26,13 +26,6 @@
           <td mat-cell *matCellDef="let passport">{{ passport.accessMethod }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="bulkSubscription">
-          <th mat-header-cell *matHeaderCellDef>Bulk Subscription</th>
-          <td mat-cell *matCellDef="let passport">
-            {{ passport.bulkSubscription ? 'Yes' : 'No' }}
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="lifecycleStatus">
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let passport">

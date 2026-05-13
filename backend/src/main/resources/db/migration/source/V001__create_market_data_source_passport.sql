@@ -8,7 +8,6 @@ CREATE TABLE market_data_source_passport
     display_name      VARCHAR(50)  NOT NULL,
     delivery_mode     VARCHAR(10)  NOT NULL,
     access_method     VARCHAR(20)  NOT NULL,
-    bulk_subscription BOOLEAN      NOT NULL,
     lifecycle_status  VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT uq_market_data_source_passport_source_code

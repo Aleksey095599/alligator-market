@@ -7,7 +7,6 @@ public record SourcePassportListItem(
         String displayName,
         String deliveryMode,
         String accessMethod,
-        boolean bulkSubscription,
         String lifecycleStatus
 ) {
     public SourcePassportListItem {

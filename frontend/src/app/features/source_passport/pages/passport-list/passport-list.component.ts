@@ -20,7 +20,6 @@ export class PassportListComponent implements OnInit {
     'displayName',
     'deliveryMode',
     'accessMethod',
-    'bulkSubscription',
     'lifecycleStatus'
   ];
   dataSource = new MatTableDataSource<SourcePassportDto>([]);

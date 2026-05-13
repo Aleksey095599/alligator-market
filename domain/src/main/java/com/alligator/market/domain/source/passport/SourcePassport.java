@@ -9,8 +9,7 @@ import java.util.Objects;
 public record SourcePassport(
         SourceDisplayName displayName,
         DeliveryMode deliveryMode,
-        AccessMethod accessMethod,
-        boolean bulkSubscription
+        AccessMethod accessMethod
 ) {
 
     public SourcePassport {

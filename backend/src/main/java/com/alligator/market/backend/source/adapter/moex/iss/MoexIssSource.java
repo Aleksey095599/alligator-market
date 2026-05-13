@@ -23,8 +23,7 @@ public final class MoexIssSource extends AbstractMarketSource<MoexIssSource> {
     private static final SourcePassport PASSPORT = new SourcePassport(
             SourceDisplayName.of(DISPLAY_NAME),
             DeliveryMode.PULL,
-            AccessMethod.API_POLL,
-            false
+            AccessMethod.API_POLL
     );
 
     private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);

@@ -18,7 +18,6 @@ public final class PassportListItemResponseMapper {
                 item.displayName(),
                 item.deliveryMode(),
                 item.accessMethod(),
-                item.bulkSubscription(),
                 item.lifecycleStatus()
         );
     }

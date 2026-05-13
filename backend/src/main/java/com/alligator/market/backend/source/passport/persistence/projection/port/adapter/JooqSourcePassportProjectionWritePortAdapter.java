@@ -65,8 +65,6 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
                             .isDistinctFrom(excluded(SOURCE_PASSPORT.DELIVERY_MODE)))
                     .or(SOURCE_PASSPORT.ACCESS_METHOD
                             .isDistinctFrom(excluded(SOURCE_PASSPORT.ACCESS_METHOD)))
-                    .or(SOURCE_PASSPORT.BULK_SUBSCRIPTION
-                            .isDistinctFrom(excluded(SOURCE_PASSPORT.BULK_SUBSCRIPTION)))
                     .or(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(lifecycleStatus));
 
             Query query = dsl.insertInto(SOURCE_PASSPORT)
@@ -74,7 +72,6 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
                     .set(SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
                     .set(SOURCE_PASSPORT.DELIVERY_MODE, passport.deliveryMode().name())
                     .set(SOURCE_PASSPORT.ACCESS_METHOD, passport.accessMethod().name())
-                    .set(SOURCE_PASSPORT.BULK_SUBSCRIPTION, passport.bulkSubscription())
                     .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
                     .onConflict(SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
@@ -84,8 +81,6 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
                             excluded(SOURCE_PASSPORT.DELIVERY_MODE))
                     .set(SOURCE_PASSPORT.ACCESS_METHOD,
                             excluded(SOURCE_PASSPORT.ACCESS_METHOD))
-                    .set(SOURCE_PASSPORT.BULK_SUBSCRIPTION,
-                            excluded(SOURCE_PASSPORT.BULK_SUBSCRIPTION))
                     .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
                     .where(businessFieldsChanged);
 

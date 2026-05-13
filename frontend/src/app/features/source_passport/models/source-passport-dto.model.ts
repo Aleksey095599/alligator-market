@@ -3,6 +3,5 @@ export interface SourcePassportDto {
   displayName: string;
   deliveryMode: string;
   accessMethod: string;
-  bulkSubscription: boolean;
   lifecycleStatus: 'ACTIVE' | 'RETIRED';
 }
