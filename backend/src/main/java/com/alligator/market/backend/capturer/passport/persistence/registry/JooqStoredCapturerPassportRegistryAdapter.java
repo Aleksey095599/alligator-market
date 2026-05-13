@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
+import static com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
 
 public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
@@ -57,20 +57,20 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
         for (StoredMarketDataCapturerPassport storedPassport : storedPassports) {
             CapturerCode code = storedPassport.capturerCode();
             CapturerPassport passport = storedPassport.passport();
-            String lifecycleStatus = storedPassport.lifecycleStatus().name();
+            String registryStatus = storedPassport.registryStatus().name();
 
             Condition businessFieldsChanged = MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME))
-                    .or(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(lifecycleStatus));
+                    .or(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(MARKET_DATA_CAPTURER_PASSPORT)
                     .set(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE, code.value())
                     .set(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
+                    .set(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .onConflict(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE)
                     .doUpdate()
                     .set(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME, excluded(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME))
-                    .set(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
+                    .set(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 
             queries.add(query);

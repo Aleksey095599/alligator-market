@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
-import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus;
 import com.alligator.market.backend.source.passport.persistence.projection.model.StoredSourceProjectionLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -89,7 +89,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE
                                 .eq(SOURCE_PLAN_ENTRY_CAPTURER_CODE))
                         .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredCapturerPassportRegistryStatus.ACTIVE.name()))
         );
     }
 
@@ -99,7 +99,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .from(MARKET_DATA_CAPTURER_PASSPORT)
                         .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE.name()))
+                                StoredCapturerPassportRegistryStatus.ACTIVE.name()))
         );
 
         Condition hasActiveSources = exists(

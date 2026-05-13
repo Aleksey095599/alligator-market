@@ -9,8 +9,8 @@ import org.jooq.DSLContext;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
+import static com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus.ACTIVE;
 
 public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDataCapturerOptionsQueryPort {
     private final DSLContext dsl;
