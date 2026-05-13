@@ -2,7 +2,7 @@ CREATE TABLE source_plan_entry
 (
     id               BIGSERIAL PRIMARY KEY,
 
-    capturer_code    VARCHAR(128) NOT NULL,
+    capturer_code    VARCHAR(50)  NOT NULL,
     instrument_code  VARCHAR(50)  NOT NULL,
     source_code      VARCHAR(50)  NOT NULL,
     priority         INTEGER      NOT NULL,

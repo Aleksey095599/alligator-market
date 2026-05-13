@@ -1,7 +1,7 @@
 CREATE TABLE quote_monitor_instruments
 (
     instrument_code VARCHAR(50)  NOT NULL,
-    capturer_code   VARCHAR(128) NOT NULL DEFAULT 'LIVE_QUOTE_MONITOR',
+    capturer_code   VARCHAR(50)  NOT NULL DEFAULT 'LIVE_QUOTE_MONITOR',
 
     CONSTRAINT pk_quote_monitor_instruments
         PRIMARY KEY (instrument_code),

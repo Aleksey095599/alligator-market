@@ -1,6 +1,6 @@
 CREATE TABLE source_plan
 (
-    capturer_code    VARCHAR(128) NOT NULL,
+    capturer_code    VARCHAR(50)  NOT NULL,
     instrument_code  VARCHAR(50)  NOT NULL,
     execution_status VARCHAR(32)  NOT NULL DEFAULT 'EXECUTABLE',
 
