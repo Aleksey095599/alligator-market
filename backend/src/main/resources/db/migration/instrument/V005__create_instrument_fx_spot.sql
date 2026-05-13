@@ -5,7 +5,7 @@ CREATE TABLE instrument_fx_spot
 
     base_currency         VARCHAR(3)  NOT NULL,
     quote_currency        VARCHAR(3)  NOT NULL,
-    tenor                 VARCHAR(5)  NOT NULL,
+    tenor                 VARCHAR(4)  NOT NULL,
     quote_fraction_digits INTEGER     NOT NULL DEFAULT 4,
 
     CONSTRAINT fk_fx_spot_instrument

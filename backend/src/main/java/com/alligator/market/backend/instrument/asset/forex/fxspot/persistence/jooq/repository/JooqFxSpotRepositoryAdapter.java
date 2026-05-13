@@ -63,7 +63,7 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                         .set(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE, instrumentCode.value())
                         .set(INSTRUMENT_FX_SPOT.BASE_CURRENCY, fxSpot.base().code().value())
                         .set(INSTRUMENT_FX_SPOT.QUOTE_CURRENCY, fxSpot.quote().code().value())
-                        .set(INSTRUMENT_FX_SPOT.TENOR, fxSpot.tenor().name())
+                        .set(INSTRUMENT_FX_SPOT.TENOR, fxSpot.tenor().code())
                         .set(INSTRUMENT_FX_SPOT.QUOTE_FRACTION_DIGITS, fxSpot.defaultQuoteFractionDigits())
                         .onConflict(
                                 INSTRUMENT_FX_SPOT.BASE_CURRENCY,

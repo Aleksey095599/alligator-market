@@ -22,7 +22,7 @@ public final class FxSpotCodec {
         Objects.requireNonNull(quoteCode, "quoteCode must not be null");
         Objects.requireNonNull(tenor, "tenor must not be null");
 
-        return InstrumentSymbol.of(baseCode.value() + quoteCode.value() + SEP + tenor.name());
+        return InstrumentSymbol.of(baseCode.value() + quoteCode.value() + SEP + tenor.code());
     }
 
     public static InstrumentCode fxSpotCode(CurrencyCode baseCode, CurrencyCode quoteCode, FxSpotTenor tenor) {
