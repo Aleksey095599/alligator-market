@@ -4,12 +4,12 @@ public enum DeliveryMode {
     PULL,
     PUSH;
 
-    static final int MAX_CODE_LENGTH = 20;
+    static final int CODE_LENGTH = 4;
 
     DeliveryMode() {
-        if (name().length() > MAX_CODE_LENGTH) {
+        if (name().length() != CODE_LENGTH) {
             throw new IllegalStateException(
-                    "DeliveryMode code must not exceed " + MAX_CODE_LENGTH + " characters: " + name()
+                    "DeliveryMode code must be exactly " + CODE_LENGTH + " characters: " + name()
             );
         }
     }

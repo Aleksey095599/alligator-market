@@ -6,7 +6,7 @@ CREATE TABLE market_data_source_passport
     source_code       VARCHAR(50)  NOT NULL,
 
     display_name      VARCHAR(50)  NOT NULL,
-    delivery_mode     VARCHAR(20)  NOT NULL,
+    delivery_mode     VARCHAR(4)   NOT NULL,
     access_method     VARCHAR(20)  NOT NULL,
     lifecycle_status  VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
 
