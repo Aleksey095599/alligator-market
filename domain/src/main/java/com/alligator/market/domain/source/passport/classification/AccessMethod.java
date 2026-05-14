@@ -1,5 +1,7 @@
 package com.alligator.market.domain.source.passport.classification;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum AccessMethod {
     API_POLL,
     WEBSOCKET,
@@ -13,6 +15,7 @@ public enum AccessMethod {
                     "AccessMethod code must not exceed " + MAX_CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("AccessMethod", name());
     }
 
     public String code() {

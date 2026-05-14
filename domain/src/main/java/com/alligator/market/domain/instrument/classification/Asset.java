@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.classification;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum Asset {
     COMMODITY,
     EQUITY,
@@ -13,6 +15,7 @@ public enum Asset {
                     "Asset code must not exceed " + MAX_CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("Asset", name());
     }
 
     public String code() {

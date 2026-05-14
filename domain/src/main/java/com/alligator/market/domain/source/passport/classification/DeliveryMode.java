@@ -1,5 +1,7 @@
 package com.alligator.market.domain.source.passport.classification;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum DeliveryMode {
     PULL,
     PUSH;
@@ -12,6 +14,7 @@ public enum DeliveryMode {
                     "DeliveryMode code must be exactly " + CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("DeliveryMode", name());
     }
 
     public String code() {

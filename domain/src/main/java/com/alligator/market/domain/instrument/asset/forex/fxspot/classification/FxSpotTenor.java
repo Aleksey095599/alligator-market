@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.asset.forex.fxspot.classification;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum FxSpotTenor {
     TOD,
     TOM,
@@ -13,6 +15,7 @@ public enum FxSpotTenor {
                     "FxSpotTenor code must not exceed " + MAX_CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("FxSpotTenor", name());
     }
 
     public String code() {

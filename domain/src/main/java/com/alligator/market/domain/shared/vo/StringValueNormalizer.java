@@ -1,5 +1,7 @@
 package com.alligator.market.domain.shared.vo;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -141,6 +143,10 @@ public final class StringValueNormalizer {
                 this.pattern = Pattern.compile(regex);
                 this.patternDescription = description;
                 return this;
+            }
+
+            public Builder domainCodePattern() {
+                return pattern(DomainCodeFormat.REGEX, DomainCodeFormat.DESCRIPTION);
             }
 
             public Builder uppercase() {

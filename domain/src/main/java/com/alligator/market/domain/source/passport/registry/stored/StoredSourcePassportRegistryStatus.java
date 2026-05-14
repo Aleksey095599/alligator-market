@@ -1,5 +1,7 @@
 package com.alligator.market.domain.source.passport.registry.stored;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum StoredSourcePassportRegistryStatus {
     ACTIVE,
     RETIRED;
@@ -13,5 +15,6 @@ public enum StoredSourcePassportRegistryStatus {
                             MAX_CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("StoredSourcePassportRegistryStatus", name());
     }
 }

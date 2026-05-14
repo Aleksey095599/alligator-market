@@ -8,8 +8,9 @@ public record SourceInstrumentCode(
 
     private static final int MAX_LENGTH = 50;
     private static final StringValueNormalizer.Options NORMALIZATION_OPTIONS = StringValueNormalizer.options()
+            .uppercase()
             .maxLength(MAX_LENGTH)
-            .rejectControlCharacters()
+            .domainCodePattern()
             .build();
 
     public SourceInstrumentCode {

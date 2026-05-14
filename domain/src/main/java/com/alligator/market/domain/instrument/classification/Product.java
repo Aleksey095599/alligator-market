@@ -1,5 +1,7 @@
 package com.alligator.market.domain.instrument.classification;
 
+import com.alligator.market.domain.shared.code.DomainCodeFormat;
+
 public enum Product {
     FORWARD,
     SPOT,
@@ -13,6 +15,7 @@ public enum Product {
                     "Product code must not exceed " + MAX_CODE_LENGTH + " characters: " + name()
             );
         }
+        DomainCodeFormat.requireValidEnumCode("Product", name());
     }
 
     public String code() {

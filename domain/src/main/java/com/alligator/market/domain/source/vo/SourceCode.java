@@ -6,12 +6,11 @@ public record SourceCode(
         String value
 ) {
 
-    private static final String PATTERN = "^[A-Z0-9_.-]+$";
     private static final int MAX_LENGTH = 50;
     private static final StringValueNormalizer.Options NORMALIZATION_OPTIONS = StringValueNormalizer.options()
             .uppercase()
             .maxLength(MAX_LENGTH)
-            .pattern(PATTERN, "[A-Z0-9_.-]+")
+            .domainCodePattern()
             .build();
 
     public SourceCode {
