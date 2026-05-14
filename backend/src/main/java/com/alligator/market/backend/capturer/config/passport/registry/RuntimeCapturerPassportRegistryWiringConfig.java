@@ -1,8 +1,8 @@
 package com.alligator.market.backend.capturer.config.passport.registry;
 
 import com.alligator.market.backend.capturer.config.registry.RuntimeCapturerRegistryWiringConfig;
-import com.alligator.market.domain.capturer.passport.registry.RuntimeCapturerPassportRegistry;
-import com.alligator.market.domain.capturer.passport.registry.RuntimeCapturerPassportRegistryAdapter;
+import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistryAdapter;
 import com.alligator.market.domain.capturer.registry.RuntimeCapturerRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

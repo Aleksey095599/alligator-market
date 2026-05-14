@@ -2,8 +2,8 @@ package com.alligator.market.backend.capturer.passport.application.projection;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.RuntimeCapturerPassportRegistry;
-import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.springframework.transaction.support.TransactionTemplate;
 

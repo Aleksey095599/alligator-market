@@ -7,7 +7,7 @@ import org.jooq.DSLContext;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus.ACTIVE;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.ACTIVE;
 
 public final class JooqMarketDataCapturerExistenceAdapter implements MarketDataCapturerExistencePort {
     private final DSLContext dsl;

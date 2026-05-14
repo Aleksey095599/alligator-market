@@ -1,4 +1,4 @@
-package com.alligator.market.domain.capturer.passport.registry;
+package com.alligator.market.domain.capturer.passport.registry.runtime;
 
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.vo.CapturerCode;

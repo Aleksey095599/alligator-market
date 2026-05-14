@@ -4,7 +4,7 @@ import com.alligator.market.backend.source.passport.persistence.projection.model
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
-import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;

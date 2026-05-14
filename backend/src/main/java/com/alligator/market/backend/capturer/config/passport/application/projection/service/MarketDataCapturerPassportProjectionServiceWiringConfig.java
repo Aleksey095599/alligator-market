@@ -5,8 +5,8 @@ import com.alligator.market.backend.capturer.config.passport.persistence.registr
 import com.alligator.market.backend.capturer.config.passport.registry.RuntimeCapturerPassportRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourcePlanStatusSyncPortWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.capturer.passport.registry.RuntimeCapturerPassportRegistry;
-import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.capturer.passport.persistence.projection.model;
 
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 import java.util.Objects;

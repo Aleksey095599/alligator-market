@@ -3,7 +3,7 @@ package com.alligator.market.backend.capturer.passport.persistence.registry;
 import com.alligator.market.backend.capturer.passport.persistence.projection.mapper.StoredMarketDataCapturerPassportMapper;
 import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerPassport;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus.RETIRED;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
 
 public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {

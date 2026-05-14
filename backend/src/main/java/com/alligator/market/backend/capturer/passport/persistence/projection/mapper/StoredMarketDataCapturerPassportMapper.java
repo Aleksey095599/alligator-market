@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.alligator.market.domain.capturer.passport.registry.StoredCapturerPassportRegistryStatus.ACTIVE;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.ACTIVE;
 
 public final class StoredMarketDataCapturerPassportMapper {
 
