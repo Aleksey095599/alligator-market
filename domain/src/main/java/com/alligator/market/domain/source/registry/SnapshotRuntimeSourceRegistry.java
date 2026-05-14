@@ -1,19 +1,19 @@
 package com.alligator.market.domain.source.registry;
 
 import com.alligator.market.domain.source.MarketSource;
-import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.vo.SourceCode;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public final class SnapshotSourceRegistry implements SourceRegistry {
+public final class SnapshotRuntimeSourceRegistry implements RuntimeSourceRegistry {
 
     private final Map<SourceCode, MarketSource> sourcesByCode;
 
-    private final Map<SourceCode, SourcePassport> passportsByCode;
-
-    public SnapshotSourceRegistry(List<? extends MarketSource> sources) {
+    public SnapshotRuntimeSourceRegistry(List<? extends MarketSource> sources) {
         Objects.requireNonNull(sources, "sources must not be null");
 
         if (sources.isEmpty()) {
@@ -21,8 +21,6 @@ public final class SnapshotSourceRegistry implements SourceRegistry {
         }
 
         Map<SourceCode, MarketSource> sourcesMap = new LinkedHashMap<>();
-        Map<SourceCode, SourcePassport> passportsMap = new LinkedHashMap<>();
-        Set<String> displayNamesLower = new HashSet<>();
 
         for (MarketSource source : sources) {
             Objects.requireNonNull(source, "source must not be null");
@@ -30,7 +28,7 @@ public final class SnapshotSourceRegistry implements SourceRegistry {
             SourceCode code = Objects.requireNonNull(source.code(),
                     "source.sourceCode must not be null");
 
-            SourcePassport passport = Objects.requireNonNull(source.passport(),
+            Objects.requireNonNull(source.passport(),
                     "source.passport must not be null");
 
             Objects.requireNonNull(source.policy(),
@@ -42,32 +40,13 @@ public final class SnapshotSourceRegistry implements SourceRegistry {
                         "Duplicate market source code detected (sourceCode=" + code.value() + ")"
                 );
             }
-
-            SourceDisplayName displayName = Objects.requireNonNull(passport.displayName(),
-                    "source.passport.displayName must not be null");
-
-            String displayNameValue = displayName.value();
-            String displayNameLower = displayNameValue.toLowerCase(Locale.ROOT);
-            if (!displayNamesLower.add(displayNameLower)) {
-                throw new IllegalArgumentException(
-                        "Duplicate market source display name detected (displayName=" + displayNameValue + ")"
-                );
-            }
-
-            passportsMap.put(code, passport);
         }
 
         this.sourcesByCode = Collections.unmodifiableMap(sourcesMap);
-        this.passportsByCode = Collections.unmodifiableMap(passportsMap);
     }
 
     @Override
     public Map<SourceCode, MarketSource> sourcesByCode() {
         return sourcesByCode;
-    }
-
-    @Override
-    public Map<SourceCode, SourcePassport> passportsByCode() {
-        return passportsByCode;
     }
 }

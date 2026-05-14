@@ -6,8 +6,8 @@ import org.jooq.DSLContext;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.source.passport.persistence.projection.model.StoredSourceProjectionLifecycleStatus.ACTIVE;
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
+import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus.ACTIVE;
 
 public final class JooqSourceExistenceAdapter implements SourceExistencePort {
     private final DSLContext dsl;

@@ -1,9 +1,9 @@
-package com.alligator.market.backend.source.passport.persistence.projection.port.adapter;
+package com.alligator.market.backend.source.passport.persistence.registry;
 
-import com.alligator.market.backend.source.passport.application.projection.port.SourcePassportProjectionWritePort;
 import com.alligator.market.backend.source.passport.persistence.projection.mapper.StoredSourcePassportMapper;
 import com.alligator.market.backend.source.passport.persistence.projection.model.StoredSourcePassport;
 import com.alligator.market.domain.source.passport.SourcePassport;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -16,25 +16,25 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.alligator.market.backend.source.passport.persistence.projection.model.StoredSourceProjectionLifecycleStatus.RETIRED;
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
+import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
 
-public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassportProjectionWritePort {
+public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePassportRegistry {
     private final DSLContext dsl;
     private final StoredSourcePassportMapper storedPassportMapper;
 
-    public JooqSourcePassportProjectionWritePortAdapter(DSLContext dsl) {
+    public JooqStoredSourcePassportRegistryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
         this.storedPassportMapper = new StoredSourcePassportMapper();
     }
 
     @Override
-    public void retireAllExcept(Set<SourceCode> passportCodes) {
-        validateCurrentCodes(passportCodes);
+    public void retireAllExcept(Set<SourceCode> activeSourceCodes) {
+        validateActiveCodes(activeSourceCodes);
 
-        Set<String> currentValues = new LinkedHashSet<>(passportCodes.size());
-        for (SourceCode code : passportCodes) {
+        Set<String> currentValues = new LinkedHashSet<>(activeSourceCodes.size());
+        for (SourceCode code : activeSourceCodes) {
             currentValues.add(code.value());
         }
 
@@ -46,8 +46,8 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
     }
 
     @Override
-    public void upsertAll(Map<SourceCode, SourcePassport> passports) {
-        List<StoredSourcePassport> storedPassports = storedPassportMapper.toActiveStored(passports);
+    public void saveActive(Map<SourceCode, SourcePassport> activePassports) {
+        List<StoredSourcePassport> storedPassports = storedPassportMapper.toActiveStored(activePassports);
         if (storedPassports.isEmpty()) {
             return;
         }
@@ -57,7 +57,7 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
         for (StoredSourcePassport storedPassport : storedPassports) {
             SourceCode code = storedPassport.sourceCode();
             SourcePassport passport = storedPassport.passport();
-            String lifecycleStatus = storedPassport.lifecycleStatus().name();
+            String registryStatus = storedPassport.registryStatus().name();
 
             Condition businessFieldsChanged = SOURCE_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(SOURCE_PASSPORT.DISPLAY_NAME))
@@ -65,14 +65,14 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
                             .isDistinctFrom(excluded(SOURCE_PASSPORT.DELIVERY_MODE)))
                     .or(SOURCE_PASSPORT.ACCESS_METHOD
                             .isDistinctFrom(excluded(SOURCE_PASSPORT.ACCESS_METHOD)))
-                    .or(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(lifecycleStatus));
+                    .or(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(SOURCE_PASSPORT)
                     .set(SOURCE_PASSPORT.SOURCE_CODE, code.value())
                     .set(SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
                     .set(SOURCE_PASSPORT.DELIVERY_MODE, passport.deliveryMode().code())
                     .set(SOURCE_PASSPORT.ACCESS_METHOD, passport.accessMethod().code())
-                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
+                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .onConflict(SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
                     .set(SOURCE_PASSPORT.DISPLAY_NAME,
@@ -81,7 +81,7 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
                             excluded(SOURCE_PASSPORT.DELIVERY_MODE))
                     .set(SOURCE_PASSPORT.ACCESS_METHOD,
                             excluded(SOURCE_PASSPORT.ACCESS_METHOD))
-                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, lifecycleStatus)
+                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 
             queries.add(query);
@@ -90,17 +90,17 @@ public class JooqSourcePassportProjectionWritePortAdapter implements SourcePassp
         dsl.batch(queries).execute();
     }
 
-    private static void validateCurrentCodes(Set<SourceCode> currentCodes) {
-        if (currentCodes == null) {
-            throw new IllegalArgumentException("currentCodes must not be null");
+    private static void validateActiveCodes(Set<SourceCode> activeSourceCodes) {
+        if (activeSourceCodes == null) {
+            throw new IllegalArgumentException("activeSourceCodes must not be null");
         }
-        if (currentCodes.isEmpty()) {
-            throw new IllegalArgumentException("currentCodes must not be empty");
+        if (activeSourceCodes.isEmpty()) {
+            throw new IllegalArgumentException("activeSourceCodes must not be empty");
         }
 
-        for (SourceCode code : currentCodes) {
+        for (SourceCode code : activeSourceCodes) {
             if (code == null) {
-                throw new IllegalArgumentException("currentCodes must not contain null");
+                throw new IllegalArgumentException("activeSourceCodes must not contain null");
             }
         }
     }

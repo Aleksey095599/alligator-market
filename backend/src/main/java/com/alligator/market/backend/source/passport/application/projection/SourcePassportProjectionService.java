@@ -1,9 +1,9 @@
 package com.alligator.market.backend.source.passport.application.projection;
 
-import com.alligator.market.backend.source.passport.application.projection.port.SourcePassportProjectionWritePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.registry.SourceRegistry;
+import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistry;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -12,19 +12,25 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class SourcePassportProjectionService {
-    private final SourceRegistry sourceRegistry;
-    private final SourcePassportProjectionWritePort writePort;
+    private final RuntimeSourcePassportRegistry runtimePassportRegistry;
+    private final StoredSourcePassportRegistry storedPassportRegistry;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final TransactionTemplate tx;
 
     public SourcePassportProjectionService(
-            SourceRegistry sourceRegistry,
-            SourcePassportProjectionWritePort writePort,
+            RuntimeSourcePassportRegistry runtimePassportRegistry,
+            StoredSourcePassportRegistry storedPassportRegistry,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             TransactionTemplate tx
     ) {
-        this.sourceRegistry = Objects.requireNonNull(sourceRegistry, "sourceRegistry must not be null");
-        this.writePort = Objects.requireNonNull(writePort, "writePort must not be null");
+        this.runtimePassportRegistry = Objects.requireNonNull(
+                runtimePassportRegistry,
+                "runtimePassportRegistry must not be null"
+        );
+        this.storedPassportRegistry = Objects.requireNonNull(
+                storedPassportRegistry,
+                "storedPassportRegistry must not be null"
+        );
         this.sourcePlanStatusSyncPort = Objects.requireNonNull(
                 sourcePlanStatusSyncPort,
                 "sourcePlanStatusSyncPort must not be null"
@@ -37,18 +43,18 @@ public final class SourcePassportProjectionService {
     }
 
     private void projectInTransaction() {
-        Map<SourceCode, SourcePassport> passportsFromRegistry = Map.copyOf(
-                Objects.requireNonNull(sourceRegistry.passportsByCode(), "passportsByCode must not be null")
+        Map<SourceCode, SourcePassport> runtimePassports = Map.copyOf(
+                Objects.requireNonNull(runtimePassportRegistry.passportsByCode(), "passportsByCode must not be null")
         );
 
-        if (passportsFromRegistry.isEmpty()) {
-            throw new IllegalStateException("Market source registry returned no source passports");
+        if (runtimePassports.isEmpty()) {
+            throw new IllegalStateException("Runtime source passport registry returned no source passports");
         }
 
-        Set<SourceCode> passportsCodesFromRegistry = Set.copyOf(passportsFromRegistry.keySet());
+        Set<SourceCode> runtimePassportCodes = Set.copyOf(runtimePassports.keySet());
 
-        writePort.retireAllExcept(passportsCodesFromRegistry);
-        writePort.upsertAll(passportsFromRegistry);
+        storedPassportRegistry.retireAllExcept(runtimePassportCodes);
+        storedPassportRegistry.saveActive(runtimePassports);
 
         sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
