@@ -5,9 +5,6 @@ import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 import java.util.Objects;
 
-/**
- * Currency reference data used by FOREX instruments.
- */
 public record Currency(
         CurrencyCode code,
         String name,
