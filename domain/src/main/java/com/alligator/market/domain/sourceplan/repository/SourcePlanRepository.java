@@ -1,23 +1,17 @@
 package com.alligator.market.domain.sourceplan.repository;
 
-import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
+import com.alligator.market.domain.sourceplan.SourcePlanKey;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SourcePlanRepository {
 
-    Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    );
+    Optional<SourcePlan> findByKey(SourcePlanKey key);
 
-    Optional<SourcePlan> findExecutableByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    );
+    Optional<SourcePlan> findExecutableByKey(SourcePlanKey key);
 
     List<SourcePlan> findExecutableByMarketDataCapturerCode(
             CapturerCode capturerCode
@@ -29,8 +23,5 @@ public interface SourcePlanRepository {
 
     boolean replaceIfExists(SourcePlan plan);
 
-    boolean deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    );
+    boolean deleteIfExistsByKey(SourcePlanKey key);
 }

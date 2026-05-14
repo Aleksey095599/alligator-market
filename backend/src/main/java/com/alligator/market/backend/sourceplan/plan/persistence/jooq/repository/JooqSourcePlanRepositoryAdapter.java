@@ -11,6 +11,7 @@ import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
+import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -62,19 +63,13 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     }
 
     @Override
-    public Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    ) {
-        return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, false);
+    public Optional<SourcePlan> findByKey(SourcePlanKey key) {
+        return findByKey(key, false);
     }
 
     @Override
-    public Optional<SourcePlan> findExecutableByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    ) {
-        return findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode, true);
+    public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
+        return findByKey(key, true);
     }
 
     @Override
@@ -83,7 +78,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     ) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
-        Map<PlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
+        Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
 
         dsl.select(
                         SOURCE_PLAN_ENTRY_INSTRUMENT_CODE,
@@ -103,7 +98,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 )
                 .fetch()
                 .forEach(record -> {
-                    PlanKey planKey = new PlanKey(
+                    SourcePlanKey planKey = new SourcePlanKey(
                             capturerCode,
                             new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
                     );
@@ -121,16 +116,11 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         return toPlans(groupedEntries);
     }
 
-    private Optional<SourcePlan> findByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode,
-            boolean executableOnly
-    ) {
-        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+    private Optional<SourcePlan> findByKey(SourcePlanKey key, boolean executableOnly) {
+        Objects.requireNonNull(key, "key must not be null");
 
-        Condition condition = SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())
-                .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(instrumentCode.value()));
+        Condition condition = SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value())
+                .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()));
 
         if (executableOnly) {
             condition = condition
@@ -159,12 +149,12 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             return Optional.empty();
         }
 
-        return Optional.of(new SourcePlan(capturerCode, instrumentCode, entries));
+        return Optional.of(new SourcePlan(key.capturerCode(), key.instrumentCode(), entries));
     }
 
     @Override
     public List<SourcePlan> findAll() {
-        Map<PlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
+        Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
 
         dsl.select(
                         SOURCE_PLAN_ENTRY_CAPTURER_CODE,
@@ -180,7 +170,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 )
                 .fetch()
                 .forEach(record -> {
-                    PlanKey planKey = new PlanKey(
+                    SourcePlanKey planKey = new SourcePlanKey(
                             new CapturerCode(
                                     record.get(SOURCE_PLAN_ENTRY_CAPTURER_CODE)
                             ),
@@ -284,17 +274,13 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     }
 
     @Override
-    public boolean deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    ) {
-        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+    public boolean deleteIfExistsByKey(SourcePlanKey key) {
+        Objects.requireNonNull(key, "key must not be null");
 
         // Entries are removed by the database cascade from source_plan.
         int deletedRows = dsl.deleteFrom(SOURCE_PLAN)
-                .where(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
-                .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .where(SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value()))
+                .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()))
                 .execute();
 
         return deletedRows > 0;
@@ -330,11 +316,11 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         );
     }
 
-    private static List<SourcePlan> toPlans(Map<PlanKey, List<SourcePlanEntry>> groupedEntries) {
+    private static List<SourcePlan> toPlans(Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries) {
         List<SourcePlan> plans = new ArrayList<>(groupedEntries.size());
 
-        for (Map.Entry<PlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
-            PlanKey planKey = groupedEntry.getKey();
+        for (Map.Entry<SourcePlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
+            SourcePlanKey planKey = groupedEntry.getKey();
             plans.add(new SourcePlan(
                     planKey.capturerCode(),
                     planKey.instrumentCode(),
@@ -343,11 +329,5 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         }
 
         return List.copyOf(plans);
-    }
-
-    private record PlanKey(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode
-    ) {
     }
 }

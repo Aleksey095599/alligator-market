@@ -41,7 +41,7 @@ public final class ReplaceSourcePlanService {
         existenceValidator.ensureSourcesExist(plan);
 
         SourcePlan currentPlan = sourcePlanRepository
-                .findByMarketDataCapturerCodeAndInstrumentCode(plan.capturerCode(), plan.instrumentCode())
+                .findByKey(plan.key())
                 .orElseThrow(() -> new SourcePlanNotFoundException(
                         plan.capturerCode(),
                         plan.instrumentCode()

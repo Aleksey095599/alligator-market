@@ -3,6 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.delete;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +30,7 @@ public final class DeleteSourcePlanService {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         boolean deleted = sourcePlanRepository
-                .deleteIfExistsByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode);
+                .deleteIfExistsByKey(new SourcePlanKey(capturerCode, instrumentCode));
         if (!deleted) {
             log.warn(
                     "Source plan was not found and was not deleted: capturerCode={}, instrumentCode={}",

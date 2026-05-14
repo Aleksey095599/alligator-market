@@ -65,6 +65,10 @@ public final class SourcePlan {
         return instrumentCode;
     }
 
+    public SourcePlanKey key() {
+        return new SourcePlanKey(capturerCode, instrumentCode);
+    }
+
     public List<SourcePlanEntry> entries() {
         return entries;
     }
