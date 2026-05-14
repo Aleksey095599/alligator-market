@@ -5,7 +5,7 @@ CREATE TABLE market_data_capturer_passport
 
     capturer_code    VARCHAR(50)  NOT NULL,
     display_name     VARCHAR(100) NOT NULL,
-    lifecycle_status VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
+    lifecycle_status VARCHAR(7)   NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT uq_market_data_capturer_code
         UNIQUE (capturer_code),
@@ -13,11 +13,13 @@ CREATE TABLE market_data_capturer_passport
         UNIQUE (display_name),
 
     CONSTRAINT chk_market_data_capturer_code_pattern
-        CHECK (capturer_code ~ '^[A-Z0-9_.-]+$'),
-    CONSTRAINT chk_market_data_capturer_code_not_blank
-        CHECK (length(btrim(capturer_code)) > 0),
+        CHECK (capturer_code ~ '^[A-Z0-9_]+$'),
     CONSTRAINT chk_market_data_capturer_display_name_not_blank
         CHECK (length(btrim(display_name)) > 0),
-    CONSTRAINT chk_market_data_capturer_passport_lifecycle_status
+    CONSTRAINT chk_market_data_capturer_display_name_no_control_chars
+        CHECK (display_name !~ '[[:cntrl:]]'),
+    CONSTRAINT chk_market_data_capturer_passport_lifecycle_status_pattern
+        CHECK (lifecycle_status ~ '^[A-Z0-9_]+$'),
+    CONSTRAINT chk_market_data_capturer_passport_lifecycle_status_allowed
         CHECK (lifecycle_status IN ('ACTIVE', 'RETIRED'))
 );

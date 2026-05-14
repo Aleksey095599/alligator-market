@@ -6,7 +6,7 @@ CREATE TABLE source_plan_entry
     instrument_code  VARCHAR(50)  NOT NULL,
     source_code      VARCHAR(50)  NOT NULL,
     priority         INTEGER      NOT NULL,
-    lifecycle_status VARCHAR(16)  NOT NULL DEFAULT 'ACTIVE',
+    lifecycle_status VARCHAR(7)   NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT fk_source_plan_entry_plan
         FOREIGN KEY (capturer_code, instrument_code)
@@ -15,7 +15,7 @@ CREATE TABLE source_plan_entry
 
     CONSTRAINT fk_source_plan_entry_source_passport
         FOREIGN KEY (source_code)
-            REFERENCES market_data_source_passport (source_code),
+            REFERENCES source_passport (source_code),
 
     CONSTRAINT uq_source_plan_entry_source
         UNIQUE (capturer_code, instrument_code, source_code),
@@ -24,6 +24,8 @@ CREATE TABLE source_plan_entry
 
     CONSTRAINT chk_source_plan_entry_priority
         CHECK (priority >= 0),
-    CONSTRAINT chk_source_plan_entry_lifecycle_status
+    CONSTRAINT chk_source_plan_entry_lifecycle_status_pattern
+        CHECK (lifecycle_status ~ '^[A-Z0-9_]+$'),
+    CONSTRAINT chk_source_plan_entry_lifecycle_status_allowed
         CHECK (lifecycle_status IN ('ACTIVE', 'RETIRED'))
 );

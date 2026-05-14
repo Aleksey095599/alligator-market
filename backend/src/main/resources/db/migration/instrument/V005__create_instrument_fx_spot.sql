@@ -23,6 +23,10 @@ CREATE TABLE instrument_fx_spot
 
     CONSTRAINT chk_fx_spot_base_quote_diff
         CHECK (base_currency <> quote_currency),
+    CONSTRAINT chk_fx_spot_tenor_pattern
+        CHECK (tenor ~ '^[A-Z0-9_]+$'),
+    CONSTRAINT chk_fx_spot_tenor_allowed
+        CHECK (tenor IN ('TOD', 'TOM', 'SPOT')),
     CONSTRAINT chk_fx_spot_digits_range
         CHECK (quote_fraction_digits BETWEEN 0 AND 10)
 );
