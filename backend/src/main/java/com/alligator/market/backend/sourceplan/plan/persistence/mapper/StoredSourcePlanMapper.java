@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.domain.sourceplan.SourcePlanEntryLifecycleStatus.ACTIVE;
-import static com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus.EXECUTABLE;
+import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.ACTIVE;
+import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus.EXECUTABLE;
 
 public final class StoredSourcePlanMapper {
 

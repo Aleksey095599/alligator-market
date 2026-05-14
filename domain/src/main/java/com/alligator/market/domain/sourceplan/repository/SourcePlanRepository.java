@@ -1,6 +1,5 @@
 package com.alligator.market.domain.sourceplan.repository;
 
-import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 
@@ -10,12 +9,6 @@ import java.util.Optional;
 public interface SourcePlanRepository {
 
     Optional<SourcePlan> findByKey(SourcePlanKey key);
-
-    Optional<SourcePlan> findExecutableByKey(SourcePlanKey key);
-
-    List<SourcePlan> findExecutableByMarketDataCapturerCode(
-            CapturerCode capturerCode
-    );
 
     List<SourcePlan> findAll();
 

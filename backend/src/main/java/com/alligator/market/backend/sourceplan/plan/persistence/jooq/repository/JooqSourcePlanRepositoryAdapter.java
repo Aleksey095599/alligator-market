@@ -21,8 +21,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
-import static com.alligator.market.domain.sourceplan.SourcePlanEntryLifecycleStatus.ACTIVE;
-import static com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus.EXECUTABLE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -64,69 +62,10 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     @Override
     public Optional<SourcePlan> findByKey(SourcePlanKey key) {
-        return findByKey(key, false);
-    }
-
-    @Override
-    public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
-        return findByKey(key, true);
-    }
-
-    @Override
-    public List<SourcePlan> findExecutableByMarketDataCapturerCode(
-            CapturerCode capturerCode
-    ) {
-        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-
-        Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
-
-        dsl.select(
-                        SOURCE_PLAN_ENTRY_INSTRUMENT_CODE,
-                        SOURCE_PLAN_ENTRY_SOURCE_CODE,
-                        SOURCE_PLAN_ENTRY_PRIORITY
-                )
-                .from(SOURCE_PLAN)
-                .join(SOURCE_PLAN_ENTRY)
-                .on(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
-                .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                .where(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
-                .and(SOURCE_PLAN_EXECUTION_STATUS.eq(EXECUTABLE.name()))
-                .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()))
-                .orderBy(
-                        SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.asc(),
-                        SOURCE_PLAN_ENTRY_PRIORITY.asc()
-                )
-                .fetch()
-                .forEach(record -> {
-                    SourcePlanKey planKey = new SourcePlanKey(
-                            capturerCode,
-                            new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
-                    );
-
-                    SourcePlanEntry entry = toEntry(
-                            record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
-                            record.get(SOURCE_PLAN_ENTRY_PRIORITY)
-                    );
-
-                    groupedEntries
-                            .computeIfAbsent(planKey, ignored -> new ArrayList<>())
-                            .add(entry);
-                });
-
-        return toPlans(groupedEntries);
-    }
-
-    private Optional<SourcePlan> findByKey(SourcePlanKey key, boolean executableOnly) {
         Objects.requireNonNull(key, "key must not be null");
 
         Condition condition = SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value())
                 .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()));
-
-        if (executableOnly) {
-            condition = condition
-                    .and(SOURCE_PLAN_EXECUTION_STATUS.eq(EXECUTABLE.name()))
-                    .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
-        }
 
         List<SourcePlanEntry> entries = dsl
                 .select(
