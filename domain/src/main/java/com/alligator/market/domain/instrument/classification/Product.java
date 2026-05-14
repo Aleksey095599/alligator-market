@@ -7,7 +7,7 @@ public enum Product {
     SPOT,
     SWAP;
 
-    private static final int MAX_CODE_LENGTH = 20;
+    private static final int MAX_CODE_LENGTH = 10;
 
     Product() {
         if (name().length() > MAX_CODE_LENGTH) {

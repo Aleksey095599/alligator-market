@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.config.plan.application.command.replace;
 
-import com.alligator.market.backend.instrument.config.registry.InstrumentRegistryWiringConfig;
+import com.alligator.market.backend.instrument.config.registry.StoredInstrumentRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.MarketDataCapturerExistencePortWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourceExistencePortWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.repository.SourcePlanRepositoryWiringConfig;
@@ -8,7 +8,7 @@ import com.alligator.market.backend.sourceplan.plan.application.command.common.S
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.command.replace.ReplaceSourcePlanService;
-import com.alligator.market.domain.instrument.registry.InstrumentRegistry;
+import com.alligator.market.domain.instrument.registry.StoredInstrumentRegistry;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         SourcePlanRepositoryWiringConfig.class,
         MarketDataCapturerExistencePortWiringConfig.class,
-        InstrumentRegistryWiringConfig.class,
+        StoredInstrumentRegistryWiringConfig.class,
         SourceExistencePortWiringConfig.class
 })
 public class ReplaceSourcePlanServiceWiringConfig {
@@ -31,8 +31,8 @@ public class ReplaceSourcePlanServiceWiringConfig {
             SourcePlanRepository sourcePlanRepository,
             @Qualifier(MarketDataCapturerExistencePortWiringConfig.BEAN_CAPTURER_EXISTENCE_PORT)
             MarketDataCapturerExistencePort capturerExistencePort,
-            @Qualifier(InstrumentRegistryWiringConfig.BEAN_INSTRUMENT_REGISTRY)
-            InstrumentRegistry instrumentRegistry,
+            @Qualifier(StoredInstrumentRegistryWiringConfig.BEAN_STORED_INSTRUMENT_REGISTRY)
+            StoredInstrumentRegistry storedInstrumentRegistry,
             @Qualifier(SourceExistencePortWiringConfig.BEAN_SOURCE_EXISTENCE_PORT)
             SourceExistencePort sourceExistencePort
     ) {
@@ -40,7 +40,7 @@ public class ReplaceSourcePlanServiceWiringConfig {
                 sourcePlanRepository,
                 new SourcePlanValidator(
                         capturerExistencePort,
-                        instrumentRegistry,
+                        storedInstrumentRegistry,
                         sourceExistencePort
                 )
         );

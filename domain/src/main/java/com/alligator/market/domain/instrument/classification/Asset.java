@@ -7,7 +7,7 @@ public enum Asset {
     EQUITY,
     FOREX;
 
-    private static final int MAX_CODE_LENGTH = 20;
+    private static final int MAX_CODE_LENGTH = 10;
 
     Asset() {
         if (name().length() > MAX_CODE_LENGTH) {

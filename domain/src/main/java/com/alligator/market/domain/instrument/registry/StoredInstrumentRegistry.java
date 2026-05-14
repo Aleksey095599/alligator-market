@@ -4,7 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 
 import java.util.List;
 
-public interface InstrumentRegistry {
+public interface StoredInstrumentRegistry {
 
     boolean contains(InstrumentCode code);
 
