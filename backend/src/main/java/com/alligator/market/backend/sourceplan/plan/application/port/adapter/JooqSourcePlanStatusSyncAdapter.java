@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus;
 import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus;
+import com.alligator.market.domain.sourceplan.SourcePlanEntryLifecycleStatus;
+import com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -57,16 +57,16 @@ public final class JooqSourcePlanStatusSyncAdapter
                 .and(activeCapturerPassportExistsForEntry());
 
         dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.ACTIVE.name())
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, SourcePlanEntryLifecycleStatus.ACTIVE.name())
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
-                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .isDistinctFrom(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
                 .and(activeReferences)
                 .execute();
 
         dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.RETIRED.name())
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, SourcePlanEntryLifecycleStatus.RETIRED.name())
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
-                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.RETIRED.name()))
+                        .isDistinctFrom(SourcePlanEntryLifecycleStatus.RETIRED.name()))
                 .and(activeReferences.not())
                 .execute();
     }
@@ -109,24 +109,24 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .on(SOURCE_PASSPORT.SOURCE_CODE.eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(SourcePlanEntryLifecycleStatus.ACTIVE.name()))
                         .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
                                 StoredSourcePassportRegistryStatus.ACTIVE.name()))
         );
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.CAPTURER_RETIRED.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.CAPTURER_RETIRED.name())
                 .where(capturerIsNotActive)
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources.not())
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.EXECUTABLE.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, SourcePlanExecutionStatus.EXECUTABLE.name())
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources)
                 .execute();

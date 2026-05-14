@@ -3,9 +3,9 @@ package com.alligator.market.backend.sourceplan.plan.application.query.common.ad
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourceQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -90,7 +90,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         return Optional.of(new SourcePlanQueryItem(
                 capturerCode.value(),
                 records.getFirst().get(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS),
-                StoredSourcePlanExecutionStatus.valueOf(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
+                SourcePlanExecutionStatus.valueOf(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
                 instrumentCode.value(),
                 sources
         ));
@@ -125,7 +125,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                     PlanKey planKey = new PlanKey(
                             record.get(SOURCE_PLAN_CAPTURER_CODE),
                             record.get(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS),
-                            StoredSourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
+                            SourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
                             record.get(SOURCE_PLAN_INSTRUMENT_CODE)
                     );
 
@@ -167,7 +167,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
     private record PlanKey(
             String capturerCode,
             String capturerLifecycleStatus,
-            StoredSourcePlanExecutionStatus executionStatus,
+            SourcePlanExecutionStatus executionStatus,
             String instrumentCode
     ) {
     }

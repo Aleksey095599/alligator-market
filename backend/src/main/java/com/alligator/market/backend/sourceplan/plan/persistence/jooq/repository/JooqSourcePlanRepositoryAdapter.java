@@ -21,8 +21,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.*;
 
-import static com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntryLifecycleStatus.ACTIVE;
-import static com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanExecutionStatus.EXECUTABLE;
+import static com.alligator.market.domain.sourceplan.SourcePlanEntryLifecycleStatus.ACTIVE;
+import static com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus.EXECUTABLE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;

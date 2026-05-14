@@ -2,6 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.persistence.model;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.sourceplan.SourcePlanExecutionStatus;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 public record StoredSourcePlan(
         CapturerCode capturerCode,
         InstrumentCode instrumentCode,
-        StoredSourcePlanExecutionStatus executionStatus,
+        SourcePlanExecutionStatus executionStatus,
         List<StoredSourcePlanEntry> entries
 ) {
     public StoredSourcePlan {
