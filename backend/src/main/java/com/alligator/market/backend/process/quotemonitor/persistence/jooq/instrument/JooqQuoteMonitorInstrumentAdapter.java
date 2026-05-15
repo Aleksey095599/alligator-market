@@ -2,7 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.persistence.jooq.instr
 
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Table;

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.process.quotemonitor;
+package com.alligator.market.domain.process.quotemonitor.capturer;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;

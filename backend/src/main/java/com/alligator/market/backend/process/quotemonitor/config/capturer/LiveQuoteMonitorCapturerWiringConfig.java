@@ -1,6 +1,6 @@
 package com.alligator.market.backend.process.quotemonitor.config.capturer;
 
-import com.alligator.market.domain.process.quotemonitor.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
