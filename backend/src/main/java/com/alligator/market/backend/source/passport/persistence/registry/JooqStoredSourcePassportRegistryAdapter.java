@@ -1,7 +1,7 @@
 package com.alligator.market.backend.source.passport.persistence.registry;
 
-import com.alligator.market.backend.source.passport.persistence.projection.mapper.StoredSourcePassportMapper;
-import com.alligator.market.backend.source.passport.persistence.projection.model.StoredSourcePassport;
+import com.alligator.market.backend.source.passport.persistence.mapper.StoredSourcePassportMapper;
+import com.alligator.market.backend.source.passport.persistence.model.StoredSourcePassport;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;

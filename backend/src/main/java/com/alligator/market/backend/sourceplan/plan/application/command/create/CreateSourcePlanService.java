@@ -3,6 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.create;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourceplan.plan.application.command.common.SourcePlanValidator;
 import com.alligator.market.domain.sourceplan.SourcePlan;
+import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,9 +15,12 @@ public final class CreateSourcePlanService {
 
     private final SourcePlanValidator existenceValidator;
 
+    private final RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater;
+
     public CreateSourcePlanService(
             SourcePlanRepository sourcePlanRepository,
-            SourcePlanValidator existenceValidator
+            SourcePlanValidator existenceValidator,
+            RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater
     ) {
         this.sourcePlanRepository = Objects.requireNonNull(
                 sourcePlanRepository,
@@ -25,6 +29,10 @@ public final class CreateSourcePlanService {
         this.existenceValidator = Objects.requireNonNull(
                 existenceValidator,
                 "existenceValidator must not be null"
+        );
+        this.runtimeSourcePlanRegistryUpdater = Objects.requireNonNull(
+                runtimeSourcePlanRegistryUpdater,
+                "runtimeSourcePlanRegistryUpdater must not be null"
         );
     }
 
@@ -45,6 +53,8 @@ public final class CreateSourcePlanService {
             );
             throw new SourcePlanAlreadyExistsException(plan.capturerCode(), plan.instrumentCode());
         }
+
+        runtimeSourcePlanRegistryUpdater.updateRuntimeRegistry();
 
         log.info(
                 "Source plan created: capturerCode={}, instrumentCode={}, sourceCount={}",

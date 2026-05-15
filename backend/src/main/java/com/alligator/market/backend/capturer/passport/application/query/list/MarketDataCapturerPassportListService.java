@@ -19,7 +19,7 @@ public final class MarketDataCapturerPassportListService {
 
     public List<MarketDataCapturerPassportListItem> findAll() {
         List<MarketDataCapturerPassportListItem> passports = queryPort.findAll();
-        log.debug("Found {} capturer passport projection rows", passports.size());
+        log.debug("Found {} capturer passport registry rows", passports.size());
         return passports;
     }
 }

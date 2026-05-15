@@ -1,7 +1,7 @@
 package com.alligator.market.backend.capturer.passport.persistence.registry;
 
-import com.alligator.market.backend.capturer.passport.persistence.projection.mapper.StoredMarketDataCapturerPassportMapper;
-import com.alligator.market.backend.capturer.passport.persistence.projection.model.StoredMarketDataCapturerPassport;
+import com.alligator.market.backend.capturer.passport.persistence.mapper.StoredMarketDataCapturerPassportMapper;
+import com.alligator.market.backend.capturer.passport.persistence.model.StoredMarketDataCapturerPassport;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;

@@ -17,7 +17,7 @@ public final class PassportListService {
 
     public List<SourcePassportListItem> findAll() {
         List<SourcePassportListItem> passports = queryPort.findAll();
-        log.debug("Found {} source passport projection rows", passports.size());
+        log.debug("Found {} source passport registry rows", passports.size());
         return passports;
     }
 }

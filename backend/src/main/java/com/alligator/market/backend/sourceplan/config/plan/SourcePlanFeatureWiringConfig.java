@@ -9,6 +9,7 @@ import com.alligator.market.backend.sourceplan.config.plan.application.query.get
 import com.alligator.market.backend.sourceplan.config.plan.application.query.list.ListSourcePlansServiceWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.application.query.options.adapter.SourcePlanOptionsQueryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.persistence.jooq.registry.StoredSourcePlanRegistryWiringConfig;
+import com.alligator.market.backend.sourceplan.config.plan.registry.sync.RuntimeSourcePlanRegistryUpdaterWiringConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
         SourcePlanExistenceQueryWiringConfig.class,
         SourcePlanOptionsQueryWiringConfig.class,
         StoredSourcePlanRegistryWiringConfig.class,
+        RuntimeSourcePlanRegistryUpdaterWiringConfig.class,
         SourcePlanApiMapperWiringConfig.class
 })
 public class SourcePlanFeatureWiringConfig {

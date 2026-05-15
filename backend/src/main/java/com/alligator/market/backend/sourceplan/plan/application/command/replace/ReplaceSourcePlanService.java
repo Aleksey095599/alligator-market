@@ -4,6 +4,7 @@ import com.alligator.market.backend.sourceplan.plan.application.command.common.S
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
+import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +18,12 @@ public final class ReplaceSourcePlanService {
 
     private final SourcePlanValidator existenceValidator;
 
+    private final RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater;
+
     public ReplaceSourcePlanService(
             SourcePlanRepository sourcePlanRepository,
-            SourcePlanValidator existenceValidator
+            SourcePlanValidator existenceValidator,
+            RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater
     ) {
         this.sourcePlanRepository = Objects.requireNonNull(
                 sourcePlanRepository,
@@ -28,6 +32,10 @@ public final class ReplaceSourcePlanService {
         this.existenceValidator = Objects.requireNonNull(
                 existenceValidator,
                 "existenceValidator must not be null"
+        );
+        this.runtimeSourcePlanRegistryUpdater = Objects.requireNonNull(
+                runtimeSourcePlanRegistryUpdater,
+                "runtimeSourcePlanRegistryUpdater must not be null"
         );
     }
 
@@ -48,6 +56,7 @@ public final class ReplaceSourcePlanService {
                 ));
 
         if (hasSameSources(currentPlan, plan)) {
+            runtimeSourcePlanRegistryUpdater.updateRuntimeRegistry();
             log.info(
                     "Source plan replace skipped: no changes detected, capturerCode={}, instrumentCode={}",
                     plan.capturerCode().value(),
@@ -65,6 +74,8 @@ public final class ReplaceSourcePlanService {
             );
             throw new SourcePlanNotFoundException(plan.capturerCode(), plan.instrumentCode());
         }
+
+        runtimeSourcePlanRegistryUpdater.updateRuntimeRegistry();
 
         log.info(
                 "Source plan replaced: capturerCode={}, instrumentCode={}, sourceCount={}",
