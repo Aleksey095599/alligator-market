@@ -5,7 +5,7 @@ import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spo
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpotTenor;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import org.junit.jupiter.api.Tag;

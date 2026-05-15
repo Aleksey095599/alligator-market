@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.asset.forex.fxspot.classification;
+package com.alligator.market.domain.instrument.asset.forex.fxspot;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 

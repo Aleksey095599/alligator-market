@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.classification;
+package com.alligator.market.domain.instrument;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 

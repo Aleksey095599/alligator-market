@@ -1,4 +1,4 @@
-package com.alligator.market.domain.source.passport.classification;
+package com.alligator.market.domain.source.passport;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 

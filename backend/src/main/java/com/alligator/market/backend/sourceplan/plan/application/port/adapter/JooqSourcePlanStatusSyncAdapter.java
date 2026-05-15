@@ -3,8 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus;
 import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanStatusPolicy;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -41,9 +40,14 @@ public final class JooqSourcePlanStatusSyncAdapter
             field(name("source_plan_entry", "lifecycle_status"), String.class);
 
     private final DSLContext dsl;
+    private final StoredSourcePlanStatusPolicy statusPolicy;
 
-    public JooqSourcePlanStatusSyncAdapter(DSLContext dsl) {
+    public JooqSourcePlanStatusSyncAdapter(
+            DSLContext dsl,
+            StoredSourcePlanStatusPolicy statusPolicy
+    ) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
+        this.statusPolicy = Objects.requireNonNull(statusPolicy, "statusPolicy must not be null");
     }
 
     @Override
@@ -55,18 +59,24 @@ public final class JooqSourcePlanStatusSyncAdapter
     private void syncSourcePlanEntryLifecycleStatuses() {
         Condition activeReferences = activeSourcePassportExistsForEntry()
                 .and(activeCapturerPassportExistsForEntry());
+        String activeEntryStatus = statusPolicy
+                .resolveEntryLifecycleStatus(true, true)
+                .name();
+        String retiredEntryStatus = statusPolicy
+                .resolveEntryLifecycleStatus(true, false)
+                .name();
 
         dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.ACTIVE.name())
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, activeEntryStatus)
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
-                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .isDistinctFrom(activeEntryStatus))
                 .and(activeReferences)
                 .execute();
 
         dsl.update(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, StoredSourcePlanEntryLifecycleStatus.RETIRED.name())
+                .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, retiredEntryStatus)
                 .where(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS
-                        .isDistinctFrom(StoredSourcePlanEntryLifecycleStatus.RETIRED.name()))
+                        .isDistinctFrom(retiredEntryStatus))
                 .and(activeReferences.not())
                 .execute();
     }
@@ -94,6 +104,19 @@ public final class JooqSourcePlanStatusSyncAdapter
     }
 
     private void refreshPlanExecutionStatuses() {
+        String activeEntryStatus = statusPolicy
+                .resolveEntryLifecycleStatus(true, true)
+                .name();
+        String capturerRetiredPlanStatus = statusPolicy
+                .resolvePlanExecutionStatus(false, false)
+                .name();
+        String noExecutableSourcesPlanStatus = statusPolicy
+                .resolvePlanExecutionStatus(true, false)
+                .name();
+        String executablePlanStatus = statusPolicy
+                .resolvePlanExecutionStatus(true, true)
+                .name();
+
         Condition capturerIsNotActive = notExists(
                 selectOne()
                         .from(CAPTURER_PASSPORT)
@@ -109,24 +132,24 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .on(SOURCE_PASSPORT.SOURCE_CODE.eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(StoredSourcePlanEntryLifecycleStatus.ACTIVE.name()))
+                        .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(activeEntryStatus))
                         .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
                                 StoredSourcePassportRegistryStatus.ACTIVE.name()))
         );
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.CAPTURER_RETIRED.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, capturerRetiredPlanStatus)
                 .where(capturerIsNotActive)
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, noExecutableSourcesPlanStatus)
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources.not())
                 .execute();
 
         dsl.update(SOURCE_PLAN)
-                .set(SOURCE_PLAN_EXECUTION_STATUS, StoredSourcePlanExecutionStatus.EXECUTABLE.name())
+                .set(SOURCE_PLAN_EXECUTION_STATUS, executablePlanStatus)
                 .where(capturerIsNotActive.not())
                 .and(hasActiveSources)
                 .execute();

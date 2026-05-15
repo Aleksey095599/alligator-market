@@ -1,5 +1,7 @@
 package com.alligator.market.domain.source.passport.classification;
 
+import com.alligator.market.domain.source.passport.AccessMethod;
+import com.alligator.market.domain.source.passport.DeliveryMode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

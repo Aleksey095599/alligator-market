@@ -1,7 +1,7 @@
 package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpotTenor;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;

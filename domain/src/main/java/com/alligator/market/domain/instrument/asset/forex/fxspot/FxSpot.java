@@ -1,8 +1,7 @@
 package com.alligator.market.domain.instrument.asset.forex.fxspot;
 
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
-import com.alligator.market.domain.instrument.classification.Asset;
-import com.alligator.market.domain.instrument.classification.Product;
+import com.alligator.market.domain.instrument.Asset;
+import com.alligator.market.domain.instrument.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.asset.forex.fxspot.application.command.create;
 
-import com.alligator.market.domain.instrument.asset.forex.fxspot.classification.FxSpotTenor;
+import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpotTenor;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
 
 import java.util.Objects;

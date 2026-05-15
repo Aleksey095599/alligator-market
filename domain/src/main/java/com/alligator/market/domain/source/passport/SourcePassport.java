@@ -1,7 +1,5 @@
 package com.alligator.market.domain.source.passport;
 
-import com.alligator.market.domain.source.passport.classification.AccessMethod;
-import com.alligator.market.domain.source.passport.classification.DeliveryMode;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 
 import java.util.Objects;
