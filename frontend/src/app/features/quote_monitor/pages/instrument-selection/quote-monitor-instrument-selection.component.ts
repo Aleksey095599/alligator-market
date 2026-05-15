@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -32,14 +32,25 @@ import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-mon
   styleUrl: './quote-monitor-instrument-selection.component.scss'
 })
 export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
-  displayedColumns: string[] = ['selected', 'instrumentCode', 'state'];
-  options: QuoteMonitorInstrumentOption[] = [];
-  selectedInstrumentCodes = new Set<string>();
-  private savedInstrumentCodes = new Set<string>();
+  readonly readonlyColumns: string[] = ['instrumentCode'];
+  readonly editColumns: string[] = ['pick', 'instrumentCode'];
+
+  monitorColumns = this.readonlyColumns;
+  candidateColumns = this.readonlyColumns;
+
+  private options: QuoteMonitorInstrumentOption[] = [];
+  private selectedInstrumentCodes = new Set<string>();
+
+  monitorInstrumentCodes: string[] = [];
+  candidateInstrumentCodes: string[] = [];
+  pickedMonitorInstrumentCodes = new Set<string>();
+  pickedCandidateInstrumentCodes = new Set<string>();
 
   filterValue = '';
   loading = false;
   saving = false;
+  monitorEditing = false;
+  candidateEditing = false;
 
   constructor(
     private readonly service: QuoteMonitorInstrumentSelectionService,
@@ -50,41 +61,12 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
     this.reload();
   }
 
-  get filteredOptions(): QuoteMonitorInstrumentOption[] {
-    const normalizedFilter = this.filterValue.trim().toUpperCase();
-
-    if (normalizedFilter.length === 0) {
-      return this.options;
-    }
-
-    return this.options.filter(option =>
-      option.instrumentCode.includes(normalizedFilter)
-    );
-  }
-
-  get selectedCount(): number {
+  get monitorCount(): number {
     return this.selectedInstrumentCodes.size;
   }
 
   get candidateCount(): number {
-    return this.options.length;
-  }
-
-  get hasChanges(): boolean {
-    return !this.sameSet(this.selectedInstrumentCodes, this.savedInstrumentCodes);
-  }
-
-  get allVisibleSelected(): boolean {
-    const visible = this.filteredOptions;
-
-    return visible.length > 0
-      && visible.every(option => this.selectedInstrumentCodes.has(option.instrumentCode));
-  }
-
-  get someVisibleSelected(): boolean {
-    return this.filteredOptions.some(option =>
-      this.selectedInstrumentCodes.has(option.instrumentCode)
-    );
+    return this.options.length - this.selectedInstrumentCodes.size;
   }
 
   get locked(): boolean {
@@ -106,7 +88,8 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
             .filter(option => option.selected)
             .map(option => option.instrumentCode)
         );
-        this.savedInstrumentCodes = new Set(this.selectedInstrumentCodes);
+        this.resetEditState();
+        this.syncLists();
         this.loading = false;
       },
       error: err => {
@@ -116,24 +99,110 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
     });
   }
 
-  save(): void {
-    if (!this.hasChanges || this.locked) {
+  onFilter(value: string): void {
+    this.filterValue = value.toUpperCase();
+    this.syncLists();
+  }
+
+  clearFilter(): void {
+    this.filterValue = '';
+    this.syncLists();
+  }
+
+  editMonitor(): void {
+    if (this.locked) {
       return;
     }
 
+    this.cancelCandidateEdit();
+    this.monitorEditing = true;
+    this.monitorColumns = this.editColumns;
+    this.pickedMonitorInstrumentCodes.clear();
+  }
+
+  editCandidates(): void {
+    if (this.locked) {
+      return;
+    }
+
+    this.cancelMonitorEdit();
+    this.candidateEditing = true;
+    this.candidateColumns = this.editColumns;
+    this.pickedCandidateInstrumentCodes.clear();
+  }
+
+  cancelMonitorEdit(): void {
+    this.monitorEditing = false;
+    this.monitorColumns = this.readonlyColumns;
+    this.pickedMonitorInstrumentCodes.clear();
+  }
+
+  cancelCandidateEdit(): void {
+    this.candidateEditing = false;
+    this.candidateColumns = this.readonlyColumns;
+    this.pickedCandidateInstrumentCodes.clear();
+  }
+
+  toggleMonitorPick(instrumentCode: string, checked: boolean): void {
+    this.togglePickedCode(this.pickedMonitorInstrumentCodes, instrumentCode, checked);
+  }
+
+  toggleCandidatePick(instrumentCode: string, checked: boolean): void {
+    this.togglePickedCode(this.pickedCandidateInstrumentCodes, instrumentCode, checked);
+  }
+
+  removePickedFromMonitor(): void {
+    if (this.locked || this.pickedMonitorInstrumentCodes.size === 0) {
+      return;
+    }
+
+    const nextSelectedInstrumentCodes = new Set(this.selectedInstrumentCodes);
+    for (const instrumentCode of this.pickedMonitorInstrumentCodes) {
+      nextSelectedInstrumentCodes.delete(instrumentCode);
+    }
+
+    this.replaceSelection(
+      nextSelectedInstrumentCodes,
+      `${this.pickedMonitorInstrumentCodes.size} instrument(s) removed from monitor`
+    );
+  }
+
+  addPickedToMonitor(): void {
+    if (this.locked || this.pickedCandidateInstrumentCodes.size === 0) {
+      return;
+    }
+
+    const nextSelectedInstrumentCodes = new Set(this.selectedInstrumentCodes);
+    for (const instrumentCode of this.pickedCandidateInstrumentCodes) {
+      nextSelectedInstrumentCodes.add(instrumentCode);
+    }
+
+    this.replaceSelection(
+      nextSelectedInstrumentCodes,
+      `${this.pickedCandidateInstrumentCodes.size} instrument(s) added to monitor`
+    );
+  }
+
+  isPickedForMonitorRemoval(instrumentCode: string): boolean {
+    return this.pickedMonitorInstrumentCodes.has(instrumentCode);
+  }
+
+  isPickedForMonitorAddition(instrumentCode: string): boolean {
+    return this.pickedCandidateInstrumentCodes.has(instrumentCode);
+  }
+
+  private replaceSelection(nextSelectedInstrumentCodes: Set<string>, successMessage: string): void {
     this.saving = true;
 
     this.service
-      .replaceSelectedInstrumentCodes(Array.from(this.selectedInstrumentCodes))
+      .replaceSelectedInstrumentCodes(Array.from(nextSelectedInstrumentCodes))
       .subscribe({
         next: () => {
-          this.savedInstrumentCodes = new Set(this.selectedInstrumentCodes);
-          this.options = this.options.map(option => ({
-            ...option,
-            selected: this.selectedInstrumentCodes.has(option.instrumentCode)
-          }));
+          this.selectedInstrumentCodes = nextSelectedInstrumentCodes;
+          this.resetEditState();
+          this.syncLists();
           this.saving = false;
-          this.snack.open('Quote monitor instruments saved', 'OK', { duration: 2500 });
+          this.snack.open(successMessage, 'OK', { duration: 2500 });
         },
         error: err => {
           this.saving = false;
@@ -142,70 +211,36 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
       });
   }
 
-  onFilter(value: string): void {
-    this.filterValue = value.toUpperCase();
+  private resetEditState(): void {
+    this.cancelMonitorEdit();
+    this.cancelCandidateEdit();
   }
 
-  clearFilter(): void {
-    this.filterValue = '';
+  private syncLists(): void {
+    const normalizedFilter = this.filterValue.trim().toUpperCase();
+    const instrumentCodes = this.options
+      .map(option => option.instrumentCode)
+      .filter(instrumentCode =>
+        normalizedFilter.length === 0 || instrumentCode.includes(normalizedFilter)
+      );
+
+    this.monitorInstrumentCodes = instrumentCodes
+      .filter(instrumentCode => this.selectedInstrumentCodes.has(instrumentCode));
+    this.candidateInstrumentCodes = instrumentCodes
+      .filter(instrumentCode => !this.selectedInstrumentCodes.has(instrumentCode));
   }
 
-  onToggle(instrumentCode: string, selected: boolean): void {
-    if (selected) {
-      this.selectedInstrumentCodes.add(instrumentCode);
+  private togglePickedCode(
+    pickedInstrumentCodes: Set<string>,
+    instrumentCode: string,
+    checked: boolean
+  ): void {
+    if (checked) {
+      pickedInstrumentCodes.add(instrumentCode);
       return;
     }
 
-    this.selectedInstrumentCodes.delete(instrumentCode);
-  }
-
-  onToggleVisible(change: MatCheckboxChange): void {
-    const checked = change.checked;
-
-    for (const option of this.filteredOptions) {
-      this.onToggle(option.instrumentCode, checked);
-    }
-  }
-
-  isSelected(instrumentCode: string): boolean {
-    return this.selectedInstrumentCodes.has(instrumentCode);
-  }
-
-  isSaved(instrumentCode: string): boolean {
-    return this.savedInstrumentCodes.has(instrumentCode);
-  }
-
-  rowStateLabel(instrumentCode: string): string {
-    const selected = this.isSelected(instrumentCode);
-    const saved = this.isSaved(instrumentCode);
-
-    if (selected && saved) {
-      return 'Selected';
-    }
-
-    if (selected) {
-      return 'New';
-    }
-
-    if (saved) {
-      return 'Removed';
-    }
-
-    return 'Available';
-  }
-
-  private sameSet(left: Set<string>, right: Set<string>): boolean {
-    if (left.size !== right.size) {
-      return false;
-    }
-
-    for (const value of left) {
-      if (!right.has(value)) {
-        return false;
-      }
-    }
-
-    return true;
+    pickedInstrumentCodes.delete(instrumentCode);
   }
 
   private resolveErrorMessage(err: unknown, fallback: string): string {

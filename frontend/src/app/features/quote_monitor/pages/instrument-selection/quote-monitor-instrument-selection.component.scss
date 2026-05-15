@@ -1,3 +1,9 @@
+.toolbar-card {
+  position: static;
+  top: auto;
+  z-index: auto;
+}
+
 .selection-toolbar {
   display: grid;
   grid-template-columns: minmax(260px, 1fr) auto auto;
@@ -36,27 +42,30 @@
   background: var(--app-border-strong);
 }
 
-.toolbar-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.toolbar-actions button {
+.reload-button {
   min-width: 112px;
+  justify-self: end;
 }
 
-.toolbar-actions mat-icon {
+.reload-button mat-icon,
+.card-actions mat-icon {
   margin-right: 6px;
 }
 
-.selection-table {
-  min-width: 640px;
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.selection-header-cell,
-.selection-cell {
+.selection-table {
+  min-width: 520px;
+}
+
+.pick-cell {
   width: 72px;
   text-align: center;
 }
@@ -67,43 +76,12 @@
   letter-spacing: 0;
 }
 
-.state-badge {
-  display: inline-flex;
-  min-width: 76px;
-  min-height: 24px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 8px;
-  border: 1px solid var(--app-border);
-  border-radius: 4px;
-  color: var(--app-text-muted);
-  background: #fff;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.state-badge--selected {
-  border-color: rgba(46, 125, 50, 0.34);
-  background: #e8f5e9;
-  color: #1b5e20;
-}
-
-.state-badge--changed {
-  border-color: rgba(0, 86, 179, 0.38);
-  background: #eaf2ff;
-  color: #004f9f;
-}
-
-.selection-row--selected {
-  background: rgba(46, 125, 50, 0.04);
-}
-
-.selection-row--changed {
-  background: rgba(0, 86, 179, 0.06);
+.selection-row--picked {
+  background: rgba(0, 86, 179, 0.07);
 }
 
 .state-block {
-  min-height: 120px;
+  min-height: 112px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,14 +99,20 @@
     width: fit-content;
   }
 
-  .toolbar-actions {
+  .reload-button {
+    justify-self: start;
+  }
+
+  .card-actions {
+    width: 100%;
+    margin: 12px 0 0;
     justify-content: flex-start;
-    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 600px) {
-  .toolbar-actions button {
-    flex: 1 1 100%;
+  .reload-button,
+  .card-actions button {
+    width: 100%;
   }
 }

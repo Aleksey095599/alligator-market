@@ -27,101 +27,184 @@
         </mat-form-field>
 
         <div class="selection-summary">
-          <span class="summary-value">{{ selectedCount }}</span>
-          <span class="summary-label">Selected</span>
+          <span class="summary-value">{{ monitorCount }}</span>
+          <span class="summary-label">In Monitor</span>
           <span class="summary-divider"></span>
           <span class="summary-value">{{ candidateCount }}</span>
           <span class="summary-label">Candidates</span>
         </div>
 
-        <div class="toolbar-actions">
-          <button
-            mat-stroked-button
-            type="button"
-            (click)="reload()"
-            [disabled]="locked"
-          >
-            <mat-icon>refresh</mat-icon>
-            Reload
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            type="button"
-            (click)="save()"
-            [disabled]="!hasChanges || locked"
-          >
-            <mat-icon>save</mat-icon>
-            Save
-          </button>
-        </div>
+        <button
+          mat-stroked-button
+          type="button"
+          class="reload-button"
+          (click)="reload()"
+          [disabled]="locked"
+        >
+          <mat-icon>refresh</mat-icon>
+          Reload
+        </button>
       </div>
     </mat-card-content>
   </mat-card>
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Instrument Candidates</mat-card-title>
+      <mat-card-title>In Monitor</mat-card-title>
+      <div class="card-actions">
+        <ng-container *ngIf="!monitorEditing; else monitorEditActions">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="editMonitor()"
+            [disabled]="locked || monitorCount === 0"
+          >
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+        </ng-container>
+
+        <ng-template #monitorEditActions>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="removePickedFromMonitor()"
+            [disabled]="locked || pickedMonitorInstrumentCodes.size === 0"
+          >
+            <mat-icon>remove_circle_outline</mat-icon>
+            Remove from monitor
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="cancelMonitorEdit()"
+            [disabled]="locked"
+          >
+            Cancel
+          </button>
+        </ng-template>
+      </div>
     </mat-card-header>
     <mat-card-content>
-      <div *ngIf="loading; else loadedContent" class="state-block">
+      <div *ngIf="loading; else monitorLoaded" class="state-block">
         Loading quote monitor instruments
       </div>
 
-      <ng-template #loadedContent>
-        <div *ngIf="filteredOptions.length === 0; else tableContent" class="state-block">
-          No instruments found
+      <ng-template #monitorLoaded>
+        <div *ngIf="monitorInstrumentCodes.length === 0; else monitorTable" class="state-block">
+          No instruments in monitor
         </div>
 
-        <ng-template #tableContent>
-          <table mat-table [dataSource]="filteredOptions" class="mat-elevation-z2 selection-table">
+        <ng-template #monitorTable>
+          <table mat-table [dataSource]="monitorInstrumentCodes" class="mat-elevation-z2 selection-table">
 
-            <ng-container matColumnDef="selected">
-              <th mat-header-cell *matHeaderCellDef class="selection-header-cell">
+            <ng-container matColumnDef="pick">
+              <th mat-header-cell *matHeaderCellDef class="pick-cell"></th>
+              <td mat-cell *matCellDef="let instrumentCode" class="pick-cell">
                 <mat-checkbox
-                  aria-label="Select visible instruments"
-                  [checked]="allVisibleSelected"
-                  [indeterminate]="someVisibleSelected && !allVisibleSelected"
+                  [attr.aria-label]="'Remove ' + instrumentCode"
+                  [checked]="isPickedForMonitorRemoval(instrumentCode)"
                   [disabled]="locked"
-                  (change)="onToggleVisible($event)"
-                ></mat-checkbox>
-              </th>
-              <td mat-cell *matCellDef="let option" class="selection-cell">
-                <mat-checkbox
-                  [attr.aria-label]="'Select ' + option.instrumentCode"
-                  [checked]="isSelected(option.instrumentCode)"
-                  [disabled]="locked"
-                  (change)="onToggle(option.instrumentCode, $event.checked)"
+                  (change)="toggleMonitorPick(instrumentCode, $event.checked)"
                 ></mat-checkbox>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="instrumentCode">
               <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
-              <td mat-cell *matCellDef="let option" class="instrument-code-cell">
-                {{ option.instrumentCode }}
+              <td mat-cell *matCellDef="let instrumentCode" class="instrument-code-cell">
+                {{ instrumentCode }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="state">
-              <th mat-header-cell *matHeaderCellDef>State</th>
-              <td mat-cell *matCellDef="let option">
-                <span
-                  class="state-badge"
-                  [class.state-badge--selected]="isSelected(option.instrumentCode)"
-                  [class.state-badge--changed]="isSelected(option.instrumentCode) !== isSaved(option.instrumentCode)"
-                >
-                  {{ rowStateLabel(option.instrumentCode) }}
-                </span>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="monitorColumns"></tr>
             <tr
               mat-row
-              *matRowDef="let row; columns: displayedColumns;"
-              [class.selection-row--selected]="isSelected(row.instrumentCode)"
-              [class.selection-row--changed]="isSelected(row.instrumentCode) !== isSaved(row.instrumentCode)"
+              *matRowDef="let row; columns: monitorColumns;"
+              [class.selection-row--picked]="isPickedForMonitorRemoval(row)"
+            ></tr>
+          </table>
+        </ng-template>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Candidates</mat-card-title>
+      <div class="card-actions">
+        <ng-container *ngIf="!candidateEditing; else candidateEditActions">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="editCandidates()"
+            [disabled]="locked || candidateCount === 0"
+          >
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+        </ng-container>
+
+        <ng-template #candidateEditActions>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="addPickedToMonitor()"
+            [disabled]="locked || pickedCandidateInstrumentCodes.size === 0"
+          >
+            <mat-icon>add_circle_outline</mat-icon>
+            Add to monitor
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="cancelCandidateEdit()"
+            [disabled]="locked"
+          >
+            Cancel
+          </button>
+        </ng-template>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="loading; else candidatesLoaded" class="state-block">
+        Loading quote monitor instruments
+      </div>
+
+      <ng-template #candidatesLoaded>
+        <div *ngIf="candidateInstrumentCodes.length === 0; else candidateTable" class="state-block">
+          No candidate instruments
+        </div>
+
+        <ng-template #candidateTable>
+          <table mat-table [dataSource]="candidateInstrumentCodes" class="mat-elevation-z2 selection-table">
+
+            <ng-container matColumnDef="pick">
+              <th mat-header-cell *matHeaderCellDef class="pick-cell"></th>
+              <td mat-cell *matCellDef="let instrumentCode" class="pick-cell">
+                <mat-checkbox
+                  [attr.aria-label]="'Add ' + instrumentCode"
+                  [checked]="isPickedForMonitorAddition(instrumentCode)"
+                  [disabled]="locked"
+                  (change)="toggleCandidatePick(instrumentCode, $event.checked)"
+                ></mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="instrumentCode">
+              <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
+              <td mat-cell *matCellDef="let instrumentCode" class="instrument-code-cell">
+                {{ instrumentCode }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="candidateColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: candidateColumns;"
+              [class.selection-row--picked]="isPickedForMonitorAddition(row)"
             ></tr>
           </table>
         </ng-template>
