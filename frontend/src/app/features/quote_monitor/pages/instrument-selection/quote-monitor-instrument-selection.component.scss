@@ -6,40 +6,15 @@
 
 .selection-toolbar {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) auto auto;
+  grid-template-columns: minmax(280px, 520px) auto;
   gap: 16px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .filter-field {
   width: 100%;
-}
-
-.selection-summary {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 12px;
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  background: var(--app-panel-bg);
-  white-space: nowrap;
-}
-
-.summary-value {
-  font-weight: 700;
-  color: rgba(0, 0, 0, 0.82);
-}
-
-.summary-label {
-  color: var(--app-text-muted);
-}
-
-.summary-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--app-border-strong);
+  max-width: 520px;
 }
 
 .reload-button {
@@ -93,10 +68,6 @@
 @media (max-width: 900px) {
   .selection-toolbar {
     grid-template-columns: 1fr;
-  }
-
-  .selection-summary {
-    width: fit-content;
   }
 
   .reload-button {

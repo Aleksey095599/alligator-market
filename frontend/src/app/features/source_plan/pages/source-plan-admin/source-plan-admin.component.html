@@ -66,6 +66,7 @@
           <div formArrayName="sources" class="sources-grid">
             <div
               class="source-row"
+              [class.source-row--editing]="editing"
               [class.source-row--retired]="isRetiredSource(control.value)"
               *ngFor="let control of sourceControls; let i = index"
               [formGroupName]="i"
@@ -99,6 +100,7 @@
               </mat-form-field>
 
               <div
+                *ngIf="editing"
                 class="source-status"
                 [class.source-status--retired]="isRetiredSource(control.value)"
               >

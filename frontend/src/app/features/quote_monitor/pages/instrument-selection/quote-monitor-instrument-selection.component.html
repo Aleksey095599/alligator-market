@@ -6,7 +6,7 @@
     <mat-card-content>
       <div class="selection-toolbar">
         <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Search instruments</mat-label>
+          <mat-label>Search instruments by code</mat-label>
           <input
             matInput
             #filterInput
@@ -26,14 +26,6 @@
           </button>
         </mat-form-field>
 
-        <div class="selection-summary">
-          <span class="summary-value">{{ monitorCount }}</span>
-          <span class="summary-label">In Monitor</span>
-          <span class="summary-divider"></span>
-          <span class="summary-value">{{ candidateCount }}</span>
-          <span class="summary-label">Candidates</span>
-        </div>
-
         <button
           mat-stroked-button
           type="button"
@@ -50,7 +42,7 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title>In Monitor</mat-card-title>
+      <mat-card-title>Monitored Instruments</mat-card-title>
       <div class="card-actions">
         <ng-container *ngIf="!monitorEditing; else monitorEditActions">
           <button
@@ -93,7 +85,7 @@
 
       <ng-template #monitorLoaded>
         <div *ngIf="monitorInstrumentCodes.length === 0; else monitorTable" class="state-block">
-          No instruments in monitor
+          No monitored instruments
         </div>
 
         <ng-template #monitorTable>
@@ -132,7 +124,7 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Candidates</mat-card-title>
+      <mat-card-title>Available Instruments</mat-card-title>
       <div class="card-actions">
         <ng-container *ngIf="!candidateEditing; else candidateEditActions">
           <button
@@ -175,7 +167,7 @@
 
       <ng-template #candidatesLoaded>
         <div *ngIf="candidateInstrumentCodes.length === 0; else candidateTable" class="state-block">
-          No candidate instruments
+          No available instruments
         </div>
 
         <ng-template #candidateTable>

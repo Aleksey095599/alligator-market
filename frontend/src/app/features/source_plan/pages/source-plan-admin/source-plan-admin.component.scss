@@ -41,9 +41,10 @@
 /* Поля идентичности плана с компактной адаптивной сеткой. */
 .identity-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(220px, 1fr);
+  grid-template-columns: minmax(260px, 360px) minmax(280px, 520px);
   gap: 12px;
-  max-width: 760px;
+  width: fit-content;
+  max-width: 100%;
 }
 
 /* Унифицированный заголовок секции. */
@@ -79,13 +80,18 @@
 /* Одна строка источника в виде карты. */
 .source-row {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 140px 96px 56px;
+  grid-template-columns: minmax(320px, 560px) 140px 56px;
   gap: 12px;
   align-items: center;
+  justify-content: start;
   padding: 0;
   background: transparent;
   border: 0;
   border-radius: 0;
+}
+
+.source-row--editing {
+  grid-template-columns: minmax(320px, 560px) 140px 96px 56px;
 }
 
 .source-row + .source-row {
@@ -119,6 +125,12 @@
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.source-status {
+  border-color: rgba(46, 125, 50, 0.34);
+  background: #e8f5e9;
+  color: #1b5e20;
 }
 
 .status-badge {
@@ -194,9 +206,15 @@
     grid-template-columns: 1fr auto;
     grid-template-areas:
       'source remove'
+      'priority remove';
+    row-gap: 8px;
+  }
+
+  .source-row--editing {
+    grid-template-areas:
+      'source remove'
       'priority remove'
       'status remove';
-    row-gap: 8px;
   }
 
   .source-row mat-form-field:first-child {
