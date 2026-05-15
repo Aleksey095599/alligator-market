@@ -1,8 +1,8 @@
 package com.alligator.market.backend.process.quotemonitor.api.exception;
 
-import com.alligator.market.backend.process.quotemonitor.api.instrument.controller.QuoteMonitorInstrumentController;
-import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
-import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorSourcePlanNotFoundException;
+import com.alligator.market.backend.process.quotemonitor.api.instrument.controller.QuoteMonitorInstrumentSelectionController;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentCandidateNotFoundException;
+import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(assignableTypes = {
-        QuoteMonitorInstrumentController.class
+        QuoteMonitorInstrumentSelectionController.class
 })
 public class QuoteMonitorApiExceptionHandler {
     @ExceptionHandler(DuplicateQuoteMonitorInstrumentCodeException.class)
@@ -28,14 +28,14 @@ public class QuoteMonitorApiExceptionHandler {
         );
     }
 
-    @ExceptionHandler(QuoteMonitorSourcePlanNotFoundException.class)
-    public ProblemDetail sourcePlanNotFound(QuoteMonitorSourcePlanNotFoundException ex) {
-        log.warn("Quote monitor source plan not found: {}", ex.getMessage());
+    @ExceptionHandler(QuoteMonitorInstrumentCandidateNotFoundException.class)
+    public ProblemDetail instrumentCandidateNotFound(QuoteMonitorInstrumentCandidateNotFoundException ex) {
+        log.warn("Quote monitor instrument candidate not found: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
-                "Quote monitor source plan not found",
+                "Quote monitor instrument candidate not found",
                 ex.getMessage(),
-                QuoteMonitorApiErrorCode.SOURCE_PLAN_NOT_FOUND.code()
+                QuoteMonitorApiErrorCode.INSTRUMENT_CANDIDATE_NOT_FOUND.code()
         );
     }
 

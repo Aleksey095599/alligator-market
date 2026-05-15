@@ -1,4 +1,4 @@
-package com.alligator.market.backend.process.quotemonitor.application.instrument.exception;
+package com.alligator.market.domain.process.quotemonitor.instrument.exception;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 

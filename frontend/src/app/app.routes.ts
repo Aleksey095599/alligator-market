@@ -30,6 +30,12 @@ export const routes: Routes = [
         .then(m => m.SourcePlanModule)
   },
   {
+    path: 'quote-monitor',
+    loadChildren: () =>
+      import('./features/quote_monitor/quote-monitor.module')
+        .then(m => m.QuoteMonitorModule)
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)

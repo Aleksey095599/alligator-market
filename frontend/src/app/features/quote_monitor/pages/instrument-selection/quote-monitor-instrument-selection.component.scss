@@ -1,0 +1,134 @@
+.selection-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.selection-summary {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-panel-bg);
+  white-space: nowrap;
+}
+
+.summary-value {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.82);
+}
+
+.summary-label {
+  color: var(--app-text-muted);
+}
+
+.summary-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--app-border-strong);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.toolbar-actions button {
+  min-width: 112px;
+}
+
+.toolbar-actions mat-icon {
+  margin-right: 6px;
+}
+
+.selection-table {
+  min-width: 640px;
+}
+
+.selection-header-cell,
+.selection-cell {
+  width: 72px;
+  text-align: center;
+}
+
+.instrument-code-cell {
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.state-badge {
+  display: inline-flex;
+  min-width: 76px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border: 1px solid var(--app-border);
+  border-radius: 4px;
+  color: var(--app-text-muted);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.state-badge--selected {
+  border-color: rgba(46, 125, 50, 0.34);
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.state-badge--changed {
+  border-color: rgba(0, 86, 179, 0.38);
+  background: #eaf2ff;
+  color: #004f9f;
+}
+
+.selection-row--selected {
+  background: rgba(46, 125, 50, 0.04);
+}
+
+.selection-row--changed {
+  background: rgba(0, 86, 179, 0.06);
+}
+
+.state-block {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 8px;
+  color: var(--app-text-muted);
+}
+
+@media (max-width: 900px) {
+  .selection-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .selection-summary {
+    width: fit-content;
+  }
+
+  .toolbar-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .toolbar-actions button {
+    flex: 1 1 100%;
+  }
+}
