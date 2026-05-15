@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -65,14 +65,14 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY,
                         SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS,
-                        MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS
+                        CAPTURER_PASSPORT.LIFECYCLE_STATUS
                 )
                 .from(SOURCE_PLAN)
                 .join(SOURCE_PLAN_ENTRY)
                 .on(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                 .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                .join(MARKET_DATA_CAPTURER_PASSPORT)
-                .on(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                .join(CAPTURER_PASSPORT)
+                .on(CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                 .where(condition)
                 .orderBy(SOURCE_PLAN_ENTRY_PRIORITY.asc())
                 .fetch();
@@ -89,7 +89,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
         return Optional.of(new SourcePlanQueryItem(
                 capturerCode.value(),
-                records.getFirst().get(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS),
+                records.getFirst().get(CAPTURER_PASSPORT.LIFECYCLE_STATUS),
                 StoredSourcePlanExecutionStatus.valueOf(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
                 instrumentCode.value(),
                 sources
@@ -107,14 +107,14 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY,
                         SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS,
-                        MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS
+                        CAPTURER_PASSPORT.LIFECYCLE_STATUS
                 )
                 .from(SOURCE_PLAN)
                 .join(SOURCE_PLAN_ENTRY)
                 .on(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                 .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
-                .join(MARKET_DATA_CAPTURER_PASSPORT)
-                .on(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                .join(CAPTURER_PASSPORT)
+                .on(CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                 .orderBy(
                         SOURCE_PLAN_CAPTURER_CODE.asc(),
                         SOURCE_PLAN_INSTRUMENT_CODE.asc(),
@@ -124,7 +124,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
                             record.get(SOURCE_PLAN_CAPTURER_CODE),
-                            record.get(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS),
+                            record.get(CAPTURER_PASSPORT.LIFECYCLE_STATUS),
                             StoredSourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
                             record.get(SOURCE_PLAN_INSTRUMENT_CODE)
                     );

@@ -9,7 +9,7 @@ import org.jooq.DSLContext;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
 import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.ACTIVE;
 
 public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDataCapturerOptionsQueryPort {
@@ -22,15 +22,15 @@ public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDa
     @Override
     public List<MarketDataCapturerOption> findAllMarketDataCapturers() {
         return dsl.select(
-                        MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE,
-                        MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME
+                        CAPTURER_PASSPORT.CAPTURER_CODE,
+                        CAPTURER_PASSPORT.DISPLAY_NAME
                 )
-                .from(MARKET_DATA_CAPTURER_PASSPORT)
-                .where(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
-                .orderBy(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.asc())
+                .from(CAPTURER_PASSPORT)
+                .where(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .orderBy(CAPTURER_PASSPORT.CAPTURER_CODE.asc())
                 .fetch(record -> new MarketDataCapturerOption(
-                        new CapturerCode(record.get(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE)),
-                        new CapturerDisplayName(record.get(MARKET_DATA_CAPTURER_PASSPORT.DISPLAY_NAME))
+                        new CapturerCode(record.get(CAPTURER_PASSPORT.CAPTURER_CODE)),
+                        new CapturerDisplayName(record.get(CAPTURER_PASSPORT.DISPLAY_NAME))
                 ));
     }
 }

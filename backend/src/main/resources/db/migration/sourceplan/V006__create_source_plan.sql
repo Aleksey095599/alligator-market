@@ -9,7 +9,7 @@ CREATE TABLE source_plan
 
     CONSTRAINT fk_source_plan_capturer
         FOREIGN KEY (capturer_code)
-            REFERENCES market_data_capturer_passport (capturer_code),
+            REFERENCES capturer_passport (capturer_code),
     CONSTRAINT fk_source_plan_instrument
         FOREIGN KEY (instrument_code)
             REFERENCES instrument_registry (instrument_code),

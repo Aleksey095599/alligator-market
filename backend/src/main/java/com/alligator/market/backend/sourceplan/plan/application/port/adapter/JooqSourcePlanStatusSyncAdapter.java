@@ -12,7 +12,7 @@ import org.jooq.Table;
 
 import java.util.Objects;
 
-import static com.alligator.market.backend.infra.jooq.generated.tables.MarketDataCapturerPassport.MARKET_DATA_CAPTURER_PASSPORT;
+import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
 import static org.jooq.impl.DSL.exists;
 import static org.jooq.impl.DSL.field;
@@ -85,10 +85,10 @@ public final class JooqSourcePlanStatusSyncAdapter
     private Condition activeCapturerPassportExistsForEntry() {
         return exists(
                 selectOne()
-                        .from(MARKET_DATA_CAPTURER_PASSPORT)
-                        .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE
+                        .from(CAPTURER_PASSPORT)
+                        .where(CAPTURER_PASSPORT.CAPTURER_CODE
                                 .eq(SOURCE_PLAN_ENTRY_CAPTURER_CODE))
-                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
+                        .and(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
                                 StoredCapturerPassportRegistryStatus.ACTIVE.name()))
         );
     }
@@ -96,9 +96,9 @@ public final class JooqSourcePlanStatusSyncAdapter
     private void refreshPlanExecutionStatuses() {
         Condition capturerIsNotActive = notExists(
                 selectOne()
-                        .from(MARKET_DATA_CAPTURER_PASSPORT)
-                        .where(MARKET_DATA_CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
-                        .and(MARKET_DATA_CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
+                        .from(CAPTURER_PASSPORT)
+                        .where(CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
+                        .and(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
                                 StoredCapturerPassportRegistryStatus.ACTIVE.name()))
         );
 
