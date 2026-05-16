@@ -4,39 +4,46 @@
 
   <mat-card class="toolbar-card">
     <mat-card-content>
-      <div class="selection-toolbar">
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Search instruments by code</mat-label>
-          <input
-            matInput
-            #filterInput
-            [value]="filterValue"
-            (input)="onFilter(filterInput.value)"
-          />
-          <button
-            *ngIf="filterValue"
-            mat-icon-button
-            matSuffix
-            type="button"
-            aria-label="Clear search"
-            matTooltip="Clear search"
-            (click)="clearFilter()"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+      <section class="form-section">
+        <div class="section-header">
+          <div class="section-label">Search by Instrument Code</div>
+          <div class="section-hint">Filter monitored and available instruments.</div>
+        </div>
 
-        <button
-          mat-stroked-button
-          type="button"
-          class="reload-button"
-          (click)="reload()"
-          [disabled]="locked"
-        >
-          <mat-icon>refresh</mat-icon>
-          Reload
-        </button>
-      </div>
+        <div class="selection-toolbar">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Instrument Code*</mat-label>
+            <input
+              matInput
+              #filterInput
+              [value]="filterValue"
+              (input)="onFilter(filterInput.value)"
+            />
+            <button
+              *ngIf="filterValue"
+              mat-icon-button
+              matSuffix
+              type="button"
+              aria-label="Clear search"
+              matTooltip="Clear search"
+              (click)="clearFilter()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="reload-button"
+            (click)="reload()"
+            [disabled]="locked"
+          >
+            <mat-icon>refresh</mat-icon>
+            Reload
+          </button>
+        </div>
+      </section>
     </mat-card-content>
   </mat-card>
 
@@ -106,7 +113,12 @@
             <ng-container matColumnDef="instrumentCode">
               <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
               <td mat-cell *matCellDef="let instrumentCode" class="instrument-code-cell">
-                {{ instrumentCode }}
+                <span class="instrument-code-text">
+                  <span
+                    *ngFor="let segment of highlightedInstrumentCodeSegments(instrumentCode)"
+                    [class.instrument-code-highlight]="segment.match"
+                  >{{ segment.text }}</span>
+                </span>
               </td>
             </ng-container>
 
@@ -188,7 +200,12 @@
             <ng-container matColumnDef="instrumentCode">
               <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
               <td mat-cell *matCellDef="let instrumentCode" class="instrument-code-cell">
-                {{ instrumentCode }}
+                <span class="instrument-code-text">
+                  <span
+                    *ngFor="let segment of highlightedInstrumentCodeSegments(instrumentCode)"
+                    [class.instrument-code-highlight]="segment.match"
+                  >{{ segment.text }}</span>
+                </span>
               </td>
             </ng-container>
 

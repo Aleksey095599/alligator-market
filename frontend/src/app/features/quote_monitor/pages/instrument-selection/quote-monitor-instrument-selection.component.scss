@@ -51,6 +51,19 @@
   letter-spacing: 0;
 }
 
+.instrument-code-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.instrument-code-highlight {
+  padding: 1px 2px;
+  border-radius: 3px;
+  background: rgba(0, 86, 179, 0.16);
+  color: #003f85;
+}
+
 .selection-row--picked {
   background: rgba(0, 86, 179, 0.07);
 }

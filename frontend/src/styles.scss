@@ -63,6 +63,60 @@ mat-toolbar .mat-mdc-button {
   flex: 1 1 180px;
 }
 
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  padding: 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-panel-bg);
+}
+
+.form-section--actions {
+  background: var(--app-panel-bg);
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.section-hint {
+  font-size: 13px;
+  color: var(--app-text-muted);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.form-grid .mat-mdc-form-field {
+  width: 100%;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .mat-mdc-card {
   background: var(--app-card-bg);
   border: 1px solid var(--app-border);
@@ -175,6 +229,18 @@ mat-toolbar .mat-mdc-button {
 
   .toolbar-card {
     top: 64px;
+  }
+
+  .form-section {
+    padding: 12px;
+  }
+
+  .action-row {
+    justify-content: stretch;
+  }
+
+  .action-row > button {
+    flex: 1 1 100%;
   }
 
   .mat-mdc-card-content {

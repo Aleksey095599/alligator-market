@@ -13,6 +13,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { QuoteMonitorInstrumentOption } from '../../models/quote-monitor-instrument-selection.model';
 import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-monitor-instrument-selection.service';
 
+interface HighlightSegment {
+  text: string;
+  match: boolean;
+}
+
 @Component({
   selector: 'app-quote-monitor-instrument-selection',
   standalone: true,
@@ -189,6 +194,45 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
 
   isPickedForMonitorAddition(instrumentCode: string): boolean {
     return this.pickedCandidateInstrumentCodes.has(instrumentCode);
+  }
+
+  highlightedInstrumentCodeSegments(instrumentCode: string): HighlightSegment[] {
+    const query = this.filterValue.trim().toUpperCase();
+    if (query.length === 0) {
+      return [{ text: instrumentCode, match: false }];
+    }
+
+    const segments: HighlightSegment[] = [];
+    const normalizedInstrumentCode = instrumentCode.toUpperCase();
+    let cursor = 0;
+    let matchIndex = normalizedInstrumentCode.indexOf(query, cursor);
+
+    while (matchIndex >= 0) {
+      if (matchIndex > cursor) {
+        segments.push({
+          text: instrumentCode.slice(cursor, matchIndex),
+          match: false
+        });
+      }
+
+      const matchEnd = matchIndex + query.length;
+      segments.push({
+        text: instrumentCode.slice(matchIndex, matchEnd),
+        match: true
+      });
+
+      cursor = matchEnd;
+      matchIndex = normalizedInstrumentCode.indexOf(query, cursor);
+    }
+
+    if (cursor < instrumentCode.length) {
+      segments.push({
+        text: instrumentCode.slice(cursor),
+        match: false
+      });
+    }
+
+    return segments;
   }
 
   private replaceSelection(nextSelectedInstrumentCodes: Set<string>, successMessage: string): void {

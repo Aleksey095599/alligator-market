@@ -8,8 +8,15 @@
       <mat-card-title>FX Spot Toolbar</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="form" class="toolbar">
+      <form [formGroup]="form" class="editor-form">
 
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-label">FX Spot Identity</div>
+            <div class="section-hint">Choose currencies, tenor, and default quote precision.</div>
+          </div>
+
+          <div class="form-grid">
         <mat-form-field appearance="outline">
           <mat-label>Base Currency</mat-label>
           <mat-select formControlName="baseCurrency">
@@ -61,7 +68,11 @@
             0 – 10 allowed
           </mat-error>
         </mat-form-field>
+          </div>
+        </section>
 
+        <section class="form-section form-section--actions">
+          <div class="action-row">
         <ng-container *ngIf="!editing; else editButtons">
           <button
             mat-raised-button
@@ -86,6 +97,8 @@
             Cancel
           </button>
         </ng-template>
+          </div>
+        </section>
       </form>
     </mat-card-content>
   </mat-card>
