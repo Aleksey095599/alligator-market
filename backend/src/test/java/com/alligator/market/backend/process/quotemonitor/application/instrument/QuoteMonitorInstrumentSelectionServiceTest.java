@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
+import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,7 +31,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"),
                         new InstrumentCode("FOREX_SPOT_USDRUB_TOM")
-                ))
+                )),
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
         );
 
         assertThat(service.findOptions())
@@ -44,17 +46,66 @@ class QuoteMonitorInstrumentSelectionServiceTest {
     void replacesSelectionWhenAllInstrumentCodesAreCandidates() {
         FakeQuoteMonitorInstrumentSelectionRepository repository =
                 new FakeQuoteMonitorInstrumentSelectionRepository(QuoteMonitorInstrumentSelection.empty());
+        FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater =
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater();
         QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
-                ))
+                )),
+                runtimeRegistryUpdater
         );
 
         service.replaceSelection(List.of(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")));
 
         assertThat(repository.get().instrumentCodes())
                 .containsExactly(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
+        assertThat(runtimeRegistryUpdater.updateCount).isEqualTo(1);
+    }
+
+    @Test
+    void addsInstrumentWhenInstrumentCodeIsCandidate() {
+        FakeQuoteMonitorInstrumentSelectionRepository repository =
+                new FakeQuoteMonitorInstrumentSelectionRepository(QuoteMonitorInstrumentSelection.empty());
+        FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater =
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater();
+        QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
+                repository,
+                new FakeQuoteMonitorInstrumentCandidatePort(List.of(
+                        new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
+                )),
+                runtimeRegistryUpdater
+        );
+
+        boolean changed = service.addInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
+
+        assertThat(changed).isTrue();
+        assertThat(repository.get().instrumentCodes())
+                .containsExactly(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
+        assertThat(runtimeRegistryUpdater.updateCount).isEqualTo(1);
+    }
+
+    @Test
+    void removesInstrumentWhenInstrumentIsSelected() {
+        FakeQuoteMonitorInstrumentSelectionRepository repository =
+                new FakeQuoteMonitorInstrumentSelectionRepository(
+                        new QuoteMonitorInstrumentSelection(List.of(
+                                new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
+                        ))
+                );
+        FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater =
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater();
+        QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
+                repository,
+                new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
+                runtimeRegistryUpdater
+        );
+
+        boolean changed = service.removeInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
+
+        assertThat(changed).isTrue();
+        assertThat(repository.get().instrumentCodes()).isEmpty();
+        assertThat(runtimeRegistryUpdater.updateCount).isEqualTo(1);
     }
 
     @Test
@@ -65,7 +116,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
-                ))
+                )),
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -85,7 +137,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
-                ))
+                )),
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -107,6 +160,26 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         @Override
         public QuoteMonitorInstrumentSelection get() {
             return selection;
+        }
+
+        @Override
+        public boolean addIfAbsent(InstrumentCode instrumentCode) {
+            if (selection.contains(instrumentCode)) {
+                return false;
+            }
+
+            selection = selection.withInstrument(instrumentCode);
+            return true;
+        }
+
+        @Override
+        public boolean removeIfExists(InstrumentCode instrumentCode) {
+            if (!selection.contains(instrumentCode)) {
+                return false;
+            }
+
+            selection = selection.withoutInstrument(instrumentCode);
+            return true;
         }
 
         @Override
@@ -135,6 +208,16 @@ class QuoteMonitorInstrumentSelectionServiceTest {
             return instrumentCodes.stream()
                     .filter(instrumentCode -> !candidateInstrumentCodeSet.contains(instrumentCode))
                     .toList();
+        }
+    }
+
+    private static final class FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater
+            implements RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater {
+        private int updateCount;
+
+        @Override
+        public void updateRuntimeRegistry() {
+            updateCount++;
         }
     }
 }

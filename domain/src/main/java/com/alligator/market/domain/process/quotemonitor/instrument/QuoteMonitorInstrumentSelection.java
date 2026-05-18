@@ -27,6 +27,38 @@ public final class QuoteMonitorInstrumentSelection {
         return instrumentCodes;
     }
 
+    public boolean contains(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        return instrumentCodes.contains(instrumentCode);
+    }
+
+    public QuoteMonitorInstrumentSelection withInstrument(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        if (contains(instrumentCode)) {
+            return this;
+        }
+
+        List<InstrumentCode> updatedInstrumentCodes = new ArrayList<>(instrumentCodes);
+        updatedInstrumentCodes.add(instrumentCode);
+
+        return new QuoteMonitorInstrumentSelection(updatedInstrumentCodes);
+    }
+
+    public QuoteMonitorInstrumentSelection withoutInstrument(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        if (!contains(instrumentCode)) {
+            return this;
+        }
+
+        List<InstrumentCode> updatedInstrumentCodes = new ArrayList<>(instrumentCodes);
+        updatedInstrumentCodes.remove(instrumentCode);
+
+        return new QuoteMonitorInstrumentSelection(updatedInstrumentCodes);
+    }
+
     private static List<InstrumentCode> copyAndValidate(List<InstrumentCode> instrumentCodes) {
         List<InstrumentCode> copied = new ArrayList<>(instrumentCodes.size());
         Set<InstrumentCode> unique = new HashSet<>();

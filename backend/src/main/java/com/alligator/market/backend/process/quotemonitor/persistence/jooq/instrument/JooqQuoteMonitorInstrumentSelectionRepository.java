@@ -38,6 +38,32 @@ public final class JooqQuoteMonitorInstrumentSelectionRepository
     }
 
     @Override
+    public boolean addIfAbsent(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        int insertedRows = dsl.insertInto(QUOTE_MONITOR_INSTRUMENTS)
+                .set(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE, instrumentCode.value())
+                .set(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE, LiveQuoteMonitorCapturer.CAPTURER_CODE.value())
+                .onConflict(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE)
+                .doNothing()
+                .execute();
+
+        return insertedRows > 0;
+    }
+
+    @Override
+    public boolean removeIfExists(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        int deletedRows = dsl.deleteFrom(QUOTE_MONITOR_INSTRUMENTS)
+                .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                .and(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE.eq(instrumentCode.value()))
+                .execute();
+
+        return deletedRows > 0;
+    }
+
+    @Override
     public void replace(QuoteMonitorInstrumentSelection selection) {
         Objects.requireNonNull(selection, "selection must not be null");
 
