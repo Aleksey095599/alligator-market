@@ -40,7 +40,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
 
     private static final DateTimeFormatter MOEX_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // MOEX SYSTIME is reported without an offset, so parse it as Moscow exchange time.
     private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
     public MoexIssFxSpotHandler(WebClient webClient) {
@@ -101,7 +100,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     }
 
     private SourceTick mapMarketdataToSourceTick(SourceInstrumentCode secid, JsonNode root) {
-        // MOEX ISS returns table-shaped JSON: column names define indexes into each data row.
         JsonNode marketdata = root.path("marketdata");
         if (marketdata.isMissingNode() || !marketdata.isObject()) {
             throw new IllegalStateException("MOEX ISS response has no 'marketdata' object");
