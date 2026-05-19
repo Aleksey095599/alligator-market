@@ -9,14 +9,12 @@ import com.alligator.market.domain.source.passport.DeliveryMode;
 import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistry;
 import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistryAdapter;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.policy.SourcePolicy;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.registry.SnapshotRuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -62,11 +60,6 @@ class RuntimeSourcePassportRegistryAdapterTest {
             SourceCode code,
             SourcePassport passport
     ) implements MarketSource {
-        @Override
-        public SourcePolicy policy() {
-            return new SourcePolicy(Duration.ofSeconds(1));
-        }
-
         @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             throw new UnsupportedOperationException("Test source does not stream ticks");

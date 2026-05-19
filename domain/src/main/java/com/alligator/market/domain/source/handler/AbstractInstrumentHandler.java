@@ -5,6 +5,8 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.handler.instrument.SupportedInstrumentsProfile;
+import com.alligator.market.domain.source.handler.passport.SourceHandlerPassport;
+import com.alligator.market.domain.source.handler.policy.SourceHandlerPolicy;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import org.reactivestreams.Publisher;
 
@@ -16,15 +18,19 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
         implements InstrumentHandler<P, I> {
 
     private final HandlerCode handlerCode;
+    private final SourceHandlerPassport passport;
 
     private final SupportedInstrumentsProfile supportedInstrumentsProfile;
+    private final SourceHandlerPolicy policy;
 
     private final AtomicReference<P> sourceRef = new AtomicReference<>();
 
     protected AbstractInstrumentHandler(
             HandlerCode handlerCode,
+            SourceHandlerPassport passport,
             Class<I> instrumentClass,
-            Set<? extends I> supportedInstruments
+            Set<? extends I> supportedInstruments,
+            SourceHandlerPolicy policy
     ) {
         SupportedInstrumentsProfile profile = SupportedInstrumentsProfile.fromSupportedInstruments(
                 handlerCode,
@@ -32,7 +38,9 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
                 supportedInstruments
         );
         this.handlerCode = handlerCode;
+        this.passport = Objects.requireNonNull(passport, "passport must not be null");
         this.supportedInstrumentsProfile = profile;
+        this.policy = Objects.requireNonNull(policy, "policy must not be null");
     }
 
     @Override
@@ -41,8 +49,18 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
     }
 
     @Override
+    public final SourceHandlerPassport passport() {
+        return passport;
+    }
+
+    @Override
     public final Set<InstrumentCode> supportedInstrumentCodes() {
         return supportedInstrumentsProfile.supportedInstrumentCodes();
+    }
+
+    @Override
+    public final SourceHandlerPolicy policy() {
+        return policy;
     }
 
     @Override

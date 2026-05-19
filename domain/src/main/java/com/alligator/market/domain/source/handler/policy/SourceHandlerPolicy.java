@@ -1,14 +1,14 @@
-package com.alligator.market.domain.source.policy;
+package com.alligator.market.domain.source.handler.policy;
 
 import java.time.Duration;
 import java.util.Objects;
 
-public record SourcePolicy(
+public record SourceHandlerPolicy(
         Duration minUpdateInterval
 ) {
     private static final Duration MIN_UPDATE_INTERVAL_ALLOWED = Duration.ofSeconds(1);
 
-    public SourcePolicy {
+    public SourceHandlerPolicy {
         Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
 
         if (minUpdateInterval.compareTo(MIN_UPDATE_INTERVAL_ALLOWED) < 0) {

@@ -31,9 +31,6 @@ public final class SnapshotRuntimeSourceRegistry implements RuntimeSourceRegistr
             Objects.requireNonNull(source.passport(),
                     "source.passport must not be null");
 
-            Objects.requireNonNull(source.policy(),
-                    "source.policy must not be null");
-
             MarketSource prev = sourcesMap.put(code, source);
             if (prev != null) {
                 throw new IllegalArgumentException(

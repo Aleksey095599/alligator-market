@@ -6,7 +6,6 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.policy.SourcePolicy;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.reactivestreams.Publisher;
@@ -18,7 +17,6 @@ public abstract class AbstractMarketSource<P extends MarketSource>
 
     protected final SourceCode sourceCode;
     protected final SourcePassport passport;
-    protected final SourcePolicy policy;
 
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
@@ -27,12 +25,10 @@ public abstract class AbstractMarketSource<P extends MarketSource>
     protected AbstractMarketSource(
             SourceCode sourceCode,
             SourcePassport passport,
-            SourcePolicy policy,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
-        Objects.requireNonNull(policy, "policy must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
 
         if (handlers.isEmpty()) {
@@ -41,7 +37,6 @@ public abstract class AbstractMarketSource<P extends MarketSource>
 
         this.sourceCode = sourceCode;
         this.passport = passport;
-        this.policy = policy;
 
         this.instrumentHandlerMap = buildInstrumentHandlerMap(sourceCode, handlers);
 
@@ -58,11 +53,6 @@ public abstract class AbstractMarketSource<P extends MarketSource>
     @Override
     public SourcePassport passport() {
         return passport;
-    }
-
-    @Override
-    public SourcePolicy policy() {
-        return policy;
     }
 
     @Override
@@ -89,6 +79,8 @@ public abstract class AbstractMarketSource<P extends MarketSource>
             Objects.requireNonNull(h, "handler must not be null");
 
             HandlerCode handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
+            Objects.requireNonNull(h.passport(), "handler.passport must not be null");
+            Objects.requireNonNull(h.policy(), "handler.policy must not be null");
             if (!handlerCodes.add(handlerCode)) {
                 throw new IllegalStateException("Market source '" + sourceCode.value() +
                         "' contains multiple handlers with the same code '" + handlerCode.value() + "'");

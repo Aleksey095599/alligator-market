@@ -8,9 +8,7 @@ import com.alligator.market.domain.source.passport.AccessMethod;
 import com.alligator.market.domain.source.passport.DeliveryMode;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.policy.SourcePolicy;
 
-import java.time.Duration;
 import java.util.Set;
 
 public final class MoexIssSource extends AbstractMarketSource<MoexIssSource> {
@@ -26,16 +24,10 @@ public final class MoexIssSource extends AbstractMarketSource<MoexIssSource> {
             AccessMethod.API_POLL
     );
 
-    private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);
-
-    private static final SourcePolicy POLICY = new SourcePolicy(
-            MIN_UPDATE_INTERVAL
-    );
-
     public MoexIssSource(
             Set<? extends InstrumentHandler<MoexIssSource, ? extends Instrument>> handlers
     ) {
-        super(SOURCE_CODE, PASSPORT, POLICY, handlers);
+        super(SOURCE_CODE, PASSPORT, handlers);
     }
 
     @Override
