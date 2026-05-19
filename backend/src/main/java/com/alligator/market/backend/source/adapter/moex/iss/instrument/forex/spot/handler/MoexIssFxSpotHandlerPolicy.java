@@ -6,15 +6,15 @@ import java.time.Duration;
 import java.util.Objects;
 
 public record MoexIssFxSpotHandlerPolicy(
-        Duration minUpdateInterval
+        Duration pollInterval
 ) implements SourceHandlerPolicy {
-    private static final Duration MIN_UPDATE_INTERVAL_ALLOWED = Duration.ofSeconds(1);
+    private static final Duration MIN_POLL_INTERVAL_ALLOWED = Duration.ofSeconds(1);
 
     public MoexIssFxSpotHandlerPolicy {
-        Objects.requireNonNull(minUpdateInterval, "minUpdateInterval must not be null");
+        Objects.requireNonNull(pollInterval, "pollInterval must not be null");
 
-        if (minUpdateInterval.compareTo(MIN_UPDATE_INTERVAL_ALLOWED) < 0) {
-            throw new IllegalArgumentException("minUpdateInterval must be >= PT1S");
+        if (pollInterval.compareTo(MIN_POLL_INTERVAL_ALLOWED) < 0) {
+            throw new IllegalArgumentException("pollInterval must be >= PT1S");
         }
     }
 }

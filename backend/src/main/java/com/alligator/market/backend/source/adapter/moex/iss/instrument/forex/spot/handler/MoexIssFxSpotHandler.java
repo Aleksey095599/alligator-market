@@ -33,8 +33,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
-    private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);
-    private static final MoexIssFxSpotHandlerPolicy POLICY = new MoexIssFxSpotHandlerPolicy(MIN_UPDATE_INTERVAL);
+    private static final Duration POLL_INTERVAL = Duration.ofSeconds(1);
+    private static final MoexIssFxSpotHandlerPolicy POLICY = new MoexIssFxSpotHandlerPolicy(POLL_INTERVAL);
 
     private final WebClient webClient;
 
@@ -52,22 +52,24 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
 
     @Override
     protected Publisher<SourceTick> doStreamSourceTicks(FxSpot instrument) {
-        Duration pollInterval = POLICY.minUpdateInterval();
+        return streamSourceTicksByPolling(instrument);
+    }
 
-        return fetchSourceTickOnce(instrument)
+    private Publisher<SourceTick> streamSourceTicksByPolling(FxSpot instrument) {
+        return pollSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
                     log.warn(
-                            "Failed to fetch FX_SPOT source tick from MOEX ISS: instrumentCode={}, reason={}",
+                            "Failed to poll FX_SPOT source tick from MOEX ISS: instrumentCode={}, reason={}",
                             instrument.instrumentCode().value(),
                             ex.getMessage(),
                             ex
                     );
                     return Mono.empty();
                 })
-                .repeatWhen(completed -> completed.delayElements(pollInterval));
+                .repeatWhen(completed -> completed.delayElements(POLICY.pollInterval()));
     }
 
-    private Mono<SourceTick> fetchSourceTickOnce(FxSpot instrument) {
+    private Mono<SourceTick> pollSourceTickOnce(FxSpot instrument) {
         InstrumentCode domainCode = instrument.instrumentCode();
         SourceInstrumentCode secid = MoexIssFxSpotSupportCatalog.moexSecidOf(domainCode);
 
@@ -89,7 +91,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                 )
                 .bodyToMono(JsonNode.class)
                 .doOnSubscribe(sub -> log.debug(
-                        "Requesting FX_SPOT source tick from MOEX ISS: instrumentCode={}, secid={}",
+                        "Polling FX_SPOT source tick from MOEX ISS: instrumentCode={}, secid={}",
                         domainCode.value(), secid.value()))
                 .map(body -> {
                     SourceTick tick = mapMarketdataToSourceTick(secid, body);
