@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/market-data-capturers")
+@RequestMapping("/api/v1/capturers")
 @RequiredArgsConstructor
 public class MarketDataCapturerPassportListController {
     private final MarketDataCapturerPassportListService service;

@@ -61,26 +61,16 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
 
             Condition businessFieldsChanged = SOURCE_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(SOURCE_PASSPORT.DISPLAY_NAME))
-                    .or(SOURCE_PASSPORT.DELIVERY_MODE
-                            .isDistinctFrom(excluded(SOURCE_PASSPORT.DELIVERY_MODE)))
-                    .or(SOURCE_PASSPORT.ACCESS_METHOD
-                            .isDistinctFrom(excluded(SOURCE_PASSPORT.ACCESS_METHOD)))
                     .or(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(SOURCE_PASSPORT)
                     .set(SOURCE_PASSPORT.SOURCE_CODE, code.value())
                     .set(SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(SOURCE_PASSPORT.DELIVERY_MODE, passport.deliveryMode().code())
-                    .set(SOURCE_PASSPORT.ACCESS_METHOD, passport.accessMethod().code())
                     .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .onConflict(SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
                     .set(SOURCE_PASSPORT.DISPLAY_NAME,
                             excluded(SOURCE_PASSPORT.DISPLAY_NAME))
-                    .set(SOURCE_PASSPORT.DELIVERY_MODE,
-                            excluded(SOURCE_PASSPORT.DELIVERY_MODE))
-                    .set(SOURCE_PASSPORT.ACCESS_METHOD,
-                            excluded(SOURCE_PASSPORT.ACCESS_METHOD))
                     .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 

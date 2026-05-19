@@ -18,7 +18,7 @@ export const routes: Routes = [
         .then(m => m.SourcePassportModule)
   },
   {
-    path: 'market-data-capturers',
+    path: 'capturers',
     loadChildren: () =>
       import('./features/market_data_capturer_passport/market-data-capturer-passport.module')
         .then(m => m.MarketDataCapturerPassportModule)

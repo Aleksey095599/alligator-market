@@ -21,8 +21,6 @@ public final class JooqSourcePassportListQueryAdapter implements SourcePassportL
         return dsl.select(
                         SOURCE_PASSPORT.SOURCE_CODE,
                         SOURCE_PASSPORT.DISPLAY_NAME,
-                        SOURCE_PASSPORT.DELIVERY_MODE,
-                        SOURCE_PASSPORT.ACCESS_METHOD,
                         SOURCE_PASSPORT.LIFECYCLE_STATUS
                 )
                 .from(SOURCE_PASSPORT)
@@ -30,8 +28,6 @@ public final class JooqSourcePassportListQueryAdapter implements SourcePassportL
                 .fetch(record -> new SourcePassportListItem(
                         record.get(SOURCE_PASSPORT.SOURCE_CODE),
                         record.get(SOURCE_PASSPORT.DISPLAY_NAME),
-                        record.get(SOURCE_PASSPORT.DELIVERY_MODE),
-                        record.get(SOURCE_PASSPORT.ACCESS_METHOD),
                         record.get(SOURCE_PASSPORT.LIFECYCLE_STATUS)
                 ));
     }

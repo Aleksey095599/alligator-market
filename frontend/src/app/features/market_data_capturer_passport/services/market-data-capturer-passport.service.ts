@@ -13,7 +13,7 @@ export class MarketDataCapturerPassportService {
   constructor(private http: HttpClient) {}
 
   /* Базовый URL (через proxy уйдёт на Spring). */
-  private readonly baseUrl = '/api/v1/market-data-capturers';
+  private readonly baseUrl = '/api/v1/capturers';
 
   /* Получить все паспорта процессов захвата. */
   list(): Observable<MarketDataCapturerPassportDto[]> {

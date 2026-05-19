@@ -8,6 +8,8 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.handler.AbstractInstrumentHandler;
+import com.alligator.market.domain.source.handler.passport.AccessMethod;
+import com.alligator.market.domain.source.handler.passport.DeliveryMode;
 import com.alligator.market.domain.source.handler.passport.SourceHandlerPassport;
 import com.alligator.market.domain.source.handler.policy.SourceHandlerPolicy;
 import com.alligator.market.domain.source.vo.HandlerCode;
@@ -32,7 +34,8 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSource, FxSpot> {
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
-    private static final SourceHandlerPassport PASSPORT = new SourceHandlerPassport();
+    private static final SourceHandlerPassport PASSPORT =
+            new SourceHandlerPassport(DeliveryMode.PULL, AccessMethod.API_POLL);
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
     private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);

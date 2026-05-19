@@ -1,11 +1,11 @@
-<div class="center-box">
+<div class="center-box registry-list-page">
   <!-- карточка со списком паспортов процессов захвата -->
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Market Data Capturers</mat-card-title>
+      <mat-card-title>Capturers</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+      <table mat-table [dataSource]="dataSource" class="registry-table mat-elevation-z2">
 
         <ng-container matColumnDef="capturerCode">
           <th mat-header-cell *matHeaderCellDef>Code</th>
@@ -13,7 +13,7 @@
         </ng-container>
 
         <ng-container matColumnDef="displayName">
-          <th mat-header-cell *matHeaderCellDef>Capturer</th>
+          <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let passport">{{ passport.displayName }}</td>
         </ng-container>
 
@@ -36,7 +36,7 @@
           [class.retired-row]="row.lifecycleStatus === 'RETIRED'"
         ></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" [attr.colspan]="displayed.length">No capturer passports found.</td>
+          <td class="mat-cell" [attr.colspan]="displayed.length">No capturers found.</td>
         </tr>
       </table>
     </mat-card-content>

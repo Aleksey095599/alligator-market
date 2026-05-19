@@ -4,8 +4,6 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.source.AbstractMarketSource;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.vo.SourceCode;
-import com.alligator.market.domain.source.passport.AccessMethod;
-import com.alligator.market.domain.source.passport.DeliveryMode;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 
@@ -18,11 +16,8 @@ public final class MoexIssSource extends AbstractMarketSource<MoexIssSource> {
 
     private static final String DISPLAY_NAME = "MOEX Informational & Statistical Server";
 
-    private static final SourcePassport PASSPORT = new SourcePassport(
-            SourceDisplayName.of(DISPLAY_NAME),
-            DeliveryMode.PULL,
-            AccessMethod.API_POLL
-    );
+    private static final SourcePassport PASSPORT =
+            new SourcePassport(SourceDisplayName.of(DISPLAY_NAME));
 
     public MoexIssSource(
             Set<? extends InstrumentHandler<MoexIssSource, ? extends Instrument>> handlers

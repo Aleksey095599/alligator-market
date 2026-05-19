@@ -4,8 +4,6 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.passport.AccessMethod;
-import com.alligator.market.domain.source.passport.DeliveryMode;
 import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistry;
 import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistryAdapter;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
@@ -49,11 +47,7 @@ class RuntimeSourcePassportRegistryAdapterTest {
     }
 
     private static SourcePassport passport(String displayName) {
-        return new SourcePassport(
-                SourceDisplayName.of(displayName),
-                DeliveryMode.PULL,
-                AccessMethod.API_POLL
-        );
+        return new SourcePassport(SourceDisplayName.of(displayName));
     }
 
     private record TestMarketSource(

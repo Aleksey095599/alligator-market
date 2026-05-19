@@ -46,6 +46,27 @@ mat-toolbar .mat-mdc-button {
   margin: 4px 0 0;
 }
 
+.registry-list-page {
+  max-width: 860px;
+}
+
+.registry-table {
+  table-layout: fixed;
+}
+
+.registry-table .mat-column-sourceCode,
+.registry-table .mat-column-capturerCode {
+  width: 28%;
+}
+
+.registry-table .mat-column-displayName {
+  width: 48%;
+}
+
+.registry-table .mat-column-lifecycleStatus {
+  width: 24%;
+}
+
 .toolbar-card {
   position: sticky;
   top: 76px;
