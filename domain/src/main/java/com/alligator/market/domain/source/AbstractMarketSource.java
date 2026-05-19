@@ -5,6 +5,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
+import com.alligator.market.domain.source.handler.passport.SourceHandlerPassport;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
@@ -79,7 +80,18 @@ public abstract class AbstractMarketSource<P extends MarketSource>
             Objects.requireNonNull(h, "handler must not be null");
 
             HandlerCode handlerCode = Objects.requireNonNull(h.handlerCode(), "handlerCode must not be null");
-            Objects.requireNonNull(h.passport(), "handler.passport must not be null");
+            SourceHandlerPassport handlerPassport = Objects.requireNonNull(
+                    h.passport(),
+                    "handler.passport must not be null"
+            );
+            Objects.requireNonNull(
+                    handlerPassport.deliveryMode(),
+                    "handler.passport.deliveryMode must not be null"
+            );
+            Objects.requireNonNull(
+                    handlerPassport.accessMethod(),
+                    "handler.passport.accessMethod must not be null"
+            );
             Objects.requireNonNull(h.policy(), "handler.policy must not be null");
             if (!handlerCodes.add(handlerCode)) {
                 throw new IllegalStateException("Market source '" + sourceCode.value() +

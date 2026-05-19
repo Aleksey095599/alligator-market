@@ -8,10 +8,6 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.handler.AbstractInstrumentHandler;
-import com.alligator.market.domain.source.handler.passport.AccessMethod;
-import com.alligator.market.domain.source.handler.passport.DeliveryMode;
-import com.alligator.market.domain.source.handler.passport.SourceHandlerPassport;
-import com.alligator.market.domain.source.handler.policy.SourceHandlerPolicy;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -34,12 +30,11 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSource, FxSpot> {
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
-    private static final SourceHandlerPassport PASSPORT =
-            new SourceHandlerPassport(DeliveryMode.PULL, AccessMethod.API_POLL);
+    private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
     private static final Duration MIN_UPDATE_INTERVAL = Duration.ofSeconds(1);
-    private static final SourceHandlerPolicy POLICY = new SourceHandlerPolicy(MIN_UPDATE_INTERVAL);
+    private static final MoexIssFxSpotHandlerPolicy POLICY = new MoexIssFxSpotHandlerPolicy(MIN_UPDATE_INTERVAL);
 
     private final WebClient webClient;
 
@@ -57,7 +52,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
 
     @Override
     protected Publisher<SourceTick> doStreamSourceTicks(FxSpot instrument) {
-        Duration pollInterval = policy().minUpdateInterval();
+        Duration pollInterval = POLICY.minUpdateInterval();
 
         return fetchSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
