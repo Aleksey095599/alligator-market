@@ -5,8 +5,6 @@ import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
-import java.time.Duration;
-
 public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
     public static final CapturerCode CAPTURER_CODE =
             CapturerCode.of("LIVE_QUOTE_MONITOR");
@@ -17,10 +15,8 @@ public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
     public static final CapturerPassport PASSPORT =
             new CapturerPassport(DISPLAY_NAME);
 
-    public static final Duration UPDATE_INTERVAL = Duration.ofSeconds(1);
-
     public static final LiveQuoteMonitorCapturerPolicy POLICY =
-            new LiveQuoteMonitorCapturerPolicy(UPDATE_INTERVAL);
+            new LiveQuoteMonitorCapturerPolicy();
 
     @Override
     public CapturerCode capturerCode() {

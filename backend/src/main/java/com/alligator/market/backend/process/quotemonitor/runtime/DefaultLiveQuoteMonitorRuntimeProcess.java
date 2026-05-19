@@ -8,30 +8,24 @@ import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitor
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.Clock;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
-public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteMonitorRuntimeProcess {
+public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMonitorRuntimeProcess {
     private final LiveQuoteMonitorCapturer capturer;
     private final RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
-    private final LiveQuoteMonitorProcessScheduler scheduler;
     private final Clock clock;
     private final Object lock = new Object();
 
-    private LiveQuoteMonitorScheduledTask scheduledTask;
     private LiveQuoteMonitorRuntimeSnapshot snapshot = LiveQuoteMonitorRuntimeSnapshot.stopped();
 
-    public ScheduledLiveQuoteMonitorRuntimeProcess(
+    public DefaultLiveQuoteMonitorRuntimeProcess(
             LiveQuoteMonitorCapturer capturer,
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            LiveQuoteMonitorProcessScheduler scheduler,
             Clock clock
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
@@ -43,7 +37,6 @@ public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteM
                 sourcePlanRegistry,
                 "sourcePlanRegistry must not be null"
         );
-        this.scheduler = Objects.requireNonNull(scheduler, "scheduler must not be null");
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
@@ -54,15 +47,7 @@ public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteM
                 return false;
             }
 
-            snapshot = snapshot.withStatus(LiveQuoteMonitorRuntimeStatus.RUNNING);
-
-            try {
-                scheduledTask = scheduler.scheduleAtFixedRate(captureInterval(), this::runTickSafely);
-            } catch (RuntimeException ex) {
-                snapshot = snapshot.withStatus(LiveQuoteMonitorRuntimeStatus.STOPPED);
-                throw ex;
-            }
-
+            snapshot = runningSnapshot();
             return true;
         }
     }
@@ -72,11 +57,6 @@ public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteM
         synchronized (lock) {
             if (snapshot.status() == LiveQuoteMonitorRuntimeStatus.STOPPED) {
                 return false;
-            }
-
-            if (scheduledTask != null) {
-                scheduledTask.cancel();
-                scheduledTask = null;
             }
 
             snapshot = snapshot.withStatus(LiveQuoteMonitorRuntimeStatus.STOPPED);
@@ -98,28 +78,12 @@ public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteM
         }
     }
 
-    private void runTickSafely() {
-        try {
-            runTick();
-        } catch (RuntimeException ex) {
-            log.error("Live quote monitor runtime tick failed", ex);
-        }
-    }
-
-    private void runTick() {
-        List<InstrumentCode> monitoredInstrumentCodes = resolveExecutableMonitoredInstrumentCodes();
-
-        synchronized (lock) {
-            if (snapshot.status() != LiveQuoteMonitorRuntimeStatus.RUNNING) {
-                return;
-            }
-
-            snapshot = new LiveQuoteMonitorRuntimeSnapshot(
-                    LiveQuoteMonitorRuntimeStatus.RUNNING,
-                    monitoredInstrumentCodes,
-                    clock.instant()
-            );
-        }
+    private LiveQuoteMonitorRuntimeSnapshot runningSnapshot() {
+        return new LiveQuoteMonitorRuntimeSnapshot(
+                LiveQuoteMonitorRuntimeStatus.RUNNING,
+                resolveExecutableMonitoredInstrumentCodes(),
+                clock.instant()
+        );
     }
 
     private List<InstrumentCode> resolveExecutableMonitoredInstrumentCodes() {
@@ -136,9 +100,5 @@ public final class ScheduledLiveQuoteMonitorRuntimeProcess implements LiveQuoteM
         );
 
         return sourcePlanRegistry.findExecutableByKey(key).isPresent();
-    }
-
-    private Duration captureInterval() {
-        return capturer.policy().captureInterval();
     }
 }

@@ -2,8 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.config.runtime;
 
 import com.alligator.market.backend.process.quotemonitor.config.capturer.LiveQuoteMonitorCapturerWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig;
-import com.alligator.market.backend.process.quotemonitor.runtime.LiveQuoteMonitorProcessScheduler;
-import com.alligator.market.backend.process.quotemonitor.runtime.ScheduledLiveQuoteMonitorRuntimeProcess;
+import com.alligator.market.backend.process.quotemonitor.runtime.DefaultLiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.backend.sourceplan.config.plan.registry.runtime.RuntimeSourcePlanRegistryWiringConfig;
 import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
@@ -20,8 +19,7 @@ import java.time.Clock;
 @Import({
         LiveQuoteMonitorCapturerWiringConfig.class,
         RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig.class,
-        RuntimeSourcePlanRegistryWiringConfig.class,
-        LiveQuoteMonitorRuntimeSchedulerWiringConfig.class
+        RuntimeSourcePlanRegistryWiringConfig.class
 })
 public class LiveQuoteMonitorRuntimeProcessWiringConfig {
     public static final String BEAN_LIVE_QUOTE_MONITOR_RUNTIME_PROCESS =
@@ -43,16 +41,13 @@ public class LiveQuoteMonitorRuntimeProcessWiringConfig {
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
             @Qualifier(RuntimeSourcePlanRegistryWiringConfig.BEAN_RUNTIME_SOURCE_PLAN_REGISTRY)
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            @Qualifier(LiveQuoteMonitorRuntimeSchedulerWiringConfig.BEAN_LIVE_QUOTE_MONITOR_PROCESS_SCHEDULER)
-            LiveQuoteMonitorProcessScheduler scheduler,
             @Qualifier(BEAN_LIVE_QUOTE_MONITOR_RUNTIME_CLOCK)
             Clock clock
     ) {
-        return new ScheduledLiveQuoteMonitorRuntimeProcess(
+        return new DefaultLiveQuoteMonitorRuntimeProcess(
                 capturer,
                 instrumentSelectionRegistry,
                 sourcePlanRegistry,
-                scheduler,
                 clock
         );
     }

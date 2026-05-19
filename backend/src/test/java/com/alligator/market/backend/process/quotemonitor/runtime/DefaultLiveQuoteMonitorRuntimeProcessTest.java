@@ -23,33 +23,28 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScheduledLiveQuoteMonitorRuntimeProcessTest {
-    private static final Instant TICK_TIME = Instant.parse("2026-05-18T08:00:00Z");
+class DefaultLiveQuoteMonitorRuntimeProcessTest {
+    private static final Instant START_TIME = Instant.parse("2026-05-18T08:00:00Z");
 
     @Test
-    void startSchedulesSingleRuntimeTask() {
-        FakeLiveQuoteMonitorProcessScheduler scheduler = new FakeLiveQuoteMonitorProcessScheduler();
-        ScheduledLiveQuoteMonitorRuntimeProcess process = process(
+    void startMovesProcessToRunningOnlyOnce() {
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
-                new MutableRuntimeSourcePlanRegistry(List.of()),
-                scheduler
+                new MutableRuntimeSourcePlanRegistry(List.of())
         );
 
         assertThat(process.start()).isTrue();
         assertThat(process.start()).isFalse();
 
         assertThat(process.status()).isEqualTo(LiveQuoteMonitorRuntimeStatus.RUNNING);
-        assertThat(scheduler.scheduleCount).isEqualTo(1);
-        assertThat(scheduler.interval).isEqualTo(LiveQuoteMonitorCapturer.UPDATE_INTERVAL);
+        assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
     }
 
     @Test
-    void stopCancelsRuntimeTask() {
-        FakeLiveQuoteMonitorProcessScheduler scheduler = new FakeLiveQuoteMonitorProcessScheduler();
-        ScheduledLiveQuoteMonitorRuntimeProcess process = process(
+    void stopMovesProcessToStoppedOnlyOnce() {
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
-                new MutableRuntimeSourcePlanRegistry(List.of()),
-                scheduler
+                new MutableRuntimeSourcePlanRegistry(List.of())
         );
 
         process.start();
@@ -58,11 +53,10 @@ class ScheduledLiveQuoteMonitorRuntimeProcessTest {
         assertThat(process.stop()).isFalse();
 
         assertThat(process.status()).isEqualTo(LiveQuoteMonitorRuntimeStatus.STOPPED);
-        assertThat(scheduler.scheduledTask.cancelled).isTrue();
     }
 
     @Test
-    void tickUsesCurrentSelectionAndExecutableSourcePlans() {
+    void startUsesCurrentSelectionAndExecutableSourcePlans() {
         InstrumentCode firstCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         InstrumentCode secondCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         MutableRuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry =
@@ -71,37 +65,23 @@ class ScheduledLiveQuoteMonitorRuntimeProcessTest {
                 );
         MutableRuntimeSourcePlanRegistry sourcePlanRegistry =
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(firstCode)));
-        FakeLiveQuoteMonitorProcessScheduler scheduler = new FakeLiveQuoteMonitorProcessScheduler();
-        ScheduledLiveQuoteMonitorRuntimeProcess process = process(
-                selectionRegistry,
-                sourcePlanRegistry,
-                scheduler
-        );
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(selectionRegistry, sourcePlanRegistry);
 
         process.start();
-        scheduler.runScheduledTask();
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(firstCode);
-        assertThat(process.snapshot().lastTickAt()).contains(TICK_TIME);
-
-        selectionRegistry.replaceSelection(new QuoteMonitorInstrumentSelection(List.of(secondCode)));
-        sourcePlanRegistry.replaceExecutablePlans(List.of(plan(secondCode)));
-        scheduler.runScheduledTask();
-
-        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(secondCode);
+        assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
     }
 
-    private static ScheduledLiveQuoteMonitorRuntimeProcess process(
+    private static DefaultLiveQuoteMonitorRuntimeProcess process(
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
-            RuntimeSourcePlanRegistry sourcePlanRegistry,
-            LiveQuoteMonitorProcessScheduler scheduler
+            RuntimeSourcePlanRegistry sourcePlanRegistry
     ) {
-        return new ScheduledLiveQuoteMonitorRuntimeProcess(
+        return new DefaultLiveQuoteMonitorRuntimeProcess(
                 new LiveQuoteMonitorCapturer(),
                 selectionRegistry,
                 sourcePlanRegistry,
-                scheduler,
-                Clock.fixed(TICK_TIME, ZoneOffset.UTC)
+                Clock.fixed(START_TIME, ZoneOffset.UTC)
         );
     }
 
@@ -113,40 +93,6 @@ class ScheduledLiveQuoteMonitorRuntimeProcessTest {
         );
     }
 
-    private static final class FakeLiveQuoteMonitorProcessScheduler
-            implements LiveQuoteMonitorProcessScheduler {
-        private int scheduleCount;
-        private java.time.Duration interval;
-        private Runnable task;
-        private FakeLiveQuoteMonitorScheduledTask scheduledTask;
-
-        @Override
-        public LiveQuoteMonitorScheduledTask scheduleAtFixedRate(
-                java.time.Duration interval,
-                Runnable task
-        ) {
-            scheduleCount++;
-            this.interval = interval;
-            this.task = task;
-            this.scheduledTask = new FakeLiveQuoteMonitorScheduledTask();
-            return scheduledTask;
-        }
-
-        private void runScheduledTask() {
-            task.run();
-        }
-    }
-
-    private static final class FakeLiveQuoteMonitorScheduledTask
-            implements LiveQuoteMonitorScheduledTask {
-        private boolean cancelled;
-
-        @Override
-        public void cancel() {
-            cancelled = true;
-        }
-    }
-
     private static final class MutableRuntimeQuoteMonitorInstrumentSelectionRegistry
             implements RuntimeQuoteMonitorInstrumentSelectionRegistry {
         private QuoteMonitorInstrumentSelection selection;
@@ -154,10 +100,6 @@ class ScheduledLiveQuoteMonitorRuntimeProcessTest {
         private MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                 QuoteMonitorInstrumentSelection selection
         ) {
-            replaceSelection(selection);
-        }
-
-        private void replaceSelection(QuoteMonitorInstrumentSelection selection) {
             this.selection = selection;
         }
 
@@ -178,13 +120,9 @@ class ScheduledLiveQuoteMonitorRuntimeProcessTest {
     }
 
     private static final class MutableRuntimeSourcePlanRegistry implements RuntimeSourcePlanRegistry {
-        private Map<SourcePlanKey, SourcePlan> plansByKey;
+        private final Map<SourcePlanKey, SourcePlan> plansByKey;
 
         private MutableRuntimeSourcePlanRegistry(List<SourcePlan> executablePlans) {
-            replaceExecutablePlans(executablePlans);
-        }
-
-        private void replaceExecutablePlans(List<SourcePlan> executablePlans) {
             Map<SourcePlanKey, SourcePlan> updatedPlansByKey = new LinkedHashMap<>();
 
             for (SourcePlan plan : executablePlans) {
