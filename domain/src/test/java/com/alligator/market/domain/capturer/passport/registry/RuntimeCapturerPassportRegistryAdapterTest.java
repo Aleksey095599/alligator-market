@@ -11,7 +11,6 @@ import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +54,11 @@ class RuntimeCapturerPassportRegistryAdapterTest {
     ) implements MarketDataCapturer {
         @Override
         public CapturerPolicy policy() {
-            return new CapturerPolicy(Duration.ofSeconds(1));
+            return TestCapturerPolicy.INSTANCE;
         }
+    }
+
+    private enum TestCapturerPolicy implements CapturerPolicy {
+        INSTANCE
     }
 }

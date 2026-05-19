@@ -2,7 +2,6 @@ package com.alligator.market.domain.process.quotemonitor.capturer;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.policy.CapturerPolicy;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
@@ -20,8 +19,8 @@ public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
 
     public static final Duration UPDATE_INTERVAL = Duration.ofSeconds(1);
 
-    public static final CapturerPolicy POLICY =
-            new CapturerPolicy(UPDATE_INTERVAL);
+    public static final LiveQuoteMonitorCapturerPolicy POLICY =
+            new LiveQuoteMonitorCapturerPolicy(UPDATE_INTERVAL);
 
     @Override
     public CapturerCode capturerCode() {
@@ -34,7 +33,7 @@ public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
     }
 
     @Override
-    public CapturerPolicy policy() {
+    public LiveQuoteMonitorCapturerPolicy policy() {
         return POLICY;
     }
 }
