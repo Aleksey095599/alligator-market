@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,8 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Observable, Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 import { LiveQuoteRow, LiveQuoteUpdate } from '../../models/quote-monitor-live-quote.model';
 import { LiveQuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
@@ -49,12 +48,13 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
 
   private readonly rowsByInstrumentCode = new Map<string, LiveQuoteRow>();
   private readonly subscriptions = new Subscription();
-  private quotePollingSubscription: Subscription | null = null;
+  private quoteEventSource: EventSource | null = null;
 
   constructor(
     private readonly runtimeService: QuoteMonitorRuntimeService,
     private readonly liveQuoteService: QuoteMonitorLiveQuoteService,
-    private readonly snack: MatSnackBar
+    private readonly snack: MatSnackBar,
+    private readonly zone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +62,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.stopQuoteStream();
     this.subscriptions.unsubscribe();
   }
 
@@ -82,10 +83,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     const subscription = this.runtimeService.status().subscribe({
       next: status => {
         this.applyRuntimeStatus(status);
-        this.refreshQuotePolling();
-        if (!this.running) {
-          this.loadCurrentQuotes();
-        }
+        this.loadSnapshot();
+        this.refreshQuoteStream();
         this.loading = false;
       },
       error: err => {
@@ -107,7 +106,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       next: status => {
         this.rowsByInstrumentCode.clear();
         this.applyRuntimeStatus(status);
-        this.refreshQuotePolling();
+        this.loadSnapshot();
+        this.refreshQuoteStream();
         this.commandRunning = false;
         this.snack.open('Quote monitor started', 'OK', { duration: 2200 });
       },
@@ -161,10 +161,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     const subscription = command.subscribe({
       next: status => {
         this.applyRuntimeStatus(status);
-        this.refreshQuotePolling();
-        if (!this.running) {
-          this.loadCurrentQuotes();
-        }
+        this.loadSnapshot();
+        this.refreshQuoteStream();
         this.commandRunning = false;
         this.snack.open(successMessage, 'OK', { duration: 2200 });
       },
@@ -205,56 +203,79 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.syncRows();
   }
 
-  private loadCurrentQuotes(): void {
-    const subscription = this.liveQuoteService.getCurrentQuotes().subscribe({
-      next: updates => this.applyQuoteUpdates(updates),
+  private loadSnapshot(): void {
+    const subscription = this.liveQuoteService.getSnapshot().subscribe({
+      next: updates => this.applyQuoteSnapshot(updates),
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load live quotes failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load live quote snapshot failed'), 'Close');
       }
     });
 
     this.subscriptions.add(subscription);
   }
 
-  private refreshQuotePolling(): void {
+  private refreshQuoteStream(): void {
     if (this.running) {
-      this.startQuotePolling();
+      this.startQuoteStream();
       return;
     }
 
-    this.stopQuotePolling();
+    this.stopQuoteStream();
   }
 
-  private startQuotePolling(): void {
-    if (this.quotePollingSubscription && !this.quotePollingSubscription.closed) {
+  private startQuoteStream(): void {
+    if (this.quoteEventSource) {
       return;
     }
 
-    this.quotePollingSubscription = timer(0, 1000)
-      .pipe(switchMap(() => this.liveQuoteService.getCurrentQuotes()))
-      .subscribe({
-        next: updates => this.applyQuoteUpdates(updates),
-        error: err => {
-          this.stopQuotePolling();
-          this.snack.open(this.resolveErrorMessage(err, 'Live quote polling failed'), 'Close');
+    const eventSource = this.liveQuoteService.openStream();
+    this.quoteEventSource = eventSource;
+
+    eventSource.addEventListener('live-quote', event => {
+      this.zone.run(() => {
+        try {
+          this.applyQuoteUpdate(this.liveQuoteService.parseStreamMessage((event as MessageEvent<string>).data));
+        } catch {
+          this.snack.open('Live quote stream message is invalid', 'Close');
         }
       });
+    });
 
-    this.subscriptions.add(this.quotePollingSubscription);
+    eventSource.onerror = () => {
+      if (!this.running) {
+        this.stopQuoteStream();
+      }
+    };
   }
 
-  private stopQuotePolling(): void {
-    this.quotePollingSubscription?.unsubscribe();
-    this.quotePollingSubscription = null;
+  private stopQuoteStream(): void {
+    this.quoteEventSource?.close();
+    this.quoteEventSource = null;
   }
 
-  private applyQuoteUpdates(updates: LiveQuoteUpdate[]): void {
-    for (const update of updates) {
-      this.applyQuoteUpdate(update);
+  private applyQuoteSnapshot(updates: LiveQuoteUpdate[]): void {
+    const updatedInstrumentCodes = new Set(updates.map(update => update.instrumentCode));
+
+    for (const [instrumentCode, row] of this.rowsByInstrumentCode.entries()) {
+      if (!updatedInstrumentCodes.has(instrumentCode)) {
+        this.rowsByInstrumentCode.set(instrumentCode, {
+          ...row,
+          lastPrice: null,
+          sourceCode: null,
+          sourceTimestamp: null,
+          receivedAt: null
+        });
+      }
     }
+
+    for (const update of updates) {
+      this.applyQuoteUpdate(update, false);
+    }
+
+    this.syncRows();
   }
 
-  private applyQuoteUpdate(update: LiveQuoteUpdate): void {
+  private applyQuoteUpdate(update: LiveQuoteUpdate, sync = true): void {
     this.rowsByInstrumentCode.set(update.instrumentCode, {
       instrumentCode: update.instrumentCode,
       lastPrice: update.lastPrice,
@@ -264,7 +285,9 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       status: this.runtimeStatus
     });
     this.lastTickAt = update.receivedAt;
-    this.syncRows();
+    if (sync) {
+      this.syncRows();
+    }
   }
 
   private syncRows(): void {

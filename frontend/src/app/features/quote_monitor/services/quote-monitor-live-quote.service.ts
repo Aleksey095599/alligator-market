@@ -16,10 +16,18 @@ export class QuoteMonitorLiveQuoteService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getCurrentQuotes(): Observable<LiveQuoteUpdate[]> {
+  getSnapshot(): Observable<LiveQuoteUpdate[]> {
     return this.http
-      .get<QuoteMonitorLiveQuoteListResponseDto>(this.baseUrl)
+      .get<QuoteMonitorLiveQuoteListResponseDto>(`${this.baseUrl}/snapshot`)
       .pipe(map(response => (response.quotes ?? []).map(quote => this.toLiveQuoteUpdate(quote))));
+  }
+
+  openStream(): EventSource {
+    return new EventSource(`${this.baseUrl}/stream`);
+  }
+
+  parseStreamMessage(data: string): LiveQuoteUpdate {
+    return this.toLiveQuoteUpdate(JSON.parse(data) as QuoteMonitorLiveQuoteDto);
   }
 
   private toLiveQuoteUpdate(quote: QuoteMonitorLiveQuoteDto): LiveQuoteUpdate {

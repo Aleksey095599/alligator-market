@@ -33,7 +33,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
-    private static final Duration POLL_INTERVAL = Duration.ofSeconds(1);
+    private static final Duration POLL_INTERVAL = Duration.ofSeconds(5);
     private static final MoexIssFxSpotHandlerPolicy POLICY = new MoexIssFxSpotHandlerPolicy(POLL_INTERVAL);
 
     private final WebClient webClient;

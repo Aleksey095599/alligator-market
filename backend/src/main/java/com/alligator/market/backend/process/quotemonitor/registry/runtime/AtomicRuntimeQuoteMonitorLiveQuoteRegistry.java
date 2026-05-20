@@ -1,9 +1,12 @@
 package com.alligator.market.backend.process.quotemonitor.registry.runtime;
 
+import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteUpdateStream;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
 import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -14,9 +17,13 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
-        implements RuntimeQuoteMonitorLiveQuoteRegistry, RuntimeQuoteMonitorLiveQuotePublisher {
+        implements RuntimeQuoteMonitorLiveQuoteRegistry,
+        RuntimeQuoteMonitorLiveQuotePublisher,
+        QuoteMonitorLiveQuoteUpdateStream {
     private final AtomicReference<Map<InstrumentCode, QuoteMonitorLiveQuote>> quotesByInstrumentCode =
             new AtomicReference<>(Map.of());
+    private final Sinks.Many<QuoteMonitorLiveQuote> liveQuoteUpdates =
+            Sinks.many().multicast().directBestEffort();
 
     @Override
     public Optional<QuoteMonitorLiveQuote> findByInstrumentCode(InstrumentCode instrumentCode) {
@@ -51,10 +58,16 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
             updated.put(quoteToPublish.instrumentCode(), quoteToPublish);
             return Map.copyOf(updated);
         });
+        liveQuoteUpdates.tryEmitNext(quoteToPublish);
     }
 
     @Override
     public void clear() {
         quotesByInstrumentCode.set(Map.of());
+    }
+
+    @Override
+    public Flux<QuoteMonitorLiveQuote> liveQuoteUpdates() {
+        return liveQuoteUpdates.asFlux();
     }
 }

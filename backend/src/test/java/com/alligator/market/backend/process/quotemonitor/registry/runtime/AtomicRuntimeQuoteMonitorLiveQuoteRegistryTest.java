@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -39,6 +40,18 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
 
         assertThat(registry.findByInstrumentCode(quote.instrumentCode())).isEmpty();
         assertThat(registry.currentQuotes()).isEmpty();
+    }
+
+    @Test
+    void emitsPublishedQuotesToLiveUpdateStream() {
+        AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
+        QuoteMonitorLiveQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
+
+        StepVerifier.create(registry.liveQuoteUpdates())
+                .then(() -> registry.publish(quote))
+                .expectNext(quote)
+                .thenCancel()
+                .verify();
     }
 
     private static QuoteMonitorLiveQuote quote(InstrumentCode instrumentCode, String lastPrice) {
