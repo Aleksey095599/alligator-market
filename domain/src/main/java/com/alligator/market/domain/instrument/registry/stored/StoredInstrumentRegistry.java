@@ -1,4 +1,4 @@
-package com.alligator.market.domain.instrument.registry;
+package com.alligator.market.domain.instrument.registry.stored;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.instrument.registry.persistence.jooq;
 
-import com.alligator.market.domain.instrument.registry.StoredInstrumentRegistry;
+import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import org.jooq.DSLContext;
 

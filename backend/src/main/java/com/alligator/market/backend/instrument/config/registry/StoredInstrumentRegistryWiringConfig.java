@@ -1,7 +1,7 @@
 package com.alligator.market.backend.instrument.config.registry;
 
 import com.alligator.market.backend.instrument.registry.persistence.jooq.JooqStoredInstrumentRegistryAdapter;
-import com.alligator.market.domain.instrument.registry.StoredInstrumentRegistry;
+import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

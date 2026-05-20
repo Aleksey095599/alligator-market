@@ -9,7 +9,7 @@ import com.alligator.market.backend.sourceplan.plan.application.command.common.S
 import com.alligator.market.backend.sourceplan.plan.application.command.create.CreateSourcePlanService;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
-import com.alligator.market.domain.instrument.registry.StoredInstrumentRegistry;
+import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Instru
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourceCodesNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
-import com.alligator.market.domain.instrument.registry.StoredInstrumentRegistry;
+import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
