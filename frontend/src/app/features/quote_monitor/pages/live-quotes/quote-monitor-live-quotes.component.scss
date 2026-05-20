@@ -1,0 +1,90 @@
+.runtime-card {
+  position: static;
+}
+
+.runtime-toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.runtime-summary {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.runtime-meta {
+  color: var(--app-text-muted);
+  font-size: 14px;
+}
+
+.runtime-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.runtime-actions mat-icon {
+  margin-right: 6px;
+}
+
+.runtime-progress {
+  margin-top: 16px;
+}
+
+.status-pill,
+.row-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #eef1f4;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.status-pill--running,
+.row-status--running {
+  background: #e4f5e6;
+  color: #145a25;
+}
+
+.live-quotes-table {
+  min-width: 860px;
+}
+
+.instrument-code-cell {
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.price-cell {
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-weight: 700;
+}
+
+.state-block {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 8px;
+  color: var(--app-text-muted);
+}
+
+@media (max-width: 700px) {
+  .runtime-actions,
+  .runtime-actions button {
+    width: 100%;
+  }
+}

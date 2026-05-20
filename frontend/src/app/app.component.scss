@@ -1,0 +1,13 @@
+.nav-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-menu-trigger mat-icon {
+  margin-left: 2px;
+}
+
+.nav-menu-trigger--active {
+  background: rgba(255, 255, 255, 0.16);
+}
