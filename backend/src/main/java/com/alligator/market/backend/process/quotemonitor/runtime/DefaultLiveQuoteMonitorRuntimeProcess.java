@@ -4,8 +4,11 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
+import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
+import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
@@ -21,6 +24,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -37,6 +41,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
     private final RuntimeSourceRegistry sourceRegistry;
+    private final RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher;
     private final Clock clock;
     private final Object lock = new Object();
 
@@ -49,6 +54,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
+            RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher,
             Clock clock
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
@@ -68,6 +74,10 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 sourceRegistry,
                 "sourceRegistry must not be null"
         );
+        this.liveQuotePublisher = Objects.requireNonNull(
+                liveQuotePublisher,
+                "liveQuotePublisher must not be null"
+        );
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
@@ -78,6 +88,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 return false;
             }
 
+            liveQuotePublisher.clear();
             List<LiveQuoteMonitorSourceStream> streams = resolveSourceStreams();
             snapshot = runningSnapshot(monitoredInstrumentCodes(streams));
             LiveQuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
@@ -248,7 +259,9 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 return;
             }
 
-            snapshot = snapshot.withLastTickAt(clock.instant());
+            Instant receivedAt = clock.instant();
+            snapshot = snapshot.withLastTickAt(receivedAt);
+            publishSourceTick(stream, tick, receivedAt);
         }
 
         log.debug(
@@ -257,6 +270,30 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 stream.sourceCode().value(),
                 tick.sourceInstrumentCode().value()
         );
+    }
+
+    private void publishSourceTick(
+            LiveQuoteMonitorSourceStream stream,
+            SourceTick tick,
+            Instant receivedAt
+    ) {
+        if (!(tick instanceof SourceLastPriceTick lastPriceTick)) {
+            log.debug(
+                    "Live Quote Monitor skipped unsupported source tick type: instrumentCode={}, sourceCode={}, type={}",
+                    stream.instrument().instrumentCode().value(),
+                    stream.sourceCode().value(),
+                    tick.sourceTickType()
+            );
+            return;
+        }
+
+        liveQuotePublisher.publish(new QuoteMonitorLiveQuote(
+                stream.instrument().instrumentCode(),
+                stream.sourceCode(),
+                lastPriceTick.lastPrice(),
+                lastPriceTick.sourceTimestamp(),
+                receivedAt
+        ));
     }
 
     private void onSourceStreamError(LiveQuoteMonitorSourceStream stream, Throwable error) {

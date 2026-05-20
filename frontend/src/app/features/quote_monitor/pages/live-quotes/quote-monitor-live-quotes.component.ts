@@ -7,10 +7,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { LiveQuoteRow, LiveQuoteUpdate } from '../../models/quote-monitor-live-quote.model';
 import { LiveQuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
+import { QuoteMonitorLiveQuoteService } from '../../services/quote-monitor-live-quote.service';
 import { QuoteMonitorRuntimeService } from '../../services/quote-monitor-runtime.service';
 
 @Component({
@@ -47,9 +49,11 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
 
   private readonly rowsByInstrumentCode = new Map<string, LiveQuoteRow>();
   private readonly subscriptions = new Subscription();
+  private quotePollingSubscription: Subscription | null = null;
 
   constructor(
     private readonly runtimeService: QuoteMonitorRuntimeService,
+    private readonly liveQuoteService: QuoteMonitorLiveQuoteService,
     private readonly snack: MatSnackBar
   ) {}
 
@@ -78,6 +82,10 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     const subscription = this.runtimeService.status().subscribe({
       next: status => {
         this.applyRuntimeStatus(status);
+        this.refreshQuotePolling();
+        if (!this.running) {
+          this.loadCurrentQuotes();
+        }
         this.loading = false;
       },
       error: err => {
@@ -94,7 +102,22 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.runCommand(this.runtimeService.start(), 'Quote monitor started');
+    this.commandRunning = true;
+    const subscription = this.runtimeService.start().subscribe({
+      next: status => {
+        this.rowsByInstrumentCode.clear();
+        this.applyRuntimeStatus(status);
+        this.refreshQuotePolling();
+        this.commandRunning = false;
+        this.snack.open('Quote monitor started', 'OK', { duration: 2200 });
+      },
+      error: err => {
+        this.commandRunning = false;
+        this.snack.open(this.resolveErrorMessage(err, 'Quote monitor command failed'), 'Close');
+      }
+    });
+
+    this.subscriptions.add(subscription);
   }
 
   stop(): void {
@@ -107,7 +130,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
 
   formatDateTime(value: string | null): string {
     if (!value) {
-      return '—';
+      return '-';
     }
 
     const date = new Date(value);
@@ -130,7 +153,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private runCommand(
-    command: ReturnType<QuoteMonitorRuntimeService['start']>,
+    command: Observable<LiveQuoteMonitorRuntimeStatus>,
     successMessage: string
   ): void {
     this.commandRunning = true;
@@ -138,6 +161,10 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     const subscription = command.subscribe({
       next: status => {
         this.applyRuntimeStatus(status);
+        this.refreshQuotePolling();
+        if (!this.running) {
+          this.loadCurrentQuotes();
+        }
         this.commandRunning = false;
         this.snack.open(successMessage, 'OK', { duration: 2200 });
       },
@@ -176,6 +203,55 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     }
 
     this.syncRows();
+  }
+
+  private loadCurrentQuotes(): void {
+    const subscription = this.liveQuoteService.getCurrentQuotes().subscribe({
+      next: updates => this.applyQuoteUpdates(updates),
+      error: err => {
+        this.snack.open(this.resolveErrorMessage(err, 'Load live quotes failed'), 'Close');
+      }
+    });
+
+    this.subscriptions.add(subscription);
+  }
+
+  private refreshQuotePolling(): void {
+    if (this.running) {
+      this.startQuotePolling();
+      return;
+    }
+
+    this.stopQuotePolling();
+  }
+
+  private startQuotePolling(): void {
+    if (this.quotePollingSubscription && !this.quotePollingSubscription.closed) {
+      return;
+    }
+
+    this.quotePollingSubscription = timer(0, 1000)
+      .pipe(switchMap(() => this.liveQuoteService.getCurrentQuotes()))
+      .subscribe({
+        next: updates => this.applyQuoteUpdates(updates),
+        error: err => {
+          this.stopQuotePolling();
+          this.snack.open(this.resolveErrorMessage(err, 'Live quote polling failed'), 'Close');
+        }
+      });
+
+    this.subscriptions.add(this.quotePollingSubscription);
+  }
+
+  private stopQuotePolling(): void {
+    this.quotePollingSubscription?.unsubscribe();
+    this.quotePollingSubscription = null;
+  }
+
+  private applyQuoteUpdates(updates: LiveQuoteUpdate[]): void {
+    for (const update of updates) {
+      this.applyQuoteUpdate(update);
+    }
   }
 
   private applyQuoteUpdate(update: LiveQuoteUpdate): void {

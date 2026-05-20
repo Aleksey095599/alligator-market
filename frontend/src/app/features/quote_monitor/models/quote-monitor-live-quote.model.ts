@@ -1,3 +1,15 @@
+export interface QuoteMonitorLiveQuoteDto {
+  instrumentCode: string;
+  lastPrice: string;
+  sourceCode: string;
+  sourceTimestamp: string;
+  receivedAt: string;
+}
+
+export interface QuoteMonitorLiveQuoteListResponseDto {
+  quotes: QuoteMonitorLiveQuoteDto[];
+}
+
 export interface LiveQuoteUpdate {
   instrumentCode: string;
   lastPrice: string;

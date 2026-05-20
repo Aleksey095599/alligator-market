@@ -3,12 +3,14 @@ package com.alligator.market.backend.process.quotemonitor.config.runtime;
 import com.alligator.market.backend.instrument.config.registry.runtime.RuntimeInstrumentRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.capturer.LiveQuoteMonitorCapturerWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig;
+import com.alligator.market.backend.process.quotemonitor.config.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.runtime.DefaultLiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.backend.source.config.registry.RuntimeSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.registry.runtime.RuntimeSourcePlanRegistryWiringConfig;
 import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
 import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
+import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
@@ -25,6 +27,7 @@ import java.time.Clock;
         RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig.class,
         RuntimeInstrumentRegistryWiringConfig.class,
         RuntimeSourceRegistryWiringConfig.class,
+        RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig.class,
         RuntimeSourcePlanRegistryWiringConfig.class
 })
 public class LiveQuoteMonitorRuntimeProcessWiringConfig {
@@ -51,6 +54,9 @@ public class LiveQuoteMonitorRuntimeProcessWiringConfig {
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             @Qualifier(RuntimeSourceRegistryWiringConfig.BEAN_RUNTIME_SOURCE_REGISTRY)
             RuntimeSourceRegistry sourceRegistry,
+            @Qualifier(RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig
+                    .BEAN_RUNTIME_QUOTE_MONITOR_LIVE_QUOTE_PUBLISHER)
+            RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher,
             @Qualifier(BEAN_LIVE_QUOTE_MONITOR_RUNTIME_CLOCK)
             Clock clock
     ) {
@@ -60,6 +66,7 @@ public class LiveQuoteMonitorRuntimeProcessWiringConfig {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
+                liveQuotePublisher,
                 clock
         );
     }
