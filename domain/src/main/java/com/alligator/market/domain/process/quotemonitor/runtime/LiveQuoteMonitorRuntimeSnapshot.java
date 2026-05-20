@@ -51,4 +51,12 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
                 lastTickAt
         );
     }
+
+    public LiveQuoteMonitorRuntimeSnapshot withLastTickAt(Instant lastTickAt) {
+        return new LiveQuoteMonitorRuntimeSnapshot(
+                status,
+                monitoredInstrumentCodes,
+                Objects.requireNonNull(lastTickAt, "lastTickAt must not be null")
+        );
+    }
 }
