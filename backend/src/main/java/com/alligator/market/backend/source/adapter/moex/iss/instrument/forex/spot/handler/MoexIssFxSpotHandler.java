@@ -1,6 +1,7 @@
 package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler;
 
 import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
+import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipReason;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
@@ -57,10 +58,17 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private Publisher<SourceTick> streamSourceTicksByPolling(FxSpot instrument) {
         return pollSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
+                    SourcePollSkipReason reason = SourcePollSkipReason.from(ex);
                     log.warn(
-                            "Failed to poll FX_SPOT source tick from MOEX ISS: instrumentCode={}, reason={}",
+                            "MOEX ISS FX_SPOT poll skipped: instrumentCode={}, reason={}, message={}",
                             instrument.instrumentCode().value(),
-                            ex.getMessage(),
+                            reason,
+                            ex.getMessage()
+                    );
+                    log.debug(
+                            "MOEX ISS FX_SPOT poll failure details: instrumentCode={}, reason={}",
+                            instrument.instrumentCode().value(),
+                            reason,
                             ex
                     );
                     return Mono.empty();
