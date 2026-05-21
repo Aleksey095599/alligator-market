@@ -1,4 +1,4 @@
-package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support;
+package com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.support;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpotTenor;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class MoexIssFxSpotSupportCatalog {
+public final class MoexIssFxSpotSupportCatalog {
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
     private static final Currency RUB = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);

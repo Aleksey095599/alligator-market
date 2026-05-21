@@ -1,4 +1,4 @@
-package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler;
+package com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.handler;
 
 import com.alligator.market.domain.source.handler.passport.AccessMethod;
 import com.alligator.market.domain.source.handler.passport.DeliveryMode;
