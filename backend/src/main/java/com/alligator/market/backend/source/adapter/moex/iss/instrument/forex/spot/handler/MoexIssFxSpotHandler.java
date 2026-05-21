@@ -1,7 +1,7 @@
 package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler;
 
 import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
-import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipReason;
+import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipLogger;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
@@ -32,6 +32,7 @@ import java.util.Set;
 @Slf4j
 public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSource, FxSpot> {
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
+    private static final String SOURCE_STREAM_NAME = "MOEX ISS FX_SPOT";
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
@@ -58,17 +59,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private Publisher<SourceTick> streamSourceTicksByPolling(FxSpot instrument) {
         return pollSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
-                    SourcePollSkipReason reason = SourcePollSkipReason.from(ex);
-                    log.warn(
-                            "MOEX ISS FX_SPOT poll skipped: instrumentCode={}, reason={}, message={}",
-                            instrument.instrumentCode().value(),
-                            reason,
-                            ex.getMessage()
-                    );
-                    log.debug(
-                            "MOEX ISS FX_SPOT poll failure details: instrumentCode={}, reason={}",
-                            instrument.instrumentCode().value(),
-                            reason,
+                    SourcePollSkipLogger.logSkippedPoll(
+                            log,
+                            SOURCE_STREAM_NAME,
+                            instrument.instrumentCode(),
                             ex
                     );
                     return Mono.empty();
