@@ -1,6 +1,7 @@
 package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler;
 
 import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
+import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipLogger;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -9,7 +10,6 @@ import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastP
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPassport;
 import com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPolicy;
-import com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.domain.source.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import lombok.extern.slf4j.Slf4j;

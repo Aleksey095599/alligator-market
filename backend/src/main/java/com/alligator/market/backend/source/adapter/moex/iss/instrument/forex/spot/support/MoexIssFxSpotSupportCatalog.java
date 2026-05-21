@@ -1,4 +1,4 @@
-package com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.support;
+package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support;
 
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpotTenor;
