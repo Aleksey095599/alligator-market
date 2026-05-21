@@ -1,4 +1,4 @@
-package com.alligator.market.domain.source.catalog.moex.iss;
+package com.alligator.market.backend.source.adapter.moex.iss;
 
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
