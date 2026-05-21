@@ -8,8 +8,6 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
-import com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPassport;
-import com.alligator.market.domain.source.catalog.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPolicy;
 import com.alligator.market.domain.source.handler.AbstractInstrumentHandler;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +34,20 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
-    private static final MoexIssFxSpotHandlerPolicy POLICY = MoexIssFxSpotHandlerPolicy.INSTANCE;
 
     private final WebClient webClient;
+    private final MoexIssFxSpotHandlerPolicy policy;
 
     private static final DateTimeFormatter MOEX_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
-    public MoexIssFxSpotHandler(WebClient webClient) {
-        super(HANDLER_CODE, PASSPORT, FxSpot.class, SUPPORTED_INSTRUMENTS, POLICY);
+    public MoexIssFxSpotHandler(WebClient webClient, MoexIssFxSpotHandlerPolicy policy) {
+        super(HANDLER_CODE, PASSPORT, FxSpot.class, SUPPORTED_INSTRUMENTS, policy);
 
         Objects.requireNonNull(webClient, "webClient must not be null");
         this.webClient = webClient;
+        this.policy = Objects.requireNonNull(policy, "policy must not be null");
     }
 
     @Override
@@ -66,7 +65,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                     );
                     return Mono.empty();
                 })
-                .repeatWhen(completed -> completed.delayElements(POLICY.pollInterval()));
+                .repeatWhen(completed -> completed.delayElements(policy.pollInterval()));
     }
 
     private Mono<SourceTick> pollSourceTickOnce(FxSpot instrument) {
