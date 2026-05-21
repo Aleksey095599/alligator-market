@@ -9,6 +9,8 @@ public record MoexIssFxSpotHandlerPolicy(
         Duration pollInterval
 ) implements SourceHandlerPolicy {
     private static final Duration MIN_POLL_INTERVAL_ALLOWED = Duration.ofSeconds(1);
+    public static final Duration POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final MoexIssFxSpotHandlerPolicy INSTANCE = new MoexIssFxSpotHandlerPolicy(POLL_INTERVAL);
 
     public MoexIssFxSpotHandlerPolicy {
         Objects.requireNonNull(pollInterval, "pollInterval must not be null");

@@ -20,7 +20,6 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -35,8 +34,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
 
     private static final Set<FxSpot> SUPPORTED_INSTRUMENTS = MoexIssFxSpotSupportCatalog.SUPPORTED_INSTRUMENTS;
-    private static final Duration POLL_INTERVAL = Duration.ofSeconds(5);
-    private static final MoexIssFxSpotHandlerPolicy POLICY = new MoexIssFxSpotHandlerPolicy(POLL_INTERVAL);
+    private static final MoexIssFxSpotHandlerPolicy POLICY = MoexIssFxSpotHandlerPolicy.INSTANCE;
 
     private final WebClient webClient;
 
