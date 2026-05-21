@@ -19,6 +19,10 @@ public enum SourcePollSkipReason {
     public static SourcePollSkipReason from(Throwable error) {
         Objects.requireNonNull(error, "error must not be null");
 
+        if (hasCause(error, SourcePollHttpException.class)) {
+            return HTTP_ERROR;
+        }
+
         if (hasCause(error, ConnectTimeoutException.class) || messageContains(error, "connection timed out")) {
             return CONNECTION_TIMEOUT;
         }

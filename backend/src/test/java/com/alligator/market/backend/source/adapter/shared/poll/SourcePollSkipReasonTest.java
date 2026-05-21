@@ -3,6 +3,7 @@ package com.alligator.market.backend.source.adapter.shared.poll;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatusCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +31,18 @@ class SourcePollSkipReasonTest {
     @Test
     void resolvesHttpErrorFromMessage() {
         IllegalStateException error = new IllegalStateException("MOEX ISS HTTP error 503");
+
+        assertThat(SourcePollSkipReason.from(error))
+                .isEqualTo(SourcePollSkipReason.HTTP_ERROR);
+    }
+
+    @Test
+    void resolvesHttpErrorFromTypedPollHttpException() {
+        SourcePollHttpException error = new SourcePollHttpException(
+                HttpStatusCode.valueOf(503),
+                "Service unavailable",
+                "MOEX ISS FX_SPOT secid=USDRUB_TOM"
+        );
 
         assertThat(SourcePollSkipReason.from(error))
                 .isEqualTo(SourcePollSkipReason.HTTP_ERROR);

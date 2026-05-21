@@ -2,6 +2,7 @@ package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.sp
 
 import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
+import com.alligator.market.backend.source.adapter.shared.poll.SourcePollHttpException;
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipLogger;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -60,6 +61,8 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                 .onErrorResume(ex -> {
                     SourcePollSkipLogger.logSkippedPoll(
                             SOURCE_STREAM_NAME,
+                            source().code(),
+                            HANDLER_CODE,
                             instrument.instrumentCode(),
                             ex
                     );
@@ -83,9 +86,12 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                 )
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response ->
-                        response.bodyToMono(String.class).map(body ->
-                                new IllegalStateException("MOEX ISS HTTP error " + response.statusCode()
-                                        + " for secid=" + secid.value() + ", body=" + body)
+                        response.bodyToMono(String.class).defaultIfEmpty("").map(body ->
+                                new SourcePollHttpException(
+                                        response.statusCode(),
+                                        body,
+                                        "MOEX ISS FX_SPOT secid=" + secid.value()
+                                )
                         )
                 )
                 .bodyToMono(JsonNode.class)
