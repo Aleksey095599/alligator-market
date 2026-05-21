@@ -93,10 +93,17 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
             snapshot = runningSnapshot(monitoredInstrumentCodes(streams));
             LiveQuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
             activeSubscriptions = startedStreams.subscriptions();
+            List<InstrumentCode> monitoredInstrumentCodes = monitoredInstrumentCodes(startedStreams.streams());
             snapshot = new LiveQuoteMonitorRuntimeSnapshot(
                     LiveQuoteMonitorRuntimeStatus.RUNNING,
-                    monitoredInstrumentCodes(startedStreams.streams()),
+                    monitoredInstrumentCodes,
                     snapshot.lastTickAt().orElse(null)
+            );
+            log.info(
+                    "Live Quote Monitor started: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
+                    capturer.capturerCode().value(),
+                    monitoredInstrumentCodes.size(),
+                    instrumentCodeValues(monitoredInstrumentCodes)
             );
             return true;
         }
@@ -109,8 +116,15 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 return false;
             }
 
+            List<InstrumentCode> monitoredInstrumentCodes = snapshot.monitoredInstrumentCodes();
             disposeActiveSubscriptions();
             snapshot = snapshot.withStatus(LiveQuoteMonitorRuntimeStatus.STOPPED);
+            log.info(
+                    "Live Quote Monitor stopped: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
+                    capturer.capturerCode().value(),
+                    monitoredInstrumentCodes.size(),
+                    instrumentCodeValues(monitoredInstrumentCodes)
+            );
             return true;
         }
     }
@@ -219,6 +233,12 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         }
 
         return List.copyOf(codes);
+    }
+
+    private static List<String> instrumentCodeValues(List<InstrumentCode> instrumentCodes) {
+        return instrumentCodes.stream()
+                .map(InstrumentCode::value)
+                .toList();
     }
 
     private LiveQuoteMonitorStartedSourceStreams subscribeToSourceStreams(List<LiveQuoteMonitorSourceStream> streams) {
