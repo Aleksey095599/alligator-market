@@ -60,7 +60,6 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
         return pollSourceTickOnce(instrument)
                 .onErrorResume(ex -> {
                     SourcePollSkipLogger.logSkippedPoll(
-                            log,
                             SOURCE_STREAM_NAME,
                             instrument.instrumentCode(),
                             ex
