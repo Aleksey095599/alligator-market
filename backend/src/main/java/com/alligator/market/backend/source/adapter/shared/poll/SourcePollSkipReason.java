@@ -1,6 +1,7 @@
 package com.alligator.market.backend.source.adapter.shared.poll;
 
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public enum SourcePollSkipReason {
     CONNECTION_TIMEOUT,
+    SSL_HANDSHAKE_TIMEOUT,
     RESPONSE_TIMEOUT,
     HTTP_ERROR,
     INVALID_RESPONSE,
@@ -25,6 +27,10 @@ public enum SourcePollSkipReason {
 
         if (hasCause(error, ConnectTimeoutException.class) || messageContains(error, "connection timed out")) {
             return CONNECTION_TIMEOUT;
+        }
+
+        if (hasCause(error, SslHandshakeTimeoutException.class) || messageContains(error, "handshake timed out")) {
+            return SSL_HANDSHAKE_TIMEOUT;
         }
 
         if (hasCause(error, ReadTimeoutException.class)

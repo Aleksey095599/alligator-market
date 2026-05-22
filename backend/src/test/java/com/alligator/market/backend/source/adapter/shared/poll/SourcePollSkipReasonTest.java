@@ -1,6 +1,7 @@
 package com.alligator.market.backend.source.adapter.shared.poll;
 
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatusCode;
@@ -18,6 +19,25 @@ class SourcePollSkipReasonTest {
 
         assertThat(SourcePollSkipReason.from(error))
                 .isEqualTo(SourcePollSkipReason.CONNECTION_TIMEOUT);
+    }
+
+    @Test
+    void resolvesSslHandshakeTimeoutFromCauseChain() {
+        RuntimeException error = new RuntimeException(
+                "request failed",
+                new SslHandshakeTimeoutException("handshake timed out after 10000ms")
+        );
+
+        assertThat(SourcePollSkipReason.from(error))
+                .isEqualTo(SourcePollSkipReason.SSL_HANDSHAKE_TIMEOUT);
+    }
+
+    @Test
+    void resolvesSslHandshakeTimeoutFromMessage() {
+        RuntimeException error = new RuntimeException("handshake timed out after 10000ms");
+
+        assertThat(SourcePollSkipReason.from(error))
+                .isEqualTo(SourcePollSkipReason.SSL_HANDSHAKE_TIMEOUT);
     }
 
     @Test
