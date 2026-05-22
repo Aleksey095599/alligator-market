@@ -5,7 +5,9 @@ import com.alligator.market.backend.instrument.asset.forex.fxspot.application.us
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.application.usage.contributor.FxSpotUsageContributorWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.application.usage.port.FxSpotUsageCheckPortWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.persistence.repository.adapter.FxSpotRepositoryWiringConfig;
+import com.alligator.market.backend.instrument.config.registry.sync.RuntimeInstrumentRegistryUpdaterWiringConfig;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSpotRepository;
+import com.alligator.market.domain.instrument.registry.sync.RuntimeInstrumentRegistryUpdater;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         FxSpotRepositoryWiringConfig.class,
         FxSpotUsageCheckPortWiringConfig.class,
-        FxSpotUsageContributorWiringConfig.class
+        FxSpotUsageContributorWiringConfig.class,
+        RuntimeInstrumentRegistryUpdaterWiringConfig.class
 })
 public class DeleteFxSpotServiceWiringConfig {
     public static final String BEAN_DELETE_FX_SPOT_SERVICE = "deleteFxSpotService";
@@ -25,8 +28,15 @@ public class DeleteFxSpotServiceWiringConfig {
             @Qualifier(FxSpotRepositoryWiringConfig.BEAN_FX_SPOT_REPOSITORY)
             FxSpotRepository fxSpotRepository,
             @Qualifier(FxSpotUsageCheckPortWiringConfig.BEAN_FX_SPOT_USAGE_CHECK_PORT)
-            FxSpotUsageCheckPort fxSpotUsageCheckPort
+            FxSpotUsageCheckPort fxSpotUsageCheckPort,
+            @Qualifier(RuntimeInstrumentRegistryUpdaterWiringConfig
+                    .BEAN_RUNTIME_INSTRUMENT_REGISTRY_UPDATER)
+            RuntimeInstrumentRegistryUpdater runtimeInstrumentRegistryUpdater
     ) {
-        return new DeleteFxSpotService(fxSpotRepository, fxSpotUsageCheckPort);
+        return new DeleteFxSpotService(
+                fxSpotRepository,
+                fxSpotUsageCheckPort,
+                runtimeInstrumentRegistryUpdater
+        );
     }
 }

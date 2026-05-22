@@ -7,6 +7,7 @@ import com.alligator.market.domain.instrument.asset.forex.fxspot.repository.FxSp
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.Currency;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.repository.CurrencyRepository;
 import com.alligator.market.domain.instrument.asset.forex.reference.currency.vo.CurrencyCode;
+import com.alligator.market.domain.instrument.registry.sync.RuntimeInstrumentRegistryUpdater;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -15,15 +16,21 @@ import java.util.Objects;
 public final class CreateFxSpotService {
     private final FxSpotRepository fxSpotRepository;
     private final CurrencyRepository currencyRepository;
+    private final RuntimeInstrumentRegistryUpdater runtimeInstrumentRegistryUpdater;
 
     public CreateFxSpotService(
             FxSpotRepository fxSpotRepository,
-            CurrencyRepository currencyRepository
+            CurrencyRepository currencyRepository,
+            RuntimeInstrumentRegistryUpdater runtimeInstrumentRegistryUpdater
     ) {
         this.fxSpotRepository = Objects.requireNonNull(fxSpotRepository,
                 "fxSpotRepository must not be null");
         this.currencyRepository = Objects.requireNonNull(currencyRepository,
                 "currencyRepository must not be null");
+        this.runtimeInstrumentRegistryUpdater = Objects.requireNonNull(
+                runtimeInstrumentRegistryUpdater,
+                "runtimeInstrumentRegistryUpdater must not be null"
+        );
     }
 
     public FxSpot create(CreateFxSpotCommand command) {
@@ -47,6 +54,8 @@ public final class CreateFxSpotService {
                 command.tenor(),
                 command.defaultQuoteFractionDigits()
         ));
+
+        runtimeInstrumentRegistryUpdater.updateRuntimeRegistry();
 
         log.info("FX_SPOT instrument {} created", created.instrumentCode().value());
         return created;
