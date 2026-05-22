@@ -1,0 +1,86 @@
+<div class="center-box instrument-catalog-page">
+  <h1 class="mat-headline-4">Instrument Catalog</h1>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Instruments</mat-card-title>
+      <div class="card-actions">
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="refresh()"
+          [disabled]="loading"
+        >
+          <mat-icon>refresh</mat-icon>
+          Reload
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="loading; else catalogLoaded" class="state-block">
+        Loading instruments
+      </div>
+
+      <ng-template #catalogLoaded>
+        <table mat-table [dataSource]="dataSource" [trackBy]="trackByInstrumentCode" class="catalog-table mat-elevation-z2">
+
+          <ng-container matColumnDef="displayName">
+            <th mat-header-cell *matHeaderCellDef>Symbol</th>
+            <td mat-cell *matCellDef="let instrument" class="symbol-cell">
+              {{ instrument.displayName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="instrumentCode">
+            <th mat-header-cell *matHeaderCellDef>Code</th>
+            <td mat-cell *matCellDef="let instrument" class="code-cell">
+              {{ instrument.instrumentCode }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="asset">
+            <th mat-header-cell *matHeaderCellDef>Asset</th>
+            <td mat-cell *matCellDef="let instrument">
+              {{ instrument.asset }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef>Product</th>
+            <td mat-cell *matCellDef="let instrument">
+              {{ instrument.product }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let instrument">
+              {{ instrument.description }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="attributes">
+            <th mat-header-cell *matHeaderCellDef>Attributes</th>
+            <td mat-cell *matCellDef="let instrument">
+              <div class="attribute-list">
+                <span
+                  *ngFor="let attribute of instrument.attributes"
+                  class="attribute-pill"
+                >
+                  <span class="attribute-label">{{ attribute.label }}</span>
+                  <span class="attribute-value">{{ attribute.value }}</span>
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="displayed.length">No instruments found.</td>
+          </tr>
+        </table>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

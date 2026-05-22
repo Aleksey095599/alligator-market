@@ -1,0 +1,81 @@
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-actions mat-icon {
+  margin-right: 6px;
+}
+
+.catalog-table {
+  min-width: 920px;
+}
+
+mat-card-content {
+  overflow-x: auto;
+}
+
+.symbol-cell,
+.code-cell {
+  font-family: "Roboto Mono", Consolas, monospace;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.symbol-cell {
+  font-weight: 700;
+}
+
+.code-cell {
+  color: var(--app-text-muted);
+  font-size: 13px;
+}
+
+.attribute-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.attribute-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 0 8px;
+  border: 1px solid var(--app-border);
+  border-radius: 4px;
+  background: var(--app-panel-bg);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.attribute-label {
+  color: var(--app-text-muted);
+}
+
+.attribute-value {
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.state-block {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 8px;
+  color: var(--app-text-muted);
+}
+
+@media (max-width: 700px) {
+  .card-actions,
+  .card-actions button {
+    width: 100%;
+  }
+}

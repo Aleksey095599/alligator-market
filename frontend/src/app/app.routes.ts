@@ -12,6 +12,12 @@ export const routes: Routes = [
       import('./features/fx_spot/fx-spot.module').then(m => m.FxSpotModule)
   },
   {
+    path: 'instruments',
+    loadChildren: () =>
+      import('./features/instrument_catalog/instrument-catalog.module')
+        .then(m => m.InstrumentCatalogModule)
+  },
+  {
     path: 'sources',
     loadChildren: () =>
       import('./features/source_passport/source-passport.module')
