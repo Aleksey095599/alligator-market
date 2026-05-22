@@ -1,3 +1,39 @@
-<div class="center-box">
-  <h1 class="mat-headline-3">Alligator Market</h1>
+<div class="center-box home-page">
+  <section class="home-header">
+    <h1 class="mat-headline-4">Alligator Market</h1>
+  </section>
+
+  <section class="process-section">
+    <div class="section-label">Processes</div>
+
+    <article class="process-card">
+      <div class="process-card__main">
+        <div class="process-card__icon" aria-hidden="true">
+          <span class="material-icons">monitoring</span>
+        </div>
+
+        <div class="process-card__body">
+          <div class="process-card__title">Quote Monitor</div>
+          <div class="process-card__meta">Runtime market data monitoring</div>
+        </div>
+      </div>
+
+      <div class="process-card__actions">
+        <a
+          class="process-action process-action--primary"
+          routerLink="/quote-monitor/live-quotes"
+        >
+          <span class="material-icons">monitoring</span>
+          Live Quotes
+        </a>
+        <a
+          class="process-action"
+          routerLink="/quote-monitor/instruments"
+        >
+          <span class="material-icons">fact_check</span>
+          Instruments
+        </a>
+      </div>
+    </article>
+  </section>
 </div>

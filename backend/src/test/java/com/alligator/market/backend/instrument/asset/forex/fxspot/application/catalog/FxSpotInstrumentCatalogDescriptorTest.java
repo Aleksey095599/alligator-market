@@ -33,7 +33,7 @@ class FxSpotInstrumentCatalogDescriptorTest {
         assertEquals(fxSpot.instrumentSymbol().value(), item.displayName());
         assertEquals(Asset.FOREX, item.asset());
         assertEquals(Product.SPOT, item.product());
-        assertEquals("FX spot currency pair", item.description());
+        assertEquals("FX SPOT currency pair", item.description());
         assertEquals(List.of(
                 new InstrumentAttribute("baseCurrency", "Base currency", "EUR"),
                 new InstrumentAttribute("quoteCurrency", "Quote currency", "USD"),

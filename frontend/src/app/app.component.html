@@ -1,11 +1,25 @@
 <mat-toolbar color="primary">
   <button mat-button routerLink="/">Home</button>
-  <button mat-button routerLink="/currencies">Currencies</button>
-  <button mat-button routerLink="/fx-spot">FX Spot</button>
-  <button mat-button routerLink="/instruments">Instrument Catalog</button>
-  <button mat-button routerLink="/sources">Sources</button>
-  <button mat-button routerLink="/capturers">Capturers</button>
-  <button mat-button routerLink="/source-plans">Source Plans</button>
+  <button
+    mat-button
+    type="button"
+    class="nav-menu-trigger"
+    [class.nav-menu-trigger--active]="instrumentsActive"
+    [matMenuTriggerFor]="instrumentsMenu"
+  >
+    Instruments
+    <mat-icon>expand_more</mat-icon>
+  </button>
+  <button
+    mat-button
+    type="button"
+    class="nav-menu-trigger"
+    [class.nav-menu-trigger--active]="sourcingActive"
+    [matMenuTriggerFor]="sourcingMenu"
+  >
+    Sourcing
+    <mat-icon>expand_more</mat-icon>
+  </button>
   <button
     mat-button
     type="button"
@@ -25,6 +39,36 @@
     <button mat-menu-item routerLink="/quote-monitor/live-quotes">
       <mat-icon>monitoring</mat-icon>
       <span>Live Quotes</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #sourcingMenu="matMenu">
+    <button mat-menu-item routerLink="/sources">
+      <mat-icon>upload</mat-icon>
+      <span>Sources</span>
+    </button>
+    <button mat-menu-item routerLink="/capturers">
+      <mat-icon>move_to_inbox</mat-icon>
+      <span>Capturers</span>
+    </button>
+    <button mat-menu-item routerLink="/source-plans">
+      <mat-icon>account_tree</mat-icon>
+      <span>Source Plans</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #instrumentsMenu="matMenu">
+    <button mat-menu-item routerLink="/instruments">
+      <mat-icon>view_list</mat-icon>
+      <span>Catalog</span>
+    </button>
+    <button mat-menu-item routerLink="/fx-spot">
+      <mat-icon>currency_exchange</mat-icon>
+      <span>FX Spot</span>
+    </button>
+    <button mat-menu-item routerLink="/currencies">
+      <mat-icon>payments</mat-icon>
+      <span>Currencies</span>
     </button>
   </mat-menu>
 </mat-toolbar>

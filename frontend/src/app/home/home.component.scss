@@ -1,4 +1,144 @@
-.center-box {
-  text-align: center;
+.home-page {
+  max-width: 940px;
+}
+
+.home-header h1 {
+  margin-bottom: 0;
+}
+
+.process-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.process-card {
+  max-width: 720px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: var(--app-card-bg);
+  box-shadow: var(--app-shadow);
+}
+
+.process-card__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.process-card__icon {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  background: var(--app-primary-soft);
+  color: #0056b3;
+}
+
+.process-card__icon .material-icons {
+  width: 34px;
+  height: 34px;
+  font-size: 34px;
+}
+
+.process-card__body {
+  min-width: 0;
+}
+
+.process-card__title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.process-card__meta {
+  margin-top: 4px;
+  color: var(--app-text-muted);
+  font-size: 14px;
+}
+
+.process-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.process-action {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 16px;
+  border: 1px solid var(--app-border-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.78);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.process-action--primary {
+  border-color: #0056b3;
+  background: #0056b3;
+  color: #fff;
+}
+
+.process-action .material-icons {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+@media (hover: hover) {
+  .process-action:hover {
+    background: var(--app-primary-soft);
+  }
+
+  .process-action--primary:hover {
+    background: #004b9d;
+    box-shadow: 0 4px 12px rgba(22, 34, 51, 0.18);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 760px) {
+  .process-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .process-card__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .process-action {
+    width: 100%;
+  }
 }
 

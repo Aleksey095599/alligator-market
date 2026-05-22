@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public final class FxSpotInstrumentCatalogDescriptor implements InstrumentCatalogDescriptor {
-    private static final String DESCRIPTION = "FX spot currency pair";
+    private static final String DESCRIPTION = "FX SPOT currency pair";
 
     @Override
     public boolean supports(Instrument instrument) {
