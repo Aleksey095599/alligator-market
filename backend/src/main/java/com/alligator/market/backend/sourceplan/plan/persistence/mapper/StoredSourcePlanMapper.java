@@ -4,17 +4,17 @@ import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSour
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.ACTIVE;
-import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus.EXECUTABLE;
+import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.AVAILABLE;
 
 public final class StoredSourcePlanMapper {
 
-    public StoredSourcePlan toActiveStored(SourcePlan plan) {
+    public StoredSourcePlan toStored(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
         List<StoredSourcePlanEntry> entries = new ArrayList<>(plan.entries().size());
@@ -23,14 +23,14 @@ public final class StoredSourcePlanMapper {
                     plan.capturerCode(),
                     plan.instrumentCode(),
                     entry,
-                    ACTIVE
+                    AVAILABLE
             ));
         }
 
         return new StoredSourcePlan(
                 plan.capturerCode(),
                 plan.instrumentCode(),
-                EXECUTABLE,
+                StoredSourcePlanExecutionStatus.AVAILABLE,
                 entries
         );
     }

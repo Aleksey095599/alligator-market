@@ -3,28 +3,27 @@ package com.alligator.market.domain.sourceplan.registry.stored;
 public final class StoredSourcePlanStatusPolicy {
 
     public StoredSourcePlanEntryLifecycleStatus resolveEntryLifecycleStatus(
-            boolean capturerActive,
-            boolean sourceActive
+            boolean sourceRegistered
     ) {
-        if (capturerActive && sourceActive) {
-            return StoredSourcePlanEntryLifecycleStatus.ACTIVE;
+        if (sourceRegistered) {
+            return StoredSourcePlanEntryLifecycleStatus.AVAILABLE;
         }
 
-        return StoredSourcePlanEntryLifecycleStatus.RETIRED;
+        return StoredSourcePlanEntryLifecycleStatus.SOURCE_RETIRED;
     }
 
     public StoredSourcePlanExecutionStatus resolvePlanExecutionStatus(
-            boolean capturerActive,
-            boolean hasExecutableSources
+            boolean capturerRegistered,
+            boolean hasAvailableSources
     ) {
-        if (!capturerActive) {
+        if (!capturerRegistered) {
             return StoredSourcePlanExecutionStatus.CAPTURER_RETIRED;
         }
 
-        if (!hasExecutableSources) {
-            return StoredSourcePlanExecutionStatus.NO_EXECUTABLE_SOURCES;
+        if (!hasAvailableSources) {
+            return StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES;
         }
 
-        return StoredSourcePlanExecutionStatus.EXECUTABLE;
+        return StoredSourcePlanExecutionStatus.AVAILABLE;
     }
 }

@@ -22,10 +22,10 @@
                 <mat-option
                   *ngFor="let capturer of capturerOptions"
                   [value]="capturer.code"
-                  [disabled]="!isCapturerActive(capturer.code)"
+                  [disabled]="!isCapturerRegistered(capturer.code)"
                 >
                   {{ capturer.displayName }}
-                  <span *ngIf="!isCapturerActive(capturer.code)"> (not active)</span>
+                  <span *ngIf="!isCapturerRegistered(capturer.code)"> (retired)</span>
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="
@@ -77,10 +77,10 @@
                   <mat-option
                     *ngFor="let source of sourceOptions"
                     [value]="source.code"
-                    [disabled]="!isSourceActive(source.code)"
+                    [disabled]="!isSourceAvailable(source.code)"
                   >
                     {{ source.code }}
-                    <span *ngIf="!isSourceActive(source.code)"> (not active)</span>
+                    <span *ngIf="!isSourceAvailable(source.code)"> (source retired)</span>
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="control.get('sourceCode')?.hasError('required')">
@@ -178,7 +178,7 @@
           <td mat-cell *matCellDef="let plan">
             <span
               class="status-badge"
-              [class.status-badge--ok]="isExecutablePlan(plan)"
+              [class.status-badge--ok]="isAvailablePlan(plan)"
               [class.status-badge--blocked]="isBlockedPlan(plan)"
             >
               {{ planStatusLabel(plan) }}
@@ -209,9 +209,9 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="firstExecutableSource">
-          <th mat-header-cell *matHeaderCellDef>First Executable</th>
-          <td mat-cell *matCellDef="let plan">{{ firstExecutableSource(plan) }}</td>
+        <ng-container matColumnDef="firstAvailableSource">
+          <th mat-header-cell *matHeaderCellDef>First Available</th>
+          <td mat-cell *matCellDef="let plan">{{ firstAvailableSource(plan) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -230,7 +230,7 @@
         <tr
           mat-row
           *matRowDef="let row; columns: displayed;"
-          [class.plan-row--warning]="isExecutablePlan(row) && hasRetiredSources(row)"
+          [class.plan-row--warning]="isAvailablePlan(row) && hasRetiredSources(row)"
           [class.plan-row--blocked]="isBlockedPlan(row)"
         ></tr>
       </table>

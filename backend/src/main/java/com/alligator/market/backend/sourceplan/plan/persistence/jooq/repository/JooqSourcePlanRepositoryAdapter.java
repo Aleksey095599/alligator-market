@@ -132,7 +132,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean createIfAbsent(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
-        StoredSourcePlan storedPlan = storedPlanMapper.toActiveStored(plan);
+        StoredSourcePlan storedPlan = storedPlanMapper.toStored(plan);
 
         try {
             return dsl.transactionResult(configuration -> {
@@ -175,7 +175,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean replaceIfExists(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
-        StoredSourcePlan storedPlan = storedPlanMapper.toActiveStored(plan);
+        StoredSourcePlan storedPlan = storedPlanMapper.toStored(plan);
 
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();

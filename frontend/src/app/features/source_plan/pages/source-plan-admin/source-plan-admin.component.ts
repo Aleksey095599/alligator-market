@@ -67,18 +67,18 @@ export class SourcePlanAdminComponent implements OnInit {
     'capturerCode',
     'instrumentCode',
     'sourceCount',
-    'firstExecutableSource',
+    'firstAvailableSource',
     'actions'
   ];
   dataSource = new MatTableDataSource<SourcePlanResponseDto>([]);
 
   /* Опции для option формы. */
-  private activeCapturerOptions: MarketDataCapturerOptionDto[] = [];
-  private activeCapturerCodes = new Set<string>();
+  private registeredCapturerOptions: MarketDataCapturerOptionDto[] = [];
+  private registeredCapturerCodes = new Set<string>();
   capturerOptions: MarketDataCapturerOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
-  private activeSourceOptions: SourceOptionDto[] = [];
-  private activeSourceCodes = new Set<string>();
+  private availableSourceOptions: SourceOptionDto[] = [];
+  private availableSourceCodes = new Set<string>();
   sourceOptions: SourceOptionDto[] = [];
 
   /* Флаг блокировки кнопок при запросе. */
@@ -174,13 +174,13 @@ export class SourcePlanAdminComponent implements OnInit {
   loadOptions(): void {
     this.service.getOptions().subscribe({
       next: options => {
-        this.activeCapturerOptions = options.capturers;
-        this.activeCapturerCodes = new Set(options.capturers.map(capturer => capturer.code));
+        this.registeredCapturerOptions = options.capturers;
+        this.registeredCapturerCodes = new Set(options.capturers.map(capturer => capturer.code));
         this.syncCapturerOptionsForCurrentMode();
 
         this.instruments = options.instruments;
-        this.activeSourceOptions = options.sources;
-        this.activeSourceCodes = new Set(options.sources.map(source => source.code));
+        this.availableSourceOptions = options.sources;
+        this.availableSourceCodes = new Set(options.sources.map(source => source.code));
         this.syncSourceOptionsForCurrentMode();
       },
       error: err => {
@@ -194,7 +194,7 @@ export class SourcePlanAdminComponent implements OnInit {
     this.sources.push(this.fb.group({
       sourceCode: [source?.sourceCode ?? '', [Validators.required]],
       priority: [source?.priority ?? 0, [Validators.required, Validators.min(0)]],
-      lifecycleStatus: [source?.lifecycleStatus ?? 'ACTIVE']
+      lifecycleStatus: [source?.lifecycleStatus ?? 'AVAILABLE']
     }));
   }
 
@@ -326,14 +326,14 @@ export class SourcePlanAdminComponent implements OnInit {
     this.selectedInstrumentCode = null;
     this.loadedSourcesFingerprint = null;
     this.locked = false;
-    this.capturerOptions = this.activeCapturerOptions;
+    this.capturerOptions = this.registeredCapturerOptions;
 
     this.form.reset({ capturerCode: '', instrumentCode: '' });
     this.form.controls['capturerCode'].enable();
     this.form.controls['instrumentCode'].enable();
 
     this.sources.clear();
-    this.sourceOptions = this.activeSourceOptions;
+    this.sourceOptions = this.availableSourceOptions;
     this.onAddSourceRow();
   }
 
@@ -342,12 +342,12 @@ export class SourcePlanAdminComponent implements OnInit {
     this.onReset();
   }
 
-  /* Counts source rows that are not executable because their source is retired. */
+  /* Counts source rows that are unavailable because their source is retired. */
   retiredCount(plan: SourcePlanResponseDto): number {
     return plan.sources.filter(source => this.isRetiredSource(source)).length;
   }
 
-  firstExecutableSource(plan: SourcePlanResponseDto): string {
+  firstAvailableSource(plan: SourcePlanResponseDto): string {
     const sorted = plan.sources
       .filter(source => !this.isRetiredSource(source))
       .sort((a, b) => a.priority - b.priority);
@@ -356,29 +356,29 @@ export class SourcePlanAdminComponent implements OnInit {
   }
 
   isRetiredSource(source: Pick<SourceResponseDto, 'lifecycleStatus'>): boolean {
-    return source.lifecycleStatus === 'RETIRED';
+    return source.lifecycleStatus === 'SOURCE_RETIRED';
   }
 
   sourceStatusLabel(source: Pick<SourceResponseDto, 'lifecycleStatus'>): string {
-    return this.isRetiredSource(source) ? 'RETIRED' : 'ACTIVE';
+    return this.isRetiredSource(source) ? 'SOURCE RETIRED' : 'AVAILABLE';
   }
 
-  isExecutablePlan(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): boolean {
-    return plan.planExecutionStatus === 'EXECUTABLE';
+  isAvailablePlan(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): boolean {
+    return plan.planExecutionStatus === 'AVAILABLE';
   }
 
   isBlockedPlan(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): boolean {
-    return !this.isExecutablePlan(plan);
+    return !this.isAvailablePlan(plan);
   }
 
   planStatusLabel(plan: Pick<SourcePlanResponseDto, 'planExecutionStatus'>): string {
     switch (plan.planExecutionStatus) {
-      case 'EXECUTABLE':
-        return 'EXECUTABLE';
+      case 'AVAILABLE':
+        return 'AVAILABLE';
       case 'CAPTURER_RETIRED':
         return 'CAPTURER RETIRED';
-      case 'NO_EXECUTABLE_SOURCES':
-        return 'NO EXECUTABLE SOURCES';
+      case 'NO_AVAILABLE_SOURCES':
+        return 'NO AVAILABLE SOURCES';
     }
   }
 
@@ -386,12 +386,12 @@ export class SourcePlanAdminComponent implements OnInit {
     return this.sourceControls.some(control => this.isRetiredSource(control.value));
   }
 
-  isSourceActive(sourceCode: string): boolean {
-    return this.activeSourceCodes.has(sourceCode);
+  isSourceAvailable(sourceCode: string): boolean {
+    return this.availableSourceCodes.has(sourceCode);
   }
 
-  isCapturerActive(capturerCode: string): boolean {
-    return this.activeCapturerCodes.has(capturerCode);
+  isCapturerRegistered(capturerCode: string): boolean {
+    return this.registeredCapturerCodes.has(capturerCode);
   }
 
   hasRetiredSources(plan: SourcePlanResponseDto): boolean {
@@ -405,7 +405,7 @@ export class SourcePlanAdminComponent implements OnInit {
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */
   private syncCapturerOptionsForCurrentMode(): void {
     if (!this.editing || !this.selectedMarketDataCapturerCode) {
-      this.capturerOptions = this.activeCapturerOptions;
+      this.capturerOptions = this.registeredCapturerOptions;
       return;
     }
 
@@ -418,8 +418,8 @@ export class SourcePlanAdminComponent implements OnInit {
   private capturerOptionsWithHistoricalCode(
     capturerCode: string
   ): MarketDataCapturerOptionDto[] {
-    if (this.activeCapturerCodes.has(capturerCode)) {
-      return this.activeCapturerOptions;
+    if (this.registeredCapturerCodes.has(capturerCode)) {
+      return this.registeredCapturerOptions;
     }
 
     return [
@@ -427,13 +427,13 @@ export class SourcePlanAdminComponent implements OnInit {
         code: capturerCode,
         displayName: capturerCode
       },
-      ...this.activeCapturerOptions
+      ...this.registeredCapturerOptions
     ];
   }
 
   private syncSourceOptionsForCurrentMode(): void {
     if (!this.editing) {
-      this.sourceOptions = this.activeSourceOptions;
+      this.sourceOptions = this.availableSourceOptions;
       return;
     }
 
@@ -447,10 +447,10 @@ export class SourcePlanAdminComponent implements OnInit {
   /* Retired source codes добавляются только для отображения уже загруженных строк в edit mode. */
   private sourceOptionsWithHistoricalCodes(sourceCodes: string[]): SourceOptionDto[] {
     const historicalCodes = Array.from(new Set(sourceCodes))
-      .filter(sourceCode => !this.activeSourceCodes.has(sourceCode))
+      .filter(sourceCode => !this.availableSourceCodes.has(sourceCode))
       .map(code => ({ code }));
 
-    return [...historicalCodes, ...this.activeSourceOptions];
+    return [...historicalCodes, ...this.availableSourceOptions];
   }
 
   private collectSortedSources(): SourceRequestDto[] {

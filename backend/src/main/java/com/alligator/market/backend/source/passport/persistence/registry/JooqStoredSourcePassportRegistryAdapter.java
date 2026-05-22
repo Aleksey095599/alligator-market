@@ -30,11 +30,11 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
     }
 
     @Override
-    public void retireAllExcept(Set<SourceCode> activeSourceCodes) {
-        validateActiveCodes(activeSourceCodes);
+    public void retireAllExcept(Set<SourceCode> registeredSourceCodes) {
+        validateRegisteredCodes(registeredSourceCodes);
 
-        Set<String> currentValues = new LinkedHashSet<>(activeSourceCodes.size());
-        for (SourceCode code : activeSourceCodes) {
+        Set<String> currentValues = new LinkedHashSet<>(registeredSourceCodes.size());
+        for (SourceCode code : registeredSourceCodes) {
             currentValues.add(code.value());
         }
 
@@ -46,8 +46,8 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
     }
 
     @Override
-    public void saveActive(Map<SourceCode, SourcePassport> activePassports) {
-        List<StoredSourcePassport> storedPassports = storedPassportMapper.toActiveStored(activePassports);
+    public void saveRegistered(Map<SourceCode, SourcePassport> registeredPassports) {
+        List<StoredSourcePassport> storedPassports = storedPassportMapper.toRegisteredStored(registeredPassports);
         if (storedPassports.isEmpty()) {
             return;
         }
@@ -80,17 +80,17 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
         dsl.batch(queries).execute();
     }
 
-    private static void validateActiveCodes(Set<SourceCode> activeSourceCodes) {
-        if (activeSourceCodes == null) {
-            throw new IllegalArgumentException("activeSourceCodes must not be null");
+    private static void validateRegisteredCodes(Set<SourceCode> registeredSourceCodes) {
+        if (registeredSourceCodes == null) {
+            throw new IllegalArgumentException("registeredSourceCodes must not be null");
         }
-        if (activeSourceCodes.isEmpty()) {
-            throw new IllegalArgumentException("activeSourceCodes must not be empty");
+        if (registeredSourceCodes.isEmpty()) {
+            throw new IllegalArgumentException("registeredSourceCodes must not be empty");
         }
 
-        for (SourceCode code : activeSourceCodes) {
+        for (SourceCode code : registeredSourceCodes) {
             if (code == null) {
-                throw new IllegalArgumentException("activeSourceCodes must not contain null");
+                throw new IllegalArgumentException("registeredSourceCodes must not contain null");
             }
         }
     }

@@ -1,9 +1,9 @@
-export type SourceLifecycleStatus = 'ACTIVE' | 'RETIRED';
-export type MarketDataCapturerLifecycleStatus = 'ACTIVE' | 'RETIRED';
+export type SourceLifecycleStatus = 'AVAILABLE' | 'SOURCE_RETIRED';
+export type MarketDataCapturerLifecycleStatus = 'REGISTERED' | 'RETIRED';
 export type SourcePlanExecutionStatus =
-  | 'EXECUTABLE'
+  | 'AVAILABLE'
   | 'CAPTURER_RETIRED'
-  | 'NO_EXECUTABLE_SOURCES';
+  | 'NO_AVAILABLE_SOURCES';
 
 export interface SourceResponseDto {
   sourceCode: string;

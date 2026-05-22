@@ -7,6 +7,7 @@ import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanRegistry;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -19,8 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.ACTIVE;
-import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus.EXECUTABLE;
+import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.AVAILABLE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -80,8 +80,9 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
     }
 
     private Map<SourcePlanKey, List<SourcePlanEntry>> selectExecutableEntries(Condition additionalCondition) {
-        Condition condition = SOURCE_PLAN_EXECUTION_STATUS.eq(EXECUTABLE.name())
-                .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(ACTIVE.name()));
+        Condition condition = SOURCE_PLAN_EXECUTION_STATUS.eq(
+                        StoredSourcePlanExecutionStatus.AVAILABLE.name())
+                .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(AVAILABLE.name()));
 
         if (additionalCondition != null) {
             condition = condition.and(additionalCondition);

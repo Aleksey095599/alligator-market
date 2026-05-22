@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.ACTIVE;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.REGISTERED;
 
 public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDataCapturerOptionsQueryPort {
     private final DSLContext dsl;
@@ -26,7 +26,7 @@ public final class JooqMarketDataCapturerOptionsQueryAdapter implements MarketDa
                         CAPTURER_PASSPORT.DISPLAY_NAME
                 )
                 .from(CAPTURER_PASSPORT)
-                .where(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(ACTIVE.name()))
+                .where(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(REGISTERED.name()))
                 .orderBy(CAPTURER_PASSPORT.CAPTURER_CODE.asc())
                 .fetch(record -> new MarketDataCapturerOption(
                         new CapturerCode(record.get(CAPTURER_PASSPORT.CAPTURER_CODE)),

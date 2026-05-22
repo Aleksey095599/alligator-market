@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.ACTIVE;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.REGISTERED;
 
 public final class StoredMarketDataCapturerPassportMapper {
 
-    public List<StoredMarketDataCapturerPassport> toActiveStored(
+    public List<StoredMarketDataCapturerPassport> toRegisteredStored(
             Map<CapturerCode, CapturerPassport> passports
     ) {
         if (passports == null) {
@@ -31,16 +31,16 @@ public final class StoredMarketDataCapturerPassportMapper {
                 throw new IllegalArgumentException("passports must not contain null values");
             }
 
-            storedPassports.add(toActiveStored(capturerCode, passport));
+            storedPassports.add(toRegisteredStored(capturerCode, passport));
         }
 
         return storedPassports;
     }
 
-    public StoredMarketDataCapturerPassport toActiveStored(
+    public StoredMarketDataCapturerPassport toRegisteredStored(
             CapturerCode capturerCode,
             CapturerPassport passport
     ) {
-        return new StoredMarketDataCapturerPassport(capturerCode, passport, ACTIVE);
+        return new StoredMarketDataCapturerPassport(capturerCode, passport, REGISTERED);
     }
 }

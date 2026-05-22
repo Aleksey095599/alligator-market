@@ -30,11 +30,11 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
     }
 
     @Override
-    public void retireAllExcept(Set<CapturerCode> activeCapturerCodes) {
-        validateActiveCodes(activeCapturerCodes);
+    public void retireAllExcept(Set<CapturerCode> registeredCapturerCodes) {
+        validateRegisteredCodes(registeredCapturerCodes);
 
-        Set<String> currentValues = new LinkedHashSet<>(activeCapturerCodes.size());
-        for (CapturerCode code : activeCapturerCodes) {
+        Set<String> currentValues = new LinkedHashSet<>(registeredCapturerCodes.size());
+        for (CapturerCode code : registeredCapturerCodes) {
             currentValues.add(code.value());
         }
 
@@ -46,8 +46,9 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
     }
 
     @Override
-    public void saveActive(Map<CapturerCode, CapturerPassport> activePassports) {
-        List<StoredMarketDataCapturerPassport> storedPassports = storedPassportMapper.toActiveStored(activePassports);
+    public void saveRegistered(Map<CapturerCode, CapturerPassport> registeredPassports) {
+        List<StoredMarketDataCapturerPassport> storedPassports =
+                storedPassportMapper.toRegisteredStored(registeredPassports);
         if (storedPassports.isEmpty()) {
             return;
         }
@@ -79,17 +80,17 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
         dsl.batch(queries).execute();
     }
 
-    private static void validateActiveCodes(Set<CapturerCode> activeCapturerCodes) {
-        if (activeCapturerCodes == null) {
-            throw new IllegalArgumentException("activeCapturerCodes must not be null");
+    private static void validateRegisteredCodes(Set<CapturerCode> registeredCapturerCodes) {
+        if (registeredCapturerCodes == null) {
+            throw new IllegalArgumentException("registeredCapturerCodes must not be null");
         }
-        if (activeCapturerCodes.isEmpty()) {
-            throw new IllegalArgumentException("activeCapturerCodes must not be empty");
+        if (registeredCapturerCodes.isEmpty()) {
+            throw new IllegalArgumentException("registeredCapturerCodes must not be empty");
         }
 
-        for (CapturerCode code : activeCapturerCodes) {
+        for (CapturerCode code : registeredCapturerCodes) {
             if (code == null) {
-                throw new IllegalArgumentException("activeCapturerCodes must not contain null");
+                throw new IllegalArgumentException("registeredCapturerCodes must not contain null");
             }
         }
     }

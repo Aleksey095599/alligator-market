@@ -34,7 +34,7 @@ public final class SnapshotStoredSourcePassportRegistryUpdater
         Set<SourceCode> runtimePassportCodes = extractRuntimePassportCodes(runtimePassports);
 
         retireMissingPassports(runtimePassportCodes);
-        saveActivePassports(runtimePassports);
+        saveRegisteredPassports(runtimePassports);
     }
 
     private Map<SourceCode, SourcePassport> loadRuntimePassports() {
@@ -59,7 +59,7 @@ public final class SnapshotStoredSourcePassportRegistryUpdater
         storedRegistry.retireAllExcept(runtimePassportCodes);
     }
 
-    private void saveActivePassports(Map<SourceCode, SourcePassport> runtimePassports) {
-        storedRegistry.saveActive(runtimePassports);
+    private void saveRegisteredPassports(Map<SourceCode, SourcePassport> runtimePassports) {
+        storedRegistry.saveRegistered(runtimePassports);
     }
 }

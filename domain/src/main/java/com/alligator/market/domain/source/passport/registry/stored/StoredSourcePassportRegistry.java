@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface StoredSourcePassportRegistry {
 
-    void retireAllExcept(Set<SourceCode> activeSourceCodes);
+    void retireAllExcept(Set<SourceCode> registeredSourceCodes);
 
-    void saveActive(Map<SourceCode, SourcePassport> activePassports);
+    void saveRegistered(Map<SourceCode, SourcePassport> registeredPassports);
 }

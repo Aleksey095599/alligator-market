@@ -3,11 +3,11 @@ package com.alligator.market.domain.sourceplan.registry.stored;
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 
 public enum StoredSourcePlanExecutionStatus {
-    EXECUTABLE,
+    AVAILABLE,
     CAPTURER_RETIRED,
-    NO_EXECUTABLE_SOURCES;
+    NO_AVAILABLE_SOURCES;
 
-    private static final int MAX_CODE_LENGTH = 21;
+    private static final int MAX_CODE_LENGTH = 20;
 
     StoredSourcePlanExecutionStatus() {
         if (name().length() > MAX_CODE_LENGTH) {

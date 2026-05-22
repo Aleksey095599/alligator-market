@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface StoredCapturerPassportRegistry {
 
-    void retireAllExcept(Set<CapturerCode> activeCapturerCodes);
+    void retireAllExcept(Set<CapturerCode> registeredCapturerCodes);
 
-    void saveActive(Map<CapturerCode, CapturerPassport> activePassports);
+    void saveRegistered(Map<CapturerCode, CapturerPassport> registeredPassports);
 }
