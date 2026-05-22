@@ -35,7 +35,7 @@ export class QuoteMonitorLiveQuoteService {
       instrumentCode: quote.instrumentCode,
       lastPrice: quote.lastPrice,
       sourceCode: quote.sourceCode,
-      sourceTimestamp: quote.sourceTimestamp,
+      sourceTickTime: quote.sourceTickTime,
       receivedAt: quote.receivedAt
     };
   }

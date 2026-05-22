@@ -75,6 +75,6 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
         assertNotNull(lastPriceTick.lastPrice(), "LAST price must not be null");
         assertTrue(lastPriceTick.lastPrice().compareTo(BigDecimal.ZERO) > 0, "LAST price must be positive");
 
-        assertNotNull(lastPriceTick.sourceTimestamp(), "Source timestamp must not be null");
+        assertNotNull(lastPriceTick.sourceTickTime(), "Source tick time must not be null");
     }
 }

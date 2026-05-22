@@ -53,7 +53,7 @@ public class QuoteMonitorLiveQuoteController {
                 quote.instrumentCode().value(),
                 quote.lastPrice().toPlainString(),
                 quote.sourceCode().value(),
-                quote.sourceTimestamp(),
+                quote.sourceTickTime(),
                 quote.receivedAt()
         );
     }

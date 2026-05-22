@@ -35,7 +35,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     'instrumentCode',
     'lastPrice',
     'sourceCode',
-    'sourceTimestamp',
+    'sourceTickTime',
     'receivedAt',
     'status'
   ];
@@ -58,7 +58,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.reload();
+    this.loadInitialState();
   }
 
   ngOnDestroy(): void {
@@ -74,7 +74,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     return this.loading || this.commandRunning;
   }
 
-  reload(): void {
+  private loadInitialState(): void {
     if (this.locked) {
       return;
     }
@@ -185,7 +185,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
         instrumentCode,
         lastPrice: current?.lastPrice ?? null,
         sourceCode: current?.sourceCode ?? null,
-        sourceTimestamp: current?.sourceTimestamp ?? null,
+        sourceTickTime: current?.sourceTickTime ?? null,
         receivedAt: current?.receivedAt ?? null,
         status: status.status
       });
@@ -262,7 +262,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
           ...row,
           lastPrice: null,
           sourceCode: null,
-          sourceTimestamp: null,
+          sourceTickTime: null,
           receivedAt: null
         });
       }
@@ -280,7 +280,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       instrumentCode: update.instrumentCode,
       lastPrice: update.lastPrice,
       sourceCode: update.sourceCode,
-      sourceTimestamp: update.sourceTimestamp,
+      sourceTickTime: update.sourceTickTime,
       receivedAt: update.receivedAt,
       status: this.runtimeStatus
     });

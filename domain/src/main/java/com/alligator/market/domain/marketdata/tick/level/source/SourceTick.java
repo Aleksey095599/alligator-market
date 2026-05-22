@@ -11,5 +11,5 @@ public interface SourceTick {
 
     SourceInstrumentCode sourceInstrumentCode();
 
-    Instant sourceTimestamp();
+    Instant sourceTickTime();
 }

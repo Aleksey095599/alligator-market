@@ -11,14 +11,14 @@ public record SourceTopOfBookQuoteTick(
         SourceInstrumentCode sourceInstrumentCode,
         BigDecimal bidPrice,
         BigDecimal askPrice,
-        Instant sourceTimestamp
+        Instant sourceTickTime
 ) implements SourceTick {
 
     public SourceTopOfBookQuoteTick {
         Objects.requireNonNull(sourceInstrumentCode, "sourceInstrumentCode must not be null");
         Objects.requireNonNull(bidPrice, "bidPrice must not be null");
         Objects.requireNonNull(askPrice, "askPrice must not be null");
-        Objects.requireNonNull(sourceTimestamp, "sourceTimestamp must not be null");
+        Objects.requireNonNull(sourceTickTime, "sourceTickTime must not be null");
 
         if (bidPrice.signum() <= 0) {
             throw new IllegalArgumentException("bidPrice must be positive");

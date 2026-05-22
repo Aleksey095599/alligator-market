@@ -6,7 +6,7 @@ public record QuoteMonitorLiveQuoteDto(
         String instrumentCode,
         String lastPrice,
         String sourceCode,
-        Instant sourceTimestamp,
+        Instant sourceTickTime,
         Instant receivedAt
 ) {
 }

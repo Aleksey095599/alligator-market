@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
-    private static final Instant SOURCE_TIME = Instant.parse("2026-05-18T08:00:00Z");
+    private static final Instant SOURCE_TICK_TIME = Instant.parse("2026-05-18T08:00:00Z");
     private static final Instant RECEIVED_AT = Instant.parse("2026-05-18T08:00:01Z");
 
     @Test
@@ -59,7 +59,7 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
                 instrumentCode,
                 SourceCode.of("MOEX_ISS"),
                 new BigDecimal(lastPrice),
-                SOURCE_TIME,
+                SOURCE_TICK_TIME,
                 RECEIVED_AT
         );
     }

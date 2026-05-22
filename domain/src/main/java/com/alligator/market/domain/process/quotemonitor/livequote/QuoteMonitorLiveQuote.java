@@ -11,7 +11,7 @@ public record QuoteMonitorLiveQuote(
         InstrumentCode instrumentCode,
         SourceCode sourceCode,
         BigDecimal lastPrice,
-        Instant sourceTimestamp,
+        Instant sourceTickTime,
         Instant receivedAt
 ) {
 
@@ -19,7 +19,7 @@ public record QuoteMonitorLiveQuote(
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(lastPrice, "lastPrice must not be null");
-        Objects.requireNonNull(sourceTimestamp, "sourceTimestamp must not be null");
+        Objects.requireNonNull(sourceTickTime, "sourceTickTime must not be null");
         Objects.requireNonNull(receivedAt, "receivedAt must not be null");
 
         if (lastPrice.signum() <= 0) {

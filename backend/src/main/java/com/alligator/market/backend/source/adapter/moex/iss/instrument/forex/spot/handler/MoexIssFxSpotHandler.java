@@ -21,7 +21,9 @@ import tools.jackson.databind.node.ArrayNode;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -40,6 +42,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
     private final MoexIssFxSpotHandlerPolicy policy;
 
     private static final DateTimeFormatter MOEX_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter MOEX_TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private static final ZoneId MOEX_ZONE = ZoneId.of("Europe/Moscow");
 
@@ -81,7 +84,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
                         .path("/engines/currency/markets/selt/boards/CETS/securities/{secid}.json")
                         .queryParam("iss.meta", "off")
                         .queryParam("iss.only", "marketdata")
-                        .queryParam("marketdata.columns", "SYSTIME,LAST")
+                        .queryParam("marketdata.columns", "SYSTIME,TIME,LAST")
                         .build(secid.value())
                 )
                 .retrieve()
@@ -121,9 +124,10 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
         ArrayNode data = (ArrayNode) dataNode;
 
         int systimeIdx = indexOfColumn(columns, "SYSTIME");
+        int timeIdx = indexOfColumn(columns, "TIME");
         int lastIdx = indexOfColumn(columns, "LAST");
-        if (systimeIdx < 0 || lastIdx < 0) {
-            throw new IllegalStateException("Array 'columns' must contain values 'SYSTIME' and 'LAST'");
+        if (systimeIdx < 0 || timeIdx < 0 || lastIdx < 0) {
+            throw new IllegalStateException("Array 'columns' must contain values 'SYSTIME', 'TIME' and 'LAST'");
         }
 
         if (data.size() != 1) {
@@ -137,30 +141,39 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
         if (!row.isArray()) {
             throw new IllegalStateException("Element 0 of 'data' must be an array (marketdata row)");
         }
-        if (row.size() <= Math.max(systimeIdx, lastIdx)) {
+        if (row.size() <= Math.max(Math.max(systimeIdx, timeIdx), lastIdx)) {
             throw new IllegalStateException(
-                    "Marketdata row has insufficient columns for SYSTIME/LAST"
+                    "Marketdata row has insufficient columns for SYSTIME/TIME/LAST"
             );
         }
 
         JsonNode systimeNode = row.get(systimeIdx);
+        JsonNode timeNode = row.get(timeIdx);
         JsonNode lastNode = row.get(lastIdx);
 
         if (systimeNode == null || systimeNode.isNull() || !systimeNode.isString()) {
             throw new IllegalStateException("MOEX ISS SYSTIME must be non-null string");
+        }
+        if (timeNode == null || timeNode.isNull() || !timeNode.isString()) {
+            throw new IllegalStateException("MOEX ISS TIME must be non-null string");
         }
         if (lastNode == null || lastNode.isNull() || !lastNode.isNumber()) {
             throw new IllegalStateException("MOEX ISS LAST must be non-null number");
         }
 
         String systimeStr = systimeNode.stringValue();
+        String timeStr = timeNode.stringValue();
 
-        Instant sourceTimestamp;
+        Instant sourceTickTime;
         try {
-            LocalDateTime ldt = LocalDateTime.parse(systimeStr, MOEX_DATETIME);
-            sourceTimestamp = ldt.atZone(MOEX_ZONE).toInstant();
+            LocalDate sourceDate = LocalDateTime.parse(systimeStr, MOEX_DATETIME).toLocalDate();
+            LocalTime tickTime = LocalTime.parse(timeStr, MOEX_TIME);
+            sourceTickTime = LocalDateTime.of(sourceDate, tickTime).atZone(MOEX_ZONE).toInstant();
         } catch (DateTimeParseException ex) {
-            throw new IllegalStateException("Failed to parse MOEX SYSTIME: '" + systimeStr + "'", ex);
+            throw new IllegalStateException(
+                    "Failed to parse MOEX tick time: SYSTIME='" + systimeStr + "', TIME='" + timeStr + "'",
+                    ex
+            );
         }
 
         BigDecimal last = lastNode.decimalValue();
@@ -168,7 +181,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSourc
         return new SourceLastPriceTick(
                 secid,
                 last,
-                sourceTimestamp
+                sourceTickTime
         );
     }
 

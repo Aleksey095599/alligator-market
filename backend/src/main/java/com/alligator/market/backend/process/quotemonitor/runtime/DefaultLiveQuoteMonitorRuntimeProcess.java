@@ -311,7 +311,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 stream.instrument().instrumentCode(),
                 stream.sourceCode(),
                 lastPriceTick.lastPrice(),
-                lastPriceTick.sourceTimestamp(),
+                lastPriceTick.sourceTickTime(),
                 receivedAt
         ));
     }
