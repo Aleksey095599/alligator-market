@@ -50,7 +50,7 @@ class FxSpotRuntimeInstrumentRegistrySynchronizationTest {
 
     @Test
     void updateSynchronizesRuntimeInstrumentRegistryAfterInstrumentChanges() {
-        FxSpot current = fxSpot(4);
+        FxSpot current = fxSpot();
         FakeFxSpotRepository fxSpotRepository = new FakeFxSpotRepository(List.of(current));
         FakeRuntimeInstrumentRegistryUpdater runtimeRegistryUpdater =
                 new FakeRuntimeInstrumentRegistryUpdater();
@@ -72,7 +72,7 @@ class FxSpotRuntimeInstrumentRegistrySynchronizationTest {
 
     @Test
     void updateSynchronizesRuntimeInstrumentRegistryWhenNoInstrumentChangesDetected() {
-        FxSpot current = fxSpot(4);
+        FxSpot current = fxSpot();
         FakeFxSpotRepository fxSpotRepository = new FakeFxSpotRepository(List.of(current));
         FakeRuntimeInstrumentRegistryUpdater runtimeRegistryUpdater =
                 new FakeRuntimeInstrumentRegistryUpdater();
@@ -89,7 +89,7 @@ class FxSpotRuntimeInstrumentRegistrySynchronizationTest {
 
     @Test
     void deleteSynchronizesRuntimeInstrumentRegistryAfterStoredInstrumentChanges() {
-        FxSpot current = fxSpot(4);
+        FxSpot current = fxSpot();
         FakeFxSpotRepository fxSpotRepository = new FakeFxSpotRepository(List.of(current));
         FakeRuntimeInstrumentRegistryUpdater runtimeRegistryUpdater =
                 new FakeRuntimeInstrumentRegistryUpdater();
@@ -105,8 +105,8 @@ class FxSpotRuntimeInstrumentRegistrySynchronizationTest {
         assertTrue(fxSpotRepository.findAll().isEmpty());
     }
 
-    private static FxSpot fxSpot(int defaultQuoteFractionDigits) {
-        return new FxSpot(cny(), rub(), FxSpotTenor.TOM, defaultQuoteFractionDigits);
+    private static FxSpot fxSpot() {
+        return new FxSpot(cny(), rub(), FxSpotTenor.TOM, 4);
     }
 
     private static Currency cny() {
