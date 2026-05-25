@@ -69,13 +69,12 @@
           </mat-error>
         </mat-form-field>
           </div>
-        </section>
 
-        <section class="form-section form-section--actions">
-          <div class="action-row">
+          <div class="action-row form-actions">
         <ng-container *ngIf="!editing; else editButtons">
           <button
             mat-raised-button
+            color="primary"
             type="button"
             (click)="onAdd()"
             [disabled]="form.invalid || locked"

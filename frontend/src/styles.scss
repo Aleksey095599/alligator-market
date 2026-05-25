@@ -70,7 +70,13 @@ mat-toolbar .mat-mdc-button {
 .toolbar-card {
   position: sticky;
   top: 76px;
-  z-index: 10;
+  z-index: 30;
+  isolation: isolate;
+}
+
+.mat-mdc-card.toolbar-card {
+  background: var(--app-card-bg);
+  box-shadow: 0 4px 14px rgba(22, 34, 51, 0.14), 0 18px 40px rgba(22, 34, 51, 0.12) !important;
 }
 
 .toolbar {
