@@ -1,6 +1,7 @@
 package com.alligator.market.backend.process.quotemonitor.application.instrument;
 
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentCandidateNotFoundException;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentSelectionLockedException;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorInstrumentOption;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -8,6 +9,9 @@ import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorI
 import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
+import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
+import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -32,7 +36,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"),
                         new InstrumentCode("FOREX_SPOT_USDRUB_TOM")
                 )),
-                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThat(service.findOptions())
@@ -53,7 +58,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
-                runtimeRegistryUpdater
+                runtimeRegistryUpdater,
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         service.replaceSelection(List.of(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")));
@@ -74,7 +80,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
-                runtimeRegistryUpdater
+                runtimeRegistryUpdater,
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         boolean changed = service.addInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
@@ -98,7 +105,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
-                runtimeRegistryUpdater
+                runtimeRegistryUpdater,
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         boolean changed = service.removeInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
@@ -117,7 +125,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
-                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -138,7 +147,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
-                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater()
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -147,6 +157,34 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 .isInstanceOf(QuoteMonitorInstrumentCandidateNotFoundException.class);
 
         assertThat(repository.get().instrumentCodes()).isEmpty();
+    }
+
+    @Test
+    void rejectsSelectionChangesWhenRuntimeIsRunning() {
+        FakeQuoteMonitorInstrumentSelectionRepository repository =
+                new FakeQuoteMonitorInstrumentSelectionRepository(QuoteMonitorInstrumentSelection.empty());
+        FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater =
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater();
+        QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
+                repository,
+                new FakeQuoteMonitorInstrumentCandidatePort(List.of(
+                        new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
+                )),
+                runtimeRegistryUpdater,
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.RUNNING)
+        );
+
+        assertThatThrownBy(() -> service.addInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")))
+                .isInstanceOf(QuoteMonitorInstrumentSelectionLockedException.class);
+        assertThatThrownBy(() -> service.removeInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")))
+                .isInstanceOf(QuoteMonitorInstrumentSelectionLockedException.class);
+        assertThatThrownBy(() -> service.replaceSelection(List.of(
+                new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
+        )))
+                .isInstanceOf(QuoteMonitorInstrumentSelectionLockedException.class);
+
+        assertThat(repository.get().instrumentCodes()).isEmpty();
+        assertThat(runtimeRegistryUpdater.updateCount).isZero();
     }
 
     private static final class FakeQuoteMonitorInstrumentSelectionRepository
@@ -218,6 +256,36 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         @Override
         public void updateRuntimeRegistry() {
             updateCount++;
+        }
+    }
+
+    private static final class FakeLiveQuoteMonitorRuntimeProcess implements LiveQuoteMonitorRuntimeProcess {
+        private LiveQuoteMonitorRuntimeStatus status;
+
+        private FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus status) {
+            this.status = status;
+        }
+
+        @Override
+        public boolean start() {
+            status = LiveQuoteMonitorRuntimeStatus.RUNNING;
+            return true;
+        }
+
+        @Override
+        public boolean stop() {
+            status = LiveQuoteMonitorRuntimeStatus.STOPPED;
+            return true;
+        }
+
+        @Override
+        public LiveQuoteMonitorRuntimeStatus status() {
+            return status;
+        }
+
+        @Override
+        public LiveQuoteMonitorRuntimeSnapshot snapshot() {
+            return new LiveQuoteMonitorRuntimeSnapshot(status, List.of(), null);
         }
     }
 }

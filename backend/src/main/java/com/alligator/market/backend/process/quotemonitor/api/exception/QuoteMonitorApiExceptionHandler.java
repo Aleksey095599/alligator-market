@@ -2,6 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.api.exception;
 
 import com.alligator.market.backend.process.quotemonitor.api.instrument.controller.QuoteMonitorInstrumentSelectionController;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentCandidateNotFoundException;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentSelectionLockedException;
 import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -36,6 +37,17 @@ public class QuoteMonitorApiExceptionHandler {
                 "Quote monitor instrument candidate not found",
                 ex.getMessage(),
                 QuoteMonitorApiErrorCode.INSTRUMENT_CANDIDATE_NOT_FOUND.code()
+        );
+    }
+
+    @ExceptionHandler(QuoteMonitorInstrumentSelectionLockedException.class)
+    public ProblemDetail instrumentSelectionLocked(QuoteMonitorInstrumentSelectionLockedException ex) {
+        log.warn("Quote monitor instrument selection is locked: {}", ex.getMessage());
+        return buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "Quote monitor instrument selection is locked",
+                ex.getMessage(),
+                QuoteMonitorApiErrorCode.INSTRUMENT_SELECTION_LOCKED.code()
         );
     }
 

@@ -12,7 +12,8 @@
 
         <div class="selection-toolbar">
           <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Instrument Code*</mat-label>
+            <mat-label>Find by instrument code</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
             <input
               matInput
               #filterInput
@@ -44,6 +45,10 @@
           </button>
         </div>
       </section>
+
+      <div *ngIf="running" class="selection-lock-note">
+        Stop quote monitor to change instruments.
+      </div>
     </mat-card-content>
   </mat-card>
 
@@ -56,7 +61,7 @@
             mat-stroked-button
             type="button"
             (click)="editMonitor()"
-            [disabled]="locked || monitorCount === 0"
+            [disabled]="selectionLocked || monitorCount === 0"
           >
             <mat-icon>edit</mat-icon>
             Edit
@@ -69,7 +74,7 @@
             color="warn"
             type="button"
             (click)="removePickedFromMonitor()"
-            [disabled]="locked || pickedMonitorInstrumentCodes.size === 0"
+            [disabled]="selectionLocked || pickedMonitorInstrumentCodes.size === 0"
           >
             <mat-icon>remove_circle_outline</mat-icon>
             Remove from monitor
@@ -104,7 +109,7 @@
                 <mat-checkbox
                   [attr.aria-label]="'Remove ' + instrumentCode"
                   [checked]="isPickedForMonitorRemoval(instrumentCode)"
-                  [disabled]="locked"
+                  [disabled]="selectionLocked"
                   (change)="toggleMonitorPick(instrumentCode, $event.checked)"
                 ></mat-checkbox>
               </td>
@@ -143,7 +148,7 @@
             mat-stroked-button
             type="button"
             (click)="editCandidates()"
-            [disabled]="locked || candidateCount === 0"
+            [disabled]="selectionLocked || candidateCount === 0"
           >
             <mat-icon>edit</mat-icon>
             Edit
@@ -156,7 +161,7 @@
             color="primary"
             type="button"
             (click)="addPickedToMonitor()"
-            [disabled]="locked || pickedCandidateInstrumentCodes.size === 0"
+            [disabled]="selectionLocked || pickedCandidateInstrumentCodes.size === 0"
           >
             <mat-icon>add_circle_outline</mat-icon>
             Add to monitor
@@ -191,7 +196,7 @@
                 <mat-checkbox
                   [attr.aria-label]="'Add ' + instrumentCode"
                   [checked]="isPickedForMonitorAddition(instrumentCode)"
-                  [disabled]="locked"
+                  [disabled]="selectionLocked"
                   (change)="toggleCandidatePick(instrumentCode, $event.checked)"
                 ></mat-checkbox>
               </td>

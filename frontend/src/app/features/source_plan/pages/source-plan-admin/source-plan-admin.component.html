@@ -170,6 +170,13 @@
     <mat-card-header>
       <mat-card-title>Source Plans</mat-card-title>
     </mat-card-header>
+    <div *ngIf="hasNavigationFilter" class="navigation-filter">
+      <span *ngIf="navigationCapturerCode">Capturer: {{ navigationCapturerCode }}</span>
+      <span *ngIf="navigationInstrumentCode">Instrument: {{ navigationInstrumentCode }}</span>
+      <button mat-stroked-button type="button" (click)="clearNavigationFilter()">
+        Clear filter
+      </button>
+    </div>
     <mat-card-content class="table-content">
       <table mat-table [dataSource]="dataSource" class="plans-table mat-elevation-z2">
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -17,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import {
   SourcePlanResponseDto,
@@ -49,7 +51,7 @@ import { SourcePlanService } from '../../services/source-plan.service';
   templateUrl: './source-plan-admin.component.html',
   styleUrl: './source-plan-admin.component.scss'
 })
-export class SourcePlanAdminComponent implements OnInit {
+export class SourcePlanAdminComponent implements OnInit, OnDestroy {
 
   private static readonly notBlank = (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -71,6 +73,10 @@ export class SourcePlanAdminComponent implements OnInit {
     'actions'
   ];
   dataSource = new MatTableDataSource<SourcePlanResponseDto>([]);
+  private allPlans: SourcePlanResponseDto[] = [];
+  navigationCapturerCode: string | null = null;
+  navigationInstrumentCode: string | null = null;
+  private readonly routeSubscription = new Subscription();
 
   /* Опции для option формы. */
   private registeredCapturerOptions: MarketDataCapturerOptionDto[] = [];
@@ -96,7 +102,9 @@ export class SourcePlanAdminComponent implements OnInit {
   constructor(
     private readonly service: SourcePlanService,
     private readonly fb: FormBuilder,
-    private readonly snack: MatSnackBar
+    private readonly snack: MatSnackBar,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       capturerCode: ['', [Validators.required, SourcePlanAdminComponent.notBlank]],
@@ -107,9 +115,22 @@ export class SourcePlanAdminComponent implements OnInit {
 
   /* Загрузка данных при открытии страницы. */
   ngOnInit(): void {
+    this.routeSubscription.add(
+      this.route.queryParamMap.subscribe(queryParams => {
+        this.navigationCapturerCode = this.normalizedQueryParam(queryParams.get('capturerCode'));
+        this.navigationInstrumentCode = this.normalizedQueryParam(queryParams.get('instrumentCode'));
+        this.applyNavigationFilter();
+        this.openNavigationPlanIfExact();
+      })
+    );
+
     this.refreshList();
     this.loadOptions();
     this.onAddSourceRow();
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   /* Удобный доступ к FormArray sources. */
@@ -162,11 +183,25 @@ export class SourcePlanAdminComponent implements OnInit {
   refreshList(): void {
     this.service.list().subscribe({
       next: plans => {
-        this.dataSource.data = plans;
+        this.allPlans = plans;
+        this.applyNavigationFilter();
+        this.openNavigationPlanIfExact();
       },
       error: err => {
         this.snack.open(this.resolveErrorMessage(err, 'Load source plans failed'), 'Close');
       }
+    });
+  }
+
+  get hasNavigationFilter(): boolean {
+    return this.navigationCapturerCode !== null || this.navigationInstrumentCode !== null;
+  }
+
+  clearNavigationFilter(): void {
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true
     });
   }
 
@@ -400,6 +435,42 @@ export class SourcePlanAdminComponent implements OnInit {
 
   hasOnlyRetiredSources(plan: SourcePlanResponseDto): boolean {
     return plan.sources.length > 0 && this.retiredCount(plan) === plan.sources.length;
+  }
+
+  private applyNavigationFilter(): void {
+    this.dataSource.data = this.allPlans.filter(plan => this.matchesNavigationFilter(plan));
+  }
+
+  private matchesNavigationFilter(plan: SourcePlanResponseDto): boolean {
+    return (this.navigationCapturerCode === null || plan.capturerCode === this.navigationCapturerCode)
+      && (this.navigationInstrumentCode === null || plan.instrumentCode === this.navigationInstrumentCode);
+  }
+
+  private openNavigationPlanIfExact(): void {
+    if (!this.navigationCapturerCode || !this.navigationInstrumentCode) {
+      return;
+    }
+
+    if (
+      this.selectedMarketDataCapturerCode === this.navigationCapturerCode
+      && this.selectedInstrumentCode === this.navigationInstrumentCode
+    ) {
+      return;
+    }
+
+    const plan = this.allPlans.find(candidate =>
+      candidate.capturerCode === this.navigationCapturerCode
+      && candidate.instrumentCode === this.navigationInstrumentCode
+    );
+
+    if (plan) {
+      this.onEditPlan(plan);
+    }
+  }
+
+  private normalizedQueryParam(value: string | null): string | null {
+    const normalized = value?.trim();
+    return normalized ? normalized : null;
   }
 
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */

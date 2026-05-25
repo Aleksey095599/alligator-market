@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'instruments'
+    redirectTo: 'live-quotes'
   },
   {
     path: 'instruments',

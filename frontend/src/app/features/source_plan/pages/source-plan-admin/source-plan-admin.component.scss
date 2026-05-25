@@ -177,6 +177,20 @@
 }
 
 /* Ряд с действиями формы. */
+.navigation-filter {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 14px 20px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-panel-bg);
+  color: var(--app-text-muted);
+  font-size: 13px;
+}
+
 .action-row {
   display: flex;
   gap: 12px;

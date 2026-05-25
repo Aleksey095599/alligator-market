@@ -9,9 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { forkJoin } from 'rxjs';
 
 import { QuoteMonitorInstrumentOption } from '../../models/quote-monitor-instrument-selection.model';
 import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-monitor-instrument-selection.service';
+import { QuoteMonitorRuntimeService } from '../../services/quote-monitor-runtime.service';
 
 interface HighlightSegment {
   text: string;
@@ -52,6 +54,7 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   pickedCandidateInstrumentCodes = new Set<string>();
 
   filterValue = '';
+  runtimeStatus = 'STOPPED';
   loading = false;
   saving = false;
   monitorEditing = false;
@@ -59,6 +62,7 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
 
   constructor(
     private readonly service: QuoteMonitorInstrumentSelectionService,
+    private readonly runtimeService: QuoteMonitorRuntimeService,
     private readonly snack: MatSnackBar
   ) {}
 
@@ -78,6 +82,14 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
     return this.loading || this.saving;
   }
 
+  get running(): boolean {
+    return this.runtimeStatus === 'RUNNING';
+  }
+
+  get selectionLocked(): boolean {
+    return this.locked || this.running;
+  }
+
   reload(): void {
     if (this.locked) {
       return;
@@ -85,11 +97,15 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
 
     this.loading = true;
 
-    this.service.getOptions().subscribe({
-      next: options => {
-        this.options = options;
+    forkJoin({
+      options: this.service.getOptions(),
+      runtimeStatus: this.runtimeService.status()
+    }).subscribe({
+      next: state => {
+        this.options = state.options;
+        this.runtimeStatus = state.runtimeStatus.status;
         this.selectedInstrumentCodes = new Set(
-          options
+          state.options
             .filter(option => option.selected)
             .map(option => option.instrumentCode)
         );
@@ -115,7 +131,7 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   }
 
   editMonitor(): void {
-    if (this.locked) {
+    if (this.selectionLocked) {
       return;
     }
 
@@ -126,7 +142,7 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   }
 
   editCandidates(): void {
-    if (this.locked) {
+    if (this.selectionLocked) {
       return;
     }
 
@@ -149,15 +165,23 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   }
 
   toggleMonitorPick(instrumentCode: string, checked: boolean): void {
+    if (this.selectionLocked) {
+      return;
+    }
+
     this.togglePickedCode(this.pickedMonitorInstrumentCodes, instrumentCode, checked);
   }
 
   toggleCandidatePick(instrumentCode: string, checked: boolean): void {
+    if (this.selectionLocked) {
+      return;
+    }
+
     this.togglePickedCode(this.pickedCandidateInstrumentCodes, instrumentCode, checked);
   }
 
   removePickedFromMonitor(): void {
-    if (this.locked || this.pickedMonitorInstrumentCodes.size === 0) {
+    if (this.selectionLocked || this.pickedMonitorInstrumentCodes.size === 0) {
       return;
     }
 
@@ -173,7 +197,7 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   }
 
   addPickedToMonitor(): void {
-    if (this.locked || this.pickedCandidateInstrumentCodes.size === 0) {
+    if (this.selectionLocked || this.pickedCandidateInstrumentCodes.size === 0) {
       return;
     }
 
@@ -236,6 +260,10 @@ export class QuoteMonitorInstrumentSelectionComponent implements OnInit {
   }
 
   private replaceSelection(nextSelectedInstrumentCodes: Set<string>, successMessage: string): void {
+    if (this.selectionLocked) {
+      return;
+    }
+
     this.saving = true;
 
     this.service

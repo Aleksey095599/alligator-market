@@ -1,18 +1,37 @@
-.runtime-card {
-  position: static;
+.quote-monitor-page {
+  width: min(1440px, calc(100% - 40px));
 }
 
-.runtime-toolbar {
+.monitor-toolbar {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
-.runtime-summary {
+.live-quotes-title-row {
   display: flex;
-  gap: 14px;
+  gap: 8px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.live-quotes-title::after {
+  content: ":";
+}
+
+.live-quotes-last-tick {
+  color: var(--app-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.live-quotes-tools {
+  display: flex;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -26,39 +45,66 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: flex-end;
   flex-wrap: wrap;
 }
 
-.runtime-actions mat-icon {
+.runtime-actions mat-icon,
+.state-block button mat-icon {
   margin-right: 6px;
 }
 
-.runtime-progress {
-  margin-top: 16px;
+.live-quotes-filter-field {
+  width: min(360px, 100%);
 }
 
-.status-pill,
+.runtime-progress {
+  margin: 0 0 16px;
+}
+
 .row-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 84px;
+  min-width: 92px;
   padding: 6px 12px;
   border-radius: 8px;
   background: #eef1f4;
   color: rgba(0, 0, 0, 0.62);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
 }
 
-.status-pill--running,
-.row-status--running {
+.row-status--live {
   background: #e4f5e6;
   color: #145a25;
 }
 
+.row-status--stopped {
+  background: #eeeeee;
+  color: #616161;
+}
+
+.row-status--waiting-for-quote {
+  background: #fff4df;
+  color: #7a4b00;
+}
+
+.row-status--not-available,
+.row-status--not-monitored {
+  background: #f7e7e7;
+  color: #7f1d1d;
+}
+
 .live-quotes-table {
-  min-width: 860px;
+  min-width: 1040px;
+}
+
+.actions-cell {
+  width: 64px;
+  text-align: right;
 }
 
 .instrument-code-cell {
@@ -67,13 +113,24 @@
   letter-spacing: 0;
 }
 
+.instrument-code-cell mark {
+  padding: 1px 0;
+  border-radius: 3px;
+  background: #fff0b8;
+  color: inherit;
+}
+
 .price-cell {
   font-family: "Roboto Mono", Consolas, monospace;
   font-weight: 700;
 }
 
+.live-quotes-row--warning {
+  background: rgba(179, 38, 30, 0.035);
+}
+
 .state-block {
-  min-height: 160px;
+  min-height: 132px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,9 +139,21 @@
   color: var(--app-text-muted);
 }
 
+.state-block--stacked {
+  flex-direction: column;
+  gap: 14px;
+}
+
 @media (max-width: 700px) {
+  .quote-monitor-page {
+    width: calc(100% - 24px);
+  }
+
   .runtime-actions,
-  .runtime-actions button {
+  .runtime-actions button:not(.mat-mdc-icon-button),
+  .live-quotes-tools,
+  .live-quotes-filter-field {
     width: 100%;
   }
+
 }
