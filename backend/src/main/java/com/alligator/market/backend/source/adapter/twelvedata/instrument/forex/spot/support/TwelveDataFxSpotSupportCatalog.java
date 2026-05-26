@@ -19,7 +19,7 @@ public final class TwelveDataFxSpotSupportCatalog {
     private static final Currency INR = new Currency(CurrencyCode.of("INR"), "Indian Rupee", "India", 2);
     private static final Currency USD = new Currency(CurrencyCode.of("USD"), "United States Dollar", "United States", 2);
 
-    private static final FxSpot INR_USD = new FxSpot(INR, USD, FxSpotTenor.SPOT, 4);
+    private static final FxSpot INR_USD = new FxSpot(INR, USD, FxSpotTenor.SPOT, 6);
 
     private static final Map<InstrumentCode, SourceInstrumentCode> DOMAIN_CODE_TO_SOURCE_CODE;
     private static final Map<InstrumentCode, String> DOMAIN_CODE_TO_TWELVE_SYMBOL;
