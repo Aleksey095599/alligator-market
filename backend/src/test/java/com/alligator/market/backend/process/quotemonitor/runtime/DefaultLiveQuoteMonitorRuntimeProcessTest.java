@@ -9,17 +9,23 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
+import com.alligator.market.domain.marketdata.tick.level.source.type.SourceTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
 import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.exception.HandlerNotFoundException;
+import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
+import com.alligator.market.domain.source.vo.HandlerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.SourcePlanEntry;
@@ -38,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -103,6 +111,10 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         process.start();
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(firstCode);
+        assertThat(instrumentState(process, firstCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.LIVE);
+        assertThat(instrumentState(process, secondCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
         assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
         assertThat(source.streamedInstrumentCodes()).containsExactly(firstCode);
         assertThat(liveQuotePublisher.clearCount()).isEqualTo(1);
@@ -140,6 +152,177 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(primarySource.streamedInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(backupSource.streamedInstrumentCodes()).isEmpty();
+    }
+
+    @Test
+    void startRecordsMissingRuntimeInstrumentIssue() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of()),
+                new MutableRuntimeSourcePlanRegistry(List.of()),
+                new MutableRuntimeSourceRegistry(List.of())
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND);
+    }
+
+    @Test
+    void startRecordsMissingRuntimeSourcePlanIssue() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of()),
+                new MutableRuntimeSourceRegistry(List.of())
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
+    }
+
+    @Test
+    void startRecordsMissingRuntimeSourceIssue() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of())
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND);
+    }
+
+    @Test
+    void startRecordsHandlerNotFoundIssueWhenSourceCannotResolveHandler() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        ThrowingMarketSource source = new ThrowingMarketSource(
+                SourceCode.of("PRIMARY_SOURCE"),
+                code -> new HandlerNotFoundException(code, SourceCode.of("PRIMARY_SOURCE"))
+        );
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of(source))
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND);
+    }
+
+    @Test
+    void startRecordsInstrumentNotSupportedIssueWhenHandlerRejectsInstrument() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        ThrowingMarketSource source = new ThrowingMarketSource(
+                SourceCode.of("PRIMARY_SOURCE"),
+                code -> InstrumentNotSupportedByHandlerException.instrumentCodeNotSupported(
+                        code,
+                        HandlerCode.of("TEST_HANDLER"),
+                        Set.of(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"))
+                )
+        );
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of(source))
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER);
+    }
+
+    @Test
+    void startRecordsStreamStartFailureIssueWhenSourceThrowsBeforePublisherIsCreated() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        ThrowingMarketSource source = new ThrowingMarketSource(
+                SourceCode.of("PRIMARY_SOURCE"),
+                ignored -> new IllegalStateException("Stream cannot be created")
+        );
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of(source))
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        LiveQuoteMonitorInstrumentRuntimeState state = onlyInstrumentState(process, instrumentCode);
+        assertThat(state.status()).isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED);
+        assertThat(state.detail()).contains("Stream cannot be created");
+    }
+
+    @Test
+    void startRecordsStreamFailureIssueWhenPublisherFailsAfterSubscription() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        FailingPublisherMarketSource source = new FailingPublisherMarketSource(SourceCode.of("PRIMARY_SOURCE"));
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of(source))
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED);
+    }
+
+    @Test
+    void startRecordsUnsupportedTickTypeIssueWhenSourceEmitsNonLastPriceTick() {
+        InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
+        UnsupportedTickMarketSource source = new UnsupportedTickMarketSource(SourceCode.of("PRIMARY_SOURCE"));
+        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+                new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
+                        new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
+                ),
+                new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
+                new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
+                new MutableRuntimeSourceRegistry(List.of(source))
+        );
+
+        process.start();
+
+        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
+        assertThat(onlyInstrumentState(process, instrumentCode).status())
+                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE);
     }
 
     private static DefaultLiveQuoteMonitorRuntimeProcess process(
@@ -195,6 +378,28 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
     private static TestInstrument instrument(InstrumentCode instrumentCode) {
         return new TestInstrument(instrumentCode);
+    }
+
+    private static LiveQuoteMonitorInstrumentRuntimeState onlyInstrumentState(
+            DefaultLiveQuoteMonitorRuntimeProcess process,
+            InstrumentCode instrumentCode
+    ) {
+        assertThat(process.snapshot().instrumentStates())
+                .extracting(LiveQuoteMonitorInstrumentRuntimeState::instrumentCode)
+                .containsExactly(instrumentCode);
+
+        return process.snapshot().instrumentStates().getFirst();
+    }
+
+    private static LiveQuoteMonitorInstrumentRuntimeState instrumentState(
+            DefaultLiveQuoteMonitorRuntimeProcess process,
+            InstrumentCode instrumentCode
+    ) {
+        return process.snapshot().instrumentStates()
+                .stream()
+                .filter(state -> state.instrumentCode().equals(instrumentCode))
+                .findFirst()
+                .orElseThrow();
     }
 
     private record TestInstrument(InstrumentCode instrumentCode) implements Instrument {
@@ -347,6 +552,95 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         private List<InstrumentCode> streamedInstrumentCodes() {
             return List.copyOf(streamedInstrumentCodes);
+        }
+    }
+
+    private static final class ThrowingMarketSource implements MarketSource {
+        private final SourceCode sourceCode;
+        private final Function<InstrumentCode, RuntimeException> exceptionFactory;
+
+        private ThrowingMarketSource(
+                SourceCode sourceCode,
+                Function<InstrumentCode, RuntimeException> exceptionFactory
+        ) {
+            this.sourceCode = sourceCode;
+            this.exceptionFactory = exceptionFactory;
+        }
+
+        @Override
+        public SourceCode code() {
+            return sourceCode;
+        }
+
+        @Override
+        public SourcePassport passport() {
+            return new SourcePassport(SourceDisplayName.of("Test Source"));
+        }
+
+        @Override
+        public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
+            throw exceptionFactory.apply(instrument.instrumentCode());
+        }
+    }
+
+    private static final class FailingPublisherMarketSource implements MarketSource {
+        private final SourceCode sourceCode;
+
+        private FailingPublisherMarketSource(SourceCode sourceCode) {
+            this.sourceCode = sourceCode;
+        }
+
+        @Override
+        public SourceCode code() {
+            return sourceCode;
+        }
+
+        @Override
+        public SourcePassport passport() {
+            return new SourcePassport(SourceDisplayName.of("Test Source"));
+        }
+
+        @Override
+        public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
+            return Flux.error(new IllegalStateException("Stream failed"));
+        }
+    }
+
+    private static final class UnsupportedTickMarketSource implements MarketSource {
+        private final SourceCode sourceCode;
+
+        private UnsupportedTickMarketSource(SourceCode sourceCode) {
+            this.sourceCode = sourceCode;
+        }
+
+        @Override
+        public SourceCode code() {
+            return sourceCode;
+        }
+
+        @Override
+        public SourcePassport passport() {
+            return new SourcePassport(SourceDisplayName.of("Test Source"));
+        }
+
+        @Override
+        public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
+            return Flux.just(new SourceTick() {
+                @Override
+                public SourceTickType sourceTickType() {
+                    return SourceTickType.TOP_OF_BOOK_QUOTE;
+                }
+
+                @Override
+                public SourceInstrumentCode sourceInstrumentCode() {
+                    return SourceInstrumentCode.of(instrument.instrumentCode().value());
+                }
+
+                @Override
+                public Instant sourceTickTime() {
+                    return START_TIME;
+                }
+            });
         }
     }
 

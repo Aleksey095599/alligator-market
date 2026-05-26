@@ -18,17 +18,6 @@
   flex-wrap: wrap;
 }
 
-.live-quotes-title::after {
-  content: ":";
-}
-
-.live-quotes-last-tick {
-  color: var(--app-text-muted);
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
 .live-quotes-tools {
   display: flex;
   gap: 12px;
@@ -62,7 +51,8 @@
   margin: 0 0 16px;
 }
 
-.row-status {
+.row-status,
+.source-plan-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -75,6 +65,10 @@
   font-weight: 700;
   line-height: 1.1;
   text-align: center;
+}
+
+.source-plan-status {
+  min-width: 152px;
 }
 
 .row-status--live {
@@ -98,8 +92,28 @@
   color: #7f1d1d;
 }
 
+.source-plan-status--available {
+  background: #e4f5e6;
+  color: #145a25;
+}
+
+.source-plan-status--capturer-retired {
+  background: #f7e7e7;
+  color: #7f1d1d;
+}
+
+.source-plan-status--no-available-sources {
+  background: #fff4df;
+  color: #7a4b00;
+}
+
+.source-plan-status--missing {
+  background: #eeeeee;
+  color: #616161;
+}
+
 .live-quotes-table {
-  min-width: 1040px;
+  min-width: 1210px;
 }
 
 .actions-cell {

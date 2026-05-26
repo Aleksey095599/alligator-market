@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import {
   QuoteMonitorInstrumentOption,
   QuoteMonitorInstrumentOptionsResponseDto,
+  QuoteMonitorSelectedInstrument,
   QuoteMonitorInstrumentSelectionResponseDto,
   ReplaceQuoteMonitorInstrumentSelectionDto
 } from '../models/quote-monitor-instrument-selection.model';
@@ -24,9 +25,14 @@ export class QuoteMonitorInstrumentSelectionService {
   }
 
   getSelectedInstrumentCodes(): Observable<string[]> {
+    return this.getSelectedInstruments()
+      .pipe(map(instruments => instruments.map(instrument => instrument.instrumentCode)));
+  }
+
+  getSelectedInstruments(): Observable<QuoteMonitorSelectedInstrument[]> {
     return this.http
       .get<QuoteMonitorInstrumentSelectionResponseDto>(this.baseUrl)
-      .pipe(map(response => (response.instruments ?? []).map(instrument => instrument.instrumentCode)));
+      .pipe(map(response => this.sortSelectedInstruments(response.instruments ?? [])));
   }
 
   replaceSelectedInstrumentCodes(instrumentCodes: string[]): Observable<void> {
@@ -41,6 +47,14 @@ export class QuoteMonitorInstrumentSelectionService {
 
   private sortOptions(options: QuoteMonitorInstrumentOption[]): QuoteMonitorInstrumentOption[] {
     return [...options].sort((left, right) =>
+      left.instrumentCode.localeCompare(right.instrumentCode)
+    );
+  }
+
+  private sortSelectedInstruments(
+    instruments: QuoteMonitorSelectedInstrument[]
+  ): QuoteMonitorSelectedInstrument[] {
+    return [...instruments].sort((left, right) =>
       left.instrumentCode.localeCompare(right.instrumentCode)
     );
   }

@@ -1,5 +1,11 @@
+export type QuoteMonitorSourcePlanStatus =
+  | 'AVAILABLE'
+  | 'CAPTURER_RETIRED'
+  | 'NO_AVAILABLE_SOURCES';
+
 export interface QuoteMonitorInstrumentDto {
   instrumentCode: string;
+  sourcePlanStatus: QuoteMonitorSourcePlanStatus;
 }
 
 export interface QuoteMonitorInstrumentOptionDto {
@@ -22,4 +28,9 @@ export interface ReplaceQuoteMonitorInstrumentSelectionDto {
 export interface QuoteMonitorInstrumentOption {
   instrumentCode: string;
   selected: boolean;
+}
+
+export interface QuoteMonitorSelectedInstrument {
+  instrumentCode: string;
+  sourcePlanStatus: QuoteMonitorSourcePlanStatus;
 }

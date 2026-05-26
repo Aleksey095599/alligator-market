@@ -3,33 +3,44 @@ package com.alligator.market.backend.process.quotemonitor.application.instrument
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentCandidateNotFoundException;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentSelectionLockedException;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorInstrumentOption;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorSelectedInstrument;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
+import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 public final class QuoteMonitorInstrumentSelectionService {
     private final QuoteMonitorInstrumentSelectionRepository repository;
     private final QuoteMonitorInstrumentCandidatePort candidatePort;
+    private final SourcePlanQueryPort sourcePlanQueryPort;
     private final RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater;
     private final LiveQuoteMonitorRuntimeProcess runtimeProcess;
 
     public QuoteMonitorInstrumentSelectionService(
             QuoteMonitorInstrumentSelectionRepository repository,
             QuoteMonitorInstrumentCandidatePort candidatePort,
+            SourcePlanQueryPort sourcePlanQueryPort,
             RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater,
             LiveQuoteMonitorRuntimeProcess runtimeProcess
     ) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
         this.candidatePort = Objects.requireNonNull(candidatePort, "candidatePort must not be null");
+        this.sourcePlanQueryPort = Objects.requireNonNull(
+                sourcePlanQueryPort,
+                "sourcePlanQueryPort must not be null"
+        );
         this.runtimeRegistryUpdater = Objects.requireNonNull(
                 runtimeRegistryUpdater,
                 "runtimeRegistryUpdater must not be null"
@@ -51,6 +62,22 @@ public final class QuoteMonitorInstrumentSelectionService {
 
     public QuoteMonitorInstrumentSelection getSelection() {
         return repository.get();
+    }
+
+    public List<QuoteMonitorSelectedInstrument> findSelectedInstruments() {
+        List<InstrumentCode> selectedInstrumentCodes = getSelection().instrumentCodes();
+        Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses =
+                sourcePlanQueryPort.findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+                        LiveQuoteMonitorCapturer.CAPTURER_CODE,
+                        selectedInstrumentCodes
+                );
+
+        return selectedInstrumentCodes.stream()
+                .map(instrumentCode -> new QuoteMonitorSelectedInstrument(
+                        instrumentCode,
+                        requireSourcePlanStatus(instrumentCode, sourcePlanStatuses)
+                ))
+                .toList();
     }
 
     public boolean addInstrument(InstrumentCode instrumentCode) {
@@ -107,5 +134,20 @@ public final class QuoteMonitorInstrumentSelectionService {
         if (runtimeProcess.status() == LiveQuoteMonitorRuntimeStatus.RUNNING) {
             throw new QuoteMonitorInstrumentSelectionLockedException();
         }
+    }
+
+    private StoredSourcePlanExecutionStatus requireSourcePlanStatus(
+            InstrumentCode instrumentCode,
+            Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses
+    ) {
+        StoredSourcePlanExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
+        if (status == null) {
+            throw new IllegalStateException(
+                    "Source plan status is missing for selected quote monitor instrument: " +
+                            instrumentCode.value()
+            );
+        }
+
+        return status;
     }
 }

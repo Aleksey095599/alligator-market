@@ -7,8 +7,8 @@ import com.alligator.market.backend.process.quotemonitor.api.instrument.dto.Quot
 import com.alligator.market.backend.process.quotemonitor.api.instrument.dto.ReplaceQuoteMonitorInstrumentSelectionRequest;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.QuoteMonitorInstrumentSelectionService;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorInstrumentOption;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorSelectedInstrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -31,7 +30,12 @@ public class QuoteMonitorInstrumentSelectionController {
 
     @GetMapping
     public ResponseEntity<QuoteMonitorInstrumentSelectionResponse> selected() {
-        return ResponseEntity.ok(toSelectionResponse(service.getSelection()));
+        return ResponseEntity.ok(new QuoteMonitorInstrumentSelectionResponse(
+                service.findSelectedInstruments()
+                        .stream()
+                        .map(this::toInstrumentDto)
+                        .toList()
+        ));
     }
 
     @GetMapping("/options")
@@ -55,19 +59,11 @@ public class QuoteMonitorInstrumentSelectionController {
         return ResponseEntity.noContent().build();
     }
 
-    private QuoteMonitorInstrumentSelectionResponse toSelectionResponse(
-            QuoteMonitorInstrumentSelection selection
-    ) {
-        return new QuoteMonitorInstrumentSelectionResponse(
-                selection.instrumentCodes()
-                        .stream()
-                        .map(this::toInstrumentDto)
-                        .toList()
+    private QuoteMonitorInstrumentDto toInstrumentDto(QuoteMonitorSelectedInstrument instrument) {
+        return new QuoteMonitorInstrumentDto(
+                instrument.instrumentCode().value(),
+                instrument.sourcePlanStatus().name()
         );
-    }
-
-    private QuoteMonitorInstrumentDto toInstrumentDto(InstrumentCode instrumentCode) {
-        return new QuoteMonitorInstrumentDto(instrumentCode.value());
     }
 
     private QuoteMonitorInstrumentOptionDto toOptionDto(QuoteMonitorInstrumentOption option) {

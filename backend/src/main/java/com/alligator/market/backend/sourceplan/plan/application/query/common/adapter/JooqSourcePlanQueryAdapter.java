@@ -97,6 +97,41 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
     }
 
     @Override
+    public Map<InstrumentCode, StoredSourcePlanExecutionStatus>
+            findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+                    CapturerCode capturerCode,
+                    List<InstrumentCode> instrumentCodes
+            ) {
+        Objects.requireNonNull(capturerCode, "capturerCode must not be null");
+        Objects.requireNonNull(instrumentCodes, "instrumentCodes must not be null");
+
+        List<String> instrumentCodeValues = instrumentCodes.stream()
+                .map(instrumentCode -> Objects.requireNonNull(instrumentCode, "instrumentCode must not be null"))
+                .map(InstrumentCode::value)
+                .distinct()
+                .toList();
+
+        if (instrumentCodeValues.isEmpty()) {
+            return Map.of();
+        }
+
+        Map<InstrumentCode, StoredSourcePlanExecutionStatus> statuses = new LinkedHashMap<>();
+
+        dsl.select(SOURCE_PLAN_INSTRUMENT_CODE, SOURCE_PLAN_EXECUTION_STATUS)
+                .from(SOURCE_PLAN)
+                .where(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value()))
+                .and(SOURCE_PLAN_INSTRUMENT_CODE.in(instrumentCodeValues))
+                .orderBy(SOURCE_PLAN_INSTRUMENT_CODE.asc())
+                .fetch()
+                .forEach(record -> statuses.put(
+                        new InstrumentCode(record.get(SOURCE_PLAN_INSTRUMENT_CODE)),
+                        StoredSourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS))
+                ));
+
+        return Map.copyOf(statuses);
+    }
+
+    @Override
     public List<SourcePlanQueryItem> findAll() {
         Map<PlanKey, List<SourceQueryItem>> groupedSources = new LinkedHashMap<>();
 

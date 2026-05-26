@@ -3,7 +3,11 @@ package com.alligator.market.backend.process.quotemonitor.application.instrument
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentCandidateNotFoundException;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.exception.QuoteMonitorInstrumentSelectionLockedException;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorInstrumentOption;
+import com.alligator.market.backend.process.quotemonitor.application.instrument.model.QuoteMonitorSelectedInstrument;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
+import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
+import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
+import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
@@ -12,9 +16,13 @@ import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
 import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +44,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"),
                         new InstrumentCode("FOREX_SPOT_USDRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -58,6 +67,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -80,6 +90,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -105,6 +116,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
+                new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -125,6 +137,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -147,6 +160,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
         );
@@ -170,6 +184,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of(
                         new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")
                 )),
+                new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
                 new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.RUNNING)
         );
@@ -185,6 +200,38 @@ class QuoteMonitorInstrumentSelectionServiceTest {
 
         assertThat(repository.get().instrumentCodes()).isEmpty();
         assertThat(runtimeRegistryUpdater.updateCount).isZero();
+    }
+
+    @Test
+    void returnsSelectedInstrumentsWithSourcePlanStatuses() {
+        InstrumentCode firstCode = new InstrumentCode("FOREX_SPOT_CNYRUB_TOM");
+        InstrumentCode secondCode = new InstrumentCode("FOREX_SPOT_USDRUB_TOM");
+        FakeQuoteMonitorInstrumentSelectionRepository repository =
+                new FakeQuoteMonitorInstrumentSelectionRepository(
+                        new QuoteMonitorInstrumentSelection(List.of(firstCode, secondCode))
+                );
+        QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
+                repository,
+                new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
+                new FakeSourcePlanQueryPort(Map.of(
+                        firstCode, StoredSourcePlanExecutionStatus.AVAILABLE,
+                        secondCode, StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES
+                )),
+                new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
+                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+        );
+
+        assertThat(service.findSelectedInstruments())
+                .containsExactly(
+                        new QuoteMonitorSelectedInstrument(
+                                firstCode,
+                                StoredSourcePlanExecutionStatus.AVAILABLE
+                        ),
+                        new QuoteMonitorSelectedInstrument(
+                                secondCode,
+                                StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES
+                        )
+                );
     }
 
     private static final class FakeQuoteMonitorInstrumentSelectionRepository
@@ -246,6 +293,47 @@ class QuoteMonitorInstrumentSelectionServiceTest {
             return instrumentCodes.stream()
                     .filter(instrumentCode -> !candidateInstrumentCodeSet.contains(instrumentCode))
                     .toList();
+        }
+    }
+
+    private static final class FakeSourcePlanQueryPort implements SourcePlanQueryPort {
+        private final Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses;
+
+        private FakeSourcePlanQueryPort(
+                Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses
+        ) {
+            this.sourcePlanStatuses = Map.copyOf(sourcePlanStatuses);
+        }
+
+        @Override
+        public Optional<SourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
+                CapturerCode capturerCode,
+                InstrumentCode instrumentCode
+        ) {
+            throw new UnsupportedOperationException("Not needed by this test");
+        }
+
+        @Override
+        public Map<InstrumentCode, StoredSourcePlanExecutionStatus>
+                findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+                        CapturerCode capturerCode,
+                        List<InstrumentCode> instrumentCodes
+                ) {
+            Map<InstrumentCode, StoredSourcePlanExecutionStatus> statuses = new LinkedHashMap<>();
+
+            for (InstrumentCode instrumentCode : instrumentCodes) {
+                StoredSourcePlanExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
+                if (status != null) {
+                    statuses.put(instrumentCode, status);
+                }
+            }
+
+            return statuses;
+        }
+
+        @Override
+        public List<SourcePlanQueryItem> findAll() {
+            throw new UnsupportedOperationException("Not needed by this test");
         }
     }
 

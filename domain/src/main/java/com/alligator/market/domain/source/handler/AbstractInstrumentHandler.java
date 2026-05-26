@@ -4,6 +4,7 @@ import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
 import com.alligator.market.domain.source.handler.instrument.SupportedInstrumentsProfile;
 import com.alligator.market.domain.source.handler.passport.SourceHandlerPassport;
 import com.alligator.market.domain.source.handler.policy.SourceHandlerPolicy;
@@ -97,45 +98,37 @@ public abstract class AbstractInstrumentHandler<P extends MarketSource, I extend
 
     private void requireInstrumentMatchesSupportedProfile(I instrument, InstrumentCode instrumentCode) {
         if (!supportedInstrumentsProfile.instrumentClass().isInstance(instrument)) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has java class '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.getClass().getName(),
-                                    handlerCode.value(),
-                                    supportedInstrumentsProfile.instrumentClass().getName()
-                            )
+            throw InstrumentNotSupportedByHandlerException.instrumentClassMismatch(
+                    instrumentCode,
+                    handlerCode,
+                    supportedInstrumentsProfile.instrumentClass(),
+                    instrument.getClass()
             );
         }
 
         if (instrument.asset() != supportedInstrumentsProfile.asset()) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has asset '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.asset(),
-                                    handlerCode.value(),
-                                    supportedInstrumentsProfile.asset()
-                            )
+            throw InstrumentNotSupportedByHandlerException.assetMismatch(
+                    instrumentCode,
+                    handlerCode,
+                    supportedInstrumentsProfile.asset(),
+                    instrument.asset()
             );
         }
 
         if (instrument.product() != supportedInstrumentsProfile.product()) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' has product '%s', but handler '%s' expects '%s'"
-                            .formatted(
-                                    instrumentCode.value(),
-                                    instrument.product(),
-                                    handlerCode.value(),
-                                    supportedInstrumentsProfile.product()
-                            )
+            throw InstrumentNotSupportedByHandlerException.productMismatch(
+                    instrumentCode,
+                    handlerCode,
+                    supportedInstrumentsProfile.product(),
+                    instrument.product()
             );
         }
 
         if (!supportedInstrumentsProfile.supportedInstrumentCodes().contains(instrumentCode)) {
-            throw new IllegalArgumentException(
-                    "Instrument '%s' is not supported by handler '%s'"
-                            .formatted(instrumentCode.value(), handlerCode.value())
+            throw InstrumentNotSupportedByHandlerException.instrumentCodeNotSupported(
+                    instrumentCode,
+                    handlerCode,
+                    supportedInstrumentsProfile.supportedInstrumentCodes()
             );
         }
     }
