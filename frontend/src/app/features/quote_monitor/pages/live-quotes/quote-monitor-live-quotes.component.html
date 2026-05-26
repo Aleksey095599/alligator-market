@@ -126,7 +126,12 @@
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef>Status</th>
               <td mat-cell *matCellDef="let row">
-                <span class="row-status" [ngClass]="statusClass(row.status)">
+                <span
+                  class="row-status"
+                  [ngClass]="statusClass(row.status)"
+                  [matTooltip]="row.statusDetail ?? ''"
+                  [matTooltipDisabled]="!row.statusDetail"
+                >
                   {{ statusLabel(row.status) }}
                 </span>
               </td>
@@ -143,15 +148,6 @@
               <th mat-header-cell *matHeaderCellDef>Source</th>
               <td mat-cell *matCellDef="let row">
                 {{ row.sourceCode ?? '-' }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="sourcePlanStatus">
-              <th mat-header-cell *matHeaderCellDef>Source Plan Status</th>
-              <td mat-cell *matCellDef="let row">
-                <span class="source-plan-status" [ngClass]="sourcePlanStatusClass(row.sourcePlanStatus)">
-                  {{ sourcePlanStatusLabel(row.sourcePlanStatus) }}
-                </span>
               </td>
             </ng-container>
 
@@ -207,7 +203,7 @@
             <tr
               mat-row
               *matRowDef="let row; columns: monitoredColumns"
-              [class.live-quotes-row--warning]="row.status === 'NOT_AVAILABLE' || row.status === 'NOT_MONITORED' || row.sourcePlanStatus !== 'AVAILABLE'"
+              [class.live-quotes-row--warning]="isIssueStatus(row.status)"
             ></tr>
           </table>
         </ng-template>

@@ -51,8 +51,7 @@
   margin: 0 0 16px;
 }
 
-.row-status,
-.source-plan-status {
+.row-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -65,10 +64,6 @@
   font-weight: 700;
   line-height: 1.1;
   text-align: center;
-}
-
-.source-plan-status {
-  min-width: 152px;
 }
 
 .row-status--live {
@@ -87,33 +82,25 @@
 }
 
 .row-status--not-available,
-.row-status--not-monitored {
+.row-status--not-monitored,
+.row-status--runtime-instrument-not-found,
+.row-status--runtime-source-plan-not-found,
+.row-status--runtime-source-not-found,
+.row-status--handler-not-found,
+.row-status--instrument-not-supported-by-handler,
+.row-status--stream-start-failed,
+.row-status--stream-failed {
   background: #f7e7e7;
   color: #7f1d1d;
 }
 
-.source-plan-status--available {
-  background: #e4f5e6;
-  color: #145a25;
-}
-
-.source-plan-status--capturer-retired {
-  background: #f7e7e7;
-  color: #7f1d1d;
-}
-
-.source-plan-status--no-available-sources {
+.row-status--unsupported-source-tick-type {
   background: #fff4df;
   color: #7a4b00;
 }
 
-.source-plan-status--missing {
-  background: #eeeeee;
-  color: #616161;
-}
-
 .live-quotes-table {
-  min-width: 1210px;
+  min-width: 1060px;
 }
 
 .actions-cell {

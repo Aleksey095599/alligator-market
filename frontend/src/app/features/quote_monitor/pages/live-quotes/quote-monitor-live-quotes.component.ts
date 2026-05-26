@@ -11,11 +11,14 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription, switchMap, timer } from 'rxjs';
 
 import { QuoteMonitorInstrumentQuote } from '../../models/quote-monitor-instrument-quote.model';
-import { QuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
-import { QuoteMonitorSourcePlanStatus } from '../../models/quote-monitor-instrument-selection.model';
+import {
+  QuoteMonitorInstrumentRuntimeState,
+  QuoteMonitorInstrumentRuntimeStatus,
+  QuoteMonitorRuntimeStatus
+} from '../../models/quote-monitor-runtime.model';
 import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-monitor-instrument-selection.service';
 import { QuoteMonitorInstrumentQuoteService } from '../../services/quote-monitor-instrument-quote.service';
 import { QuoteMonitorRuntimeService } from '../../services/quote-monitor-runtime.service';
@@ -26,20 +29,18 @@ interface HighlightSegment {
 }
 
 type QuoteMonitorRowStatus =
-  | 'STOPPED'
+  | QuoteMonitorInstrumentRuntimeStatus
   | 'NOT_AVAILABLE'
-  | 'WAITING_FOR_QUOTE'
-  | 'LIVE'
   | 'NOT_MONITORED';
 
 interface QuoteMonitorInstrumentRow {
   instrumentCode: string;
   lastPrice: string | null;
   sourceCode: string | null;
-  sourcePlanStatus: QuoteMonitorSourcePlanStatus | null;
   sourceTickTime: string | null;
   receivedAt: string | null;
   status: QuoteMonitorRowStatus;
+  statusDetail: string | null;
   candidateAvailable: boolean;
   monitored: boolean;
 }
@@ -71,7 +72,6 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     'status',
     'lastPrice',
     'sourceCode',
-    'sourcePlanStatus',
     'sourceTickTime',
     'receivedAt',
     'actions'
@@ -86,12 +86,14 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   commandRunning = false;
 
   private selectedInstrumentCodes = new Set<string>();
-  private sourcePlanStatusesByInstrumentCode = new Map<string, QuoteMonitorSourcePlanStatus>();
   private candidateInstrumentCodeSet = new Set<string>();
   private monitoredInstrumentCodes = new Set<string>();
+  private runtimeInstrumentStatesByInstrumentCode =
+    new Map<string, QuoteMonitorInstrumentRuntimeState>();
   private readonly instrumentQuotesByInstrumentCode = new Map<string, QuoteMonitorInstrumentQuote>();
   private readonly subscriptions = new Subscription();
   private quoteEventSource: EventSource | null = null;
+  private runtimeStatusPollingSubscription: Subscription | null = null;
 
   constructor(
     private readonly instrumentSelectionService: QuoteMonitorInstrumentSelectionService,
@@ -108,6 +110,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopQuoteStream();
+    this.stopRuntimeStatusPolling();
     this.subscriptions.unsubscribe();
   }
 
@@ -222,6 +225,22 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
         return 'WAITING';
       case 'LIVE':
         return 'LIVE';
+      case 'RUNTIME_INSTRUMENT_NOT_FOUND':
+        return 'INSTRUMENT NOT LOADED';
+      case 'RUNTIME_SOURCE_PLAN_NOT_FOUND':
+        return 'SOURCE PLAN NOT LOADED';
+      case 'RUNTIME_SOURCE_NOT_FOUND':
+        return 'SOURCE NOT LOADED';
+      case 'HANDLER_NOT_FOUND':
+        return 'HANDLER NOT FOUND';
+      case 'INSTRUMENT_NOT_SUPPORTED_BY_HANDLER':
+        return 'NOT SUPPORTED';
+      case 'STREAM_START_FAILED':
+        return 'START FAILED';
+      case 'STREAM_FAILED':
+        return 'STREAM FAILED';
+      case 'UNSUPPORTED_SOURCE_TICK_TYPE':
+        return 'UNSUPPORTED TICK';
       case 'NOT_MONITORED':
         return 'NOT MONITORED';
     }
@@ -231,25 +250,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     return `row-status--${status.toLowerCase().split('_').join('-')}`;
   }
 
-  sourcePlanStatusLabel(status: QuoteMonitorSourcePlanStatus | null): string {
-    switch (status) {
-      case 'AVAILABLE':
-        return 'AVAILABLE';
-      case 'CAPTURER_RETIRED':
-        return 'CAPTURER RETIRED';
-      case 'NO_AVAILABLE_SOURCES':
-        return 'NO AVAILABLE SOURCES';
-      case null:
-        return '-';
-    }
-  }
-
-  sourcePlanStatusClass(status: QuoteMonitorSourcePlanStatus | null): string {
-    if (!status) {
-      return 'source-plan-status--missing';
-    }
-
-    return `source-plan-status--${status.toLowerCase().split('_').join('-')}`;
+  isIssueStatus(status: QuoteMonitorRowStatus): boolean {
+    return status !== 'STOPPED' && status !== 'WAITING_FOR_QUOTE' && status !== 'LIVE';
   }
 
   formatDateTime(value: string | null): string {
@@ -341,12 +343,6 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
         this.selectedInstrumentCodes = new Set(
           state.selectedInstruments.map(instrument => instrument.instrumentCode)
         );
-        this.sourcePlanStatusesByInstrumentCode = new Map(
-          state.selectedInstruments.map(instrument => [
-            instrument.instrumentCode,
-            instrument.sourcePlanStatus
-          ])
-        );
         this.applyRuntimeStatus(state.runtimeStatus, false);
         this.applyQuoteSnapshot(state.instrumentQuotes, false);
         this.syncRows();
@@ -393,8 +389,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.selectedInstrumentCodes = nextSelectedInstrumentCodes;
-          this.sourcePlanStatusesByInstrumentCode = new Map(
-            Array.from(this.sourcePlanStatusesByInstrumentCode)
+          this.runtimeInstrumentStatesByInstrumentCode = new Map(
+            Array.from(this.runtimeInstrumentStatesByInstrumentCode)
               .filter(([instrumentCode]) => nextSelectedInstrumentCodes.has(instrumentCode))
           );
           this.syncRows();
@@ -414,6 +410,9 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.runtimeStatus = status.status;
     this.lastTickAt = status.lastTickAt;
     this.monitoredInstrumentCodes = new Set(status.monitoredInstrumentCodes);
+    this.runtimeInstrumentStatesByInstrumentCode = new Map(
+      status.instrumentStates.map(state => [state.instrumentCode, state])
+    );
 
     if (sync) {
       this.syncRows();
@@ -434,10 +433,12 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   private refreshQuoteStream(): void {
     if (this.running) {
       this.startQuoteStream();
+      this.startRuntimeStatusPolling();
       return;
     }
 
     this.stopQuoteStream();
+    this.stopRuntimeStatusPolling();
   }
 
   private startQuoteStream(): void {
@@ -472,6 +473,35 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.quoteEventSource = null;
   }
 
+  private startRuntimeStatusPolling(): void {
+    if (this.runtimeStatusPollingSubscription) {
+      return;
+    }
+
+    const subscription = timer(5000, 5000)
+      .pipe(switchMap(() => this.runtimeService.status()))
+      .subscribe({
+        next: status => {
+          this.applyRuntimeStatus(status);
+          if (!this.running) {
+            this.stopQuoteStream();
+            this.stopRuntimeStatusPolling();
+          }
+        },
+        error: () => {
+          this.runtimeStatusPollingSubscription = null;
+        }
+      });
+
+    this.runtimeStatusPollingSubscription = subscription;
+    this.subscriptions.add(subscription);
+  }
+
+  private stopRuntimeStatusPolling(): void {
+    this.runtimeStatusPollingSubscription?.unsubscribe();
+    this.runtimeStatusPollingSubscription = null;
+  }
+
   private applyQuoteSnapshot(updates: QuoteMonitorInstrumentQuote[], sync = true): void {
     this.instrumentQuotesByInstrumentCode.clear();
     for (const update of updates) {
@@ -501,25 +531,30 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     const quote = this.instrumentQuotesByInstrumentCode.get(instrumentCode);
     const candidateAvailable = this.candidateInstrumentCodeSet.has(instrumentCode);
     const monitored = this.monitoredInstrumentCodes.has(instrumentCode);
+    const runtimeState = this.runtimeInstrumentStatesByInstrumentCode.get(instrumentCode);
 
     return {
       instrumentCode,
       lastPrice: quote?.lastPrice ?? null,
       sourceCode: quote?.sourceCode ?? null,
-      sourcePlanStatus: this.sourcePlanStatusesByInstrumentCode.get(instrumentCode) ?? null,
       sourceTickTime: quote?.sourceTickTime ?? null,
       receivedAt: quote?.receivedAt ?? null,
-      status: this.resolveRowStatus(quote, candidateAvailable, monitored),
+      status: this.resolveRowStatus(runtimeState, candidateAvailable, monitored),
+      statusDetail: runtimeState?.detail ?? null,
       candidateAvailable,
       monitored
     };
   }
 
   private resolveRowStatus(
-    quote: QuoteMonitorInstrumentQuote | undefined,
+    runtimeState: QuoteMonitorInstrumentRuntimeState | undefined,
     candidateAvailable: boolean,
     monitored: boolean
   ): QuoteMonitorRowStatus {
+    if (runtimeState) {
+      return runtimeState.status;
+    }
+
     if (!this.running) {
       return candidateAvailable ? 'STOPPED' : 'NOT_AVAILABLE';
     }
@@ -528,7 +563,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       return 'NOT_MONITORED';
     }
 
-    return quote ? 'LIVE' : 'WAITING_FOR_QUOTE';
+    return 'WAITING_FOR_QUOTE';
   }
 
   private matchesQuoteFilter(instrumentCode: string): boolean {
