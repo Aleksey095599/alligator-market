@@ -20,7 +20,8 @@ public final class MoexIssFxSpotSupportCatalog {
     private static final Currency RUB = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
     private static final Currency CNY = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
 
-    private static final FxSpot USD_RUB = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
+    private static final FxSpot USD_RUB_TOM = new FxSpot(USD, RUB, FxSpotTenor.TOM, 4);
+    private static final FxSpot USD_RUB_SPOT = new FxSpot(USD, RUB, FxSpotTenor.SPOT, 4);
     private static final FxSpot CNY_RUB = new FxSpot(CNY, RUB, FxSpotTenor.TOM, 4);
 
     private static final Map<InstrumentCode, SourceInstrumentCode> DOMAIN_CODE_TO_SECID;
@@ -29,12 +30,13 @@ public final class MoexIssFxSpotSupportCatalog {
 
     static {
         SUPPORTED_INSTRUMENTS = Collections.unmodifiableSet(
-                new LinkedHashSet<>(List.of(USD_RUB, CNY_RUB))
+                new LinkedHashSet<>(List.of(USD_RUB_TOM, USD_RUB_SPOT, CNY_RUB))
         );
 
         Map<InstrumentCode, SourceInstrumentCode> map = new LinkedHashMap<>();
 
-        map.put(USD_RUB.instrumentCode(), SourceInstrumentCode.of("USD000UTSTOM"));
+        map.put(USD_RUB_TOM.instrumentCode(), SourceInstrumentCode.of("USD000UTSTOM"));
+        map.put(USD_RUB_SPOT.instrumentCode(), SourceInstrumentCode.of("USDRUB_SPT"));
         map.put(CNY_RUB.instrumentCode(), SourceInstrumentCode.of("CNYRUB_TOM"));
 
         DOMAIN_CODE_TO_SECID = Collections.unmodifiableMap(map);
