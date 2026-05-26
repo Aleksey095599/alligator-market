@@ -1,9 +1,9 @@
-package com.alligator.market.backend.process.quotemonitor.api.livequote.controller;
+package com.alligator.market.backend.process.quotemonitor.api.quote.controller;
 
-import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorInstrumentQuoteDto;
-import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorInstrumentQuoteListResponse;
-import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteQueryService;
-import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteStreamService;
+import com.alligator.market.backend.process.quotemonitor.api.quote.dto.QuoteMonitorInstrumentQuoteDto;
+import com.alligator.market.backend.process.quotemonitor.api.quote.dto.QuoteMonitorInstrumentQuoteListResponse;
+import com.alligator.market.backend.process.quotemonitor.application.quote.QuoteMonitorInstrumentQuoteQueryService;
+import com.alligator.market.backend.process.quotemonitor.application.quote.QuoteMonitorInstrumentQuoteStreamService;
 import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/quote-monitor/live-quotes")
-public class QuoteMonitorLiveQuoteController {
-    private final QuoteMonitorLiveQuoteQueryService queryService;
-    private final QuoteMonitorLiveQuoteStreamService streamService;
+public class QuoteMonitorInstrumentQuoteController {
+    private final QuoteMonitorInstrumentQuoteQueryService queryService;
+    private final QuoteMonitorInstrumentQuoteStreamService streamService;
 
-    public QuoteMonitorLiveQuoteController(
-            QuoteMonitorLiveQuoteQueryService queryService,
-            QuoteMonitorLiveQuoteStreamService streamService
+    public QuoteMonitorInstrumentQuoteController(
+            QuoteMonitorInstrumentQuoteQueryService queryService,
+            QuoteMonitorInstrumentQuoteStreamService streamService
     ) {
         this.queryService = Objects.requireNonNull(queryService, "queryService must not be null");
         this.streamService = Objects.requireNonNull(streamService, "streamService must not be null");

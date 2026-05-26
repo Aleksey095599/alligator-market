@@ -1,6 +1,6 @@
-package com.alligator.market.backend.process.quotemonitor.application.livequote;
+package com.alligator.market.backend.process.quotemonitor.application.quote;
 
-import com.alligator.market.backend.process.quotemonitor.registry.runtime.AtomicRuntimeQuoteMonitorLiveQuoteRegistry;
+import com.alligator.market.backend.process.quotemonitor.registry.runtime.AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
 import com.alligator.market.domain.source.vo.SourceCode;
@@ -10,16 +10,17 @@ import reactor.test.StepVerifier;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-class QuoteMonitorLiveQuoteStreamServiceTest {
+class QuoteMonitorInstrumentQuoteStreamServiceTest {
     private static final Instant SOURCE_TICK_TIME = Instant.parse("2026-05-18T08:00:00Z");
     private static final Instant RECEIVED_AT = Instant.parse("2026-05-18T08:00:01Z");
 
     @Test
     void streamsCurrentSnapshotAndFutureUpdates() {
-        AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
+        AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry registry = new AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry();
         QuoteMonitorInstrumentQuote snapshotQuote = quote("FOREX_SPOT_CNYRUB_TOM", "12.10");
         QuoteMonitorInstrumentQuote updateQuote = quote("FOREX_SPOT_USDRUB_TOM", "90.20");
-        QuoteMonitorLiveQuoteStreamService service = new QuoteMonitorLiveQuoteStreamService(registry, registry);
+        QuoteMonitorInstrumentQuoteStreamService service =
+                new QuoteMonitorInstrumentQuoteStreamService(registry, registry);
 
         registry.publish(snapshotQuote);
 

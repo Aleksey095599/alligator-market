@@ -18,7 +18,7 @@ export interface QuoteMonitorInstrumentQuote {
   receivedAt: string;
 }
 
-export interface LiveQuoteRow {
+export interface InstrumentQuoteRow {
   instrumentCode: string;
   lastPrice: string | null;
   sourceCode: string | null;

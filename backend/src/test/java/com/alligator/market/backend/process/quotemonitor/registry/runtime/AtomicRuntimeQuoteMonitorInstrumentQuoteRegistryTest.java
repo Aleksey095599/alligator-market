@@ -12,14 +12,14 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
+class AtomicRuntimeQuoteMonitorInstrumentQuoteRegistryTest {
     private static final Instant SOURCE_TICK_TIME = Instant.parse("2026-05-18T08:00:00Z");
     private static final Instant RECEIVED_AT = Instant.parse("2026-05-18T08:00:01Z");
 
     @Test
     void returnsLatestPublishedQuoteByInstrumentCode() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
-        AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
+        AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry registry = new AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry();
         QuoteMonitorInstrumentQuote firstQuote = quote(instrumentCode, "90.10");
         QuoteMonitorInstrumentQuote changedQuote = quote(instrumentCode, "90.20");
 
@@ -32,7 +32,7 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
 
     @Test
     void clearRemovesCurrentQuotes() {
-        AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
+        AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry registry = new AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry();
         QuoteMonitorInstrumentQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
 
         registry.publish(quote);
@@ -44,10 +44,10 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
 
     @Test
     void emitsPublishedQuotesToLiveUpdateStream() {
-        AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
+        AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry registry = new AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry();
         QuoteMonitorInstrumentQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
 
-        StepVerifier.create(registry.liveQuoteUpdates())
+        StepVerifier.create(registry.instrumentQuoteUpdates())
                 .then(() -> registry.publish(quote))
                 .expectNext(quote)
                 .thenCancel()

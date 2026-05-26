@@ -1,10 +1,10 @@
 package com.alligator.market.backend.process.quotemonitor.registry.runtime;
 
-import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteUpdateStream;
+import com.alligator.market.backend.process.quotemonitor.application.quote.QuoteMonitorInstrumentQuoteUpdateStream;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuoteRegistry;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -16,13 +16,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
-        implements RuntimeQuoteMonitorLiveQuoteRegistry,
-        RuntimeQuoteMonitorLiveQuotePublisher,
-        QuoteMonitorLiveQuoteUpdateStream {
+public final class AtomicRuntimeQuoteMonitorInstrumentQuoteRegistry
+        implements RuntimeQuoteMonitorInstrumentQuoteRegistry,
+        RuntimeQuoteMonitorInstrumentQuotePublisher,
+        QuoteMonitorInstrumentQuoteUpdateStream {
     private final AtomicReference<Map<InstrumentCode, QuoteMonitorInstrumentQuote>> quotesByInstrumentCode =
             new AtomicReference<>(Map.of());
-    private final Sinks.Many<QuoteMonitorInstrumentQuote> liveQuoteUpdates =
+    private final Sinks.Many<QuoteMonitorInstrumentQuote> instrumentQuoteUpdates =
             Sinks.many().multicast().directBestEffort();
 
     @Override
@@ -58,7 +58,7 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
             updated.put(quoteToPublish.instrumentCode(), quoteToPublish);
             return Map.copyOf(updated);
         });
-        liveQuoteUpdates.tryEmitNext(quoteToPublish);
+        instrumentQuoteUpdates.tryEmitNext(quoteToPublish);
     }
 
     @Override
@@ -67,7 +67,7 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
     }
 
     @Override
-    public Flux<QuoteMonitorInstrumentQuote> liveQuoteUpdates() {
-        return liveQuoteUpdates.asFlux();
+    public Flux<QuoteMonitorInstrumentQuote> instrumentQuoteUpdates() {
+        return instrumentQuoteUpdates.asFlux();
     }
 }

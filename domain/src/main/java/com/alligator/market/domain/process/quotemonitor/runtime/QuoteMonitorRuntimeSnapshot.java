@@ -1,6 +1,7 @@
 package com.alligator.market.domain.process.quotemonitor.runtime;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
+import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;

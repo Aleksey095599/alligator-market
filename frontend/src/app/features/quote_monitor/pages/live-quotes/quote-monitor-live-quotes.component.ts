@@ -13,11 +13,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 
-import { QuoteMonitorInstrumentQuote } from '../../models/quote-monitor-live-quote.model';
+import { QuoteMonitorInstrumentQuote } from '../../models/quote-monitor-instrument-quote.model';
 import { QuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
 import { QuoteMonitorSourcePlanStatus } from '../../models/quote-monitor-instrument-selection.model';
 import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-monitor-instrument-selection.service';
-import { QuoteMonitorLiveQuoteService } from '../../services/quote-monitor-live-quote.service';
+import { QuoteMonitorInstrumentQuoteService } from '../../services/quote-monitor-instrument-quote.service';
 import { QuoteMonitorRuntimeService } from '../../services/quote-monitor-runtime.service';
 
 interface HighlightSegment {
@@ -80,7 +80,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   rows: QuoteMonitorInstrumentRow[] = [];
   runtimeStatus = 'STOPPED';
   lastTickAt: string | null = null;
-  liveQuoteFilterValue = '';
+  instrumentQuoteFilterValue = '';
   loading = false;
   saving = false;
   commandRunning = false;
@@ -89,14 +89,14 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   private sourcePlanStatusesByInstrumentCode = new Map<string, QuoteMonitorSourcePlanStatus>();
   private candidateInstrumentCodeSet = new Set<string>();
   private monitoredInstrumentCodes = new Set<string>();
-  private readonly liveQuotesByInstrumentCode = new Map<string, QuoteMonitorInstrumentQuote>();
+  private readonly instrumentQuotesByInstrumentCode = new Map<string, QuoteMonitorInstrumentQuote>();
   private readonly subscriptions = new Subscription();
   private quoteEventSource: EventSource | null = null;
 
   constructor(
     private readonly instrumentSelectionService: QuoteMonitorInstrumentSelectionService,
     private readonly runtimeService: QuoteMonitorRuntimeService,
-    private readonly liveQuoteService: QuoteMonitorLiveQuoteService,
+    private readonly instrumentQuoteService: QuoteMonitorInstrumentQuoteService,
     private readonly snack: MatSnackBar,
     private readonly zone: NgZone,
     private readonly router: Router
@@ -143,7 +143,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.commandRunning = true;
     const subscription = this.runtimeService.start().subscribe({
       next: status => {
-        this.liveQuotesByInstrumentCode.clear();
+        this.instrumentQuotesByInstrumentCode.clear();
         this.applyRuntimeStatus(status);
         this.loadSnapshot();
         this.refreshQuoteStream();
@@ -167,13 +167,13 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.runCommand(this.runtimeService.stop(), 'Quote monitor stopped');
   }
 
-  onLiveQuoteFilter(value: string): void {
-    this.liveQuoteFilterValue = value.toUpperCase();
+  onInstrumentQuoteFilter(value: string): void {
+    this.instrumentQuoteFilterValue = value.toUpperCase();
     this.syncRows();
   }
 
-  clearLiveQuoteFilter(): void {
-    this.liveQuoteFilterValue = '';
+  clearInstrumentQuoteFilter(): void {
+    this.instrumentQuoteFilterValue = '';
     this.syncRows();
   }
 
@@ -272,8 +272,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     }).format(date);
   }
 
-  highlightedLiveQuoteInstrumentCodeSegments(instrumentCode: string): HighlightSegment[] {
-    return this.highlightedInstrumentCodeSegments(instrumentCode, this.liveQuoteFilterValue);
+  highlightedQuoteInstrumentCodeSegments(instrumentCode: string): HighlightSegment[] {
+    return this.highlightedInstrumentCodeSegments(instrumentCode, this.instrumentQuoteFilterValue);
   }
 
   private highlightedInstrumentCodeSegments(
@@ -332,7 +332,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       runtimeStatus: this.runtimeService.status(),
       options: this.instrumentSelectionService.getOptions(),
       selectedInstruments: this.instrumentSelectionService.getSelectedInstruments(),
-      liveQuotes: this.liveQuoteService.getSnapshot()
+      instrumentQuotes: this.instrumentQuoteService.getSnapshot()
     }).subscribe({
       next: state => {
         this.candidateInstrumentCodeSet = new Set(
@@ -348,7 +348,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
           ])
         );
         this.applyRuntimeStatus(state.runtimeStatus, false);
-        this.applyQuoteSnapshot(state.liveQuotes, false);
+        this.applyQuoteSnapshot(state.instrumentQuotes, false);
         this.syncRows();
         this.refreshQuoteStream();
         this.loading = false;
@@ -421,7 +421,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private loadSnapshot(): void {
-    const subscription = this.liveQuoteService.getSnapshot().subscribe({
+    const subscription = this.instrumentQuoteService.getSnapshot().subscribe({
       next: updates => this.applyQuoteSnapshot(updates),
       error: err => {
         this.snack.open(this.resolveErrorMessage(err, 'Load live quote snapshot failed'), 'Close');
@@ -445,13 +445,15 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const eventSource = this.liveQuoteService.openStream();
+    const eventSource = this.instrumentQuoteService.openStream();
     this.quoteEventSource = eventSource;
 
     eventSource.addEventListener('live-quote', event => {
       this.zone.run(() => {
         try {
-          this.applyQuoteUpdate(this.liveQuoteService.parseStreamMessage((event as MessageEvent<string>).data));
+          this.applyQuoteUpdate(
+            this.instrumentQuoteService.parseStreamMessage((event as MessageEvent<string>).data)
+          );
         } catch {
           this.snack.open('Live quote stream message is invalid', 'Close');
         }
@@ -471,9 +473,9 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private applyQuoteSnapshot(updates: QuoteMonitorInstrumentQuote[], sync = true): void {
-    this.liveQuotesByInstrumentCode.clear();
+    this.instrumentQuotesByInstrumentCode.clear();
     for (const update of updates) {
-      this.liveQuotesByInstrumentCode.set(update.instrumentCode, update);
+      this.instrumentQuotesByInstrumentCode.set(update.instrumentCode, update);
     }
 
     if (sync) {
@@ -482,21 +484,21 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private applyQuoteUpdate(update: QuoteMonitorInstrumentQuote): void {
-    this.liveQuotesByInstrumentCode.set(update.instrumentCode, update);
+    this.instrumentQuotesByInstrumentCode.set(update.instrumentCode, update);
     this.lastTickAt = update.receivedAt;
     this.syncRows();
   }
 
   private syncRows(): void {
     const selectedInstrumentCodes = Array.from(this.selectedInstrumentCodes)
-      .filter(instrumentCode => this.matchesLiveQuoteFilter(instrumentCode))
+      .filter(instrumentCode => this.matchesQuoteFilter(instrumentCode))
       .sort((left, right) => left.localeCompare(right));
 
     this.rows = selectedInstrumentCodes.map(instrumentCode => this.toRow(instrumentCode));
   }
 
   private toRow(instrumentCode: string): QuoteMonitorInstrumentRow {
-    const quote = this.liveQuotesByInstrumentCode.get(instrumentCode);
+    const quote = this.instrumentQuotesByInstrumentCode.get(instrumentCode);
     const candidateAvailable = this.candidateInstrumentCodeSet.has(instrumentCode);
     const monitored = this.monitoredInstrumentCodes.has(instrumentCode);
 
@@ -529,8 +531,8 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     return quote ? 'LIVE' : 'WAITING_FOR_QUOTE';
   }
 
-  private matchesLiveQuoteFilter(instrumentCode: string): boolean {
-    const normalizedFilter = this.liveQuoteFilterValue.trim().toUpperCase();
+  private matchesQuoteFilter(instrumentCode: string): boolean {
+    const normalizedFilter = this.instrumentQuoteFilterValue.trim().toUpperCase();
     return normalizedFilter.length === 0 || instrumentCode.toUpperCase().includes(normalizedFilter);
   }
 

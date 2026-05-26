@@ -15,10 +15,10 @@ import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCap
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -92,8 +92,8 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         TestInstrument firstInstrument = instrument(firstCode);
         TestInstrument secondInstrument = instrument(secondCode);
         RecordingMarketSource source = new RecordingMarketSource(SourceCode.of("PRIMARY_SOURCE"));
-        CapturingRuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher =
-                new CapturingRuntimeQuoteMonitorLiveQuotePublisher();
+        CapturingRuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher =
+                new CapturingRuntimeQuoteMonitorInstrumentQuotePublisher();
         MutableRuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry =
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(firstCode, secondCode))
@@ -105,7 +105,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 new MutableRuntimeInstrumentRegistry(List.of(firstInstrument, secondInstrument)),
                 sourcePlanRegistry,
                 new MutableRuntimeSourceRegistry(List.of(source)),
-                liveQuotePublisher
+                instrumentQuotePublisher
         );
 
         process.start();
@@ -117,11 +117,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
         assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
         assertThat(source.streamedInstrumentCodes()).containsExactly(firstCode);
-        assertThat(liveQuotePublisher.clearCount()).isEqualTo(1);
-        assertThat(liveQuotePublisher.publishedQuotes()).hasSize(1);
-        assertThat(liveQuotePublisher.publishedQuotes().getFirst().instrumentCode()).isEqualTo(firstCode);
-        assertThat(liveQuotePublisher.publishedQuotes().getFirst().sourceCode()).isEqualTo(source.code());
-        assertThat(liveQuotePublisher.publishedQuotes().getFirst().lastPrice()).isEqualByComparingTo(BigDecimal.ONE);
+        assertThat(instrumentQuotePublisher.clearCount()).isEqualTo(1);
+        assertThat(instrumentQuotePublisher.publishedQuotes()).hasSize(1);
+        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().instrumentCode()).isEqualTo(firstCode);
+        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().sourceCode()).isEqualTo(source.code());
+        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().lastPrice()).isEqualByComparingTo(BigDecimal.ONE);
     }
 
     @Test
@@ -336,7 +336,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
-                new CapturingRuntimeQuoteMonitorLiveQuotePublisher()
+                new CapturingRuntimeQuoteMonitorInstrumentQuotePublisher()
         );
     }
 
@@ -345,7 +345,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
-            RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher
+            RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher
     ) {
         return new DefaultQuoteMonitorRuntimeProcess(
                 new QuoteMonitorCapturer(),
@@ -353,7 +353,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
-                liveQuotePublisher,
+                instrumentQuotePublisher,
                 Clock.fixed(START_TIME, ZoneOffset.UTC)
         );
     }
@@ -644,8 +644,8 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class CapturingRuntimeQuoteMonitorLiveQuotePublisher
-            implements RuntimeQuoteMonitorLiveQuotePublisher {
+    private static final class CapturingRuntimeQuoteMonitorInstrumentQuotePublisher
+            implements RuntimeQuoteMonitorInstrumentQuotePublisher {
         private final List<QuoteMonitorInstrumentQuote> publishedQuotes = new ArrayList<>();
         private int clearCount;
 

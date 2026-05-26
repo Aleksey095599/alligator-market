@@ -6,12 +6,12 @@ import {
   QuoteMonitorInstrumentQuote,
   QuoteMonitorInstrumentQuoteDto,
   QuoteMonitorInstrumentQuoteListResponseDto
-} from '../models/quote-monitor-live-quote.model';
+} from '../models/quote-monitor-instrument-quote.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuoteMonitorLiveQuoteService {
+export class QuoteMonitorInstrumentQuoteService {
   private readonly baseUrl = '/api/v1/quote-monitor/live-quotes';
 
   constructor(private readonly http: HttpClient) {}

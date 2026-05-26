@@ -1,4 +1,4 @@
-package com.alligator.market.domain.process.quotemonitor.runtime;
+package com.alligator.market.domain.process.quotemonitor.runtime.instrument;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 

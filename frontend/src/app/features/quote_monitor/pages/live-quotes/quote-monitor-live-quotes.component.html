@@ -18,17 +18,17 @@
             <input
               matInput
               type="text"
-              [value]="liveQuoteFilterValue"
-              (input)="onLiveQuoteFilter($any($event.target).value)"
+              [value]="instrumentQuoteFilterValue"
+              (input)="onInstrumentQuoteFilter($any($event.target).value)"
             >
             <button
-              *ngIf="liveQuoteFilterValue"
+              *ngIf="instrumentQuoteFilterValue"
               mat-icon-button
               matSuffix
               type="button"
               matTooltip="Clear"
-              (click)="clearLiveQuoteFilter()"
-              aria-label="Clear live quote instrument filter"
+              (click)="clearInstrumentQuoteFilter()"
+              aria-label="Clear instrument quote filter"
             >
               <mat-icon>close</mat-icon>
             </button>
@@ -116,9 +116,9 @@
             <ng-container matColumnDef="instrumentCode">
               <th mat-header-cell *matHeaderCellDef>Instrument Code</th>
               <td mat-cell *matCellDef="let row" class="instrument-code-cell">
-                <ng-container *ngFor="let segment of highlightedLiveQuoteInstrumentCodeSegments(row.instrumentCode)">
-                  <mark *ngIf="segment.match; else plainLiveQuoteSegment">{{ segment.text }}</mark>
-                  <ng-template #plainLiveQuoteSegment>{{ segment.text }}</ng-template>
+                <ng-container *ngFor="let segment of highlightedQuoteInstrumentCodeSegments(row.instrumentCode)">
+                  <mark *ngIf="segment.match; else plainQuoteSegment">{{ segment.text }}</mark>
+                  <ng-template #plainQuoteSegment>{{ segment.text }}</ng-template>
                 </ng-container>
               </td>
             </ng-container>

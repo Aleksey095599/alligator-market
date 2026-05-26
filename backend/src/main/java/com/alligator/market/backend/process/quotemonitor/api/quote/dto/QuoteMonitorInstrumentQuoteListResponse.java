@@ -1,4 +1,4 @@
-package com.alligator.market.backend.process.quotemonitor.api.livequote.dto;
+package com.alligator.market.backend.process.quotemonitor.api.quote.dto;
 
 import java.util.List;
 

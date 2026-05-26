@@ -8,12 +8,12 @@ import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastP
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -45,7 +45,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
     private final RuntimeSourceRegistry sourceRegistry;
-    private final RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher;
+    private final RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher;
     private final Clock clock;
     private final Object lock = new Object();
 
@@ -58,7 +58,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
-            RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher,
+            RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher,
             Clock clock
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
@@ -78,9 +78,9 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 sourceRegistry,
                 "sourceRegistry must not be null"
         );
-        this.liveQuotePublisher = Objects.requireNonNull(
-                liveQuotePublisher,
-                "liveQuotePublisher must not be null"
+        this.instrumentQuotePublisher = Objects.requireNonNull(
+                instrumentQuotePublisher,
+                "instrumentQuotePublisher must not be null"
         );
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
@@ -92,7 +92,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 return false;
             }
 
-            liveQuotePublisher.clear();
+            instrumentQuotePublisher.clear();
             QuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
             List<QuoteMonitorSourceStream> streams = resolution.streams();
             snapshot = runningSnapshot(
@@ -375,7 +375,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
             return false;
         }
 
-        liveQuotePublisher.publish(new QuoteMonitorInstrumentQuote(
+        instrumentQuotePublisher.publish(new QuoteMonitorInstrumentQuote(
                 stream.instrument().instrumentCode(),
                 stream.sourceCode(),
                 lastPriceTick.lastPrice(),

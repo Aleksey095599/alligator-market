@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface RuntimeQuoteMonitorLiveQuoteRegistry {
+public interface RuntimeQuoteMonitorInstrumentQuoteRegistry {
 
     Optional<QuoteMonitorInstrumentQuote> findByInstrumentCode(InstrumentCode instrumentCode);
 
