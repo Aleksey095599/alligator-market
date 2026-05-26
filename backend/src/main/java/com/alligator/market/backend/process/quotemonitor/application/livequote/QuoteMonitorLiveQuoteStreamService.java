@@ -1,7 +1,7 @@
 package com.alligator.market.backend.process.quotemonitor.application.livequote;
 
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
 import reactor.core.publisher.Flux;
 
 import java.util.Objects;
@@ -18,7 +18,7 @@ public final class QuoteMonitorLiveQuoteStreamService {
         this.updateStream = Objects.requireNonNull(updateStream, "updateStream must not be null");
     }
 
-    public Flux<QuoteMonitorLiveQuote> streamQuotes() {
+    public Flux<QuoteMonitorInstrumentQuote> streamQuotes() {
         return Flux.defer(() -> Flux.concat(
                 Flux.fromIterable(registry.currentQuotes()),
                 updateStream.liveQuoteUpdates()

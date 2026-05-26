@@ -11,14 +11,14 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceTickType;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeStatus;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -49,12 +49,12 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DefaultLiveQuoteMonitorRuntimeProcessTest {
+class DefaultQuoteMonitorRuntimeProcessTest {
     private static final Instant START_TIME = Instant.parse("2026-05-18T08:00:00Z");
 
     @Test
     void startMovesProcessToRunningOnlyOnce() {
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
                 new MutableRuntimeInstrumentRegistry(List.of()),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
@@ -64,13 +64,13 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         assertThat(process.start()).isTrue();
         assertThat(process.start()).isFalse();
 
-        assertThat(process.status()).isEqualTo(LiveQuoteMonitorRuntimeStatus.RUNNING);
+        assertThat(process.status()).isEqualTo(QuoteMonitorRuntimeStatus.RUNNING);
         assertThat(process.snapshot().lastTickAt()).isEmpty();
     }
 
     @Test
     void stopMovesProcessToStoppedOnlyOnce() {
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
                 new MutableRuntimeInstrumentRegistry(List.of()),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
@@ -82,7 +82,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         assertThat(process.stop()).isTrue();
         assertThat(process.stop()).isFalse();
 
-        assertThat(process.status()).isEqualTo(LiveQuoteMonitorRuntimeStatus.STOPPED);
+        assertThat(process.status()).isEqualTo(QuoteMonitorRuntimeStatus.STOPPED);
     }
 
     @Test
@@ -100,7 +100,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
                 );
         MutableRuntimeSourcePlanRegistry sourcePlanRegistry =
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(firstCode)));
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 selectionRegistry,
                 new MutableRuntimeInstrumentRegistry(List.of(firstInstrument, secondInstrument)),
                 sourcePlanRegistry,
@@ -112,9 +112,9 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(firstCode);
         assertThat(instrumentState(process, firstCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.LIVE);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.LIVE);
         assertThat(instrumentState(process, secondCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
         assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
         assertThat(source.streamedInstrumentCodes()).containsExactly(firstCode);
         assertThat(liveQuotePublisher.clearCount()).isEqualTo(1);
@@ -140,7 +140,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
                         new SourcePlanEntry(SourceCode.of("BACKUP_SOURCE"), 1),
                         new SourcePlanEntry(SourceCode.of("PRIMARY_SOURCE"), 0)
                 )));
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 selectionRegistry,
                 new MutableRuntimeInstrumentRegistry(List.of(instrument)),
                 sourcePlanRegistry,
@@ -157,7 +157,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsMissingRuntimeInstrumentIssue() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -170,13 +170,13 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND);
     }
 
     @Test
     void startRecordsMissingRuntimeSourcePlanIssue() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -189,13 +189,13 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
     }
 
     @Test
     void startRecordsMissingRuntimeSourceIssue() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -208,7 +208,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND);
     }
 
     @Test
@@ -218,7 +218,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
                 SourceCode.of("PRIMARY_SOURCE"),
                 code -> new HandlerNotFoundException(code, SourceCode.of("PRIMARY_SOURCE"))
         );
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -231,7 +231,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND);
     }
 
     @Test
@@ -245,7 +245,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
                         Set.of(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"))
                 )
         );
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -258,7 +258,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER);
     }
 
     @Test
@@ -268,7 +268,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
                 SourceCode.of("PRIMARY_SOURCE"),
                 ignored -> new IllegalStateException("Stream cannot be created")
         );
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -280,8 +280,8 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         process.start();
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
-        LiveQuoteMonitorInstrumentRuntimeState state = onlyInstrumentState(process, instrumentCode);
-        assertThat(state.status()).isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED);
+        QuoteMonitorInstrumentRuntimeState state = onlyInstrumentState(process, instrumentCode);
+        assertThat(state.status()).isEqualTo(QuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED);
         assertThat(state.detail()).contains("Stream cannot be created");
     }
 
@@ -289,7 +289,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
     void startRecordsStreamFailureIssueWhenPublisherFailsAfterSubscription() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         FailingPublisherMarketSource source = new FailingPublisherMarketSource(SourceCode.of("PRIMARY_SOURCE"));
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -302,14 +302,14 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED);
     }
 
     @Test
     void startRecordsUnsupportedTickTypeIssueWhenSourceEmitsNonLastPriceTick() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         UnsupportedTickMarketSource source = new UnsupportedTickMarketSource(SourceCode.of("PRIMARY_SOURCE"));
-        DefaultLiveQuoteMonitorRuntimeProcess process = process(
+        DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
@@ -322,10 +322,10 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
         assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(onlyInstrumentState(process, instrumentCode).status())
-                .isEqualTo(LiveQuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE);
+                .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE);
     }
 
-    private static DefaultLiveQuoteMonitorRuntimeProcess process(
+    private static DefaultQuoteMonitorRuntimeProcess process(
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
@@ -340,15 +340,15 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         );
     }
 
-    private static DefaultLiveQuoteMonitorRuntimeProcess process(
+    private static DefaultQuoteMonitorRuntimeProcess process(
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
             RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher
     ) {
-        return new DefaultLiveQuoteMonitorRuntimeProcess(
-                new LiveQuoteMonitorCapturer(),
+        return new DefaultQuoteMonitorRuntimeProcess(
+                new QuoteMonitorCapturer(),
                 selectionRegistry,
                 instrumentRegistry,
                 sourcePlanRegistry,
@@ -370,7 +370,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
             SourcePlanEntry... entries
     ) {
         return new SourcePlan(
-                LiveQuoteMonitorCapturer.CAPTURER_CODE,
+                QuoteMonitorCapturer.CAPTURER_CODE,
                 instrumentCode,
                 List.of(entries)
         );
@@ -380,19 +380,19 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
         return new TestInstrument(instrumentCode);
     }
 
-    private static LiveQuoteMonitorInstrumentRuntimeState onlyInstrumentState(
-            DefaultLiveQuoteMonitorRuntimeProcess process,
+    private static QuoteMonitorInstrumentRuntimeState onlyInstrumentState(
+            DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
         assertThat(process.snapshot().instrumentStates())
-                .extracting(LiveQuoteMonitorInstrumentRuntimeState::instrumentCode)
+                .extracting(QuoteMonitorInstrumentRuntimeState::instrumentCode)
                 .containsExactly(instrumentCode);
 
         return process.snapshot().instrumentStates().getFirst();
     }
 
-    private static LiveQuoteMonitorInstrumentRuntimeState instrumentState(
-            DefaultLiveQuoteMonitorRuntimeProcess process,
+    private static QuoteMonitorInstrumentRuntimeState instrumentState(
+            DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
         return process.snapshot().instrumentStates()
@@ -646,11 +646,11 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
 
     private static final class CapturingRuntimeQuoteMonitorLiveQuotePublisher
             implements RuntimeQuoteMonitorLiveQuotePublisher {
-        private final List<QuoteMonitorLiveQuote> publishedQuotes = new ArrayList<>();
+        private final List<QuoteMonitorInstrumentQuote> publishedQuotes = new ArrayList<>();
         private int clearCount;
 
         @Override
-        public void publish(QuoteMonitorLiveQuote quote) {
+        public void publish(QuoteMonitorInstrumentQuote quote) {
             publishedQuotes.add(quote);
         }
 
@@ -660,7 +660,7 @@ class DefaultLiveQuoteMonitorRuntimeProcessTest {
             publishedQuotes.clear();
         }
 
-        private List<QuoteMonitorLiveQuote> publishedQuotes() {
+        private List<QuoteMonitorInstrumentQuote> publishedQuotes() {
             return List.copyOf(publishedQuotes);
         }
 

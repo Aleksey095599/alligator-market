@@ -5,15 +5,15 @@ import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrument
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorInstrumentRuntimeStatus;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -39,8 +39,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMonitorRuntimeProcess {
-    private final LiveQuoteMonitorCapturer capturer;
+public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRuntimeProcess {
+    private final QuoteMonitorCapturer capturer;
     private final RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry;
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
@@ -49,11 +49,11 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     private final Clock clock;
     private final Object lock = new Object();
 
-    private LiveQuoteMonitorRuntimeSnapshot snapshot = LiveQuoteMonitorRuntimeSnapshot.stopped();
+    private QuoteMonitorRuntimeSnapshot snapshot = QuoteMonitorRuntimeSnapshot.stopped();
     private List<Disposable> activeSubscriptions = List.of();
 
-    public DefaultLiveQuoteMonitorRuntimeProcess(
-            LiveQuoteMonitorCapturer capturer,
+    public DefaultQuoteMonitorRuntimeProcess(
+            QuoteMonitorCapturer capturer,
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
@@ -88,23 +88,23 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     @Override
     public boolean start() {
         synchronized (lock) {
-            if (snapshot.status() == LiveQuoteMonitorRuntimeStatus.RUNNING) {
+            if (snapshot.status() == QuoteMonitorRuntimeStatus.RUNNING) {
                 return false;
             }
 
             liveQuotePublisher.clear();
-            LiveQuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
-            List<LiveQuoteMonitorSourceStream> streams = resolution.streams();
+            QuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
+            List<QuoteMonitorSourceStream> streams = resolution.streams();
             snapshot = runningSnapshot(
                     monitoredInstrumentCodes(streams),
                     resolution.instrumentStates()
             );
-            LiveQuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
+            QuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
             activeSubscriptions = startedStreams.subscriptions();
             List<InstrumentCode> monitoredInstrumentCodes = monitoredInstrumentCodes(startedStreams.streams());
             snapshot = snapshot.withMonitoredInstrumentCodes(monitoredInstrumentCodes);
             log.info(
-                    "Live Quote Monitor started: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
+                    "Quote Monitor started: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
                     capturer.capturerCode().value(),
                     monitoredInstrumentCodes.size(),
                     instrumentCodeValues(monitoredInstrumentCodes)
@@ -116,17 +116,17 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     @Override
     public boolean stop() {
         synchronized (lock) {
-            if (snapshot.status() == LiveQuoteMonitorRuntimeStatus.STOPPED) {
+            if (snapshot.status() == QuoteMonitorRuntimeStatus.STOPPED) {
                 return false;
             }
 
             List<InstrumentCode> monitoredInstrumentCodes = snapshot.monitoredInstrumentCodes();
             disposeActiveSubscriptions();
             snapshot = snapshot
-                    .withStatus(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                    .withStatus(QuoteMonitorRuntimeStatus.STOPPED)
                     .withInstrumentStates(stoppedInstrumentStates(snapshot.instrumentStates()));
             log.info(
-                    "Live Quote Monitor stopped: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
+                    "Quote Monitor stopped: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
                     capturer.capturerCode().value(),
                     monitoredInstrumentCodes.size(),
                     instrumentCodeValues(monitoredInstrumentCodes)
@@ -136,34 +136,34 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     }
 
     @Override
-    public LiveQuoteMonitorRuntimeStatus status() {
+    public QuoteMonitorRuntimeStatus status() {
         synchronized (lock) {
             return snapshot.status();
         }
     }
 
     @Override
-    public LiveQuoteMonitorRuntimeSnapshot snapshot() {
+    public QuoteMonitorRuntimeSnapshot snapshot() {
         synchronized (lock) {
             return snapshot;
         }
     }
 
-    private LiveQuoteMonitorRuntimeSnapshot runningSnapshot(
+    private QuoteMonitorRuntimeSnapshot runningSnapshot(
             List<InstrumentCode> monitoredInstrumentCodes,
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
-        return new LiveQuoteMonitorRuntimeSnapshot(
-                LiveQuoteMonitorRuntimeStatus.RUNNING,
+        return new QuoteMonitorRuntimeSnapshot(
+                QuoteMonitorRuntimeStatus.RUNNING,
                 monitoredInstrumentCodes,
                 null,
                 instrumentStates
         );
     }
 
-    private LiveQuoteMonitorSourceStreamResolution resolveSourceStreams() {
-        List<LiveQuoteMonitorSourceStream> streams = new ArrayList<>();
-        List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates = new ArrayList<>();
+    private QuoteMonitorSourceStreamResolution resolveSourceStreams() {
+        List<QuoteMonitorSourceStream> streams = new ArrayList<>();
+        List<QuoteMonitorInstrumentRuntimeState> instrumentStates = new ArrayList<>();
 
         for (InstrumentCode instrumentCode : instrumentSelectionRegistry.selectedInstrumentCodes()) {
             Optional<Instrument> instrument = resolveInstrument(instrumentCode);
@@ -171,7 +171,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 instrumentStates.add(runtimeIssue(
                         instrumentCode,
                         null,
-                        LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND,
+                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND,
                         "Selected instrument is absent from runtime instrument registry"
                 ));
                 continue;
@@ -182,34 +182,34 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 instrumentStates.add(runtimeIssue(
                         instrumentCode,
                         null,
-                        LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND,
+                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND,
                         "Executable source plan is absent from runtime source plan registry"
                 ));
                 continue;
             }
 
-            Optional<LiveQuoteMonitorSourceStream> stream = resolveSourceStream(
-                    new LiveQuoteMonitorInstrumentPlan(instrument.get(), sourcePlan.get())
+            Optional<QuoteMonitorSourceStream> stream = resolveSourceStream(
+                    new QuoteMonitorInstrumentPlan(instrument.get(), sourcePlan.get())
             );
             if (stream.isEmpty()) {
                 instrumentStates.add(runtimeIssue(
                         instrumentCode,
                         null,
-                        LiveQuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND,
+                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND,
                         "Source plan has no entries available in runtime source registry"
                 ));
                 continue;
             }
 
-            LiveQuoteMonitorSourceStream resolvedStream = stream.get();
+            QuoteMonitorSourceStream resolvedStream = stream.get();
             streams.add(resolvedStream);
-            instrumentStates.add(LiveQuoteMonitorInstrumentRuntimeState.waitingForQuote(
+            instrumentStates.add(QuoteMonitorInstrumentRuntimeState.waitingForQuote(
                     instrumentCode,
                     resolvedStream.sourceCode()
             ));
         }
 
-        return new LiveQuoteMonitorSourceStreamResolution(
+        return new QuoteMonitorSourceStreamResolution(
                 List.copyOf(streams),
                 List.copyOf(instrumentStates)
         );
@@ -219,7 +219,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         Optional<Instrument> instrument = instrumentRegistry.findByCode(instrumentCode);
         if (instrument.isEmpty()) {
             log.warn(
-                    "Live Quote Monitor selected instrument is absent from runtime instrument registry: instrumentCode={}",
+                    "Quote Monitor selected instrument is absent from runtime instrument registry: instrumentCode={}",
                     instrumentCode.value()
             );
         }
@@ -236,7 +236,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         Optional<SourcePlan> sourcePlan = sourcePlanRegistry.findExecutableByKey(key);
         if (sourcePlan.isEmpty()) {
             log.warn(
-                    "Live Quote Monitor selected instrument has no executable source plan: capturerCode={}, instrumentCode={}",
+                    "Quote Monitor selected instrument has no executable source plan: capturerCode={}, instrumentCode={}",
                     capturer.capturerCode().value(),
                     instrumentCode.value()
             );
@@ -245,8 +245,8 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         return sourcePlan;
     }
 
-    private Optional<LiveQuoteMonitorSourceStream> resolveSourceStream(
-            LiveQuoteMonitorInstrumentPlan instrumentPlan
+    private Optional<QuoteMonitorSourceStream> resolveSourceStream(
+            QuoteMonitorInstrumentPlan instrumentPlan
     ) {
         Map<SourceCode, MarketSource> sourcesByCode = sourceRegistry.sourcesByCode();
 
@@ -257,7 +257,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                     MarketSource source = sourcesByCode.get(entry.sourceCode());
                     if (source == null) {
                         log.warn(
-                                "Live Quote Monitor source plan entry is absent from runtime source registry: " +
+                                "Quote Monitor source plan entry is absent from runtime source registry: " +
                                         "instrumentCode={}, sourceCode={}",
                                 instrumentPlan.instrument().instrumentCode().value(),
                                 entry.sourceCode().value()
@@ -265,7 +265,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                         return java.util.stream.Stream.empty();
                     }
 
-                    return java.util.stream.Stream.of(new LiveQuoteMonitorSourceStream(
+                    return java.util.stream.Stream.of(new QuoteMonitorSourceStream(
                             instrumentPlan.instrument(),
                             entry.sourceCode(),
                             source
@@ -274,10 +274,10 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 .findFirst();
     }
 
-    private List<InstrumentCode> monitoredInstrumentCodes(List<LiveQuoteMonitorSourceStream> streams) {
+    private List<InstrumentCode> monitoredInstrumentCodes(List<QuoteMonitorSourceStream> streams) {
         Set<InstrumentCode> codes = new LinkedHashSet<>();
 
-        for (LiveQuoteMonitorSourceStream stream : streams) {
+        for (QuoteMonitorSourceStream stream : streams) {
             codes.add(stream.instrument().instrumentCode());
         }
 
@@ -290,11 +290,11 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 .toList();
     }
 
-    private LiveQuoteMonitorStartedSourceStreams subscribeToSourceStreams(List<LiveQuoteMonitorSourceStream> streams) {
-        List<LiveQuoteMonitorSourceStream> startedStreams = new ArrayList<>(streams.size());
+    private QuoteMonitorStartedSourceStreams subscribeToSourceStreams(List<QuoteMonitorSourceStream> streams) {
+        List<QuoteMonitorSourceStream> startedStreams = new ArrayList<>(streams.size());
         List<Disposable> subscriptions = new ArrayList<>(streams.size());
 
-        for (LiveQuoteMonitorSourceStream stream : streams) {
+        for (QuoteMonitorSourceStream stream : streams) {
             try {
                 Disposable subscription = Flux.from(stream.source().streamSourceTicks(stream.instrument()))
                         .subscribe(
@@ -311,7 +311,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                         failureDetail(ex)
                 ));
                 log.warn(
-                        "Failed to start Live Quote Monitor source stream: instrumentCode={}, sourceCode={}, reason={}",
+                        "Failed to start Quote Monitor source stream: instrumentCode={}, sourceCode={}, reason={}",
                         stream.instrument().instrumentCode().value(),
                         stream.sourceCode().value(),
                         ex.getMessage(),
@@ -320,17 +320,17 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
             }
         }
 
-        return new LiveQuoteMonitorStartedSourceStreams(
+        return new QuoteMonitorStartedSourceStreams(
                 List.copyOf(startedStreams),
                 List.copyOf(subscriptions)
         );
     }
 
-    private void onSourceTick(LiveQuoteMonitorSourceStream stream, SourceTick tick) {
+    private void onSourceTick(QuoteMonitorSourceStream stream, SourceTick tick) {
         Objects.requireNonNull(tick, "tick must not be null");
 
         synchronized (lock) {
-            if (snapshot.status() != LiveQuoteMonitorRuntimeStatus.RUNNING) {
+            if (snapshot.status() != QuoteMonitorRuntimeStatus.RUNNING) {
                 return;
             }
 
@@ -338,7 +338,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
             snapshot = snapshot.withLastTickAt(receivedAt);
             boolean published = publishSourceTick(stream, tick, receivedAt);
             if (published) {
-                snapshot = snapshot.withInstrumentState(LiveQuoteMonitorInstrumentRuntimeState.live(
+                snapshot = snapshot.withInstrumentState(QuoteMonitorInstrumentRuntimeState.live(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode()
                 ));
@@ -346,14 +346,14 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
                 snapshot = snapshot.withInstrumentState(runtimeIssue(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode(),
-                        LiveQuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE,
+                        QuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE,
                         "Unsupported source tick type: " + tick.sourceTickType()
                 ));
             }
         }
 
         log.debug(
-                "Live Quote Monitor source tick received: instrumentCode={}, sourceCode={}, sourceInstrumentCode={}",
+                "Quote Monitor source tick received: instrumentCode={}, sourceCode={}, sourceInstrumentCode={}",
                 stream.instrument().instrumentCode().value(),
                 stream.sourceCode().value(),
                 tick.sourceInstrumentCode().value()
@@ -361,13 +361,13 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
     }
 
     private boolean publishSourceTick(
-            LiveQuoteMonitorSourceStream stream,
+            QuoteMonitorSourceStream stream,
             SourceTick tick,
             Instant receivedAt
     ) {
         if (!(tick instanceof SourceLastPriceTick lastPriceTick)) {
             log.debug(
-                    "Live Quote Monitor skipped unsupported source tick type: instrumentCode={}, sourceCode={}, type={}",
+                    "Quote Monitor skipped unsupported source tick type: instrumentCode={}, sourceCode={}, type={}",
                     stream.instrument().instrumentCode().value(),
                     stream.sourceCode().value(),
                     tick.sourceTickType()
@@ -375,7 +375,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
             return false;
         }
 
-        liveQuotePublisher.publish(new QuoteMonitorLiveQuote(
+        liveQuotePublisher.publish(new QuoteMonitorInstrumentQuote(
                 stream.instrument().instrumentCode(),
                 stream.sourceCode(),
                 lastPriceTick.lastPrice(),
@@ -385,9 +385,9 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         return true;
     }
 
-    private void onSourceStreamError(LiveQuoteMonitorSourceStream stream, Throwable error) {
+    private void onSourceStreamError(QuoteMonitorSourceStream stream, Throwable error) {
         synchronized (lock) {
-            if (snapshot.status() == LiveQuoteMonitorRuntimeStatus.RUNNING) {
+            if (snapshot.status() == QuoteMonitorRuntimeStatus.RUNNING) {
                 snapshot = snapshot.withInstrumentState(runtimeIssue(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode(),
@@ -398,7 +398,7 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         }
 
         log.warn(
-                "Live Quote Monitor source stream failed: instrumentCode={}, sourceCode={}, reason={}",
+                "Quote Monitor source stream failed: instrumentCode={}, sourceCode={}, reason={}",
                 stream.instrument().instrumentCode().value(),
                 stream.sourceCode().value(),
                 error.getMessage(),
@@ -414,21 +414,21 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         activeSubscriptions = List.of();
     }
 
-    private static List<LiveQuoteMonitorInstrumentRuntimeState> stoppedInstrumentStates(
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+    private static List<QuoteMonitorInstrumentRuntimeState> stoppedInstrumentStates(
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
         return instrumentStates.stream()
-                .map(state -> LiveQuoteMonitorInstrumentRuntimeState.stopped(state.instrumentCode()))
+                .map(state -> QuoteMonitorInstrumentRuntimeState.stopped(state.instrumentCode()))
                 .toList();
     }
 
-    private static LiveQuoteMonitorInstrumentRuntimeState runtimeIssue(
+    private static QuoteMonitorInstrumentRuntimeState runtimeIssue(
             InstrumentCode instrumentCode,
             SourceCode sourceCode,
-            LiveQuoteMonitorInstrumentRuntimeStatus status,
+            QuoteMonitorInstrumentRuntimeStatus status,
             String detail
     ) {
-        return LiveQuoteMonitorInstrumentRuntimeState.issue(
+        return QuoteMonitorInstrumentRuntimeState.issue(
                 instrumentCode,
                 sourceCode,
                 status,
@@ -436,26 +436,26 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         );
     }
 
-    private static LiveQuoteMonitorInstrumentRuntimeStatus streamStartFailureStatus(Throwable error) {
+    private static QuoteMonitorInstrumentRuntimeStatus streamStartFailureStatus(Throwable error) {
         if (error instanceof HandlerNotFoundException) {
-            return LiveQuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND;
+            return QuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND;
         }
         if (error instanceof InstrumentNotSupportedByHandlerException) {
-            return LiveQuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER;
+            return QuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER;
         }
 
-        return LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED;
+        return QuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED;
     }
 
-    private static LiveQuoteMonitorInstrumentRuntimeStatus streamFailureStatus(Throwable error) {
+    private static QuoteMonitorInstrumentRuntimeStatus streamFailureStatus(Throwable error) {
         if (error instanceof HandlerNotFoundException) {
-            return LiveQuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND;
+            return QuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND;
         }
         if (error instanceof InstrumentNotSupportedByHandlerException) {
-            return LiveQuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER;
+            return QuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER;
         }
 
-        return LiveQuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED;
+        return QuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED;
     }
 
     private static String failureDetail(Throwable error) {
@@ -467,11 +467,11 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         return message;
     }
 
-    private record LiveQuoteMonitorSourceStreamResolution(
-            List<LiveQuoteMonitorSourceStream> streams,
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+    private record QuoteMonitorSourceStreamResolution(
+            List<QuoteMonitorSourceStream> streams,
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
-        private LiveQuoteMonitorSourceStreamResolution {
+        private QuoteMonitorSourceStreamResolution {
             streams = List.copyOf(Objects.requireNonNull(streams, "streams must not be null"));
             instrumentStates = List.copyOf(
                     Objects.requireNonNull(instrumentStates, "instrumentStates must not be null")
@@ -479,33 +479,33 @@ public final class DefaultLiveQuoteMonitorRuntimeProcess implements LiveQuoteMon
         }
     }
 
-    private record LiveQuoteMonitorInstrumentPlan(
+    private record QuoteMonitorInstrumentPlan(
             Instrument instrument,
             SourcePlan sourcePlan
     ) {
-        private LiveQuoteMonitorInstrumentPlan {
+        private QuoteMonitorInstrumentPlan {
             Objects.requireNonNull(instrument, "instrument must not be null");
             Objects.requireNonNull(sourcePlan, "sourcePlan must not be null");
         }
     }
 
-    private record LiveQuoteMonitorSourceStream(
+    private record QuoteMonitorSourceStream(
             Instrument instrument,
             SourceCode sourceCode,
             MarketSource source
     ) {
-        private LiveQuoteMonitorSourceStream {
+        private QuoteMonitorSourceStream {
             Objects.requireNonNull(instrument, "instrument must not be null");
             Objects.requireNonNull(sourceCode, "sourceCode must not be null");
             Objects.requireNonNull(source, "source must not be null");
         }
     }
 
-    private record LiveQuoteMonitorStartedSourceStreams(
-            List<LiveQuoteMonitorSourceStream> streams,
+    private record QuoteMonitorStartedSourceStreams(
+            List<QuoteMonitorSourceStream> streams,
             List<Disposable> subscriptions
     ) {
-        private LiveQuoteMonitorStartedSourceStreams {
+        private QuoteMonitorStartedSourceStreams {
             streams = List.copyOf(Objects.requireNonNull(streams, "streams must not be null"));
             subscriptions = List.copyOf(Objects.requireNonNull(subscriptions, "subscriptions must not be null"));
         }

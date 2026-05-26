@@ -5,18 +5,18 @@ import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
-public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
+public final class QuoteMonitorCapturer implements MarketDataCapturer {
     public static final CapturerCode CAPTURER_CODE =
-            CapturerCode.of("LIVE_QUOTE_MONITOR");
+            CapturerCode.of("QUOTE_MONITOR");
 
     public static final CapturerDisplayName DISPLAY_NAME =
-            CapturerDisplayName.of("Live Quote Monitor");
+            CapturerDisplayName.of("Quote Monitor");
 
     public static final CapturerPassport PASSPORT =
             new CapturerPassport(DISPLAY_NAME);
 
-    public static final LiveQuoteMonitorCapturerPolicy POLICY =
-            new LiveQuoteMonitorCapturerPolicy();
+    public static final QuoteMonitorCapturerPolicy POLICY =
+            new QuoteMonitorCapturerPolicy();
 
     @Override
     public CapturerCode capturerCode() {
@@ -29,7 +29,7 @@ public final class LiveQuoteMonitorCapturer implements MarketDataCapturer {
     }
 
     @Override
-    public LiveQuoteMonitorCapturerPolicy policy() {
+    public QuoteMonitorCapturerPolicy policy() {
         return POLICY;
     }
 }

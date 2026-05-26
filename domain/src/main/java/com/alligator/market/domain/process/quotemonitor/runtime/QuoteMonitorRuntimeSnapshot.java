@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class LiveQuoteMonitorRuntimeSnapshot {
-    private final LiveQuoteMonitorRuntimeStatus status;
+public final class QuoteMonitorRuntimeSnapshot {
+    private final QuoteMonitorRuntimeStatus status;
     private final List<InstrumentCode> monitoredInstrumentCodes;
     private final Instant lastTickAt;
-    private final List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates;
+    private final List<QuoteMonitorInstrumentRuntimeState> instrumentStates;
 
-    public LiveQuoteMonitorRuntimeSnapshot(
-            LiveQuoteMonitorRuntimeStatus status,
+    public QuoteMonitorRuntimeSnapshot(
+            QuoteMonitorRuntimeStatus status,
             List<InstrumentCode> monitoredInstrumentCodes,
             Instant lastTickAt
     ) {
@@ -28,11 +28,11 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot(
-            LiveQuoteMonitorRuntimeStatus status,
+    public QuoteMonitorRuntimeSnapshot(
+            QuoteMonitorRuntimeStatus status,
             List<InstrumentCode> monitoredInstrumentCodes,
             Instant lastTickAt,
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.monitoredInstrumentCodes = List.copyOf(
@@ -42,15 +42,15 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         this.instrumentStates = copyAndValidateInstrumentStates(instrumentStates);
     }
 
-    public static LiveQuoteMonitorRuntimeSnapshot stopped() {
-        return new LiveQuoteMonitorRuntimeSnapshot(
-                LiveQuoteMonitorRuntimeStatus.STOPPED,
+    public static QuoteMonitorRuntimeSnapshot stopped() {
+        return new QuoteMonitorRuntimeSnapshot(
+                QuoteMonitorRuntimeStatus.STOPPED,
                 List.of(),
                 null
         );
     }
 
-    public LiveQuoteMonitorRuntimeStatus status() {
+    public QuoteMonitorRuntimeStatus status() {
         return status;
     }
 
@@ -62,12 +62,12 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         return Optional.ofNullable(lastTickAt);
     }
 
-    public List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates() {
+    public List<QuoteMonitorInstrumentRuntimeState> instrumentStates() {
         return instrumentStates;
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot withStatus(LiveQuoteMonitorRuntimeStatus status) {
-        return new LiveQuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeSnapshot withStatus(QuoteMonitorRuntimeStatus status) {
+        return new QuoteMonitorRuntimeSnapshot(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -75,8 +75,8 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot withLastTickAt(Instant lastTickAt) {
-        return new LiveQuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeSnapshot withLastTickAt(Instant lastTickAt) {
+        return new QuoteMonitorRuntimeSnapshot(
                 status,
                 monitoredInstrumentCodes,
                 Objects.requireNonNull(lastTickAt, "lastTickAt must not be null"),
@@ -84,10 +84,10 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot withMonitoredInstrumentCodes(
+    public QuoteMonitorRuntimeSnapshot withMonitoredInstrumentCodes(
             List<InstrumentCode> monitoredInstrumentCodes
     ) {
-        return new LiveQuoteMonitorRuntimeSnapshot(
+        return new QuoteMonitorRuntimeSnapshot(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -95,10 +95,10 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot withInstrumentStates(
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+    public QuoteMonitorRuntimeSnapshot withInstrumentStates(
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
-        return new LiveQuoteMonitorRuntimeSnapshot(
+        return new QuoteMonitorRuntimeSnapshot(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -106,14 +106,14 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public LiveQuoteMonitorRuntimeSnapshot withInstrumentState(
-            LiveQuoteMonitorInstrumentRuntimeState instrumentState
+    public QuoteMonitorRuntimeSnapshot withInstrumentState(
+            QuoteMonitorInstrumentRuntimeState instrumentState
     ) {
         Objects.requireNonNull(instrumentState, "instrumentState must not be null");
 
-        Map<InstrumentCode, LiveQuoteMonitorInstrumentRuntimeState> statesByInstrumentCode =
+        Map<InstrumentCode, QuoteMonitorInstrumentRuntimeState> statesByInstrumentCode =
                 new LinkedHashMap<>();
-        for (LiveQuoteMonitorInstrumentRuntimeState currentState : instrumentStates) {
+        for (QuoteMonitorInstrumentRuntimeState currentState : instrumentStates) {
             statesByInstrumentCode.put(currentState.instrumentCode(), currentState);
         }
         statesByInstrumentCode.put(instrumentState.instrumentCode(), instrumentState);
@@ -124,23 +124,23 @@ public final class LiveQuoteMonitorRuntimeSnapshot {
         );
     }
 
-    private static List<LiveQuoteMonitorInstrumentRuntimeState> copyAndValidateInstrumentStates(
-            List<LiveQuoteMonitorInstrumentRuntimeState> instrumentStates
+    private static List<QuoteMonitorInstrumentRuntimeState> copyAndValidateInstrumentStates(
+            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
         Objects.requireNonNull(instrumentStates, "instrumentStates must not be null");
 
-        Map<InstrumentCode, LiveQuoteMonitorInstrumentRuntimeState> statesByInstrumentCode =
+        Map<InstrumentCode, QuoteMonitorInstrumentRuntimeState> statesByInstrumentCode =
                 new LinkedHashMap<>();
-        for (LiveQuoteMonitorInstrumentRuntimeState state : instrumentStates) {
-            LiveQuoteMonitorInstrumentRuntimeState stateToCheck =
+        for (QuoteMonitorInstrumentRuntimeState state : instrumentStates) {
+            QuoteMonitorInstrumentRuntimeState stateToCheck =
                     Objects.requireNonNull(state, "instrumentState must not be null");
-            LiveQuoteMonitorInstrumentRuntimeState previous = statesByInstrumentCode.put(
+            QuoteMonitorInstrumentRuntimeState previous = statesByInstrumentCode.put(
                     stateToCheck.instrumentCode(),
                     stateToCheck
             );
             if (previous != null) {
                 throw new IllegalArgumentException(
-                        "Duplicate Live Quote Monitor runtime state detected for instrument code '" +
+                        "Duplicate Quote Monitor runtime state detected for instrument code '" +
                                 stateToCheck.instrumentCode().value() + "'"
                 );
             }

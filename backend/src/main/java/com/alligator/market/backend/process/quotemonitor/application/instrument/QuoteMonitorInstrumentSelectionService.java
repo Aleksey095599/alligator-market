@@ -7,12 +7,12 @@ import com.alligator.market.backend.process.quotemonitor.application.instrument.
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 
 import java.util.HashSet;
@@ -26,14 +26,14 @@ public final class QuoteMonitorInstrumentSelectionService {
     private final QuoteMonitorInstrumentCandidatePort candidatePort;
     private final SourcePlanQueryPort sourcePlanQueryPort;
     private final RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater;
-    private final LiveQuoteMonitorRuntimeProcess runtimeProcess;
+    private final QuoteMonitorRuntimeProcess runtimeProcess;
 
     public QuoteMonitorInstrumentSelectionService(
             QuoteMonitorInstrumentSelectionRepository repository,
             QuoteMonitorInstrumentCandidatePort candidatePort,
             SourcePlanQueryPort sourcePlanQueryPort,
             RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater,
-            LiveQuoteMonitorRuntimeProcess runtimeProcess
+            QuoteMonitorRuntimeProcess runtimeProcess
     ) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
         this.candidatePort = Objects.requireNonNull(candidatePort, "candidatePort must not be null");
@@ -68,7 +68,7 @@ public final class QuoteMonitorInstrumentSelectionService {
         List<InstrumentCode> selectedInstrumentCodes = getSelection().instrumentCodes();
         Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses =
                 sourcePlanQueryPort.findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
-                        LiveQuoteMonitorCapturer.CAPTURER_CODE,
+                        QuoteMonitorCapturer.CAPTURER_CODE,
                         selectedInstrumentCodes
                 );
 
@@ -131,7 +131,7 @@ public final class QuoteMonitorInstrumentSelectionService {
     }
 
     private void ensureRuntimeStopped() {
-        if (runtimeProcess.status() == LiveQuoteMonitorRuntimeStatus.RUNNING) {
+        if (runtimeProcess.status() == QuoteMonitorRuntimeStatus.RUNNING) {
             throw new QuoteMonitorInstrumentSelectionLockedException();
         }
     }

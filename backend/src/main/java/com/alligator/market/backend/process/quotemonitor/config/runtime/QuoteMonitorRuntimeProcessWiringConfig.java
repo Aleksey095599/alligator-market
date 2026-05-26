@@ -1,17 +1,17 @@
 package com.alligator.market.backend.process.quotemonitor.config.runtime;
 
 import com.alligator.market.backend.instrument.config.registry.runtime.RuntimeInstrumentRegistryWiringConfig;
-import com.alligator.market.backend.process.quotemonitor.config.capturer.LiveQuoteMonitorCapturerWiringConfig;
+import com.alligator.market.backend.process.quotemonitor.config.capturer.QuoteMonitorCapturerWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig;
-import com.alligator.market.backend.process.quotemonitor.runtime.DefaultLiveQuoteMonitorRuntimeProcess;
+import com.alligator.market.backend.process.quotemonitor.runtime.DefaultQuoteMonitorRuntimeProcess;
 import com.alligator.market.backend.source.config.registry.RuntimeSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.registry.runtime.RuntimeSourcePlanRegistryWiringConfig;
 import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,28 +23,28 @@ import java.time.Clock;
 
 @Configuration(proxyBeanMethods = false)
 @Import({
-        LiveQuoteMonitorCapturerWiringConfig.class,
+        QuoteMonitorCapturerWiringConfig.class,
         RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig.class,
         RuntimeInstrumentRegistryWiringConfig.class,
         RuntimeSourceRegistryWiringConfig.class,
         RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig.class,
         RuntimeSourcePlanRegistryWiringConfig.class
 })
-public class LiveQuoteMonitorRuntimeProcessWiringConfig {
-    public static final String BEAN_LIVE_QUOTE_MONITOR_RUNTIME_PROCESS =
-            "liveQuoteMonitorRuntimeProcess";
-    public static final String BEAN_LIVE_QUOTE_MONITOR_RUNTIME_CLOCK =
-            "liveQuoteMonitorRuntimeClock";
+public class QuoteMonitorRuntimeProcessWiringConfig {
+    public static final String BEAN_QUOTE_MONITOR_RUNTIME_PROCESS =
+            "quoteMonitorRuntimeProcess";
+    public static final String BEAN_QUOTE_MONITOR_RUNTIME_CLOCK =
+            "quoteMonitorRuntimeClock";
 
-    @Bean(BEAN_LIVE_QUOTE_MONITOR_RUNTIME_CLOCK)
-    public Clock liveQuoteMonitorRuntimeClock() {
+    @Bean(BEAN_QUOTE_MONITOR_RUNTIME_CLOCK)
+    public Clock quoteMonitorRuntimeClock() {
         return Clock.systemUTC();
     }
 
-    @Bean(BEAN_LIVE_QUOTE_MONITOR_RUNTIME_PROCESS)
-    public LiveQuoteMonitorRuntimeProcess liveQuoteMonitorRuntimeProcess(
-            @Qualifier(LiveQuoteMonitorCapturerWiringConfig.BEAN_LIVE_QUOTE_MONITOR_CAPTURER)
-            LiveQuoteMonitorCapturer capturer,
+    @Bean(BEAN_QUOTE_MONITOR_RUNTIME_PROCESS)
+    public QuoteMonitorRuntimeProcess quoteMonitorRuntimeProcess(
+            @Qualifier(QuoteMonitorCapturerWiringConfig.BEAN_QUOTE_MONITOR_CAPTURER)
+            QuoteMonitorCapturer capturer,
             @Qualifier(RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig
                     .BEAN_RUNTIME_QUOTE_MONITOR_INSTRUMENT_SELECTION_REGISTRY)
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
@@ -57,10 +57,10 @@ public class LiveQuoteMonitorRuntimeProcessWiringConfig {
             @Qualifier(RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig
                     .BEAN_RUNTIME_QUOTE_MONITOR_LIVE_QUOTE_PUBLISHER)
             RuntimeQuoteMonitorLiveQuotePublisher liveQuotePublisher,
-            @Qualifier(BEAN_LIVE_QUOTE_MONITOR_RUNTIME_CLOCK)
+            @Qualifier(BEAN_QUOTE_MONITOR_RUNTIME_CLOCK)
             Clock clock
     ) {
-        return new DefaultLiveQuoteMonitorRuntimeProcess(
+        return new DefaultQuoteMonitorRuntimeProcess(
                 capturer,
                 instrumentSelectionRegistry,
                 instrumentRegistry,

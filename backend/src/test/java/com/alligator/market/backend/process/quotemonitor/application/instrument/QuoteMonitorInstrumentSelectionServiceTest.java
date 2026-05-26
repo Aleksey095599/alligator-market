@@ -13,9 +13,9 @@ import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorI
 import com.alligator.market.domain.process.quotemonitor.instrument.exception.DuplicateQuoteMonitorInstrumentCodeException;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +46,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThat(service.findOptions())
@@ -69,7 +69,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         service.replaceSelection(List.of(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")));
@@ -92,7 +92,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         boolean changed = service.addInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
@@ -118,7 +118,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
                 new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         boolean changed = service.removeInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM"));
@@ -139,7 +139,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -152,7 +152,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
     }
 
     @Test
-    void rejectsInstrumentCodesWithoutLiveQuoteMonitorSourcePlan() {
+    void rejectsInstrumentCodesWithoutQuoteMonitorSourcePlan() {
         FakeQuoteMonitorInstrumentSelectionRepository repository =
                 new FakeQuoteMonitorInstrumentSelectionRepository(QuoteMonitorInstrumentSelection.empty());
         QuoteMonitorInstrumentSelectionService service = new QuoteMonitorInstrumentSelectionService(
@@ -162,7 +162,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThatThrownBy(() -> service.replaceSelection(List.of(
@@ -186,7 +186,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 )),
                 new FakeSourcePlanQueryPort(Map.of()),
                 runtimeRegistryUpdater,
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.RUNNING)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.RUNNING)
         );
 
         assertThatThrownBy(() -> service.addInstrument(new InstrumentCode("FOREX_SPOT_CNYRUB_TOM")))
@@ -218,7 +218,7 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                         secondCode, StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES
                 )),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
-                new FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus.STOPPED)
+                new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
         );
 
         assertThat(service.findSelectedInstruments())
@@ -347,33 +347,33 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         }
     }
 
-    private static final class FakeLiveQuoteMonitorRuntimeProcess implements LiveQuoteMonitorRuntimeProcess {
-        private LiveQuoteMonitorRuntimeStatus status;
+    private static final class FakeQuoteMonitorRuntimeProcess implements QuoteMonitorRuntimeProcess {
+        private QuoteMonitorRuntimeStatus status;
 
-        private FakeLiveQuoteMonitorRuntimeProcess(LiveQuoteMonitorRuntimeStatus status) {
+        private FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus status) {
             this.status = status;
         }
 
         @Override
         public boolean start() {
-            status = LiveQuoteMonitorRuntimeStatus.RUNNING;
+            status = QuoteMonitorRuntimeStatus.RUNNING;
             return true;
         }
 
         @Override
         public boolean stop() {
-            status = LiveQuoteMonitorRuntimeStatus.STOPPED;
+            status = QuoteMonitorRuntimeStatus.STOPPED;
             return true;
         }
 
         @Override
-        public LiveQuoteMonitorRuntimeStatus status() {
+        public QuoteMonitorRuntimeStatus status() {
             return status;
         }
 
         @Override
-        public LiveQuoteMonitorRuntimeSnapshot snapshot() {
-            return new LiveQuoteMonitorRuntimeSnapshot(status, List.of(), null);
+        public QuoteMonitorRuntimeSnapshot snapshot() {
+            return new QuoteMonitorRuntimeSnapshot(status, List.of(), null);
         }
     }
 }

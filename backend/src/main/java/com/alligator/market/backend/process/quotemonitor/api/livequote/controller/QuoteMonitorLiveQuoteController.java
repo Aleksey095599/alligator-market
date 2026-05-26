@@ -1,10 +1,10 @@
 package com.alligator.market.backend.process.quotemonitor.api.livequote.controller;
 
-import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorLiveQuoteDto;
-import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorLiveQuoteListResponse;
+import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorInstrumentQuoteDto;
+import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorInstrumentQuoteListResponse;
 import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteQueryService;
 import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteStreamService;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
@@ -30,8 +30,8 @@ public class QuoteMonitorLiveQuoteController {
     }
 
     @GetMapping("/snapshot")
-    public ResponseEntity<QuoteMonitorLiveQuoteListResponse> snapshot() {
-        return ResponseEntity.ok(new QuoteMonitorLiveQuoteListResponse(
+    public ResponseEntity<QuoteMonitorInstrumentQuoteListResponse> snapshot() {
+        return ResponseEntity.ok(new QuoteMonitorInstrumentQuoteListResponse(
                 queryService.currentQuotes()
                         .stream()
                         .map(this::toDto)
@@ -40,7 +40,7 @@ public class QuoteMonitorLiveQuoteController {
     }
 
     @GetMapping(path = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<QuoteMonitorLiveQuoteDto>> stream() {
+    public Flux<ServerSentEvent<QuoteMonitorInstrumentQuoteDto>> stream() {
         return streamService.streamQuotes()
                 .map(quote -> ServerSentEvent.builder(toDto(quote))
                         .event("live-quote")
@@ -48,8 +48,8 @@ public class QuoteMonitorLiveQuoteController {
                         .build());
     }
 
-    private QuoteMonitorLiveQuoteDto toDto(QuoteMonitorLiveQuote quote) {
-        return new QuoteMonitorLiveQuoteDto(
+    private QuoteMonitorInstrumentQuoteDto toDto(QuoteMonitorInstrumentQuote quote) {
+        return new QuoteMonitorInstrumentQuoteDto(
                 quote.instrumentCode().value(),
                 quote.lastPrice().toPlainString(),
                 quote.sourceCode().value(),

@@ -2,7 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.application.livequote;
 
 import com.alligator.market.backend.process.quotemonitor.registry.runtime.AtomicRuntimeQuoteMonitorLiveQuoteRegistry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -17,8 +17,8 @@ class QuoteMonitorLiveQuoteStreamServiceTest {
     @Test
     void streamsCurrentSnapshotAndFutureUpdates() {
         AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
-        QuoteMonitorLiveQuote snapshotQuote = quote("FOREX_SPOT_CNYRUB_TOM", "12.10");
-        QuoteMonitorLiveQuote updateQuote = quote("FOREX_SPOT_USDRUB_TOM", "90.20");
+        QuoteMonitorInstrumentQuote snapshotQuote = quote("FOREX_SPOT_CNYRUB_TOM", "12.10");
+        QuoteMonitorInstrumentQuote updateQuote = quote("FOREX_SPOT_USDRUB_TOM", "90.20");
         QuoteMonitorLiveQuoteStreamService service = new QuoteMonitorLiveQuoteStreamService(registry, registry);
 
         registry.publish(snapshotQuote);
@@ -31,8 +31,8 @@ class QuoteMonitorLiveQuoteStreamServiceTest {
                 .verify();
     }
 
-    private static QuoteMonitorLiveQuote quote(String instrumentCode, String lastPrice) {
-        return new QuoteMonitorLiveQuote(
+    private static QuoteMonitorInstrumentQuote quote(String instrumentCode, String lastPrice) {
+        return new QuoteMonitorInstrumentQuote(
                 InstrumentCode.of(instrumentCode),
                 SourceCode.of("MOEX_ISS"),
                 new BigDecimal(lastPrice),

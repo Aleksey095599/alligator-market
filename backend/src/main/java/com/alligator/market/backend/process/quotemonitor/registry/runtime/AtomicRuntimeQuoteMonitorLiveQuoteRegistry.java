@@ -2,9 +2,9 @@ package com.alligator.market.backend.process.quotemonitor.registry.runtime;
 
 import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteUpdateStream;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -20,20 +20,20 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
         implements RuntimeQuoteMonitorLiveQuoteRegistry,
         RuntimeQuoteMonitorLiveQuotePublisher,
         QuoteMonitorLiveQuoteUpdateStream {
-    private final AtomicReference<Map<InstrumentCode, QuoteMonitorLiveQuote>> quotesByInstrumentCode =
+    private final AtomicReference<Map<InstrumentCode, QuoteMonitorInstrumentQuote>> quotesByInstrumentCode =
             new AtomicReference<>(Map.of());
-    private final Sinks.Many<QuoteMonitorLiveQuote> liveQuoteUpdates =
+    private final Sinks.Many<QuoteMonitorInstrumentQuote> liveQuoteUpdates =
             Sinks.many().multicast().directBestEffort();
 
     @Override
-    public Optional<QuoteMonitorLiveQuote> findByInstrumentCode(InstrumentCode instrumentCode) {
+    public Optional<QuoteMonitorInstrumentQuote> findByInstrumentCode(InstrumentCode instrumentCode) {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return Optional.ofNullable(quotesByInstrumentCode.get().get(instrumentCode));
     }
 
     @Override
-    public List<QuoteMonitorLiveQuote> currentQuotes() {
+    public List<QuoteMonitorInstrumentQuote> currentQuotes() {
         return quotesByInstrumentCode.get()
                 .values()
                 .stream()
@@ -42,19 +42,19 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
     }
 
     @Override
-    public Map<InstrumentCode, QuoteMonitorLiveQuote> quotesByInstrumentCode() {
+    public Map<InstrumentCode, QuoteMonitorInstrumentQuote> quotesByInstrumentCode() {
         return quotesByInstrumentCode.get();
     }
 
     @Override
-    public void publish(QuoteMonitorLiveQuote quote) {
-        QuoteMonitorLiveQuote quoteToPublish = Objects.requireNonNull(
+    public void publish(QuoteMonitorInstrumentQuote quote) {
+        QuoteMonitorInstrumentQuote quoteToPublish = Objects.requireNonNull(
                 quote,
                 "quote must not be null"
         );
 
         quotesByInstrumentCode.updateAndGet(current -> {
-            Map<InstrumentCode, QuoteMonitorLiveQuote> updated = new LinkedHashMap<>(current);
+            Map<InstrumentCode, QuoteMonitorInstrumentQuote> updated = new LinkedHashMap<>(current);
             updated.put(quoteToPublish.instrumentCode(), quoteToPublish);
             return Map.copyOf(updated);
         });
@@ -67,7 +67,7 @@ public final class AtomicRuntimeQuoteMonitorLiveQuoteRegistry
     }
 
     @Override
-    public Flux<QuoteMonitorLiveQuote> liveQuoteUpdates() {
+    public Flux<QuoteMonitorInstrumentQuote> liveQuoteUpdates() {
         return liveQuoteUpdates.asFlux();
     }
 }

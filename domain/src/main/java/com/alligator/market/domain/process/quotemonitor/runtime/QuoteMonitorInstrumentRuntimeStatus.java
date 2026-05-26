@@ -2,7 +2,7 @@ package com.alligator.market.domain.process.quotemonitor.runtime;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 
-public enum LiveQuoteMonitorInstrumentRuntimeStatus {
+public enum QuoteMonitorInstrumentRuntimeStatus {
     STOPPED,
     WAITING_FOR_QUOTE,
     LIVE,
@@ -17,13 +17,13 @@ public enum LiveQuoteMonitorInstrumentRuntimeStatus {
 
     private static final int MAX_CODE_LENGTH = 40;
 
-    LiveQuoteMonitorInstrumentRuntimeStatus() {
+    QuoteMonitorInstrumentRuntimeStatus() {
         if (name().length() > MAX_CODE_LENGTH) {
             throw new IllegalStateException(
-                    "LiveQuoteMonitorInstrumentRuntimeStatus code must not exceed " +
+                    "QuoteMonitorInstrumentRuntimeStatus code must not exceed " +
                             MAX_CODE_LENGTH + " characters: " + name()
             );
         }
-        DomainCodeFormat.requireValidEnumCode("LiveQuoteMonitorInstrumentRuntimeStatus", name());
+        DomainCodeFormat.requireValidEnumCode("QuoteMonitorInstrumentRuntimeStatus", name());
     }
 }

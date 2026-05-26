@@ -1,9 +1,9 @@
 package com.alligator.market.backend.process.quotemonitor.api.runtime.controller;
 
-import com.alligator.market.backend.process.quotemonitor.api.runtime.dto.LiveQuoteMonitorRuntimeStatusResponse;
-import com.alligator.market.backend.process.quotemonitor.application.runtime.LiveQuoteMonitorRuntimeControlService;
+import com.alligator.market.backend.process.quotemonitor.api.runtime.dto.QuoteMonitorRuntimeStatusResponse;
+import com.alligator.market.backend.process.quotemonitor.application.runtime.QuoteMonitorRuntimeControlService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeSnapshot;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,32 +14,32 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/quote-monitor/runtime")
-public class LiveQuoteMonitorRuntimeController {
-    private final LiveQuoteMonitorRuntimeControlService service;
+public class QuoteMonitorRuntimeController {
+    private final QuoteMonitorRuntimeControlService service;
 
-    public LiveQuoteMonitorRuntimeController(LiveQuoteMonitorRuntimeControlService service) {
+    public QuoteMonitorRuntimeController(QuoteMonitorRuntimeControlService service) {
         this.service = Objects.requireNonNull(service, "service must not be null");
     }
 
     @PostMapping("/start")
-    public ResponseEntity<LiveQuoteMonitorRuntimeStatusResponse> start() {
+    public ResponseEntity<QuoteMonitorRuntimeStatusResponse> start() {
         return ResponseEntity.ok(toResponse(service.start()));
     }
 
     @PostMapping("/stop")
-    public ResponseEntity<LiveQuoteMonitorRuntimeStatusResponse> stop() {
+    public ResponseEntity<QuoteMonitorRuntimeStatusResponse> stop() {
         return ResponseEntity.ok(toResponse(service.stop()));
     }
 
     @GetMapping("/status")
-    public ResponseEntity<LiveQuoteMonitorRuntimeStatusResponse> status() {
+    public ResponseEntity<QuoteMonitorRuntimeStatusResponse> status() {
         return ResponseEntity.ok(toResponse(service.snapshot()));
     }
 
-    private LiveQuoteMonitorRuntimeStatusResponse toResponse(
-            LiveQuoteMonitorRuntimeSnapshot snapshot
+    private QuoteMonitorRuntimeStatusResponse toResponse(
+            QuoteMonitorRuntimeSnapshot snapshot
     ) {
-        return new LiveQuoteMonitorRuntimeStatusResponse(
+        return new QuoteMonitorRuntimeStatusResponse(
                 snapshot.status().name(),
                 snapshot.monitoredInstrumentCodes()
                         .stream()

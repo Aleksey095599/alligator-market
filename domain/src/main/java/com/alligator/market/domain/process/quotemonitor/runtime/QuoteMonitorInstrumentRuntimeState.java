@@ -6,16 +6,16 @@ import com.alligator.market.domain.source.vo.SourceCode;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class LiveQuoteMonitorInstrumentRuntimeState {
+public final class QuoteMonitorInstrumentRuntimeState {
     private final InstrumentCode instrumentCode;
     private final SourceCode sourceCode;
-    private final LiveQuoteMonitorInstrumentRuntimeStatus status;
+    private final QuoteMonitorInstrumentRuntimeStatus status;
     private final String detail;
 
-    public LiveQuoteMonitorInstrumentRuntimeState(
+    public QuoteMonitorInstrumentRuntimeState(
             InstrumentCode instrumentCode,
             SourceCode sourceCode,
-            LiveQuoteMonitorInstrumentRuntimeStatus status,
+            QuoteMonitorInstrumentRuntimeStatus status,
             String detail
     ) {
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -24,52 +24,52 @@ public final class LiveQuoteMonitorInstrumentRuntimeState {
         this.detail = normalizeDetail(detail);
     }
 
-    public static LiveQuoteMonitorInstrumentRuntimeState stopped(InstrumentCode instrumentCode) {
-        return new LiveQuoteMonitorInstrumentRuntimeState(
+    public static QuoteMonitorInstrumentRuntimeState stopped(InstrumentCode instrumentCode) {
+        return new QuoteMonitorInstrumentRuntimeState(
                 instrumentCode,
                 null,
-                LiveQuoteMonitorInstrumentRuntimeStatus.STOPPED,
+                QuoteMonitorInstrumentRuntimeStatus.STOPPED,
                 null
         );
     }
 
-    public static LiveQuoteMonitorInstrumentRuntimeState waitingForQuote(
+    public static QuoteMonitorInstrumentRuntimeState waitingForQuote(
             InstrumentCode instrumentCode,
             SourceCode sourceCode
     ) {
-        return new LiveQuoteMonitorInstrumentRuntimeState(
+        return new QuoteMonitorInstrumentRuntimeState(
                 instrumentCode,
                 sourceCode,
-                LiveQuoteMonitorInstrumentRuntimeStatus.WAITING_FOR_QUOTE,
+                QuoteMonitorInstrumentRuntimeStatus.WAITING_FOR_QUOTE,
                 null
         );
     }
 
-    public static LiveQuoteMonitorInstrumentRuntimeState live(
+    public static QuoteMonitorInstrumentRuntimeState live(
             InstrumentCode instrumentCode,
             SourceCode sourceCode
     ) {
-        return new LiveQuoteMonitorInstrumentRuntimeState(
+        return new QuoteMonitorInstrumentRuntimeState(
                 instrumentCode,
                 sourceCode,
-                LiveQuoteMonitorInstrumentRuntimeStatus.LIVE,
+                QuoteMonitorInstrumentRuntimeStatus.LIVE,
                 null
         );
     }
 
-    public static LiveQuoteMonitorInstrumentRuntimeState issue(
+    public static QuoteMonitorInstrumentRuntimeState issue(
             InstrumentCode instrumentCode,
             SourceCode sourceCode,
-            LiveQuoteMonitorInstrumentRuntimeStatus status,
+            QuoteMonitorInstrumentRuntimeStatus status,
             String detail
     ) {
-        if (status == LiveQuoteMonitorInstrumentRuntimeStatus.STOPPED
-                || status == LiveQuoteMonitorInstrumentRuntimeStatus.WAITING_FOR_QUOTE
-                || status == LiveQuoteMonitorInstrumentRuntimeStatus.LIVE) {
+        if (status == QuoteMonitorInstrumentRuntimeStatus.STOPPED
+                || status == QuoteMonitorInstrumentRuntimeStatus.WAITING_FOR_QUOTE
+                || status == QuoteMonitorInstrumentRuntimeStatus.LIVE) {
             throw new IllegalArgumentException("status must describe a runtime issue: " + status);
         }
 
-        return new LiveQuoteMonitorInstrumentRuntimeState(
+        return new QuoteMonitorInstrumentRuntimeState(
                 instrumentCode,
                 sourceCode,
                 status,
@@ -85,7 +85,7 @@ public final class LiveQuoteMonitorInstrumentRuntimeState {
         return Optional.ofNullable(sourceCode);
     }
 
-    public LiveQuoteMonitorInstrumentRuntimeStatus status() {
+    public QuoteMonitorInstrumentRuntimeStatus status() {
         return status;
     }
 

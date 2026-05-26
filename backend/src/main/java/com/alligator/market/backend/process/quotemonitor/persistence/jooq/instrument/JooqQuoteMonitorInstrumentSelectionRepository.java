@@ -1,7 +1,7 @@
 package com.alligator.market.backend.process.quotemonitor.persistence.jooq.instrument;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import org.jooq.DSLContext;
@@ -32,7 +32,7 @@ public final class JooqQuoteMonitorInstrumentSelectionRepository
     public QuoteMonitorInstrumentSelection get() {
         return new QuoteMonitorInstrumentSelection(dsl.select(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE)
                 .from(QUOTE_MONITOR_INSTRUMENTS)
-                .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .orderBy(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE.asc())
                 .fetch(record -> new InstrumentCode(record.get(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE))));
     }
@@ -43,7 +43,7 @@ public final class JooqQuoteMonitorInstrumentSelectionRepository
 
         int insertedRows = dsl.insertInto(QUOTE_MONITOR_INSTRUMENTS)
                 .set(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE, instrumentCode.value())
-                .set(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE, LiveQuoteMonitorCapturer.CAPTURER_CODE.value())
+                .set(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE, QuoteMonitorCapturer.CAPTURER_CODE.value())
                 .onConflict(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE)
                 .doNothing()
                 .execute();
@@ -56,7 +56,7 @@ public final class JooqQuoteMonitorInstrumentSelectionRepository
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         int deletedRows = dsl.deleteFrom(QUOTE_MONITOR_INSTRUMENTS)
-                .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .and(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE.eq(instrumentCode.value()))
                 .execute();
 
@@ -71,13 +71,13 @@ public final class JooqQuoteMonitorInstrumentSelectionRepository
             DSLContext tx = configuration.dsl();
 
             tx.deleteFrom(QUOTE_MONITOR_INSTRUMENTS)
-                    .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                    .where(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                     .execute();
 
             for (InstrumentCode instrumentCode : selection.instrumentCodes()) {
                 tx.insertInto(QUOTE_MONITOR_INSTRUMENTS)
                         .set(QUOTE_MONITOR_INSTRUMENTS_INSTRUMENT_CODE, instrumentCode.value())
-                        .set(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE, LiveQuoteMonitorCapturer.CAPTURER_CODE.value())
+                        .set(QUOTE_MONITOR_INSTRUMENTS_CAPTURER_CODE, QuoteMonitorCapturer.CAPTURER_CODE.value())
                         .execute();
             }
         });

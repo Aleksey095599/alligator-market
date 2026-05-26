@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import {
-  LiveQuoteUpdate,
-  QuoteMonitorLiveQuoteDto,
-  QuoteMonitorLiveQuoteListResponseDto
+  QuoteMonitorInstrumentQuote,
+  QuoteMonitorInstrumentQuoteDto,
+  QuoteMonitorInstrumentQuoteListResponseDto
 } from '../models/quote-monitor-live-quote.model';
 
 @Injectable({
@@ -16,21 +16,21 @@ export class QuoteMonitorLiveQuoteService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getSnapshot(): Observable<LiveQuoteUpdate[]> {
+  getSnapshot(): Observable<QuoteMonitorInstrumentQuote[]> {
     return this.http
-      .get<QuoteMonitorLiveQuoteListResponseDto>(`${this.baseUrl}/snapshot`)
-      .pipe(map(response => (response.quotes ?? []).map(quote => this.toLiveQuoteUpdate(quote))));
+      .get<QuoteMonitorInstrumentQuoteListResponseDto>(`${this.baseUrl}/snapshot`)
+      .pipe(map(response => (response.quotes ?? []).map(quote => this.toInstrumentQuote(quote))));
   }
 
   openStream(): EventSource {
     return new EventSource(`${this.baseUrl}/stream`);
   }
 
-  parseStreamMessage(data: string): LiveQuoteUpdate {
-    return this.toLiveQuoteUpdate(JSON.parse(data) as QuoteMonitorLiveQuoteDto);
+  parseStreamMessage(data: string): QuoteMonitorInstrumentQuote {
+    return this.toInstrumentQuote(JSON.parse(data) as QuoteMonitorInstrumentQuoteDto);
   }
 
-  private toLiveQuoteUpdate(quote: QuoteMonitorLiveQuoteDto): LiveQuoteUpdate {
+  private toInstrumentQuote(quote: QuoteMonitorInstrumentQuoteDto): QuoteMonitorInstrumentQuote {
     return {
       instrumentCode: quote.instrumentCode,
       lastPrice: quote.lastPrice,

@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import {
-  LiveQuoteMonitorRuntimeStatus,
-  LiveQuoteMonitorRuntimeStatusResponseDto
+  QuoteMonitorRuntimeStatus,
+  QuoteMonitorRuntimeStatusResponseDto
 } from '../models/quote-monitor-runtime.model';
 
 @Injectable({
@@ -15,27 +15,27 @@ export class QuoteMonitorRuntimeService {
 
   constructor(private readonly http: HttpClient) {}
 
-  start(): Observable<LiveQuoteMonitorRuntimeStatus> {
+  start(): Observable<QuoteMonitorRuntimeStatus> {
     return this.http
-      .post<LiveQuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/start`, {})
+      .post<QuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/start`, {})
       .pipe(map(response => this.toRuntimeStatus(response)));
   }
 
-  stop(): Observable<LiveQuoteMonitorRuntimeStatus> {
+  stop(): Observable<QuoteMonitorRuntimeStatus> {
     return this.http
-      .post<LiveQuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/stop`, {})
+      .post<QuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/stop`, {})
       .pipe(map(response => this.toRuntimeStatus(response)));
   }
 
-  status(): Observable<LiveQuoteMonitorRuntimeStatus> {
+  status(): Observable<QuoteMonitorRuntimeStatus> {
     return this.http
-      .get<LiveQuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/status`)
+      .get<QuoteMonitorRuntimeStatusResponseDto>(`${this.baseUrl}/status`)
       .pipe(map(response => this.toRuntimeStatus(response)));
   }
 
   private toRuntimeStatus(
-    response: LiveQuoteMonitorRuntimeStatusResponseDto
-  ): LiveQuoteMonitorRuntimeStatus {
+    response: QuoteMonitorRuntimeStatusResponseDto
+  ): QuoteMonitorRuntimeStatus {
     return {
       status: response.status,
       monitoredInstrumentCodes: [...(response.monitoredInstrumentCodes ?? [])].sort((left, right) =>

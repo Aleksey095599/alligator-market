@@ -1,7 +1,7 @@
 package com.alligator.market.backend.process.quotemonitor.registry.runtime;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.livequote.QuoteMonitorLiveQuote;
+import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -20,8 +20,8 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
     void returnsLatestPublishedQuoteByInstrumentCode() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
-        QuoteMonitorLiveQuote firstQuote = quote(instrumentCode, "90.10");
-        QuoteMonitorLiveQuote changedQuote = quote(instrumentCode, "90.20");
+        QuoteMonitorInstrumentQuote firstQuote = quote(instrumentCode, "90.10");
+        QuoteMonitorInstrumentQuote changedQuote = quote(instrumentCode, "90.20");
 
         registry.publish(firstQuote);
         registry.publish(changedQuote);
@@ -33,7 +33,7 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
     @Test
     void clearRemovesCurrentQuotes() {
         AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
-        QuoteMonitorLiveQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
+        QuoteMonitorInstrumentQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
 
         registry.publish(quote);
         registry.clear();
@@ -45,7 +45,7 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
     @Test
     void emitsPublishedQuotesToLiveUpdateStream() {
         AtomicRuntimeQuoteMonitorLiveQuoteRegistry registry = new AtomicRuntimeQuoteMonitorLiveQuoteRegistry();
-        QuoteMonitorLiveQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
+        QuoteMonitorInstrumentQuote quote = quote(InstrumentCode.of("FOREX_SPOT_USDRUB_TOM"), "90.10");
 
         StepVerifier.create(registry.liveQuoteUpdates())
                 .then(() -> registry.publish(quote))
@@ -54,8 +54,8 @@ class AtomicRuntimeQuoteMonitorLiveQuoteRegistryTest {
                 .verify();
     }
 
-    private static QuoteMonitorLiveQuote quote(InstrumentCode instrumentCode, String lastPrice) {
-        return new QuoteMonitorLiveQuote(
+    private static QuoteMonitorInstrumentQuote quote(InstrumentCode instrumentCode, String lastPrice) {
+        return new QuoteMonitorInstrumentQuote(
                 instrumentCode,
                 SourceCode.of("MOEX_ISS"),
                 new BigDecimal(lastPrice),

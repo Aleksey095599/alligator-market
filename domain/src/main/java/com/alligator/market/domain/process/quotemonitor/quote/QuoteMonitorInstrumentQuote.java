@@ -1,4 +1,4 @@
-package com.alligator.market.domain.process.quotemonitor.livequote;
+package com.alligator.market.domain.process.quotemonitor.quote;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
-public record QuoteMonitorLiveQuote(
+public record QuoteMonitorInstrumentQuote(
         InstrumentCode instrumentCode,
         SourceCode sourceCode,
         BigDecimal lastPrice,
@@ -15,7 +15,7 @@ public record QuoteMonitorLiveQuote(
         Instant receivedAt
 ) {
 
-    public QuoteMonitorLiveQuote {
+    public QuoteMonitorInstrumentQuote {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(lastPrice, "lastPrice must not be null");

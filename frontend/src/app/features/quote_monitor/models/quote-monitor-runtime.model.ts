@@ -1,10 +1,10 @@
-export interface LiveQuoteMonitorRuntimeStatusResponseDto {
+export interface QuoteMonitorRuntimeStatusResponseDto {
   status: string;
   monitoredInstrumentCodes: string[];
   lastTickAt: string | null;
 }
 
-export interface LiveQuoteMonitorRuntimeStatus {
+export interface QuoteMonitorRuntimeStatus {
   status: string;
   monitoredInstrumentCodes: string[];
   lastTickAt: string | null;

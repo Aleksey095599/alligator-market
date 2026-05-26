@@ -1,4 +1,4 @@
-export interface QuoteMonitorLiveQuoteDto {
+export interface QuoteMonitorInstrumentQuoteDto {
   instrumentCode: string;
   lastPrice: string;
   sourceCode: string;
@@ -6,11 +6,11 @@ export interface QuoteMonitorLiveQuoteDto {
   receivedAt: string;
 }
 
-export interface QuoteMonitorLiveQuoteListResponseDto {
-  quotes: QuoteMonitorLiveQuoteDto[];
+export interface QuoteMonitorInstrumentQuoteListResponseDto {
+  quotes: QuoteMonitorInstrumentQuoteDto[];
 }
 
-export interface LiveQuoteUpdate {
+export interface QuoteMonitorInstrumentQuote {
   instrumentCode: string;
   lastPrice: string;
   sourceCode: string | null;

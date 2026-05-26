@@ -13,8 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 
-import { LiveQuoteUpdate } from '../../models/quote-monitor-live-quote.model';
-import { LiveQuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
+import { QuoteMonitorInstrumentQuote } from '../../models/quote-monitor-live-quote.model';
+import { QuoteMonitorRuntimeStatus } from '../../models/quote-monitor-runtime.model';
 import { QuoteMonitorSourcePlanStatus } from '../../models/quote-monitor-instrument-selection.model';
 import { QuoteMonitorInstrumentSelectionService } from '../../services/quote-monitor-instrument-selection.service';
 import { QuoteMonitorLiveQuoteService } from '../../services/quote-monitor-live-quote.service';
@@ -64,7 +64,7 @@ interface QuoteMonitorInstrumentRow {
   styleUrl: './quote-monitor-live-quotes.component.scss'
 })
 export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
-  private static readonly liveQuoteMonitorCapturerCode = 'LIVE_QUOTE_MONITOR';
+  private static readonly quoteMonitorCapturerCode = 'QUOTE_MONITOR';
 
   readonly monitoredColumns: string[] = [
     'instrumentCode',
@@ -89,7 +89,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   private sourcePlanStatusesByInstrumentCode = new Map<string, QuoteMonitorSourcePlanStatus>();
   private candidateInstrumentCodeSet = new Set<string>();
   private monitoredInstrumentCodes = new Set<string>();
-  private readonly liveQuotesByInstrumentCode = new Map<string, LiveQuoteUpdate>();
+  private readonly liveQuotesByInstrumentCode = new Map<string, QuoteMonitorInstrumentQuote>();
   private readonly subscriptions = new Subscription();
   private quoteEventSource: EventSource | null = null;
 
@@ -206,7 +206,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   viewSourcePlan(instrumentCode: string): void {
     void this.router.navigate(['/source-plans'], {
       queryParams: {
-        capturerCode: QuoteMonitorLiveQuotesComponent.liveQuoteMonitorCapturerCode,
+        capturerCode: QuoteMonitorLiveQuotesComponent.quoteMonitorCapturerCode,
         instrumentCode
       }
     });
@@ -363,7 +363,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private runCommand(
-    command: Observable<LiveQuoteMonitorRuntimeStatus>,
+    command: Observable<QuoteMonitorRuntimeStatus>,
     successMessage: string
   ): void {
     this.commandRunning = true;
@@ -410,7 +410,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscription);
   }
 
-  private applyRuntimeStatus(status: LiveQuoteMonitorRuntimeStatus, sync = true): void {
+  private applyRuntimeStatus(status: QuoteMonitorRuntimeStatus, sync = true): void {
     this.runtimeStatus = status.status;
     this.lastTickAt = status.lastTickAt;
     this.monitoredInstrumentCodes = new Set(status.monitoredInstrumentCodes);
@@ -470,7 +470,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     this.quoteEventSource = null;
   }
 
-  private applyQuoteSnapshot(updates: LiveQuoteUpdate[], sync = true): void {
+  private applyQuoteSnapshot(updates: QuoteMonitorInstrumentQuote[], sync = true): void {
     this.liveQuotesByInstrumentCode.clear();
     for (const update of updates) {
       this.liveQuotesByInstrumentCode.set(update.instrumentCode, update);
@@ -481,7 +481,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private applyQuoteUpdate(update: LiveQuoteUpdate): void {
+  private applyQuoteUpdate(update: QuoteMonitorInstrumentQuote): void {
     this.liveQuotesByInstrumentCode.set(update.instrumentCode, update);
     this.lastTickAt = update.receivedAt;
     this.syncRows();
@@ -514,7 +514,7 @@ export class QuoteMonitorLiveQuotesComponent implements OnInit, OnDestroy {
   }
 
   private resolveRowStatus(
-    quote: LiveQuoteUpdate | undefined,
+    quote: QuoteMonitorInstrumentQuote | undefined,
     candidateAvailable: boolean,
     monitored: boolean
   ): QuoteMonitorRowStatus {

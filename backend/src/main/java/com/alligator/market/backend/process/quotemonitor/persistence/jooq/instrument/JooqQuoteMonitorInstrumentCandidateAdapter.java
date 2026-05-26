@@ -2,7 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.persistence.jooq.instr
 
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.capturer.LiveQuoteMonitorCapturer;
+import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -36,7 +36,7 @@ public final class JooqQuoteMonitorInstrumentCandidateAdapter implements QuoteMo
     public List<InstrumentCode> findCandidateInstrumentCodes() {
         return dsl.select(SOURCE_PLAN_INSTRUMENT_CODE)
                 .from(SOURCE_PLAN)
-                .where(SOURCE_PLAN_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                .where(SOURCE_PLAN_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .and(SOURCE_PLAN_EXECUTION_STATUS.eq(
                         StoredSourcePlanExecutionStatus.AVAILABLE.name()))
                 .orderBy(SOURCE_PLAN_INSTRUMENT_CODE.asc())
@@ -58,7 +58,7 @@ public final class JooqQuoteMonitorInstrumentCandidateAdapter implements QuoteMo
 
         Set<String> existingValues = new HashSet<>(dsl.select(SOURCE_PLAN_INSTRUMENT_CODE)
                 .from(SOURCE_PLAN)
-                .where(SOURCE_PLAN_CAPTURER_CODE.eq(LiveQuoteMonitorCapturer.CAPTURER_CODE.value()))
+                .where(SOURCE_PLAN_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .and(SOURCE_PLAN_EXECUTION_STATUS.eq(
                         StoredSourcePlanExecutionStatus.AVAILABLE.name()))
                 .and(SOURCE_PLAN_INSTRUMENT_CODE.in(requestedValues))

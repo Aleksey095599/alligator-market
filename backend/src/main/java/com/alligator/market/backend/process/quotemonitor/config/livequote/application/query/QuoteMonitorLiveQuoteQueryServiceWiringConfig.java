@@ -2,7 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.config.livequote.appli
 
 import com.alligator.market.backend.process.quotemonitor.application.livequote.QuoteMonitorLiveQuoteQueryService;
 import com.alligator.market.backend.process.quotemonitor.config.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistryWiringConfig;
-import com.alligator.market.domain.process.quotemonitor.livequote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
+import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorLiveQuoteRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -3,14 +3,14 @@ package com.alligator.market.backend.process.quotemonitor.config.instrument;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.QuoteMonitorInstrumentSelectionService;
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdaterWiringConfig;
-import com.alligator.market.backend.process.quotemonitor.config.runtime.LiveQuoteMonitorRuntimeProcessWiringConfig;
+import com.alligator.market.backend.process.quotemonitor.config.runtime.QuoteMonitorRuntimeProcessWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.persistence.jooq.instrument.JooqQuoteMonitorInstrumentCandidateAdapter;
 import com.alligator.market.backend.process.quotemonitor.persistence.jooq.instrument.JooqQuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.backend.sourceplan.config.plan.application.query.common.SourcePlanQueryPortWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
-import com.alligator.market.domain.process.quotemonitor.runtime.LiveQuoteMonitorRuntimeProcess;
+import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import({
         RuntimeQuoteMonitorInstrumentSelectionRegistryUpdaterWiringConfig.class,
-        LiveQuoteMonitorRuntimeProcessWiringConfig.class,
+        QuoteMonitorRuntimeProcessWiringConfig.class,
         SourcePlanQueryPortWiringConfig.class
 })
 public class QuoteMonitorInstrumentSelectionWiringConfig {
@@ -54,8 +54,8 @@ public class QuoteMonitorInstrumentSelectionWiringConfig {
                             .BEAN_RUNTIME_QUOTE_MONITOR_INSTRUMENT_SELECTION_REGISTRY_UPDATER
             )
             RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater runtimeRegistryUpdater,
-            @Qualifier(LiveQuoteMonitorRuntimeProcessWiringConfig.BEAN_LIVE_QUOTE_MONITOR_RUNTIME_PROCESS)
-            LiveQuoteMonitorRuntimeProcess runtimeProcess
+            @Qualifier(QuoteMonitorRuntimeProcessWiringConfig.BEAN_QUOTE_MONITOR_RUNTIME_PROCESS)
+            QuoteMonitorRuntimeProcess runtimeProcess
     ) {
         return new QuoteMonitorInstrumentSelectionService(
                 repository,
