@@ -67,6 +67,25 @@ public final class QuoteMonitorRuntimeState {
         return instrumentStates;
     }
 
+    public Optional<QuoteMonitorInstrumentRuntimeState> instrumentState(InstrumentCode instrumentCode) {
+        Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
+
+        return instrumentStates.stream()
+                .filter(state -> state.instrumentCode().equals(instrumentCode))
+                .findFirst();
+    }
+
+    public List<QuoteMonitorInstrumentRuntimeState> issueInstrumentStates() {
+        return instrumentStates.stream()
+                .filter(QuoteMonitorInstrumentRuntimeState::isIssue)
+                .toList();
+    }
+
+    public boolean hasInstrumentIssues() {
+        return instrumentStates.stream()
+                .anyMatch(QuoteMonitorInstrumentRuntimeState::isIssue);
+    }
+
     public QuoteMonitorRuntimeState withStatus(QuoteMonitorRuntimeStatus status) {
         return new QuoteMonitorRuntimeState(
                 status,

@@ -385,21 +385,17 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
-        assertThat(process.state().instrumentStates())
-                .extracting(QuoteMonitorInstrumentRuntimeState::instrumentCode)
-                .containsExactly(instrumentCode);
+        assertThat(process.state().instrumentStates()).hasSize(1);
 
-        return process.state().instrumentStates().getFirst();
+        return instrumentState(process, instrumentCode);
     }
 
     private static QuoteMonitorInstrumentRuntimeState instrumentState(
             DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
-        return process.state().instrumentStates()
-                .stream()
-                .filter(state -> state.instrumentCode().equals(instrumentCode))
-                .findFirst()
+        return process.state()
+                .instrumentState(instrumentCode)
                 .orElseThrow();
     }
 

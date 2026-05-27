@@ -63,9 +63,7 @@ public final class QuoteMonitorInstrumentRuntimeState {
             QuoteMonitorInstrumentRuntimeStatus status,
             String detail
     ) {
-        if (status == QuoteMonitorInstrumentRuntimeStatus.STOPPED
-                || status == QuoteMonitorInstrumentRuntimeStatus.WAITING_FOR_QUOTE
-                || status == QuoteMonitorInstrumentRuntimeStatus.LIVE) {
+        if (!status.isIssue()) {
             throw new IllegalArgumentException("status must describe a runtime issue: " + status);
         }
 
@@ -91,6 +89,10 @@ public final class QuoteMonitorInstrumentRuntimeState {
 
     public Optional<String> detail() {
         return Optional.ofNullable(detail);
+    }
+
+    public boolean isIssue() {
+        return status.isIssue();
     }
 
     private static String normalizeDetail(String detail) {
