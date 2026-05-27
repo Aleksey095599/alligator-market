@@ -14,11 +14,11 @@ import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrum
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -92,8 +92,8 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         TestInstrument firstInstrument = instrument(firstCode);
         TestInstrument secondInstrument = instrument(secondCode);
         RecordingMarketSource source = new RecordingMarketSource(SourceCode.of("PRIMARY_SOURCE"));
-        CapturingRuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher =
-                new CapturingRuntimeQuoteMonitorInstrumentQuotePublisher();
+        CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher tickPublisher =
+                new CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher();
         MutableRuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry =
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(firstCode, secondCode))
@@ -105,7 +105,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 new MutableRuntimeInstrumentRegistry(List.of(firstInstrument, secondInstrument)),
                 sourcePlanRegistry,
                 new MutableRuntimeSourceRegistry(List.of(source)),
-                instrumentQuotePublisher
+                tickPublisher
         );
 
         process.start();
@@ -117,11 +117,12 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
         assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
         assertThat(source.streamedInstrumentCodes()).containsExactly(firstCode);
-        assertThat(instrumentQuotePublisher.clearCount()).isEqualTo(1);
-        assertThat(instrumentQuotePublisher.publishedQuotes()).hasSize(1);
-        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().instrumentCode()).isEqualTo(firstCode);
-        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().sourceCode()).isEqualTo(source.code());
-        assertThat(instrumentQuotePublisher.publishedQuotes().getFirst().lastPrice()).isEqualByComparingTo(BigDecimal.ONE);
+        assertThat(tickPublisher.clearCount()).isEqualTo(1);
+        assertThat(tickPublisher.publishedTicks()).hasSize(1);
+        assertThat(tickPublisher.publishedTicks().getFirst().instrumentCode()).isEqualTo(firstCode);
+        assertThat(tickPublisher.publishedTicks().getFirst().sourceCode()).isEqualTo(source.code());
+        assertThat(tickPublisher.publishedTicks().getFirst().sourceTick().lastPrice())
+                .isEqualByComparingTo(BigDecimal.ONE);
     }
 
     @Test
@@ -336,7 +337,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
-                new CapturingRuntimeQuoteMonitorInstrumentQuotePublisher()
+                new CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher()
         );
     }
 
@@ -345,7 +346,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
-            RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher
+            RuntimeQuoteMonitorLastPriceCapturedTickPublisher tickPublisher
     ) {
         return new DefaultQuoteMonitorRuntimeProcess(
                 new QuoteMonitorCapturer(),
@@ -353,7 +354,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
-                instrumentQuotePublisher,
+                tickPublisher,
                 Clock.fixed(START_TIME, ZoneOffset.UTC)
         );
     }
@@ -644,24 +645,24 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class CapturingRuntimeQuoteMonitorInstrumentQuotePublisher
-            implements RuntimeQuoteMonitorInstrumentQuotePublisher {
-        private final List<QuoteMonitorInstrumentQuote> publishedQuotes = new ArrayList<>();
+    private static final class CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher
+            implements RuntimeQuoteMonitorLastPriceCapturedTickPublisher {
+        private final List<QuoteMonitorLastPriceCapturedTick> publishedTicks = new ArrayList<>();
         private int clearCount;
 
         @Override
-        public void publish(QuoteMonitorInstrumentQuote quote) {
-            publishedQuotes.add(quote);
+        public void publish(QuoteMonitorLastPriceCapturedTick tick) {
+            publishedTicks.add(tick);
         }
 
         @Override
         public void clear() {
             clearCount++;
-            publishedQuotes.clear();
+            publishedTicks.clear();
         }
 
-        private List<QuoteMonitorInstrumentQuote> publishedQuotes() {
-            return List.copyOf(publishedQuotes);
+        private List<QuoteMonitorLastPriceCapturedTick> publishedTicks() {
+            return List.copyOf(publishedTicks);
         }
 
         private int clearCount() {

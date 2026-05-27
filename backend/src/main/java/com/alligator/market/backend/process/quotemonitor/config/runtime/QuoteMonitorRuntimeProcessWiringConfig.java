@@ -3,14 +3,14 @@ package com.alligator.market.backend.process.quotemonitor.config.runtime;
 import com.alligator.market.backend.instrument.config.registry.runtime.RuntimeInstrumentRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.capturer.QuoteMonitorCapturerWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig;
-import com.alligator.market.backend.process.quotemonitor.config.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuoteRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.runtime.DefaultQuoteMonitorRuntimeProcess;
+import com.alligator.market.backend.process.quotemonitor.config.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickRegistryWiringConfig;
 import com.alligator.market.backend.source.config.registry.RuntimeSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.registry.runtime.RuntimeSourcePlanRegistryWiringConfig;
 import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
@@ -27,7 +27,7 @@ import java.time.Clock;
         RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig.class,
         RuntimeInstrumentRegistryWiringConfig.class,
         RuntimeSourceRegistryWiringConfig.class,
-        RuntimeQuoteMonitorInstrumentQuoteRegistryWiringConfig.class,
+        RuntimeQuoteMonitorLastPriceCapturedTickRegistryWiringConfig.class,
         RuntimeSourcePlanRegistryWiringConfig.class
 })
 public class QuoteMonitorRuntimeProcessWiringConfig {
@@ -54,9 +54,9 @@ public class QuoteMonitorRuntimeProcessWiringConfig {
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             @Qualifier(RuntimeSourceRegistryWiringConfig.BEAN_RUNTIME_SOURCE_REGISTRY)
             RuntimeSourceRegistry sourceRegistry,
-            @Qualifier(RuntimeQuoteMonitorInstrumentQuoteRegistryWiringConfig
-                    .BEAN_RUNTIME_QUOTE_MONITOR_INSTRUMENT_QUOTE_PUBLISHER)
-            RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher,
+            @Qualifier(RuntimeQuoteMonitorLastPriceCapturedTickRegistryWiringConfig
+                    .BEAN_RUNTIME_QUOTE_MONITOR_LAST_PRICE_CAPTURED_TICK_PUBLISHER)
+            RuntimeQuoteMonitorLastPriceCapturedTickPublisher lastPriceCapturedTickPublisher,
             @Qualifier(BEAN_QUOTE_MONITOR_RUNTIME_CLOCK)
             Clock clock
     ) {
@@ -66,7 +66,7 @@ public class QuoteMonitorRuntimeProcessWiringConfig {
                 instrumentRegistry,
                 sourcePlanRegistry,
                 sourceRegistry,
-                instrumentQuotePublisher,
+                lastPriceCapturedTickPublisher,
                 clock
         );
     }

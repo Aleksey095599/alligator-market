@@ -1,8 +1,8 @@
-package com.alligator.market.backend.process.quotemonitor.api.quote.dto;
+package com.alligator.market.backend.process.quotemonitor.api.livequote.dto;
 
 import java.time.Instant;
 
-public record QuoteMonitorInstrumentQuoteDto(
+public record QuoteMonitorLiveQuoteDto(
         String instrumentCode,
         String lastPrice,
         String sourceCode,

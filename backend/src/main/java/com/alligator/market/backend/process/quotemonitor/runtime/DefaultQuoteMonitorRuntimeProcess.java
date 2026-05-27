@@ -7,13 +7,13 @@ import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.quote.QuoteMonitorInstrumentQuote;
-import com.alligator.market.domain.process.quotemonitor.quote.registry.runtime.RuntimeQuoteMonitorInstrumentQuotePublisher;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
@@ -45,7 +45,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
     private final RuntimeSourceRegistry sourceRegistry;
-    private final RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher;
+    private final RuntimeQuoteMonitorLastPriceCapturedTickPublisher lastPriceCapturedTickPublisher;
     private final Clock clock;
     private final Object lock = new Object();
 
@@ -58,7 +58,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
             RuntimeSourceRegistry sourceRegistry,
-            RuntimeQuoteMonitorInstrumentQuotePublisher instrumentQuotePublisher,
+            RuntimeQuoteMonitorLastPriceCapturedTickPublisher lastPriceCapturedTickPublisher,
             Clock clock
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
@@ -78,9 +78,9 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 sourceRegistry,
                 "sourceRegistry must not be null"
         );
-        this.instrumentQuotePublisher = Objects.requireNonNull(
-                instrumentQuotePublisher,
-                "instrumentQuotePublisher must not be null"
+        this.lastPriceCapturedTickPublisher = Objects.requireNonNull(
+                lastPriceCapturedTickPublisher,
+                "lastPriceCapturedTickPublisher must not be null"
         );
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
@@ -92,7 +92,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 return false;
             }
 
-            instrumentQuotePublisher.clear();
+            lastPriceCapturedTickPublisher.clear();
             QuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
             List<QuoteMonitorSourceStream> streams = resolution.streams();
             snapshot = runningSnapshot(
@@ -375,11 +375,10 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
             return false;
         }
 
-        instrumentQuotePublisher.publish(new QuoteMonitorInstrumentQuote(
+        lastPriceCapturedTickPublisher.publish(new QuoteMonitorLastPriceCapturedTick(
                 stream.instrument().instrumentCode(),
                 stream.sourceCode(),
-                lastPriceTick.lastPrice(),
-                lastPriceTick.sourceTickTime(),
+                lastPriceTick,
                 receivedAt
         ));
         return true;
