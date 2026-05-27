@@ -1,7 +1,7 @@
-package com.alligator.market.domain.process.quotemonitor.runtime;
+package com.alligator.market.domain.process.quotemonitor.runtime.state;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class QuoteMonitorRuntimeSnapshot {
+public final class QuoteMonitorRuntimeState {
     private final QuoteMonitorRuntimeStatus status;
     private final List<InstrumentCode> monitoredInstrumentCodes;
     private final Instant lastTickAt;
     private final List<QuoteMonitorInstrumentRuntimeState> instrumentStates;
 
-    public QuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeState(
             QuoteMonitorRuntimeStatus status,
             List<InstrumentCode> monitoredInstrumentCodes,
             Instant lastTickAt
@@ -29,7 +29,7 @@ public final class QuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public QuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeState(
             QuoteMonitorRuntimeStatus status,
             List<InstrumentCode> monitoredInstrumentCodes,
             Instant lastTickAt,
@@ -43,8 +43,8 @@ public final class QuoteMonitorRuntimeSnapshot {
         this.instrumentStates = copyAndValidateInstrumentStates(instrumentStates);
     }
 
-    public static QuoteMonitorRuntimeSnapshot stopped() {
-        return new QuoteMonitorRuntimeSnapshot(
+    public static QuoteMonitorRuntimeState stopped() {
+        return new QuoteMonitorRuntimeState(
                 QuoteMonitorRuntimeStatus.STOPPED,
                 List.of(),
                 null
@@ -67,8 +67,8 @@ public final class QuoteMonitorRuntimeSnapshot {
         return instrumentStates;
     }
 
-    public QuoteMonitorRuntimeSnapshot withStatus(QuoteMonitorRuntimeStatus status) {
-        return new QuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeState withStatus(QuoteMonitorRuntimeStatus status) {
+        return new QuoteMonitorRuntimeState(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -76,8 +76,8 @@ public final class QuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public QuoteMonitorRuntimeSnapshot withLastTickAt(Instant lastTickAt) {
-        return new QuoteMonitorRuntimeSnapshot(
+    public QuoteMonitorRuntimeState withLastTickAt(Instant lastTickAt) {
+        return new QuoteMonitorRuntimeState(
                 status,
                 monitoredInstrumentCodes,
                 Objects.requireNonNull(lastTickAt, "lastTickAt must not be null"),
@@ -85,10 +85,10 @@ public final class QuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public QuoteMonitorRuntimeSnapshot withMonitoredInstrumentCodes(
+    public QuoteMonitorRuntimeState withMonitoredInstrumentCodes(
             List<InstrumentCode> monitoredInstrumentCodes
     ) {
-        return new QuoteMonitorRuntimeSnapshot(
+        return new QuoteMonitorRuntimeState(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -96,10 +96,10 @@ public final class QuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public QuoteMonitorRuntimeSnapshot withInstrumentStates(
+    public QuoteMonitorRuntimeState withInstrumentStates(
             List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
-        return new QuoteMonitorRuntimeSnapshot(
+        return new QuoteMonitorRuntimeState(
                 status,
                 monitoredInstrumentCodes,
                 lastTickAt,
@@ -107,7 +107,7 @@ public final class QuoteMonitorRuntimeSnapshot {
         );
     }
 
-    public QuoteMonitorRuntimeSnapshot withInstrumentState(
+    public QuoteMonitorRuntimeState withInstrumentState(
             QuoteMonitorInstrumentRuntimeState instrumentState
     ) {
         Objects.requireNonNull(instrumentState, "instrumentState must not be null");

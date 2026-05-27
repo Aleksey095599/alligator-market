@@ -8,10 +8,10 @@ import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastP
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.source.MarketSource;
@@ -49,7 +49,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     private final Clock clock;
     private final Object lock = new Object();
 
-    private QuoteMonitorRuntimeSnapshot snapshot = QuoteMonitorRuntimeSnapshot.stopped();
+    private QuoteMonitorRuntimeState state = QuoteMonitorRuntimeState.stopped();
     private List<Disposable> activeSubscriptions = List.of();
 
     public DefaultQuoteMonitorRuntimeProcess(
@@ -88,21 +88,21 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     @Override
     public boolean start() {
         synchronized (lock) {
-            if (snapshot.status() == QuoteMonitorRuntimeStatus.RUNNING) {
+            if (state.status() == QuoteMonitorRuntimeStatus.RUNNING) {
                 return false;
             }
 
             lastPriceCapturedTickPublisher.clear();
             QuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
             List<QuoteMonitorSourceStream> streams = resolution.streams();
-            snapshot = runningSnapshot(
+            state = runningState(
                     monitoredInstrumentCodes(streams),
                     resolution.instrumentStates()
             );
             QuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
             activeSubscriptions = startedStreams.subscriptions();
             List<InstrumentCode> monitoredInstrumentCodes = monitoredInstrumentCodes(startedStreams.streams());
-            snapshot = snapshot.withMonitoredInstrumentCodes(monitoredInstrumentCodes);
+            state = state.withMonitoredInstrumentCodes(monitoredInstrumentCodes);
             log.info(
                     "Quote Monitor started: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
                     capturer.capturerCode().value(),
@@ -116,15 +116,15 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     @Override
     public boolean stop() {
         synchronized (lock) {
-            if (snapshot.status() == QuoteMonitorRuntimeStatus.STOPPED) {
+            if (state.status() == QuoteMonitorRuntimeStatus.STOPPED) {
                 return false;
             }
 
-            List<InstrumentCode> monitoredInstrumentCodes = snapshot.monitoredInstrumentCodes();
+            List<InstrumentCode> monitoredInstrumentCodes = state.monitoredInstrumentCodes();
             disposeActiveSubscriptions();
-            snapshot = snapshot
+            state = state
                     .withStatus(QuoteMonitorRuntimeStatus.STOPPED)
-                    .withInstrumentStates(stoppedInstrumentStates(snapshot.instrumentStates()));
+                    .withInstrumentStates(stoppedInstrumentStates(state.instrumentStates()));
             log.info(
                     "Quote Monitor stopped: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
                     capturer.capturerCode().value(),
@@ -138,22 +138,22 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
     @Override
     public QuoteMonitorRuntimeStatus status() {
         synchronized (lock) {
-            return snapshot.status();
+            return state.status();
         }
     }
 
     @Override
-    public QuoteMonitorRuntimeSnapshot snapshot() {
+    public QuoteMonitorRuntimeState state() {
         synchronized (lock) {
-            return snapshot;
+            return state;
         }
     }
 
-    private QuoteMonitorRuntimeSnapshot runningSnapshot(
+    private QuoteMonitorRuntimeState runningState(
             List<InstrumentCode> monitoredInstrumentCodes,
             List<QuoteMonitorInstrumentRuntimeState> instrumentStates
     ) {
-        return new QuoteMonitorRuntimeSnapshot(
+        return new QuoteMonitorRuntimeState(
                 QuoteMonitorRuntimeStatus.RUNNING,
                 monitoredInstrumentCodes,
                 null,
@@ -304,7 +304,7 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 startedStreams.add(stream);
                 subscriptions.add(subscription);
             } catch (RuntimeException ex) {
-                snapshot = snapshot.withInstrumentState(runtimeIssue(
+                state = state.withInstrumentState(runtimeIssue(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode(),
                         streamStartFailureStatus(ex),
@@ -330,20 +330,20 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
         Objects.requireNonNull(tick, "tick must not be null");
 
         synchronized (lock) {
-            if (snapshot.status() != QuoteMonitorRuntimeStatus.RUNNING) {
+            if (state.status() != QuoteMonitorRuntimeStatus.RUNNING) {
                 return;
             }
 
             Instant receivedAt = clock.instant();
-            snapshot = snapshot.withLastTickAt(receivedAt);
+            state = state.withLastTickAt(receivedAt);
             boolean published = publishSourceTick(stream, tick, receivedAt);
             if (published) {
-                snapshot = snapshot.withInstrumentState(QuoteMonitorInstrumentRuntimeState.live(
+                state = state.withInstrumentState(QuoteMonitorInstrumentRuntimeState.live(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode()
                 ));
             } else {
-                snapshot = snapshot.withInstrumentState(runtimeIssue(
+                state = state.withInstrumentState(runtimeIssue(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode(),
                         QuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE,
@@ -386,8 +386,8 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
 
     private void onSourceStreamError(QuoteMonitorSourceStream stream, Throwable error) {
         synchronized (lock) {
-            if (snapshot.status() == QuoteMonitorRuntimeStatus.RUNNING) {
-                snapshot = snapshot.withInstrumentState(runtimeIssue(
+            if (state.status() == QuoteMonitorRuntimeStatus.RUNNING) {
+                state = state.withInstrumentState(runtimeIssue(
                         stream.instrument().instrumentCode(),
                         stream.sourceCode(),
                         streamFailureStatus(error),

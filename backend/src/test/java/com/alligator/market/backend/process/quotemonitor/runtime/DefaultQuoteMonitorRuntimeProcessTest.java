@@ -14,9 +14,9 @@ import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrum
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorInstrumentSelection;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.source.MarketSource;
@@ -65,7 +65,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         assertThat(process.start()).isFalse();
 
         assertThat(process.status()).isEqualTo(QuoteMonitorRuntimeStatus.RUNNING);
-        assertThat(process.snapshot().lastTickAt()).isEmpty();
+        assertThat(process.state().lastTickAt()).isEmpty();
     }
 
     @Test
@@ -110,12 +110,12 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(firstCode);
+        assertThat(process.state().monitoredInstrumentCodes()).containsExactly(firstCode);
         assertThat(instrumentState(process, firstCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.LIVE);
         assertThat(instrumentState(process, secondCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
-        assertThat(process.snapshot().lastTickAt()).contains(START_TIME);
+        assertThat(process.state().lastTickAt()).contains(START_TIME);
         assertThat(source.streamedInstrumentCodes()).containsExactly(firstCode);
         assertThat(tickPublisher.clearCount()).isEqualTo(1);
         assertThat(tickPublisher.publishedTicks()).hasSize(1);
@@ -150,7 +150,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
+        assertThat(process.state().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(primarySource.streamedInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(backupSource.streamedInstrumentCodes()).isEmpty();
     }
@@ -169,7 +169,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND);
     }
@@ -188,7 +188,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND);
     }
@@ -207,7 +207,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND);
     }
@@ -230,7 +230,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.HANDLER_NOT_FOUND);
     }
@@ -257,7 +257,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.INSTRUMENT_NOT_SUPPORTED_BY_HANDLER);
     }
@@ -280,7 +280,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).isEmpty();
+        assertThat(process.state().monitoredInstrumentCodes()).isEmpty();
         QuoteMonitorInstrumentRuntimeState state = onlyInstrumentState(process, instrumentCode);
         assertThat(state.status()).isEqualTo(QuoteMonitorInstrumentRuntimeStatus.STREAM_START_FAILED);
         assertThat(state.detail()).contains("Stream cannot be created");
@@ -301,7 +301,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
+        assertThat(process.state().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.STREAM_FAILED);
     }
@@ -321,7 +321,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         process.start();
 
-        assertThat(process.snapshot().monitoredInstrumentCodes()).containsExactly(instrumentCode);
+        assertThat(process.state().monitoredInstrumentCodes()).containsExactly(instrumentCode);
         assertThat(onlyInstrumentState(process, instrumentCode).status())
                 .isEqualTo(QuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE);
     }
@@ -385,18 +385,18 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
-        assertThat(process.snapshot().instrumentStates())
+        assertThat(process.state().instrumentStates())
                 .extracting(QuoteMonitorInstrumentRuntimeState::instrumentCode)
                 .containsExactly(instrumentCode);
 
-        return process.snapshot().instrumentStates().getFirst();
+        return process.state().instrumentStates().getFirst();
     }
 
     private static QuoteMonitorInstrumentRuntimeState instrumentState(
             DefaultQuoteMonitorRuntimeProcess process,
             InstrumentCode instrumentCode
     ) {
-        return process.snapshot().instrumentStates()
+        return process.state().instrumentStates()
                 .stream()
                 .filter(state -> state.instrumentCode().equals(instrumentCode))
                 .findFirst()

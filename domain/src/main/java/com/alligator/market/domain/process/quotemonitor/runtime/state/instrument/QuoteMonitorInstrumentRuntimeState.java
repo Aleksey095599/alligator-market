@@ -1,4 +1,4 @@
-package com.alligator.market.domain.process.quotemonitor.runtime.instrument;
+package com.alligator.market.domain.process.quotemonitor.runtime.state.instrument;
 
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;

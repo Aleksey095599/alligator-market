@@ -12,7 +12,7 @@ import com.alligator.market.domain.process.quotemonitor.instrument.QuoteMonitorI
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 
 import java.util.HashSet;

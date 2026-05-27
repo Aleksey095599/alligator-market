@@ -4,8 +4,8 @@ import com.alligator.market.backend.process.quotemonitor.api.runtime.dto.QuoteMo
 import com.alligator.market.backend.process.quotemonitor.api.runtime.dto.QuoteMonitorRuntimeStatusResponse;
 import com.alligator.market.backend.process.quotemonitor.application.runtime.QuoteMonitorRuntimeControlService;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
-import com.alligator.market.domain.process.quotemonitor.runtime.instrument.QuoteMonitorInstrumentRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,20 +36,20 @@ public class QuoteMonitorRuntimeController {
 
     @GetMapping("/status")
     public ResponseEntity<QuoteMonitorRuntimeStatusResponse> status() {
-        return ResponseEntity.ok(toResponse(service.snapshot()));
+        return ResponseEntity.ok(toResponse(service.state()));
     }
 
     private QuoteMonitorRuntimeStatusResponse toResponse(
-            QuoteMonitorRuntimeSnapshot snapshot
+            QuoteMonitorRuntimeState state
     ) {
         return new QuoteMonitorRuntimeStatusResponse(
-                snapshot.status().name(),
-                snapshot.monitoredInstrumentCodes()
+                state.status().name(),
+                state.monitoredInstrumentCodes()
                         .stream()
                         .map(InstrumentCode::value)
                         .toList(),
-                snapshot.lastTickAt().orElse(null),
-                snapshot.instrumentStates()
+                state.lastTickAt().orElse(null),
+                state.instrumentStates()
                         .stream()
                         .map(this::toResponse)
                         .toList()

@@ -14,8 +14,8 @@ import com.alligator.market.domain.process.quotemonitor.instrument.exception.Dup
 import com.alligator.market.domain.process.quotemonitor.instrument.repository.QuoteMonitorInstrumentSelectionRepository;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 import org.junit.jupiter.api.Test;
 
@@ -372,8 +372,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         }
 
         @Override
-        public QuoteMonitorRuntimeSnapshot snapshot() {
-            return new QuoteMonitorRuntimeSnapshot(status, List.of(), null);
+        public QuoteMonitorRuntimeState state() {
+            return new QuoteMonitorRuntimeState(status, List.of(), null);
         }
     }
 }

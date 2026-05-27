@@ -1,7 +1,7 @@
 package com.alligator.market.backend.process.quotemonitor.application.runtime;
 
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
-import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeSnapshot;
+import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
 
 import java.util.Objects;
 
@@ -12,17 +12,17 @@ public final class QuoteMonitorRuntimeControlService {
         this.runtimeProcess = Objects.requireNonNull(runtimeProcess, "runtimeProcess must not be null");
     }
 
-    public QuoteMonitorRuntimeSnapshot start() {
+    public QuoteMonitorRuntimeState start() {
         runtimeProcess.start();
-        return runtimeProcess.snapshot();
+        return runtimeProcess.state();
     }
 
-    public QuoteMonitorRuntimeSnapshot stop() {
+    public QuoteMonitorRuntimeState stop() {
         runtimeProcess.stop();
-        return runtimeProcess.snapshot();
+        return runtimeProcess.state();
     }
 
-    public QuoteMonitorRuntimeSnapshot snapshot() {
-        return runtimeProcess.snapshot();
+    public QuoteMonitorRuntimeState state() {
+        return runtimeProcess.state();
     }
 }
