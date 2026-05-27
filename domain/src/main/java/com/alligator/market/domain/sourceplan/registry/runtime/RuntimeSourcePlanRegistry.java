@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface RuntimeSourcePlanRegistry {
 
-    Optional<SourcePlan> findExecutableByKey(SourcePlanKey key);
+    Optional<SourcePlan> findAvailableByKey(SourcePlanKey key);
 
-    List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode);
+    List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode);
 
-    Map<SourcePlanKey, SourcePlan> executablePlansByKey();
+    Map<SourcePlanKey, SourcePlan> availablePlansByKey();
 }

@@ -28,17 +28,17 @@ public final class SnapshotRuntimeSourcePlanRegistryUpdater implements RuntimeSo
 
     @Override
     public void updateRuntimeRegistry() {
-        List<SourcePlan> executablePlans = loadExecutablePlans();
-        RuntimeSourcePlanRegistry snapshot = createSnapshot(executablePlans);
+        List<SourcePlan> availablePlans = loadAvailablePlans();
+        RuntimeSourcePlanRegistry snapshot = createSnapshot(availablePlans);
         publishSnapshot(snapshot);
     }
 
-    private List<SourcePlan> loadExecutablePlans() {
-        return storedRegistry.findAllExecutable();
+    private List<SourcePlan> loadAvailablePlans() {
+        return storedRegistry.findAllAvailable();
     }
 
-    private RuntimeSourcePlanRegistry createSnapshot(List<SourcePlan> executablePlans) {
-        return new SnapshotRuntimeSourcePlanRegistry(executablePlans);
+    private RuntimeSourcePlanRegistry createSnapshot(List<SourcePlan> availablePlans) {
+        return new SnapshotRuntimeSourcePlanRegistry(availablePlans);
     }
 
     private void publishSnapshot(RuntimeSourcePlanRegistry snapshot) {

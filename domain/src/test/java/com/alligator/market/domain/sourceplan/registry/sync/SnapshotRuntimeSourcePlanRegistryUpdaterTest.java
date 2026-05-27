@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
 
     @Test
-    void publishesExecutablePlansFromStoredRegistryAsRuntimeSnapshot() {
+    void publishesAvailablePlansFromStoredRegistryAsRuntimeSnapshot() {
         SourcePlan plan = plan("TEST_CAPTURER", "EUR_USD", "PRIMARY_SOURCE");
         CapturingRuntimeSourcePlanRegistryPublisher publisher =
                 new CapturingRuntimeSourcePlanRegistryPublisher();
@@ -33,13 +33,13 @@ class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
         updater.updateRuntimeRegistry();
 
         assertNotNull(publisher.publishedRegistry);
-        assertEquals(Optional.of(plan), publisher.publishedRegistry.findExecutableByKey(plan.key()));
-        assertEquals(List.of(plan), publisher.publishedRegistry.findExecutableByCapturerCode(plan.capturerCode()));
-        assertEquals(plan, publisher.publishedRegistry.executablePlansByKey().get(plan.key()));
+        assertEquals(Optional.of(plan), publisher.publishedRegistry.findAvailableByKey(plan.key()));
+        assertEquals(List.of(plan), publisher.publishedRegistry.findAvailableByCapturerCode(plan.capturerCode()));
+        assertEquals(plan, publisher.publishedRegistry.availablePlansByKey().get(plan.key()));
     }
 
     @Test
-    void publishesEmptySnapshotWhenStoredRegistryHasNoExecutablePlans() {
+    void publishesEmptySnapshotWhenStoredRegistryHasNoAvailablePlans() {
         CapturingRuntimeSourcePlanRegistryPublisher publisher =
                 new CapturingRuntimeSourcePlanRegistryPublisher();
         RuntimeSourcePlanRegistryUpdater updater = new SnapshotRuntimeSourcePlanRegistryUpdater(
@@ -50,7 +50,7 @@ class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
         updater.updateRuntimeRegistry();
 
         assertNotNull(publisher.publishedRegistry);
-        assertTrue(publisher.publishedRegistry.executablePlansByKey().isEmpty());
+        assertTrue(publisher.publishedRegistry.availablePlansByKey().isEmpty());
     }
 
     @Test
@@ -68,13 +68,13 @@ class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
 
         updater.updateRuntimeRegistry();
 
-        assertEquals(Optional.of(firstPlan), publisher.publishedRegistry.findExecutableByKey(firstPlan.key()));
+        assertEquals(Optional.of(firstPlan), publisher.publishedRegistry.findAvailableByKey(firstPlan.key()));
 
-        storedRegistry.replaceExecutablePlans(List.of(changedPlan));
+        storedRegistry.replaceAvailablePlans(List.of(changedPlan));
         updater.updateRuntimeRegistry();
 
-        assertEquals(Optional.of(changedPlan), publisher.publishedRegistry.findExecutableByKey(changedPlan.key()));
-        assertEquals(List.of(changedPlan), publisher.publishedRegistry.findExecutableByCapturerCode(
+        assertEquals(Optional.of(changedPlan), publisher.publishedRegistry.findAvailableByKey(changedPlan.key()));
+        assertEquals(List.of(changedPlan), publisher.publishedRegistry.findAvailableByCapturerCode(
                 changedPlan.capturerCode()
         ));
     }
@@ -92,35 +92,35 @@ class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
     }
 
     private static final class StubStoredSourcePlanRegistry implements StoredSourcePlanRegistry {
-        private List<SourcePlan> executablePlans;
+        private List<SourcePlan> availablePlans;
 
-        private StubStoredSourcePlanRegistry(List<SourcePlan> executablePlans) {
-            replaceExecutablePlans(executablePlans);
+        private StubStoredSourcePlanRegistry(List<SourcePlan> availablePlans) {
+            replaceAvailablePlans(availablePlans);
         }
 
-        private void replaceExecutablePlans(List<SourcePlan> executablePlans) {
-            this.executablePlans = List.copyOf(
-                    Objects.requireNonNull(executablePlans, "executablePlans must not be null")
+        private void replaceAvailablePlans(List<SourcePlan> availablePlans) {
+            this.availablePlans = List.copyOf(
+                    Objects.requireNonNull(availablePlans, "availablePlans must not be null")
             );
         }
 
         @Override
-        public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
-            return executablePlans.stream()
+        public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
+            return availablePlans.stream()
                     .filter(plan -> plan.key().equals(key))
                     .findFirst();
         }
 
         @Override
-        public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
-            return executablePlans.stream()
+        public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
+            return availablePlans.stream()
                     .filter(plan -> plan.capturerCode().equals(capturerCode))
                     .toList();
         }
 
         @Override
-        public List<SourcePlan> findAllExecutable() {
-            return executablePlans;
+        public List<SourcePlan> findAllAvailable() {
+            return availablePlans;
         }
     }
 

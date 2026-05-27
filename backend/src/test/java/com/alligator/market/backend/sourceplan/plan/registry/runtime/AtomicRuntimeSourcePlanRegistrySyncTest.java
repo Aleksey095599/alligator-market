@@ -34,19 +34,19 @@ class AtomicRuntimeSourcePlanRegistrySyncTest {
 
         updater.updateRuntimeRegistry();
 
-        assertEquals(Optional.of(firstPlan), runtimeRegistry.findExecutableByKey(firstPlan.key()));
+        assertEquals(Optional.of(firstPlan), runtimeRegistry.findAvailableByKey(firstPlan.key()));
 
-        storedRegistry.replaceExecutablePlans(List.of(changedPlan));
+        storedRegistry.replaceAvailablePlans(List.of(changedPlan));
         updater.updateRuntimeRegistry();
 
-        assertEquals(Optional.of(changedPlan), runtimeRegistry.findExecutableByKey(changedPlan.key()));
-        assertEquals(List.of(changedPlan), runtimeRegistry.findExecutableByCapturerCode(
+        assertEquals(Optional.of(changedPlan), runtimeRegistry.findAvailableByKey(changedPlan.key()));
+        assertEquals(List.of(changedPlan), runtimeRegistry.findAvailableByCapturerCode(
                 changedPlan.capturerCode()
         ));
     }
 
     @Test
-    void runtimeRegistryIsClearedWhenStoredRegistryHasNoExecutablePlans() {
+    void runtimeRegistryIsClearedWhenStoredRegistryHasNoAvailablePlans() {
         SourcePlan plan = plan("TEST_CAPTURER", "EUR_USD", "PRIMARY_SOURCE");
         MutableStoredSourcePlanRegistry storedRegistry =
                 new MutableStoredSourcePlanRegistry(List.of(plan));
@@ -57,11 +57,11 @@ class AtomicRuntimeSourcePlanRegistrySyncTest {
         );
 
         updater.updateRuntimeRegistry();
-        storedRegistry.replaceExecutablePlans(List.of());
+        storedRegistry.replaceAvailablePlans(List.of());
         updater.updateRuntimeRegistry();
 
-        assertTrue(runtimeRegistry.executablePlansByKey().isEmpty());
-        assertEquals(Optional.empty(), runtimeRegistry.findExecutableByKey(plan.key()));
+        assertTrue(runtimeRegistry.availablePlansByKey().isEmpty());
+        assertEquals(Optional.empty(), runtimeRegistry.findAvailableByKey(plan.key()));
     }
 
     private static SourcePlan plan(
@@ -77,35 +77,35 @@ class AtomicRuntimeSourcePlanRegistrySyncTest {
     }
 
     private static final class MutableStoredSourcePlanRegistry implements StoredSourcePlanRegistry {
-        private List<SourcePlan> executablePlans;
+        private List<SourcePlan> availablePlans;
 
-        private MutableStoredSourcePlanRegistry(List<SourcePlan> executablePlans) {
-            replaceExecutablePlans(executablePlans);
+        private MutableStoredSourcePlanRegistry(List<SourcePlan> availablePlans) {
+            replaceAvailablePlans(availablePlans);
         }
 
-        private void replaceExecutablePlans(List<SourcePlan> executablePlans) {
-            this.executablePlans = List.copyOf(
-                    Objects.requireNonNull(executablePlans, "executablePlans must not be null")
+        private void replaceAvailablePlans(List<SourcePlan> availablePlans) {
+            this.availablePlans = List.copyOf(
+                    Objects.requireNonNull(availablePlans, "availablePlans must not be null")
             );
         }
 
         @Override
-        public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
-            return executablePlans.stream()
+        public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
+            return availablePlans.stream()
                     .filter(plan -> plan.key().equals(key))
                     .findFirst();
         }
 
         @Override
-        public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
-            return executablePlans.stream()
+        public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
+            return availablePlans.stream()
                     .filter(plan -> plan.capturerCode().equals(capturerCode))
                     .toList();
         }
 
         @Override
-        public List<SourcePlan> findAllExecutable() {
-            return executablePlans;
+        public List<SourcePlan> findAllAvailable() {
+            return availablePlans;
         }
     }
 }

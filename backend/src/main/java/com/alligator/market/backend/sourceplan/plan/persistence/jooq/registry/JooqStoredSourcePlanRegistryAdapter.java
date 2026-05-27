@@ -52,10 +52,10 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
     }
 
     @Override
-    public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
+    public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
         Objects.requireNonNull(key, "key must not be null");
 
-        List<SourcePlanEntry> entries = selectExecutableEntries(
+        List<SourcePlanEntry> entries = selectAvailableEntries(
                 SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value())
                         .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()))
         ).get(key);
@@ -68,18 +68,18 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
     }
 
     @Override
-    public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
+    public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
-        return toPlans(selectExecutableEntries(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())));
+        return toPlans(selectAvailableEntries(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())));
     }
 
     @Override
-    public List<SourcePlan> findAllExecutable() {
-        return toPlans(selectExecutableEntries(null));
+    public List<SourcePlan> findAllAvailable() {
+        return toPlans(selectAvailableEntries(null));
     }
 
-    private Map<SourcePlanKey, List<SourcePlanEntry>> selectExecutableEntries(Condition additionalCondition) {
+    private Map<SourcePlanKey, List<SourcePlanEntry>> selectAvailableEntries(Condition additionalCondition) {
         Condition condition = SOURCE_PLAN_EXECUTION_STATUS.eq(
                         StoredSourcePlanExecutionStatus.AVAILABLE.name())
                 .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(AVAILABLE.name()));

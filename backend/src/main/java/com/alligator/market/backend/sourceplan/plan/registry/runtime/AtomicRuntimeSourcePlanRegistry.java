@@ -19,18 +19,18 @@ public final class AtomicRuntimeSourcePlanRegistry
             new AtomicReference<>(new SnapshotRuntimeSourcePlanRegistry(List.of()));
 
     @Override
-    public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
-        return currentRegistry.get().findExecutableByKey(key);
+    public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
+        return currentRegistry.get().findAvailableByKey(key);
     }
 
     @Override
-    public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
-        return currentRegistry.get().findExecutableByCapturerCode(capturerCode);
+    public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
+        return currentRegistry.get().findAvailableByCapturerCode(capturerCode);
     }
 
     @Override
-    public Map<SourcePlanKey, SourcePlan> executablePlansByKey() {
-        return currentRegistry.get().executablePlansByKey();
+    public Map<SourcePlanKey, SourcePlan> availablePlansByKey() {
+        return currentRegistry.get().availablePlansByKey();
     }
 
     @Override

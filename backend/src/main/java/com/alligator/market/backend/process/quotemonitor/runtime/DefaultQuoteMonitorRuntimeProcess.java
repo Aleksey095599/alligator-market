@@ -1,28 +1,22 @@
 package com.alligator.market.backend.process.quotemonitor.runtime;
 
-import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
-import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.start.QuoteMonitorRuntimeSourceAssignment;
+import com.alligator.market.domain.process.quotemonitor.runtime.start.QuoteMonitorRuntimeStart;
+import com.alligator.market.domain.process.quotemonitor.runtime.start.QuoteMonitorRuntimeStartResolution;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
-import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
-import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
-import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
-import com.alligator.market.domain.sourceplan.SourcePlanKey;
-import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -30,21 +24,15 @@ import reactor.core.publisher.Flux;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
 public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRuntimeProcess {
     private final QuoteMonitorCapturer capturer;
-    private final RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry;
-    private final RuntimeInstrumentRegistry instrumentRegistry;
-    private final RuntimeSourcePlanRegistry sourcePlanRegistry;
-    private final RuntimeSourceRegistry sourceRegistry;
+    private final QuoteMonitorRuntimeStart runtimeStart;
     private final RuntimeQuoteMonitorLastPriceCapturedTickPublisher lastPriceCapturedTickPublisher;
     private final Clock clock;
     private final Object lock = new Object();
@@ -54,29 +42,14 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
 
     public DefaultQuoteMonitorRuntimeProcess(
             QuoteMonitorCapturer capturer,
-            RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
-            RuntimeInstrumentRegistry instrumentRegistry,
-            RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeSourceRegistry sourceRegistry,
+            QuoteMonitorRuntimeStart runtimeStart,
             RuntimeQuoteMonitorLastPriceCapturedTickPublisher lastPriceCapturedTickPublisher,
             Clock clock
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
-        this.instrumentSelectionRegistry = Objects.requireNonNull(
-                instrumentSelectionRegistry,
-                "instrumentSelectionRegistry must not be null"
-        );
-        this.instrumentRegistry = Objects.requireNonNull(
-                instrumentRegistry,
-                "instrumentRegistry must not be null"
-        );
-        this.sourcePlanRegistry = Objects.requireNonNull(
-                sourcePlanRegistry,
-                "sourcePlanRegistry must not be null"
-        );
-        this.sourceRegistry = Objects.requireNonNull(
-                sourceRegistry,
-                "sourceRegistry must not be null"
+        this.runtimeStart = Objects.requireNonNull(
+                runtimeStart,
+                "runtimeStart must not be null"
         );
         this.lastPriceCapturedTickPublisher = Objects.requireNonNull(
                 lastPriceCapturedTickPublisher,
@@ -93,15 +66,14 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
             }
 
             lastPriceCapturedTickPublisher.clear();
-            QuoteMonitorSourceStreamResolution resolution = resolveSourceStreams();
-            List<QuoteMonitorSourceStream> streams = resolution.streams();
-            state = runningState(
-                    monitoredInstrumentCodes(streams),
-                    resolution.instrumentStates()
-            );
-            QuoteMonitorStartedSourceStreams startedStreams = subscribeToSourceStreams(streams);
-            activeSubscriptions = startedStreams.subscriptions();
-            List<InstrumentCode> monitoredInstrumentCodes = monitoredInstrumentCodes(startedStreams.streams());
+            QuoteMonitorRuntimeStartResolution startResolution = runtimeStart.resolve();
+            state = startResolution.initialState();
+            logStartIssues(startResolution);
+
+            QuoteMonitorStartedSourceAssignments startedAssignments =
+                    subscribeToSourceAssignments(startResolution.sourceAssignments());
+            activeSubscriptions = startedAssignments.subscriptions();
+            List<InstrumentCode> monitoredInstrumentCodes = monitoredInstrumentCodes(startedAssignments.assignments());
             state = state.withMonitoredInstrumentCodes(monitoredInstrumentCodes);
             log.info(
                     "Quote Monitor started: capturerCode={}, monitoredInstrumentCount={}, monitoredInstrumentCodes={}",
@@ -149,136 +121,11 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
         }
     }
 
-    private QuoteMonitorRuntimeState runningState(
-            List<InstrumentCode> monitoredInstrumentCodes,
-            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
-    ) {
-        return new QuoteMonitorRuntimeState(
-                QuoteMonitorRuntimeStatus.RUNNING,
-                monitoredInstrumentCodes,
-                null,
-                instrumentStates
-        );
-    }
-
-    private QuoteMonitorSourceStreamResolution resolveSourceStreams() {
-        List<QuoteMonitorSourceStream> streams = new ArrayList<>();
-        List<QuoteMonitorInstrumentRuntimeState> instrumentStates = new ArrayList<>();
-
-        for (InstrumentCode instrumentCode : instrumentSelectionRegistry.selectedInstrumentCodes()) {
-            Optional<Instrument> instrument = resolveInstrument(instrumentCode);
-            if (instrument.isEmpty()) {
-                instrumentStates.add(runtimeIssue(
-                        instrumentCode,
-                        null,
-                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_INSTRUMENT_NOT_FOUND,
-                        "Selected instrument is absent from runtime instrument registry"
-                ));
-                continue;
-            }
-
-            Optional<SourcePlan> sourcePlan = resolveSourcePlan(instrumentCode);
-            if (sourcePlan.isEmpty()) {
-                instrumentStates.add(runtimeIssue(
-                        instrumentCode,
-                        null,
-                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_PLAN_NOT_FOUND,
-                        "Executable source plan is absent from runtime source plan registry"
-                ));
-                continue;
-            }
-
-            Optional<QuoteMonitorSourceStream> stream = resolveSourceStream(
-                    new QuoteMonitorInstrumentPlan(instrument.get(), sourcePlan.get())
-            );
-            if (stream.isEmpty()) {
-                instrumentStates.add(runtimeIssue(
-                        instrumentCode,
-                        null,
-                        QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND,
-                        "Source plan has no entries available in runtime source registry"
-                ));
-                continue;
-            }
-
-            QuoteMonitorSourceStream resolvedStream = stream.get();
-            streams.add(resolvedStream);
-            instrumentStates.add(QuoteMonitorInstrumentRuntimeState.waitingForQuote(
-                    instrumentCode,
-                    resolvedStream.sourceCode()
-            ));
-        }
-
-        return new QuoteMonitorSourceStreamResolution(
-                List.copyOf(streams),
-                List.copyOf(instrumentStates)
-        );
-    }
-
-    private Optional<Instrument> resolveInstrument(InstrumentCode instrumentCode) {
-        Optional<Instrument> instrument = instrumentRegistry.findByCode(instrumentCode);
-        if (instrument.isEmpty()) {
-            log.warn(
-                    "Quote Monitor selected instrument is absent from runtime instrument registry: instrumentCode={}",
-                    instrumentCode.value()
-            );
-        }
-
-        return instrument;
-    }
-
-    private Optional<SourcePlan> resolveSourcePlan(InstrumentCode instrumentCode) {
-        SourcePlanKey key = new SourcePlanKey(
-                capturer.capturerCode(),
-                instrumentCode
-        );
-
-        Optional<SourcePlan> sourcePlan = sourcePlanRegistry.findExecutableByKey(key);
-        if (sourcePlan.isEmpty()) {
-            log.warn(
-                    "Quote Monitor selected instrument has no executable source plan: capturerCode={}, instrumentCode={}",
-                    capturer.capturerCode().value(),
-                    instrumentCode.value()
-            );
-        }
-
-        return sourcePlan;
-    }
-
-    private Optional<QuoteMonitorSourceStream> resolveSourceStream(
-            QuoteMonitorInstrumentPlan instrumentPlan
-    ) {
-        Map<SourceCode, MarketSource> sourcesByCode = sourceRegistry.sourcesByCode();
-
-        return instrumentPlan.sourcePlan().entries()
-                .stream()
-                .sorted(Comparator.comparingInt(SourcePlanEntry::priority))
-                .flatMap(entry -> {
-                    MarketSource source = sourcesByCode.get(entry.sourceCode());
-                    if (source == null) {
-                        log.warn(
-                                "Quote Monitor source plan entry is absent from runtime source registry: " +
-                                        "instrumentCode={}, sourceCode={}",
-                                instrumentPlan.instrument().instrumentCode().value(),
-                                entry.sourceCode().value()
-                        );
-                        return java.util.stream.Stream.empty();
-                    }
-
-                    return java.util.stream.Stream.of(new QuoteMonitorSourceStream(
-                            instrumentPlan.instrument(),
-                            entry.sourceCode(),
-                            source
-                    ));
-                })
-                .findFirst();
-    }
-
-    private List<InstrumentCode> monitoredInstrumentCodes(List<QuoteMonitorSourceStream> streams) {
+    private static List<InstrumentCode> monitoredInstrumentCodes(List<QuoteMonitorRuntimeSourceAssignment> assignments) {
         Set<InstrumentCode> codes = new LinkedHashSet<>();
 
-        for (QuoteMonitorSourceStream stream : streams) {
-            codes.add(stream.instrument().instrumentCode());
+        for (QuoteMonitorRuntimeSourceAssignment assignment : assignments) {
+            codes.add(assignment.instrument().instrumentCode());
         }
 
         return List.copyOf(codes);
@@ -290,43 +137,60 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
                 .toList();
     }
 
-    private QuoteMonitorStartedSourceStreams subscribeToSourceStreams(List<QuoteMonitorSourceStream> streams) {
-        List<QuoteMonitorSourceStream> startedStreams = new ArrayList<>(streams.size());
-        List<Disposable> subscriptions = new ArrayList<>(streams.size());
+    private void logStartIssues(QuoteMonitorRuntimeStartResolution startResolution) {
+        for (QuoteMonitorInstrumentRuntimeState instrumentState : startResolution.initialState().issueInstrumentStates()) {
+            log.warn(
+                    "Quote Monitor start issue: instrumentCode={}, sourceCode={}, status={}, detail={}",
+                    instrumentState.instrumentCode().value(),
+                    instrumentState.sourceCode()
+                            .map(SourceCode::value)
+                            .orElse(null),
+                    instrumentState.status(),
+                    instrumentState.detail()
+                            .orElse(null)
+            );
+        }
+    }
 
-        for (QuoteMonitorSourceStream stream : streams) {
+    private QuoteMonitorStartedSourceAssignments subscribeToSourceAssignments(
+            List<QuoteMonitorRuntimeSourceAssignment> assignments
+    ) {
+        List<QuoteMonitorRuntimeSourceAssignment> startedAssignments = new ArrayList<>(assignments.size());
+        List<Disposable> subscriptions = new ArrayList<>(assignments.size());
+
+        for (QuoteMonitorRuntimeSourceAssignment assignment : assignments) {
             try {
-                Disposable subscription = Flux.from(stream.source().streamSourceTicks(stream.instrument()))
+                Disposable subscription = Flux.from(assignment.source().streamSourceTicks(assignment.instrument()))
                         .subscribe(
-                                tick -> onSourceTick(stream, tick),
-                                error -> onSourceStreamError(stream, error)
+                                tick -> onSourceTick(assignment, tick),
+                                error -> onSourceTickStreamError(assignment, error)
                         );
-                startedStreams.add(stream);
+                startedAssignments.add(assignment);
                 subscriptions.add(subscription);
             } catch (RuntimeException ex) {
                 state = state.withInstrumentState(runtimeIssue(
-                        stream.instrument().instrumentCode(),
-                        stream.sourceCode(),
+                        assignment.instrument().instrumentCode(),
+                        assignment.sourceCode(),
                         streamStartFailureStatus(ex),
                         failureDetail(ex)
                 ));
                 log.warn(
-                        "Failed to start Quote Monitor source stream: instrumentCode={}, sourceCode={}, reason={}",
-                        stream.instrument().instrumentCode().value(),
-                        stream.sourceCode().value(),
+                        "Failed to start Quote Monitor source tick stream: instrumentCode={}, sourceCode={}, reason={}",
+                        assignment.instrument().instrumentCode().value(),
+                        assignment.sourceCode().value(),
                         ex.getMessage(),
                         ex
                 );
             }
         }
 
-        return new QuoteMonitorStartedSourceStreams(
-                List.copyOf(startedStreams),
+        return new QuoteMonitorStartedSourceAssignments(
+                List.copyOf(startedAssignments),
                 List.copyOf(subscriptions)
         );
     }
 
-    private void onSourceTick(QuoteMonitorSourceStream stream, SourceTick tick) {
+    private void onSourceTick(QuoteMonitorRuntimeSourceAssignment assignment, SourceTick tick) {
         Objects.requireNonNull(tick, "tick must not be null");
 
         synchronized (lock) {
@@ -336,16 +200,16 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
 
             Instant receivedAt = clock.instant();
             state = state.withLastTickAt(receivedAt);
-            boolean published = publishSourceTick(stream, tick, receivedAt);
+            boolean published = publishSourceTick(assignment, tick, receivedAt);
             if (published) {
                 state = state.withInstrumentState(QuoteMonitorInstrumentRuntimeState.live(
-                        stream.instrument().instrumentCode(),
-                        stream.sourceCode()
+                        assignment.instrument().instrumentCode(),
+                        assignment.sourceCode()
                 ));
             } else {
                 state = state.withInstrumentState(runtimeIssue(
-                        stream.instrument().instrumentCode(),
-                        stream.sourceCode(),
+                        assignment.instrument().instrumentCode(),
+                        assignment.sourceCode(),
                         QuoteMonitorInstrumentRuntimeStatus.UNSUPPORTED_SOURCE_TICK_TYPE,
                         "Unsupported source tick type: " + tick.sourceTickType()
                 ));
@@ -354,42 +218,42 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
 
         log.debug(
                 "Quote Monitor source tick received: instrumentCode={}, sourceCode={}, sourceInstrumentCode={}",
-                stream.instrument().instrumentCode().value(),
-                stream.sourceCode().value(),
+                assignment.instrument().instrumentCode().value(),
+                assignment.sourceCode().value(),
                 tick.sourceInstrumentCode().value()
         );
     }
 
     private boolean publishSourceTick(
-            QuoteMonitorSourceStream stream,
+            QuoteMonitorRuntimeSourceAssignment assignment,
             SourceTick tick,
             Instant receivedAt
     ) {
         if (!(tick instanceof SourceLastPriceTick lastPriceTick)) {
             log.debug(
                     "Quote Monitor skipped unsupported source tick type: instrumentCode={}, sourceCode={}, type={}",
-                    stream.instrument().instrumentCode().value(),
-                    stream.sourceCode().value(),
+                    assignment.instrument().instrumentCode().value(),
+                    assignment.sourceCode().value(),
                     tick.sourceTickType()
             );
             return false;
         }
 
         lastPriceCapturedTickPublisher.publish(new QuoteMonitorLastPriceCapturedTick(
-                stream.instrument().instrumentCode(),
-                stream.sourceCode(),
+                assignment.instrument().instrumentCode(),
+                assignment.sourceCode(),
                 lastPriceTick,
                 receivedAt
         ));
         return true;
     }
 
-    private void onSourceStreamError(QuoteMonitorSourceStream stream, Throwable error) {
+    private void onSourceTickStreamError(QuoteMonitorRuntimeSourceAssignment assignment, Throwable error) {
         synchronized (lock) {
             if (state.status() == QuoteMonitorRuntimeStatus.RUNNING) {
                 state = state.withInstrumentState(runtimeIssue(
-                        stream.instrument().instrumentCode(),
-                        stream.sourceCode(),
+                        assignment.instrument().instrumentCode(),
+                        assignment.sourceCode(),
                         streamFailureStatus(error),
                         failureDetail(error)
                 ));
@@ -397,9 +261,9 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
         }
 
         log.warn(
-                "Quote Monitor source stream failed: instrumentCode={}, sourceCode={}, reason={}",
-                stream.instrument().instrumentCode().value(),
-                stream.sourceCode().value(),
+                "Quote Monitor source tick stream failed: instrumentCode={}, sourceCode={}, reason={}",
+                assignment.instrument().instrumentCode().value(),
+                assignment.sourceCode().value(),
                 error.getMessage(),
                 error
         );
@@ -466,46 +330,12 @@ public final class DefaultQuoteMonitorRuntimeProcess implements QuoteMonitorRunt
         return message;
     }
 
-    private record QuoteMonitorSourceStreamResolution(
-            List<QuoteMonitorSourceStream> streams,
-            List<QuoteMonitorInstrumentRuntimeState> instrumentStates
-    ) {
-        private QuoteMonitorSourceStreamResolution {
-            streams = List.copyOf(Objects.requireNonNull(streams, "streams must not be null"));
-            instrumentStates = List.copyOf(
-                    Objects.requireNonNull(instrumentStates, "instrumentStates must not be null")
-            );
-        }
-    }
-
-    private record QuoteMonitorInstrumentPlan(
-            Instrument instrument,
-            SourcePlan sourcePlan
-    ) {
-        private QuoteMonitorInstrumentPlan {
-            Objects.requireNonNull(instrument, "instrument must not be null");
-            Objects.requireNonNull(sourcePlan, "sourcePlan must not be null");
-        }
-    }
-
-    private record QuoteMonitorSourceStream(
-            Instrument instrument,
-            SourceCode sourceCode,
-            MarketSource source
-    ) {
-        private QuoteMonitorSourceStream {
-            Objects.requireNonNull(instrument, "instrument must not be null");
-            Objects.requireNonNull(sourceCode, "sourceCode must not be null");
-            Objects.requireNonNull(source, "source must not be null");
-        }
-    }
-
-    private record QuoteMonitorStartedSourceStreams(
-            List<QuoteMonitorSourceStream> streams,
+    private record QuoteMonitorStartedSourceAssignments(
+            List<QuoteMonitorRuntimeSourceAssignment> assignments,
             List<Disposable> subscriptions
     ) {
-        private QuoteMonitorStartedSourceStreams {
-            streams = List.copyOf(Objects.requireNonNull(streams, "streams must not be null"));
+        private QuoteMonitorStartedSourceAssignments {
+            assignments = List.copyOf(Objects.requireNonNull(assignments, "assignments must not be null"));
             subscriptions = List.copyOf(Objects.requireNonNull(subscriptions, "subscriptions must not be null"));
         }
     }

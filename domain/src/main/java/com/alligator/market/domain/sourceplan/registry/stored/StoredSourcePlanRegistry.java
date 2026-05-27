@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface StoredSourcePlanRegistry {
 
-    Optional<SourcePlan> findExecutableByKey(SourcePlanKey key);
+    Optional<SourcePlan> findAvailableByKey(SourcePlanKey key);
 
-    List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode);
+    List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode);
 
-    List<SourcePlan> findAllExecutable();
+    List<SourcePlan> findAllAvailable();
 }

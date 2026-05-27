@@ -17,6 +17,8 @@ import com.alligator.market.domain.process.quotemonitor.instrument.registry.runt
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
+import com.alligator.market.domain.process.quotemonitor.runtime.start.RegistryBackedQuoteMonitorRuntimeStart;
+import com.alligator.market.domain.process.quotemonitor.runtime.start.QuoteMonitorRuntimeStart;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
 import com.alligator.market.domain.source.MarketSource;
@@ -86,7 +88,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     }
 
     @Test
-    void startUsesCurrentSelectionAndExecutableSourcePlans() {
+    void startUsesCurrentSelectionAndAvailableSourcePlans() {
         InstrumentCode firstCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         InstrumentCode secondCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         TestInstrument firstInstrument = instrument(firstCode);
@@ -348,12 +350,17 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             RuntimeSourceRegistry sourceRegistry,
             RuntimeQuoteMonitorLastPriceCapturedTickPublisher tickPublisher
     ) {
+        QuoteMonitorCapturer capturer = new QuoteMonitorCapturer();
+
         return new DefaultQuoteMonitorRuntimeProcess(
-                new QuoteMonitorCapturer(),
-                selectionRegistry,
-                instrumentRegistry,
-                sourcePlanRegistry,
-                sourceRegistry,
+                capturer,
+                new RegistryBackedQuoteMonitorRuntimeStart(
+                        capturer,
+                        selectionRegistry,
+                        instrumentRegistry,
+                        sourcePlanRegistry,
+                        sourceRegistry
+                ),
                 tickPublisher,
                 Clock.fixed(START_TIME, ZoneOffset.UTC)
         );
@@ -446,10 +453,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     private static final class MutableRuntimeSourcePlanRegistry implements RuntimeSourcePlanRegistry {
         private final Map<SourcePlanKey, SourcePlan> plansByKey;
 
-        private MutableRuntimeSourcePlanRegistry(List<SourcePlan> executablePlans) {
+        private MutableRuntimeSourcePlanRegistry(List<SourcePlan> availablePlans) {
             Map<SourcePlanKey, SourcePlan> updatedPlansByKey = new LinkedHashMap<>();
 
-            for (SourcePlan plan : executablePlans) {
+            for (SourcePlan plan : availablePlans) {
                 updatedPlansByKey.put(plan.key(), plan);
             }
 
@@ -457,12 +464,12 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
-        public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
+        public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
             return Optional.ofNullable(plansByKey.get(key));
         }
 
         @Override
-        public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
+        public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
             return plansByKey.values()
                     .stream()
                     .filter(plan -> plan.capturerCode().equals(capturerCode))
@@ -470,7 +477,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
-        public Map<SourcePlanKey, SourcePlan> executablePlansByKey() {
+        public Map<SourcePlanKey, SourcePlan> availablePlansByKey() {
             return plansByKey;
         }
     }

@@ -14,17 +14,17 @@ import java.util.Optional;
 
 public final class SnapshotRuntimeSourcePlanRegistry implements RuntimeSourcePlanRegistry {
 
-    private final Map<SourcePlanKey, SourcePlan> executablePlansByKey;
+    private final Map<SourcePlanKey, SourcePlan> availablePlansByKey;
 
-    private final Map<CapturerCode, List<SourcePlan>> executablePlansByCapturerCode;
+    private final Map<CapturerCode, List<SourcePlan>> availablePlansByCapturerCode;
 
-    public SnapshotRuntimeSourcePlanRegistry(List<SourcePlan> executablePlans) {
-        Objects.requireNonNull(executablePlans, "executablePlans must not be null");
+    public SnapshotRuntimeSourcePlanRegistry(List<SourcePlan> availablePlans) {
+        Objects.requireNonNull(availablePlans, "availablePlans must not be null");
 
         Map<SourcePlanKey, SourcePlan> plansByKey = new LinkedHashMap<>();
         Map<CapturerCode, List<SourcePlan>> plansByCapturerCode = new LinkedHashMap<>();
 
-        for (SourcePlan plan : executablePlans) {
+        for (SourcePlan plan : availablePlans) {
             SourcePlan planToRegister = Objects.requireNonNull(plan, "plan must not be null");
             SourcePlanKey key = planToRegister.key();
 
@@ -41,27 +41,27 @@ public final class SnapshotRuntimeSourcePlanRegistry implements RuntimeSourcePla
                     .add(planToRegister);
         }
 
-        this.executablePlansByKey = Collections.unmodifiableMap(plansByKey);
-        this.executablePlansByCapturerCode = freezePlansByCapturerCode(plansByCapturerCode);
+        this.availablePlansByKey = Collections.unmodifiableMap(plansByKey);
+        this.availablePlansByCapturerCode = freezePlansByCapturerCode(plansByCapturerCode);
     }
 
     @Override
-    public Optional<SourcePlan> findExecutableByKey(SourcePlanKey key) {
+    public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
         Objects.requireNonNull(key, "key must not be null");
 
-        return Optional.ofNullable(executablePlansByKey.get(key));
+        return Optional.ofNullable(availablePlansByKey.get(key));
     }
 
     @Override
-    public List<SourcePlan> findExecutableByCapturerCode(CapturerCode capturerCode) {
+    public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
-        return executablePlansByCapturerCode.getOrDefault(capturerCode, List.of());
+        return availablePlansByCapturerCode.getOrDefault(capturerCode, List.of());
     }
 
     @Override
-    public Map<SourcePlanKey, SourcePlan> executablePlansByKey() {
-        return executablePlansByKey;
+    public Map<SourcePlanKey, SourcePlan> availablePlansByKey() {
+        return availablePlansByKey;
     }
 
     private static Map<CapturerCode, List<SourcePlan>> freezePlansByCapturerCode(
