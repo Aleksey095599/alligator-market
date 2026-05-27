@@ -1,4 +1,4 @@
-package com.alligator.market.domain.process.quotemonitor.marketdata.tick;
+package com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;

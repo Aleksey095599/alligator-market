@@ -2,7 +2,7 @@ package com.alligator.market.backend.process.quotemonitor.config.tick.applicatio
 
 import com.alligator.market.backend.process.quotemonitor.application.tick.QuoteMonitorLastPriceCapturedTickQueryService;
 import com.alligator.market.backend.process.quotemonitor.config.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickRegistryWiringConfig;
-import com.alligator.market.domain.process.quotemonitor.marketdata.tick.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickRegistry;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

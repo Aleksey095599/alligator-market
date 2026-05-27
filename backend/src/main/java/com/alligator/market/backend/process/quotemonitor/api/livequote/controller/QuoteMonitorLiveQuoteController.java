@@ -4,7 +4,7 @@ import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.Quote
 import com.alligator.market.backend.process.quotemonitor.api.livequote.dto.QuoteMonitorLiveQuoteListResponse;
 import com.alligator.market.backend.process.quotemonitor.application.tick.QuoteMonitorLastPriceCapturedTickQueryService;
 import com.alligator.market.backend.process.quotemonitor.application.tick.QuoteMonitorLastPriceCapturedTickStreamService;
-import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.QuoteMonitorLastPriceCapturedTick;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;

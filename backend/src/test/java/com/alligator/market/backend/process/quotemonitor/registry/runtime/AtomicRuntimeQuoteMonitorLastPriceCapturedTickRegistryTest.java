@@ -3,7 +3,7 @@ package com.alligator.market.backend.process.quotemonitor.registry.runtime;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.type.SourceLastPriceTick;
 import com.alligator.market.domain.marketdata.tick.level.source.vo.SourceInstrumentCode;
-import com.alligator.market.domain.process.quotemonitor.marketdata.tick.QuoteMonitorLastPriceCapturedTick;
+import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
