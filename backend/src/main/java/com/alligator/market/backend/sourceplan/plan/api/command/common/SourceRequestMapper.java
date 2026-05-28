@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.api.command.common;
 
 import com.alligator.market.domain.source.vo.SourceCode;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 
 public class SourceRequestMapper {
     public PrioritizedSourceCode toDomain(SourceRequest request) {

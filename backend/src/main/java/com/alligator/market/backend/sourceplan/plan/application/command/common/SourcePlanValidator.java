@@ -6,7 +6,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Source
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 
 import java.util.LinkedHashSet;

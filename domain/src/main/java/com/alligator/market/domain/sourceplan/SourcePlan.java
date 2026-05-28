@@ -3,6 +3,8 @@ package com.alligator.market.domain.sourceplan;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 
 import java.util.*;
 
@@ -11,14 +13,6 @@ public final class SourcePlan {
 
     private final SourcePlanKey key;
     private final List<PrioritizedSourceCode> prioritizedSourceCodes;
-
-    public SourcePlan(
-            CapturerCode capturerCode,
-            InstrumentCode instrumentCode,
-            List<PrioritizedSourceCode> prioritizedSourceCodes
-    ) {
-        this(new SourcePlanKey(capturerCode, instrumentCode), prioritizedSourceCodes);
-    }
 
     public SourcePlan(
             SourcePlanKey key,

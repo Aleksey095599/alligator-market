@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.replace
 
 import com.alligator.market.backend.sourceplan.plan.application.command.common.SourcePlanValidator;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;

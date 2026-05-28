@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.persistence.model;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus;
 
 import java.util.Objects;

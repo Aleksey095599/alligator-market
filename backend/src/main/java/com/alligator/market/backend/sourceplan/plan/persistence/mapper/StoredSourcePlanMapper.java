@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.persistence.mapper;
 
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 

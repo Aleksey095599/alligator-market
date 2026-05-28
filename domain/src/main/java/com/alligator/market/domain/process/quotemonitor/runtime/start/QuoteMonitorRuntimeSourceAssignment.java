@@ -3,7 +3,7 @@ package com.alligator.market.domain.process.quotemonitor.runtime.start;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.vo.SourceCode;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 
 import java.util.Objects;
 

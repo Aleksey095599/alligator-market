@@ -4,7 +4,8 @@ import com.alligator.market.backend.sourceplan.plan.api.command.replace.dto.Repl
 import com.alligator.market.backend.sourceplan.plan.api.command.common.SourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 
 import java.util.List;
@@ -35,8 +36,10 @@ public class ReplaceSourcePlanMapper {
                 .toList();
 
         return new SourcePlan(
-                new CapturerCode(capturerCode),
-                new InstrumentCode(instrumentCode),
+                new SourcePlanKey(
+                        new CapturerCode(capturerCode),
+                        new InstrumentCode(instrumentCode)
+                ),
                 prioritizedSourceCodes
         );
     }

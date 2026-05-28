@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.command.delete;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.sourceplan.SourcePlanKey;
+import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import lombok.extern.slf4j.Slf4j;

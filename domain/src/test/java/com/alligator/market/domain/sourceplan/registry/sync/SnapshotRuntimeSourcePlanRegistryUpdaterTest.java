@@ -3,9 +3,9 @@ package com.alligator.market.domain.sourceplan.registry.sync;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
-import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
+import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanKey;
+import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanRegistry;
 import org.junit.jupiter.api.Test;
@@ -85,8 +85,10 @@ class SnapshotRuntimeSourcePlanRegistryUpdaterTest {
             String sourceCode
     ) {
         return new SourcePlan(
-                CapturerCode.of(capturerCode),
-                InstrumentCode.of(instrumentCode),
+                new SourcePlanKey(
+                        CapturerCode.of(capturerCode),
+                        InstrumentCode.of(instrumentCode)
+                ),
                 List.of(new PrioritizedSourceCode(SourceCode.of(sourceCode), 0))
         );
     }

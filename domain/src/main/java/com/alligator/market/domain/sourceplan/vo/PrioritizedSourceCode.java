@@ -1,4 +1,4 @@
-package com.alligator.market.domain.sourceplan;
+package com.alligator.market.domain.sourceplan.vo;
 
 import com.alligator.market.domain.source.vo.SourceCode;
 
