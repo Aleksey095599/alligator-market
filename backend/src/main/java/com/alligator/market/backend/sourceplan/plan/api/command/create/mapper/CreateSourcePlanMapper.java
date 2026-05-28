@@ -4,8 +4,8 @@ import com.alligator.market.backend.sourceplan.plan.api.command.create.dto.Creat
 import com.alligator.market.backend.sourceplan.plan.api.command.common.SourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,14 +23,14 @@ public class CreateSourcePlanMapper {
     }
 
     public SourcePlan toDomain(CreateSourcePlanRequest request) {
-        List<SourcePlanEntry> entries = request.sources().stream()
+        List<PrioritizedSourceCode> prioritizedSourceCodes = request.sources().stream()
                 .map(sourceRequestMapper::toDomain)
                 .toList();
 
         return new SourcePlan(
                 new CapturerCode(request.capturerCode()),
                 new InstrumentCode(request.instrumentCode()),
-                entries
+                prioritizedSourceCodes
         );
     }
 }

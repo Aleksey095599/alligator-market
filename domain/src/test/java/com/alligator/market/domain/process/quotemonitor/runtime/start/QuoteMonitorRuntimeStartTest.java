@@ -19,8 +19,8 @@ import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import org.junit.jupiter.api.Test;
@@ -48,8 +48,8 @@ class QuoteMonitorRuntimeStartTest {
                         QuoteMonitorCapturer.CAPTURER_CODE,
                         instrumentCode,
                         List.of(
-                                new SourcePlanEntry(missingSourceCode, 0),
-                                new SourcePlanEntry(backupSourceCode, 1)
+                                new PrioritizedSourceCode(missingSourceCode, 0),
+                                new PrioritizedSourceCode(backupSourceCode, 1)
                         )
                 ))),
                 new RuntimeSources(List.of(source(backupSourceCode)))
@@ -60,7 +60,7 @@ class QuoteMonitorRuntimeStartTest {
         assertEquals(QuoteMonitorRuntimeStatus.RUNNING, resolution.initialState().status());
         assertEquals(List.of(instrumentCode), resolution.monitoredInstrumentCodes());
         assertEquals(1, resolution.sourceAssignments().size());
-        assertEquals(backupSourceCode, resolution.sourceAssignments().getFirst().sourcePlanEntry().sourceCode());
+        assertEquals(backupSourceCode, resolution.sourceAssignments().getFirst().prioritizedSourceCode().sourceCode());
         assertEquals(backupSourceCode, resolution.sourceAssignments().getFirst().sourceCode());
 
         QuoteMonitorInstrumentRuntimeState instrumentState =
@@ -125,7 +125,7 @@ class QuoteMonitorRuntimeStartTest {
         return new SourcePlan(
                 QuoteMonitorCapturer.CAPTURER_CODE,
                 instrumentCode,
-                List.of(new SourcePlanEntry(SourceCode.of("PRIMARY_SOURCE"), 0))
+                List.of(new PrioritizedSourceCode(SourceCode.of("PRIMARY_SOURCE"), 0))
         );
     }
 

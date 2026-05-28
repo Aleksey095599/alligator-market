@@ -2,8 +2,8 @@ package com.alligator.market.backend.sourceplan.plan.persistence.mapper;
 
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ public final class StoredSourcePlanMapper {
     public StoredSourcePlan toStored(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        List<StoredSourcePlanEntry> entries = new ArrayList<>(plan.entries().size());
-        for (SourcePlanEntry entry : plan.entries()) {
+        List<StoredSourcePlanEntry> entries = new ArrayList<>(plan.prioritizedSourceCodes().size());
+        for (PrioritizedSourceCode prioritizedSourceCode : plan.prioritizedSourceCodes()) {
             entries.add(new StoredSourcePlanEntry(
                     plan.capturerCode(),
                     plan.instrumentCode(),
-                    entry,
+                    prioritizedSourceCode,
                     AVAILABLE
             ));
         }

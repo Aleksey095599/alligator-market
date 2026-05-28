@@ -8,8 +8,8 @@ import com.alligator.market.domain.process.quotemonitor.instrument.registry.runt
 import com.alligator.market.domain.source.MarketSource;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 
@@ -77,18 +77,18 @@ public final class RegistryBackedQuoteMonitorRuntimeStart implements QuoteMonito
     ) {
         Map<SourceCode, MarketSource> sourcesByCode = sourceRegistry.sourcesByCode();
 
-        return sourcePlan.entries()
+        return sourcePlan.prioritizedSourceCodes()
                 .stream()
-                .sorted(Comparator.comparingInt(SourcePlanEntry::priority))
-                .flatMap(entry -> {
-                    MarketSource source = sourcesByCode.get(entry.sourceCode());
+                .sorted(Comparator.comparingInt(PrioritizedSourceCode::priority))
+                .flatMap(prioritizedSourceCode -> {
+                    MarketSource source = sourcesByCode.get(prioritizedSourceCode.sourceCode());
                     if (source == null) {
                         return java.util.stream.Stream.empty();
                     }
 
                     return java.util.stream.Stream.of(new QuoteMonitorRuntimeSourceAssignment(
                             instrument,
-                            entry,
+                            prioritizedSourceCode,
                             source
                     ));
                 })

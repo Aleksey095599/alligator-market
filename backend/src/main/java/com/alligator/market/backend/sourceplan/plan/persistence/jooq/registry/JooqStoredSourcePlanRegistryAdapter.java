@@ -3,8 +3,8 @@ package com.alligator.market.backend.sourceplan.plan.persistence.jooq.registry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanRegistry;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
@@ -55,31 +55,31 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
     public Optional<SourcePlan> findAvailableByKey(SourcePlanKey key) {
         Objects.requireNonNull(key, "key must not be null");
 
-        List<SourcePlanEntry> entries = selectAvailableEntries(
+        List<PrioritizedSourceCode> prioritizedSourceCodes = selectAvailableSourceCodes(
                 SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value())
                         .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()))
         ).get(key);
 
-        if (entries == null || entries.isEmpty()) {
+        if (prioritizedSourceCodes == null || prioritizedSourceCodes.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(new SourcePlan(key.capturerCode(), key.instrumentCode(), entries));
+        return Optional.of(new SourcePlan(key, prioritizedSourceCodes));
     }
 
     @Override
     public List<SourcePlan> findAvailableByCapturerCode(CapturerCode capturerCode) {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
 
-        return toPlans(selectAvailableEntries(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())));
+        return toPlans(selectAvailableSourceCodes(SOURCE_PLAN_CAPTURER_CODE.eq(capturerCode.value())));
     }
 
     @Override
     public List<SourcePlan> findAllAvailable() {
-        return toPlans(selectAvailableEntries(null));
+        return toPlans(selectAvailableSourceCodes(null));
     }
 
-    private Map<SourcePlanKey, List<SourcePlanEntry>> selectAvailableEntries(Condition additionalCondition) {
+    private Map<SourcePlanKey, List<PrioritizedSourceCode>> selectAvailableSourceCodes(Condition additionalCondition) {
         Condition condition = SOURCE_PLAN_EXECUTION_STATUS.eq(
                         StoredSourcePlanExecutionStatus.AVAILABLE.name())
                 .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(AVAILABLE.name()));
@@ -88,7 +88,7 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
             condition = condition.and(additionalCondition);
         }
 
-        Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
+        Map<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCodes = new LinkedHashMap<>();
 
         dsl.select(
                         SOURCE_PLAN_ENTRY_CAPTURER_CODE,
@@ -113,28 +113,27 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
                             new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
                     );
 
-                    SourcePlanEntry entry = new SourcePlanEntry(
+                    PrioritizedSourceCode prioritizedSourceCode = new PrioritizedSourceCode(
                             new SourceCode(record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE)),
                             record.get(SOURCE_PLAN_ENTRY_PRIORITY)
                     );
 
-                    groupedEntries
+                    groupedSourceCodes
                             .computeIfAbsent(planKey, ignored -> new ArrayList<>())
-                            .add(entry);
+                            .add(prioritizedSourceCode);
                 });
 
-        return groupedEntries;
+        return groupedSourceCodes;
     }
 
-    private static List<SourcePlan> toPlans(Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries) {
-        List<SourcePlan> plans = new ArrayList<>(groupedEntries.size());
+    private static List<SourcePlan> toPlans(Map<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCodes) {
+        List<SourcePlan> plans = new ArrayList<>(groupedSourceCodes.size());
 
-        for (Map.Entry<SourcePlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
-            SourcePlanKey planKey = groupedEntry.getKey();
+        for (Map.Entry<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCode : groupedSourceCodes.entrySet()) {
+            SourcePlanKey planKey = groupedSourceCode.getKey();
             plans.add(new SourcePlan(
-                    planKey.capturerCode(),
-                    planKey.instrumentCode(),
-                    groupedEntry.getValue()
+                    planKey,
+                    groupedSourceCode.getValue()
             ));
         }
 

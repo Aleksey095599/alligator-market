@@ -60,7 +60,7 @@ public final class CreateSourcePlanService {
                 "Source plan created: capturerCode={}, instrumentCode={}, sourceCount={}",
                 plan.capturerCode().value(),
                 plan.instrumentCode().value(),
-                plan.entries().size()
+                plan.prioritizedSourceCodes().size()
         );
     }
 }

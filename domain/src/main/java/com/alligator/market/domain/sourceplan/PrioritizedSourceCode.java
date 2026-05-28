@@ -4,11 +4,11 @@ import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.util.Objects;
 
-public record SourcePlanEntry(
+public record PrioritizedSourceCode(
         SourceCode sourceCode,
         int priority
 ) {
-    public SourcePlanEntry {
+    public PrioritizedSourceCode {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
 
         if (priority < 0) {

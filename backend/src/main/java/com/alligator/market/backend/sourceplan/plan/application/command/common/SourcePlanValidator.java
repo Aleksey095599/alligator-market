@@ -6,8 +6,8 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Source
 import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -54,9 +54,9 @@ public final class SourcePlanValidator {
     public void ensureSourcesExist(SourcePlan plan) {
         Set<String> missingSourceCodes = new LinkedHashSet<>();
 
-        for (SourcePlanEntry entry : plan.entries()) {
-            if (!sourceExistencePort.existsByCode(entry.sourceCode())) {
-                missingSourceCodes.add(entry.sourceCode().value());
+        for (PrioritizedSourceCode prioritizedSourceCode : plan.prioritizedSourceCodes()) {
+            if (!sourceExistencePort.existsByCode(prioritizedSourceCode.sourceCode())) {
+                missingSourceCodes.add(prioritizedSourceCode.sourceCode().value());
             }
         }
 

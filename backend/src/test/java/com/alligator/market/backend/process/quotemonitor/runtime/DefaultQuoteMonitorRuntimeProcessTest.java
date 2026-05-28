@@ -29,8 +29,8 @@ import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import org.junit.jupiter.api.Test;
@@ -128,7 +128,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     }
 
     @Test
-    void startUsesHighestPriorityAvailableSourcePlanEntry() {
+    void startUsesHighestPriorityAvailableSourceCode() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrument instrument = instrument(instrumentCode);
         RecordingMarketSource primarySource = new RecordingMarketSource(SourceCode.of("PRIMARY_SOURCE"));
@@ -140,8 +140,8 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         MutableRuntimeSourcePlanRegistry sourcePlanRegistry =
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(
                         instrumentCode,
-                        new SourcePlanEntry(SourceCode.of("BACKUP_SOURCE"), 1),
-                        new SourcePlanEntry(SourceCode.of("PRIMARY_SOURCE"), 0)
+                        new PrioritizedSourceCode(SourceCode.of("BACKUP_SOURCE"), 1),
+                        new PrioritizedSourceCode(SourceCode.of("PRIMARY_SOURCE"), 0)
                 )));
         DefaultQuoteMonitorRuntimeProcess process = process(
                 selectionRegistry,
@@ -369,18 +369,18 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     private static SourcePlan plan(InstrumentCode instrumentCode) {
         return plan(
                 instrumentCode,
-                new SourcePlanEntry(SourceCode.of("PRIMARY_SOURCE"), 0)
+                new PrioritizedSourceCode(SourceCode.of("PRIMARY_SOURCE"), 0)
         );
     }
 
     private static SourcePlan plan(
             InstrumentCode instrumentCode,
-            SourcePlanEntry... entries
+            PrioritizedSourceCode... prioritizedSourceCodes
     ) {
         return new SourcePlan(
                 QuoteMonitorCapturer.CAPTURER_CODE,
                 instrumentCode,
-                List.of(entries)
+                List.of(prioritizedSourceCodes)
         );
     }
 

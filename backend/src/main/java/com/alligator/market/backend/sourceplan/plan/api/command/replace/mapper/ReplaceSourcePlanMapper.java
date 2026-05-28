@@ -4,8 +4,8 @@ import com.alligator.market.backend.sourceplan.plan.api.command.replace.dto.Repl
 import com.alligator.market.backend.sourceplan.plan.api.command.common.SourceRequestMapper;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,14 +30,14 @@ public class ReplaceSourcePlanMapper {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
-        List<SourcePlanEntry> entries = request.sources().stream()
+        List<PrioritizedSourceCode> prioritizedSourceCodes = request.sources().stream()
                 .map(sourceRequestMapper::toDomain)
                 .toList();
 
         return new SourcePlan(
                 new CapturerCode(capturerCode),
                 new InstrumentCode(instrumentCode),
-                entries
+                prioritizedSourceCodes
         );
     }
 }

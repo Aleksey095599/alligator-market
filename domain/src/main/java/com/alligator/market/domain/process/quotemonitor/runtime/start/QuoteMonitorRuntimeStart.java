@@ -47,7 +47,7 @@ public interface QuoteMonitorRuntimeStart {
                         instrumentCode,
                         null,
                         QuoteMonitorInstrumentRuntimeStatus.RUNTIME_SOURCE_NOT_FOUND,
-                        "Source plan has no entries available in runtime source registry"
+                        "Source plan has no prioritized source codes available in runtime source registry"
                 ));
                 continue;
             }

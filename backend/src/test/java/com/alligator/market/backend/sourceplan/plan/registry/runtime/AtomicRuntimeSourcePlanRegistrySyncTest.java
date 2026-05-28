@@ -3,8 +3,8 @@ package com.alligator.market.backend.sourceplan.plan.registry.runtime;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanRegistry;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
@@ -72,7 +72,7 @@ class AtomicRuntimeSourcePlanRegistrySyncTest {
         return new SourcePlan(
                 CapturerCode.of(capturerCode),
                 InstrumentCode.of(instrumentCode),
-                List.of(new SourcePlanEntry(SourceCode.of(sourceCode), 0))
+                List.of(new PrioritizedSourceCode(SourceCode.of(sourceCode), 0))
         );
     }
 

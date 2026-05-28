@@ -9,8 +9,8 @@ import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSour
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
+import com.alligator.market.domain.sourceplan.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
-import com.alligator.market.domain.sourceplan.SourcePlanEntry;
 import com.alligator.market.domain.sourceplan.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.jooq.Condition;
@@ -67,7 +67,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
         Condition condition = SOURCE_PLAN_CAPTURER_CODE.eq(key.capturerCode().value())
                 .and(SOURCE_PLAN_INSTRUMENT_CODE.eq(key.instrumentCode().value()));
 
-        List<SourcePlanEntry> entries = dsl
+        List<PrioritizedSourceCode> prioritizedSourceCodes = dsl
                 .select(
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY
@@ -78,22 +78,22 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                 .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
                 .where(condition)
                 .orderBy(SOURCE_PLAN_ENTRY_PRIORITY.asc())
-                .fetch(record -> toEntry(
+                .fetch(record -> toPrioritizedSourceCode(
                         record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
                         record.get(SOURCE_PLAN_ENTRY_PRIORITY)
                 ));
 
-        // A plan with no source entries is not usable for capture, so it is treated as absent.
-        if (entries.isEmpty()) {
+        // A plan with no prioritized source codes is not usable for capture, so it is treated as absent.
+        if (prioritizedSourceCodes.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(new SourcePlan(key.capturerCode(), key.instrumentCode(), entries));
+        return Optional.of(new SourcePlan(key, prioritizedSourceCodes));
     }
 
     @Override
     public List<SourcePlan> findAll() {
-        Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries = new LinkedHashMap<>();
+        Map<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCodes = new LinkedHashMap<>();
 
         dsl.select(
                         SOURCE_PLAN_ENTRY_CAPTURER_CODE,
@@ -116,17 +116,17 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                             new InstrumentCode(record.get(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE))
                     );
 
-                    SourcePlanEntry entry = toEntry(
+                    PrioritizedSourceCode prioritizedSourceCode = toPrioritizedSourceCode(
                             record.get(SOURCE_PLAN_ENTRY_SOURCE_CODE),
                             record.get(SOURCE_PLAN_ENTRY_PRIORITY)
                     );
 
-                    groupedEntries
+                    groupedSourceCodes
                             .computeIfAbsent(planKey, ignored -> new ArrayList<>())
-                            .add(entry);
+                            .add(prioritizedSourceCode);
                 });
 
-        return toPlans(groupedEntries);
+        return toPlans(groupedSourceCodes);
     }
 
     @Override
@@ -231,39 +231,38 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     ) {
         Objects.requireNonNull(storedEntry, "storedEntry must not be null");
 
-        SourcePlanEntry entry = storedEntry.entry();
+        PrioritizedSourceCode prioritizedSourceCode = storedEntry.prioritizedSourceCode();
 
         dsl.insertInto(SOURCE_PLAN_ENTRY)
                 .set(SOURCE_PLAN_ENTRY_CAPTURER_CODE, storedEntry.capturerCode().value())
                 .set(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE, storedEntry.instrumentCode().value())
-                .set(SOURCE_PLAN_ENTRY_SOURCE_CODE, entry.sourceCode().value())
-                .set(SOURCE_PLAN_ENTRY_PRIORITY, entry.priority())
+                .set(SOURCE_PLAN_ENTRY_SOURCE_CODE, prioritizedSourceCode.sourceCode().value())
+                .set(SOURCE_PLAN_ENTRY_PRIORITY, prioritizedSourceCode.priority())
                 .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, storedEntry.lifecycleStatus().name())
                 .execute();
     }
 
-    private SourcePlanEntry toEntry(
+    private PrioritizedSourceCode toPrioritizedSourceCode(
             String sourceCode,
             Integer priority
     ) {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(priority, "priority must not be null");
 
-        return new SourcePlanEntry(
+        return new PrioritizedSourceCode(
                 new SourceCode(sourceCode),
                 priority
         );
     }
 
-    private static List<SourcePlan> toPlans(Map<SourcePlanKey, List<SourcePlanEntry>> groupedEntries) {
-        List<SourcePlan> plans = new ArrayList<>(groupedEntries.size());
+    private static List<SourcePlan> toPlans(Map<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCodes) {
+        List<SourcePlan> plans = new ArrayList<>(groupedSourceCodes.size());
 
-        for (Map.Entry<SourcePlanKey, List<SourcePlanEntry>> groupedEntry : groupedEntries.entrySet()) {
-            SourcePlanKey planKey = groupedEntry.getKey();
+        for (Map.Entry<SourcePlanKey, List<PrioritizedSourceCode>> groupedSourceCode : groupedSourceCodes.entrySet()) {
+            SourcePlanKey planKey = groupedSourceCode.getKey();
             plans.add(new SourcePlan(
-                    planKey.capturerCode(),
-                    planKey.instrumentCode(),
-                    groupedEntry.getValue()
+                    planKey,
+                    groupedSourceCode.getValue()
             ));
         }
 

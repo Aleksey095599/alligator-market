@@ -9,67 +9,77 @@ import java.util.*;
 @SuppressWarnings("ClassCanBeRecord") // Domain model, not a DTO-style data carrier.
 public final class SourcePlan {
 
-    private final CapturerCode capturerCode;
-    private final InstrumentCode instrumentCode;
-    private final List<SourcePlanEntry> entries;
+    private final SourcePlanKey key;
+    private final List<PrioritizedSourceCode> prioritizedSourceCodes;
 
     public SourcePlan(
             CapturerCode capturerCode,
             InstrumentCode instrumentCode,
-            List<SourcePlanEntry> entries
+            List<PrioritizedSourceCode> prioritizedSourceCodes
     ) {
-        this.capturerCode = Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-        this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
-        this.entries = copyAndValidateEntries(Objects.requireNonNull(entries, "entries must not be null"));
+        this(new SourcePlanKey(capturerCode, instrumentCode), prioritizedSourceCodes);
     }
 
-    private static List<SourcePlanEntry> copyAndValidateEntries(
-            List<SourcePlanEntry> entries
+    public SourcePlan(
+            SourcePlanKey key,
+            List<PrioritizedSourceCode> prioritizedSourceCodes
     ) {
-        if (entries.isEmpty()) {
-            throw new IllegalArgumentException("entries must not be empty");
+        this.key = Objects.requireNonNull(key, "key must not be null");
+        this.prioritizedSourceCodes = copyAndValidatePrioritizedSourceCodes(
+                Objects.requireNonNull(prioritizedSourceCodes, "prioritizedSourceCodes must not be null")
+        );
+    }
+
+    private static List<PrioritizedSourceCode> copyAndValidatePrioritizedSourceCodes(
+            List<PrioritizedSourceCode> prioritizedSourceCodes
+    ) {
+        if (prioritizedSourceCodes.isEmpty()) {
+            throw new IllegalArgumentException("prioritizedSourceCodes must not be empty");
         }
 
-        List<SourcePlanEntry> entriesValidated = new ArrayList<>(entries.size());
+        List<PrioritizedSourceCode> validatedSourceCodes = new ArrayList<>(prioritizedSourceCodes.size());
         Set<SourceCode> sourceCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
-        for (SourcePlanEntry entry : entries) {
-            SourcePlanEntry entryToCheck = Objects.requireNonNull(entry, "entry must not be null");
+        for (PrioritizedSourceCode prioritizedSourceCode : prioritizedSourceCodes) {
+            PrioritizedSourceCode prioritizedSourceCodeToCheck = Objects.requireNonNull(
+                    prioritizedSourceCode,
+                    "prioritizedSourceCode must not be null"
+            );
 
-            if (!sourceCodes.add(entryToCheck.sourceCode())) {
+            if (!sourceCodes.add(prioritizedSourceCodeToCheck.sourceCode())) {
                 throw new IllegalArgumentException(
                         "Source plan contains duplicate source code '" +
-                                entryToCheck.sourceCode().value() + "'"
+                                prioritizedSourceCodeToCheck.sourceCode().value() + "'"
                 );
             }
 
-            if (!priorities.add(entryToCheck.priority())) {
+            if (!priorities.add(prioritizedSourceCodeToCheck.priority())) {
                 throw new IllegalArgumentException(
                         "Source plan contains duplicate priority '" +
-                                entryToCheck.priority() + "'"
+                                prioritizedSourceCodeToCheck.priority() + "'"
                 );
             }
 
-            entriesValidated.add(entryToCheck);
+            validatedSourceCodes.add(prioritizedSourceCodeToCheck);
         }
 
-        return List.copyOf(entriesValidated);
+        return List.copyOf(validatedSourceCodes);
     }
 
     public CapturerCode capturerCode() {
-        return capturerCode;
+        return key.capturerCode();
     }
 
     public InstrumentCode instrumentCode() {
-        return instrumentCode;
+        return key.instrumentCode();
     }
 
     public SourcePlanKey key() {
-        return new SourcePlanKey(capturerCode, instrumentCode);
+        return key;
     }
 
-    public List<SourcePlanEntry> entries() {
-        return entries;
+    public List<PrioritizedSourceCode> prioritizedSourceCodes() {
+        return prioritizedSourceCodes;
     }
 }
