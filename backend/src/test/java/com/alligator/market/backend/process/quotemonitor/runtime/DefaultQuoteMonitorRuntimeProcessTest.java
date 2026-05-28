@@ -377,8 +377,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             PrioritizedSourceCode... prioritizedSourceCodes
     ) {
         return new SourcePlan(
-                QuoteMonitorCapturer.CAPTURER_CODE,
-                instrumentCode,
+                new SourcePlanKey(
+                        QuoteMonitorCapturer.CAPTURER_CODE,
+                        instrumentCode
+                ),
                 List.of(prioritizedSourceCodes)
         );
     }

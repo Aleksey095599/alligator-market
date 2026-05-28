@@ -45,8 +45,10 @@ class QuoteMonitorRuntimeStartTest {
                 new RuntimeSelection(new QuoteMonitorInstrumentSelection(List.of(instrumentCode))),
                 new RuntimeInstruments(List.of(instrument(instrumentCode))),
                 new RuntimeSourcePlans(List.of(new SourcePlan(
-                        QuoteMonitorCapturer.CAPTURER_CODE,
-                        instrumentCode,
+                        new SourcePlanKey(
+                                QuoteMonitorCapturer.CAPTURER_CODE,
+                                instrumentCode
+                        ),
                         List.of(
                                 new PrioritizedSourceCode(missingSourceCode, 0),
                                 new PrioritizedSourceCode(backupSourceCode, 1)
@@ -123,8 +125,10 @@ class QuoteMonitorRuntimeStartTest {
 
     private static SourcePlan plan(InstrumentCode instrumentCode) {
         return new SourcePlan(
-                QuoteMonitorCapturer.CAPTURER_CODE,
-                instrumentCode,
+                new SourcePlanKey(
+                        QuoteMonitorCapturer.CAPTURER_CODE,
+                        instrumentCode
+                ),
                 List.of(new PrioritizedSourceCode(SourceCode.of("PRIMARY_SOURCE"), 0))
         );
     }
