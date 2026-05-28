@@ -1,9 +1,9 @@
 package com.alligator.market.domain.source.passport.registry.runtime;
 
-import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.util.Collections;
@@ -15,9 +15,9 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class RuntimeSourcePassportRegistryAdapter implements RuntimeSourcePassportRegistry {
-    private final RuntimeSourceRegistry runtimeSourceRegistry;
+    private final RuntimeMarketDataSourceRegistry runtimeSourceRegistry;
 
-    public RuntimeSourcePassportRegistryAdapter(RuntimeSourceRegistry runtimeSourceRegistry) {
+    public RuntimeSourcePassportRegistryAdapter(RuntimeMarketDataSourceRegistry runtimeSourceRegistry) {
         this.runtimeSourceRegistry = Objects.requireNonNull(
                 runtimeSourceRegistry,
                 "runtimeSourceRegistry must not be null"
@@ -26,7 +26,7 @@ public final class RuntimeSourcePassportRegistryAdapter implements RuntimeSource
 
     @Override
     public Map<SourceCode, SourcePassport> passportsByCode() {
-        Map<SourceCode, MarketSource> sourcesByCode = Objects.requireNonNull(
+        Map<SourceCode, MarketDataSource> sourcesByCode = Objects.requireNonNull(
                 runtimeSourceRegistry.sourcesByCode(),
                 "sourcesByCode must not be null"
         );
@@ -34,9 +34,9 @@ public final class RuntimeSourcePassportRegistryAdapter implements RuntimeSource
         Map<SourceCode, SourcePassport> passportsByCode = new LinkedHashMap<>(sourcesByCode.size());
         Set<String> displayNamesLower = new HashSet<>();
 
-        for (Map.Entry<SourceCode, MarketSource> entry : sourcesByCode.entrySet()) {
+        for (Map.Entry<SourceCode, MarketDataSource> entry : sourcesByCode.entrySet()) {
             SourceCode code = Objects.requireNonNull(entry.getKey(), "sourcesByCode must not contain null keys");
-            MarketSource source = Objects.requireNonNull(
+            MarketDataSource source = Objects.requireNonNull(
                     entry.getValue(),
                     "sourcesByCode must not contain null values"
             );
@@ -54,7 +54,7 @@ public final class RuntimeSourcePassportRegistryAdapter implements RuntimeSource
             String displayNameLower = displayNameValue.toLowerCase(Locale.ROOT);
             if (!displayNamesLower.add(displayNameLower)) {
                 throw new IllegalArgumentException(
-                        "Duplicate market source display name detected (displayName=" + displayNameValue + ")"
+                        "Duplicate market data source display name detected (displayName=" + displayNameValue + ")"
                 );
             }
 

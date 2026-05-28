@@ -13,8 +13,8 @@ import org.reactivestreams.Publisher;
 
 import java.util.*;
 
-public abstract class AbstractMarketSource<P extends MarketSource>
-        implements MarketSource {
+public abstract class AbstractMarketDataSource<P extends MarketDataSource>
+        implements MarketDataSource {
 
     protected final SourceCode sourceCode;
     protected final SourcePassport passport;
@@ -23,7 +23,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
 
     protected abstract P self();
 
-    protected AbstractMarketSource(
+    protected AbstractMarketDataSource(
             SourceCode sourceCode,
             SourcePassport passport,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
@@ -65,7 +65,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
         return handler.streamSourceTicks(instrument);
     }
 
-    private static <P extends MarketSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
+    private static <P extends MarketDataSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             SourceCode sourceCode,
             Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
@@ -94,7 +94,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
             );
             Objects.requireNonNull(h.policy(), "handler.policy must not be null");
             if (!handlerCodes.add(handlerCode)) {
-                throw new IllegalStateException("Market source '" + sourceCode.value() +
+                throw new IllegalStateException("Market data source '" + sourceCode.value() +
                         "' contains multiple handlers with the same code '" + handlerCode.value() + "'");
             }
 
@@ -106,7 +106,7 @@ public abstract class AbstractMarketSource<P extends MarketSource>
 
                 InstrumentHandler<P, ? extends Instrument> prev = map.putIfAbsent(instrumentCode, h);
                 if (prev != null) {
-                    throw new IllegalStateException("Market source '" + sourceCode.value() +
+                    throw new IllegalStateException("Market data source '" + sourceCode.value() +
                             "' contains instrument code '" + instrumentCode.value() +
                             "' that is supported by multiple handlers ('" + prev.handlerCode().value() +
                             "', '" + handlerCode.value() + "')");

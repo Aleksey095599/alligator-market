@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 @Validated
-@ConfigurationProperties("market-source.handler-web-client")
+@ConfigurationProperties("market-data-source.handler-web-client")
 public record HandlerWebClientProperties(
         Duration connectTimeout,
         Duration responseTimeout

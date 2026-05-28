@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.config.adapter.moex.iss.handlers;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.backend.source.config.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerConfig;
 import com.alligator.market.domain.instrument.Instrument;
@@ -20,7 +20,7 @@ public class MoexIssHandlersConfig {
     public static final String BEAN_NAME = "moexIssHandlers";
 
     @Bean(BEAN_NAME)
-    public Set<InstrumentHandler<MoexIssSource, ? extends Instrument>> moexIssHandlers(
+    public Set<InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> moexIssHandlers(
             MoexIssFxSpotHandler fxSpotHandler
 
     ) {

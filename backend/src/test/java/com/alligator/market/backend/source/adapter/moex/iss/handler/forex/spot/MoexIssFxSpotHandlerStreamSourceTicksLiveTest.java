@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPolicy;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
@@ -41,7 +41,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
                 webClient,
                 new MoexIssFxSpotHandlerPolicy(Duration.ofSeconds(5))
         );
-        MoexIssSource source = new MoexIssSource(Set.of(handler));
+        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
 
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.config.adapter.moex.iss;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
 import com.alligator.market.backend.source.config.adapter.moex.iss.handlers.MoexIssHandlersConfig;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
@@ -13,14 +13,14 @@ import java.util.Set;
 
 @Configuration(proxyBeanMethods = false)
 @Import(MoexIssHandlersConfig.class)
-public class MoexIssSourceConfig {
-    public static final String BEAN_NAME = "moexIssSource";
+public class MoexIssMarketDataSourceConfig {
+    public static final String BEAN_NAME = "moexIssMarketDataSource";
 
     @Bean(BEAN_NAME)
-    public MoexIssSource moexIssSource(
+    public MoexIssMarketDataSource moexIssMarketDataSource(
             @Qualifier(MoexIssHandlersConfig.BEAN_NAME)
-            Set<InstrumentHandler<MoexIssSource, ? extends Instrument>> handlers
+            Set<InstrumentHandler<MoexIssMarketDataSource, ? extends Instrument>> handlers
     ) {
-        return new MoexIssSource(handlers);
+        return new MoexIssMarketDataSource(handlers);
     }
 }

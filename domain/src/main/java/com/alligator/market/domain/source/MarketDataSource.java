@@ -6,7 +6,7 @@ import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.reactivestreams.Publisher;
 
-public interface MarketSource {
+public interface MarketDataSource {
 
     SourceCode code();
 

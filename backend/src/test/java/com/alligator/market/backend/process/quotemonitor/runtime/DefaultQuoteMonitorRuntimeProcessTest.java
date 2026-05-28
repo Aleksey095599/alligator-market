@@ -20,12 +20,12 @@ import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument
 import com.alligator.market.domain.process.quotemonitor.runtime.start.RegistryBackedQuoteMonitorRuntimeStart;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.QuoteMonitorLastPriceCapturedTick;
 import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured.registry.runtime.RuntimeQuoteMonitorLastPriceCapturedTickPublisher;
-import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.HandlerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
@@ -59,7 +59,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
                 new MutableRuntimeInstrumentRegistry(List.of()),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
-                new MutableRuntimeSourceRegistry(List.of())
+                new MutableRuntimeMarketDataSourceRegistry(List.of())
         );
 
         assertThat(process.start()).isTrue();
@@ -75,7 +75,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(QuoteMonitorInstrumentSelection.empty()),
                 new MutableRuntimeInstrumentRegistry(List.of()),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
-                new MutableRuntimeSourceRegistry(List.of())
+                new MutableRuntimeMarketDataSourceRegistry(List.of())
         );
 
         process.start();
@@ -92,7 +92,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         InstrumentCode secondCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         TestInstrument firstInstrument = instrument(firstCode);
         TestInstrument secondInstrument = instrument(secondCode);
-        RecordingMarketSource source = new RecordingMarketSource(SourceCode.of("PRIMARY_SOURCE"));
+        RecordingMarketDataSource source = new RecordingMarketDataSource(SourceCode.of("PRIMARY_SOURCE"));
         CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher tickPublisher =
                 new CapturingRuntimeQuoteMonitorLastPriceCapturedTickPublisher();
         MutableRuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry =
@@ -105,7 +105,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 selectionRegistry,
                 new MutableRuntimeInstrumentRegistry(List.of(firstInstrument, secondInstrument)),
                 sourcePlanRegistry,
-                new MutableRuntimeSourceRegistry(List.of(source)),
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source)),
                 tickPublisher
         );
 
@@ -130,8 +130,8 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     void startUsesHighestPriorityAvailableSourceCode() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrument instrument = instrument(instrumentCode);
-        RecordingMarketSource primarySource = new RecordingMarketSource(SourceCode.of("PRIMARY_SOURCE"));
-        RecordingMarketSource backupSource = new RecordingMarketSource(SourceCode.of("BACKUP_SOURCE"));
+        RecordingMarketDataSource primarySource = new RecordingMarketDataSource(SourceCode.of("PRIMARY_SOURCE"));
+        RecordingMarketDataSource backupSource = new RecordingMarketDataSource(SourceCode.of("BACKUP_SOURCE"));
         MutableRuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry =
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
@@ -146,7 +146,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 selectionRegistry,
                 new MutableRuntimeInstrumentRegistry(List.of(instrument)),
                 sourcePlanRegistry,
-                new MutableRuntimeSourceRegistry(List.of(backupSource, primarySource))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(backupSource, primarySource))
         );
 
         process.start();
@@ -165,7 +165,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of()),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
-                new MutableRuntimeSourceRegistry(List.of())
+                new MutableRuntimeMarketDataSourceRegistry(List.of())
         );
 
         process.start();
@@ -184,7 +184,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of()),
-                new MutableRuntimeSourceRegistry(List.of())
+                new MutableRuntimeMarketDataSourceRegistry(List.of())
         );
 
         process.start();
@@ -203,7 +203,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of())
+                new MutableRuntimeMarketDataSourceRegistry(List.of())
         );
 
         process.start();
@@ -216,7 +216,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsHandlerNotFoundIssueWhenSourceCannotResolveHandler() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        ThrowingMarketSource source = new ThrowingMarketSource(
+        ThrowingMarketDataSource source = new ThrowingMarketDataSource(
                 SourceCode.of("PRIMARY_SOURCE"),
                 code -> new HandlerNotFoundException(code, SourceCode.of("PRIMARY_SOURCE"))
         );
@@ -226,7 +226,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of(source))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source))
         );
 
         process.start();
@@ -239,7 +239,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsInstrumentNotSupportedIssueWhenHandlerRejectsInstrument() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        ThrowingMarketSource source = new ThrowingMarketSource(
+        ThrowingMarketDataSource source = new ThrowingMarketDataSource(
                 SourceCode.of("PRIMARY_SOURCE"),
                 code -> InstrumentNotSupportedByHandlerException.instrumentCodeNotSupported(
                         code,
@@ -253,7 +253,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of(source))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source))
         );
 
         process.start();
@@ -266,7 +266,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsStreamStartFailureIssueWhenSourceThrowsBeforePublisherIsCreated() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        ThrowingMarketSource source = new ThrowingMarketSource(
+        ThrowingMarketDataSource source = new ThrowingMarketDataSource(
                 SourceCode.of("PRIMARY_SOURCE"),
                 ignored -> new IllegalStateException("Stream cannot be created")
         );
@@ -276,7 +276,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of(source))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source))
         );
 
         process.start();
@@ -290,14 +290,15 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsStreamFailureIssueWhenPublisherFailsAfterSubscription() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        FailingPublisherMarketSource source = new FailingPublisherMarketSource(SourceCode.of("PRIMARY_SOURCE"));
+        FailingPublisherMarketDataSource source =
+                new FailingPublisherMarketDataSource(SourceCode.of("PRIMARY_SOURCE"));
         DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of(source))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source))
         );
 
         process.start();
@@ -310,14 +311,14 @@ class DefaultQuoteMonitorRuntimeProcessTest {
     @Test
     void startRecordsUnsupportedTickTypeIssueWhenSourceEmitsNonLastPriceTick() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
-        UnsupportedTickMarketSource source = new UnsupportedTickMarketSource(SourceCode.of("PRIMARY_SOURCE"));
+        UnsupportedTickMarketDataSource source = new UnsupportedTickMarketDataSource(SourceCode.of("PRIMARY_SOURCE"));
         DefaultQuoteMonitorRuntimeProcess process = process(
                 new MutableRuntimeQuoteMonitorInstrumentSelectionRegistry(
                         new QuoteMonitorInstrumentSelection(List.of(instrumentCode))
                 ),
                 new MutableRuntimeInstrumentRegistry(List.of(instrument(instrumentCode))),
                 new MutableRuntimeSourcePlanRegistry(List.of(plan(instrumentCode))),
-                new MutableRuntimeSourceRegistry(List.of(source))
+                new MutableRuntimeMarketDataSourceRegistry(List.of(source))
         );
 
         process.start();
@@ -331,7 +332,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeSourceRegistry sourceRegistry
+            RuntimeMarketDataSourceRegistry sourceRegistry
     ) {
         return process(
                 selectionRegistry,
@@ -346,7 +347,7 @@ class DefaultQuoteMonitorRuntimeProcessTest {
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeSourceRegistry sourceRegistry,
+            RuntimeMarketDataSourceRegistry sourceRegistry,
             RuntimeQuoteMonitorLastPriceCapturedTickPublisher tickPublisher
     ) {
         QuoteMonitorCapturer capturer = new QuoteMonitorCapturer();
@@ -507,13 +508,13 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class MutableRuntimeSourceRegistry implements RuntimeSourceRegistry {
-        private final Map<SourceCode, MarketSource> sourcesByCode;
+    private static final class MutableRuntimeMarketDataSourceRegistry implements RuntimeMarketDataSourceRegistry {
+        private final Map<SourceCode, MarketDataSource> sourcesByCode;
 
-        private MutableRuntimeSourceRegistry(List<? extends MarketSource> sources) {
-            Map<SourceCode, MarketSource> updatedSourcesByCode = new LinkedHashMap<>();
+        private MutableRuntimeMarketDataSourceRegistry(List<? extends MarketDataSource> sources) {
+            Map<SourceCode, MarketDataSource> updatedSourcesByCode = new LinkedHashMap<>();
 
-            for (MarketSource source : sources) {
+            for (MarketDataSource source : sources) {
                 updatedSourcesByCode.put(source.code(), source);
             }
 
@@ -521,16 +522,16 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
-        public Map<SourceCode, MarketSource> sourcesByCode() {
+        public Map<SourceCode, MarketDataSource> sourcesByCode() {
             return sourcesByCode;
         }
     }
 
-    private static final class RecordingMarketSource implements MarketSource {
+    private static final class RecordingMarketDataSource implements MarketDataSource {
         private final SourceCode sourceCode;
         private final List<InstrumentCode> streamedInstrumentCodes = new ArrayList<>();
 
-        private RecordingMarketSource(SourceCode sourceCode) {
+        private RecordingMarketDataSource(SourceCode sourceCode) {
             this.sourceCode = sourceCode;
         }
 
@@ -560,11 +561,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class ThrowingMarketSource implements MarketSource {
+    private static final class ThrowingMarketDataSource implements MarketDataSource {
         private final SourceCode sourceCode;
         private final Function<InstrumentCode, RuntimeException> exceptionFactory;
 
-        private ThrowingMarketSource(
+        private ThrowingMarketDataSource(
                 SourceCode sourceCode,
                 Function<InstrumentCode, RuntimeException> exceptionFactory
         ) {
@@ -588,10 +589,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class FailingPublisherMarketSource implements MarketSource {
+    private static final class FailingPublisherMarketDataSource implements MarketDataSource {
         private final SourceCode sourceCode;
 
-        private FailingPublisherMarketSource(SourceCode sourceCode) {
+        private FailingPublisherMarketDataSource(SourceCode sourceCode) {
             this.sourceCode = sourceCode;
         }
 
@@ -611,10 +612,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
     }
 
-    private static final class UnsupportedTickMarketSource implements MarketSource {
+    private static final class UnsupportedTickMarketDataSource implements MarketDataSource {
         private final SourceCode sourceCode;
 
-        private UnsupportedTickMarketSource(SourceCode sourceCode) {
+        private UnsupportedTickMarketDataSource(SourceCode sourceCode) {
             this.sourceCode = sourceCode;
         }
 

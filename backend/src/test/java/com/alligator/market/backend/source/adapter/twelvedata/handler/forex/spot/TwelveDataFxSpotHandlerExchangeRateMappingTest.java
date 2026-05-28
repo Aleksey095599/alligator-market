@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.twelvedata.handler.forex.spot;
 
-import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataSource;
+import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataMarketDataSource;
 import com.alligator.market.backend.source.adapter.twelvedata.instrument.forex.spot.handler.TwelveDataFxSpotHandler;
 import com.alligator.market.backend.source.adapter.twelvedata.instrument.forex.spot.handler.TwelveDataFxSpotHandlerPolicy;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
@@ -46,7 +46,7 @@ class TwelveDataFxSpotHandlerExchangeRateMappingTest {
                 "test-api-key",
                 new TwelveDataFxSpotHandlerPolicy(Duration.ofMinutes(5))
         );
-        TwelveDataSource source = new TwelveDataSource(Set.of(handler));
+        TwelveDataMarketDataSource source = new TwelveDataMarketDataSource(Set.of(handler));
 
         SourceTick tick = Flux.from(source.streamSourceTicks(inrUsdSpot()))
                 .take(1)

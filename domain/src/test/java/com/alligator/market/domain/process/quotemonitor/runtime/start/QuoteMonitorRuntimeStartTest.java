@@ -14,10 +14,10 @@ import com.alligator.market.domain.process.quotemonitor.instrument.registry.runt
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
-import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
@@ -112,7 +112,7 @@ class QuoteMonitorRuntimeStartTest {
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeSourceRegistry sourceRegistry
+            RuntimeMarketDataSourceRegistry sourceRegistry
     ) {
         return new RegistryBackedQuoteMonitorRuntimeStart(
                 new QuoteMonitorCapturer(),
@@ -137,8 +137,8 @@ class QuoteMonitorRuntimeStartTest {
         return new TestInstrument(instrumentCode);
     }
 
-    private static TestSource source(SourceCode sourceCode) {
-        return new TestSource(sourceCode);
+    private static TestMarketDataSource source(SourceCode sourceCode) {
+        return new TestMarketDataSource(sourceCode);
     }
 
     private record TestInstrument(InstrumentCode instrumentCode) implements Instrument {
@@ -159,7 +159,7 @@ class QuoteMonitorRuntimeStartTest {
         }
     }
 
-    private record TestSource(SourceCode code) implements MarketSource {
+    private record TestMarketDataSource(SourceCode code) implements MarketDataSource {
 
         @Override
         public SourcePassport passport() {
@@ -259,17 +259,17 @@ class QuoteMonitorRuntimeStartTest {
     }
 
     private record RuntimeSources(
-            Map<SourceCode, MarketSource> sourcesByCode
-    ) implements RuntimeSourceRegistry {
+            Map<SourceCode, MarketDataSource> sourcesByCode
+    ) implements RuntimeMarketDataSourceRegistry {
 
-        private RuntimeSources(List<? extends MarketSource> sources) {
+        private RuntimeSources(List<? extends MarketDataSource> sources) {
             this(sourcesByCode(sources));
         }
 
-        private static Map<SourceCode, MarketSource> sourcesByCode(List<? extends MarketSource> sources) {
-            Map<SourceCode, MarketSource> updatedSourcesByCode = new LinkedHashMap<>();
+        private static Map<SourceCode, MarketDataSource> sourcesByCode(List<? extends MarketDataSource> sources) {
+            Map<SourceCode, MarketDataSource> updatedSourcesByCode = new LinkedHashMap<>();
 
-            for (MarketSource source : sources) {
+            for (MarketDataSource source : sources) {
                 updatedSourcesByCode.put(source.code(), source);
             }
 

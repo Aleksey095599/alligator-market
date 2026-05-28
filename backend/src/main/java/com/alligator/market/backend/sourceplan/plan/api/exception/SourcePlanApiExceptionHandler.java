@@ -54,10 +54,10 @@ public class SourcePlanApiExceptionHandler {
 
     @ExceptionHandler(SourceCodesNotFoundException.class)
     public ProblemDetail handleSourceCodesNotFound(SourceCodesNotFoundException ex) {
-        log.warn("Market source codes do not exist: {}", ex.getMessage());
+        log.warn("Market data source codes do not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
-                "Market source codes not found",
+                "Market data source codes not found",
                 ex.getMessage(),
                 SourcePlanApiErrorCode.SOURCE_CODES_NOT_FOUND.code()
         );

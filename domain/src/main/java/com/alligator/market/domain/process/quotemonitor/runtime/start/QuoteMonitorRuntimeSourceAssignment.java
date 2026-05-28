@@ -1,7 +1,7 @@
 package com.alligator.market.domain.process.quotemonitor.runtime.start;
 
 import com.alligator.market.domain.instrument.Instrument;
-import com.alligator.market.domain.source.MarketSource;
+import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
 public record QuoteMonitorRuntimeSourceAssignment(
         Instrument instrument,
         PrioritizedSourceCode prioritizedSourceCode,
-        MarketSource source
+        MarketDataSource source
 ) {
     public QuoteMonitorRuntimeSourceAssignment {
         Objects.requireNonNull(instrument, "instrument must not be null");

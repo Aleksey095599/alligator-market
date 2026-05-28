@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.Product;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.instrument.vo.InstrumentSymbol;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
-import com.alligator.market.domain.source.AbstractMarketSource;
+import com.alligator.market.domain.source.AbstractMarketDataSource;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
 import com.alligator.market.domain.source.handler.passport.AccessMethod;
 import com.alligator.market.domain.source.handler.passport.DeliveryMode;
@@ -32,7 +32,7 @@ class AbstractInstrumentHandlerTest {
         InstrumentCode supportedCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         InstrumentCode unsupportedCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(supportedCode)));
-        new TestMarketSource(handler);
+        new TestMarketDataSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -53,7 +53,7 @@ class AbstractInstrumentHandlerTest {
     void rejectsInstrumentWithUnexpectedAsset() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(instrumentCode)));
-        new TestMarketSource(handler);
+        new TestMarketDataSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -73,7 +73,7 @@ class AbstractInstrumentHandlerTest {
     void rejectsInstrumentWithUnexpectedProduct() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(instrumentCode)));
-        new TestMarketSource(handler);
+        new TestMarketDataSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -89,8 +89,8 @@ class AbstractInstrumentHandlerTest {
         assertEquals(Product.FORWARD.code(), ex.actualValue());
     }
 
-    private static final class TestMarketSource extends AbstractMarketSource<TestMarketSource> {
-        private TestMarketSource(TestInstrumentHandler handler) {
+    private static final class TestMarketDataSource extends AbstractMarketDataSource<TestMarketDataSource> {
+        private TestMarketDataSource(TestInstrumentHandler handler) {
             super(
                     SourceCode.of("TEST_SOURCE"),
                     new SourcePassport(SourceDisplayName.of("Test Source")),
@@ -99,13 +99,13 @@ class AbstractInstrumentHandlerTest {
         }
 
         @Override
-        protected TestMarketSource self() {
+        protected TestMarketDataSource self() {
             return this;
         }
     }
 
     private static final class TestInstrumentHandler
-            extends AbstractInstrumentHandler<TestMarketSource, TestInstrument> {
+            extends AbstractInstrumentHandler<TestMarketDataSource, TestInstrument> {
         private static final HandlerCode HANDLER_CODE = HandlerCode.of("TEST_HANDLER");
         private static final SourceHandlerPassport PASSPORT = new TestSourceHandlerPassport();
         private static final SourceHandlerPolicy POLICY = new SourceHandlerPolicy() {

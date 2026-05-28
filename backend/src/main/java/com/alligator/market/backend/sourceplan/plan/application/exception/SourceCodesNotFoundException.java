@@ -17,6 +17,6 @@ public final class SourceCodesNotFoundException extends IllegalArgumentException
             joiner.add(Objects.requireNonNull(sourceCode, "sourceCode must not be null"));
         }
 
-        return "Market source codes do not exist: " + joiner;
+        return "Market data source codes do not exist: " + joiner;
     }
 }

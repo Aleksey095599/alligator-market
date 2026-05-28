@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 @Validated
-@ConfigurationProperties("market-source.handler-properties.moex.iss.fx-spot")
+@ConfigurationProperties("market-data-source.handler-properties.moex.iss.fx-spot")
 public record MoexIssFxSpotHandlerProperties(
         Duration pollInterval
 ) {

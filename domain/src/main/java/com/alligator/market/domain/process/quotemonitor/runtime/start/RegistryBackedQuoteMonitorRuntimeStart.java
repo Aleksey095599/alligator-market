@@ -5,8 +5,8 @@ import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrument
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
-import com.alligator.market.domain.source.MarketSource;
-import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
+import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
@@ -24,14 +24,14 @@ public final class RegistryBackedQuoteMonitorRuntimeStart implements QuoteMonito
     private final RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry;
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
-    private final RuntimeSourceRegistry sourceRegistry;
+    private final RuntimeMarketDataSourceRegistry sourceRegistry;
 
     public RegistryBackedQuoteMonitorRuntimeStart(
             QuoteMonitorCapturer capturer,
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeSourceRegistry sourceRegistry
+            RuntimeMarketDataSourceRegistry sourceRegistry
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
         this.instrumentSelectionRegistry = Objects.requireNonNull(
@@ -75,13 +75,13 @@ public final class RegistryBackedQuoteMonitorRuntimeStart implements QuoteMonito
             Instrument instrument,
             SourcePlan sourcePlan
     ) {
-        Map<SourceCode, MarketSource> sourcesByCode = sourceRegistry.sourcesByCode();
+        Map<SourceCode, MarketDataSource> sourcesByCode = sourceRegistry.sourcesByCode();
 
         return sourcePlan.prioritizedSourceCodes()
                 .stream()
                 .sorted(Comparator.comparingInt(PrioritizedSourceCode::priority))
                 .flatMap(prioritizedSourceCode -> {
-                    MarketSource source = sourcesByCode.get(prioritizedSourceCode.sourceCode());
+                    MarketDataSource source = sourcesByCode.get(prioritizedSourceCode.sourceCode());
                     if (source == null) {
                         return java.util.stream.Stream.empty();
                     }

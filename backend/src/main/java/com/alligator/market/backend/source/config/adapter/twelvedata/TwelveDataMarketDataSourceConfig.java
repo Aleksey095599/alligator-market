@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.config.adapter.twelvedata;
 
-import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataSource;
+import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataMarketDataSource;
 import com.alligator.market.backend.source.config.adapter.twelvedata.handlers.TwelveDataHandlersConfig;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.source.handler.InstrumentHandler;
@@ -13,14 +13,14 @@ import java.util.Set;
 
 @Configuration(proxyBeanMethods = false)
 @Import(TwelveDataHandlersConfig.class)
-public class TwelveDataSourceConfig {
-    public static final String BEAN_NAME = "twelveDataSource";
+public class TwelveDataMarketDataSourceConfig {
+    public static final String BEAN_NAME = "twelveDataMarketDataSource";
 
     @Bean(BEAN_NAME)
-    public TwelveDataSource twelveDataSource(
+    public TwelveDataMarketDataSource twelveDataMarketDataSource(
             @Qualifier(TwelveDataHandlersConfig.BEAN_NAME)
-            Set<InstrumentHandler<TwelveDataSource, ? extends Instrument>> handlers
+            Set<InstrumentHandler<TwelveDataMarketDataSource, ? extends Instrument>> handlers
     ) {
-        return new TwelveDataSource(handlers);
+        return new TwelveDataMarketDataSource(handlers);
     }
 }
