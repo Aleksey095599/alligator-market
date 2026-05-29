@@ -1,5 +1,5 @@
 export type SourceLifecycleStatus = 'AVAILABLE' | 'SOURCE_RETIRED';
-export type MarketDataCapturerLifecycleStatus = 'REGISTERED' | 'RETIRED';
+export type CapturerLifecycleStatus = 'REGISTERED' | 'RETIRED';
 export type SourcePlanExecutionStatus =
   | 'AVAILABLE'
   | 'CAPTURER_RETIRED'
@@ -13,7 +13,7 @@ export interface SourceResponseDto {
 
 export interface SourcePlanResponseDto {
   capturerCode: string;
-  capturerLifecycleStatus: MarketDataCapturerLifecycleStatus;
+  capturerLifecycleStatus: CapturerLifecycleStatus;
   planExecutionStatus: SourcePlanExecutionStatus;
   instrumentCode: string;
   sources: SourceResponseDto[];

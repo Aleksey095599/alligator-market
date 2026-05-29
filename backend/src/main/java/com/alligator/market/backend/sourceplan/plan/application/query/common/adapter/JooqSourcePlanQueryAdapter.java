@@ -50,7 +50,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
     }
 
     @Override
-    public Optional<SourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
+    public Optional<SourcePlanQueryItem> findByCapturerCodeAndInstrumentCode(
             CapturerCode capturerCode,
             InstrumentCode instrumentCode
     ) {
@@ -98,7 +98,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     @Override
     public Map<InstrumentCode, StoredSourcePlanExecutionStatus>
-            findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+            findExecutionStatusesByCapturerCodeAndInstrumentCodes(
                     CapturerCode capturerCode,
                     List<InstrumentCode> instrumentCodes
             ) {

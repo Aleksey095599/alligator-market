@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { MarketDataCapturerPassportDto } from '../models/market-data-capturer-passport-dto.model';
+import { CapturerPassportDto } from '../models/capturer-passport-dto.model';
 
 /* Сервис для чтения паспортов процессов захвата. */
 @Injectable({
   providedIn: 'root'
 })
-export class MarketDataCapturerPassportService {
+export class CapturerPassportService {
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +16,7 @@ export class MarketDataCapturerPassportService {
   private readonly baseUrl = '/api/v1/capturers';
 
   /* Получить все паспорта процессов захвата. */
-  list(): Observable<MarketDataCapturerPassportDto[]> {
-    return this.http.get<MarketDataCapturerPassportDto[]>(this.baseUrl);
+  list(): Observable<CapturerPassportDto[]> {
+    return this.http.get<CapturerPassportDto[]>(this.baseUrl);
   }
 }

@@ -1,10 +1,10 @@
 package com.alligator.market.backend.sourceplan.plan.api.query.options.controller;
 
-import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.MarketDataCapturerOptionDto;
+import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.CapturerOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.InstrumentOptionDto;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.SourcePlanOptionsResponse;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.dto.SourceOptionDto;
-import com.alligator.market.backend.sourceplan.plan.application.query.options.port.MarketDataCapturerOptionsQueryPort;
+import com.alligator.market.backend.sourceplan.plan.application.query.options.port.CapturerOptionsQueryPort;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.SourceOptionsQueryPort;
 import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.Objects;
 
 @RestController
 public class SourcePlanOptionsQueryController {
-    private final MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort;
+    private final CapturerOptionsQueryPort capturerOptionsQueryPort;
     private final StoredInstrumentRegistry storedInstrumentRegistry;
     private final SourceOptionsQueryPort sourceOptionsQueryPort;
 
     public SourcePlanOptionsQueryController(
-            MarketDataCapturerOptionsQueryPort capturerOptionsQueryPort,
+            CapturerOptionsQueryPort capturerOptionsQueryPort,
             StoredInstrumentRegistry storedInstrumentRegistry,
             SourceOptionsQueryPort sourceOptionsQueryPort
     ) {
@@ -41,8 +41,8 @@ public class SourcePlanOptionsQueryController {
     @GetMapping("/api/v1/source-plans/options")
     public ResponseEntity<SourcePlanOptionsResponse> getOptions() {
         SourcePlanOptionsResponse response = new SourcePlanOptionsResponse(
-                capturerOptionsQueryPort.findAllMarketDataCapturers().stream()
-                        .map(option -> new MarketDataCapturerOptionDto(
+                capturerOptionsQueryPort.findAllCapturers().stream()
+                        .map(option -> new CapturerOptionDto(
                                 option.code().value(),
                                 option.displayName().value()
                         ))

@@ -67,7 +67,7 @@ public final class QuoteMonitorInstrumentSelectionService {
     public List<QuoteMonitorSelectedInstrument> findSelectedInstruments() {
         List<InstrumentCode> selectedInstrumentCodes = getSelection().instrumentCodes();
         Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses =
-                sourcePlanQueryPort.findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+                sourcePlanQueryPort.findExecutionStatusesByCapturerCodeAndInstrumentCodes(
                         QuoteMonitorCapturer.CAPTURER_CODE,
                         selectedInstrumentCodes
                 );

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.CapturerExistencePort;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.DSLContext;
 
@@ -9,10 +9,10 @@ import java.util.Objects;
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
 import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.REGISTERED;
 
-public final class JooqMarketDataCapturerExistenceAdapter implements MarketDataCapturerExistencePort {
+public final class JooqCapturerExistenceAdapter implements CapturerExistencePort {
     private final DSLContext dsl;
 
-    public JooqMarketDataCapturerExistenceAdapter(DSLContext dsl) {
+    public JooqCapturerExistenceAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 

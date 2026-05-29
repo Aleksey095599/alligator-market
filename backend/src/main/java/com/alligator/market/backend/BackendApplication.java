@@ -1,7 +1,7 @@
 package com.alligator.market.backend;
 
 import com.alligator.market.backend.capturer.config.passport.application.sync.startup.CapturerPassportRegistrySynchronizationStartupRunnerWiringConfig;
-import com.alligator.market.backend.capturer.config.passport.application.query.list.MarketDataCapturerPassportListServiceWiringConfig;
+import com.alligator.market.backend.capturer.config.passport.application.query.list.CapturerPassportListServiceWiringConfig;
 import com.alligator.market.backend.capturer.config.registry.RuntimeCapturerRegistryWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.fxspot.config.FxSpotFeatureWiringConfig;
 import com.alligator.market.backend.instrument.asset.forex.reference.currency.config.CurrencyFeatureWiringConfig;
@@ -27,7 +27,7 @@ import java.util.TimeZone;
         InstrumentRegistryFeatureWiringConfig.class,
         InstrumentCatalogFeatureWiringConfig.class,
         RuntimeCapturerRegistryWiringConfig.class,
-        MarketDataCapturerPassportListServiceWiringConfig.class,
+        CapturerPassportListServiceWiringConfig.class,
         CapturerPassportRegistrySynchronizationStartupRunnerWiringConfig.class,
         QuoteMonitorFeatureWiringConfig.class,
         SourcePlanFeatureWiringConfig.class,

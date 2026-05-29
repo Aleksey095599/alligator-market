@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/market-data-capturer-passport-list/market-data-capturer-passport-list.component')
-        .then(c => c.MarketDataCapturerPassportListComponent)
+      import('./pages/capturer-passport-list/capturer-passport-list.component')
+        .then(c => c.CapturerPassportListComponent)
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MarketDataCapturerPassportRoutingModule {}
+export class CapturerPassportRoutingModule {}

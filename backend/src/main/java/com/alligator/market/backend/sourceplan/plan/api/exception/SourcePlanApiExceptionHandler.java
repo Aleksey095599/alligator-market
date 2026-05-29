@@ -6,7 +6,7 @@ import com.alligator.market.backend.sourceplan.plan.api.command.replace.controll
 import com.alligator.market.backend.sourceplan.plan.api.query.get.controller.GetSourcePlanController;
 import com.alligator.market.backend.sourceplan.plan.api.query.list.controller.SourcePlanListController;
 import com.alligator.market.backend.sourceplan.plan.api.query.options.controller.SourcePlanOptionsQueryController;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.CapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanAlreadyExistsException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourcePlanNotFoundException;
@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
         SourcePlanOptionsQueryController.class
 })
 public class SourcePlanApiExceptionHandler {
-    @ExceptionHandler(MarketDataCapturerCodeNotFoundException.class)
-    public ProblemDetail handleMarketDataCapturerCodeNotFound(MarketDataCapturerCodeNotFoundException ex) {
+    @ExceptionHandler(CapturerCodeNotFoundException.class)
+    public ProblemDetail handleCapturerCodeNotFound(CapturerCodeNotFoundException ex) {
         log.warn("Capturer code does not exist: {}", ex.getMessage());
         return buildProblemDetail(
                 HttpStatus.BAD_REQUEST,

@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MarketDataCapturerPassportDto } from '../../models/market-data-capturer-passport-dto.model';
-import { MarketDataCapturerPassportService } from '../../services/market-data-capturer-passport.service';
+import { CapturerPassportDto } from '../../models/capturer-passport-dto.model';
+import { CapturerPassportService } from '../../services/capturer-passport.service';
 
 @Component({
-  selector: 'app-market-data-capturer-passport-list',
+  selector: 'app-capturer-passport-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatCardModule, MatSnackBarModule],
-  templateUrl: './market-data-capturer-passport-list.component.html',
-  styleUrl: './market-data-capturer-passport-list.component.scss'
+  templateUrl: './capturer-passport-list.component.html',
+  styleUrl: './capturer-passport-list.component.scss'
 })
-export class MarketDataCapturerPassportListComponent implements OnInit {
+export class CapturerPassportListComponent implements OnInit {
 
   /* Список колонок таблицы. */
   displayed: string[] = [
@@ -22,10 +22,10 @@ export class MarketDataCapturerPassportListComponent implements OnInit {
     'lifecycleStatus'
   ];
   /* Источник данных для таблицы. */
-  dataSource = new MatTableDataSource<MarketDataCapturerPassportDto>([]);
+  dataSource = new MatTableDataSource<CapturerPassportDto>([]);
 
   constructor(
-    private readonly service: MarketDataCapturerPassportService,
+    private readonly service: CapturerPassportService,
     private readonly snack: MatSnackBar
   ) {}
 

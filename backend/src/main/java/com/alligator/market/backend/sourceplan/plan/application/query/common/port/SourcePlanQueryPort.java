@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface SourcePlanQueryPort {
-    Optional<SourcePlanQueryItem> findByMarketDataCapturerCodeAndInstrumentCode(
+    Optional<SourcePlanQueryItem> findByCapturerCodeAndInstrumentCode(
             CapturerCode capturerCode,
             InstrumentCode instrumentCode
     );
 
-    Map<InstrumentCode, StoredSourcePlanExecutionStatus> findExecutionStatusesByMarketDataCapturerCodeAndInstrumentCodes(
+    Map<InstrumentCode, StoredSourcePlanExecutionStatus> findExecutionStatusesByCapturerCodeAndInstrumentCodes(
             CapturerCode capturerCode,
             List<InstrumentCode> instrumentCodes
     );

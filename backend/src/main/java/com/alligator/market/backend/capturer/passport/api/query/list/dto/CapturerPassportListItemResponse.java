@@ -1,6 +1,6 @@
 package com.alligator.market.backend.capturer.passport.api.query.list.dto;
 
-public record MarketDataCapturerPassportListItemResponse(
+public record CapturerPassportListItemResponse(
         String capturerCode,
         String displayName,
         String lifecycleStatus

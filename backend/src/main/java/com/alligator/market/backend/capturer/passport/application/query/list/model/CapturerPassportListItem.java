@@ -2,12 +2,12 @@ package com.alligator.market.backend.capturer.passport.application.query.list.mo
 
 import java.util.Objects;
 
-public record MarketDataCapturerPassportListItem(
+public record CapturerPassportListItem(
         String capturerCode,
         String displayName,
         String lifecycleStatus
 ) {
-    public MarketDataCapturerPassportListItem {
+    public CapturerPassportListItem {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
         Objects.requireNonNull(lifecycleStatus, "lifecycleStatus must not be null");

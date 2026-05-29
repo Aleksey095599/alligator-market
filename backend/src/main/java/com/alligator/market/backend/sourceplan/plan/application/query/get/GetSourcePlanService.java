@@ -26,7 +26,7 @@ public final class GetSourcePlanService {
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
 
         return sourcePlanQueryPort
-                .findByMarketDataCapturerCodeAndInstrumentCode(capturerCode, instrumentCode)
+                .findByCapturerCodeAndInstrumentCode(capturerCode, instrumentCode)
                 .orElseThrow(() -> new SourcePlanNotFoundException(capturerCode, instrumentCode));
     }
 }

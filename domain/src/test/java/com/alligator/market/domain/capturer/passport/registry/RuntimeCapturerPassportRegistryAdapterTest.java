@@ -24,7 +24,7 @@ class RuntimeCapturerPassportRegistryAdapterTest {
         CapturerCode code = CapturerCode.of("TEST_CAPTURER");
         CapturerPassport passport = passport("Test Capturer");
         RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
-                new TestMarketDataCapturer(code, passport)
+                new TestCapturer(code, passport)
         ));
         RuntimeCapturerPassportRegistry passportRegistry =
                 new RuntimeCapturerPassportRegistryAdapter(capturerRegistry);
@@ -35,8 +35,8 @@ class RuntimeCapturerPassportRegistryAdapterTest {
     @Test
     void rejectsDuplicatePassportDisplayNames() {
         RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
-                new TestMarketDataCapturer(CapturerCode.of("FIRST_CAPTURER"), passport("Duplicate")),
-                new TestMarketDataCapturer(CapturerCode.of("SECOND_CAPTURER"), passport("duplicate"))
+                new TestCapturer(CapturerCode.of("FIRST_CAPTURER"), passport("Duplicate")),
+                new TestCapturer(CapturerCode.of("SECOND_CAPTURER"), passport("duplicate"))
         ));
         RuntimeCapturerPassportRegistry passportRegistry =
                 new RuntimeCapturerPassportRegistryAdapter(capturerRegistry);
@@ -48,7 +48,7 @@ class RuntimeCapturerPassportRegistryAdapterTest {
         return new CapturerPassport(CapturerDisplayName.of(displayName));
     }
 
-    private record TestMarketDataCapturer(
+    private record TestCapturer(
             CapturerCode capturerCode,
             CapturerPassport passport
     ) implements MarketDataCapturer {

@@ -42,7 +42,7 @@ public final class ReplaceSourcePlanService {
     public void replace(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        existenceValidator.ensureMarketDataCapturerExists(plan);
+        existenceValidator.ensureCapturerExists(plan);
 
         existenceValidator.ensureInstrumentExists(plan);
 

@@ -39,7 +39,7 @@ public final class CreateSourcePlanService {
     public void create(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
 
-        existenceValidator.ensureMarketDataCapturerExists(plan);
+        existenceValidator.ensureCapturerExists(plan);
 
         existenceValidator.ensureInstrumentExists(plan);
 

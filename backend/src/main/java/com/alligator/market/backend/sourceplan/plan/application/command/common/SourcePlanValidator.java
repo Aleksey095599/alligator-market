@@ -1,9 +1,9 @@
 package com.alligator.market.backend.sourceplan.plan.application.command.common;
 
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.CapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourceCodesNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.application.port.MarketDataCapturerExistencePort;
+import com.alligator.market.backend.sourceplan.plan.application.port.CapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
 import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
@@ -14,14 +14,14 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class SourcePlanValidator {
-    private final MarketDataCapturerExistencePort capturerExistencePort;
+    private final CapturerExistencePort capturerExistencePort;
 
     private final StoredInstrumentRegistry storedInstrumentRegistry;
 
     private final SourceExistencePort sourceExistencePort;
 
     public SourcePlanValidator(
-            MarketDataCapturerExistencePort capturerExistencePort,
+            CapturerExistencePort capturerExistencePort,
             StoredInstrumentRegistry storedInstrumentRegistry,
             SourceExistencePort sourceExistencePort
     ) {
@@ -39,9 +39,9 @@ public final class SourcePlanValidator {
         );
     }
 
-    public void ensureMarketDataCapturerExists(SourcePlan plan) {
+    public void ensureCapturerExists(SourcePlan plan) {
         if (!capturerExistencePort.existsByCode(plan.capturerCode())) {
-            throw new MarketDataCapturerCodeNotFoundException(plan.capturerCode());
+            throw new CapturerCodeNotFoundException(plan.capturerCode());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.alligator.market.backend.capturer.passport.persistence.registry;
 
-import com.alligator.market.backend.capturer.passport.persistence.mapper.StoredMarketDataCapturerPassportMapper;
-import com.alligator.market.backend.capturer.passport.persistence.model.StoredMarketDataCapturerPassport;
+import com.alligator.market.backend.capturer.passport.persistence.mapper.StoredCapturerPassportMapper;
+import com.alligator.market.backend.capturer.passport.persistence.model.StoredCapturerPassport;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
@@ -22,11 +22,11 @@ import static org.jooq.impl.DSL.excluded;
 
 public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
     private final DSLContext dsl;
-    private final StoredMarketDataCapturerPassportMapper storedPassportMapper;
+    private final StoredCapturerPassportMapper storedPassportMapper;
 
     public JooqStoredCapturerPassportRegistryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
-        this.storedPassportMapper = new StoredMarketDataCapturerPassportMapper();
+        this.storedPassportMapper = new StoredCapturerPassportMapper();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
 
     @Override
     public void saveRegistered(Map<CapturerCode, CapturerPassport> registeredPassports) {
-        List<StoredMarketDataCapturerPassport> storedPassports =
+        List<StoredCapturerPassport> storedPassports =
                 storedPassportMapper.toRegisteredStored(registeredPassports);
         if (storedPassports.isEmpty()) {
             return;
@@ -55,7 +55,7 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
 
         List<Query> queries = new ArrayList<>(storedPassports.size());
 
-        for (StoredMarketDataCapturerPassport storedPassport : storedPassports) {
+        for (StoredCapturerPassport storedPassport : storedPassports) {
             CapturerCode code = storedPassport.capturerCode();
             CapturerPassport passport = storedPassport.passport();
             String registryStatus = storedPassport.registryStatus().name();

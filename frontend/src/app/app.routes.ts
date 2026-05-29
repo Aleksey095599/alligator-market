@@ -26,8 +26,8 @@ export const routes: Routes = [
   {
     path: 'capturers',
     loadChildren: () =>
-      import('./features/market_data_capturer_passport/market-data-capturer-passport.module')
-        .then(m => m.MarketDataCapturerPassportModule)
+      import('./features/capturer_passport/capturer-passport.module')
+        .then(m => m.CapturerPassportModule)
   },
   {
     path: 'source-plans',

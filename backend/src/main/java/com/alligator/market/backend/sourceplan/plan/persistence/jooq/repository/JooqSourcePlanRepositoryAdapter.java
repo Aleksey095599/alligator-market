@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.persistence.jooq.repository;
 
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
-import com.alligator.market.backend.sourceplan.plan.application.exception.MarketDataCapturerCodeNotFoundException;
+import com.alligator.market.backend.sourceplan.plan.application.exception.CapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.persistence.mapper.StoredSourcePlanMapper;
 import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
@@ -161,7 +161,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             });
         } catch (DataIntegrityViolationException ex) {
             if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_CAPTURER)) {
-                throw new MarketDataCapturerCodeNotFoundException(plan.capturerCode());
+                throw new CapturerCodeNotFoundException(plan.capturerCode());
             }
 
             if (DbConstraintErrors.isViolationOf(ex, FK_SOURCE_PLAN_INSTRUMENT)) {

@@ -5,11 +5,11 @@ import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
 import java.util.Objects;
 
-public record MarketDataCapturerOption(
+public record CapturerOption(
         CapturerCode code,
         CapturerDisplayName displayName
 ) {
-    public MarketDataCapturerOption {
+    public CapturerOption {
         Objects.requireNonNull(code, "code must not be null");
         Objects.requireNonNull(displayName, "displayName must not be null");
     }

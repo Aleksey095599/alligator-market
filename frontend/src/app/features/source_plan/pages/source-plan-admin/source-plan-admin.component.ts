@@ -25,7 +25,7 @@ import {
   SourceResponseDto
 } from '../../models/source-plan.model';
 import {
-  MarketDataCapturerOptionDto,
+  CapturerOptionDto,
   InstrumentOptionDto,
   SourceOptionDto
 } from '../../models/source-plan-options.model';
@@ -79,9 +79,9 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
   private readonly routeSubscription = new Subscription();
 
   /* Опции для option формы. */
-  private registeredCapturerOptions: MarketDataCapturerOptionDto[] = [];
+  private registeredCapturerOptions: CapturerOptionDto[] = [];
   private registeredCapturerCodes = new Set<string>();
-  capturerOptions: MarketDataCapturerOptionDto[] = [];
+  capturerOptions: CapturerOptionDto[] = [];
   instruments: InstrumentOptionDto[] = [];
   private availableSourceOptions: SourceOptionDto[] = [];
   private availableSourceCodes = new Set<string>();
@@ -92,7 +92,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
   /* Режим редактора: create/edit. */
   editing = false;
   /* Текущий выбранный план в режиме редактирования. */
-  selectedMarketDataCapturerCode: string | null = null;
+  selectedCapturerCode: string | null = null;
   selectedInstrumentCode: string | null = null;
   private loadedSourcesFingerprint: string | null = null;
 
@@ -248,7 +248,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
     this.service.get(plan.capturerCode, plan.instrumentCode).subscribe({
       next: fullPlan => {
         this.editing = true;
-        this.selectedMarketDataCapturerCode = fullPlan.capturerCode;
+        this.selectedCapturerCode = fullPlan.capturerCode;
         this.selectedInstrumentCode = fullPlan.instrumentCode;
 
         this.syncCapturerOptionsForCurrentMode();
@@ -309,7 +309,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
     if (
       this.hasPlanValidationError
       || this.locked
-      || !this.selectedMarketDataCapturerCode
+      || !this.selectedCapturerCode
       || !this.selectedInstrumentCode
       || !this.hasPlanChanges
     ) {
@@ -317,7 +317,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
     }
 
     this.locked = true;
-    const capturerCode = this.selectedMarketDataCapturerCode;
+    const capturerCode = this.selectedCapturerCode;
     const instrumentCode = this.selectedInstrumentCode;
     const sources = this.collectSortedSources();
 
@@ -340,16 +340,16 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
 
   /* Удалить выбранный план из editor-а. */
   onDeleteSelected(): void {
-    if (!this.selectedMarketDataCapturerCode || !this.selectedInstrumentCode || this.locked) {
+    if (!this.selectedCapturerCode || !this.selectedInstrumentCode || this.locked) {
       return;
     }
 
-    this.deletePlan(this.selectedMarketDataCapturerCode, this.selectedInstrumentCode, true);
+    this.deletePlan(this.selectedCapturerCode, this.selectedInstrumentCode, true);
   }
 
   /* Удалить план из нижнего списка. */
   onDeleteFromList(plan: SourcePlanResponseDto): void {
-    const isCurrentPlan = this.selectedMarketDataCapturerCode === plan.capturerCode
+    const isCurrentPlan = this.selectedCapturerCode === plan.capturerCode
       && this.selectedInstrumentCode === plan.instrumentCode;
     this.deletePlan(plan.capturerCode, plan.instrumentCode, isCurrentPlan);
   }
@@ -357,7 +357,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
   /* Сбросить форму и вернуться в create mode. */
   onReset(): void {
     this.editing = false;
-    this.selectedMarketDataCapturerCode = null;
+    this.selectedCapturerCode = null;
     this.selectedInstrumentCode = null;
     this.loadedSourcesFingerprint = null;
     this.locked = false;
@@ -452,7 +452,7 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
     }
 
     if (
-      this.selectedMarketDataCapturerCode === this.navigationCapturerCode
+      this.selectedCapturerCode === this.navigationCapturerCode
       && this.selectedInstrumentCode === this.navigationInstrumentCode
     ) {
       return;
@@ -475,20 +475,20 @@ export class SourcePlanAdminComponent implements OnInit, OnDestroy {
 
   /* Привести source-строки к DTO и отсортировать по priority перед отправкой. */
   private syncCapturerOptionsForCurrentMode(): void {
-    if (!this.editing || !this.selectedMarketDataCapturerCode) {
+    if (!this.editing || !this.selectedCapturerCode) {
       this.capturerOptions = this.registeredCapturerOptions;
       return;
     }
 
     this.capturerOptions = this.capturerOptionsWithHistoricalCode(
-      this.selectedMarketDataCapturerCode
+      this.selectedCapturerCode
     );
   }
 
   /* Retired capturer code добавляется только для отображения уже загруженного плана. */
   private capturerOptionsWithHistoricalCode(
     capturerCode: string
-  ): MarketDataCapturerOptionDto[] {
+  ): CapturerOptionDto[] {
     if (this.registeredCapturerCodes.has(capturerCode)) {
       return this.registeredCapturerOptions;
     }
