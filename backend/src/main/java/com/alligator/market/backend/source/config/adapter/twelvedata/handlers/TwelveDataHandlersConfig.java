@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.config.adapter.twelvedata.handlers;
 
-import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataMarketDataSource;
+import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataSource;
 import com.alligator.market.backend.source.adapter.twelvedata.instrument.forex.spot.handler.TwelveDataFxSpotHandler;
 import com.alligator.market.backend.source.config.adapter.twelvedata.instrument.forex.spot.handler.TwelveDataFxSpotHandlerConfig;
 import com.alligator.market.domain.instrument.Instrument;
@@ -19,7 +19,7 @@ public class TwelveDataHandlersConfig {
     public static final String BEAN_NAME = "twelveDataHandlers";
 
     @Bean(BEAN_NAME)
-    public Set<InstrumentHandler<TwelveDataMarketDataSource, ? extends Instrument>> twelveDataHandlers(
+    public Set<InstrumentHandler<TwelveDataSource, ? extends Instrument>> twelveDataHandlers(
             TwelveDataFxSpotHandler fxSpotHandler
     ) {
         return Set.of(fxSpotHandler);

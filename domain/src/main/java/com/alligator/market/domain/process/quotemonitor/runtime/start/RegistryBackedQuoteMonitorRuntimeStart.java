@@ -6,7 +6,7 @@ import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.source.MarketDataSource;
-import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
@@ -24,14 +24,14 @@ public final class RegistryBackedQuoteMonitorRuntimeStart implements QuoteMonito
     private final RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry;
     private final RuntimeInstrumentRegistry instrumentRegistry;
     private final RuntimeSourcePlanRegistry sourcePlanRegistry;
-    private final RuntimeMarketDataSourceRegistry sourceRegistry;
+    private final RuntimeSourceRegistry sourceRegistry;
 
     public RegistryBackedQuoteMonitorRuntimeStart(
             QuoteMonitorCapturer capturer,
             RuntimeQuoteMonitorInstrumentSelectionRegistry instrumentSelectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeMarketDataSourceRegistry sourceRegistry
+            RuntimeSourceRegistry sourceRegistry
     ) {
         this.capturer = Objects.requireNonNull(capturer, "capturer must not be null");
         this.instrumentSelectionRegistry = Objects.requireNonNull(

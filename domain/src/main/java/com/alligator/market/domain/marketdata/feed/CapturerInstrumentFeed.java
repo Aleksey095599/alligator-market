@@ -1,7 +1,7 @@
 package com.alligator.market.domain.marketdata.feed;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.marketdata.feed.vo.PrioritizedMarketDataSource;
+import com.alligator.market.domain.marketdata.feed.vo.PrioritizedSource;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 
@@ -15,12 +15,12 @@ import java.util.Set;
 public final class CapturerInstrumentFeed {
     private final CapturerCode capturerCode;
     private final InstrumentCode instrumentCode;
-    private final List<PrioritizedMarketDataSource> prioritizedSources;
+    private final List<PrioritizedSource> prioritizedSources;
 
     public CapturerInstrumentFeed(
             CapturerCode capturerCode,
             InstrumentCode instrumentCode,
-            List<PrioritizedMarketDataSource> prioritizedSources
+            List<PrioritizedSource> prioritizedSources
     ) {
         this.capturerCode = Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         this.instrumentCode = Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
@@ -29,19 +29,19 @@ public final class CapturerInstrumentFeed {
         );
     }
 
-    private static List<PrioritizedMarketDataSource> copyAndValidatePrioritizedSources(
-            List<PrioritizedMarketDataSource> prioritizedSources
+    private static List<PrioritizedSource> copyAndValidatePrioritizedSources(
+            List<PrioritizedSource> prioritizedSources
     ) {
         if (prioritizedSources.isEmpty()) {
             throw new IllegalArgumentException("prioritizedSources must not be empty");
         }
 
-        List<PrioritizedMarketDataSource> validatedSources = new ArrayList<>(prioritizedSources.size());
+        List<PrioritizedSource> validatedSources = new ArrayList<>(prioritizedSources.size());
         Set<SourceCode> sourceCodes = new HashSet<>();
         Set<Integer> priorities = new HashSet<>();
 
-        for (PrioritizedMarketDataSource prioritizedSource : prioritizedSources) {
-            PrioritizedMarketDataSource prioritizedSourceToCheck = Objects.requireNonNull(
+        for (PrioritizedSource prioritizedSource : prioritizedSources) {
+            PrioritizedSource prioritizedSourceToCheck = Objects.requireNonNull(
                     prioritizedSource,
                     "prioritizedSource must not be null"
             );
@@ -74,7 +74,7 @@ public final class CapturerInstrumentFeed {
         return instrumentCode;
     }
 
-    public List<PrioritizedMarketDataSource> prioritizedSources() {
+    public List<PrioritizedSource> prioritizedSources() {
         return prioritizedSources;
     }
 }

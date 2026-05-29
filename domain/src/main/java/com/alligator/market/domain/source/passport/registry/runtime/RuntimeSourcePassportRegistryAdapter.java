@@ -3,7 +3,7 @@ package com.alligator.market.domain.source.passport.registry.runtime;
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 
 import java.util.Collections;
@@ -15,9 +15,9 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class RuntimeSourcePassportRegistryAdapter implements RuntimeSourcePassportRegistry {
-    private final RuntimeMarketDataSourceRegistry runtimeSourceRegistry;
+    private final RuntimeSourceRegistry runtimeSourceRegistry;
 
-    public RuntimeSourcePassportRegistryAdapter(RuntimeMarketDataSourceRegistry runtimeSourceRegistry) {
+    public RuntimeSourcePassportRegistryAdapter(RuntimeSourceRegistry runtimeSourceRegistry) {
         this.runtimeSourceRegistry = Objects.requireNonNull(
                 runtimeSourceRegistry,
                 "runtimeSourceRegistry must not be null"

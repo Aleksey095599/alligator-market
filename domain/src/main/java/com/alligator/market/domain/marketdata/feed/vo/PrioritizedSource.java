@@ -4,11 +4,11 @@ import com.alligator.market.domain.source.MarketDataSource;
 
 import java.util.Objects;
 
-public record PrioritizedMarketDataSource(
+public record PrioritizedSource(
         MarketDataSource source,
         int priority
 ) {
-    public PrioritizedMarketDataSource {
+    public PrioritizedSource {
         Objects.requireNonNull(source, "source must not be null");
         Objects.requireNonNull(source.code(), "source.code must not be null");
 

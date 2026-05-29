@@ -17,7 +17,7 @@ import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
-import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
@@ -112,7 +112,7 @@ class QuoteMonitorRuntimeStartTest {
             RuntimeQuoteMonitorInstrumentSelectionRegistry selectionRegistry,
             RuntimeInstrumentRegistry instrumentRegistry,
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            RuntimeMarketDataSourceRegistry sourceRegistry
+            RuntimeSourceRegistry sourceRegistry
     ) {
         return new RegistryBackedQuoteMonitorRuntimeStart(
                 new QuoteMonitorCapturer(),
@@ -137,8 +137,8 @@ class QuoteMonitorRuntimeStartTest {
         return new TestInstrument(instrumentCode);
     }
 
-    private static TestMarketDataSource source(SourceCode sourceCode) {
-        return new TestMarketDataSource(sourceCode);
+    private static TestSource source(SourceCode sourceCode) {
+        return new TestSource(sourceCode);
     }
 
     private record TestInstrument(InstrumentCode instrumentCode) implements Instrument {
@@ -159,7 +159,7 @@ class QuoteMonitorRuntimeStartTest {
         }
     }
 
-    private record TestMarketDataSource(SourceCode code) implements MarketDataSource {
+    private record TestSource(SourceCode code) implements MarketDataSource {
 
         @Override
         public SourcePassport passport() {
@@ -260,7 +260,7 @@ class QuoteMonitorRuntimeStartTest {
 
     private record RuntimeSources(
             Map<SourceCode, MarketDataSource> sourcesByCode
-    ) implements RuntimeMarketDataSourceRegistry {
+    ) implements RuntimeSourceRegistry {
 
         private RuntimeSources(List<? extends MarketDataSource> sources) {
             this(sourcesByCode(sources));

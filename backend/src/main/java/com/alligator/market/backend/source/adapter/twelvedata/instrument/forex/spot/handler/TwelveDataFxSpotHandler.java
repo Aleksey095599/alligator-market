@@ -2,7 +2,7 @@ package com.alligator.market.backend.source.adapter.twelvedata.instrument.forex.
 
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollHttpException;
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipLogger;
-import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataMarketDataSource;
+import com.alligator.market.backend.source.adapter.twelvedata.TwelveDataSource;
 import com.alligator.market.backend.source.adapter.twelvedata.instrument.forex.spot.support.TwelveDataFxSpotSupportCatalog;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
-public class TwelveDataFxSpotHandler extends AbstractInstrumentHandler<TwelveDataMarketDataSource, FxSpot> {
+public class TwelveDataFxSpotHandler extends AbstractInstrumentHandler<TwelveDataSource, FxSpot> {
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("TWELVE_DATA_FX_SPOT_HANDLER");
     private static final String SOURCE_STREAM_NAME = "TWELVE DATA FX_SPOT";
     private static final TwelveDataFxSpotHandlerPassport PASSPORT = TwelveDataFxSpotHandlerPassport.INSTANCE;
@@ -98,7 +98,7 @@ public class TwelveDataFxSpotHandler extends AbstractInstrumentHandler<TwelveDat
                         domainCode.value(), twelveSymbol))
                 .map(body -> {
                     SourceTick tick = mapExchangeRateToSourceTick(sourceInstrumentCode, twelveSymbol, body);
-                    log.debug("Received FX_SPOT SourceMarketDataTick from Twelve Data: {}", tick);
+                    log.debug("Received FX_SPOT SourceTick from Twelve Data: {}", tick);
                     return tick;
                 });
     }

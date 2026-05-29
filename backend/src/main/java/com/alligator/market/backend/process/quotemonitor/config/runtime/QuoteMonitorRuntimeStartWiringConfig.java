@@ -3,14 +3,14 @@ package com.alligator.market.backend.process.quotemonitor.config.runtime;
 import com.alligator.market.backend.instrument.config.registry.runtime.RuntimeInstrumentRegistryWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.capturer.QuoteMonitorCapturerWiringConfig;
 import com.alligator.market.backend.process.quotemonitor.config.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig;
-import com.alligator.market.backend.source.config.registry.RuntimeMarketDataSourceRegistryWiringConfig;
+import com.alligator.market.backend.source.config.registry.RuntimeSourceRegistryWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.registry.runtime.RuntimeSourcePlanRegistryWiringConfig;
 import com.alligator.market.domain.instrument.registry.runtime.RuntimeInstrumentRegistry;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.runtime.RuntimeQuoteMonitorInstrumentSelectionRegistry;
 import com.alligator.market.domain.process.quotemonitor.runtime.start.RegistryBackedQuoteMonitorRuntimeStart;
 import com.alligator.market.domain.process.quotemonitor.runtime.start.QuoteMonitorRuntimeStart;
-import com.alligator.market.domain.source.registry.RuntimeMarketDataSourceRegistry;
+import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.sourceplan.registry.runtime.RuntimeSourcePlanRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Import;
         RuntimeQuoteMonitorInstrumentSelectionRegistryWiringConfig.class,
         RuntimeInstrumentRegistryWiringConfig.class,
         RuntimeSourcePlanRegistryWiringConfig.class,
-        RuntimeMarketDataSourceRegistryWiringConfig.class
+        RuntimeSourceRegistryWiringConfig.class
 })
 public class QuoteMonitorRuntimeStartWiringConfig {
     public static final String BEAN_QUOTE_MONITOR_RUNTIME_START =
@@ -40,8 +40,8 @@ public class QuoteMonitorRuntimeStartWiringConfig {
             RuntimeInstrumentRegistry instrumentRegistry,
             @Qualifier(RuntimeSourcePlanRegistryWiringConfig.BEAN_RUNTIME_SOURCE_PLAN_REGISTRY)
             RuntimeSourcePlanRegistry sourcePlanRegistry,
-            @Qualifier(RuntimeMarketDataSourceRegistryWiringConfig.BEAN_RUNTIME_MARKET_DATA_SOURCE_REGISTRY)
-            RuntimeMarketDataSourceRegistry sourceRegistry
+            @Qualifier(RuntimeSourceRegistryWiringConfig.BEAN_RUNTIME_SOURCE_REGISTRY)
+            RuntimeSourceRegistry sourceRegistry
     ) {
         return new RegistryBackedQuoteMonitorRuntimeStart(
                 capturer,

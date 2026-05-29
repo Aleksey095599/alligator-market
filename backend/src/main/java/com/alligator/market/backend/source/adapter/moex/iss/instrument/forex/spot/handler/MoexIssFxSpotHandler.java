@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.support.MoexIssFxSpotSupportCatalog;
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollHttpException;
 import com.alligator.market.backend.source.adapter.shared.poll.SourcePollSkipLogger;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
-public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarketDataSource, FxSpot> {
+public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssSource, FxSpot> {
     private static final HandlerCode HANDLER_CODE = HandlerCode.of("MOEX_ISS_FX_SPOT_HANDLER");
     private static final String SOURCE_STREAM_NAME = "MOEX ISS FX_SPOT";
     private static final MoexIssFxSpotHandlerPassport PASSPORT = MoexIssFxSpotHandlerPassport.INSTANCE;
@@ -103,7 +103,7 @@ public class MoexIssFxSpotHandler extends AbstractInstrumentHandler<MoexIssMarke
                         domainCode.value(), secid.value()))
                 .map(body -> {
                     SourceTick tick = mapMarketdataToSourceTick(secid, body);
-                    log.debug("Received FX_SPOT SourceMarketDataTick from MOEX ISS: {}", tick);
+                    log.debug("Received FX_SPOT SourceTick from MOEX ISS: {}", tick);
                     return tick;
                 });
     }

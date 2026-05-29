@@ -32,7 +32,7 @@ class AbstractInstrumentHandlerTest {
         InstrumentCode supportedCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         InstrumentCode unsupportedCode = InstrumentCode.of("FOREX_SPOT_USDRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(supportedCode)));
-        new TestMarketDataSource(handler);
+        new TestSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -53,7 +53,7 @@ class AbstractInstrumentHandlerTest {
     void rejectsInstrumentWithUnexpectedAsset() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(instrumentCode)));
-        new TestMarketDataSource(handler);
+        new TestSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -73,7 +73,7 @@ class AbstractInstrumentHandlerTest {
     void rejectsInstrumentWithUnexpectedProduct() {
         InstrumentCode instrumentCode = InstrumentCode.of("FOREX_SPOT_CNYRUB_TOM");
         TestInstrumentHandler handler = new TestInstrumentHandler(Set.of(new TestInstrument(instrumentCode)));
-        new TestMarketDataSource(handler);
+        new TestSource(handler);
 
         InstrumentNotSupportedByHandlerException ex = assertThrows(
                 InstrumentNotSupportedByHandlerException.class,
@@ -89,8 +89,8 @@ class AbstractInstrumentHandlerTest {
         assertEquals(Product.FORWARD.code(), ex.actualValue());
     }
 
-    private static final class TestMarketDataSource extends AbstractMarketDataSource<TestMarketDataSource> {
-        private TestMarketDataSource(TestInstrumentHandler handler) {
+    private static final class TestSource extends AbstractMarketDataSource<TestSource> {
+        private TestSource(TestInstrumentHandler handler) {
             super(
                     SourceCode.of("TEST_SOURCE"),
                     new SourcePassport(SourceDisplayName.of("Test Source")),
@@ -99,13 +99,13 @@ class AbstractInstrumentHandlerTest {
         }
 
         @Override
-        protected TestMarketDataSource self() {
+        protected TestSource self() {
             return this;
         }
     }
 
     private static final class TestInstrumentHandler
-            extends AbstractInstrumentHandler<TestMarketDataSource, TestInstrument> {
+            extends AbstractInstrumentHandler<TestSource, TestInstrument> {
         private static final HandlerCode HANDLER_CODE = HandlerCode.of("TEST_HANDLER");
         private static final SourceHandlerPassport PASSPORT = new TestSourceHandlerPassport();
         private static final SourceHandlerPolicy POLICY = new SourceHandlerPolicy() {

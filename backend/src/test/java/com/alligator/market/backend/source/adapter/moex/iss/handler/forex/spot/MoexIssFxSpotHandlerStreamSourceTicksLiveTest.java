@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPolicy;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
@@ -41,7 +41,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
                 webClient,
                 new MoexIssFxSpotHandlerPolicy(Duration.ofSeconds(5))
         );
-        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
+        MoexIssSource source = new MoexIssSource(Set.of(handler));
 
         Currency cny = new Currency(CurrencyCode.of("CNY"), "Chinese Yuan", "China", 2);
         Currency rub = new Currency(CurrencyCode.of("RUB"), "Russian Ruble", "Russian Federation", 2);
@@ -63,7 +63,7 @@ class MoexIssFxSpotHandlerStreamSourceTicksLiveTest {
     private static void assertCnyRubTomTick(SourceTick tick) {
         System.out.println("LIVE SOURCE TICK FROM MOEX ISS: " + tick);
 
-        assertNotNull(tick, "SourceMarketDataTick must not be null");
+        assertNotNull(tick, "SourceTick must not be null");
         SourceLastPriceTick lastPriceTick = assertInstanceOf(SourceLastPriceTick.class, tick);
 
         assertEquals(

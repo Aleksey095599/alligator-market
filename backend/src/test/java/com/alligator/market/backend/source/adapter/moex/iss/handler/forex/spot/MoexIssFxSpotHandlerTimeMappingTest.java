@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.adapter.moex.iss.handler.forex.spot;
 
-import com.alligator.market.backend.source.adapter.moex.iss.MoexIssMarketDataSource;
+import com.alligator.market.backend.source.adapter.moex.iss.MoexIssSource;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandler;
 import com.alligator.market.backend.source.adapter.moex.iss.instrument.forex.spot.handler.MoexIssFxSpotHandlerPolicy;
 import com.alligator.market.domain.instrument.asset.forex.fxspot.FxSpot;
@@ -45,7 +45,7 @@ class MoexIssFxSpotHandlerTimeMappingTest {
                 webClient,
                 new MoexIssFxSpotHandlerPolicy(Duration.ofSeconds(5))
         );
-        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
+        MoexIssSource source = new MoexIssSource(Set.of(handler));
 
         SourceTick tick = Flux.from(source.streamSourceTicks(cnyRubTom()))
                 .take(1)
@@ -77,7 +77,7 @@ class MoexIssFxSpotHandlerTimeMappingTest {
                 webClient,
                 new MoexIssFxSpotHandlerPolicy(Duration.ofSeconds(5))
         );
-        MoexIssMarketDataSource source = new MoexIssMarketDataSource(Set.of(handler));
+        MoexIssSource source = new MoexIssSource(Set.of(handler));
 
         SourceTick tick = Flux.from(source.streamSourceTicks(usdRubSpot()))
                 .take(1)

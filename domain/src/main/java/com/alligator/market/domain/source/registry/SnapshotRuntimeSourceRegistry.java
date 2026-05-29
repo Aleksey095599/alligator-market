@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public final class SnapshotRuntimeMarketDataSourceRegistry implements RuntimeMarketDataSourceRegistry {
+public final class SnapshotRuntimeSourceRegistry implements RuntimeSourceRegistry {
 
     private final Map<SourceCode, MarketDataSource> sourcesByCode;
 
-    public SnapshotRuntimeMarketDataSourceRegistry(List<? extends MarketDataSource> sources) {
+    public SnapshotRuntimeSourceRegistry(List<? extends MarketDataSource> sources) {
         Objects.requireNonNull(sources, "sources must not be null");
 
         if (sources.isEmpty()) {

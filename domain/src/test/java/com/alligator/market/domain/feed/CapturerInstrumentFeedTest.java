@@ -2,7 +2,7 @@ package com.alligator.market.domain.feed;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.marketdata.feed.CapturerInstrumentFeed;
-import com.alligator.market.domain.marketdata.feed.vo.PrioritizedMarketDataSource;
+import com.alligator.market.domain.marketdata.feed.vo.PrioritizedSource;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
@@ -24,8 +24,8 @@ class CapturerInstrumentFeedTest {
     void createsFeedForCapturerInstrumentAndPrioritizedSources() {
         CapturerCode capturerCode = CapturerCode.of("TEST_CAPTURER");
         InstrumentCode instrumentCode = InstrumentCode.of("EUR_USD");
-        PrioritizedMarketDataSource primarySource = prioritizedSource("PRIMARY_SOURCE", 0);
-        PrioritizedMarketDataSource backupSource = prioritizedSource("BACKUP_SOURCE", 1);
+        PrioritizedSource primarySource = prioritizedSource("PRIMARY_SOURCE", 0);
+        PrioritizedSource backupSource = prioritizedSource("BACKUP_SOURCE", 1);
 
         CapturerInstrumentFeed feed = new CapturerInstrumentFeed(
                 capturerCode,
@@ -80,18 +80,18 @@ class CapturerInstrumentFeedTest {
         );
     }
 
-    private static PrioritizedMarketDataSource prioritizedSource(
+    private static PrioritizedSource prioritizedSource(
             String sourceCode,
             int priority
     ) {
-        return new PrioritizedMarketDataSource(
-                new TestMarketDataSource(SourceCode.of(sourceCode)),
+        return new PrioritizedSource(
+                new TestSource(SourceCode.of(sourceCode)),
                 priority
         );
     }
 
-    private record TestMarketDataSource(SourceCode code) implements MarketDataSource {
-        private TestMarketDataSource {
+    private record TestSource(SourceCode code) implements MarketDataSource {
+        private TestSource {
             if (code == null) {
                 throw new IllegalArgumentException("code must not be null");
             }
