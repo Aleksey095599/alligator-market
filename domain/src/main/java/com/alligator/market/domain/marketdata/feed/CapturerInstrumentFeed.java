@@ -1,7 +1,7 @@
-package com.alligator.market.domain.feed;
+package com.alligator.market.domain.marketdata.feed;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.feed.vo.PrioritizedMarketDataSource;
+import com.alligator.market.domain.marketdata.feed.vo.PrioritizedMarketDataSource;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 

@@ -1,4 +1,4 @@
-package com.alligator.market.domain.feed.vo;
+package com.alligator.market.domain.marketdata.feed.vo;
 
 import com.alligator.market.domain.source.MarketDataSource;
 
