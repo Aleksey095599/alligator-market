@@ -1,4 +1,4 @@
-package com.alligator.market.domain.marketdata.feed.plan.registry.stored;
+package com.alligator.market.domain.marketdata.feed.plan.registry.stored.status;
 
 import com.alligator.market.domain.shared.code.DomainCodeFormat;
 
