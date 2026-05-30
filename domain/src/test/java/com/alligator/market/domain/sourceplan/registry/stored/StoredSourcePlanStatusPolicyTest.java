@@ -11,11 +11,11 @@ class StoredSourcePlanStatusPolicyTest {
     @Test
     void resolvesEntryLifecycleStatusFromSourceRegistration() {
         assertEquals(
-                StoredSourcePlanEntryLifecycleStatus.AVAILABLE,
+                StoredSourcePlan.EntryLifecycleStatus.AVAILABLE,
                 policy.resolveEntryLifecycleStatus(true)
         );
         assertEquals(
-                StoredSourcePlanEntryLifecycleStatus.SOURCE_RETIRED,
+                StoredSourcePlan.EntryLifecycleStatus.SOURCE_RETIRED,
                 policy.resolveEntryLifecycleStatus(false)
         );
     }
@@ -23,15 +23,15 @@ class StoredSourcePlanStatusPolicyTest {
     @Test
     void resolvesPlanExecutionStatusFromCapturerRegistrationAndAvailableSources() {
         assertEquals(
-                StoredSourcePlanExecutionStatus.CAPTURER_RETIRED,
+                StoredSourcePlan.ExecutionStatus.CAPTURER_RETIRED,
                 policy.resolvePlanExecutionStatus(false, true)
         );
         assertEquals(
-                StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES,
+                StoredSourcePlan.ExecutionStatus.NO_AVAILABLE_SOURCES,
                 policy.resolvePlanExecutionStatus(true, false)
         );
         assertEquals(
-                StoredSourcePlanExecutionStatus.AVAILABLE,
+                StoredSourcePlan.ExecutionStatus.AVAILABLE,
                 policy.resolvePlanExecutionStatus(true, true)
         );
     }

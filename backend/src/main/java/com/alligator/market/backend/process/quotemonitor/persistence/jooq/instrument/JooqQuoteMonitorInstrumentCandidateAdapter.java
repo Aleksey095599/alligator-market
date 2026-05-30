@@ -3,7 +3,7 @@ package com.alligator.market.backend.process.quotemonitor.persistence.jooq.instr
 import com.alligator.market.backend.process.quotemonitor.application.instrument.port.QuoteMonitorInstrumentCandidatePort;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.process.quotemonitor.capturer.QuoteMonitorCapturer;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Table;
@@ -38,7 +38,7 @@ public final class JooqQuoteMonitorInstrumentCandidateAdapter implements QuoteMo
                 .from(SOURCE_PLAN)
                 .where(SOURCE_PLAN_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .and(SOURCE_PLAN_EXECUTION_STATUS.eq(
-                        StoredSourcePlanExecutionStatus.AVAILABLE.name()))
+                        StoredSourcePlan.ExecutionStatus.AVAILABLE.name()))
                 .orderBy(SOURCE_PLAN_INSTRUMENT_CODE.asc())
                 .fetch(record -> new InstrumentCode(record.get(SOURCE_PLAN_INSTRUMENT_CODE)));
     }
@@ -60,7 +60,7 @@ public final class JooqQuoteMonitorInstrumentCandidateAdapter implements QuoteMo
                 .from(SOURCE_PLAN)
                 .where(SOURCE_PLAN_CAPTURER_CODE.eq(QuoteMonitorCapturer.CAPTURER_CODE.value()))
                 .and(SOURCE_PLAN_EXECUTION_STATUS.eq(
-                        StoredSourcePlanExecutionStatus.AVAILABLE.name()))
+                        StoredSourcePlan.ExecutionStatus.AVAILABLE.name()))
                 .and(SOURCE_PLAN_INSTRUMENT_CODE.in(requestedValues))
                 .fetch(SOURCE_PLAN_INSTRUMENT_CODE));
 

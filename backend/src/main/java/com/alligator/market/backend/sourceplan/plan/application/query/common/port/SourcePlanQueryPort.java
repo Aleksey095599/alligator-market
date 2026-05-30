@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.query.common.po
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public interface SourcePlanQueryPort {
             InstrumentCode instrumentCode
     );
 
-    Map<InstrumentCode, StoredSourcePlanExecutionStatus> findExecutionStatusesByCapturerCodeAndInstrumentCodes(
+    Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> findExecutionStatusesByCapturerCodeAndInstrumentCodes(
             CapturerCode capturerCode,
             List<InstrumentCode> instrumentCodes
     );

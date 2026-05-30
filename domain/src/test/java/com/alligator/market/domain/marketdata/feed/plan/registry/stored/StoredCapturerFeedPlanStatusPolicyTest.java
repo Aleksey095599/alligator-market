@@ -2,7 +2,7 @@ package com.alligator.market.domain.marketdata.feed.plan.registry.stored;
 
 import com.alligator.market.domain.marketdata.feed.plan.registry.stored.status.StoredCapturerFeedPlanStatus;
 import com.alligator.market.domain.marketdata.feed.plan.registry.stored.status.StoredCapturerFeedPlanStatusPolicy;
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,14 +14,14 @@ class StoredCapturerFeedPlanStatusPolicyTest {
     private final StoredCapturerFeedPlanStatusPolicy policy = new StoredCapturerFeedPlanStatusPolicy();
 
     @Test
-    void resolvesPlanStatusFromCapturerRegistrationAndSourcePassportRegistryStatuses() {
+    void resolvesPlanStatusFromCapturerRegistrationAndSourcePassportStatuses() {
         assertEquals(
                 StoredCapturerFeedPlanStatus.CAPTURER_RETIRED,
-                policy.resolvePlanStatus(false, List.of(StoredSourcePassportRegistryStatus.REGISTERED))
+                policy.resolvePlanStatus(false, List.of(StoredSourcePassport.Status.REGISTERED))
         );
         assertEquals(
                 StoredCapturerFeedPlanStatus.NO_AVAILABLE_SOURCES,
-                policy.resolvePlanStatus(true, List.of(StoredSourcePassportRegistryStatus.RETIRED))
+                policy.resolvePlanStatus(true, List.of(StoredSourcePassport.Status.RETIRED))
         );
         assertEquals(
                 StoredCapturerFeedPlanStatus.NO_AVAILABLE_SOURCES,
@@ -30,8 +30,8 @@ class StoredCapturerFeedPlanStatusPolicyTest {
         assertEquals(
                 StoredCapturerFeedPlanStatus.AVAILABLE,
                 policy.resolvePlanStatus(true, List.of(
-                        StoredSourcePassportRegistryStatus.RETIRED,
-                        StoredSourcePassportRegistryStatus.REGISTERED
+                        StoredSourcePassport.Status.RETIRED,
+                        StoredSourcePassport.Status.REGISTERED
                 ))
         );
     }

@@ -8,7 +8,7 @@ public class SourceResponseMapper {
         return new SourceResponse(
                 source.sourceCode(),
                 source.priority(),
-                source.lifecycleStatus()
+                source.lifecycleStatus().name()
         );
     }
 }

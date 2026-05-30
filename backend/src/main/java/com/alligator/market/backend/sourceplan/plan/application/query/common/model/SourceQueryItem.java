@@ -1,11 +1,13 @@
 package com.alligator.market.backend.sourceplan.plan.application.query.common.model;
 
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
+
 import java.util.Objects;
 
 public record SourceQueryItem(
         String sourceCode,
         int priority,
-        String lifecycleStatus
+        StoredSourcePlan.EntryLifecycleStatus lifecycleStatus
 ) {
     public SourceQueryItem {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");

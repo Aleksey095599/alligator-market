@@ -6,7 +6,7 @@ import com.alligator.market.backend.sourceplan.plan.application.query.common.por
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -91,14 +91,14 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         return Optional.of(new SourcePlanQueryItem(
                 capturerCode.value(),
                 toCapturerPassportStatus(records.getFirst().get(CAPTURER_PASSPORT.LIFECYCLE_STATUS)),
-                StoredSourcePlanExecutionStatus.valueOf(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
+                toSourcePlanExecutionStatus(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
                 instrumentCode.value(),
                 sources
         ));
     }
 
     @Override
-    public Map<InstrumentCode, StoredSourcePlanExecutionStatus>
+    public Map<InstrumentCode, StoredSourcePlan.ExecutionStatus>
             findExecutionStatusesByCapturerCodeAndInstrumentCodes(
                     CapturerCode capturerCode,
                     List<InstrumentCode> instrumentCodes
@@ -116,7 +116,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
             return Map.of();
         }
 
-        Map<InstrumentCode, StoredSourcePlanExecutionStatus> statuses = new LinkedHashMap<>();
+        Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> statuses = new LinkedHashMap<>();
 
         dsl.select(SOURCE_PLAN_INSTRUMENT_CODE, SOURCE_PLAN_EXECUTION_STATUS)
                 .from(SOURCE_PLAN)
@@ -126,7 +126,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                 .fetch()
                 .forEach(record -> statuses.put(
                         new InstrumentCode(record.get(SOURCE_PLAN_INSTRUMENT_CODE)),
-                        StoredSourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS))
+                        toSourcePlanExecutionStatus(record.get(SOURCE_PLAN_EXECUTION_STATUS))
                 ));
 
         return Map.copyOf(statuses);
@@ -161,7 +161,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                     PlanKey planKey = new PlanKey(
                             record.get(SOURCE_PLAN_CAPTURER_CODE),
                             toCapturerPassportStatus(record.get(CAPTURER_PASSPORT.LIFECYCLE_STATUS)),
-                            StoredSourcePlanExecutionStatus.valueOf(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
+                            toSourcePlanExecutionStatus(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
                             record.get(SOURCE_PLAN_INSTRUMENT_CODE)
                     );
 
@@ -197,17 +197,25 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
     ) {
         Objects.requireNonNull(priority, "priority must not be null");
 
-        return new SourceQueryItem(sourceCode, priority, lifecycleStatus);
+        return new SourceQueryItem(
+                sourceCode,
+                priority,
+                StoredSourcePlan.EntryLifecycleStatus.valueOf(lifecycleStatus)
+        );
     }
 
     private static StoredCapturerPassport.Status toCapturerPassportStatus(String status) {
         return StoredCapturerPassport.Status.valueOf(status);
     }
 
+    private static StoredSourcePlan.ExecutionStatus toSourcePlanExecutionStatus(String status) {
+        return StoredSourcePlan.ExecutionStatus.valueOf(status);
+    }
+
     private record PlanKey(
             String capturerCode,
             StoredCapturerPassport.Status capturerLifecycleStatus,
-            StoredSourcePlanExecutionStatus executionStatus,
+            StoredSourcePlan.ExecutionStatus executionStatus,
             String instrumentCode
     ) {
     }

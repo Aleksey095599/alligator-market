@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.feed.plan.registry.stored.status;
 
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -9,18 +9,18 @@ public final class StoredCapturerFeedPlanStatusPolicy {
 
     public StoredCapturerFeedPlanStatus resolvePlanStatus(
             boolean capturerRegistered,
-            Collection<StoredSourcePassportRegistryStatus> plannedSourcePassportRegistryStatuses
+            Collection<StoredSourcePassport.Status> plannedSourcePassportStatuses
     ) {
         Objects.requireNonNull(
-                plannedSourcePassportRegistryStatuses,
-                "plannedSourcePassportRegistryStatuses must not be null"
+                plannedSourcePassportStatuses,
+                "plannedSourcePassportStatuses must not be null"
         );
 
         if (!capturerRegistered) {
             return StoredCapturerFeedPlanStatus.CAPTURER_RETIRED;
         }
 
-        if (!hasRegisteredSourcePassport(plannedSourcePassportRegistryStatuses)) {
+        if (!hasRegisteredSourcePassport(plannedSourcePassportStatuses)) {
             return StoredCapturerFeedPlanStatus.NO_AVAILABLE_SOURCES;
         }
 
@@ -28,10 +28,10 @@ public final class StoredCapturerFeedPlanStatusPolicy {
     }
 
     private static boolean hasRegisteredSourcePassport(
-            Collection<StoredSourcePassportRegistryStatus> plannedSourcePassportRegistryStatuses
+            Collection<StoredSourcePassport.Status> plannedSourcePassportStatuses
     ) {
-        return plannedSourcePassportRegistryStatuses.stream()
-                .map(status -> Objects.requireNonNull(status, "sourcePassportRegistryStatus must not be null"))
-                .anyMatch(StoredSourcePassportRegistryStatus.REGISTERED::equals);
+        return plannedSourcePassportStatuses.stream()
+                .map(status -> Objects.requireNonNull(status, "sourcePassportStatus must not be null"))
+                .anyMatch(StoredSourcePassport.Status.REGISTERED::equals);
     }
 }

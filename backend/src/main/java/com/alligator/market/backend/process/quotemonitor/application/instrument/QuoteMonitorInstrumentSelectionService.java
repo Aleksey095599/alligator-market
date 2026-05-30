@@ -13,7 +13,7 @@ import com.alligator.market.domain.process.quotemonitor.instrument.repository.Qu
 import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync.RuntimeQuoteMonitorInstrumentSelectionRegistryUpdater;
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 
 import java.util.HashSet;
 import java.util.List;
@@ -66,7 +66,7 @@ public final class QuoteMonitorInstrumentSelectionService {
 
     public List<QuoteMonitorSelectedInstrument> findSelectedInstruments() {
         List<InstrumentCode> selectedInstrumentCodes = getSelection().instrumentCodes();
-        Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses =
+        Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> sourcePlanStatuses =
                 sourcePlanQueryPort.findExecutionStatusesByCapturerCodeAndInstrumentCodes(
                         QuoteMonitorCapturer.CAPTURER_CODE,
                         selectedInstrumentCodes
@@ -136,11 +136,11 @@ public final class QuoteMonitorInstrumentSelectionService {
         }
     }
 
-    private StoredSourcePlanExecutionStatus requireSourcePlanStatus(
+    private StoredSourcePlan.ExecutionStatus requireSourcePlanStatus(
             InstrumentCode instrumentCode,
-            Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses
+            Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> sourcePlanStatuses
     ) {
-        StoredSourcePlanExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
+        StoredSourcePlan.ExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
         if (status == null) {
             throw new IllegalStateException(
                     "Source plan status is missing for selected quote monitor instrument: " +

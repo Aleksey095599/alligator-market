@@ -2,6 +2,7 @@ package com.alligator.market.backend.source.passport.application.query.list.adap
 
 import com.alligator.market.backend.source.passport.application.query.list.model.SourcePassportListItem;
 import com.alligator.market.backend.source.passport.application.query.list.port.SourcePassportListQueryPort;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public final class JooqSourcePassportListQueryAdapter implements SourcePassportL
                 .fetch(record -> new SourcePassportListItem(
                         record.get(SOURCE_PASSPORT.SOURCE_CODE),
                         record.get(SOURCE_PASSPORT.DISPLAY_NAME),
-                        record.get(SOURCE_PASSPORT.LIFECYCLE_STATUS)
+                        StoredSourcePassport.Status.valueOf(record.get(SOURCE_PASSPORT.LIFECYCLE_STATUS))
                 ));
     }
 }

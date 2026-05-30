@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
-import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus.REGISTERED;
+import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport.Status.REGISTERED;
 
 public final class JooqSourceOptionsQueryAdapter implements SourceOptionsQueryPort {
     private final DSLContext dsl;

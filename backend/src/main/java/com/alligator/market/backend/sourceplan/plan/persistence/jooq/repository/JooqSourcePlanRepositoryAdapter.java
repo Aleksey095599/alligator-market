@@ -3,14 +3,12 @@ package com.alligator.market.backend.sourceplan.plan.persistence.jooq.repository
 import com.alligator.market.backend.common.persistence.constraint.DbConstraintErrors;
 import com.alligator.market.backend.sourceplan.plan.application.exception.CapturerCodeNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.exception.InstrumentCodeNotFoundException;
-import com.alligator.market.backend.sourceplan.plan.persistence.mapper.StoredSourcePlanMapper;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlan;
-import com.alligator.market.backend.sourceplan.plan.persistence.model.StoredSourcePlanEntry;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.source.vo.SourceCode;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.repository.SourcePlanRepository;
 import org.jooq.Condition;
@@ -53,11 +51,9 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
             field(name("source_plan", "execution_status"), String.class);
 
     private final DSLContext dsl;
-    private final StoredSourcePlanMapper storedPlanMapper;
 
     public JooqSourcePlanRepositoryAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
-        this.storedPlanMapper = new StoredSourcePlanMapper();
     }
 
     @Override
@@ -132,7 +128,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean createIfAbsent(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
-        StoredSourcePlan storedPlan = storedPlanMapper.toStored(plan);
+        StoredSourcePlan storedPlan = StoredSourcePlan.available(plan);
 
         try {
             return dsl.transactionResult(configuration -> {
@@ -153,8 +149,8 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                     return false;
                 }
 
-                for (StoredSourcePlanEntry entry : storedPlan.entries()) {
-                    insertEntry(tx, entry);
+                for (StoredSourcePlan.Entry entry : storedPlan.entries()) {
+                    insertEntry(tx, storedPlan, entry);
                 }
 
                 return true;
@@ -175,7 +171,7 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
     @Override
     public boolean replaceIfExists(SourcePlan plan) {
         Objects.requireNonNull(plan, "plan must not be null");
-        StoredSourcePlan storedPlan = storedPlanMapper.toStored(plan);
+        StoredSourcePlan storedPlan = StoredSourcePlan.available(plan);
 
         return dsl.transactionResult(configuration -> {
             DSLContext tx = configuration.dsl();
@@ -204,8 +200,8 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
                     .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(storedPlan.instrumentCode().value()))
                     .execute();
 
-            for (StoredSourcePlanEntry entry : storedPlan.entries()) {
-                insertEntry(tx, entry);
+            for (StoredSourcePlan.Entry entry : storedPlan.entries()) {
+                insertEntry(tx, storedPlan, entry);
             }
 
             return true;
@@ -227,15 +223,17 @@ public final class JooqSourcePlanRepositoryAdapter implements SourcePlanReposito
 
     private void insertEntry(
             DSLContext dsl,
-            StoredSourcePlanEntry storedEntry
+            StoredSourcePlan storedPlan,
+            StoredSourcePlan.Entry storedEntry
     ) {
+        Objects.requireNonNull(storedPlan, "storedPlan must not be null");
         Objects.requireNonNull(storedEntry, "storedEntry must not be null");
 
         PrioritizedSourceCode prioritizedSourceCode = storedEntry.prioritizedSourceCode();
 
         dsl.insertInto(SOURCE_PLAN_ENTRY)
-                .set(SOURCE_PLAN_ENTRY_CAPTURER_CODE, storedEntry.capturerCode().value())
-                .set(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE, storedEntry.instrumentCode().value())
+                .set(SOURCE_PLAN_ENTRY_CAPTURER_CODE, storedPlan.capturerCode().value())
+                .set(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE, storedPlan.instrumentCode().value())
                 .set(SOURCE_PLAN_ENTRY_SOURCE_CODE, prioritizedSourceCode.sourceCode().value())
                 .set(SOURCE_PLAN_ENTRY_PRIORITY, prioritizedSourceCode.priority())
                 .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, storedEntry.lifecycleStatus().name())

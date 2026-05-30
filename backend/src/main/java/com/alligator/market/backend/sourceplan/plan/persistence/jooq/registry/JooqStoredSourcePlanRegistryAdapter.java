@@ -7,7 +7,7 @@ import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 import com.alligator.market.domain.sourceplan.vo.SourcePlanKey;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanRegistry;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanEntryLifecycleStatus.AVAILABLE;
+import static com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan.EntryLifecycleStatus.AVAILABLE;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
@@ -81,7 +81,7 @@ public final class JooqStoredSourcePlanRegistryAdapter implements StoredSourcePl
 
     private Map<SourcePlanKey, List<PrioritizedSourceCode>> selectAvailableSourceCodes(Condition additionalCondition) {
         Condition condition = SOURCE_PLAN_EXECUTION_STATUS.eq(
-                        StoredSourcePlanExecutionStatus.AVAILABLE.name())
+                        StoredSourcePlan.ExecutionStatus.AVAILABLE.name())
                 .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(AVAILABLE.name()));
 
         if (additionalCondition != null) {

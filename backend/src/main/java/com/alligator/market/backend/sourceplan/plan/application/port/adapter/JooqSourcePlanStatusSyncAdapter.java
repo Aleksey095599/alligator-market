@@ -2,7 +2,8 @@ package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistryStatus;
+import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanStatusPolicy;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -58,12 +59,8 @@ public final class JooqSourcePlanStatusSyncAdapter
 
     private void syncSourcePlanEntryLifecycleStatuses() {
         Condition registeredSourceReference = registeredSourcePassportExistsForEntry();
-        String availableEntryStatus = statusPolicy
-                .resolveEntryLifecycleStatus(true)
-                .name();
-        String sourceRetiredEntryStatus = statusPolicy
-                .resolveEntryLifecycleStatus(false)
-                .name();
+        String availableEntryStatus = statusPolicy.resolveEntryLifecycleStatus(true).name();
+        String sourceRetiredEntryStatus = statusPolicy.resolveEntryLifecycleStatus(false).name();
 
         dsl.update(SOURCE_PLAN_ENTRY)
                 .set(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS, availableEntryStatus)
@@ -87,23 +84,15 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .where(SOURCE_PASSPORT.SOURCE_CODE
                                 .eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredSourcePassportRegistryStatus.REGISTERED.name()))
+                                StoredSourcePassport.Status.REGISTERED.name()))
         );
     }
 
     private void refreshPlanAvailabilityStatuses() {
-        String availableEntryStatus = statusPolicy
-                .resolveEntryLifecycleStatus(true)
-                .name();
-        String capturerRetiredPlanStatus = statusPolicy
-                .resolvePlanExecutionStatus(false, false)
-                .name();
-        String noAvailableSourcesPlanStatus = statusPolicy
-                .resolvePlanExecutionStatus(true, false)
-                .name();
-        String availablePlanStatus = statusPolicy
-                .resolvePlanExecutionStatus(true, true)
-                .name();
+        String availableEntryStatus = StoredSourcePlan.EntryLifecycleStatus.AVAILABLE.name();
+        String capturerRetiredPlanStatus = statusPolicy.resolvePlanExecutionStatus(false, false).name();
+        String noAvailableSourcesPlanStatus = statusPolicy.resolvePlanExecutionStatus(true, false).name();
+        String availablePlanStatus = statusPolicy.resolvePlanExecutionStatus(true, true).name();
 
         Condition capturerIsNotRegistered = notExists(
                 selectOne()
@@ -122,7 +111,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
                         .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(availableEntryStatus))
                         .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredSourcePassportRegistryStatus.REGISTERED.name()))
+                                StoredSourcePassport.Status.REGISTERED.name()))
         );
 
         dsl.update(SOURCE_PLAN)

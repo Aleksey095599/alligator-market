@@ -16,7 +16,7 @@ import com.alligator.market.domain.process.quotemonitor.instrument.registry.sync
 import com.alligator.market.domain.process.quotemonitor.runtime.QuoteMonitorRuntimeProcess;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonitorRuntimeStatus;
-import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanExecutionStatus;
+import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -214,8 +214,8 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 repository,
                 new FakeQuoteMonitorInstrumentCandidatePort(List.of()),
                 new FakeSourcePlanQueryPort(Map.of(
-                        firstCode, StoredSourcePlanExecutionStatus.AVAILABLE,
-                        secondCode, StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES
+                        firstCode, StoredSourcePlan.ExecutionStatus.AVAILABLE,
+                        secondCode, StoredSourcePlan.ExecutionStatus.NO_AVAILABLE_SOURCES
                 )),
                 new FakeRuntimeQuoteMonitorInstrumentSelectionRegistryUpdater(),
                 new FakeQuoteMonitorRuntimeProcess(QuoteMonitorRuntimeStatus.STOPPED)
@@ -225,11 +225,11 @@ class QuoteMonitorInstrumentSelectionServiceTest {
                 .containsExactly(
                         new QuoteMonitorSelectedInstrument(
                                 firstCode,
-                                StoredSourcePlanExecutionStatus.AVAILABLE
+                                StoredSourcePlan.ExecutionStatus.AVAILABLE
                         ),
                         new QuoteMonitorSelectedInstrument(
                                 secondCode,
-                                StoredSourcePlanExecutionStatus.NO_AVAILABLE_SOURCES
+                                StoredSourcePlan.ExecutionStatus.NO_AVAILABLE_SOURCES
                         )
                 );
     }
@@ -297,10 +297,10 @@ class QuoteMonitorInstrumentSelectionServiceTest {
     }
 
     private static final class FakeSourcePlanQueryPort implements SourcePlanQueryPort {
-        private final Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses;
+        private final Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> sourcePlanStatuses;
 
         private FakeSourcePlanQueryPort(
-                Map<InstrumentCode, StoredSourcePlanExecutionStatus> sourcePlanStatuses
+                Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> sourcePlanStatuses
         ) {
             this.sourcePlanStatuses = Map.copyOf(sourcePlanStatuses);
         }
@@ -314,15 +314,15 @@ class QuoteMonitorInstrumentSelectionServiceTest {
         }
 
         @Override
-        public Map<InstrumentCode, StoredSourcePlanExecutionStatus>
+        public Map<InstrumentCode, StoredSourcePlan.ExecutionStatus>
                 findExecutionStatusesByCapturerCodeAndInstrumentCodes(
                         CapturerCode capturerCode,
                         List<InstrumentCode> instrumentCodes
                 ) {
-            Map<InstrumentCode, StoredSourcePlanExecutionStatus> statuses = new LinkedHashMap<>();
+            Map<InstrumentCode, StoredSourcePlan.ExecutionStatus> statuses = new LinkedHashMap<>();
 
             for (InstrumentCode instrumentCode : instrumentCodes) {
-                StoredSourcePlanExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
+                StoredSourcePlan.ExecutionStatus status = sourcePlanStatuses.get(instrumentCode);
                 if (status != null) {
                     statuses.put(instrumentCode, status);
                 }
