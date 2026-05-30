@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistryStatus.REGISTERED;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport.Status.REGISTERED;
 
 public final class JooqCapturerOptionsQueryAdapter implements CapturerOptionsQueryPort {
     private final DSLContext dsl;

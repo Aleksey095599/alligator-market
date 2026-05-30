@@ -18,7 +18,7 @@ public final class CapturerPassportListItemResponseMapper {
         return new CapturerPassportListItemResponse(
                 item.capturerCode(),
                 item.displayName(),
-                item.lifecycleStatus()
+                item.lifecycleStatus().name()
         );
     }
 }

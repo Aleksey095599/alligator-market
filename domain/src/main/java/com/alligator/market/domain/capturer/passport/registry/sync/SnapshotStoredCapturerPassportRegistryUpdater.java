@@ -2,9 +2,12 @@ package com.alligator.market.domain.capturer.passport.registry.sync;
 
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
 import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -60,6 +63,17 @@ public final class SnapshotStoredCapturerPassportRegistryUpdater
     }
 
     private void saveRegisteredPassports(Map<CapturerCode, CapturerPassport> runtimePassports) {
-        storedRegistry.saveRegistered(runtimePassports);
+        storedRegistry.save(toRegisteredStoredPassports(runtimePassports));
+    }
+
+    private List<StoredCapturerPassport> toRegisteredStoredPassports(
+            Map<CapturerCode, CapturerPassport> runtimePassports
+    ) {
+        List<StoredCapturerPassport> storedPassports = new ArrayList<>(runtimePassports.size());
+        for (Map.Entry<CapturerCode, CapturerPassport> entry : runtimePassports.entrySet()) {
+            storedPassports.add(StoredCapturerPassport.registered(entry.getKey(), entry.getValue()));
+        }
+
+        return List.copyOf(storedPassports);
     }
 }
