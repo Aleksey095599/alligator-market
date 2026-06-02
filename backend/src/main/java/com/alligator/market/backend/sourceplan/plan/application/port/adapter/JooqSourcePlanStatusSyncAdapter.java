@@ -39,6 +39,10 @@ public final class JooqSourcePlanStatusSyncAdapter
             field(name("source_plan_entry", "source_code"), String.class);
     private static final Field<String> SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS =
             field(name("source_plan_entry", "lifecycle_status"), String.class);
+    private static final Field<String> SOURCE_PASSPORT_REGISTRY_STATUS =
+            field(name("source_passport", "registry_status"), String.class);
+    private static final Field<String> CAPTURER_PASSPORT_REGISTRY_STATUS =
+            field(name("capturer_passport", "registry_status"), String.class);
 
     private final DSLContext dsl;
     private final StoredSourcePlanStatusPolicy statusPolicy;
@@ -83,8 +87,8 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .from(SOURCE_PASSPORT)
                         .where(SOURCE_PASSPORT.SOURCE_CODE
                                 .eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
-                        .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredSourcePassport.Status.REGISTERED.name()))
+                        .and(SOURCE_PASSPORT_REGISTRY_STATUS.eq(
+                                StoredSourcePassport.RegistryStatus.REGISTERED.name()))
         );
     }
 
@@ -98,8 +102,8 @@ public final class JooqSourcePlanStatusSyncAdapter
                 selectOne()
                         .from(CAPTURER_PASSPORT)
                         .where(CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
-                        .and(CAPTURER_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredCapturerPassport.Status.REGISTERED.name()))
+                        .and(CAPTURER_PASSPORT_REGISTRY_STATUS.eq(
+                                StoredCapturerPassport.RegistryStatus.REGISTERED.name()))
         );
 
         Condition hasAvailableSources = exists(
@@ -110,8 +114,8 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .where(SOURCE_PLAN_ENTRY_CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
                         .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(availableEntryStatus))
-                        .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.eq(
-                                StoredSourcePassport.Status.REGISTERED.name()))
+                        .and(SOURCE_PASSPORT_REGISTRY_STATUS.eq(
+                                StoredSourcePassport.RegistryStatus.REGISTERED.name()))
         );
 
         dsl.update(SOURCE_PLAN)

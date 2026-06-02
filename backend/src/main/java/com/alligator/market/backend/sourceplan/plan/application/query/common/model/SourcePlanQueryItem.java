@@ -8,14 +8,14 @@ import java.util.Objects;
 
 public record SourcePlanQueryItem(
         String capturerCode,
-        StoredCapturerPassport.Status capturerLifecycleStatus,
+        StoredCapturerPassport.RegistryStatus capturerRegistryStatus,
         StoredSourcePlan.ExecutionStatus planExecutionStatus,
         String instrumentCode,
         List<SourceQueryItem> sources
 ) {
     public SourcePlanQueryItem {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
-        Objects.requireNonNull(capturerLifecycleStatus, "capturerLifecycleStatus must not be null");
+        Objects.requireNonNull(capturerRegistryStatus, "capturerRegistryStatus must not be null");
         Objects.requireNonNull(planExecutionStatus, "planExecutionStatus must not be null");
         Objects.requireNonNull(instrumentCode, "instrumentCode must not be null");
         Objects.requireNonNull(sources, "sources must not be null");

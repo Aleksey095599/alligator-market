@@ -9,43 +9,43 @@ import java.util.Objects;
 public record StoredSourcePassport(
         SourceCode sourceCode,
         SourcePassport passport,
-        Status status
+        RegistryStatus registryStatus
 ) {
 
     public StoredSourcePassport {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
-        Objects.requireNonNull(status, "status must not be null");
+        Objects.requireNonNull(registryStatus, "registryStatus must not be null");
     }
 
     public static StoredSourcePassport registered(
             SourceCode sourceCode,
             SourcePassport passport
     ) {
-        return new StoredSourcePassport(sourceCode, passport, Status.REGISTERED);
+        return new StoredSourcePassport(sourceCode, passport, RegistryStatus.REGISTERED);
     }
 
     public static StoredSourcePassport retired(
             SourceCode sourceCode,
             SourcePassport passport
     ) {
-        return new StoredSourcePassport(sourceCode, passport, Status.RETIRED);
+        return new StoredSourcePassport(sourceCode, passport, RegistryStatus.RETIRED);
     }
 
-    public enum Status {
+    public enum RegistryStatus {
         REGISTERED,
         RETIRED;
 
         private static final int MAX_CODE_LENGTH = 10;
 
-        Status() {
+        RegistryStatus() {
             if (name().length() > MAX_CODE_LENGTH) {
                 throw new IllegalStateException(
-                        "StoredSourcePassport.Status code must not exceed " +
+                        "StoredSourcePassport.RegistryStatus code must not exceed " +
                                 MAX_CODE_LENGTH + " characters: " + name()
                 );
             }
-            DomainCodeFormat.requireValidEnumCode("StoredSourcePassport.Status", name());
+            DomainCodeFormat.requireValidEnumCode("StoredSourcePassport.RegistryStatus", name());
         }
     }
 }

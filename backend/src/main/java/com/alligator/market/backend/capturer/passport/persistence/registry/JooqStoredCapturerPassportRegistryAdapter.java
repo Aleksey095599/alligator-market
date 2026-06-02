@@ -6,6 +6,7 @@ import com.alligator.market.domain.capturer.passport.registry.stored.StoredCaptu
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Query;
 
 import java.util.ArrayList;
@@ -16,10 +17,15 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport.Status.RETIRED;
+import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport.RegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.name;
 
 public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
+    private static final Field<String> CAPTURER_PASSPORT_REGISTRY_STATUS =
+            field(name("capturer_passport", "registry_status"), String.class);
+
     private final DSLContext dsl;
 
     public JooqStoredCapturerPassportRegistryAdapter(DSLContext dsl) {
@@ -36,9 +42,9 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
         }
 
         dsl.update(CAPTURER_PASSPORT)
-                .set(CAPTURER_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
+                .set(CAPTURER_PASSPORT_REGISTRY_STATUS, RETIRED.name())
                 .where(CAPTURER_PASSPORT.CAPTURER_CODE.notIn(currentValues))
-                .and(CAPTURER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
+                .and(CAPTURER_PASSPORT_REGISTRY_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -56,20 +62,20 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
         for (StoredCapturerPassport storedPassport : storedPassports) {
             CapturerCode code = storedPassport.capturerCode();
             CapturerPassport passport = storedPassport.passport();
-            String registryStatus = storedPassport.status().name();
+            String registryStatus = storedPassport.registryStatus().name();
 
             Condition businessFieldsChanged = CAPTURER_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(CAPTURER_PASSPORT.DISPLAY_NAME))
-                    .or(CAPTURER_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(registryStatus));
+                    .or(CAPTURER_PASSPORT_REGISTRY_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(CAPTURER_PASSPORT)
                     .set(CAPTURER_PASSPORT.CAPTURER_CODE, code.value())
                     .set(CAPTURER_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(CAPTURER_PASSPORT.LIFECYCLE_STATUS, registryStatus)
+                    .set(CAPTURER_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .onConflict(CAPTURER_PASSPORT.CAPTURER_CODE)
                     .doUpdate()
                     .set(CAPTURER_PASSPORT.DISPLAY_NAME, excluded(CAPTURER_PASSPORT.DISPLAY_NAME))
-                    .set(CAPTURER_PASSPORT.LIFECYCLE_STATUS, registryStatus)
+                    .set(CAPTURER_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 
             queries.add(query);

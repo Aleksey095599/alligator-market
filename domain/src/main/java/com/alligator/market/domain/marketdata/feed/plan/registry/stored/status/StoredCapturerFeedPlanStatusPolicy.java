@@ -9,7 +9,7 @@ public final class StoredCapturerFeedPlanStatusPolicy {
 
     public StoredCapturerFeedPlanStatus resolvePlanStatus(
             boolean capturerRegistered,
-            Collection<StoredSourcePassport.Status> plannedSourcePassportStatuses
+            Collection<StoredSourcePassport.RegistryStatus> plannedSourcePassportStatuses
     ) {
         Objects.requireNonNull(
                 plannedSourcePassportStatuses,
@@ -28,10 +28,10 @@ public final class StoredCapturerFeedPlanStatusPolicy {
     }
 
     private static boolean hasRegisteredSourcePassport(
-            Collection<StoredSourcePassport.Status> plannedSourcePassportStatuses
+            Collection<StoredSourcePassport.RegistryStatus> plannedSourcePassportStatuses
     ) {
         return plannedSourcePassportStatuses.stream()
                 .map(status -> Objects.requireNonNull(status, "sourcePassportStatus must not be null"))
-                .anyMatch(StoredSourcePassport.Status.REGISTERED::equals);
+                .anyMatch(StoredSourcePassport.RegistryStatus.REGISTERED::equals);
     }
 }

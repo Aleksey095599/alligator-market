@@ -6,6 +6,7 @@ import com.alligator.market.domain.source.passport.registry.stored.StoredSourceP
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Query;
 
 import java.util.ArrayList;
@@ -16,10 +17,15 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
-import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport.Status.RETIRED;
+import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport.RegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.name;
 
 public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePassportRegistry {
+    private static final Field<String> SOURCE_PASSPORT_REGISTRY_STATUS =
+            field(name("source_passport", "registry_status"), String.class);
+
     private final DSLContext dsl;
 
     public JooqStoredSourcePassportRegistryAdapter(DSLContext dsl) {
@@ -36,9 +42,9 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
         }
 
         dsl.update(SOURCE_PASSPORT)
-                .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, RETIRED.name())
+                .set(SOURCE_PASSPORT_REGISTRY_STATUS, RETIRED.name())
                 .where(SOURCE_PASSPORT.SOURCE_CODE.notIn(currentValues))
-                .and(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(RETIRED.name()))
+                .and(SOURCE_PASSPORT_REGISTRY_STATUS.isDistinctFrom(RETIRED.name()))
                 .execute();
     }
 
@@ -56,21 +62,21 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
         for (StoredSourcePassport storedPassport : storedPassports) {
             SourceCode code = storedPassport.sourceCode();
             SourcePassport passport = storedPassport.passport();
-            String registryStatus = storedPassport.status().name();
+            String registryStatus = storedPassport.registryStatus().name();
 
             Condition businessFieldsChanged = SOURCE_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(SOURCE_PASSPORT.DISPLAY_NAME))
-                    .or(SOURCE_PASSPORT.LIFECYCLE_STATUS.isDistinctFrom(registryStatus));
+                    .or(SOURCE_PASSPORT_REGISTRY_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(SOURCE_PASSPORT)
                     .set(SOURCE_PASSPORT.SOURCE_CODE, code.value())
                     .set(SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
-                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
+                    .set(SOURCE_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .onConflict(SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
                     .set(SOURCE_PASSPORT.DISPLAY_NAME,
                             excluded(SOURCE_PASSPORT.DISPLAY_NAME))
-                    .set(SOURCE_PASSPORT.LIFECYCLE_STATUS, registryStatus)
+                    .set(SOURCE_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 
             queries.add(query);

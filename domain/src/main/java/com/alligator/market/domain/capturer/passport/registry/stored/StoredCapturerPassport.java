@@ -9,43 +9,43 @@ import java.util.Objects;
 public record StoredCapturerPassport(
         CapturerCode capturerCode,
         CapturerPassport passport,
-        Status status
+        RegistryStatus registryStatus
 ) {
 
     public StoredCapturerPassport {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
-        Objects.requireNonNull(status, "status must not be null");
+        Objects.requireNonNull(registryStatus, "registryStatus must not be null");
     }
 
     public static StoredCapturerPassport registered(
             CapturerCode capturerCode,
             CapturerPassport passport
     ) {
-        return new StoredCapturerPassport(capturerCode, passport, Status.REGISTERED);
+        return new StoredCapturerPassport(capturerCode, passport, RegistryStatus.REGISTERED);
     }
 
     public static StoredCapturerPassport retired(
             CapturerCode capturerCode,
             CapturerPassport passport
     ) {
-        return new StoredCapturerPassport(capturerCode, passport, Status.RETIRED);
+        return new StoredCapturerPassport(capturerCode, passport, RegistryStatus.RETIRED);
     }
 
-    public enum Status {
+    public enum RegistryStatus {
         REGISTERED,
         RETIRED;
 
         private static final int MAX_CODE_LENGTH = 10;
 
-        Status() {
+        RegistryStatus() {
             if (name().length() > MAX_CODE_LENGTH) {
                 throw new IllegalStateException(
-                        "StoredCapturerPassport.Status code must not exceed " +
+                        "StoredCapturerPassport.RegistryStatus code must not exceed " +
                                 MAX_CODE_LENGTH + " characters: " + name()
                 );
             }
-            DomainCodeFormat.requireValidEnumCode("StoredCapturerPassport.Status", name());
+            DomainCodeFormat.requireValidEnumCode("StoredCapturerPassport.RegistryStatus", name());
         }
     }
 }

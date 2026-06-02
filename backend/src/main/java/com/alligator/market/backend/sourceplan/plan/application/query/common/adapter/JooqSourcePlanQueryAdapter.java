@@ -43,6 +43,8 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
             field(name("source_plan_entry", "priority"), Integer.class);
     private static final Field<String> SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS =
             field(name("source_plan_entry", "lifecycle_status"), String.class);
+    private static final Field<String> CAPTURER_PASSPORT_REGISTRY_STATUS =
+            field(name("capturer_passport", "registry_status"), String.class);
 
     private final DSLContext dsl;
 
@@ -66,7 +68,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY,
                         SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS,
-                        CAPTURER_PASSPORT.LIFECYCLE_STATUS
+                        CAPTURER_PASSPORT_REGISTRY_STATUS
                 )
                 .from(SOURCE_PLAN)
                 .join(SOURCE_PLAN_ENTRY)
@@ -90,7 +92,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
         return Optional.of(new SourcePlanQueryItem(
                 capturerCode.value(),
-                toCapturerPassportStatus(records.getFirst().get(CAPTURER_PASSPORT.LIFECYCLE_STATUS)),
+                toCapturerPassportRegistryStatus(records.getFirst().get(CAPTURER_PASSPORT_REGISTRY_STATUS)),
                 toSourcePlanExecutionStatus(records.getFirst().get(SOURCE_PLAN_EXECUTION_STATUS)),
                 instrumentCode.value(),
                 sources
@@ -143,7 +145,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                         SOURCE_PLAN_ENTRY_SOURCE_CODE,
                         SOURCE_PLAN_ENTRY_PRIORITY,
                         SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS,
-                        CAPTURER_PASSPORT.LIFECYCLE_STATUS
+                        CAPTURER_PASSPORT_REGISTRY_STATUS
                 )
                 .from(SOURCE_PLAN)
                 .join(SOURCE_PLAN_ENTRY)
@@ -160,7 +162,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
                 .forEach(record -> {
                     PlanKey planKey = new PlanKey(
                             record.get(SOURCE_PLAN_CAPTURER_CODE),
-                            toCapturerPassportStatus(record.get(CAPTURER_PASSPORT.LIFECYCLE_STATUS)),
+                            toCapturerPassportRegistryStatus(record.get(CAPTURER_PASSPORT_REGISTRY_STATUS)),
                             toSourcePlanExecutionStatus(record.get(SOURCE_PLAN_EXECUTION_STATUS)),
                             record.get(SOURCE_PLAN_INSTRUMENT_CODE)
                     );
@@ -180,7 +182,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
             PlanKey planKey = entry.getKey();
             plans.add(new SourcePlanQueryItem(
                     planKey.capturerCode(),
-                    planKey.capturerLifecycleStatus(),
+                    planKey.capturerRegistryStatus(),
                     planKey.executionStatus(),
                     planKey.instrumentCode(),
                     entry.getValue()
@@ -204,8 +206,8 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         );
     }
 
-    private static StoredCapturerPassport.Status toCapturerPassportStatus(String status) {
-        return StoredCapturerPassport.Status.valueOf(status);
+    private static StoredCapturerPassport.RegistryStatus toCapturerPassportRegistryStatus(String status) {
+        return StoredCapturerPassport.RegistryStatus.valueOf(status);
     }
 
     private static StoredSourcePlan.ExecutionStatus toSourcePlanExecutionStatus(String status) {
@@ -214,7 +216,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     private record PlanKey(
             String capturerCode,
-            StoredCapturerPassport.Status capturerLifecycleStatus,
+            StoredCapturerPassport.RegistryStatus capturerRegistryStatus,
             StoredSourcePlan.ExecutionStatus executionStatus,
             String instrumentCode
     ) {

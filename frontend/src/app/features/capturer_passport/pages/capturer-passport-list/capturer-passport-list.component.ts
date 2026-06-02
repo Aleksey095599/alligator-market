@@ -19,7 +19,7 @@ export class CapturerPassportListComponent implements OnInit {
   displayed: string[] = [
     'capturerCode',
     'displayName',
-    'lifecycleStatus'
+    'registryStatus'
   ];
   /* Источник данных для таблицы. */
   dataSource = new MatTableDataSource<CapturerPassportDto>([]);

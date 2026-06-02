@@ -4,7 +4,7 @@ import java.util.List;
 
 public record SourcePlanResponse(
         String capturerCode,
-        String capturerLifecycleStatus,
+        String capturerRegistryStatus,
         String planExecutionStatus,
         String instrumentCode,
         List<SourceResponse> sources

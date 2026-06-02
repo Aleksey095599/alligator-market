@@ -17,11 +17,11 @@ class StoredCapturerFeedPlanStatusPolicyTest {
     void resolvesPlanStatusFromCapturerRegistrationAndSourcePassportStatuses() {
         assertEquals(
                 StoredCapturerFeedPlanStatus.CAPTURER_RETIRED,
-                policy.resolvePlanStatus(false, List.of(StoredSourcePassport.Status.REGISTERED))
+                policy.resolvePlanStatus(false, List.of(StoredSourcePassport.RegistryStatus.REGISTERED))
         );
         assertEquals(
                 StoredCapturerFeedPlanStatus.NO_AVAILABLE_SOURCES,
-                policy.resolvePlanStatus(true, List.of(StoredSourcePassport.Status.RETIRED))
+                policy.resolvePlanStatus(true, List.of(StoredSourcePassport.RegistryStatus.RETIRED))
         );
         assertEquals(
                 StoredCapturerFeedPlanStatus.NO_AVAILABLE_SOURCES,
@@ -30,8 +30,8 @@ class StoredCapturerFeedPlanStatusPolicyTest {
         assertEquals(
                 StoredCapturerFeedPlanStatus.AVAILABLE,
                 policy.resolvePlanStatus(true, List.of(
-                        StoredSourcePassport.Status.RETIRED,
-                        StoredSourcePassport.Status.REGISTERED
+                        StoredSourcePassport.RegistryStatus.RETIRED,
+                        StoredSourcePassport.RegistryStatus.REGISTERED
                 ))
         );
     }
