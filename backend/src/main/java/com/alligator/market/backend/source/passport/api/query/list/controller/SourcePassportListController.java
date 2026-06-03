@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/sources")
+@RequestMapping("/api/v1/source-passports")
 @RequiredArgsConstructor
-public class PassportListController {
+public class SourcePassportListController {
     private final PassportListService service;
 
     @GetMapping

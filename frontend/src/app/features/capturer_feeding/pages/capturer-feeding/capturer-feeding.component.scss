@@ -1,0 +1,13 @@
+.capturer-feeding-page {
+  max-width: 860px;
+}
+
+.empty-state {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  color: var(--app-text-muted);
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 8px;
+  background: var(--app-panel-bg);
+}

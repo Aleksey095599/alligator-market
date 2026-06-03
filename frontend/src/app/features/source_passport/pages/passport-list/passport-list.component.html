@@ -1,7 +1,7 @@
 <div class="center-box registry-list-page">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Sources</mat-card-title>
+      <mat-card-title>Source Passports</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="registry-table mat-elevation-z2">
@@ -35,7 +35,7 @@
           [class.retired-row]="row.registryStatus === 'RETIRED'"
         ></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" [attr.colspan]="displayed.length">No sources found.</td>
+          <td class="mat-cell" [attr.colspan]="displayed.length">No source passports found.</td>
         </tr>
       </table>
     </mat-card-content>

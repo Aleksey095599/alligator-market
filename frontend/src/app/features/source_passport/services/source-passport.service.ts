@@ -11,7 +11,7 @@ export class SourcePassportService {
 
   constructor(private http: HttpClient) {}
 
-  private readonly baseUrl = '/api/v1/sources';
+  private readonly baseUrl = '/api/v1/source-passports';
 
   list(): Observable<SourcePassportDto[]> {
     return this.http.get<SourcePassportDto[]>(this.baseUrl);

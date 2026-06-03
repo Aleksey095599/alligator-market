@@ -43,7 +43,7 @@ export class CapturerPassportListComponent implements OnInit {
         );
       },
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load capturers failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load capturer passports failed'), 'Close');
       }
     });
   }

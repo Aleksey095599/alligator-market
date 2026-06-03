@@ -30,8 +30,9 @@ export class AppComponent {
   }
 
   get sourcingActive(): boolean {
-    return this.router.url.startsWith('/sources')
-      || this.router.url.startsWith('/capturers')
+    return this.router.url.startsWith('/source-passports')
+      || this.router.url.startsWith('/capturer-passports')
+      || this.router.url.startsWith('/capturer-feeding')
       || this.router.url.startsWith('/source-plans');
   }
 

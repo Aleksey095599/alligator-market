@@ -39,7 +39,7 @@ export class PassportListComponent implements OnInit {
         );
       },
       error: err => {
-        this.snack.open(this.resolveErrorMessage(err, 'Load sources failed'), 'Close');
+        this.snack.open(this.resolveErrorMessage(err, 'Load source passports failed'), 'Close');
       }
     });
   }

@@ -18,16 +18,22 @@ export const routes: Routes = [
         .then(m => m.InstrumentCatalogModule)
   },
   {
-    path: 'sources',
+    path: 'source-passports',
     loadChildren: () =>
       import('./features/source_passport/source-passport.module')
         .then(m => m.SourcePassportModule)
   },
   {
-    path: 'capturers',
+    path: 'capturer-passports',
     loadChildren: () =>
       import('./features/capturer_passport/capturer-passport.module')
         .then(m => m.CapturerPassportModule)
+  },
+  {
+    path: 'capturer-feeding',
+    loadComponent: () =>
+      import('./features/capturer_feeding/pages/capturer-feeding/capturer-feeding.component')
+        .then(c => c.CapturerFeedingComponent)
   },
   {
     path: 'source-plans',
@@ -46,5 +52,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./home/home.component').then(c => c.HomeComponent)
   },
+  { path: 'sources', redirectTo: 'source-passports', pathMatch: 'full' },
+  { path: 'capturers', redirectTo: 'capturer-passports', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];

@@ -13,7 +13,7 @@ export class CapturerPassportService {
   constructor(private http: HttpClient) {}
 
   /* Базовый URL (через proxy уйдёт на Spring). */
-  private readonly baseUrl = '/api/v1/capturers';
+  private readonly baseUrl = '/api/v1/capturer-passports';
 
   /* Получить все паспорта процессов захвата. */
   list(): Observable<CapturerPassportDto[]> {

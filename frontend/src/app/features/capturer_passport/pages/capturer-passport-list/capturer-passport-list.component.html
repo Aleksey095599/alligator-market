@@ -2,7 +2,7 @@
   <!-- карточка со списком паспортов процессов захвата -->
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Capturers</mat-card-title>
+      <mat-card-title>Capturer Passports</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="registry-table mat-elevation-z2">
@@ -36,7 +36,7 @@
           [class.retired-row]="row.registryStatus === 'RETIRED'"
         ></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" [attr.colspan]="displayed.length">No capturers found.</td>
+          <td class="mat-cell" [attr.colspan]="displayed.length">No capturer passports found.</td>
         </tr>
       </table>
     </mat-card-content>

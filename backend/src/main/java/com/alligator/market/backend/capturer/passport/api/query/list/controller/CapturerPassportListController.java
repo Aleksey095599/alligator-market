@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/capturers")
+@RequestMapping("/api/v1/capturer-passports")
 @RequiredArgsConstructor
 public class CapturerPassportListController {
     private final CapturerPassportListService service;
