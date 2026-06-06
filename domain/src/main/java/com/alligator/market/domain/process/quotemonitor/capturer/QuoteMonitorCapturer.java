@@ -15,7 +15,7 @@ public final class QuoteMonitorCapturer implements MarketDataCapturer {
     public static final CapturerPassport PASSPORT =
             new CapturerPassport(
                     DISPLAY_NAME,
-                    "Captures selected instrument quotes for monitoring"
+                    "Shows live quotes for selected instruments"
             );
 
     public static final QuoteMonitorCapturerPolicy POLICY =

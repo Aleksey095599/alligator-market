@@ -14,10 +14,20 @@
     mat-button
     type="button"
     class="nav-menu-trigger"
-    [class.nav-menu-trigger--active]="sourcingActive"
-    [matMenuTriggerFor]="sourcingMenu"
+    [class.nav-menu-trigger--active]="sourcesActive"
+    [matMenuTriggerFor]="sourcesMenu"
   >
-    Sourcing
+    Sources
+    <mat-icon>expand_more</mat-icon>
+  </button>
+  <button
+    mat-button
+    type="button"
+    class="nav-menu-trigger"
+    [class.nav-menu-trigger--active]="capturersActive"
+    [matMenuTriggerFor]="capturersMenu"
+  >
+    Capturers
     <mat-icon>expand_more</mat-icon>
   </button>
   <button
@@ -42,22 +52,25 @@
     </button>
   </mat-menu>
 
-  <mat-menu #sourcingMenu="matMenu">
+  <mat-menu #sourcesMenu="matMenu">
     <button mat-menu-item routerLink="/source-passports">
-      <mat-icon>upload</mat-icon>
-      <span>Source Passports</span>
-    </button>
-    <button mat-menu-item routerLink="/capturer-passports">
-      <mat-icon>move_to_inbox</mat-icon>
-      <span>Capturer Passports</span>
-    </button>
-    <button mat-menu-item routerLink="/capturer-feeding">
-      <mat-icon>rss_feed</mat-icon>
-      <span>Capturer Feeding</span>
+      <mat-icon>badge</mat-icon>
+      <span>Passports</span>
     </button>
     <button mat-menu-item routerLink="/source-plans">
       <mat-icon>account_tree</mat-icon>
       <span>Source Plans</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #capturersMenu="matMenu">
+    <button mat-menu-item routerLink="/capturer-passports">
+      <mat-icon>badge</mat-icon>
+      <span>Passports</span>
+    </button>
+    <button mat-menu-item routerLink="/capturer-feeding">
+      <mat-icon>rss_feed</mat-icon>
+      <span>Capturer Feeding</span>
     </button>
   </mat-menu>
 
