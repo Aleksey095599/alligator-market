@@ -13,7 +13,10 @@ public final class QuoteMonitorCapturer implements MarketDataCapturer {
             CapturerDisplayName.of("Quote Monitor");
 
     public static final CapturerPassport PASSPORT =
-            new CapturerPassport(DISPLAY_NAME);
+            new CapturerPassport(
+                    DISPLAY_NAME,
+                    "Captures selected instrument quotes for monitoring"
+            );
 
     public static final QuoteMonitorCapturerPolicy POLICY =
             new QuoteMonitorCapturerPolicy();

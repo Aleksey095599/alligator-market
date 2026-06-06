@@ -93,7 +93,10 @@ class AbstractInstrumentHandlerTest {
         private TestSource(TestInstrumentHandler handler) {
             super(
                     SourceCode.of("TEST_SOURCE"),
-                    new SourcePassport(SourceDisplayName.of("Test Source")),
+                    new SourcePassport(
+                            SourceDisplayName.of("Test Source"),
+                            "Test source description"
+                    ),
                     Set.of(handler)
             );
         }

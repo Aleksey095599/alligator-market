@@ -23,6 +23,10 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
 public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
+    private static final Field<String> CAPTURER_PASSPORT_DESCRIPTION =
+            field(name("description"), String.class);
+    private static final Field<String> CAPTURER_PASSPORT_STORED_DESCRIPTION =
+            field(name("capturer_passport", "description"), String.class);
     private static final Field<String> CAPTURER_PASSPORT_REGISTRY_STATUS =
             field(name("capturer_passport", "registry_status"), String.class);
 
@@ -66,15 +70,19 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
 
             Condition businessFieldsChanged = CAPTURER_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(CAPTURER_PASSPORT.DISPLAY_NAME))
+                    .or(CAPTURER_PASSPORT_STORED_DESCRIPTION
+                            .isDistinctFrom(excluded(CAPTURER_PASSPORT_DESCRIPTION)))
                     .or(CAPTURER_PASSPORT_REGISTRY_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(CAPTURER_PASSPORT)
                     .set(CAPTURER_PASSPORT.CAPTURER_CODE, code.value())
                     .set(CAPTURER_PASSPORT.DISPLAY_NAME, passport.displayName().value())
+                    .set(CAPTURER_PASSPORT_DESCRIPTION, passport.description())
                     .set(CAPTURER_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .onConflict(CAPTURER_PASSPORT.CAPTURER_CODE)
                     .doUpdate()
                     .set(CAPTURER_PASSPORT.DISPLAY_NAME, excluded(CAPTURER_PASSPORT.DISPLAY_NAME))
+                    .set(CAPTURER_PASSPORT_DESCRIPTION, excluded(CAPTURER_PASSPORT_DESCRIPTION))
                     .set(CAPTURER_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 

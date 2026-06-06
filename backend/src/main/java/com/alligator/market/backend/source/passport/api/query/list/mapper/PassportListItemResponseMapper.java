@@ -16,6 +16,7 @@ public final class PassportListItemResponseMapper {
         return new PassportListItemResponse(
                 item.sourceCode(),
                 item.displayName(),
+                item.description(),
                 item.registryStatus().name()
         );
     }

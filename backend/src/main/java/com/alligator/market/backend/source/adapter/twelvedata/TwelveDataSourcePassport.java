@@ -8,7 +8,8 @@ public final class TwelveDataSourcePassport {
     public static final String SOURCE_CODE_VALUE = "TWELVE_DATA";
     public static final SourceCode SOURCE_CODE = SourceCode.of(SOURCE_CODE_VALUE);
     public static final SourcePassport INSTANCE = new SourcePassport(
-            SourceDisplayName.of("Twelve Data")
+            SourceDisplayName.of("Twelve Data"),
+            "Twelve Data market data source"
     );
 
     private TwelveDataSourcePassport() {

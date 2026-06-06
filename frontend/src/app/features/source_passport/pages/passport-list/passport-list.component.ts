@@ -18,6 +18,7 @@ export class PassportListComponent implements OnInit {
   displayed: string[] = [
     'sourceCode',
     'displayName',
+    'description',
     'registryStatus'
   ];
   dataSource = new MatTableDataSource<SourcePassportDto>([]);

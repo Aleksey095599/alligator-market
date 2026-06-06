@@ -19,6 +19,7 @@ export class CapturerPassportListComponent implements OnInit {
   displayed: string[] = [
     'capturerCode',
     'displayName',
+    'description',
     'registryStatus'
   ];
   /* Источник данных для таблицы. */

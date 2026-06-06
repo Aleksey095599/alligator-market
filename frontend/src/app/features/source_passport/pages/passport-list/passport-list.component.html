@@ -16,6 +16,11 @@
           <td mat-cell *matCellDef="let passport">{{ passport.displayName }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let passport">{{ passport.description }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="registryStatus">
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let passport">

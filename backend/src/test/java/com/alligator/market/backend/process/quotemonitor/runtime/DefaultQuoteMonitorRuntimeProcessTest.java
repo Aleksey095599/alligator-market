@@ -542,7 +542,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         @Override
         public SourcePassport passport() {
-            return new SourcePassport(SourceDisplayName.of("Test Source"));
+            return new SourcePassport(
+                    SourceDisplayName.of("Test Source"),
+                    "Test source description"
+            );
         }
 
         @Override
@@ -580,7 +583,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         @Override
         public SourcePassport passport() {
-            return new SourcePassport(SourceDisplayName.of("Test Source"));
+            return new SourcePassport(
+                    SourceDisplayName.of("Test Source"),
+                    "Test source description"
+            );
         }
 
         @Override
@@ -603,7 +609,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         @Override
         public SourcePassport passport() {
-            return new SourcePassport(SourceDisplayName.of("Test Source"));
+            return new SourcePassport(
+                    SourceDisplayName.of("Test Source"),
+                    "Test source description"
+            );
         }
 
         @Override
@@ -626,7 +635,10 @@ class DefaultQuoteMonitorRuntimeProcessTest {
 
         @Override
         public SourcePassport passport() {
-            return new SourcePassport(SourceDisplayName.of("Test Source"));
+            return new SourcePassport(
+                    SourceDisplayName.of("Test Source"),
+                    "Test source description"
+            );
         }
 
         @Override

@@ -47,7 +47,7 @@ class RuntimeSourcePassportRegistryAdapterTest {
     }
 
     private static SourcePassport passport(String displayName) {
-        return new SourcePassport(SourceDisplayName.of(displayName));
+        return new SourcePassport(SourceDisplayName.of(displayName), displayName + " description");
     }
 
     private record TestSource(

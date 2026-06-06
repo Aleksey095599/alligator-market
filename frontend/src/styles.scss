@@ -47,24 +47,31 @@ mat-toolbar .mat-mdc-button {
 }
 
 .registry-list-page {
-  max-width: 860px;
+  max-width: 1040px;
 }
 
 .registry-table {
   table-layout: fixed;
+  min-width: 780px;
 }
 
 .registry-table .mat-column-sourceCode,
 .registry-table .mat-column-capturerCode {
-  width: 28%;
+  width: 22%;
 }
 
 .registry-table .mat-column-displayName {
-  width: 48%;
+  width: 26%;
+}
+
+.registry-table .mat-column-description {
+  width: 34%;
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .registry-table .mat-column-registryStatus {
-  width: 24%;
+  width: 18%;
 }
 
 .mat-mdc-card.toolbar-card {

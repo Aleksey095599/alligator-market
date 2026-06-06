@@ -15,6 +15,8 @@ import static org.jooq.impl.DSL.name;
 
 public final class JooqCapturerPassportListQueryAdapter
         implements CapturerPassportListQueryPort {
+    private static final Field<String> CAPTURER_PASSPORT_DESCRIPTION =
+            field(name("description"), String.class);
     private static final Field<String> CAPTURER_PASSPORT_REGISTRY_STATUS =
             field(name("capturer_passport", "registry_status"), String.class);
 
@@ -29,6 +31,7 @@ public final class JooqCapturerPassportListQueryAdapter
         return dsl.select(
                         CAPTURER_PASSPORT.CAPTURER_CODE,
                         CAPTURER_PASSPORT.DISPLAY_NAME,
+                        CAPTURER_PASSPORT_DESCRIPTION,
                         CAPTURER_PASSPORT_REGISTRY_STATUS
                 )
                 .from(CAPTURER_PASSPORT)
@@ -36,6 +39,7 @@ public final class JooqCapturerPassportListQueryAdapter
                 .fetch(record -> new CapturerPassportListItem(
                         record.get(CAPTURER_PASSPORT.CAPTURER_CODE),
                         record.get(CAPTURER_PASSPORT.DISPLAY_NAME),
+                        record.get(CAPTURER_PASSPORT_DESCRIPTION),
                         StoredCapturerPassport.RegistryStatus.valueOf(
                                 record.get(CAPTURER_PASSPORT_REGISTRY_STATUS)
                         )

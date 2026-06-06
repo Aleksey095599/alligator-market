@@ -45,7 +45,7 @@ class RuntimeCapturerPassportRegistryAdapterTest {
     }
 
     private static CapturerPassport passport(String displayName) {
-        return new CapturerPassport(CapturerDisplayName.of(displayName));
+        return new CapturerPassport(CapturerDisplayName.of(displayName), displayName + " description");
     }
 
     private record TestCapturer(

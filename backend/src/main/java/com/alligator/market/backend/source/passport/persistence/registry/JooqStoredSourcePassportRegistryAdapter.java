@@ -23,6 +23,10 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
 public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePassportRegistry {
+    private static final Field<String> SOURCE_PASSPORT_DESCRIPTION =
+            field(name("description"), String.class);
+    private static final Field<String> SOURCE_PASSPORT_STORED_DESCRIPTION =
+            field(name("source_passport", "description"), String.class);
     private static final Field<String> SOURCE_PASSPORT_REGISTRY_STATUS =
             field(name("source_passport", "registry_status"), String.class);
 
@@ -66,16 +70,21 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
 
             Condition businessFieldsChanged = SOURCE_PASSPORT.DISPLAY_NAME
                     .isDistinctFrom(excluded(SOURCE_PASSPORT.DISPLAY_NAME))
+                    .or(SOURCE_PASSPORT_STORED_DESCRIPTION
+                            .isDistinctFrom(excluded(SOURCE_PASSPORT_DESCRIPTION)))
                     .or(SOURCE_PASSPORT_REGISTRY_STATUS.isDistinctFrom(registryStatus));
 
             Query query = dsl.insertInto(SOURCE_PASSPORT)
                     .set(SOURCE_PASSPORT.SOURCE_CODE, code.value())
                     .set(SOURCE_PASSPORT.DISPLAY_NAME, passport.displayName().value())
+                    .set(SOURCE_PASSPORT_DESCRIPTION, passport.description())
                     .set(SOURCE_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .onConflict(SOURCE_PASSPORT.SOURCE_CODE)
                     .doUpdate()
                     .set(SOURCE_PASSPORT.DISPLAY_NAME,
                             excluded(SOURCE_PASSPORT.DISPLAY_NAME))
+                    .set(SOURCE_PASSPORT_DESCRIPTION,
+                            excluded(SOURCE_PASSPORT_DESCRIPTION))
                     .set(SOURCE_PASSPORT_REGISTRY_STATUS, registryStatus)
                     .where(businessFieldsChanged);
 

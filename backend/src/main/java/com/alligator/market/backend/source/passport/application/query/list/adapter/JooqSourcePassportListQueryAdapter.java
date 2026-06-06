@@ -14,6 +14,8 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
 public final class JooqSourcePassportListQueryAdapter implements SourcePassportListQueryPort {
+    private static final Field<String> SOURCE_PASSPORT_DESCRIPTION =
+            field(name("description"), String.class);
     private static final Field<String> SOURCE_PASSPORT_REGISTRY_STATUS =
             field(name("source_passport", "registry_status"), String.class);
 
@@ -28,6 +30,7 @@ public final class JooqSourcePassportListQueryAdapter implements SourcePassportL
         return dsl.select(
                         SOURCE_PASSPORT.SOURCE_CODE,
                         SOURCE_PASSPORT.DISPLAY_NAME,
+                        SOURCE_PASSPORT_DESCRIPTION,
                         SOURCE_PASSPORT_REGISTRY_STATUS
                 )
                 .from(SOURCE_PASSPORT)
@@ -35,6 +38,7 @@ public final class JooqSourcePassportListQueryAdapter implements SourcePassportL
                 .fetch(record -> new SourcePassportListItem(
                         record.get(SOURCE_PASSPORT.SOURCE_CODE),
                         record.get(SOURCE_PASSPORT.DISPLAY_NAME),
+                        record.get(SOURCE_PASSPORT_DESCRIPTION),
                         StoredSourcePassport.RegistryStatus.valueOf(record.get(SOURCE_PASSPORT_REGISTRY_STATUS))
                 ));
     }
