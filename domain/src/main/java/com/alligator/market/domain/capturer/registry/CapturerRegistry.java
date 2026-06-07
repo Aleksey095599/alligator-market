@@ -5,7 +5,7 @@ import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 import java.util.Map;
 
-public interface RuntimeCapturerRegistry {
+public interface CapturerRegistry {
 
     Map<CapturerCode, MarketDataCapturer> capturersByCode();
 }

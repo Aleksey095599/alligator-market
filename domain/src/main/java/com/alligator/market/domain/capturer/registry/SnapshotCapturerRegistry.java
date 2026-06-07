@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public final class SnapshotRuntimeCapturerRegistry implements RuntimeCapturerRegistry {
+public final class SnapshotCapturerRegistry implements CapturerRegistry {
 
     private final Map<CapturerCode, MarketDataCapturer> capturersByCode;
 
-    public SnapshotRuntimeCapturerRegistry(List<? extends MarketDataCapturer> capturers) {
+    public SnapshotCapturerRegistry(List<? extends MarketDataCapturer> capturers) {
         Objects.requireNonNull(capturers, "capturers must not be null");
 
         if (capturers.isEmpty()) {

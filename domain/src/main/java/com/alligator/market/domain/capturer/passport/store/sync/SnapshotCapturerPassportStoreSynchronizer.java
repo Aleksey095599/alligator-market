@@ -4,7 +4,7 @@ import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore;
-import com.alligator.market.domain.capturer.registry.RuntimeCapturerRegistry;
+import com.alligator.market.domain.capturer.registry.CapturerRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 
@@ -20,16 +20,16 @@ import java.util.Set;
 
 public final class SnapshotCapturerPassportStoreSynchronizer
         implements CapturerPassportStoreSynchronizer {
-    private final RuntimeCapturerRegistry runtimeCapturerRegistry;
+    private final CapturerRegistry capturerRegistry;
     private final CapturerPassportStore passportStore;
 
     public SnapshotCapturerPassportStoreSynchronizer(
-            RuntimeCapturerRegistry runtimeCapturerRegistry,
+            CapturerRegistry capturerRegistry,
             CapturerPassportStore passportStore
     ) {
-        this.runtimeCapturerRegistry = Objects.requireNonNull(
-                runtimeCapturerRegistry,
-                "runtimeCapturerRegistry must not be null"
+        this.capturerRegistry = Objects.requireNonNull(
+                capturerRegistry,
+                "capturerRegistry must not be null"
         );
         this.passportStore = Objects.requireNonNull(
                 passportStore,
@@ -39,23 +39,22 @@ public final class SnapshotCapturerPassportStoreSynchronizer
 
     @Override
     public void synchronize() {
-        Map<CapturerCode, CapturerPassport> passportSnapshot =
-                loadPassportSnapshotFromRuntimeCapturerRegistry();
+        Map<CapturerCode, CapturerPassport> passportSnapshot = loadPassportSnapshotFromCapturerRegistry();
 
         retirePassportsMissingFromSnapshot(passportSnapshot.keySet());
         saveRegisteredSnapshotRecords(passportSnapshot);
     }
 
-    private Map<CapturerCode, CapturerPassport> loadPassportSnapshotFromRuntimeCapturerRegistry() {
+    private Map<CapturerCode, CapturerPassport> loadPassportSnapshotFromCapturerRegistry() {
         Map<CapturerCode, MarketDataCapturer> capturerSnapshot = new LinkedHashMap<>(
                 Objects.requireNonNull(
-                        runtimeCapturerRegistry.capturersByCode(),
+                        capturerRegistry.capturersByCode(),
                         "capturersByCode must not be null"
                 )
         );
 
         if (capturerSnapshot.isEmpty()) {
-            throw new IllegalStateException("Runtime capturer registry returned no capturers");
+            throw new IllegalStateException("Capturer registry returned no capturers");
         }
 
         return passportsByCapturerCode(capturerSnapshot);

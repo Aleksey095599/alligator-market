@@ -5,8 +5,8 @@ import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore;
 import com.alligator.market.domain.capturer.policy.CapturerPolicy;
-import com.alligator.market.domain.capturer.registry.RuntimeCapturerRegistry;
-import com.alligator.market.domain.capturer.registry.SnapshotRuntimeCapturerRegistry;
+import com.alligator.market.domain.capturer.registry.CapturerRegistry;
+import com.alligator.market.domain.capturer.registry.SnapshotCapturerRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class SnapshotCapturerPassportStoreSynchronizerTest {
 
     @Test
-    void synchronizesStoreFromRuntimeCapturerRegistrySnapshot() {
+    void synchronizesStoreFromCapturerRegistrySnapshot() {
         CapturerCode code = CapturerCode.of("TEST_CAPTURER");
         CapturerPassport passport = passport("Test Capturer");
-        RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
+        CapturerRegistry capturerRegistry = new SnapshotCapturerRegistry(List.of(
                 new TestCapturer(code, passport)
         ));
         CapturingCapturerPassportStore passportStore = new CapturingCapturerPassportStore();
@@ -45,7 +45,7 @@ class SnapshotCapturerPassportStoreSynchronizerTest {
 
     @Test
     void rejectsDuplicatePassportDisplayNames() {
-        RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
+        CapturerRegistry capturerRegistry = new SnapshotCapturerRegistry(List.of(
                 new TestCapturer(CapturerCode.of("FIRST_CAPTURER"), passport("Duplicate")),
                 new TestCapturer(CapturerCode.of("SECOND_CAPTURER"), passport("duplicate"))
         ));
