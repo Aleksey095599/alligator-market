@@ -1,7 +1,9 @@
-package com.alligator.market.domain.capturer.passport.registry;
+package com.alligator.market.domain.capturer.passport.store.sync;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore;
 import com.alligator.market.domain.capturer.policy.CapturerPolicy;
 import com.alligator.market.domain.capturer.registry.RuntimeCapturerRegistry;
 import com.alligator.market.domain.capturer.registry.SnapshotRuntimeCapturerRegistry;
@@ -9,25 +11,36 @@ import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class CapturerPassportRegistryAdapterTest {
+class SnapshotCapturerPassportStoreSynchronizerTest {
 
     @Test
-    void exposesPassportsFromRuntimeCapturers() {
+    void synchronizesStoreFromRuntimeCapturerRegistrySnapshot() {
         CapturerCode code = CapturerCode.of("TEST_CAPTURER");
         CapturerPassport passport = passport("Test Capturer");
         RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
                 new TestCapturer(code, passport)
         ));
-        CapturerPassportRegistry passportRegistry =
-                new CapturerPassportRegistryAdapter(capturerRegistry);
+        CapturingCapturerPassportStore passportStore = new CapturingCapturerPassportStore();
+        CapturerPassportStoreSynchronizer synchronizer = new SnapshotCapturerPassportStoreSynchronizer(
+                capturerRegistry,
+                passportStore
+        );
 
-        assertEquals(Map.of(code, passport), passportRegistry.passportsByCode());
+        synchronizer.synchronize();
+
+        assertEquals(Set.of(code), passportStore.retiredAllExcept);
+        assertEquals(
+                List.of(CapturerPassportRecord.registered(code, passport)),
+                passportStore.savedRecords
+        );
     }
 
     @Test
@@ -36,10 +49,12 @@ class CapturerPassportRegistryAdapterTest {
                 new TestCapturer(CapturerCode.of("FIRST_CAPTURER"), passport("Duplicate")),
                 new TestCapturer(CapturerCode.of("SECOND_CAPTURER"), passport("duplicate"))
         ));
-        CapturerPassportRegistry passportRegistry =
-                new CapturerPassportRegistryAdapter(capturerRegistry);
+        CapturerPassportStoreSynchronizer synchronizer = new SnapshotCapturerPassportStoreSynchronizer(
+                capturerRegistry,
+                new CapturingCapturerPassportStore()
+        );
 
-        assertThrows(IllegalArgumentException.class, passportRegistry::passportsByCode);
+        assertThrows(IllegalArgumentException.class, synchronizer::synchronize);
     }
 
     private static CapturerPassport passport(String displayName) {
@@ -58,5 +73,20 @@ class CapturerPassportRegistryAdapterTest {
 
     private enum TestCapturerPolicy implements CapturerPolicy {
         INSTANCE
+    }
+
+    private static final class CapturingCapturerPassportStore implements CapturerPassportStore {
+        private Set<CapturerCode> retiredAllExcept = Set.of();
+        private List<CapturerPassportRecord> savedRecords = List.of();
+
+        @Override
+        public void retireAllExcept(Set<CapturerCode> registeredCapturerCodes) {
+            retiredAllExcept = new LinkedHashSet<>(registeredCapturerCodes);
+        }
+
+        @Override
+        public void save(Collection<CapturerPassportRecord> passports) {
+            savedRecords = List.copyOf(passports);
+        }
     }
 }

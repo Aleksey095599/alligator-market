@@ -7,13 +7,13 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Objects;
 
-public final class CapturerPassportRegistrySynchronizationService {
+public final class CapturerPassportStoreSynchronizationService {
     private final CapturerPassportStoreSynchronizer capturerPassportStoreSynchronizer;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater;
     private final TransactionTemplate tx;
 
-    public CapturerPassportRegistrySynchronizationService(
+    public CapturerPassportStoreSynchronizationService(
             CapturerPassportStoreSynchronizer capturerPassportStoreSynchronizer,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater,

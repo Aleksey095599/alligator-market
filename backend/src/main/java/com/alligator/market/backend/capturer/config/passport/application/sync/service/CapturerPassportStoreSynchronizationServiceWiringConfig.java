@@ -1,7 +1,7 @@
 package com.alligator.market.backend.capturer.config.passport.application.sync.service;
 
 import com.alligator.market.backend.capturer.config.passport.store.sync.CapturerPassportStoreSynchronizerWiringConfig;
-import com.alligator.market.backend.capturer.passport.application.sync.CapturerPassportRegistrySynchronizationService;
+import com.alligator.market.backend.capturer.passport.application.sync.CapturerPassportStoreSynchronizationService;
 import com.alligator.market.backend.sourceplan.config.plan.application.port.adapter.SourcePlanStatusSyncPortWiringConfig;
 import com.alligator.market.backend.sourceplan.config.plan.registry.sync.RuntimeSourcePlanRegistryUpdaterWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
@@ -20,12 +20,12 @@ import org.springframework.transaction.support.TransactionTemplate;
         SourcePlanStatusSyncPortWiringConfig.class,
         RuntimeSourcePlanRegistryUpdaterWiringConfig.class
 })
-public class CapturerPassportRegistrySynchronizationServiceWiringConfig {
-    public static final String BEAN_CAPTURER_PASSPORT_REGISTRY_SYNCHRONIZATION_SERVICE =
-            "capturerPassportRegistrySynchronizationService";
+public class CapturerPassportStoreSynchronizationServiceWiringConfig {
+    public static final String BEAN_CAPTURER_PASSPORT_STORE_SYNCHRONIZATION_SERVICE =
+            "capturerPassportStoreSynchronizationService";
 
-    @Bean(BEAN_CAPTURER_PASSPORT_REGISTRY_SYNCHRONIZATION_SERVICE)
-    public CapturerPassportRegistrySynchronizationService capturerPassportRegistrySynchronizationService(
+    @Bean(BEAN_CAPTURER_PASSPORT_STORE_SYNCHRONIZATION_SERVICE)
+    public CapturerPassportStoreSynchronizationService capturerPassportStoreSynchronizationService(
             @Qualifier(CapturerPassportStoreSynchronizerWiringConfig
                     .BEAN_CAPTURER_PASSPORT_STORE_SYNCHRONIZER)
             CapturerPassportStoreSynchronizer capturerPassportStoreSynchronizer,
@@ -35,7 +35,7 @@ public class CapturerPassportRegistrySynchronizationServiceWiringConfig {
             RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater,
             PlatformTransactionManager txManager
     ) {
-        return new CapturerPassportRegistrySynchronizationService(
+        return new CapturerPassportStoreSynchronizationService(
                 capturerPassportStoreSynchronizer,
                 sourcePlanStatusSyncPort,
                 runtimeSourcePlanRegistryUpdater,
