@@ -1,13 +1,13 @@
-package com.alligator.market.domain.capturer.passport.registry.stored;
+package com.alligator.market.domain.capturer.passport.store;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface StoredCapturerPassportRegistry {
+public interface CapturerPassportStore {
 
     void retireAllExcept(Set<CapturerCode> registeredCapturerCodes);
 
-    void save(Collection<StoredCapturerPassport> passports);
+    void save(Collection<CapturerPassportRecord> passports);
 }

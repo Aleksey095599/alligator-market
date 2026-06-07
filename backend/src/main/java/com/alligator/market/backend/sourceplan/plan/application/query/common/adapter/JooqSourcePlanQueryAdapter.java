@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.query.common.ad
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourcePlanQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.model.SourceQueryItem;
 import com.alligator.market.backend.sourceplan.plan.application.query.common.port.SourcePlanQueryPort;
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import com.alligator.market.domain.instrument.vo.InstrumentCode;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
@@ -206,8 +206,8 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
         );
     }
 
-    private static StoredCapturerPassport.RegistryStatus toCapturerPassportRegistryStatus(String status) {
-        return StoredCapturerPassport.RegistryStatus.valueOf(status);
+    private static CapturerPassportRecord.RegistryStatus toCapturerPassportRegistryStatus(String status) {
+        return CapturerPassportRecord.RegistryStatus.valueOf(status);
     }
 
     private static StoredSourcePlan.ExecutionStatus toSourcePlanExecutionStatus(String status) {
@@ -216,7 +216,7 @@ public final class JooqSourcePlanQueryAdapter implements SourcePlanQueryPort {
 
     private record PlanKey(
             String capturerCode,
-            StoredCapturerPassport.RegistryStatus capturerRegistryStatus,
+            CapturerPassportRecord.RegistryStatus capturerRegistryStatus,
             StoredSourcePlan.ExecutionStatus executionStatus,
             String instrumentCode
     ) {

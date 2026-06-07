@@ -1,6 +1,6 @@
 package com.alligator.market.backend.capturer.passport.application.query.list.model;
 
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 
 import java.util.Objects;
 
@@ -8,7 +8,7 @@ public record CapturerPassportListItem(
         String capturerCode,
         String displayName,
         String description,
-        StoredCapturerPassport.RegistryStatus registryStatus
+        CapturerPassportRecord.RegistryStatus registryStatus
 ) {
     public CapturerPassportListItem {
         Objects.requireNonNull(capturerCode, "capturerCode must not be null");

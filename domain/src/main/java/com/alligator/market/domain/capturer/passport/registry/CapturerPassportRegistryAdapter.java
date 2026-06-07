@@ -1,4 +1,4 @@
-package com.alligator.market.domain.capturer.passport.registry.runtime;
+package com.alligator.market.domain.capturer.passport.registry;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public final class RuntimeCapturerPassportRegistryAdapter implements RuntimeCapturerPassportRegistry {
+public final class CapturerPassportRegistryAdapter implements CapturerPassportRegistry {
     private final RuntimeCapturerRegistry runtimeCapturerRegistry;
 
-    public RuntimeCapturerPassportRegistryAdapter(RuntimeCapturerRegistry runtimeCapturerRegistry) {
+    public CapturerPassportRegistryAdapter(RuntimeCapturerRegistry runtimeCapturerRegistry) {
         this.runtimeCapturerRegistry = Objects.requireNonNull(
                 runtimeCapturerRegistry,
                 "runtimeCapturerRegistry must not be null"

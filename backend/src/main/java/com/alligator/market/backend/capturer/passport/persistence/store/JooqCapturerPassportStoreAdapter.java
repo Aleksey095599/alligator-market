@@ -1,8 +1,8 @@
-package com.alligator.market.backend.capturer.passport.persistence.registry;
+package com.alligator.market.backend.capturer.passport.persistence.store;
 
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassportRegistry;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -17,12 +17,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport.RegistryStatus.RETIRED;
+import static com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord.RegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
-public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturerPassportRegistry {
+public class JooqCapturerPassportStoreAdapter implements CapturerPassportStore {
     private static final Field<String> CAPTURER_PASSPORT_DESCRIPTION =
             field(name("description"), String.class);
     private static final Field<String> CAPTURER_PASSPORT_STORED_DESCRIPTION =
@@ -32,7 +32,7 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
 
     private final DSLContext dsl;
 
-    public JooqStoredCapturerPassportRegistryAdapter(DSLContext dsl) {
+    public JooqCapturerPassportStoreAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
@@ -53,17 +53,17 @@ public class JooqStoredCapturerPassportRegistryAdapter implements StoredCapturer
     }
 
     @Override
-    public void save(Collection<StoredCapturerPassport> passports) {
+    public void save(Collection<CapturerPassportRecord> passports) {
         Objects.requireNonNull(passports, "passports must not be null");
 
-        List<StoredCapturerPassport> storedPassports = List.copyOf(passports);
+        List<CapturerPassportRecord> storedPassports = List.copyOf(passports);
         if (storedPassports.isEmpty()) {
             return;
         }
 
         List<Query> queries = new ArrayList<>(storedPassports.size());
 
-        for (StoredCapturerPassport storedPassport : storedPassports) {
+        for (CapturerPassportRecord storedPassport : storedPassports) {
             CapturerCode code = storedPassport.capturerCode();
             CapturerPassport passport = storedPassport.passport();
             String registryStatus = storedPassport.registryStatus().name();

@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.plan.application.query.common.model;
 
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public record SourcePlanQueryItem(
         String capturerCode,
-        StoredCapturerPassport.RegistryStatus capturerRegistryStatus,
+        CapturerPassportRecord.RegistryStatus capturerRegistryStatus,
         StoredSourcePlan.ExecutionStatus planExecutionStatus,
         String instrumentCode,
         List<SourceQueryItem> sources

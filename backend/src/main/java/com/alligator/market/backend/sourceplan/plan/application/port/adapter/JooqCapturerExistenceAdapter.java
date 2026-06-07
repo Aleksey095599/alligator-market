@@ -8,7 +8,7 @@ import org.jooq.Field;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.CapturerPassport.CAPTURER_PASSPORT;
-import static com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport.RegistryStatus.REGISTERED;
+import static com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord.RegistryStatus.REGISTERED;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 

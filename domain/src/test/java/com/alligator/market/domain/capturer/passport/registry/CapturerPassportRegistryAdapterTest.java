@@ -2,8 +2,6 @@ package com.alligator.market.domain.capturer.passport.registry;
 
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistry;
-import com.alligator.market.domain.capturer.passport.registry.runtime.RuntimeCapturerPassportRegistryAdapter;
 import com.alligator.market.domain.capturer.policy.CapturerPolicy;
 import com.alligator.market.domain.capturer.registry.RuntimeCapturerRegistry;
 import com.alligator.market.domain.capturer.registry.SnapshotRuntimeCapturerRegistry;
@@ -17,7 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RuntimeCapturerPassportRegistryAdapterTest {
+class CapturerPassportRegistryAdapterTest {
 
     @Test
     void exposesPassportsFromRuntimeCapturers() {
@@ -26,8 +24,8 @@ class RuntimeCapturerPassportRegistryAdapterTest {
         RuntimeCapturerRegistry capturerRegistry = new SnapshotRuntimeCapturerRegistry(List.of(
                 new TestCapturer(code, passport)
         ));
-        RuntimeCapturerPassportRegistry passportRegistry =
-                new RuntimeCapturerPassportRegistryAdapter(capturerRegistry);
+        CapturerPassportRegistry passportRegistry =
+                new CapturerPassportRegistryAdapter(capturerRegistry);
 
         assertEquals(Map.of(code, passport), passportRegistry.passportsByCode());
     }
@@ -38,8 +36,8 @@ class RuntimeCapturerPassportRegistryAdapterTest {
                 new TestCapturer(CapturerCode.of("FIRST_CAPTURER"), passport("Duplicate")),
                 new TestCapturer(CapturerCode.of("SECOND_CAPTURER"), passport("duplicate"))
         ));
-        RuntimeCapturerPassportRegistry passportRegistry =
-                new RuntimeCapturerPassportRegistryAdapter(capturerRegistry);
+        CapturerPassportRegistry passportRegistry =
+                new CapturerPassportRegistryAdapter(capturerRegistry);
 
         assertThrows(IllegalArgumentException.class, passportRegistry::passportsByCode);
     }

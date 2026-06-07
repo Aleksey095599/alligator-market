@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanStatusPolicy;
@@ -103,7 +103,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .from(CAPTURER_PASSPORT)
                         .where(CAPTURER_PASSPORT.CAPTURER_CODE.eq(SOURCE_PLAN_CAPTURER_CODE))
                         .and(CAPTURER_PASSPORT_REGISTRY_STATUS.eq(
-                                StoredCapturerPassport.RegistryStatus.REGISTERED.name()))
+                                CapturerPassportRecord.RegistryStatus.REGISTERED.name()))
         );
 
         Condition hasAvailableSources = exists(

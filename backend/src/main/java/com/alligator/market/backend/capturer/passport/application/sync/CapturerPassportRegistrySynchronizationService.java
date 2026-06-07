@@ -1,27 +1,27 @@
 package com.alligator.market.backend.capturer.passport.application.sync;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.capturer.passport.registry.sync.StoredCapturerPassportRegistryUpdater;
+import com.alligator.market.domain.capturer.passport.store.sync.CapturerPassportStoreSynchronizer;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Objects;
 
 public final class CapturerPassportRegistrySynchronizationService {
-    private final StoredCapturerPassportRegistryUpdater storedCapturerPassportRegistryUpdater;
+    private final CapturerPassportStoreSynchronizer capturerPassportStoreSynchronizer;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater;
     private final TransactionTemplate tx;
 
     public CapturerPassportRegistrySynchronizationService(
-            StoredCapturerPassportRegistryUpdater storedCapturerPassportRegistryUpdater,
+            CapturerPassportStoreSynchronizer capturerPassportStoreSynchronizer,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater,
             TransactionTemplate tx
     ) {
-        this.storedCapturerPassportRegistryUpdater = Objects.requireNonNull(
-                storedCapturerPassportRegistryUpdater,
-                "storedCapturerPassportRegistryUpdater must not be null"
+        this.capturerPassportStoreSynchronizer = Objects.requireNonNull(
+                capturerPassportStoreSynchronizer,
+                "capturerPassportStoreSynchronizer must not be null"
         );
         this.sourcePlanStatusSyncPort = Objects.requireNonNull(
                 sourcePlanStatusSyncPort,
@@ -40,7 +40,7 @@ public final class CapturerPassportRegistrySynchronizationService {
     }
 
     private void synchronizeInTransaction() {
-        storedCapturerPassportRegistryUpdater.updateStoredRegistry();
+        capturerPassportStoreSynchronizer.synchronize();
         sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
 }

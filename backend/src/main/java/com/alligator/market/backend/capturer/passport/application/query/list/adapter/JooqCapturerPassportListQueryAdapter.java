@@ -2,7 +2,7 @@ package com.alligator.market.backend.capturer.passport.application.query.list.ad
 
 import com.alligator.market.backend.capturer.passport.application.query.list.model.CapturerPassportListItem;
 import com.alligator.market.backend.capturer.passport.application.query.list.port.CapturerPassportListQueryPort;
-import com.alligator.market.domain.capturer.passport.registry.stored.StoredCapturerPassport;
+import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 
@@ -40,7 +40,7 @@ public final class JooqCapturerPassportListQueryAdapter
                         record.get(CAPTURER_PASSPORT.CAPTURER_CODE),
                         record.get(CAPTURER_PASSPORT.DISPLAY_NAME),
                         record.get(CAPTURER_PASSPORT_DESCRIPTION),
-                        StoredCapturerPassport.RegistryStatus.valueOf(
+                        CapturerPassportRecord.RegistryStatus.valueOf(
                                 record.get(CAPTURER_PASSPORT_REGISTRY_STATUS)
                         )
                 ));
