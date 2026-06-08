@@ -1,6 +1,6 @@
 package com.alligator.market.backend.source.passport.application.query.list.model;
 
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
+import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
 
 import java.util.Objects;
 
@@ -8,7 +8,7 @@ public record SourcePassportListItem(
         String sourceCode,
         String displayName,
         String description,
-        StoredSourcePassport.RegistryStatus registryStatus
+        SourcePassportRecord.RegistryStatus registryStatus
 ) {
     public SourcePassportListItem {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");

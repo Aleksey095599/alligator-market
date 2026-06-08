@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
-import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport.RegistryStatus.REGISTERED;
+import static com.alligator.market.domain.source.passport.store.SourcePassportRecord.RegistryStatus.REGISTERED;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 

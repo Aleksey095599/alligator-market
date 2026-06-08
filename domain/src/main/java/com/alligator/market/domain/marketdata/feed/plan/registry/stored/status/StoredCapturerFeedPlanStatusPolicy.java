@@ -1,6 +1,6 @@
 package com.alligator.market.domain.marketdata.feed.plan.registry.stored.status;
 
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
+import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -9,7 +9,7 @@ public final class StoredCapturerFeedPlanStatusPolicy {
 
     public StoredCapturerFeedPlanStatus resolvePlanStatus(
             boolean capturerRegistered,
-            Collection<StoredSourcePassport.RegistryStatus> plannedSourcePassportStatuses
+            Collection<SourcePassportRecord.RegistryStatus> plannedSourcePassportStatuses
     ) {
         Objects.requireNonNull(
                 plannedSourcePassportStatuses,
@@ -28,10 +28,10 @@ public final class StoredCapturerFeedPlanStatusPolicy {
     }
 
     private static boolean hasRegisteredSourcePassport(
-            Collection<StoredSourcePassport.RegistryStatus> plannedSourcePassportStatuses
+            Collection<SourcePassportRecord.RegistryStatus> plannedSourcePassportStatuses
     ) {
         return plannedSourcePassportStatuses.stream()
                 .map(status -> Objects.requireNonNull(status, "sourcePassportStatus must not be null"))
-                .anyMatch(StoredSourcePassport.RegistryStatus.REGISTERED::equals);
+                .anyMatch(SourcePassportRecord.RegistryStatus.REGISTERED::equals);
     }
 }

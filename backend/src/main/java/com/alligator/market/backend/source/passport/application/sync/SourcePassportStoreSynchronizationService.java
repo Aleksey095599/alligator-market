@@ -1,27 +1,27 @@
 package com.alligator.market.backend.source.passport.application.sync;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
-import com.alligator.market.domain.source.passport.registry.sync.StoredSourcePassportRegistryUpdater;
+import com.alligator.market.domain.source.passport.store.sync.SourcePassportStoreSynchronizer;
 import com.alligator.market.domain.sourceplan.registry.sync.RuntimeSourcePlanRegistryUpdater;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Objects;
 
-public final class SourcePassportRegistrySynchronizationService {
-    private final StoredSourcePassportRegistryUpdater storedSourcePassportRegistryUpdater;
+public final class SourcePassportStoreSynchronizationService {
+    private final SourcePassportStoreSynchronizer sourcePassportStoreSynchronizer;
     private final SourcePlanStatusSyncPort sourcePlanStatusSyncPort;
     private final RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater;
     private final TransactionTemplate tx;
 
-    public SourcePassportRegistrySynchronizationService(
-            StoredSourcePassportRegistryUpdater storedSourcePassportRegistryUpdater,
+    public SourcePassportStoreSynchronizationService(
+            SourcePassportStoreSynchronizer sourcePassportStoreSynchronizer,
             SourcePlanStatusSyncPort sourcePlanStatusSyncPort,
             RuntimeSourcePlanRegistryUpdater runtimeSourcePlanRegistryUpdater,
             TransactionTemplate tx
     ) {
-        this.storedSourcePassportRegistryUpdater = Objects.requireNonNull(
-                storedSourcePassportRegistryUpdater,
-                "storedSourcePassportRegistryUpdater must not be null"
+        this.sourcePassportStoreSynchronizer = Objects.requireNonNull(
+                sourcePassportStoreSynchronizer,
+                "sourcePassportStoreSynchronizer must not be null"
         );
         this.sourcePlanStatusSyncPort = Objects.requireNonNull(
                 sourcePlanStatusSyncPort,
@@ -40,7 +40,7 @@ public final class SourcePassportRegistrySynchronizationService {
     }
 
     private void synchronizeInTransaction() {
-        storedSourcePassportRegistryUpdater.updateStoredRegistry();
+        sourcePassportStoreSynchronizer.synchronizeStoreFromSourceRegistry();
         sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
 }

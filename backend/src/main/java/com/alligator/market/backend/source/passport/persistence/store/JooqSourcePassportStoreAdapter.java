@@ -1,8 +1,8 @@
-package com.alligator.market.backend.source.passport.persistence.registry;
+package com.alligator.market.backend.source.passport.persistence.store;
 
 import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassportRegistry;
+import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
+import com.alligator.market.domain.source.passport.store.SourcePassportStore;
 import com.alligator.market.domain.source.vo.SourceCode;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -17,12 +17,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.SourcePassport.SOURCE_PASSPORT;
-import static com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport.RegistryStatus.RETIRED;
+import static com.alligator.market.domain.source.passport.store.SourcePassportRecord.RegistryStatus.RETIRED;
 import static org.jooq.impl.DSL.excluded;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
-public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePassportRegistry {
+public class JooqSourcePassportStoreAdapter implements SourcePassportStore {
     private static final Field<String> SOURCE_PASSPORT_DESCRIPTION =
             field(name("description"), String.class);
     private static final Field<String> SOURCE_PASSPORT_STORED_DESCRIPTION =
@@ -32,7 +32,7 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
 
     private final DSLContext dsl;
 
-    public JooqStoredSourcePassportRegistryAdapter(DSLContext dsl) {
+    public JooqSourcePassportStoreAdapter(DSLContext dsl) {
         this.dsl = Objects.requireNonNull(dsl, "dsl must not be null");
     }
 
@@ -53,17 +53,17 @@ public class JooqStoredSourcePassportRegistryAdapter implements StoredSourcePass
     }
 
     @Override
-    public void save(Collection<StoredSourcePassport> passports) {
+    public void save(Collection<SourcePassportRecord> passports) {
         Objects.requireNonNull(passports, "passports must not be null");
 
-        List<StoredSourcePassport> storedPassports = List.copyOf(passports);
+        List<SourcePassportRecord> storedPassports = List.copyOf(passports);
         if (storedPassports.isEmpty()) {
             return;
         }
 
         List<Query> queries = new ArrayList<>(storedPassports.size());
 
-        for (StoredSourcePassport storedPassport : storedPassports) {
+        for (SourcePassportRecord storedPassport : storedPassports) {
             SourceCode code = storedPassport.sourceCode();
             SourcePassport passport = storedPassport.passport();
             String registryStatus = storedPassport.registryStatus().name();

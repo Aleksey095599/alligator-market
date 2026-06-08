@@ -2,7 +2,7 @@ package com.alligator.market.backend.sourceplan.plan.application.port.adapter;
 
 import com.alligator.market.backend.sourceplan.plan.application.port.SourcePlanStatusSyncPort;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
-import com.alligator.market.domain.source.passport.registry.stored.StoredSourcePassport;
+import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlan;
 import com.alligator.market.domain.sourceplan.registry.stored.StoredSourcePlanStatusPolicy;
 import org.jooq.Condition;
@@ -88,7 +88,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .where(SOURCE_PASSPORT.SOURCE_CODE
                                 .eq(SOURCE_PLAN_ENTRY_SOURCE_CODE))
                         .and(SOURCE_PASSPORT_REGISTRY_STATUS.eq(
-                                StoredSourcePassport.RegistryStatus.REGISTERED.name()))
+                                SourcePassportRecord.RegistryStatus.REGISTERED.name()))
         );
     }
 
@@ -115,7 +115,7 @@ public final class JooqSourcePlanStatusSyncAdapter
                         .and(SOURCE_PLAN_ENTRY_INSTRUMENT_CODE.eq(SOURCE_PLAN_INSTRUMENT_CODE))
                         .and(SOURCE_PLAN_ENTRY_LIFECYCLE_STATUS.eq(availableEntryStatus))
                         .and(SOURCE_PASSPORT_REGISTRY_STATUS.eq(
-                                StoredSourcePassport.RegistryStatus.REGISTERED.name()))
+                                SourcePassportRecord.RegistryStatus.REGISTERED.name()))
         );
 
         dsl.update(SOURCE_PLAN)

@@ -1,11 +1,11 @@
-package com.alligator.market.domain.source.passport.registry;
+package com.alligator.market.domain.source.passport.store.sync;
 
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.passport.SourcePassport;
-import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistry;
-import com.alligator.market.domain.source.passport.registry.runtime.RuntimeSourcePassportRegistryAdapter;
+import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
+import com.alligator.market.domain.source.passport.store.SourcePassportStore;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
 import com.alligator.market.domain.source.registry.SnapshotRuntimeSourceRegistry;
@@ -13,25 +13,36 @@ import com.alligator.market.domain.source.vo.SourceCode;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RuntimeSourcePassportRegistryAdapterTest {
+class SnapshotSourcePassportStoreSynchronizerTest {
 
     @Test
-    void exposesPassportsFromRuntimeSources() {
+    void synchronizesStoreFromSourceRegistrySnapshot() {
         SourceCode code = SourceCode.of("TEST_SOURCE");
         SourcePassport passport = passport("Test Source");
         RuntimeSourceRegistry sourceRegistry = new SnapshotRuntimeSourceRegistry(List.of(
                 new TestSource(code, passport)
         ));
-        RuntimeSourcePassportRegistry passportRegistry =
-                new RuntimeSourcePassportRegistryAdapter(sourceRegistry);
+        CapturingSourcePassportStore passportStore = new CapturingSourcePassportStore();
+        SourcePassportStoreSynchronizer synchronizer = new SnapshotSourcePassportStoreSynchronizer(
+                sourceRegistry,
+                passportStore
+        );
 
-        assertEquals(Map.of(code, passport), passportRegistry.passportsByCode());
+        synchronizer.synchronizeStoreFromSourceRegistry();
+
+        assertEquals(Set.of(code), passportStore.retiredAllExcept);
+        assertEquals(
+                List.of(SourcePassportRecord.registered(code, passport)),
+                passportStore.savedRecords
+        );
     }
 
     @Test
@@ -40,10 +51,12 @@ class RuntimeSourcePassportRegistryAdapterTest {
                 new TestSource(SourceCode.of("FIRST_SOURCE"), passport("Duplicate")),
                 new TestSource(SourceCode.of("SECOND_SOURCE"), passport("duplicate"))
         ));
-        RuntimeSourcePassportRegistry passportRegistry =
-                new RuntimeSourcePassportRegistryAdapter(sourceRegistry);
+        SourcePassportStoreSynchronizer synchronizer = new SnapshotSourcePassportStoreSynchronizer(
+                sourceRegistry,
+                new CapturingSourcePassportStore()
+        );
 
-        assertThrows(IllegalArgumentException.class, passportRegistry::passportsByCode);
+        assertThrows(IllegalArgumentException.class, synchronizer::synchronizeStoreFromSourceRegistry);
     }
 
     private static SourcePassport passport(String displayName) {
@@ -57,6 +70,21 @@ class RuntimeSourcePassportRegistryAdapterTest {
         @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             throw new UnsupportedOperationException("Test source does not stream ticks");
+        }
+    }
+
+    private static final class CapturingSourcePassportStore implements SourcePassportStore {
+        private Set<SourceCode> retiredAllExcept = Set.of();
+        private List<SourcePassportRecord> savedRecords = List.of();
+
+        @Override
+        public void retireAllExcept(Set<SourceCode> registeredSourceCodes) {
+            retiredAllExcept = new LinkedHashSet<>(registeredSourceCodes);
+        }
+
+        @Override
+        public void save(Collection<SourcePassportRecord> passports) {
+            savedRecords = List.copyOf(passports);
         }
     }
 }
