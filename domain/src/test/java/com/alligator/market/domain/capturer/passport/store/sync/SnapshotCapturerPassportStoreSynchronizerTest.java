@@ -34,7 +34,7 @@ class SnapshotCapturerPassportStoreSynchronizerTest {
                 passportStore
         );
 
-        synchronizer.synchronize();
+        synchronizer.synchronizeStoreFromCapturerRegistry();
 
         assertEquals(Set.of(code), passportStore.retiredAllExcept);
         assertEquals(
@@ -54,7 +54,7 @@ class SnapshotCapturerPassportStoreSynchronizerTest {
                 new CapturingCapturerPassportStore()
         );
 
-        assertThrows(IllegalArgumentException.class, synchronizer::synchronize);
+        assertThrows(IllegalArgumentException.class, synchronizer::synchronizeStoreFromCapturerRegistry);
     }
 
     private static CapturerPassport passport(String displayName) {

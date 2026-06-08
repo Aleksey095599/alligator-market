@@ -38,7 +38,7 @@ public final class SnapshotCapturerPassportStoreSynchronizer
     }
 
     @Override
-    public void synchronize() {
+    public void synchronizeStoreFromCapturerRegistry() {
         Map<CapturerCode, CapturerPassport> passportSnapshot = loadPassportSnapshotFromCapturerRegistry();
 
         retirePassportsMissingFromSnapshot(passportSnapshot.keySet());

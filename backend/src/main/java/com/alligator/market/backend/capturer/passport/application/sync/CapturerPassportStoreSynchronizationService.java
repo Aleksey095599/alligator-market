@@ -40,7 +40,7 @@ public final class CapturerPassportStoreSynchronizationService {
     }
 
     private void synchronizeInTransaction() {
-        capturerPassportStoreSynchronizer.synchronize();
+        capturerPassportStoreSynchronizer.synchronizeStoreFromCapturerRegistry();
         sourcePlanStatusSyncPort.syncSourcePlanStatuses();
     }
 }
