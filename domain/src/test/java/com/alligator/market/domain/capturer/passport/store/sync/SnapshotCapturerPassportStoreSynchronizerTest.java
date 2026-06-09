@@ -4,7 +4,6 @@ import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportRecord;
 import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore;
-import com.alligator.market.domain.capturer.policy.CapturerPolicy;
 import com.alligator.market.domain.capturer.registry.CapturerRegistry;
 import com.alligator.market.domain.capturer.registry.SnapshotCapturerRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
@@ -65,14 +64,6 @@ class SnapshotCapturerPassportStoreSynchronizerTest {
             CapturerCode capturerCode,
             CapturerPassport passport
     ) implements MarketDataCapturer {
-        @Override
-        public CapturerPolicy policy() {
-            return TestCapturerPolicy.INSTANCE;
-        }
-    }
-
-    private enum TestCapturerPolicy implements CapturerPolicy {
-        INSTANCE
     }
 
     private static final class CapturingCapturerPassportStore implements CapturerPassportStore {

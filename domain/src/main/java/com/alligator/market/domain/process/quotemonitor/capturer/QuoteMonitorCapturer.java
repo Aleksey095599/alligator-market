@@ -18,9 +18,6 @@ public final class QuoteMonitorCapturer implements MarketDataCapturer {
                     "Shows live quotes for selected instruments"
             );
 
-    public static final QuoteMonitorCapturerPolicy POLICY =
-            new QuoteMonitorCapturerPolicy();
-
     @Override
     public CapturerCode capturerCode() {
         return CAPTURER_CODE;
@@ -29,10 +26,5 @@ public final class QuoteMonitorCapturer implements MarketDataCapturer {
     @Override
     public CapturerPassport passport() {
         return PASSPORT;
-    }
-
-    @Override
-    public QuoteMonitorCapturerPolicy policy() {
-        return POLICY;
     }
 }

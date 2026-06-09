@@ -1,7 +1,6 @@
 package com.alligator.market.domain.capturer;
 
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
-import com.alligator.market.domain.capturer.policy.CapturerPolicy;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
 
 public interface MarketDataCapturer {
@@ -9,6 +8,4 @@ public interface MarketDataCapturer {
     CapturerCode capturerCode();
 
     CapturerPassport passport();
-
-    CapturerPolicy policy();
 }

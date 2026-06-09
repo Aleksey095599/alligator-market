@@ -31,9 +31,6 @@ public final class SnapshotCapturerRegistry implements CapturerRegistry {
             Objects.requireNonNull(capturer.passport(),
                     "capturer.passport must not be null");
 
-            Objects.requireNonNull(capturer.policy(),
-                    "capturer.policy must not be null");
-
             MarketDataCapturer previous = capturersMap.put(code, capturer);
             if (previous != null) {
                 throw new IllegalArgumentException(
