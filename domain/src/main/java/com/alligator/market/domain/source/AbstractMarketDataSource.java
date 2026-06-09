@@ -19,6 +19,7 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
     protected final SourceCode sourceCode;
     protected final SourcePassport passport;
 
+    private final Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers;
     private final Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>> instrumentHandlerMap;
 
     protected abstract P self();
@@ -30,18 +31,15 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
     ) {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(passport, "passport must not be null");
-        Objects.requireNonNull(handlers, "handlers must not be null");
 
-        if (handlers.isEmpty()) {
-            throw new IllegalArgumentException("handlers must not be empty");
-        }
+        Set<InstrumentHandler<P, ? extends Instrument>> handlerSnapshot = copyHandlers(handlers);
 
         this.sourceCode = sourceCode;
         this.passport = passport;
+        this.handlers = handlerSnapshot;
+        this.instrumentHandlerMap = buildInstrumentHandlerMap(sourceCode, handlerSnapshot);
 
-        this.instrumentHandlerMap = buildInstrumentHandlerMap(sourceCode, handlers);
-
-        for (InstrumentHandler<P, ? extends Instrument> h : handlers) {
+        for (InstrumentHandler<P, ? extends Instrument> h : handlerSnapshot) {
             h.attachTo(self());
         }
     }
@@ -57,6 +55,11 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
     }
 
     @Override
+    public final Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+        return handlers;
+    }
+
+    @Override
     public final <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
         Objects.requireNonNull(instrument, "instrument must not be null");
 
@@ -68,7 +71,7 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
     private static <P extends MarketDataSource> Map<InstrumentCode, InstrumentHandler<P, ? extends Instrument>>
     buildInstrumentHandlerMap(
             SourceCode sourceCode,
-            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
+            Set<InstrumentHandler<P, ? extends Instrument>> handlers
     ) {
         Objects.requireNonNull(sourceCode, "sourceCode must not be null");
         Objects.requireNonNull(handlers, "handlers must not be null");
@@ -115,6 +118,23 @@ public abstract class AbstractMarketDataSource<P extends MarketDataSource>
         }
 
         return Collections.unmodifiableMap(map);
+    }
+
+    private static <P extends MarketDataSource> Set<InstrumentHandler<P, ? extends Instrument>> copyHandlers(
+            Set<? extends InstrumentHandler<P, ? extends Instrument>> handlers
+    ) {
+        Objects.requireNonNull(handlers, "handlers must not be null");
+
+        if (handlers.isEmpty()) {
+            throw new IllegalArgumentException("handlers must not be empty");
+        }
+
+        Set<InstrumentHandler<P, ? extends Instrument>> handlerSnapshot = new LinkedHashSet<>();
+        for (InstrumentHandler<P, ? extends Instrument> handler : handlers) {
+            handlerSnapshot.add(Objects.requireNonNull(handler, "handler must not be null"));
+        }
+
+        return Collections.unmodifiableSet(handlerSnapshot);
     }
 
     @SuppressWarnings("unchecked")

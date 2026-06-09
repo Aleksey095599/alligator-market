@@ -3,6 +3,7 @@ package com.alligator.market.domain.source.passport.store.sync;
 import com.alligator.market.domain.instrument.Instrument;
 import com.alligator.market.domain.marketdata.tick.level.source.SourceTick;
 import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.store.SourcePassportRecord;
 import com.alligator.market.domain.source.passport.store.SourcePassportStore;
@@ -67,6 +68,11 @@ class SnapshotSourcePassportStoreSynchronizerTest {
             SourceCode code,
             SourcePassport passport
     ) implements MarketDataSource {
+        @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
+        }
+
         @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             throw new UnsupportedOperationException("Test source does not stream ticks");

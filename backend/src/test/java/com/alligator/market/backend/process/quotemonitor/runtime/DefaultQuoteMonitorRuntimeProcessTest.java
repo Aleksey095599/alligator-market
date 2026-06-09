@@ -23,6 +23,7 @@ import com.alligator.market.domain.process.quotemonitor.marketdata.tick.captured
 import com.alligator.market.domain.source.MarketDataSource;
 import com.alligator.market.domain.source.exception.HandlerNotFoundException;
 import com.alligator.market.domain.source.exception.InstrumentNotSupportedByHandlerException;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
@@ -549,6 +550,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
+        }
+
+        @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             streamedInstrumentCodes.add(instrument.instrumentCode());
 
@@ -590,6 +596,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
+        }
+
+        @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             throw exceptionFactory.apply(instrument.instrumentCode());
         }
@@ -616,6 +627,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
         }
 
         @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
+        }
+
+        @Override
         public <I extends Instrument> Publisher<SourceTick> streamSourceTicks(I instrument) {
             return Flux.error(new IllegalStateException("Stream failed"));
         }
@@ -639,6 +655,11 @@ class DefaultQuoteMonitorRuntimeProcessTest {
                     SourceDisplayName.of("Test Source"),
                     "Test source description"
             );
+        }
+
+        @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
         }
 
         @Override

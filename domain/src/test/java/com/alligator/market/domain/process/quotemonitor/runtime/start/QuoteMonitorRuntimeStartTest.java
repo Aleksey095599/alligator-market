@@ -15,6 +15,7 @@ import com.alligator.market.domain.process.quotemonitor.runtime.state.QuoteMonit
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeState;
 import com.alligator.market.domain.process.quotemonitor.runtime.state.instrument.QuoteMonitorInstrumentRuntimeStatus;
 import com.alligator.market.domain.source.MarketDataSource;
+import com.alligator.market.domain.source.handler.InstrumentHandler;
 import com.alligator.market.domain.source.passport.SourcePassport;
 import com.alligator.market.domain.source.passport.vo.SourceDisplayName;
 import com.alligator.market.domain.source.registry.RuntimeSourceRegistry;
@@ -30,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -167,6 +169,11 @@ class QuoteMonitorRuntimeStartTest {
                     SourceDisplayName.of("Test Source"),
                     "Test source description"
             );
+        }
+
+        @Override
+        public Set<? extends InstrumentHandler<? extends MarketDataSource, ? extends Instrument>> handlers() {
+            return Set.of();
         }
 
         @Override
