@@ -7,7 +7,7 @@ import com.alligator.market.domain.capturer.passport.store.CapturerPassportStore
 import com.alligator.market.domain.capturer.registry.CapturerRegistry;
 import com.alligator.market.domain.capturer.registry.SnapshotCapturerRegistry;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.vo.CapturerDisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;

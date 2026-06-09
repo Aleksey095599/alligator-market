@@ -3,7 +3,7 @@ package com.alligator.market.backend.sourceplan.plan.application.query.options.a
 import com.alligator.market.backend.sourceplan.plan.application.query.options.model.CapturerOption;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.CapturerOptionsQueryPort;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.vo.CapturerDisplayName;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 

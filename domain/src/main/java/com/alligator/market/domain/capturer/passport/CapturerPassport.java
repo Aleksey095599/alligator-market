@@ -1,6 +1,6 @@
 package com.alligator.market.domain.capturer.passport;
 
-import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.vo.CapturerDisplayName;
 import com.alligator.market.domain.shared.vo.StringValueNormalizer;
 
 import java.util.Objects;

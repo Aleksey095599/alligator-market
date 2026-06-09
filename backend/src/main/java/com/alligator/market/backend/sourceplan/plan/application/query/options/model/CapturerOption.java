@@ -1,7 +1,7 @@
 package com.alligator.market.backend.sourceplan.plan.application.query.options.model;
 
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.vo.CapturerDisplayName;
 
 import java.util.Objects;
 

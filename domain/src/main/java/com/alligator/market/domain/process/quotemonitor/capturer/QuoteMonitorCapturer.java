@@ -3,7 +3,7 @@ package com.alligator.market.domain.process.quotemonitor.capturer;
 import com.alligator.market.domain.capturer.MarketDataCapturer;
 import com.alligator.market.domain.capturer.passport.CapturerPassport;
 import com.alligator.market.domain.capturer.vo.CapturerCode;
-import com.alligator.market.domain.capturer.vo.CapturerDisplayName;
+import com.alligator.market.domain.capturer.passport.vo.CapturerDisplayName;
 
 public final class QuoteMonitorCapturer implements MarketDataCapturer {
     public static final CapturerCode CAPTURER_CODE =
