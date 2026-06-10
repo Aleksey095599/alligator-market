@@ -1,0 +1,53 @@
+<div class="center-box registry-list-page">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Source Handler Passports</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="registry-table mat-elevation-z2">
+
+        <ng-container matColumnDef="sourceCode">
+          <th mat-header-cell *matHeaderCellDef>Source</th>
+          <td mat-cell *matCellDef="let passport">{{ passport.sourceCode }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="handlerCode">
+          <th mat-header-cell *matHeaderCellDef>Handler</th>
+          <td mat-cell *matCellDef="let passport">{{ passport.handlerCode }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryMode">
+          <th mat-header-cell *matHeaderCellDef>Delivery</th>
+          <td mat-cell *matCellDef="let passport">{{ passport.deliveryMode }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="accessMethod">
+          <th mat-header-cell *matHeaderCellDef>Access</th>
+          <td mat-cell *matCellDef="let passport">{{ passport.accessMethod }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="registryStatus">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let passport">
+            <span
+              class="status-badge"
+              [class.status-badge--retired]="passport.registryStatus === 'RETIRED'"
+            >
+              {{ passport.registryStatus }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayed;"
+          [class.retired-row]="row.registryStatus === 'RETIRED'"
+        ></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayed.length">No source handler passports found.</td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -24,6 +24,12 @@ export const routes: Routes = [
         .then(m => m.SourcePassportModule)
   },
   {
+    path: 'source-handler-passports',
+    loadChildren: () =>
+      import('./features/source_handler_passport/source-handler-passport.module')
+        .then(m => m.SourceHandlerPassportModule)
+  },
+  {
     path: 'capturer-passports',
     loadChildren: () =>
       import('./features/capturer_passport/capturer-passport.module')
