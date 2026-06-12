@@ -1,6 +1,6 @@
 package com.alligator.market.backend.sourceplan.config.plan.application.query.options.adapter;
 
-import com.alligator.market.backend.instrument.config.registry.StoredInstrumentRegistryWiringConfig;
+import com.alligator.market.backend.instrument.config.identity.InstrumentIdentityStoreWiringConfig;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.adapter.JooqCapturerOptionsQueryAdapter;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.adapter.JooqSourceOptionsQueryAdapter;
 import com.alligator.market.backend.sourceplan.plan.application.query.options.port.CapturerOptionsQueryPort;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration(proxyBeanMethods = false)
-@Import(StoredInstrumentRegistryWiringConfig.class)
+@Import(InstrumentIdentityStoreWiringConfig.class)
 public class SourcePlanOptionsQueryWiringConfig {
     public static final String BEAN_CAPTURER_OPTIONS_QUERY_PORT = "capturerOptionsQueryPort";
     public static final String BEAN_SOURCE_OPTIONS_QUERY_PORT = "sourceOptionsQueryPort";

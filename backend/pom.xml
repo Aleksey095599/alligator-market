@@ -117,7 +117,7 @@
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
                                     <inputSchema>public</inputSchema>
                                     <!-- Таблицы, для которых генерируется jOOQ-код. -->
-                                    <includes>instrument_registry|currency|instrument_fx_spot|source_passport|source_handler_passport|capturer_passport|source_plan|source_plan_entry|quote_monitor_instruments</includes>
+                                    <includes>instrument_identity|currency|instrument_fx_spot|source_passport|source_handler_passport|capturer_passport|source_plan|source_plan_entry|quote_monitor_instruments</includes>
                                 </database>
 
                                 <target>

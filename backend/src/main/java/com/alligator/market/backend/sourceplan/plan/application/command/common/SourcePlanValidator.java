@@ -5,7 +5,7 @@ import com.alligator.market.backend.sourceplan.plan.application.exception.Instru
 import com.alligator.market.backend.sourceplan.plan.application.exception.SourceCodesNotFoundException;
 import com.alligator.market.backend.sourceplan.plan.application.port.CapturerExistencePort;
 import com.alligator.market.backend.sourceplan.plan.application.port.SourceExistencePort;
-import com.alligator.market.domain.instrument.registry.stored.StoredInstrumentRegistry;
+import com.alligator.market.domain.instrument.identity.InstrumentIdentityStore;
 import com.alligator.market.domain.sourceplan.vo.PrioritizedSourceCode;
 import com.alligator.market.domain.sourceplan.SourcePlan;
 
@@ -16,22 +16,22 @@ import java.util.Set;
 public final class SourcePlanValidator {
     private final CapturerExistencePort capturerExistencePort;
 
-    private final StoredInstrumentRegistry storedInstrumentRegistry;
+    private final InstrumentIdentityStore instrumentIdentityStore;
 
     private final SourceExistencePort sourceExistencePort;
 
     public SourcePlanValidator(
             CapturerExistencePort capturerExistencePort,
-            StoredInstrumentRegistry storedInstrumentRegistry,
+            InstrumentIdentityStore instrumentIdentityStore,
             SourceExistencePort sourceExistencePort
     ) {
         this.capturerExistencePort = Objects.requireNonNull(
                 capturerExistencePort,
                 "capturerExistencePort must not be null"
         );
-        this.storedInstrumentRegistry = Objects.requireNonNull(
-                storedInstrumentRegistry,
-                "storedInstrumentRegistry must not be null"
+        this.instrumentIdentityStore = Objects.requireNonNull(
+                instrumentIdentityStore,
+                "instrumentIdentityStore must not be null"
         );
         this.sourceExistencePort = Objects.requireNonNull(
                 sourceExistencePort,
@@ -46,7 +46,7 @@ public final class SourcePlanValidator {
     }
 
     public void ensureInstrumentExists(SourcePlan plan) {
-        if (!storedInstrumentRegistry.contains(plan.instrumentCode())) {
+        if (!instrumentIdentityStore.contains(plan.instrumentCode())) {
             throw new InstrumentCodeNotFoundException(plan.instrumentCode());
         }
     }

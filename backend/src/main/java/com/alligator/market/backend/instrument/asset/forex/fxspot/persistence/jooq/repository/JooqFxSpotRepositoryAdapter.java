@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static com.alligator.market.backend.infra.jooq.generated.tables.Currency.CURRENCY;
 import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentFxSpot.INSTRUMENT_FX_SPOT;
-import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentRegistry.INSTRUMENT_REGISTRY;
+import static com.alligator.market.backend.infra.jooq.generated.tables.InstrumentIdentity.INSTRUMENT_IDENTITY;
 
 public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
     private static final String FK_SOURCE_PLAN_INSTRUMENT =
@@ -49,13 +49,13 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                 DSLContext tx = configuration.dsl();
                 InstrumentCode instrumentCode = fxSpot.instrumentCode();
 
-                int insertedRegistryRows = tx.insertInto(INSTRUMENT_REGISTRY)
-                        .set(INSTRUMENT_REGISTRY.INSTRUMENT_CODE, instrumentCode.value())
-                        .onConflict(INSTRUMENT_REGISTRY.INSTRUMENT_CODE)
+                int insertedIdentityRows = tx.insertInto(INSTRUMENT_IDENTITY)
+                        .set(INSTRUMENT_IDENTITY.INSTRUMENT_CODE, instrumentCode.value())
+                        .onConflict(INSTRUMENT_IDENTITY.INSTRUMENT_CODE)
                         .doNothing()
                         .execute();
 
-                if (insertedRegistryRows == 0) {
+                if (insertedIdentityRows == 0) {
                     throw new FxSpotAlreadyExistsException(instrumentCode);
                 }
 
@@ -124,12 +124,12 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
                     throw new FxSpotNotFoundException(instrumentCode);
                 }
 
-                int deletedRegistryRows = tx.deleteFrom(INSTRUMENT_REGISTRY)
-                        .where(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(instrumentCode.value()))
+                int deletedIdentityRows = tx.deleteFrom(INSTRUMENT_IDENTITY)
+                        .where(INSTRUMENT_IDENTITY.INSTRUMENT_CODE.eq(instrumentCode.value()))
                         .execute();
 
-                if (deletedRegistryRows == 0) {
-                    throw new IllegalStateException("FX_SPOT registry row was not found during delete");
+                if (deletedIdentityRows == 0) {
+                    throw new IllegalStateException("FX_SPOT identity row was not found during delete");
                 }
             });
         } catch (DataAccessException ex) {
@@ -154,8 +154,8 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
 
         return dsl.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
-                .join(INSTRUMENT_REGISTRY)
-                .on(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
+                .join(INSTRUMENT_IDENTITY)
+                .on(INSTRUMENT_IDENTITY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
                 .join(baseCurrencyRef)
                 .on(baseCurrencyRef.CODE.eq(INSTRUMENT_FX_SPOT.BASE_CURRENCY))
                 .join(quoteCurrencyRef)
@@ -184,8 +184,8 @@ public final class JooqFxSpotRepositoryAdapter implements FxSpotRepository {
 
         return context.select(fxSpotSelectFields(baseCurrencyRef, quoteCurrencyRef))
                 .from(INSTRUMENT_FX_SPOT)
-                .join(INSTRUMENT_REGISTRY)
-                .on(INSTRUMENT_REGISTRY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
+                .join(INSTRUMENT_IDENTITY)
+                .on(INSTRUMENT_IDENTITY.INSTRUMENT_CODE.eq(INSTRUMENT_FX_SPOT.INSTRUMENT_CODE))
                 .join(baseCurrencyRef)
                 .on(baseCurrencyRef.CODE.eq(INSTRUMENT_FX_SPOT.BASE_CURRENCY))
                 .join(quoteCurrencyRef)
